@@ -1,0 +1,60 @@
+table{
+    text-align: center;
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 10px;
+}
+
+th {
+    background: white;
+    color: black;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    font-size: 18px;
+}
+
+td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+    font-size: 18px;
+}
+.labels tr td {
+    background-color: white;
+    font-weight: bold;
+    color: rgb(0, 0, 0);
+}
+.label tr td label {
+    display: block;
+}
+[data-toggle="toggle"] {
+    display: none;
+}
+
+[data-toggle="toggleUnd"] {
+    display: none;
+}
+
+.hideShow{
+    display: none;
+}
+
+.hideShowUnd{
+    display: none;
+}
+
+.sum{
+    text-align: right;
+}
+
+.details{
+    text-align: center;
+}
+
+.levelPays { display: none; }
+
+.more{
+    text-align: center;
+}
