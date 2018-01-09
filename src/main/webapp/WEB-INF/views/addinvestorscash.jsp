@@ -35,6 +35,7 @@
         <form:input type="hidden" path="" id="edit" value="${edit}"/>
         <form:input type="hidden" path="" id="doubleCash" value="${doubleCash}"/>
         <form:input type="hidden" path="" id="closeCash" value="${closeCash}"/>
+
         <div class="row" id="facilitiesRow">
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="facilities">Объект:</label>
@@ -105,8 +106,7 @@
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="source">Источник:</label>
                 <div class="col-md-7">
-                    <form:input type="number" path="source" id="source" class="form-control input-sm"
-                                min="0.0" step="any"/>
+                    <form:input type="text" path="source" id="source" class="form-control input-sm"/>
                 </div>
             </div>
         </div>

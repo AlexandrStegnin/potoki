@@ -16,8 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.annotation.Resource;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -30,9 +28,6 @@ import java.util.stream.Collectors;
 
 @Controller
 public class InvestorsFlowsController {
-
-    @PersistenceContext(name = "persistanceUnit")
-    protected EntityManager emf;
 
     @Resource(name = "uploadExcelFunc")
     private UploadExcelFunc uploadExcelFunc;
@@ -87,134 +82,7 @@ public class InvestorsFlowsController {
 
         return response;
     }
-    /*
-    @GetMapping(value = "/investorsflows2")
-    public String viewiFlows2(ModelMap model) {
-        Locale RU = new Locale("ru", "RU");
-        Users investor = userService.findById(getPrincipalFunc.getPrincipalId());
-        List<InvestorsFlows> investorsFlowsList = investorsFlowsService.findByInvestorId(investor.getId());
 
-
-        List<MainFlows> mainFlows = mainFlowsService.findAllWithCriteriaApi();
-
-        List<MainFlows> invFlows = mainFlows.stream()
-                .filter(i -> i.getUnderFacilities().getFacility().getInvestors().contains(investor))
-                .collect(Collectors.toList());
-
-        Date dateMax = invFlows.stream().map(MainFlows::getSettlementDate).max(Date::compareTo).orElse(null);
-
-        float summaArendiMonth = (float)invFlows.stream()
-                .filter(a -> a.getSumma() > 0)
-                .filter(a -> globalFunctions.getMonthInt(a.getSettlementDate()) == globalFunctions.getMonthInt(dateMax) &&
-                        globalFunctions.getYearInt(a.getSettlementDate()) == globalFunctions.getYearInt(dateMax))
-                .collect(Collectors.toList()).stream().mapToDouble(MainFlows::getSumma).sum();
-
-        float summaArendiAll = (float)invFlows.stream()
-                .filter(a -> a.getSumma() > 0)
-                .collect(Collectors.toList())
-                .stream()
-                .mapToDouble(MainFlows::getSumma).sum();
-
-        float summaRashodiMonth = (float)invFlows.stream()
-                .filter(r -> r.getSumma() < 0)
-                .filter(r -> globalFunctions.getMonthInt(r.getSettlementDate()) == globalFunctions.getMonthInt(dateMax) &&
-                        globalFunctions.getYearInt(r.getSettlementDate()) == globalFunctions.getYearInt(dateMax))
-                .collect(Collectors.toList())
-                .stream()
-                .mapToDouble(MainFlows::getSumma).sum();
-
-        float summaRashodiAll = (float)invFlows.stream()
-                .filter(r -> r.getSumma() < 0)
-                .collect(Collectors.toList())
-                .stream()
-                .mapToDouble(MainFlows::getSumma).sum();
-
-        Date dateMaxPays = mainFlows.stream().map(MainFlows::getSettlementDate).max(Date::compareTo).orElse(null);
-        float summaPaysMonth;
-        float summaPays;
-        if(!Objects.equals(dateMaxPays, null)){
-            summaPaysMonth = (float) investorsFlowsList.stream()
-                    .filter(p -> globalFunctions.getMonthInt(p.getReportDate()) == globalFunctions.getMonthInt(dateMaxPays) &&
-                            globalFunctions.getYearInt(p.getReportDate()) == globalFunctions.getYearInt(dateMaxPays))
-                    .collect(Collectors.toList())
-                    .stream()
-                    .mapToDouble(InvestorsFlows::getAfterCashing).sum();
-        }else{
-            summaPaysMonth = (float) investorsFlowsList.stream()
-                    .mapToDouble(InvestorsFlows::getAfterCashing).sum();
-        }
-
-
-        summaPays = (float) investorsFlowsList.stream()
-                .mapToDouble(InvestorsFlows::getAfterCashing).sum();
-
-        final int[] id = {0};
-        final Comparator<MainFlows> comp = (mf1, mf2) -> Float.compare(mf1.getSumma(), mf2.getSumma());
-
-        String monthAndYear;
-
-        SimpleDateFormat monthFormatter = new SimpleDateFormat("MMMM", RU);
-        SimpleDateFormat yearFormatter = new SimpleDateFormat("yyyy", RU);
-        monthAndYear = Objects.equals(dateMax, null) ?
-                monthFormatter.format(dateMaxPays) + " " + yearFormatter.format(dateMaxPays) :
-                monthFormatter.format(dateMax) + " " + yearFormatter.format(dateMax);
-
-        Map<String, String> facilities = new HashMap<>(0);
-        facilities.put(String.valueOf(id[0]), "Выберите объект");
-
-        List<InvestorsCash> invCash = investorsCashService.findByInvestorId(investor.getId());
-        BigDecimal summaCash = new BigDecimal(invCash.stream().mapToDouble(InvestorsCash::getGivedCash).sum(), MathContext.DECIMAL64);
-        List<InvestorsCash> finInvCash =
-                invCash.stream().collect(
-                        Collectors.groupingBy(
-                                cash ->
-                                        new InvestorsCash(
-                                                cash.getFacility(),
-                                                cash.getInvestor()),
-                                Collectors.summingDouble(InvestorsCash::getGivedCash)
-                        )).entrySet().stream()
-                        .map(entry -> new InvestorsCash(
-                                Float.parseFloat(entry.getValue().toString()),
-                                entry.getKey().getFacility(),
-                                entry.getKey().getInvestor()))
-                        .collect(Collectors.toList());
-
-        float finalMaxSumMonth = summaArendiMonth > summaPaysMonth ? summaArendiMonth : summaPaysMonth;
-        float finalMaxSumAll = summaArendiAll > summaPays ? summaArendiAll : summaPays;
-        final String[] facility = {""};
-        investorsFlowsList.stream().distinct().forEach(flows -> {
-            facility[0] = flows.getUnderFacilities().getFacility().getFacility();
-            if(!facilities.containsKey(facility[0])){
-                facilities.put(facility[0], facility[0]);
-            }
-        });
-
-        SearchSummary searchSummaryF = new SearchSummary();
-
-        model.addAttribute("facilities", facilities);
-        model.addAttribute("monthAndYear", monthAndYear);
-        model.addAttribute("searchSummaryF", searchSummaryF);
-
-        model.addAttribute("summaArendiMonth", summaArendiMonth);
-        model.addAttribute("summaArendiAll", summaArendiAll);
-
-        model.addAttribute("summaPays", summaPays);
-        model.addAttribute("summaPaysMonth", summaPaysMonth);
-
-        model.addAttribute("invCash", finInvCash);
-        model.addAttribute("summaCash", summaCash);
-
-        model.addAttribute("finalMaxSumMonth", finalMaxSumMonth);
-        model.addAttribute("finalMaxSumAll", finalMaxSumAll);
-
-        model.addAttribute("summaRashodiMonth", summaRashodiMonth);
-        model.addAttribute("summaRashodiAll", summaRashodiAll);
-
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
-
-        return "viewmainflowsinv2";
-    }
-    */
     @PostMapping(value = "/showCalculating", produces="application/json;charset=UTF-8")
     public @ResponseBody
     GenericResponse showCalculating(@RequestBody SearchSummary searchSummary, HttpServletRequest httpServletRequest) {
