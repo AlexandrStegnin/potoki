@@ -226,7 +226,7 @@
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="sourceFacilities" id="sourceFacilitiesLbl">Объект реинвестирования:</label>
                 <div class="col-md-7">
-                    <form:select path="" id="sourceFacilities" items="${sourceFacilities}" multiple="false"
+                    <form:select path="sourceFacility" id="sourceFacilities" items="${sourceFacilities}" multiple="false"
                                  itemValue="id" itemLabel="facility" class="form-control input-sm"/>
                     <div class="has-error" id="sourceFacilityErr">
                     </div>
@@ -238,7 +238,7 @@
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="sourceUnderFacilities" id="sourceUnderFacilitiesLbl">Подобъект реинвестирования:</label>
                 <div class="col-md-7">
-                    <form:select path="" id="sourceUnderFacilities" multiple="false" class="form-control input-sm">
+                    <form:select path="sourceUnderFacility" id="sourceUnderFacilities" multiple="false" class="form-control input-sm">
                         <c:forEach var="uf" items="${sourceUnderFacilities}">
                             <form:option value="${uf.underFacility}" id="${uf.id}" data-parent-id="${uf.facilityId}">
 

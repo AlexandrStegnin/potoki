@@ -379,16 +379,17 @@ public class InvestorsFlowsController {
         List<MainFlows> mainFlows = mainFlowsService.findByFacilityIdIn(facilitiesIdList);
         //List<MainFlows> mainFlows = mainFlowsService.findAllWithCriteriaApi();
 
+        /*
         List<MainFlows> invFlows = mainFlows.stream()
                 .filter(i -> !Objects.equals(null, i.getUnderFacilities()) && i.getUnderFacilities().getFacility().getInvestors().contains(investor))
                 .collect(Collectors.toList());
-
+        */
         List<InvestorsCash> investorsCashList = investorsCashService.findByInvestorId(investor.getId());
 
         List<UsersAnnexToContracts> annexes = investor.getUsersAnnexToContractsList();
 
         CashFlows cashFlows = new CashFlows();
-        cashFlows.setMainFlowsList(invFlows);
+        cashFlows.setMainFlowsList(mainFlows);
         cashFlows.setInvestorsFlowsList(investorsFlowsList);
         cashFlows.setInvestorsCashList(investorsCashList);
         cashFlows.setAnnexes(annexes);

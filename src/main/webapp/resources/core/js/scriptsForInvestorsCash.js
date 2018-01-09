@@ -506,9 +506,9 @@ function prepareCashSave(what) {
         typeClosingInvest: typeClosingInvest,
         shareKind: shareKind,
         dateReport: dateReport,
-        sourceFacility: null,
+        sourceFacility: reFacility,
         source: source,
-        sourceUnderFacility: null
+        sourceUnderFacility: reUnderFacility
     };
 
     var flag = true;
@@ -616,8 +616,8 @@ function disableFields() {
         $('#shareKindName').prop('disabled', true);
     }else if($('#edit').val() === 'true') {
         var cashDetail = $('#cashDetail');
-        var reFacility = $('#reFacility');
-        var reUnderFacility = $('#reUnderFacility');
+        var reFacility = $('#sourceFacility');
+        var reUnderFacility = $('#sourceUnderFacility');
         var dateRep = $('#dateRepRow');
 
         $('#facilities').prop('disabled', false);
