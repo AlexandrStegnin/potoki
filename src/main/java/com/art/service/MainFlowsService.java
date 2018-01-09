@@ -77,17 +77,14 @@ public class MainFlowsService {
         return em.createQuery(mainFlowsCriteriaQuery).getResultList();
     }
 
-    /*
-    public List<MainFlows> findByInvestorId(BigInteger investorId){
+
+    public List<MainFlows> findByFacilityIdIn(List<BigInteger> facilityIdList){
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<MainFlows> investorsCashCriteriaQuery = cb.createQuery(InvestorsCash.class);
-        Root<InvestorsCash> investorsCashRoot = investorsCashCriteriaQuery.from(InvestorsCash.class);
-        investorsCashCriteriaQuery.select(investorsCashRoot);
-        investorsCashCriteriaQuery.where(cb.and(cb.equal(investorsCashRoot.get(InvestorsCash_.investorId), investorId),
-                cb.equal(investorsCashRoot.get(InvestorsCash_.facilityId), facilityId),
-                cb.gt(investorsCashRoot.get(InvestorsCash_.givedCash), 0),
-                cb.isNull(investorsCashRoot.get(InvestorsCash_.typeClosingInvest))));
-        return em.createQuery(investorsCashCriteriaQuery).getResultList();
+        CriteriaQuery<MainFlows> mainFlowsCriteriaQuery = cb.createQuery(MainFlows.class);
+        Root<MainFlows> mainFlowsRoot = mainFlowsCriteriaQuery.from(MainFlows.class);
+        mainFlowsCriteriaQuery.select(mainFlowsRoot);
+        mainFlowsCriteriaQuery.where(mainFlowsRoot.get(MainFlows_.underFacilities).get(UnderFacilities_.facility).get(Facilities_.id).in(facilityIdList));
+        return em.createQuery(mainFlowsCriteriaQuery).getResultList();
     }
-    */
+
 }

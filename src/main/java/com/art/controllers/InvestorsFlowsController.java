@@ -502,10 +502,14 @@ public class InvestorsFlowsController {
 
     @PostMapping(value = "/getIncomes")
     public @ResponseBody CashFlows getIncomes(ModelMap model){
-        Users investor = userService.findByIdWithAnnexes(getPrincipalFunc.getPrincipalId());
+        Users investor = userService.findByIdWithAnnexesAndFacilities(getPrincipalFunc.getPrincipalId());
         List<InvestorsFlows> investorsFlowsList = investorsFlowsService.findByInvestorId(investor.getId());
 
-        List<MainFlows> mainFlows = mainFlowsService.findAllWithCriteriaApi();
+        List<BigInteger> facilitiesIdList = new ArrayList<>(0);
+        investor.getFacilityes().forEach(f -> facilitiesIdList.add(f.getId()));
+
+        List<MainFlows> mainFlows = mainFlowsService.findByFacilityIdIn(facilitiesIdList);
+        //List<MainFlows> mainFlows = mainFlowsService.findAllWithCriteriaApi();
 
         List<MainFlows> invFlows = mainFlows.stream()
                 .filter(i -> !Objects.equals(null, i.getUnderFacilities()) && i.getUnderFacilities().getFacility().getInvestors().contains(investor))
@@ -538,14 +542,14 @@ public class InvestorsFlowsController {
     @PostMapping(value = "/getMainFlows")
     public @ResponseBody CashFlows getMainFlows(ModelMap model){
         Users investor = userService.findById(getPrincipalFunc.getPrincipalId());
-        List<MainFlows> mainFlows = mainFlowsService.findAllWithCriteriaApi();
 
-        List<MainFlows> invFlows = mainFlows.stream()
-                .filter(i -> i.getUnderFacilities().getFacility().getInvestors().contains(investor))
-                .collect(Collectors.toList());
+        List<BigInteger> facilitiesIdList = new ArrayList<>(0);
+        investor.getFacilityes().forEach(f -> facilitiesIdList.add(f.getId()));
+
+        List<MainFlows> mainFlows = mainFlowsService.findByFacilityIdIn(facilitiesIdList);
 
         CashFlows cashFlows = new CashFlows();
-        cashFlows.setMainFlowsList(invFlows);
+        cashFlows.setMainFlowsList(mainFlows);
 
         return cashFlows;
     }

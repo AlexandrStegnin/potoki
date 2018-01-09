@@ -160,6 +160,17 @@ public class UserService {
         return em.createQuery(usersCriteriaQuery).getSingleResult();
     }
 
+    public Users findByIdWithAnnexesAndFacilities(BigInteger id){
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
+        Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
+        usersRoot.fetch(Users_.usersAnnexToContractsList, JoinType.LEFT);
+        usersRoot.fetch(Users_.facilityes, JoinType.LEFT);
+        usersCriteriaQuery.select(usersRoot).distinct(true);
+        usersCriteriaQuery.where(cb.equal(usersRoot.get(Users_.id), id));
+        return em.createQuery(usersCriteriaQuery).getSingleResult();
+    }
+
     public Users findByIdWithStuffs(BigInteger id){
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
