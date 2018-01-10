@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -70,9 +69,6 @@ public class InvestorsCashController {
     @Resource(name = "mailingGroupsService")
     private MailingGroupsService mailingGroupsService;
 
-    @Resource(name = "roomsService")
-    private RoomsService roomsService;
-
     @Resource(name = "investorsFlowsSaleService")
     private InvestorsFlowsSaleService investorsFlowsSaleService;
 
@@ -97,7 +93,6 @@ public class InvestorsCashController {
         model.addAttribute("edit", true);
         model.addAttribute("closeCash", false);
         model.addAttribute("doubleCash", false);
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         model.addAttribute("title", title);
         return "addinvestorscash";
     }
@@ -117,6 +112,7 @@ public class InvestorsCashController {
         return "addinvestorscash";
     }
 
+    /*
     @PostMapping(value = { "/edit-cash-{id}" })
     public String updateShare(@ModelAttribute("investorsCash") InvestorsCash investorsCash,
                               BindingResult result, ModelMap model) {
@@ -134,6 +130,7 @@ public class InvestorsCashController {
         model.addAttribute("ret", ret);
         return "registrationsuccess";
     }
+    */
 
     @GetMapping(value = { "/double-cash-{id}" })
     public String doubleInvCash(@PathVariable BigInteger id, ModelMap model) {
@@ -161,6 +158,7 @@ public class InvestorsCashController {
         return "addinvestorscash";
     }
 
+    /*
     @PostMapping(value = { "/double-cash-{id}" })
     public String updateInvCash(@ModelAttribute("investorsCash") InvestorsCash investorsCash,
                                      BindingResult result, ModelMap model) {
@@ -197,7 +195,7 @@ public class InvestorsCashController {
             investorsCashService.update(investorsCash);
         }else{
             List<InvestorsCash> investorsCashes = investorsCashService.findAll()
-                    .stream().filter(cash -> cash.getGivedCash().compareTo(BigDecimal.ZERO) > 0).collect(Collectors.toList());;
+                    .stream().filter(cash -> cash.getGivedCash().compareTo(BigDecimal.ZERO) > 0).collect(Collectors.toList());
             model.addAttribute("investorsCashes", investorsCashes);
             model.addAttribute("searchSummary", new SearchSummary());
             model.addAttribute("title", title);
@@ -209,13 +207,14 @@ public class InvestorsCashController {
         }else {
             investorsCashService.deleteById(investorsCash.getId());
             List<InvestorsCash> investorsCashes = investorsCashService.findAll()
-                    .stream().filter(cash -> cash.getGivedCash().compareTo(BigDecimal.ZERO) > 0).collect(Collectors.toList());;
+                    .stream().filter(cash -> cash.getGivedCash().compareTo(BigDecimal.ZERO) > 0).collect(Collectors.toList());
             model.addAttribute("investorsCashes", investorsCashes);
             model.addAttribute("searchSummary", new SearchSummary());
             model.addAttribute("title", title);
             return "viewinvestorscash";
         }
     }
+    */
 
     @PostMapping(value = { "/deleteCashList" }, produces="application/json;charset=UTF-8")
     public @ResponseBody
@@ -548,7 +547,8 @@ public class InvestorsCashController {
         }else if(!Objects.equals(reFacility, null) && !Objects.equals(investorsCash.getId(), null) &&
             !Objects.equals(investorsCash.getNewCashDetails(), null) &&
                 (!investorsCash.getNewCashDetails().getNewCashDetail().equalsIgnoreCase("Реинвестирование с продажи") &&
-                        !investorsCash.getNewCashDetails().getNewCashDetail().equalsIgnoreCase("Реинвестирование с аренды"))){
+                        !investorsCash.getNewCashDetails().getNewCashDetail().equalsIgnoreCase("Реинвестирование с аренды")) &&
+                (!Objects.equals(null, searchSummary.getWhat()) && !searchSummary.getWhat().equalsIgnoreCase("edit"))){
             InvestorsCash newInvestorsCash = new InvestorsCash();
             newInvestorsCash.setFacility(reFacility);
             newInvestorsCash.setSourceFacility(investorsCash.getFacility());
@@ -588,15 +588,13 @@ public class InvestorsCashController {
             newInvestorsCash.setSource(investorsCash.getId().toString());
             newInvestorsCash.setUnderFacility(investorsCash.getUnderFacility());
             investorsCash.setUnderFacility(inMemoryCash.getUnderFacility());
-            //if(!Objects.equals(newInvestorsCash.getUnderFacility(), null)){
-                investorsCash.setIsDivide(1);
-                updateMailingGroups(newInvestorsCash, "add");
-                updateMailingGroups(investorsCash, "add");
-                addFacility(newInvestorsCash);
-                addFacility(investorsCash);
-                investorsCashService.update(newInvestorsCash);
-                investorsCashService.update(investorsCash);
-            //}
+            investorsCash.setIsDivide(1);
+            updateMailingGroups(newInvestorsCash, "add");
+            updateMailingGroups(investorsCash, "add");
+            addFacility(newInvestorsCash);
+            addFacility(investorsCash);
+            investorsCashService.update(newInvestorsCash);
+            investorsCashService.update(investorsCash);
         }
 
         investorsCash = investorsCashService.update(investorsCash);
@@ -868,7 +866,7 @@ public class InvestorsCashController {
         Map<String, InvestorsCash> map = new HashMap<>(0);
 
         cashList.forEach(ic -> {
-            InvestorsCash keyMap = null;
+            InvestorsCash keyMap;
             switch (what){
                 case "sale":
                     keyMap = map.get(ic.getInvestor().getLogin() +
