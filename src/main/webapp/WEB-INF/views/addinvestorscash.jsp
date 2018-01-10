@@ -58,6 +58,7 @@
             </c:otherwise>
         </c:choose>
 
+
         <div class="row" id="underFacilitiesRow">
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="underFacilities">Подобъект:</label>
