@@ -595,6 +595,7 @@ public class InvestorsCashController {
             addFacility(investorsCash);
             investorsCashService.update(newInvestorsCash);
             investorsCashService.update(investorsCash);
+
         }
 
         investorsCash = investorsCashService.update(investorsCash);
