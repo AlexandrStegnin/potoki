@@ -19,20 +19,15 @@ public class StringToStuffConverter implements Converter<String, Stuffs> {
         this.stuffService = stuffService;
     }
 
-    /**
-     * Gets UserProfile by Id
-     * @see Converter#convert(Object)
-     */
     public Stuffs convert(String id) {
-        Stuffs stuffs = null;
-        try{
+        Stuffs stuffs;
+        try {
             BigInteger IntId = new BigInteger(id);
             stuffs = stuffService.findById(IntId);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             stuffs = stuffService.findByStuff(id);
         }
 
-        System.out.println("Stuff : "+stuffs);
         return stuffs;
     }
 }

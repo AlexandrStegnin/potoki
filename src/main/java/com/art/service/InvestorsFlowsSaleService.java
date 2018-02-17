@@ -19,7 +19,7 @@ public class InvestorsFlowsSaleService {
     @PersistenceContext(name = "persistanceUnit")
     private EntityManager em;
 
-    public InvestorsFlowsSale findWithAllFields(BigInteger id){
+    public InvestorsFlowsSale findWithAllFields(BigInteger id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<InvestorsFlowsSale> saleCriteriaQuery = cb.createQuery(InvestorsFlowsSale.class);
         Root<InvestorsFlowsSale> saleRoot = saleCriteriaQuery.from(InvestorsFlowsSale.class);
@@ -32,15 +32,15 @@ public class InvestorsFlowsSaleService {
         return em.createQuery(saleCriteriaQuery).getSingleResult();
     }
 
-    public void create(InvestorsFlowsSale sale){
+    public void create(InvestorsFlowsSale sale) {
         this.em.persist(sale);
     }
 
-    public void update(InvestorsFlowsSale sale){
+    public void update(InvestorsFlowsSale sale) {
         this.em.merge(sale);
     }
 
-    public List<InvestorsFlowsSale> findAll(){
+    public List<InvestorsFlowsSale> findAll() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<InvestorsFlowsSale> saleCriteriaQuery = cb.createQuery(InvestorsFlowsSale.class);
         Root<InvestorsFlowsSale> saleRoot = saleCriteriaQuery.from(InvestorsFlowsSale.class);
@@ -52,7 +52,7 @@ public class InvestorsFlowsSaleService {
         return em.createQuery(saleCriteriaQuery).getResultList();
     }
 
-    public List<InvestorsFlowsSale> findByIdInWithAllFields(List<BigInteger> idList){
+    public List<InvestorsFlowsSale> findByIdInWithAllFields(List<BigInteger> idList) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<InvestorsFlowsSale> saleCriteriaQuery = cb.createQuery(InvestorsFlowsSale.class);
         Root<InvestorsFlowsSale> saleRoot = saleCriteriaQuery.from(InvestorsFlowsSale.class);
@@ -65,7 +65,7 @@ public class InvestorsFlowsSaleService {
         return em.createQuery(saleCriteriaQuery).getResultList();
     }
 
-    public List<InvestorsFlowsSale> findByIdIn(List<BigInteger> idList){
+    public List<InvestorsFlowsSale> findByIdIn(List<BigInteger> idList) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<InvestorsFlowsSale> saleCriteriaQuery = cb.createQuery(InvestorsFlowsSale.class);
         Root<InvestorsFlowsSale> saleRoot = saleCriteriaQuery.from(InvestorsFlowsSale.class);
@@ -74,7 +74,7 @@ public class InvestorsFlowsSaleService {
         return em.createQuery(saleCriteriaQuery).getResultList();
     }
 
-    public void deleteByIdIn(List<BigInteger> idList){
+    public void deleteByIdIn(List<BigInteger> idList) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaDelete<InvestorsFlowsSale> query = cb.createCriteriaDelete(InvestorsFlowsSale.class);
         Root<InvestorsFlowsSale> root = query.from(InvestorsFlowsSale.class);
@@ -82,18 +82,18 @@ public class InvestorsFlowsSaleService {
         em.createQuery(query).executeUpdate();
     }
 
-    public InvestorsFlowsSale findById(BigInteger id){
+    public InvestorsFlowsSale findById(BigInteger id) {
         return this.em.find(InvestorsFlowsSale.class, id);
     }
 
-    public void delete(){
+    public void delete() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaDelete<InvestorsFlowsSale> query = cb.createCriteriaDelete(InvestorsFlowsSale.class);
         query.from(InvestorsFlowsSale.class);
         em.createQuery(query).executeUpdate();
     }
 
-    public void deleteById(BigInteger id){
+    public void deleteById(BigInteger id) {
         CriteriaBuilder cb = this.em.getCriteriaBuilder();
         CriteriaDelete<InvestorsFlowsSale> delete = cb.createCriteriaDelete(InvestorsFlowsSale.class);
         Root<InvestorsFlowsSale> flowsSaleRoot = delete.from(InvestorsFlowsSale.class);

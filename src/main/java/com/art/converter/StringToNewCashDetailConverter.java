@@ -13,7 +13,7 @@ public class StringToNewCashDetailConverter implements Converter<String, NewCash
     private NewCashDetailsService newCashDetailsService;
 
     @Autowired
-    public StringToNewCashDetailConverter(NewCashDetailsService newCashDetailsService){
+    public StringToNewCashDetailConverter(NewCashDetailsService newCashDetailsService) {
         this.newCashDetailsService = newCashDetailsService;
     }
 

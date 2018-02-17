@@ -38,9 +38,6 @@ public class InvestorsFlowsSaleController {
     @Resource(name = "underFacilitiesService")
     private UnderFacilitiesService underFacilitiesService;
 
-    @Resource(name = "stuffService")
-    private StuffService stuffService;
-
     @Resource(name = "userService")
     private UserService userService;
 
@@ -50,14 +47,8 @@ public class InvestorsFlowsSaleController {
     @Resource(name = "shareKindService")
     private ShareKindService shareKindService;
 
-    @Resource(name = "cashTypesService")
-    private CashTypesService cashTypesService;
-
-    @Resource(name = "newCashDetailsService")
-    private NewCashDetailsService newCashDetailsService;
-
     @GetMapping(value = "/flowsSale")
-    public ModelAndView flowsSale(){
+    public ModelAndView flowsSale() {
         ModelAndView modelAndView = new ModelAndView("viewInvestorsFlowsSale");
         SearchSummary searchSummary = new SearchSummary();
         modelAndView.addObject("searchSummary", searchSummary);
@@ -68,7 +59,7 @@ public class InvestorsFlowsSaleController {
         return modelAndView;
     }
 
-    @PostMapping(value = "/loadFlowsSaleAjax", produces="application/json;charset=UTF-8")
+    @PostMapping(value = "/loadFlowsSaleAjax", produces = "application/json;charset=UTF-8")
     public @ResponseBody
     GenericResponse loadFlowsSale(MultipartHttpServletRequest request, HttpServletRequest httpServletRequest) {
 
@@ -76,7 +67,7 @@ public class InvestorsFlowsSaleController {
 
         Iterator<String> itr = request.getFileNames();
         List<MultipartFile> multipartFiles = new ArrayList<>(0);
-        while (itr.hasNext()){
+        while (itr.hasNext()) {
             multipartFiles.add(request.getFile(itr.next()));
         }
 
@@ -95,7 +86,7 @@ public class InvestorsFlowsSaleController {
     }
 
     @GetMapping(value = "/deleteFlowsSale")
-    public String deleteFlows(){
+    public String deleteFlows() {
         investorsFlowsSaleService.delete();
         return "redirect:/flowsSale";
     }

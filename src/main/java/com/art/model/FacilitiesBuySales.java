@@ -18,7 +18,7 @@ import java.util.Date;
 @EqualsAndHashCode
 @Entity
 @Table(name = "FacilitiesBuySales")
-public class FacilitiesBuySales implements Serializable{
+public class FacilitiesBuySales implements Serializable {
 
     private BigInteger id;
     private float summa;
@@ -30,47 +30,52 @@ public class FacilitiesBuySales implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "Id")
-    public BigInteger getId(){
+    public BigInteger getId() {
         return id;
     }
-    public void setId(BigInteger id){
+
+    public void setId(BigInteger id) {
         this.id = id;
     }
 
     @Enumerated(EnumType.STRING)
     @Column(name = "OperationType")
-    public BuySalesEnum getOperationType(){
+    public BuySalesEnum getOperationType() {
         return operationType;
     }
-    public void setOperationType(BuySalesEnum operationType){
+
+    public void setOperationType(BuySalesEnum operationType) {
         this.operationType = operationType;
     }
 
     @OneToOne
     @JoinColumn(name = "UnderFacilityId", referencedColumnName = "ID")
-    public UnderFacilities getUnderFacility(){
+    public UnderFacilities getUnderFacility() {
         return underFacility;
     }
-    public void setFacility(UnderFacilities underFacility){
+
+    public void setFacility(UnderFacilities underFacility) {
         this.underFacility = underFacility;
     }
 
     @OneToOne
     @JoinColumn(name = "FacilityId", referencedColumnName = "ID")
-    public Facilities getFacility(){
+    public Facilities getFacility() {
         return facility;
     }
-    public void setFacility(Facilities facility){
+
+    public void setFacility(Facilities facility) {
         this.facility = facility;
     }
 
     @Transient
-    public String getDateGivedToLocalDate(){
+    public String getDateGivedToLocalDate() {
         String localDate = "";
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        try{
+        try {
             localDate = format.format(dateGived);
-        }catch(Exception ignored){}
+        } catch (Exception ignored) {
+        }
 
         return localDate;
     }

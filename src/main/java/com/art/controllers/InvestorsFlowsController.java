@@ -1,7 +1,6 @@
 package com.art.controllers;
 
 import com.art.func.GetPrincipalFunc;
-import com.art.func.GlobalFunctions;
 import com.art.func.UploadExcelFunc;
 import com.art.model.*;
 import com.art.model.supporting.CashFlows;
@@ -44,9 +43,6 @@ public class InvestorsFlowsController {
     @Resource(name = "investorsCashService")
     private InvestorsCashService investorsCashService;
 
-    @Resource(name = "globalFunctions")
-    private GlobalFunctions globalFunctions;
-
     @Resource(name = "userService")
     private UserService userService;
 
@@ -56,9 +52,12 @@ public class InvestorsFlowsController {
     @Resource(name = "investorsFlowsSaleService")
     private InvestorsFlowsSaleService investorsFlowsSaleService;
 
+    @Resource(name = "usersAnnexToContractsService")
+    private UsersAnnexToContractsService usersAnnexToContractsService;
+
     private final String SHARE_KIND = "Основная доля";
 
-    @PostMapping(value = "/loadFlowsAjax", produces="application/json;charset=UTF-8")
+    @PostMapping(value = "/loadFlowsAjax", produces = "application/json;charset=UTF-8")
     public @ResponseBody
     GenericResponse loadFlows(MultipartHttpServletRequest request, HttpServletRequest httpServletRequest) {
 
@@ -66,7 +65,7 @@ public class InvestorsFlowsController {
 
         Iterator<String> itr = request.getFileNames();
         List<MultipartFile> multipartFiles = new ArrayList<>(0);
-        while (itr.hasNext()){
+        while (itr.hasNext()) {
             multipartFiles.add(request.getFile(itr.next()));
         }
 
@@ -83,7 +82,7 @@ public class InvestorsFlowsController {
         return response;
     }
 
-    @PostMapping(value = "/showCalculating", produces="application/json;charset=UTF-8")
+    @PostMapping(value = "/showCalculating", produces = "application/json;charset=UTF-8")
     public @ResponseBody
     GenericResponse showCalculating(@RequestBody SearchSummary searchSummary, HttpServletRequest httpServletRequest) {
 
@@ -115,7 +114,7 @@ public class InvestorsFlowsController {
         return createDataForCalculation(searchSummary.getFacility(), period, getPrincipalFunc.getPrincipalId(), searchSummary.getTableForSearch());
     }
 
-    private GenericResponse createDataForCalculation(String facilityName, Date period, BigInteger investorId, String table){
+    private GenericResponse createDataForCalculation(String facilityName, Date period, BigInteger investorId, String table) {
         GenericResponse response = new GenericResponse();
         List<InvestorsFlows> investorsFlowsList = investorsFlowsService.findByInvestorId(investorId);
         Locale RU = new Locale("ru", "RU");
@@ -130,9 +129,9 @@ public class InvestorsFlowsController {
                 .stream()
                 .filter(i -> Objects.equals(facilityName, null) || i.getFacility().getFacility().equalsIgnoreCase(facilityName))
                 .filter(i -> {
-                    if(table.equalsIgnoreCase("monthPays")){
+                    if (table.equalsIgnoreCase("monthPays")) {
                         return i.getReportDate().compareTo(period) == 0;
-                    }else {
+                    } else {
                         return true;
                     }
                 })
@@ -178,7 +177,7 @@ public class InvestorsFlowsController {
                 .sum();
 
 
-        List<InvestorsFlows> paysToInvestors  = investorsFlowsList
+        List<InvestorsFlows> paysToInvestors = investorsFlowsList
                 .stream()
                 .filter(p -> Objects.equals(facilityName, null) || p.getFacility().getFacility().equalsIgnoreCase(facilityName))
                 .collect(Collectors.toList())
@@ -217,7 +216,7 @@ public class InvestorsFlowsController {
         final String[] underFacility = {""};
 
         result.append("<tbody class='labels'>")
-            .append("<tr>")
+                .append("<tr>")
                 .append("<td style='padding: 0'>").append(facilityName).append("</td>")
                 .append("<td></td>")
                 .append("<td style='text-align: right'>").append(fmt.format(rentSum)).append("</td>")
@@ -229,7 +228,7 @@ public class InvestorsFlowsController {
                 .append("<td style='text-align: right'>").append(fmt.format(sumAfterCashing)).append("</td>")
                 .append("<td class='details'><label for='").append(facilityName).append("Und'>Показать</label>")
                 .append("<input type='checkbox' id='").append(facilityName).append("Und' data-toggle='toggleUnd' /></td>")
-            .append("</tr>");
+                .append("</tr>");
         result.append("</tbody>");
         result.append("<tbody class='hideShowUnd'>");
 
@@ -244,7 +243,7 @@ public class InvestorsFlowsController {
         List<InvestorsFlows> finalInvestorsFlowsList = investorsFlowsList;
         paysToInvestors.forEach(fPays -> {
 
-            if(!Objects.equals(fPays.getUnderFacilities(), null)){
+            if (!Objects.equals(fPays.getUnderFacilities(), null)) {
                 underFacility[0] = fPays.getUnderFacilities().getUnderFacility();
             }
 
@@ -299,7 +298,7 @@ public class InvestorsFlowsController {
                     .append("<td style='text-align: right'>").append(fmtPercent.format(cashingComissionUnd[0]))
                     .append("<td style='text-align: right'>").append(fmt.format(sumAfterCashingUnd[0]))
                     .append("<td></td>")
-                .append("</tr>");
+                    .append("</tr>");
 
         });
         result.append("</tbody></tbody>");
@@ -324,7 +323,7 @@ public class InvestorsFlowsController {
     }
 
     @RequestMapping(value = "/sumdetails", method = RequestMethod.POST,
-            produces="application/json;charset=UTF-8")
+            produces = "application/json;charset=UTF-8")
     public @ResponseBody
     GenericResponse investorsSumDetailsPage(@RequestBody SearchSummary searchSummary) {
 
@@ -332,11 +331,11 @@ public class InvestorsFlowsController {
         NumberFormat fmt = NumberFormat.getCurrencyInstance(RU);
         NumberFormat fmtPerc = NumberFormat.getPercentInstance(RU);
 
-        List<InvestorsTotalSum> tempList  = investorsCashService.getInvestorsCashSumsDetails(
+        List<InvestorsTotalSum> tempList = investorsCashService.getInvestorsCashSumsDetails(
                 getPrincipalFunc.getPrincipalId()
         );
 
-        List<InvestorsTotalSum> investorsTotalSums= tempList.stream()
+        List<InvestorsTotalSum> investorsTotalSums = tempList.stream()
                 .filter(iSums -> iSums.getFacility().equals(searchSummary.getFacility()))
                 .collect(Collectors.toList());
 
@@ -364,12 +363,13 @@ public class InvestorsFlowsController {
     }
 
     @GetMapping(value = "/cashflows")
-    public String cashFlows(ModelMap model){
+    public String cashFlows(ModelMap model) {
         return "viewFlows";
     }
 
     @PostMapping(value = "/getIncomes")
-    public @ResponseBody CashFlows getIncomes(ModelMap model){
+    public @ResponseBody
+    CashFlows getIncomes(ModelMap model) {
         Users investor = userService.findByIdWithAnnexesAndFacilities(getPrincipalFunc.getPrincipalId());
         List<InvestorsFlows> investorsFlowsList = investorsFlowsService.findByInvestorId(investor.getId());
 
@@ -377,30 +377,28 @@ public class InvestorsFlowsController {
         investor.getFacilityes().forEach(f -> facilitiesIdList.add(f.getId()));
 
         List<MainFlows> mainFlows = mainFlowsService.findByFacilityIdIn(facilitiesIdList);
-        //List<MainFlows> mainFlows = mainFlowsService.findAllWithCriteriaApi();
 
-        /*
-        List<MainFlows> invFlows = mainFlows.stream()
-                .filter(i -> !Objects.equals(null, i.getUnderFacilities()) && i.getUnderFacilities().getFacility().getInvestors().contains(investor))
-                .collect(Collectors.toList());
-        */
         List<InvestorsCash> investorsCashList = investorsCashService.findByInvestorId(investor.getId());
 
-        List<UsersAnnexToContracts> annexes = investor.getUsersAnnexToContractsList();
+        List<UsersAnnexToContracts> annexes = investor.getUsersAnnexToContractsList().stream().distinct().collect(Collectors.toList());
+
+        List<Rooms> rooms = roomsService.findByFacilitiesId(facilitiesIdList);
 
         CashFlows cashFlows = new CashFlows();
         cashFlows.setMainFlowsList(mainFlows);
         cashFlows.setInvestorsFlowsList(investorsFlowsList);
         cashFlows.setInvestorsCashList(investorsCashList);
         cashFlows.setAnnexes(annexes);
+        cashFlows.setRooms(rooms);
 
         return cashFlows;
     }
 
     @PostMapping(value = "/getInvestorsFlows")
-    public @ResponseBody CashFlows getInvestorsFlows(ModelMap model){
-        Users investor = userService.findById(getPrincipalFunc.getPrincipalId());
-        List<InvestorsFlows> investorsFlowsList = investorsFlowsService.findByInvestorId(investor.getId());
+    public @ResponseBody
+    CashFlows getInvestorsFlows(ModelMap model) {
+        Users investor = userService.findByIdWithAnnexesAndFacilities(getPrincipalFunc.getPrincipalId());
+        List<InvestorsFlows> investorsFlowsList = investorsFlowsService.findByInvestorIdWithFacilitiesUnderFacilities(investor.getId());
 
         CashFlows cashFlows = new CashFlows();
         cashFlows.setInvestorsFlowsList(investorsFlowsList);
@@ -408,38 +406,69 @@ public class InvestorsFlowsController {
         return cashFlows;
     }
 
+    @PostMapping(value = "/getAnnexesList")
+    public @ResponseBody
+    CashFlows getAnnexes(ModelMap model) {
+        Users investor = userService.findByIdWithAnnexesAndFacilities(getPrincipalFunc.getPrincipalId());
+        List<UsersAnnexToContracts> usersAnnexToContracts = usersAnnexToContractsService.findByUserId(investor.getId());
+
+        CashFlows cashFlows = new CashFlows();
+        cashFlows.setAnnexes(usersAnnexToContracts);
+
+        return cashFlows;
+    }
+
+    @PostMapping(value = "/getInvestorsCashList")
+    public @ResponseBody
+    CashFlows getInvestorsCash(ModelMap model) {
+        return getCashFlows();
+    }
+
+    private CashFlows getCashFlows() {
+        Users investor = userService.findByIdWithFacilities(getPrincipalFunc.getPrincipalId());
+        List<InvestorsCash> investorsCashList = investorsCashService.findByInvestorId(investor.getId());
+        List<BigInteger> idList = new ArrayList<>(0);
+        investor.getFacilityes().forEach(f -> idList.add(f.getId()));
+
+        List<Rooms> rooms = roomsService.findByFacilitiesId(idList);
+
+        CashFlows cashFlows = new CashFlows();
+        cashFlows.setInvestorsCashList(investorsCashList);
+        cashFlows.setRooms(rooms);
+        return cashFlows;
+    }
+
     @PostMapping(value = "/getMainFlows")
-    public @ResponseBody CashFlows getMainFlows(ModelMap model){
-        Users investor = userService.findById(getPrincipalFunc.getPrincipalId());
+    public @ResponseBody
+    CashFlows getMainFlows(ModelMap model) {
+        Users investor = userService.findByIdWithFacilities(getPrincipalFunc.getPrincipalId());
 
         List<BigInteger> facilitiesIdList = new ArrayList<>(0);
         investor.getFacilityes().forEach(f -> facilitiesIdList.add(f.getId()));
 
         List<MainFlows> mainFlows = mainFlowsService.findByFacilityIdIn(facilitiesIdList);
 
+        Facilities facility = investorsCashService.getSumCash(getPrincipalFunc.getPrincipalId());
+
         CashFlows cashFlows = new CashFlows();
         cashFlows.setMainFlowsList(mainFlows);
+        cashFlows.setFacility(facility);
 
         return cashFlows;
     }
 
     @PostMapping(value = "/getInvestorCash")
-    public @ResponseBody CashFlows getCash(ModelMap model){
-        Users investor = userService.findById(getPrincipalFunc.getPrincipalId());
-        List<InvestorsCash> cash = investorsCashService.findByInvestorId(investor.getId());
-
-        CashFlows cashFlows = new CashFlows();
-        cashFlows.setInvestorsCashList(cash);
-
-        return cashFlows;
+    public @ResponseBody
+    CashFlows getCash(ModelMap model) {
+        return getCashFlows();
     }
 
-    @PostMapping(value = { "/deleteFlowsList" }, produces="application/json;charset=UTF-8")
+    @PostMapping(value = {"/deleteFlowsList"}, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     GenericResponse deleteFlowsList(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
         try {
-            switch (searchSummary.getWhat()){
+            switch (searchSummary.getWhat()) {
                 case "sale":
                     investorsFlowsSaleService.deleteByIdIn(searchSummary.getCashIdList());
                     break;
@@ -448,28 +477,17 @@ public class InvestorsFlowsController {
                     investorsFlowsService.deleteByIdIn(searchSummary.getCashIdList());
                     break;
             }
-        response.setMessage("Данные успешно удалены");
+            response.setMessage("Данные успешно удалены");
 
-        }catch (Exception ex){
+        } catch (Exception ex) {
             System.out.println(ex.getLocalizedMessage());
         }
 
         return response;
     }
 
-    private String getMonthAndYearSettlementDate(String settlementDate){
-        Locale RU = new Locale("ru", "RU");
-        String localDate = "";
-        SimpleDateFormat format = new SimpleDateFormat("MMM yyyy", RU);
-        try{
-            localDate = format.format(settlementDate);
-        }catch(Exception ignored){}
-
-        return localDate;
-    }
-
     @GetMapping(value = "/deleteFlows")
-    public String deleteFlows(){
+    public String deleteFlows() {
         investorsFlowsService.delete();
         return "redirect:/paysToInv";
     }

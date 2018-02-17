@@ -1,6 +1,5 @@
 package com.art.controllers;
 
-import com.art.func.GetPrincipalFunc;
 import com.art.model.BonusTypes;
 import com.art.service.BonusTypesService;
 import org.springframework.stereotype.Controller;
@@ -21,9 +20,6 @@ public class BonusTypesController {
     @Resource(name = "bonusTypesService")
     private BonusTypesService bonusTypesService;
 
-    @Resource(name = "getPrincipalFunc")
-    private GetPrincipalFunc getPrincipalFunc;
-
     @GetMapping(value = "/bonustypes")
     public String bonusTypesPage(ModelMap model) {
 
@@ -33,7 +29,7 @@ public class BonusTypesController {
         return "viewbonustypes";
     }
 
-    @GetMapping(value = { "/edit-bonustypes-{id}" })
+    @GetMapping(value = {"/edit-bonustypes-{id}"})
     public String editBonusTypes(@PathVariable BigInteger id, ModelMap model) {
         String title = "Обновление данных по бонусам";
         BonusTypes bonusTypes = bonusTypesService.findById(id);
@@ -43,9 +39,9 @@ public class BonusTypesController {
         return "addbonustypes";
     }
 
-    @PostMapping(value = { "/edit-bonustypes-{id}" })
+    @PostMapping(value = {"/edit-bonustypes-{id}"})
     public String updateBonusTypes(@ModelAttribute("bonusTypes") BonusTypes bonusTypes,
-                                           BindingResult result, ModelMap model) {
+                                   BindingResult result, ModelMap model) {
         String ret = "списку бонусов.";
         String redirectUrl = "/bonustypes";
         if (result.hasErrors()) {
@@ -62,13 +58,13 @@ public class BonusTypesController {
         return "registrationsuccess";
     }
 
-    @GetMapping(value = { "/delete-bonustypes-{id}" })
+    @GetMapping(value = {"/delete-bonustypes-{id}"})
     public String deleteBoonusTypes(@PathVariable BigInteger id) {
         bonusTypesService.deleteById(id);
         return "redirect:/bonustypes";
     }
 
-    @GetMapping(value = { "/newbonustypes" })
+    @GetMapping(value = {"/newbonustypes"})
     public String newBonusTypes(ModelMap model) {
         String title = "Добавление бонуса";
         BonusTypes bonusTypes = new BonusTypes();
@@ -78,9 +74,9 @@ public class BonusTypesController {
         return "addbonustypes";
     }
 
-    @PostMapping(value = { "/newbonustypes" })
+    @PostMapping(value = {"/newbonustypes"})
     public String saveBonusTypes(@ModelAttribute("bonusTypes") BonusTypes bonusTypes,
-                                         BindingResult result, ModelMap model) {
+                                 BindingResult result, ModelMap model) {
 
         if (result.hasErrors()) {
             return "addbonustypes";

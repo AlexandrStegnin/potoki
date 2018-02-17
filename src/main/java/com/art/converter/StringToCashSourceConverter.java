@@ -1,8 +1,6 @@
 package com.art.converter;
 
-import com.art.model.AlphaCorrectTags;
 import com.art.model.CashSources;
-import com.art.service.AlphaCorrectTagsService;
 import com.art.service.CashSourcesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
@@ -15,7 +13,7 @@ public class StringToCashSourceConverter implements Converter<String, CashSource
     private CashSourcesService cashSourcesService;
 
     @Autowired
-    public StringToCashSourceConverter(CashSourcesService cashSourcesService){
+    public StringToCashSourceConverter(CashSourcesService cashSourcesService) {
         this.cashSourcesService = cashSourcesService;
     }
 

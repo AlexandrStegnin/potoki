@@ -1,6 +1,5 @@
 package com.art.controllers;
 
-import com.art.func.GetPrincipalFunc;
 import com.art.model.Facilities;
 import com.art.model.InvestorsExpenses;
 import com.art.model.TypeExpenses;
@@ -31,9 +30,6 @@ public class InvestorsExpensesController {
     @Resource(name = "userService")
     private UserService userService;
 
-    @Resource(name = "getPrincipalFunc")
-    private GetPrincipalFunc getPrincipalFunc;
-
     @Resource(name = "facilityService")
     private FacilityService facilityService;
 
@@ -52,7 +48,7 @@ public class InvestorsExpensesController {
         return "viewinvestorsexp";
     }
 
-    @GetMapping(value = { "/edit-investorsexp-{id}" })
+    @GetMapping(value = {"/edit-investorsexp-{id}"})
     public String editInvestorsExpenses(@PathVariable BigInteger id, ModelMap model) {
         String title = "Обновление данных по расходам инвесторов";
         InvestorsExpenses investorsExpenses = investorsExpensesService.findById(id);
@@ -65,9 +61,9 @@ public class InvestorsExpensesController {
         return "addinvestorsexp";
     }
 
-    @PostMapping(value = { "/edit-investorsexp-{id}" })
+    @PostMapping(value = {"/edit-investorsexp-{id}"})
     public String updateInvestorsExpenses(@ModelAttribute("investorsExpenses") InvestorsExpenses investorsExpenses,
-                                           BindingResult result, ModelMap model) {
+                                          BindingResult result, ModelMap model) {
         String ret = "списку расходов инвесторов.";
         String redirectUrl = "/investorsexp";
         if (result.hasErrors()) {
@@ -82,13 +78,13 @@ public class InvestorsExpensesController {
         return "registrationsuccess";
     }
 
-    @GetMapping(value = { "/delete-investorsexp-{id}" })
+    @GetMapping(value = {"/delete-investorsexp-{id}"})
     public String deleteInvestorsExpenses(@PathVariable BigInteger id) {
         investorsExpensesService.deleteById(id);
         return "redirect:/investorsexp";
     }
 
-    @GetMapping(value = { "/newinvestorsexp" })
+    @GetMapping(value = {"/newinvestorsexp"})
     public String newInvestorsExpenses(ModelMap model) {
         String title = "Добавление расхода инвестора";
         InvestorsExpenses investorsExpenses = new InvestorsExpenses();
@@ -101,9 +97,9 @@ public class InvestorsExpensesController {
         return "addinvestorsexp";
     }
 
-    @PostMapping(value = { "/newinvestorsexp" })
+    @PostMapping(value = {"/newinvestorsexp"})
     public String saveInvestorsExp(@ModelAttribute("investorsExpenses") InvestorsExpenses investorsExpenses,
-                                         BindingResult result, ModelMap model) {
+                                   BindingResult result, ModelMap model) {
 
         if (result.hasErrors()) {
             return "addinvestorsexp";

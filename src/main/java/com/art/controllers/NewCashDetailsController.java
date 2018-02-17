@@ -1,6 +1,5 @@
 package com.art.controllers;
 
-import com.art.func.GetPrincipalFunc;
 import com.art.model.NewCashDetails;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
@@ -15,8 +14,6 @@ import java.util.List;
 
 @Controller
 public class NewCashDetailsController {
-    @Resource(name = "getPrincipalFunc")
-    private GetPrincipalFunc getPrincipalFunc;
 
     @Resource(name = "newCashDetailsService")
     private NewCashDetailsService newCashDetailsService;
@@ -27,23 +24,21 @@ public class NewCashDetailsController {
         List<NewCashDetails> newCashDetails = newCashDetailsService
                 .findAll();
         model.addAttribute("newCashDetails", newCashDetails);
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
 
         return "viewnewcashdetails";
     }
 
-    @GetMapping(value = { "/newcashdetail" })
+    @GetMapping(value = {"/newcashdetail"})
     public String newCashDetail(ModelMap model) {
         String title = "Добавление деталей новых денег";
         NewCashDetails newCashDetails = new NewCashDetails();
         model.addAttribute("newCashDetails", newCashDetails);
         model.addAttribute("edit", false);
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         model.addAttribute("title", title);
         return "addnewcashdetail";
     }
 
-    @PostMapping(value = { "/savenewcashdetail" }, produces="application/json;charset=UTF-8")
+    @PostMapping(value = {"/savenewcashdetail"}, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     GenericResponse saveNewCashDetail(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
@@ -55,23 +50,18 @@ public class NewCashDetailsController {
     }
 
 
-    @GetMapping(value = { "/edit-newcashdetail-{id}" })
+    @GetMapping(value = {"/edit-newcashdetail-{id}"})
     public String editNewCashDetail(@PathVariable BigInteger id, ModelMap model) {
         String title = "Обновление деталей новых денег";
         NewCashDetails newCashDetails = newCashDetailsService.findById(id);
 
         model.addAttribute("newCashDetails", newCashDetails);
         model.addAttribute("edit", true);
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         model.addAttribute("title", title);
         return "addnewcashdetail";
     }
 
-    /**
-     * This method will be called on form submission, handling POST request for
-     * updating user in database. It also validates the user input
-     */
-    @PostMapping(value = { "/editnewcashdetail" }, produces="application/json;charset=UTF-8")
+    @PostMapping(value = {"/editnewcashdetail"}, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     GenericResponse updateNewCashDetail(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
@@ -82,7 +72,7 @@ public class NewCashDetailsController {
         return response;
     }
 
-    @PostMapping(value = { "/deletenewcashdetail" }, produces="application/json;charset=UTF-8")
+    @PostMapping(value = {"/deletenewcashdetail"}, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     GenericResponse deleteSource(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();

@@ -14,7 +14,7 @@ public class StringToMailingGroupsConverter implements Converter<String, Mailing
     private MailingGroupsService mailingGroupsService;
 
     @Autowired
-    public StringToMailingGroupsConverter(MailingGroupsService mailingGroupsService){
+    public StringToMailingGroupsConverter(MailingGroupsService mailingGroupsService) {
         this.mailingGroupsService = mailingGroupsService;
     }
 

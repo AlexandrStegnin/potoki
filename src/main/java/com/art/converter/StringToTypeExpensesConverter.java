@@ -14,16 +14,16 @@ public class StringToTypeExpensesConverter implements Converter<String, TypeExpe
     @Resource(name = "typeExpensesService")
     private TypeExpensesService typeExpensesService;
 
-    public StringToTypeExpensesConverter(TypeExpensesService typeExpensesService){
+    public StringToTypeExpensesConverter(TypeExpensesService typeExpensesService) {
         this.typeExpensesService = typeExpensesService;
     }
 
     public TypeExpenses convert(String id) {
-        TypeExpenses typeExpenses = null;
-        try{
+        TypeExpenses typeExpenses;
+        try {
             BigInteger IntId = new BigInteger(id);
             typeExpenses = typeExpensesService.findById(IntId);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             typeExpenses = typeExpensesService.findByTypeExp(id);
         }
         return typeExpenses;

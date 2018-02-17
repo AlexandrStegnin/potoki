@@ -29,47 +29,52 @@ public class AllowanceIp implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "Id")
-    public BigInteger getId(){
+    public BigInteger getId() {
         return id;
     }
-    public void setId(BigInteger id){
+
+    public void setId(BigInteger id) {
         this.id = id;
     }
 
     @OneToOne
     @JoinColumn(name = "UnderFacilityId", referencedColumnName = "ID")
-    public UnderFacilities getUnderFacility(){
+    public UnderFacilities getUnderFacility() {
         return underFacility;
     }
-    public void setUnderFacility(UnderFacilities underFacility){
+
+    public void setUnderFacility(UnderFacilities underFacility) {
         this.underFacility = underFacility;
     }
 
     @OneToOne
     @JoinColumn(name = "InvestorId", referencedColumnName = "ID")
-    public Users getInvestor(){
+    public Users getInvestor() {
         return investor;
     }
-    public void setInvestor(Users investor){
+
+    public void setInvestor(Users investor) {
         this.investor = investor;
     }
 
     @OneToOne
     @JoinColumn(name = "FacilityId", referencedColumnName = "ID")
-    public Facilities getFacility(){
+    public Facilities getFacility() {
         return facility;
     }
-    public void setFacility(Facilities facility){
+
+    public void setFacility(Facilities facility) {
         this.facility = facility;
     }
 
     @Transient
-    public String getDateStartToLocalDate(){
+    public String getDateStartToLocalDate() {
         String localDate = "";
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        try{
+        try {
             localDate = format.format(dateStart);
-        }catch(Exception ignored){}
+        } catch (Exception ignored) {
+        }
 
         return localDate;
     }

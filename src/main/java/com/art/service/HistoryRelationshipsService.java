@@ -23,32 +23,32 @@ public class HistoryRelationshipsService {
         return historyRelationshipsRepository.findAll();
     }
 
-    public HistoryRelationships create(HistoryRelationships relationships){
+    public HistoryRelationships create(HistoryRelationships relationships) {
         return historyRelationshipsRepository.saveAndFlush(relationships);
     }
 
-    public List<HistoryRelationships> findByManagerIdOrRentorId(BigInteger managerId, BigInteger rentorId){
+    public List<HistoryRelationships> findByManagerIdOrRentorId(BigInteger managerId, BigInteger rentorId) {
         return historyRelationshipsRepository.findByManagerIdOrRentorId(managerId, rentorId);
     }
 
-    public HistoryRelationships findById(BigInteger id){
+    public HistoryRelationships findById(BigInteger id) {
         return historyRelationshipsRepository.findOne(id);
     }
 
-    public HistoryRelationships update(HistoryRelationships relationships){
+    public HistoryRelationships update(HistoryRelationships relationships) {
         return historyRelationshipsRepository.saveAndFlush(relationships);
     }
 
-    public void deleteById(BigInteger id){
+    public void deleteById(BigInteger id) {
         historyRelationshipsRepository.delete(id);
     }
 
 
-    public List<InvestorsSummary> getInvestorsSummary(BigInteger investorId){
+    public List<InvestorsSummary> getInvestorsSummary(BigInteger investorId) {
         return historyRelationshipsRepository.getInvestorsSummary(investorId);
     }
 
-    public List<InvestorsSummary> getInvestorsSummaryWithFacility(BigInteger investorId, String facility){
+    public List<InvestorsSummary> getInvestorsSummaryWithFacility(BigInteger investorId, String facility) {
         return historyRelationshipsRepository.getInvestorsSummaryWithFacility(investorId, facility);
     }
 

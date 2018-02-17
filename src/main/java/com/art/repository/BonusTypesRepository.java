@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.math.BigInteger;
 
 @Repository
-public interface BonusTypesRepository extends JpaRepository<BonusTypes, BigInteger>{
+public interface BonusTypesRepository extends JpaRepository<BonusTypes, BigInteger> {
     BonusTypes findByBonusType(String bonusType);
 }

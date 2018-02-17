@@ -20,28 +20,27 @@ public class FacilitiesBuySalesService {
     private FacilitiesBuySalesRepository facilitiesBuySalesRepository;
 
 
-
     public List<FacilitiesBuySales> findAll() {
         return facilitiesBuySalesRepository.findAll();
     }
 
-    public FacilitiesBuySales findById(BigInteger id){
+    public FacilitiesBuySales findById(BigInteger id) {
         return facilitiesBuySalesRepository.findOne(id);
     }
 
-    public FacilitiesBuySales update(FacilitiesBuySales facilitiesBuySales){
+    public FacilitiesBuySales update(FacilitiesBuySales facilitiesBuySales) {
         return facilitiesBuySalesRepository.saveAndFlush(facilitiesBuySales);
     }
 
-    public void deleteById(BigInteger id){
+    public void deleteById(BigInteger id) {
         facilitiesBuySalesRepository.delete(id);
     }
 
-    public void deleteByUnderFacility(UnderFacilities underFacilities){
+    public void deleteByUnderFacility(UnderFacilities underFacilities) {
         facilitiesBuySalesRepository.deleteByUnderFacility(underFacilities);
     }
 
-    public void create(FacilitiesBuySales facilitiesBuySales){
+    public void create(FacilitiesBuySales facilitiesBuySales) {
         facilitiesBuySalesRepository.saveAndFlush(facilitiesBuySales);
     }
 }

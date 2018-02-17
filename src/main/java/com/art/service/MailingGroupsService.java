@@ -30,33 +30,27 @@ public class MailingGroupsService {
     @PersistenceContext(name = "persistanceUnit")
     private EntityManager em;
 
-    public MailingGroups create(MailingGroups mailingGroups){
+    public MailingGroups create(MailingGroups mailingGroups) {
         return mailingGroupsRepository.saveAndFlush(mailingGroups);
     }
 
-    public List<MailingGroups> findAll(){
+    public List<MailingGroups> findAll() {
         return mailingGroupsRepository.findAll();
     }
 
-    public MailingGroups findById(BigInteger id){
+    public MailingGroups findById(BigInteger id) {
         return mailingGroupsRepository.findOne(id);
     }
 
-    public MailingGroups update(MailingGroups mailingGroups){
+    public MailingGroups update(MailingGroups mailingGroups) {
         return mailingGroupsRepository.saveAndFlush(mailingGroups);
     }
 
-    public void deleteById(BigInteger id){
+    public void deleteById(BigInteger id) {
         mailingGroupsRepository.delete(id);
     }
 
-    /*
-    public List<MailingGroups> findByIdIn(List<BigInteger> idList){
-        return mailingGroupsRepository.findByIdIn(idList);
-    }
-    */
-
-    public List<MailingGroups> findAllWithUsers(){
+    public List<MailingGroups> findAllWithUsers() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
         CriteriaQuery<MailingGroups> mailingGroupsCriteriaQuery = cb.createQuery(MailingGroups.class);
@@ -68,7 +62,7 @@ public class MailingGroupsService {
         return em.createQuery(mailingGroupsCriteriaQuery).getResultList();
     }
 
-    public MailingGroups findByIdWithUsers(BigInteger id){
+    public MailingGroups findByIdWithUsers(BigInteger id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
         CriteriaQuery<MailingGroups> mailingGroupsCriteriaQuery = cb.createQuery(MailingGroups.class);
@@ -80,7 +74,7 @@ public class MailingGroupsService {
         return em.createQuery(mailingGroupsCriteriaQuery).getSingleResult();
     }
 
-    public MailingGroups findByIdWithAllFields(BigInteger id){
+    public MailingGroups findByIdWithAllFields(BigInteger id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
         CriteriaQuery<MailingGroups> mailingGroupsCriteriaQuery = cb.createQuery(MailingGroups.class);
@@ -99,7 +93,7 @@ public class MailingGroupsService {
         return group;
     }
 
-    public MailingGroups findByGroupWithUsers(String group){
+    public MailingGroups findByGroupWithUsers(String group) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<MailingGroups> mailingGroupsCriteriaQuery = cb.createQuery(MailingGroups.class);
         Root<MailingGroups> mailingGroupsRoot = mailingGroupsCriteriaQuery.from(MailingGroups.class);
@@ -108,16 +102,16 @@ public class MailingGroupsService {
         mailingGroupsCriteriaQuery.where(cb.like(cb.lower(mailingGroupsRoot.get(MailingGroups_.mailingGroup)),
                 "%" + group.toLowerCase() + "%"));
         MailingGroups mailingGroups = new MailingGroups();
-        try{
+        try {
             mailingGroups = em.createQuery(mailingGroupsCriteriaQuery).getSingleResult();
-        }catch (NoResultException ex){
+        } catch (NoResultException ex) {
             ex.getLocalizedMessage();
         }
 
         return mailingGroups;
     }
 
-    public List<MailingGroups> findByIdIn(List<BigInteger> idList){
+    public List<MailingGroups> findByIdIn(List<BigInteger> idList) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<MailingGroups> mailingGroupsCriteriaQuery = cb.createQuery(MailingGroups.class);
         Root<MailingGroups> mailingGroupsRoot = mailingGroupsCriteriaQuery.from(MailingGroups.class);

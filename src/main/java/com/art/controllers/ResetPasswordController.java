@@ -1,6 +1,5 @@
 package com.art.controllers;
 
-import com.art.func.GetPrincipalFunc;
 import com.art.model.PasswordResetToken;
 import com.art.model.Users;
 import com.art.model.supporting.GenericResponse;
@@ -35,38 +34,35 @@ public class ResetPasswordController {
     @Resource(name = "passwordResetTokenService")
     private PasswordResetTokenService passwordResetTokenService;
 
-    @Resource(name = "getPrincipalFunc")
-    private GetPrincipalFunc getPrincipalFunc;
-
     @GetMapping(value = "/forgotPassword")
-    public ModelAndView forgotPasswordPage(){
+    public ModelAndView forgotPasswordPage() {
         return new ModelAndView("forgotPassword");
     }
 
-    @PostMapping(value = "/resetPassword", produces="application/json;charset=UTF-8")
+    @PostMapping(value = "/resetPassword", produces = "application/json;charset=UTF-8")
     public @ResponseBody
-    GenericResponse resetPasswordPage(@RequestBody SearchSummary searchSummary){
+    GenericResponse resetPasswordPage(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
         Users users;
         try {
-            users = userService.findByLoginAndEmail(searchSummary.getLogin() , searchSummary.getEmail());
-        }catch (Exception e){
+            users = userService.findByLoginAndEmail(searchSummary.getLogin(), searchSummary.getEmail());
+        } catch (Exception e) {
             response.setError("<p>Пользователь с таким email и логином не найден.</p>");
             return response;
         }
 
         PasswordResetToken oldToken = passwordResetTokenService.findById(users.getId());
-        if(oldToken != null){
+        if (oldToken != null) {
             passwordResetTokenService.deleteById(users.getId());
         }
 
         String fileName = "mail.ru.properties";
 
         InputStream input;
-        try{
+        try {
             input = MailService.class.getClassLoader().getResourceAsStream(fileName);
             prop.load(input);
-        }catch (IOException ex){
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
 
@@ -108,7 +104,7 @@ public class ResetPasswordController {
 
     @PostMapping(value = "/savePassword")
     @ResponseBody
-    public GenericResponse savePasswordPage(@RequestBody SearchSummary searchSummary){
+    public GenericResponse savePasswordPage(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
         Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         userService.changeUserPassword(user, searchSummary.getPassword());

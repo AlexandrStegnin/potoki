@@ -21,38 +21,43 @@ public class SendingMail implements Serializable {
     private String body;
     private List<FileBucket> fileBucket;
 
-    public List<Users> getUsers(){
+    public List<Users> getUsers() {
         return users;
     }
-    public void setUsers(List<Users> users){
+
+    public void setUsers(List<Users> users) {
         this.users = users;
     }
 
-    public List<MailingGroups> getMailingGroups(){
+    public List<MailingGroups> getMailingGroups() {
         return mailingGroups;
     }
-    public void setMailingGroups(List<MailingGroups> mailingGroups){
+
+    public void setMailingGroups(List<MailingGroups> mailingGroups) {
         this.mailingGroups = mailingGroups;
     }
 
-    public String getBody(){
+    public String getBody() {
         return body;
     }
-    public void setBody(String body){
+
+    public void setBody(String body) {
         this.body = body;
     }
 
-    public String getSubject(){
+    public String getSubject() {
         return subject;
     }
-    public void setSubject(String subject){
+
+    public void setSubject(String subject) {
         this.subject = subject;
     }
 
-    public List<FileBucket> getFileBucket(){
+    public List<FileBucket> getFileBucket() {
         return fileBucket;
     }
-    public void setFileBucket(List<FileBucket> fileBucket){
+
+    public void setFileBucket(List<FileBucket> fileBucket) {
         this.fileBucket = fileBucket;
     }
 

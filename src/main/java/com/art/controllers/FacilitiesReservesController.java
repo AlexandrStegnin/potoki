@@ -1,8 +1,12 @@
 package com.art.controllers;
 
-import com.art.func.GetPrincipalFunc;
-import com.art.model.*;
-import com.art.service.*;
+import com.art.model.Facilities;
+import com.art.model.FacilitiesReserves;
+import com.art.model.UnderFacilities;
+import com.art.service.FacilitiesReservesService;
+import com.art.service.FacilityService;
+import com.art.service.StuffService;
+import com.art.service.UnderFacilitiesService;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -22,9 +26,6 @@ public class FacilitiesReservesController {
     @Resource(name = "facilitiesReservesService")
     private FacilitiesReservesService facilitiesReservesService;
 
-    @Resource(name = "getPrincipalFunc")
-    private GetPrincipalFunc getPrincipalFunc;
-
     @Resource(name = "facilityService")
     private FacilityService facilityService;
 
@@ -43,7 +44,7 @@ public class FacilitiesReservesController {
         return "viewfacilitiesreserves";
     }
 
-    @GetMapping(value = { "/edit-reserves-{id}" })
+    @GetMapping(value = {"/edit-reserves-{id}"})
     public String editFacilitiesReserves(@PathVariable BigInteger id, ModelMap model) {
         String title = "Обновление данных по резервам";
         FacilitiesReserves facilitiesReserves = facilitiesReservesService.findById(id);
@@ -53,9 +54,9 @@ public class FacilitiesReservesController {
         return "addfacilitiesreserves";
     }
 
-    @PostMapping(value = { "/edit-reserves-{id}" })
+    @PostMapping(value = {"/edit-reserves-{id}"})
     public String updateFacilitiesReserves(@ModelAttribute("facilitiesReserves") FacilitiesReserves facilitiesReserves,
-                                  BindingResult result, ModelMap model) {
+                                           BindingResult result, ModelMap model) {
         String ret = "списку резервов.";
         String redirectUrl = "/facilitiesreserves";
         if (result.hasErrors()) {
@@ -72,13 +73,13 @@ public class FacilitiesReservesController {
         return "registrationsuccess";
     }
 
-    @GetMapping(value = { "/delete-reserves-{id}" })
+    @GetMapping(value = {"/delete-reserves-{id}"})
     public String deleteFacilitiesReserves(@PathVariable BigInteger id) {
         facilitiesReservesService.deleteById(id);
         return "redirect:/facilitiesreserves";
     }
 
-    @GetMapping(value = { "/newfacilitiesreserves" })
+    @GetMapping(value = {"/newfacilitiesreserves"})
     public String newFacilitiesReserves(ModelMap model) {
         String title = "Добавление резерва";
         FacilitiesReserves facilitiesReserves = new FacilitiesReserves();
@@ -88,9 +89,9 @@ public class FacilitiesReservesController {
         return "addfacilitiesreserves";
     }
 
-    @PostMapping(value = { "/newfacilitiesreserves" })
+    @PostMapping(value = {"/newfacilitiesreserves"})
     public String saveFacilitiesReserves(@ModelAttribute("facilitiesReserves") FacilitiesReserves facilitiesReserves,
-                                  BindingResult result, ModelMap model) {
+                                         BindingResult result, ModelMap model) {
 
         if (result.hasErrors()) {
             return "addfacilitiesreserves";

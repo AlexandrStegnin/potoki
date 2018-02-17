@@ -15,7 +15,7 @@ import java.math.BigInteger;
 @EqualsAndHashCode
 @Entity
 @Table(name = "AnnexToContracts")
-public class AnnexToContracts implements Serializable{
+public class AnnexToContracts implements Serializable {
 
     private BigInteger id;
     private String annexName;
@@ -23,10 +23,11 @@ public class AnnexToContracts implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "Id")
-    public BigInteger getId(){
+    public BigInteger getId() {
         return id;
     }
-    public void setId(BigInteger id){
+
+    public void setId(BigInteger id) {
         this.id = id;
     }
 
@@ -34,6 +35,7 @@ public class AnnexToContracts implements Serializable{
     public String getAnnexName() {
         return annexName;
     }
+
     public void setAnnexName(String annexName) {
         this.annexName = annexName;
     }

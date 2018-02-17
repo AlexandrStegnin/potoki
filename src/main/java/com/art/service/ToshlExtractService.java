@@ -16,20 +16,20 @@ public class ToshlExtractService {
     @Resource(name = "toshlExtractRepository")
     private ToshlExtractRepository toshlExtractRepository;
 
-    public List<ToshlExtract> createList(List<ToshlExtract> toshlExtracts){
+    public List<ToshlExtract> createList(List<ToshlExtract> toshlExtracts) {
         return toshlExtractRepository.save(toshlExtracts);
     }
 
-    public ToshlExtract create(ToshlExtract toshlExtract){
+    public ToshlExtract create(ToshlExtract toshlExtract) {
         return toshlExtractRepository.
                 saveAndFlush(toshlExtract);
     }
 
-    public List<ToshlExtract> findAll(){
+    public List<ToshlExtract> findAll() {
         return toshlExtractRepository.findAll();
     }
 
-    public void delete(){
+    public void delete() {
         toshlExtractRepository.deleteAll();
     }
 }

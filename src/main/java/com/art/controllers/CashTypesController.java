@@ -1,6 +1,5 @@
 package com.art.controllers;
 
-import com.art.func.GetPrincipalFunc;
 import com.art.model.CashTypes;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
@@ -15,8 +14,6 @@ import java.util.List;
 
 @Controller
 public class CashTypesController {
-    @Resource(name = "getPrincipalFunc")
-    private GetPrincipalFunc getPrincipalFunc;
 
     @Resource(name = "cashTypesService")
     private CashTypesService cashTypesService;
@@ -27,23 +24,21 @@ public class CashTypesController {
         List<CashTypes> cashTypes = cashTypesService
                 .findAll();
         model.addAttribute("cashTypes", cashTypes);
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
 
         return "viewcashtypes";
     }
 
-    @GetMapping(value = { "/newcashtype" })
+    @GetMapping(value = {"/newcashtype"})
     public String newCashSource(ModelMap model) {
         String title = "Добавление вида денег";
         CashTypes cashTypes = new CashTypes();
         model.addAttribute("cashTypes", cashTypes);
         model.addAttribute("edit", false);
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         model.addAttribute("title", title);
         return "addcashtypes";
     }
 
-    @PostMapping(value = { "/savecashtype" }, produces="application/json;charset=UTF-8")
+    @PostMapping(value = {"/savecashtype"}, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     GenericResponse saveCashType(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
@@ -55,23 +50,18 @@ public class CashTypesController {
     }
 
 
-    @GetMapping(value = { "/edit-cashtype-{id}" })
+    @GetMapping(value = {"/edit-cashtype-{id}"})
     public String editCashType(@PathVariable BigInteger id, ModelMap model) {
         String title = "Обновление вида денег";
         CashTypes cashTypes = cashTypesService.findById(id);
 
         model.addAttribute("cashTypes", cashTypes);
         model.addAttribute("edit", true);
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         model.addAttribute("title", title);
         return "addcashtypes";
     }
 
-    /**
-     * This method will be called on form submission, handling POST request for
-     * updating user in database. It also validates the user input
-     */
-    @PostMapping(value = { "/editcashtype" }, produces="application/json;charset=UTF-8")
+    @PostMapping(value = {"/editcashtype"}, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     GenericResponse updateSource(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
@@ -82,7 +72,7 @@ public class CashTypesController {
         return response;
     }
 
-    @PostMapping(value = { "/deletetype" }, produces="application/json;charset=UTF-8")
+    @PostMapping(value = {"/deletetype"}, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     GenericResponse deleteSource(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -31,7 +31,14 @@
         <div class="collapse navbar-collapse" id="navbar-main">
             <!-- Содержимое основной части -->
             <ul class="nav navbar-nav navbar-right">
-
+                <sec:authorize access="hasRole('INVESTOR') and !hasRole('ADMIN')">
+                <li>
+                    <a id="balance" href="#">
+                        <span class="glyphicon glyphicon-rub"style="margin-right: 5px; color: dodgerblue;"></span>
+                        Баланс: <span>0</span>
+                    </a>
+                </li>
+                </sec:authorize>
                 <li>
                     <a id="profile" href="/profile">
                         <span class="glyphicon glyphicon-lock"style="margin-right: 5px; color: dodgerblue;"></span>

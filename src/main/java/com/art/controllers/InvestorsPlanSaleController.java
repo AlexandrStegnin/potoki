@@ -31,7 +31,6 @@ public class InvestorsPlanSaleController {
                 getPrincipalFunc.getPrincipalId()
         );
         model.addAttribute("investorsPlanSales", investorsPlanSales);
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
 
         return "investorsplansales";
     }

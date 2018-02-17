@@ -16,8 +16,6 @@ import javax.annotation.Resource;
 @Import(WebConfig.class)
 public class RoleConfig extends WebMvcConfigurerAdapter {
 
-    //@Bean
-
     @Resource(name = "stuffService")
     private StuffService stuffService;
 
@@ -73,7 +71,7 @@ public class RoleConfig extends WebMvcConfigurerAdapter {
     private RoomsService roomsService;
 
     @Override
-    public void addFormatters (FormatterRegistry registry) {
+    public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(new RoleToUserRoleConverter(roleService));
         registry.addConverter(new StringToStuffConverter(stuffService));
         registry.addConverter(new StringToUserConverter(userService));

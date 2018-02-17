@@ -32,36 +32,36 @@ public class MainFlows implements Serializable {
     private String levelThree;
     private UnderFacilities underFacilities;
 
-    public MainFlows(){
+    public MainFlows() {
 
     }
 
-    public MainFlows(UnderFacilities underFacilities){
+    public MainFlows(UnderFacilities underFacilities) {
         this.underFacilities = underFacilities;
     }
 
-    public MainFlows(UnderFacilities underFacilities, Date settlementDate){
+    public MainFlows(UnderFacilities underFacilities, Date settlementDate) {
         this.underFacilities = underFacilities;
         this.settlementDate = settlementDate;
     }
 
-    public MainFlows(UnderFacilities underFacilities, Date settlementDate, float summa){
+    public MainFlows(UnderFacilities underFacilities, Date settlementDate, float summa) {
         this.underFacilities = underFacilities;
         this.settlementDate = settlementDate;
         this.summa = summa;
     }
 
-    public MainFlows(UnderFacilities underFacilities, float summa){
+    public MainFlows(UnderFacilities underFacilities, float summa) {
         this.underFacilities = underFacilities;
         this.summa = summa;
     }
 
-    public MainFlows(UnderFacilities underFacilities, String payment){
+    public MainFlows(UnderFacilities underFacilities, String payment) {
         this.underFacilities = underFacilities;
         this.payment = payment;
     }
 
-    public MainFlows(UnderFacilities underFacilities, String payment, float summa){
+    public MainFlows(UnderFacilities underFacilities, String payment, float summa) {
         this.underFacilities = underFacilities;
         this.payment = payment;
         this.summa = summa;
@@ -70,82 +70,92 @@ public class MainFlows implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "Id")
-    public BigInteger getId(){
+    public BigInteger getId() {
         return id;
     }
-    public void setId(BigInteger id){
+
+    public void setId(BigInteger id) {
         this.id = id;
     }
 
     @Column(name = "PlanFact")
-    public String getPlanFact(){
+    public String getPlanFact() {
         return planFact;
     }
-    public void setPlanFact(String planFact){
+
+    public void setPlanFact(String planFact) {
         this.planFact = planFact;
     }
 
     @Column(name = "FileName")
-    public String getFileName(){
+    public String getFileName() {
         return fileName;
     }
-    public void setFileName(String fileName){
+
+    public void setFileName(String fileName) {
         this.fileName = fileName;
     }
 
     @Column(name = "SettlementDate")
-    public Date getSettlementDate(){
+    public Date getSettlementDate() {
         return settlementDate;
     }
-    public void setSettlementDate(Date settlementDate){
+
+    public void setSettlementDate(Date settlementDate) {
         this.settlementDate = settlementDate;
     }
 
     @Column(name = "Summa")
-    public float getSumma(){
+    public float getSumma() {
         return summa;
     }
-    public void setSumma(float summa){
+
+    public void setSumma(float summa) {
         this.summa = summa;
     }
 
     @Column(name = "OrgName")
-    public String getOrgName(){
+    public String getOrgName() {
         return orgName;
     }
-    public void setOrgName(String orgName){
+
+    public void setOrgName(String orgName) {
         this.orgName = orgName;
     }
 
     @Column(name = "Inn")
-    public String getInn(){
+    public String getInn() {
         return inn;
     }
-    public void setInn(String inn){
+
+    public void setInn(String inn) {
         this.inn = inn;
     }
 
     @Column(name = "Account")
-    public String getAccount(){
+    public String getAccount() {
         return account;
     }
-    public void setAccount(String account){
+
+    public void setAccount(String account) {
         this.account = account;
     }
 
     @Column(name = "PurposePayment")
-    public String getPurposePayment(){
+    public String getPurposePayment() {
         return purposePayment;
     }
-    public void setPurposePayment(String purposePayment){
+
+    public void setPurposePayment(String purposePayment) {
         this.purposePayment = purposePayment;
     }
 
     @Column(name = "Payment")
-    public String getPayment(){
+    public String getPayment() {
         return payment;
     }
-    public void setPayment(String payment){
+
+    public void setPayment(String payment) {
         this.payment = payment;
     }
 
@@ -160,98 +170,107 @@ public class MainFlows implements Serializable {
     */
 
     @Column(name = "LevelTwo")
-    public String getLevelTwo(){
+    public String getLevelTwo() {
         return levelTwo;
     }
-    public void setLevelTwo(String levelTwo){
+
+    public void setLevelTwo(String levelTwo) {
         this.levelTwo = levelTwo;
     }
 
     @Column(name = "LevelThree")
-    public String getLevelThree(){
+    public String getLevelThree() {
         return levelThree;
     }
-    public void setLevelThree(String levelThree){
+
+    public void setLevelThree(String levelThree) {
         this.levelThree = levelThree;
     }
 
     @ManyToOne
     @JoinColumn(name = "UnderFacilityId")
-    public UnderFacilities getUnderFacilities(){
+    public UnderFacilities getUnderFacilities() {
         return underFacilities;
     }
-    public void setUnderFacilities(UnderFacilities underFacilities){
+
+    public void setUnderFacilities(UnderFacilities underFacilities) {
         this.underFacilities = underFacilities;
     }
 
     @Transient
-    public String getSettlementDateToLocalDate(){
+    public String getSettlementDateToLocalDate() {
         String localDate = "";
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        try{
+        try {
             localDate = format.format(settlementDate);
-        }catch(Exception ignored){}
+        } catch (Exception ignored) {
+        }
 
         return localDate;
     }
 
     @Transient
-    public String getYearSettlementDate(){
+    public String getYearSettlementDate() {
         String localDate = "";
         SimpleDateFormat format = new SimpleDateFormat("yyyy");
-        try{
+        try {
             localDate = format.format(settlementDate);
-        }catch(Exception ignored){}
+        } catch (Exception ignored) {
+        }
 
         return localDate;
     }
 
     @Transient
-    public String getSmallYearSettlementDate(){
+    public String getSmallYearSettlementDate() {
         String localDate = "";
         SimpleDateFormat format = new SimpleDateFormat("yy");
-        try{
+        try {
             localDate = format.format(settlementDate);
-        }catch(Exception ignored){}
+        } catch (Exception ignored) {
+        }
 
         return localDate;
     }
 
     @Transient
-    public String getMonthSettlementDate(){
+    public String getMonthSettlementDate() {
         String localDate = "";
         SimpleDateFormat format = new SimpleDateFormat("MM");
-        try{
+        try {
             localDate = format.format(settlementDate);
-        }catch(Exception ignored){}
+        } catch (Exception ignored) {
+        }
 
         return localDate;
     }
 
     @Transient
-    public String getMonthNameSettlementDate(){
+    public String getMonthNameSettlementDate() {
         String localDate = "";
         SimpleDateFormat format = new SimpleDateFormat("MMM");
-        try{
+        try {
             localDate = format.format(settlementDate);
-        }catch(Exception ignored){}
+        } catch (Exception ignored) {
+        }
 
         return localDate;
     }
 
     @Transient
-    public String getMonthAndYearSettlementDate(){
+    public String getMonthAndYearSettlementDate() {
         String localDate = "";
         SimpleDateFormat format = new SimpleDateFormat("MMM yyyy");
-        try{
+        try {
             localDate = format.format(settlementDate);
-        }catch(Exception ignored){}
+        } catch (Exception ignored) {
+        }
 
         return localDate;
     }
 
     @Transient
-    public String getFacilityName(){
+    public String getFacilityName() {
         return getUnderFacilities().getFacility().getFacility();
     }
 }

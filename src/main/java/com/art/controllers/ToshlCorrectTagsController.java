@@ -1,6 +1,5 @@
 package com.art.controllers;
 
-import com.art.func.GetPrincipalFunc;
 import com.art.model.ToshlCorrectTags;
 import com.art.service.ToshlCorrectTagsService;
 import org.springframework.stereotype.Controller;
@@ -21,33 +20,28 @@ public class ToshlCorrectTagsController {
     @Resource(name = "toshlCorrectTagsService")
     private ToshlCorrectTagsService toshlCorrectTagsService;
 
-    @Resource(name = "getPrincipalFunc")
-    private GetPrincipalFunc getPrincipalFunc;
-
     @GetMapping(value = "/toshlcorrecttags")
     public String toshlCorrectTagsPage(ModelMap model) {
 
         List<ToshlCorrectTags> toshlCorrectTagss = toshlCorrectTagsService.findAll();
         model.addAttribute("toshlCorrectTagss", toshlCorrectTagss);
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
 
         return "viewtoshlcorrecttags";
     }
 
-    @GetMapping(value = { "/newtoshltag" })
+    @GetMapping(value = {"/newtoshltag"})
     public String newToshlTag(ModelMap model) {
         String title = "Добавление тэга Toshl";
         ToshlCorrectTags toshlCorrectTags = new ToshlCorrectTags();
         model.addAttribute("toshlCorrectTags", toshlCorrectTags);
         model.addAttribute("edit", false);
         model.addAttribute("title", title);
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         return "addtoshltags";
     }
 
-    @PostMapping(value = { "/newtoshltag" })
+    @PostMapping(value = {"/newtoshltag"})
     public String saveToshlTags(@ModelAttribute("toshlCorrectTagsTags")
-                                            ToshlCorrectTags toshlCorrectTags,
+                                        ToshlCorrectTags toshlCorrectTags,
                                 BindingResult result, ModelMap model) {
 
         if (result.hasErrors()) {
@@ -60,24 +54,22 @@ public class ToshlCorrectTagsController {
 
         model.addAttribute("success", "Тэг Toshl " +
                 toshlCorrectTags.getCorrectTag() + " успешно добавлен.");
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         model.addAttribute("redirectUrl", redirectUrl);
         model.addAttribute("ret", ret);
         return "registrationsuccess";
     }
 
-    @GetMapping(value = { "/edit-toshltags-{id}" })
+    @GetMapping(value = {"/edit-toshltags-{id}"})
     public String editToshlTags(@PathVariable BigInteger id, ModelMap model) {
         String title = "Обновление данных по тэгам Toshl";
         ToshlCorrectTags toshlCorrectTags = toshlCorrectTagsService.find(id);
         model.addAttribute("toshlCorrectTags", toshlCorrectTags);
         model.addAttribute("edit", true);
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         model.addAttribute("title", title);
         return "addtoshltags";
     }
 
-    @PostMapping(value = { "/edit-toshltags-{id}" })
+    @PostMapping(value = {"/edit-toshltags-{id}"})
     public String updateToshlTags(
             @ModelAttribute("toshlCorrectTags") ToshlCorrectTags toshlCorrectTags,
             BindingResult result, ModelMap model) {
@@ -91,13 +83,12 @@ public class ToshlCorrectTagsController {
 
         model.addAttribute("success", "Тэг Toshl " +
                 toshlCorrectTags.getCorrectTag() + " успешно обновлён.");
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         model.addAttribute("redirectUrl", redirectUrl);
         model.addAttribute("ret", ret);
         return "registrationsuccess";
     }
 
-    @GetMapping(value = { "/delete-toshltags-{id}" })
+    @GetMapping(value = {"/delete-toshltags-{id}"})
     public String deleteToshlTags(@PathVariable BigInteger id) {
         toshlCorrectTagsService.deleteById(id);
         return "redirect:/toshlcorrecttags";

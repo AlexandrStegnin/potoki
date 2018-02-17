@@ -12,6 +12,7 @@ import java.util.List;
 public interface AlphaExtractRepository extends JpaRepository<AlphaExtract, BigInteger> {
     List<AlphaExtract> findByInnOrAccountOrPurposePaymentContaining(
             String inn, String account, String description);
+
     void deleteAllByPIdIsNull();
 
     List<AlphaExtract> findByTagsIsNotNull();

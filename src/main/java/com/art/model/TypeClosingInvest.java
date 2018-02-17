@@ -4,13 +4,14 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigInteger;
 
 @ToString
 @EqualsAndHashCode
 @Entity
 @Table(name = "TypeClosingInvest")
-public class TypeClosingInvest {
+public class TypeClosingInvest implements Serializable {
     private BigInteger id;
     private String typeClosingInvest;
 
@@ -20,6 +21,7 @@ public class TypeClosingInvest {
     public BigInteger getId() {
         return id;
     }
+
     public void setId(BigInteger id) {
         this.id = id;
     }
@@ -28,6 +30,7 @@ public class TypeClosingInvest {
     public String getTypeClosingInvest() {
         return typeClosingInvest;
     }
+
     public void setTypeClosingInvest(String typeClosingInvest) {
         this.typeClosingInvest = typeClosingInvest;
     }

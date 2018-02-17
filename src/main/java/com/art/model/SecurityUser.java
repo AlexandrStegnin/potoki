@@ -8,12 +8,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class SecurityUser extends Users implements UserDetails
-{
+public class SecurityUser extends Users implements UserDetails {
 
     public SecurityUser(Users user) {
-        if(user != null)
-        {
+        if (user != null) {
             this.setId(user.getId());
             this.setLogin(user.getLogin());
             this.setPassword(user.getPassword());
@@ -33,8 +31,7 @@ public class SecurityUser extends Users implements UserDetails
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         List<Roles> userRoles = this.getRoles();
 
-        if(userRoles != null)
-        {
+        if (userRoles != null) {
             for (Roles role : userRoles) {
                 SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.getRole());
                 authorities.add(authority);

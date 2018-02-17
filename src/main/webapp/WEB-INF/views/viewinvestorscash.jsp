@@ -86,6 +86,7 @@
                         <li id="reinvestAll"><a href="/#">Массовое реинвестирование</a></li>
                         <li id="divideAll"><a href="/#">Массовое разделение сумм</a></li>
                         <li id="deleteAll"><a href="/#">Удалить выбранные суммы</a></li>
+                        <li id="closeAll"><a href="/#">Закрыть выбранные суммы</a></li>
                     </ul>
                 </div>
 
@@ -178,6 +179,7 @@
                         </c:choose>
                         <input type="checkbox" title="Выбрать" ${checked} ${disabled} ${enabled}/>
                     </td>
+                    <td hidden data-source="${cash.source}"></td>
                 </tr>
             </c:forEach>
             </tbody>
@@ -268,9 +270,72 @@
                         </div>
                     </div>
 
+                    <div class="row" id="underFacilitiesListRow">
+                        <div class="form-group col-md-12">
+                            <label class="col-md-3 control-lable" for="underFacilitiesList">Из каких подобъектов состоит остаток:</label>
+                            <div class="col-md-7">
+                                <form:select path="underFacilitiesList" id="underFacilitiesList" items="${underFacilities}" multiple="true"
+                                             itemValue="id" itemLabel="underFacility" class="form-control input-sm"/>
+                                <div id="underFacilityErr" style="color: red; display: none">Необходимо выбрать из каких подобъектов состоит остаток</div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div class="form-actions floatRight">
                             <input type="submit" value="Разделить" class="btn btn-primary btn-sm"/> или <a href="<c:url value='/#' />" id="cancelDivide">Отмена</a>
+                        </div>
+                    </div>
+                </form:form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="closeModal" class="modal fade" role="dialog">
+    <div class="modal-dialog" style="width: 90%">
+        <div class="modal-content" id="closeContent">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4></h4>
+            </div>
+            <div class="modal-body">
+                <form:form method="POST" modelAttribute="searchSummary" class="form-horizontal" id="closeData">
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label class="col-md-3 control-lable" for="dateClosing">Дата закрытия:</label>
+                            <div class="col-md-7">
+                                <form:input type="date" path="dateClose" id="dateClosing" class="form-control input-sm"/>
+                                <div id="dateCloseErr" style="color: red; display: none">Необходимо выбрать дату закрытия</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" id="typeClosingRow">
+                        <div class="form-group col-md-12">
+                            <label class="col-md-3 control-lable" for="typeClosing">Вид закрытия:</label>
+                            <div class="col-md-7">
+                                <form:select path="typeClosingInvest" id="typeClosing" items="${typeClosingInvest}" multiple="false"
+                                             itemValue="id" itemLabel="typeClosingInvest" class="form-control input-sm"/>
+                                <div id="typeClosingErr" style="color: red; display: none">Необходимо выбрать вид закрытия</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" id="buyerRow" style="display: none">
+                        <div class="form-group col-md-12">
+                            <label class="col-md-3 control-lable" for="buyer">Инвестор покупатель:</label>
+                            <div class="col-md-7">
+                                <form:select path="user" id="buyer" items="${investors}" multiple="false"
+                                             itemValue="id" itemLabel="login" class="form-control input-sm"/>
+                                <div id="buyerErr" style="color: red; display: none">Необходимо выбрать инвестора покупателя</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-actions floatRight">
+                            <input type="submit" value="Закрыть" class="btn btn-primary btn-sm"/> или <a href="<c:url value='/#' />" id="cancelClose">Отмена</a>
                         </div>
                     </div>
                 </form:form>

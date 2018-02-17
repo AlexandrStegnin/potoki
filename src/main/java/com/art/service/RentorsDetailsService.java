@@ -22,39 +22,39 @@ public class RentorsDetailsService {
         return rentorsDetailsRepository.findAll();
     }
 
-    public RentorsDetails findById(BigInteger id){
+    public RentorsDetails findById(BigInteger id) {
         return rentorsDetailsRepository.findOne(id);
     }
 
-    public RentorsDetails create(RentorsDetails rentorsDetails){
+    public RentorsDetails create(RentorsDetails rentorsDetails) {
         return rentorsDetailsRepository.saveAndFlush(rentorsDetails);
     }
 
-    public RentorsDetails update(RentorsDetails rentorsDetails){
+    public RentorsDetails update(RentorsDetails rentorsDetails) {
         return rentorsDetailsRepository.saveAndFlush(rentorsDetails);
     }
 
-    public void deleteById(BigInteger id){
+    public void deleteById(BigInteger id) {
         rentorsDetailsRepository.delete(id);
     }
 
-    public List<RentorsDetails> findByFacilityIdOrRentorId(BigInteger facilityId, BigInteger rentorId){
+    public List<RentorsDetails> findByFacilityIdOrRentorId(BigInteger facilityId, BigInteger rentorId) {
         return rentorsDetailsRepository.findByFacilityIdOrRentorId(facilityId, rentorId);
     }
 
-    public List<RentorsDetails> findByRentorId(BigInteger rentorId){
+    public List<RentorsDetails> findByRentorId(BigInteger rentorId) {
         return rentorsDetailsRepository.findByRentorId(rentorId);
     }
 
-    public List<RentorsDetails> findByFacilityId(BigInteger facilityId){
+    public List<RentorsDetails> findByFacilityId(BigInteger facilityId) {
         return rentorsDetailsRepository.findByFacilityId(facilityId);
     }
 
-    public List<RentorsDetails> createList(List<RentorsDetails> rdList){
+    public List<RentorsDetails> createList(List<RentorsDetails> rdList) {
         return rentorsDetailsRepository.save(rdList);
     }
 
-    public void deleteList(List<RentorsDetails> rentorsDetails){
+    public void deleteList(List<RentorsDetails> rentorsDetails) {
         rentorsDetailsRepository.delete(rentorsDetails);
     }
 }

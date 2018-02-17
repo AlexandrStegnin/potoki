@@ -1,12 +1,11 @@
 package com.art.controllers;
 
-import com.art.func.GetPrincipalFunc;
-import com.art.func.GlobalFunctions;
 import com.art.func.UploadExcelFunc;
 import com.art.model.AlphaExtract;
 import com.art.model.ToshlExtract;
 import com.art.model.supporting.FileBucket;
-import com.art.service.*;
+import com.art.service.AlphaExtractService;
+import com.art.service.ToshlExtractService;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -34,31 +33,12 @@ public class UploadExcelController {
     @Resource(name = "toshlExtractService")
     private ToshlExtractService toshlExtractService;
 
-    @Resource(name = "getPrincipalFunc")
-    private GetPrincipalFunc getPrincipalFunc;
-
-    @Resource(name = "mainFlowsService")
-    private MainFlowsService mainFlowsService;
-
-    @Resource(name = "investorsCashService")
-    private InvestorsCashService investorsCashService;
-
-    @Resource(name = "userService")
-    private UserService userService;
-
-    @Resource(name = "globalFunctions")
-    private GlobalFunctions globalFunctions;
-
-    @Resource(name = "paysToInvestorsService")
-    private PaysToInvestorsService paysToInvestorsService;
-
     @RequestMapping(value = "/alphaextract", method = RequestMethod.GET)
     public String viewextract(ModelMap model) {
         FileBucket fileModel = new FileBucket();
         model.addAttribute("fileBucket", fileModel);
         List<AlphaExtract> alphaExtracts = alphaExtractService.findAll();
         model.addAttribute("alphaExtracts", alphaExtracts);
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         return "viewalphaextract";
     }
 
@@ -68,7 +48,6 @@ public class UploadExcelController {
         model.addAttribute("fileBucket", fileModel);
         List<ToshlExtract> toshlExtracts = toshlExtractService.findAll();
         model.addAttribute("toshlExtracts", toshlExtracts);
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         return "viewtoshlextract";
     }
 
@@ -76,7 +55,6 @@ public class UploadExcelController {
     public String singleFileUpload(ModelMap model) {
         FileBucket fileModel = new FileBucket();
         model.addAttribute("fileBucket", fileModel);
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         return "uploadexcel";
     }
 
@@ -99,7 +77,6 @@ public class UploadExcelController {
     public String singleToshlUpload(ModelMap model) {
         FileBucket fileModel = new FileBucket();
         model.addAttribute("fileBucket", fileModel);
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         return "uploadexcel";
     }
 
@@ -144,22 +121,7 @@ public class UploadExcelController {
         model.addAttribute("title", title);
         return "success";
     }
-    /*
-    @PostMapping(value = "/uploadinvflows")
-    public String uploadInvFlows(ModelMap model, @ModelAttribute("fileBucket") FileBucket fileBucket)
-            throws IOException, ParseException {
-        String ret = "потоков инвесторов";
-        String redirectUrl = "/paysToInv";
-        String title = "Потоки инвесторов";
-        MultipartFile multipartFile = fileBucket.getFile();
-        String err = uploadExcelFunc.ExcelParser(multipartFile, "invFlows");
-        model.addAttribute("redirectUrl", redirectUrl);
-        model.addAttribute("ret", ret);
-        model.addAttribute("err", err);
-        model.addAttribute("title", title);
-        return "success";
-    }
-    */
+
     @InitBinder
     public void initBinder(WebDataBinder webDataBinder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

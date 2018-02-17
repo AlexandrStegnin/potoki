@@ -20,7 +20,7 @@ public class ShareKindService {
     @PersistenceContext(name = "persistanceUnit")
     private EntityManager em;
 
-    public List<ShareKind> findAll(){
+    public List<ShareKind> findAll() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
         CriteriaQuery<ShareKind> shareKindCriteriaQuery = cb.createQuery(ShareKind.class);
@@ -30,15 +30,15 @@ public class ShareKindService {
         return em.createQuery(shareKindCriteriaQuery).getResultList();
     }
 
-    public ShareKind findById(BigInteger id){
+    public ShareKind findById(BigInteger id) {
         return this.em.find(ShareKind.class, id);
     }
 
-    public ShareKind findByShareKind(String shareKind){
+    public ShareKind findByShareKind(String shareKind) {
         return this.em.find(ShareKind.class, shareKind);
     }
 
-    public void deleteById(BigInteger id){
+    public void deleteById(BigInteger id) {
         CriteriaBuilder cb = this.em.getCriteriaBuilder();
         CriteriaDelete<ShareKind> delete = cb.createCriteriaDelete(ShareKind.class);
         Root<ShareKind> shareKindRoot = delete.from(ShareKind.class);
@@ -46,7 +46,7 @@ public class ShareKindService {
         this.em.createQuery(delete).executeUpdate();
     }
 
-    public void update(ShareKind shareKind){
+    public void update(ShareKind shareKind) {
         CriteriaBuilder criteriaBuilder = this.em.getCriteriaBuilder();
         CriteriaUpdate<ShareKind> update = criteriaBuilder.createCriteriaUpdate(ShareKind.class);
         Root<ShareKind> shareKindRoot = update.from(ShareKind.class);
@@ -55,11 +55,11 @@ public class ShareKindService {
         this.em.createQuery(update).executeUpdate();
     }
 
-    public void create(ShareKind shareKind){
+    public void create(ShareKind shareKind) {
         this.em.persist(shareKind);
     }
 
-    public List<ShareKind> init(){
+    public List<ShareKind> init() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<ShareKind> shareKindCriteriaQuery = cb.createQuery(ShareKind.class);
         Root<ShareKind> shareKindRoot = shareKindCriteriaQuery.from(ShareKind.class);

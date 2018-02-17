@@ -19,39 +19,39 @@ public class AllowanceIpService {
     @Resource(name = "allowanceIpRepository")
     private AllowanceIpRepository allowanceIpRepository;
 
-    public List<AllowanceIp> createList(List<AllowanceIp> allowanceIpList){
+    public List<AllowanceIp> createList(List<AllowanceIp> allowanceIpList) {
         return allowanceIpRepository.save(allowanceIpList);
     }
 
-    public AllowanceIp create(AllowanceIp allowanceIp){
+    public AllowanceIp create(AllowanceIp allowanceIp) {
         return allowanceIpRepository.saveAndFlush(allowanceIp);
     }
 
-    public List<AllowanceIp> findAll(){
+    public List<AllowanceIp> findAll() {
         return allowanceIpRepository.findAll();
     }
 
-    public AllowanceIp findById(BigInteger id){
+    public AllowanceIp findById(BigInteger id) {
         return allowanceIpRepository.findOne(id);
     }
 
-    public AllowanceIp update(AllowanceIp allowanceIp){
+    public AllowanceIp update(AllowanceIp allowanceIp) {
         return allowanceIpRepository.saveAndFlush(allowanceIp);
     }
 
-    public void deleteById(BigInteger id){
+    public void deleteById(BigInteger id) {
         allowanceIpRepository.delete(id);
     }
 
-    public List<AllowanceIp> findByFacilityId(BigInteger facilityId){
+    public List<AllowanceIp> findByFacilityId(BigInteger facilityId) {
         return allowanceIpRepository.findByFacilityId(facilityId);
     }
 
-    public void updateList(List<AllowanceIp> allowanceIpList){
+    public void updateList(List<AllowanceIp> allowanceIpList) {
         allowanceIpRepository.save(allowanceIpList);
     }
 
-    public List<AllowanceIp> findByInvestor(Users user){
+    public List<AllowanceIp> findByInvestor(Users user) {
         return allowanceIpRepository.findByInvestor(user);
     }
 

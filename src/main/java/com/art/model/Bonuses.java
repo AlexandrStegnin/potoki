@@ -32,56 +32,62 @@ public class Bonuses implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "Id")
-    public BigInteger getId(){
+    public BigInteger getId() {
         return id;
     }
-    public void setId(BigInteger id){
+
+    public void setId(BigInteger id) {
         this.id = id;
     }
 
     @OneToOne
     @JoinColumn(name = "BonusTypeId", referencedColumnName = "ID")
-    public BonusTypes getBonusTypes(){
+    public BonusTypes getBonusTypes() {
         return bonusTypes;
     }
-    public void setBonusTypes(BonusTypes bonusTypes){
+
+    public void setBonusTypes(BonusTypes bonusTypes) {
         this.bonusTypes = bonusTypes;
     }
 
     @OneToOne
     @JoinColumn(name = "FacilityId", referencedColumnName = "ID")
-    public Facilities getFacility(){
+    public Facilities getFacility() {
         return facility;
     }
-    public void setFacility(Facilities facility){
+
+    public void setFacility(Facilities facility) {
         this.facility = facility;
     }
 
     @OneToOne
     @JoinColumn(name = "ManagerId", referencedColumnName = "ID")
-    public Users getManager(){
+    public Users getManager() {
         return manager;
     }
-    public void setManager(Users manager){
+
+    public void setManager(Users manager) {
         this.manager = manager;
     }
 
     @OneToOne
     @JoinColumn(name = "RentorId", referencedColumnName = "ID")
-    public Users getRentor(){
+    public Users getRentor() {
         return rentor;
     }
-    public void setRentor(Users rentor){
+
+    public void setRentor(Users rentor) {
         this.rentor = rentor;
     }
 
     @Transient
-    public String getDateStBonusToLocalDate(){
+    public String getDateStBonusToLocalDate() {
         String localDate = "";
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        try{
+        try {
             localDate = format.format(dateStBonus);
-        }catch(Exception ignored){}
+        } catch (Exception ignored) {
+        }
 
         return localDate;
     }

@@ -24,19 +24,19 @@ public class StuffService {
         return stuffRepository.findAll();
     }
 
-    public Stuffs findById(BigInteger id){
+    public Stuffs findById(BigInteger id) {
         return stuffRepository.findOne(id);
     }
 
-    public Stuffs update(Stuffs stuff){
+    public Stuffs update(Stuffs stuff) {
         return stuffRepository.saveAndFlush(stuff);
     }
 
-    public Stuffs findByStuff(String stuff){
+    public Stuffs findByStuff(String stuff) {
         return stuffRepository.findByStuff(stuff);
     }
 
-    public List<Stuffs> initializeStuffs(){
+    public List<Stuffs> initializeStuffs() {
         Stuffs stuff = new Stuffs("0", "Все");
         List<Stuffs> stuffs = new ArrayList<>(0);
         stuffs.add(stuff);

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -119,10 +119,6 @@
                 <th>Доля</th>
                 <th>Налог</th>
                 <th>Вывод денег</th>
-                <!--
-                <th>Месяц</th>
-                <th>Год</th>
-                -->
                 <th>Сумма за месяц</th>
                 <th>По инвестору</th>
                 <th>После налогов</th>
@@ -159,10 +155,6 @@
                     <td>
                         <fmt:formatNumber value="${flows.cashing}" type="percent" minFractionDigits="2"/>
                     </td>
-                    <!--
-                    <td>${flows.getMonthReportDate()}</td>
-                    <td>${flows.getYearReportDate()}</td>
-                    -->
                     <td>
                         <fmt:formatNumber value="${flows.summa}" type="currency" minFractionDigits="2"/>
                     </td>
@@ -270,6 +262,8 @@
         </div>
     </div>
 </div>
+
+<%@include file="loader.jsp"%>
 
 </body>
 </html>

@@ -20,11 +20,11 @@ public class StringToUserConverter implements Converter<String, Users> {
     }
 
     public Users convert(String id) {
-        Users user = null;
-        try{
+        Users user;
+        try {
             BigInteger IntId = new BigInteger(id);
             user = userService.findById(IntId);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             user = userService.findByLogin(id);
         }
 

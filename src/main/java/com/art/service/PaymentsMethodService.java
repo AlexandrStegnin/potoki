@@ -22,15 +22,15 @@ public class PaymentsMethodService {
         return paymentsMethodRepository.findAll();
     }
 
-    public PaymentsMethod findById(BigInteger id){
+    public PaymentsMethod findById(BigInteger id) {
         return paymentsMethodRepository.findOne(id);
     }
 
-    public PaymentsMethod findByPayment(String payment){
+    public PaymentsMethod findByPayment(String payment) {
         return paymentsMethodRepository.findByPayment(payment);
     }
 
-    public List<PaymentsMethod> findByManager(int manager){
+    public List<PaymentsMethod> findByManager(int manager) {
         return paymentsMethodRepository.findByManager(manager);
     }
 }

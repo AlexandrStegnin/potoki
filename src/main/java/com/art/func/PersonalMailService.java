@@ -25,17 +25,17 @@ public class PersonalMailService {
     private static final String ENCODING = StandardCharsets.UTF_8.name();
 
     public GenericResponse sendEmails(Users user, SendingMail sendingMail, String username, String pwd,
-                                      String who, List<MultipartFile> file){
+                                      String who, List<MultipartFile> file) {
         GenericResponse response = new GenericResponse();
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 
         String fileName = "mail.ru.properties";
         Properties prop = new Properties();
         InputStream input;
-        try{
+        try {
             input = AppSecurityConfig.class.getClassLoader().getResourceAsStream(fileName);
             prop.load(input);
-        }catch (IOException ex){
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
 
@@ -53,10 +53,6 @@ public class PersonalMailService {
         System.setProperty("mail.mime.encodeparameters", "false");
         Properties javaMailProperties = new Properties();
 
-
-        //javaMailProperties.put("mail.mime.encodeparameters", "false");
-        //javaMailProperties.put("mail.mime.encodefilename", "true");
-        //javaMailProperties.put("mail.mime.decodeparameters", "true");
         javaMailProperties.put("mail.transport.protocol", prop.getProperty("mail.protocol"));
         javaMailProperties.put("mail.smtp.port", Integer.parseInt(prop.getProperty("mail.port")));
         javaMailProperties.put("mail.smtp.host", prop.getProperty("mail.host"));
@@ -71,22 +67,18 @@ public class PersonalMailService {
         mailSender.setSession(session);
         final String[] attachName = {""};
         mailSender.send(mimeMessage -> {
-            /*mimeMessage.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                    "application/octet-stream");*/
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, ENCODING);
             messageHelper.setTo(user.getEmail());
             messageHelper.setSubject(sendingMail.getSubject());
             messageHelper.setText(sendingMail.getBody(), true);
             messageHelper.setFrom(new InternetAddress(username, who));
-            // determines if there is an upload file, attach it to the e-mail
-            //URLCodec codec = new URLCodec();
-            if(!Objects.equals(file, null)){
+            if (!Objects.equals(file, null)) {
                 file.forEach(f -> {
                     attachName[0] = f.getOriginalFilename();
 
                     if (!attachName[0].equals("")) {
-                        try{
-                            messageHelper.addAttachment(/*MimeUtility.encodeText(attachName, ENCODING, "B")*/attachName[0], f);
+                        try {
+                            messageHelper.addAttachment(attachName[0], f);
                             response.setMessage("Письма успешно отправлены.");
                         } catch (MessagingException e) {
                             response.setError("При отправке писем что-то пошло не так.");
@@ -115,20 +107,5 @@ public class PersonalMailService {
         }
 
     }
-    /*
-    private MimeMessagePreparator getMessagePreparator(final Users user, String body, String subject,
-                                                       String uName, String who) {
-        MimeMessage mimeMessage;
-        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8")
-        /*
-        return mimeMessage -> {
-            mimeMessage.setFrom(new InternetAddress(uName, who));
-            mimeMessage.setRecipient(Message.RecipientType.TO,
-                    new InternetAddress(user.getEmail()));
-            mimeMessage.setText(body, "UTF-8", "HTML");
-            mimeMessage.setSubject(subject);
-        };
 
-    }
-    */
 }

@@ -7,7 +7,7 @@ import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
-public class SearchSummary implements Serializable{
+public class SearchSummary implements Serializable {
     private String facility;
     private Date dateStart;
     private Date dateEnd;
@@ -71,238 +71,274 @@ public class SearchSummary implements Serializable{
     private Rooms room;
     private String dateClose;
     private List<BigInteger> cashIdList;
+    private List<UnderFacilities> underFacilitiesList;
 
-    public String getFacility(){
+
+    public String getFacility() {
         return facility;
     }
-    public void setFacility(String facility){
+
+    public void setFacility(String facility) {
         this.facility = facility;
     }
 
-    public String getTableForSearch(){
+    public String getTableForSearch() {
         return tableForSearch;
     }
-    public void setTableForSearch(String tableForSearch){
+
+    public void setTableForSearch(String tableForSearch) {
         this.tableForSearch = tableForSearch;
     }
 
-    public Date getDateStart(){
+    public Date getDateStart() {
         return dateStart;
     }
-    public void setDateStart(Date dateStart){
+
+    public void setDateStart(Date dateStart) {
         this.dateStart = dateStart;
     }
-    public Date getDateEnd(){
+
+    public Date getDateEnd() {
         return dateEnd;
     }
-    public void setDateEnd(Date dateEnd){
+
+    public void setDateEnd(Date dateEnd) {
         this.dateEnd = dateEnd;
     }
 
-    public String getEmail(){
+    public String getEmail() {
         return email;
     }
-    public void setEmail(String email){
+
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getPassword(){
+    public String getPassword() {
         return password;
     }
-    public void setPassword(String password){
+
+    public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getRentor(){
+    public String getRentor() {
         return rentor;
     }
-    public void setRentor(String rentor){
+
+    public void setRentor(String rentor) {
         this.rentor = rentor;
     }
 
-    public Users getUser(){
+    public Users getUser() {
         return user;
     }
-    public void setUser(Users user){
+
+    public void setUser(Users user) {
         this.user = user;
     }
 
-    public List<Facilities> getFacilityList(){
+    public List<Facilities> getFacilityList() {
         return facilityList;
     }
-    public void setFacilityList(List<Facilities> facilityList){
+
+    public void setFacilityList(List<Facilities> facilityList) {
         this.facilityList = facilityList;
     }
 
-    public String getInn(){
+    public String getInn() {
         return inn;
     }
-    public void setInn(String inn){
+
+    public void setInn(String inn) {
         this.inn = inn;
     }
 
-    public String getAccount(){
+    public String getAccount() {
         return account;
     }
-    public void setAccount(String account){
+
+    public void setAccount(String account) {
         this.account = account;
     }
 
-    public String getSwitchSite(){
+    public String getSwitchSite() {
         return switchSite;
     }
-    public void setSwitchSite(String switchSite){
+
+    public void setSwitchSite(String switchSite) {
         this.switchSite = switchSite;
     }
 
-    public String getOrganization(){
+    public String getOrganization() {
         return organization;
     }
-    public void setOrganization(String organization){
+
+    public void setOrganization(String organization) {
         this.organization = organization;
     }
 
-    public String getActivateSite(){
+    public String getActivateSite() {
         return activateSite;
     }
-    public void setActivateSite(String activateSite){
+
+    public void setActivateSite(String activateSite) {
         this.activateSite = activateSite;
     }
 
-    public String getSearchStuff(){
+    public String getSearchStuff() {
         return searchStuff;
     }
-    public void setSearchStuff(String searchStuff){
+
+    public void setSearchStuff(String searchStuff) {
         this.searchStuff = searchStuff;
     }
 
-    public String getInvestor(){
+    public String getInvestor() {
         return investor;
     }
-    public void setInvestor(String investor){
+
+    public void setInvestor(String investor) {
         this.investor = investor;
     }
 
-    public String getiYear(){
+    public String getiYear() {
         return iYear;
     }
-    public void setiYear(String iYear){
+
+    public void setiYear(String iYear) {
         this.iYear = iYear;
     }
 
-    public String getiMonth(){
+    public String getiMonth() {
         return iMonth;
     }
-    public void setiMonth(String iMonth){
+
+    public void setiMonth(String iMonth) {
         this.iMonth = iMonth;
     }
 
-    public String getPay(){
+    public String getPay() {
         return pay;
     }
-    public void setPay(String pay){
+
+    public void setPay(String pay) {
         this.pay = pay;
     }
 
-    public String getUnderFacility(){
+    public String getUnderFacility() {
         return underFacility;
     }
-    public void setUnderFacility(String underFacility){
+
+    public void setUnderFacility(String underFacility) {
         this.underFacility = underFacility;
     }
 
-    public String getCashSource(){
+    public String getCashSource() {
         return cashSource;
     }
-    public void setCashSource(String cashSource){
+
+    public void setCashSource(String cashSource) {
         this.cashSource = cashSource;
     }
 
-    public String getCashSourceId(){
+    public String getCashSourceId() {
         return cashSourceId;
     }
-    public void setCashSourceId(String cashSourceId){
+
+    public void setCashSourceId(String cashSourceId) {
         this.cashSourceId = cashSourceId;
     }
 
-    public String getCashType(){
+    public String getCashType() {
         return cashType;
     }
-    public void setCashType(String cashType){
+
+    public void setCashType(String cashType) {
         this.cashType = cashType;
     }
 
-    public String getCashTypeId(){
+    public String getCashTypeId() {
         return cashTypeId;
     }
-    public void setCashTypeId(String cashTypeId){
+
+    public void setCashTypeId(String cashTypeId) {
         this.cashTypeId = cashTypeId;
     }
 
-    public String getNewCashDetail(){
+    public String getNewCashDetail() {
         return newCashDetail;
     }
-    public void setNewCashDetail(String newCashDetail){
+
+    public void setNewCashDetail(String newCashDetail) {
         this.newCashDetail = newCashDetail;
     }
 
-    public String getNewCashDetailId(){
+    public String getNewCashDetailId() {
         return newCashDetailId;
     }
-    public void setNewCashDetailId(String newCashDetailId){
+
+    public void setNewCashDetailId(String newCashDetailId) {
         this.newCashDetailId = newCashDetailId;
     }
 
-    public String getInvType(){
+    public String getInvType() {
         return invType;
     }
-    public void setInvType(String invType){
+
+    public void setInvType(String invType) {
         this.invType = invType;
     }
 
-    public String getPeriod(){
+    public String getPeriod() {
         return period;
     }
-    public void setPeriod(String period){
+
+    public void setPeriod(String period) {
         this.period = period;
     }
 
-    public String getInvTypeId(){
+    public String getInvTypeId() {
         return invTypeId;
     }
-    public void setInvTypeId(String invTypeId){
+
+    public void setInvTypeId(String invTypeId) {
         this.invTypeId = invTypeId;
     }
 
-    public String getTypeClosingInvest(){
+    public String getTypeClosingInvest() {
         return typeClosingInvest;
     }
-    public void setTypeClosingInvest(String typeClosingInvest){
+
+    public void setTypeClosingInvest(String typeClosingInvest) {
         this.typeClosingInvest = typeClosingInvest;
     }
 
-    public String getTypeClosingInvestId(){
+    public String getTypeClosingInvestId() {
         return typeClosingInvestId;
     }
-    public void setTypeClosingInvestId(String typeClosingInvestId){
+
+    public void setTypeClosingInvestId(String typeClosingInvestId) {
         this.typeClosingInvestId = typeClosingInvestId;
     }
 
-    public String getShareKind(){
+    public String getShareKind() {
         return shareKind;
     }
-    public void setShareKind(String shareKind){
+
+    public void setShareKind(String shareKind) {
         this.shareKind = shareKind;
     }
 
-    public String getShareKindId(){
+    public String getShareKindId() {
         return shareKindId;
     }
-    public void setShareKindId(String shareKindId){
+
+    public void setShareKindId(String shareKindId) {
         this.shareKindId = shareKindId;
     }
 
-    public List<InvestorsCash> getInvestorsCashList(){
+    public List<InvestorsCash> getInvestorsCashList() {
         return investorsCashList;
     }
 
@@ -337,6 +373,7 @@ public class SearchSummary implements Serializable{
     public UsersAnnexToContracts getUsersAnnexToContracts() {
         return usersAnnexToContracts;
     }
+
     public void setUsersAnnexToContracts(UsersAnnexToContracts usersAnnexToContracts) {
         this.usersAnnexToContracts = usersAnnexToContracts;
     }
@@ -344,6 +381,7 @@ public class SearchSummary implements Serializable{
     public int getAnnexesCnt() {
         return annexesCnt;
     }
+
     public void setAnnexesCnt(int annexesCnt) {
         this.annexesCnt = annexesCnt;
     }
@@ -351,14 +389,16 @@ public class SearchSummary implements Serializable{
     public AnnexToContracts getAnnexToContracts() {
         return annexToContracts;
     }
+
     public void setAnnexToContracts(AnnexToContracts annexToContracts) {
         this.annexToContracts = annexToContracts;
     }
 
-    public InvestorsCash getInvestorsCash(){
+    public InvestorsCash getInvestorsCash() {
         return investorsCash;
     }
-    public void setInvestorsCash(InvestorsCash investorsCash){
+
+    public void setInvestorsCash(InvestorsCash investorsCash) {
         this.investorsCash = investorsCash;
     }
 
@@ -373,6 +413,7 @@ public class SearchSummary implements Serializable{
     public Rooms getRoom() {
         return room;
     }
+
     public void setRoom(Rooms room) {
         this.room = room;
     }
@@ -407,5 +448,13 @@ public class SearchSummary implements Serializable{
 
     public void setWhat(String what) {
         this.what = what;
+    }
+
+    public List<UnderFacilities> getUnderFacilitiesList() {
+        return underFacilitiesList;
+    }
+
+    public void setUnderFacilitiesList(List<UnderFacilities> underFacilitiesList) {
+        this.underFacilitiesList = underFacilitiesList;
     }
 }

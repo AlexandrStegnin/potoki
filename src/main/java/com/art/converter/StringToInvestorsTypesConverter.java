@@ -13,13 +13,12 @@ public class StringToInvestorsTypesConverter implements Converter<String, Invest
     private InvestorsTypesService investorsTypesService;
 
     @Autowired
-    public StringToInvestorsTypesConverter(InvestorsTypesService investorsTypesService){
+    public StringToInvestorsTypesConverter(InvestorsTypesService investorsTypesService) {
         this.investorsTypesService = investorsTypesService;
     }
 
     public InvestorsTypes convert(String id) {
         BigInteger IntId = new BigInteger(id);
-        InvestorsTypes investorsTypes = investorsTypesService.findById(IntId);
-        return investorsTypes;
+        return investorsTypesService.findById(IntId);
     }
 }

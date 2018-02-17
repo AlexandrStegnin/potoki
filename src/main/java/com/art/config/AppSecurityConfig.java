@@ -33,19 +33,19 @@ import java.util.Properties;
 @ComponentScan("com.art")
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
+public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
-    public JavaMailSender getMailSender(){
+    public JavaMailSender getMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 
         String fileName = "mail.ru.properties";
         Properties prop = new Properties();
         InputStream input;
-        try{
+        try {
             input = AppSecurityConfig.class.getClassLoader().getResourceAsStream(fileName);
             prop.load(input);
-        }catch (IOException ex){
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
 
@@ -92,43 +92,43 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
+    public void configure(WebSecurity web) {
         web
                 .ignoring()
                 .antMatchers("/resources/**"); // #3
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception{
+    protected void configure(HttpSecurity http) throws Exception {
         CharacterEncodingFilter filter = new CharacterEncodingFilter();
         filter.setEncoding("UTF-8");
         filter.setForceEncoding(true);
-        http.addFilterBefore(filter,CsrfFilter.class);
+        http.addFilterBefore(filter, CsrfFilter.class);
         //rest of your code
 
         http
                 .authorizeRequests()
                 .antMatchers("/savePassword").permitAll()
                 .antMatchers("/", "/welcome", "/cashflows")
-                    .access("hasRole('ADMIN') or hasRole('DBA') or hasRole('INVESTOR')")
+                .access("hasRole('ADMIN') or hasRole('DBA') or hasRole('INVESTOR')")
                 .antMatchers("createmail")
-                    .access("hasRole('BIGDADDY') or hasRole('DBA') or hasRole('ADMIN')")
+                .access("hasRole('BIGDADDY') or hasRole('DBA') or hasRole('ADMIN')")
                 .antMatchers("/new**", "/delete**", "**double**", "/save**", "/show**", "/sum**")
-                    .access("hasRole('ADMIN')")
+                .access("hasRole('ADMIN')")
                 .antMatchers("/getIncomes", "/getInvestorsFlows", "/getMainFlows")
-                    .access("hasRole('ADMIN') or hasRole('DBA') or hasRole('INVESTOR')")
+                .access("hasRole('ADMIN') or hasRole('DBA') or hasRole('INVESTOR')")
                 .antMatchers("/edit**", "/admin**", "catalogue", "uploadImage")
-                    .access("hasRole('ADMIN') or hasRole('DBA')")
+                .access("hasRole('ADMIN') or hasRole('DBA')")
                 .antMatchers("/**allowance**")
-                    .access("hasRole('ADMIN') or hasRole('DBA')")
+                .access("hasRole('ADMIN') or hasRole('DBA')")
                 .antMatchers("/**alpha**", "**tag**", "**rentors**", "/switch", "/uploadexcel",
                         "**close**", "/load**")
-                    .access("hasRole('ADMIN') or hasRole('DBA')")
+                .access("hasRole('ADMIN') or hasRole('DBA')")
                 .antMatchers("/**bonus**")
-                    .access("hasRole('ADMIN') or hasRole('DBA')")
+                .access("hasRole('ADMIN') or hasRole('DBA')")
                 .antMatchers("/**cashpayment**", "**cashsource**", "**source**",
                         "**facilities**", "/investors**")
-                    .access("hasRole('ADMIN') or hasRole('DBA')")
+                .access("hasRole('ADMIN') or hasRole('DBA')")
                 .and().formLogin().loginPage("/login")
                 .loginProcessingUrl("/login")
                 .usernameParameter("login").passwordParameter("password")
@@ -141,15 +141,6 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
                 .and().sessionManagement().enableSessionUrlRewriting(true)
                 .and().sessionManagement().invalidSessionUrl("/login");
     }
-
-    /*
-    @Bean
-    public PersistentTokenRepository persistentTokenRepository() {
-        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
-        jdbcTokenRepository.setDataSource(dataSource);
-        return jdbcTokenRepository;
-    }
-    */
 
     @Bean
     public PersistentTokenBasedRememberMeServices getPersistentTokenBasedRememberMeServices() {

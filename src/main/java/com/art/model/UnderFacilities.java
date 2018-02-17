@@ -12,8 +12,8 @@ import java.util.Set;
 
 @Getter
 @Setter
-@ToString(exclude = { "facility", "rooms" })
-@EqualsAndHashCode(exclude = { "facility", "rooms" })
+@ToString(exclude = {"facility", "rooms"})
+@EqualsAndHashCode(exclude = {"facility", "rooms"})
 @Entity
 @Table(name = "UnderFacilities")
 public class UnderFacilities implements Serializable {
@@ -25,39 +25,44 @@ public class UnderFacilities implements Serializable {
     private Set<Rooms> rooms;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "FacilityId")
-    public Facilities getFacility(){
+    @JoinColumn(name = "FacilityId", referencedColumnName = "Id")
+    public Facilities getFacility() {
         return facility;
     }
-    public void setFacility(Facilities facility){
+
+    public void setFacility(Facilities facility) {
         this.facility = facility;
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public BigInteger getId(){
+    public BigInteger getId() {
         return id;
     }
-    public void setId(BigInteger id){
+
+    public void setId(BigInteger id) {
         this.id = id;
     }
 
+
     @Column(name = "FacilityId", insertable = false, updatable = false)
-    public BigInteger getFacilityId(){
+    public BigInteger getFacilityId() {
         return facilityId;
     }
-    public void setFacilityId(BigInteger facilityId){
+
+    public void setFacilityId(BigInteger facilityId) {
         this.facilityId = facilityId;
     }
 
+
     @Column(name = "UnderFacility")
-    public String getUnderFacility(){
+    public String getUnderFacility() {
         return underFacility;
     }
-    public void setUnderFacility(String underFacility){
+
+    public void setUnderFacility(String underFacility) {
         this.underFacility = underFacility;
     }
-
 
     @OneToMany(cascade =
             {
@@ -68,10 +73,11 @@ public class UnderFacilities implements Serializable {
             },
             fetch = FetchType.LAZY)
     @JoinColumn(name = "UnderFacilityId", referencedColumnName = "Id")
-    public Set<Rooms> getRooms(){
+    public Set<Rooms> getRooms() {
         return rooms;
     }
-    public void setRooms(Set<Rooms> rooms){
+
+    public void setRooms(Set<Rooms> rooms) {
         this.rooms = rooms;
     }
 

@@ -1,7 +1,6 @@
 package com.art.controllers;
 
 import com.art.config.AppSecurityConfig;
-import com.art.func.GetPrincipalFunc;
 import com.art.func.GetServiceStatus;
 import com.art.func.PersonalMailService;
 import com.art.model.*;
@@ -19,7 +18,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
@@ -31,9 +31,6 @@ public class UserController {
 
     @Resource(name = "userService")
     private UserService userService;
-
-    @Resource(name = "getPrincipalFunc")
-    private GetPrincipalFunc getPrincipalFunc;
 
     @Resource(name = "getServiceStatus")
     private GetServiceStatus getServiceStatus;
@@ -80,33 +77,28 @@ public class UserController {
     @Resource(name = "rentorsDetailsService")
     private RentorsDetailsService rentorsDetailsService;
 
-    @Resource(name = "annexToContractsService")
-    private AnnexToContractsService annexToContractsService;
-
     @Resource(name = "usersAnnexToContractsService")
     private UsersAnnexToContractsService usersAnnexToContractsService;
 
-    private static String path = System.getProperty("catalina.home") + "/pdfFiles";
-
-    private Properties getProp(){
+    private Properties getProp() {
         String fileName = "mail.ru.properties";
         Properties prop = new Properties();
         InputStream input;
-        try{
+        try {
             input = AppSecurityConfig.class.getClassLoader().getResourceAsStream(fileName);
             prop.load(input);
-        }catch (IOException ex){
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
         return prop;
     }
     /*
-    * В профиль
-    *
-    * */
+     * В профиль
+     *
+     * */
 
     @GetMapping(value = "/profile")
-    public ModelAndView toProfile(Principal principal){
+    public ModelAndView toProfile(Principal principal) {
 
         String title = "Личный кабинет";
         ModelAndView modelAndView = new ModelAndView();
@@ -117,7 +109,6 @@ public class UserController {
 
         user.setPassword("");
         FileBucket fileModel = new FileBucket();
-        //List<AnnexToContracts> annexToContractsList = annexToContractsService.findAll();
         int annexCnt = (int) user.getUsersAnnexToContractsList().stream()
                 .filter(a -> a.getAnnexRead() == 0)
                 .count();
@@ -133,7 +124,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/profile")
-    public ModelAndView profilePage(@ModelAttribute("user") Users user, Principal principal){
+    public ModelAndView profilePage(@ModelAttribute("user") Users user, Principal principal) {
         ModelAndView modelAndView = new ModelAndView("welcome");
         userService.update(user);
         return modelAndView;
@@ -142,7 +133,7 @@ public class UserController {
     /**
      * Создание пользователя
      */
-    @GetMapping(value = { "/newuser" })
+    @GetMapping(value = {"/newuser"})
     public String newUser(ModelMap model) {
         String title = "Добавление пользователя";
         Users user = new Users();
@@ -152,12 +143,11 @@ public class UserController {
         model.addAttribute("user", user);
         model.addAttribute("edit", false);
         model.addAttribute("active", active);
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         model.addAttribute("title", title);
         return "registration";
     }
 
-    @PostMapping(value = { "/newuser" })
+    @PostMapping(value = {"/newuser"})
     public String saveUser(@ModelAttribute("user") Users user, BindingResult result, ModelMap model) {
 
         if (result.hasErrors()) {
@@ -168,7 +158,7 @@ public class UserController {
         String uuid = UUID.randomUUID().toString().substring(0, 8);
         user.setPassword(uuid);
         userService.create(user);
-        if(user.getUserStuff().getStuff().equalsIgnoreCase("Инвестор")){
+        if (user.getUserStuff().getStuff().equalsIgnoreCase("Инвестор")) {
             SendingMail mail = new SendingMail();
             mail.setSubject("Добро пожаловать в Доходный Дом Колесникъ!");
             mail.setBody("Здравствуйте, уважаемый " + user.getUserStuff().getStuff() + "!<br/>" +
@@ -185,13 +175,12 @@ public class UserController {
         }
 
         model.addAttribute("success", "Пользователь " + user.getLogin() + " успешно добавлен.");
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         model.addAttribute("redirectUrl", redirectUrl);
         model.addAttribute("ret", ret);
         return "registrationsuccess";
     }
 
-    @RequestMapping(value = { "/edit-user-{id}" }, method = RequestMethod.GET)
+    @RequestMapping(value = {"/edit-user-{id}"}, method = RequestMethod.GET)
     public String editUser(@PathVariable BigInteger id, ModelMap model) {
         String title = "Обновление данных пользователя";
         Users user = userService.findByIdWithStuffsAndMailingGroupsAndFacilities(id);
@@ -201,12 +190,11 @@ public class UserController {
         model.addAttribute("user", user);
         model.addAttribute("edit", true);
         model.addAttribute("active", active);
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         model.addAttribute("title", title);
         return "registration";
     }
 
-    @RequestMapping(value = { "/edit-user-{id}" }, method = RequestMethod.POST)
+    @RequestMapping(value = {"/edit-user-{id}"}, method = RequestMethod.POST)
     public String updateUser(@ModelAttribute("user") Users user, BindingResult result, ModelMap model) {
         String ret = "списку пользователей.";
         String redirectUrl = "/admin";
@@ -214,18 +202,9 @@ public class UserController {
             return "registration";
         }
 
-        /*//Uncomment below 'if block' if you WANT TO ALLOW UPDATING SSO_ID in UI which is a unique key to a User.
-        if(!userService.isUserSSOUnique(user.getId(), user.getSsoId())){
-            FieldError ssoError =new FieldError("user","ssoId",messageSource.getMessage("non.unique.ssoId", new String[]{user.getSsoId()}, Locale.getDefault()));
-            result.addError(ssoError);
-            return "registration";
-        }*/
-
         userService.update(user);
 
         model.addAttribute("success", "Данные пользователя " + user.getLogin() + " успешно обновлены.");
-
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         model.addAttribute("redirectUrl", redirectUrl);
         model.addAttribute("ret", ret);
         return "registrationsuccess";
@@ -234,19 +213,17 @@ public class UserController {
     /**
      * Удаление пользователя по ID.
      */
-    @RequestMapping(value = { "/delete-user-{id}" }, method = RequestMethod.GET)
+    @RequestMapping(value = {"/delete-user-{id}"}, method = RequestMethod.GET)
     public String deleteUser(@PathVariable BigInteger id) {
         userService.deleteUser(id);
         return "redirect:/admin";
     }
 
-    @PostMapping(value = "deleteuser", produces="application/json;charset=UTF-8")
+    @PostMapping(value = "deleteuser", produces = "application/json;charset=UTF-8")
     public @ResponseBody
     GenericResponse deleteUser(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
-        //Set<Users> usersSet = new HashSet<>(0);
         Users user = userService.findByIdWithStuffs(new BigInteger(searchSummary.getRentor()));
-        //usersSet.add(user);
         List<AllowanceIp> allowanceIpList;
         List<Bonuses> bonusesList;
         List<CashPayments> cashPaymentsList;
@@ -256,7 +233,7 @@ public class UserController {
         List<InvestorsExpenses> investorsExpenses;
         List<RentorsDetails> rentorsDetailsList;
         Facilities facilities;
-        switch (user.getUserStuff().getStuff()){
+        switch (user.getUserStuff().getStuff()) {
             case "Арендатор":
                 bonusesList = bonusesService.findByRentor(user);
                 bonusesList.forEach(b -> {
@@ -277,7 +254,7 @@ public class UserController {
                 cashPaymentsList = cashPaymentsService.findByManagerId(user.getId());
                 cashPaymentsList.forEach(cp -> cashPaymentsService.deleteById(cp.getId()));
                 facilities = facilityService.findByManager(user);
-                if(facilities != null){
+                if (facilities != null) {
                     facilities.setManager(null);
                     facilityService.update(facilities);
                 }
@@ -295,29 +272,30 @@ public class UserController {
                 break;
         }
 
-        try{
+        try {
             userService.deleteUser(user.getId());
             response.setMessage("Пользователь <b>" + user.getLogin() + "</b> успешно удалён.");
-        }catch (Exception e){
+        } catch (Exception e) {
             response.setError("При удалении пользователя <b>" + user.getLogin() + "</b> произошла ошибка.");
         }
 
         return response;
     }
 
-    @PostMapping(value = "/checkservice", produces="application/json;charset=UTF-8")
-    public @ResponseBody GenericResponse checkService(){
+    @PostMapping(value = "/checkservice", produces = "application/json;charset=UTF-8")
+    public @ResponseBody
+    GenericResponse checkService() {
         GenericResponse response = new GenericResponse();
-        if(getServiceStatus.getStatus() == 1){
+        if (getServiceStatus.getStatus() == 1) {
             response.setMessage("1");
-        }else{
+        } else {
             response.setMessage("0");
         }
         return response;
     }
 
     @GetMapping(value = "/createmail")
-    public ModelAndView createMailPage(ModelMap model){
+    public ModelAndView createMailPage(ModelMap model) {
         ModelAndView modelAndView = new ModelAndView("createmail");
         FileBucket fileModel = new FileBucket();
         FileBucket file = new FileBucket();
@@ -325,7 +303,6 @@ public class UserController {
         model.addAttribute("file", file);
         String ret = "профилю.";
         String redirectUrl = "/profile";
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         model.addAttribute("redirectUrl", redirectUrl);
         model.addAttribute("ret", ret);
 
@@ -335,7 +312,7 @@ public class UserController {
         return modelAndView;
     }
 
-    @PostMapping(value = "/createmail", produces="application/json;charset=UTF-8")
+    @PostMapping(value = "/createmail", produces = "application/json;charset=UTF-8")
     public @ResponseBody
     GenericResponse sendMail(MultipartHttpServletRequest request) {
         String who = "ДД Колесникъ";
@@ -344,20 +321,18 @@ public class UserController {
 
         Iterator<String> itr = request.getFileNames();
         List<MultipartFile> multipartFiles = new ArrayList<>(0);
-        while (itr.hasNext()){
+        while (itr.hasNext()) {
             multipartFiles.add(request.getFile(itr.next()));
         }
-
-        /*multipartFiles = multipartFiles.stream().distinct().collect(Collectors.toList());*/
         List<BigInteger> uIdList = new ArrayList<>(0);
         List<BigInteger> mIdList = new ArrayList<>(0);
 
         String sendingMail = request.getParameter("sendingMail");
         ObjectMapper mapper = new ObjectMapper();
         SendingMail mail = new SendingMail();
-        try{
+        try {
             mail = mapper.readValue(sendingMail, SendingMail.class);
-        }catch (IOException ex){
+        } catch (IOException ex) {
             response.setError(ex.getMessage());
         }
         mail.getMailingGroups().forEach(i -> mIdList.add(i.getId()));
@@ -383,8 +358,9 @@ public class UserController {
         return response;
     }
 
-    @PostMapping(value = { "/saveuser" }, produces="application/json;charset=UTF-8")
-    public @ResponseBody GenericResponse saveUser(@RequestBody SearchSummary searchSummary) {
+    @PostMapping(value = {"/saveuser"}, produces = "application/json;charset=UTF-8")
+    public @ResponseBody
+    GenericResponse saveUser(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
         List<BigInteger> facilitiesIdList = new ArrayList<>(0);
         searchSummary.getFacilityList().forEach(f -> facilitiesIdList.add(f.getId()));
@@ -393,16 +369,16 @@ public class UserController {
         String inn = "";
         String account = "";
         Users user = searchSummary.getUser();
-        if(Objects.equals(user.getMailingGroups(), null)){
+        if (Objects.equals(user.getMailingGroups(), null)) {
             user.setMailingGroups(null);
         }
-        if(searchSummary.getInn() != null){
+        if (searchSummary.getInn() != null) {
             inn = searchSummary.getInn();
         }
-        if(searchSummary.getAccount() != null){
+        if (searchSummary.getAccount() != null) {
             account = searchSummary.getAccount();
         }
-        if(searchSummary.getOrganization() != null){
+        if (searchSummary.getOrganization() != null) {
             organization = searchSummary.getOrganization();
         }
 
@@ -417,7 +393,7 @@ public class UserController {
         facilitiesList.forEach(f -> {
             Set<Users> usersList = f.getInvestors();
             usersList.add(user);
-            switch (user.getUserStuff().getStuff()){
+            switch (user.getUserStuff().getStuff()) {
                 case "Арендатор":
                     for (String tag : tags) {
                         AlphaCorrectTags correctTags = new AlphaCorrectTags();
@@ -439,7 +415,8 @@ public class UserController {
                     f.setInvestors(usersList);
                     newRdList.add(rentorsDetails);
                     break;
-                case "Инвестор": f.setInvestors(usersList);
+                case "Инвестор":
+                    f.setInvestors(usersList);
                     break;
             }
         });
@@ -451,10 +428,13 @@ public class UserController {
         return response;
     }
 
-    @PostMapping(value = { "/setReadToAnnex" }, produces="application/json;charset=UTF-8")
-    public @ResponseBody GenericResponse saveAnnexRead(@RequestBody SearchSummary searchSummary) {
+    @PostMapping(value = {"/setReadToAnnex"}, produces = "application/json;charset=UTF-8")
+    public @ResponseBody
+    GenericResponse saveAnnexRead(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
-        UsersAnnexToContracts usersAnnexToContracts = searchSummary.getUsersAnnexToContracts();
+        UsersAnnexToContracts usersAnnexToContracts = usersAnnexToContractsService.findById(searchSummary.getUsersAnnexToContracts().getId());
+        usersAnnexToContracts.setAnnexRead(1);
+        usersAnnexToContracts.setDateRead(new Date());
         usersAnnexToContractsService.update(usersAnnexToContracts);
         response.setMessage("Запись успешно изменена");
         return response;

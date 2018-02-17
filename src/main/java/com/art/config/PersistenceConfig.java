@@ -21,7 +21,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages="com.art.repository")
+@EnableJpaRepositories(basePackages = "com.art.repository")
 @PropertySource("classpath:application.properties")
 public class PersistenceConfig {
 
@@ -29,7 +29,7 @@ public class PersistenceConfig {
     private Environment env;
 
     @Bean
-    public DataSource dataSource() throws ClassNotFoundException{
+    public DataSource dataSource() throws ClassNotFoundException {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
         Class.forName(env.getProperty("jdbc.driverClassName"));
@@ -42,10 +42,10 @@ public class PersistenceConfig {
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws ClassNotFoundException{
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws ClassNotFoundException {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
-        em.setPackagesToScan(new String[] { "com.art.model" });
+        em.setPackagesToScan("com.art.model");
         em.setPersistenceUnitName("persistenceUnit");
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
@@ -56,7 +56,7 @@ public class PersistenceConfig {
 
 
     @Bean
-    public PlatformTransactionManager transactionManager(EntityManagerFactory emf){
+    public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(emf);
 
@@ -64,7 +64,7 @@ public class PersistenceConfig {
     }
 
     @Bean
-    public PersistenceExceptionTranslationPostProcessor exceptionTranslation(){
+    public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
         return new PersistenceExceptionTranslationPostProcessor();
     }
 

@@ -37,33 +37,33 @@
     </div>
     <sec:authorize access="hasRole('ADMIN') or hasRole('DBA') or hasRole('BIGDADDY')">
     <div class="well">
-        <a href="<c:url value='/admin' />" class="btn btn-success btn-block">Пользователи</a>
-        <a href="<c:url value='/mailinggroups' />" class="btn btn-success btn-block">Группы рассылок</a>
-        <a href="<c:url value='/admin_facility' />" class="btn btn-success btn-block">Объекты</a>
-        <a href="<c:url value='/underfacilities' />" class="btn btn-success btn-block">Подобъекты</a>
-        <a href="<c:url value='/rooms' />" class="btn btn-success btn-block">Помещения</a>
-        <a href="<c:url value='/facilitiesbuysales' />" class="btn btn-success btn-block">Покупка/продажа объектов</a>
-        <a href="<c:url value='/viewfacilitiesservicecontracts' />" class="btn btn-success btn-block">Договоры обслуживания</a>
-        <a href="<c:url value='/rentorsdetails' />" class="btn btn-success btn-block">Реквизиты арендаторов</a>
-        <a href="<c:url value='/bonustypes' />" class="btn btn-success btn-block">Типы бонусов</a>
-        <a href="<c:url value='/typeexp' />" class="btn btn-success btn-block">Типы расходов</a>
-        <a href="<c:url value='/investorscash' />" class="btn btn-success btn-block">Деньги инвесторов</a>
-        <a href="<c:url value='/allowanceip' />" class="btn btn-success btn-block">Надбавки ИП</a>
-        <a href="<c:url value='/facilitiesreserves' />" class="btn btn-success btn-block">Резервы</a>
-        <a href="<c:url value='/bonuses' />" class="btn btn-success btn-block">Бонусы</a>
-        <a href="<c:url value='/investorsexp' />" class="btn btn-success btn-block">Расходы инвесторов</a>
-        <a href="<c:url value='/alphacorrecttags' />" class="btn btn-success btn-block">Тэги Альфа банка</a>
-        <a href="<c:url value='/toshlcorrecttags' />" class="btn btn-success btn-block">Тэги Toshl</a>
-        <a href="<c:url value='/investorsshare' />" class="btn btn-success btn-block">Доли инвесторов</a>
-        <a href="<c:url value='/paysToInv' />" class="btn btn-success btn-block">Выплаты инвесторам</a>
-        <a href="<c:url value='/flowsSale' />" class="btn btn-success btn-block">Выплаты инвесторам (продажа)</a>
-        <a href="<c:url value='/investorsAllFlows' />" class="btn btn-success btn-block">Потоки инвесторов</a>
-        <a href="<c:url value='/viewcashsources' />" class="btn btn-success btn-block">Источники получения денег</a>
-        <a href="<c:url value='/viewcashtypes' />" class="btn btn-success btn-block">Виды денег</a>
-        <a href="<c:url value='/viewnewcashdetails' />" class="btn btn-success btn-block">Детали новых денег</a>
-        <a href="<c:url value='/viewinvestorstypes' />" class="btn btn-success btn-block">Типы инвесторов</a>
-        <a href="<c:url value='/viewTypesClosingInvest' />" class="btn btn-success btn-block">Виды закрытия вложений</a>
-        <a href="<c:url value='/viewShareKind' />" class="btn btn-success btn-block">Виды долей</a>
+        <a href="<c:url value='/admin' />" class="btn btn-success btn-block">Пользователи (USERS)</a>
+        <a href="<c:url value='/mailinggroups' />" class="btn btn-success btn-block">Группы рассылок (MailingGroups)</a>
+        <a href="<c:url value='/admin_facility' />" class="btn btn-success btn-block">Объекты (FACILITYES)</a>
+        <a href="<c:url value='/underfacilities' />" class="btn btn-success btn-block">Подобъекы (UnderFacilities)</a>
+        <a href="<c:url value='/rooms' />" class="btn btn-success btn-block">Помещения (Rooms)</a>
+        <a href="<c:url value='/facilitiesbuysales' />" class="btn btn-success btn-block">Покупка/продажа объектов (FacilitiesBuySales)</a>
+        <a href="<c:url value='/viewfacilitiesservicecontracts' />" class="btn btn-success btn-block">Договоры обслуживания (FacilitiesServiceContracts)</a>
+        <a href="<c:url value='/rentorsdetails' />" class="btn btn-success btn-block">Реквизиты арендаторов (RentorsDetails)</a>
+        <a href="<c:url value='/bonustypes' />" class="btn btn-success btn-block">Типы бонусов (BonusTypes)</a>
+        <a href="<c:url value='/typeexp' />" class="btn btn-success btn-block">Типы расходов (TypeExpenses)</a>
+        <a href="<c:url value='/investorscash' />" class="btn btn-success btn-block">Деньги инвесторов (InvestorsCash)</a>
+        <a href="<c:url value='/allowanceip' />" class="btn btn-success btn-block">Надбавки ИП (AllowanceIp)</a>
+        <a href="<c:url value='/facilitiesreserves' />" class="btn btn-success btn-block">Резервы (FacilitiesReserves)</a>
+        <a href="<c:url value='/bonuses' />" class="btn btn-success btn-block">Бонусы (Bonuses)</a>
+        <a href="<c:url value='/investorsexp' />" class="btn btn-success btn-block">Расходы инвесторов (InvestorsExpenses)</a>
+        <a href="<c:url value='/alphacorrecttags' />" class="btn btn-success btn-block">Тэги Альфа банка (AlphaCorrectTags)</a>
+        <a href="<c:url value='/toshlcorrecttags' />" class="btn btn-success btn-block">Тэги Toshl (ToshlCorrectTags)</a>
+        <a href="<c:url value='/investorsshare' />" class="btn btn-success btn-block">Доли инвесторов (INVESTORS_SHARE)</a>
+        <a href="<c:url value='/paysToInv' />" class="btn btn-success btn-block">Выплаты инвесторам (InvestorsFlows)</a>
+        <a href="<c:url value='/flowsSale' />" class="btn btn-success btn-block">Выплаты инвесторам (продажа) (InvestorsFlowsSale)</a>
+        <a href="<c:url value='/investorsAllFlows' />" class="btn btn-success btn-block">Потоки инвесторов (MainFlows)</a>
+        <a href="<c:url value='/viewcashsources' />" class="btn btn-success btn-block">Источники получения денег (CashSources)</a>
+        <a href="<c:url value='/viewcashtypes' />" class="btn btn-success btn-block">Виды денег (CashTypes)</a>
+        <a href="<c:url value='/viewnewcashdetails' />" class="btn btn-success btn-block">Детали новых денег (NewCashDetails)</a>
+        <a href="<c:url value='/viewinvestorstypes' />" class="btn btn-success btn-block">Типы инвесторов (InvestorsTypes)</a>
+        <a href="<c:url value='/viewTypesClosingInvest' />" class="btn btn-success btn-block">Виды закрытия вложений (TypeClosingInvest)</a>
+        <a href="<c:url value='/viewShareKind' />" class="btn btn-success btn-block">Виды долей (ShareKind)</a>
         <a href="<c:url value='/cashflows' />" class="btn btn-success btn-block">Тест</a>
         </sec:authorize>
     </div>

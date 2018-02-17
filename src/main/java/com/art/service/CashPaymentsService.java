@@ -18,23 +18,23 @@ public class CashPaymentsService {
     @Resource(name = "cashPaymentsRepository")
     private CashPaymentsRepository cashPaymentsRepository;
 
-    public CashPayments update(CashPayments cashPayments){
+    public CashPayments update(CashPayments cashPayments) {
         return cashPaymentsRepository.saveAndFlush(cashPayments);
     }
 
-    public void deleteById(BigInteger id){
+    public void deleteById(BigInteger id) {
         cashPaymentsRepository.delete(id);
     }
 
-    public CashPayments create(CashPayments cashPayments){
+    public CashPayments create(CashPayments cashPayments) {
         return cashPaymentsRepository.saveAndFlush(cashPayments);
     }
 
-    public List<CashPayments> findByManagerId(BigInteger managerId){
+    public List<CashPayments> findByManagerId(BigInteger managerId) {
         return cashPaymentsRepository.findByManagerId(managerId);
     }
 
-    public CashPayments findById(BigInteger id){
+    public CashPayments findById(BigInteger id) {
         return cashPaymentsRepository.findOne(id);
     }
 

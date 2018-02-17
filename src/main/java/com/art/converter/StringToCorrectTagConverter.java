@@ -14,7 +14,7 @@ public class StringToCorrectTagConverter implements Converter<String, AlphaCorre
     private AlphaCorrectTagsService alphaCorrectTagsService;
 
     @Autowired
-    public StringToCorrectTagConverter(AlphaCorrectTagsService alphaCorrectTagsService){
+    public StringToCorrectTagConverter(AlphaCorrectTagsService alphaCorrectTagsService) {
         this.alphaCorrectTagsService = alphaCorrectTagsService;
     }
 

@@ -46,9 +46,8 @@ public class AlphaExtractController {
     @Resource(name = "rentorsDetailsService")
     private RentorsDetailsService rentorsDetailsService;
 
-    @GetMapping(value = { "/double-alphaextract-{id}" })
+    @GetMapping(value = {"/double-alphaextract-{id}"})
     public String doubleAlphaExtract(@PathVariable BigInteger id, ModelMap model) {
-        //String title = "Разделение строк по выгрузкам Альфа банка";
         AlphaExtract alphaExtract = alphaExtractService.findById(id);
 
         model.addAttribute("alphaExtract", alphaExtract);
@@ -56,7 +55,7 @@ public class AlphaExtractController {
         return "addalphaextract";
     }
 
-    @GetMapping(value = { "/edit-alphaextract-{id}" })
+    @GetMapping(value = {"/edit-alphaextract-{id}"})
     public String editAlphaExtract(@PathVariable BigInteger id, ModelMap model) {
         AlphaExtract alphaExtract = alphaExtractService.findById(id);
 
@@ -66,9 +65,9 @@ public class AlphaExtractController {
         return "addalphaextract";
     }
 
-    @PostMapping(value = { "/edit-alphaextract-{id}" })
+    @PostMapping(value = {"/edit-alphaextract-{id}"})
     public String edAlphaExtract(@ModelAttribute("alphaExtract") AlphaExtract alphaExtract,
-                                     BindingResult result, ModelMap model) {
+                                 BindingResult result, ModelMap model) {
 
         String ret = "списку выгрузок Альфа банка.";
         String redirectUrl = "/alphaextract";
@@ -92,9 +91,9 @@ public class AlphaExtractController {
         return "redirect:/alphaextract";
     }
 
-    @PostMapping(value = { "/double-alphaextract-{id}" })
+    @PostMapping(value = {"/double-alphaextract-{id}"})
     public String updateAlphaExtract(@ModelAttribute("alphaExtract") AlphaExtract alphaExtract,
-            BindingResult result, ModelMap model) {
+                                     BindingResult result, ModelMap model) {
 
         //String title = "Разделение строк по выгрузкам Альфа банка";
         String ret = "списку выгрузок Альфа банка.";
@@ -108,7 +107,7 @@ public class AlphaExtractController {
         newAlphaExtract.setpId(
                 String.join("_", newAlphaExtract.getDateOperToLocalDate(), newAlphaExtract.getDocNumber(),
                         String.valueOf(newAlphaExtract.getDebet()), String.valueOf(newAlphaExtract.getCredit()))
-        /*.replaceAll("\\.", "_")*/);
+                /*.replaceAll("\\.", "_")*/);
         newAlphaExtract.setDebet(alphaExtract.getDebet());
         newAlphaExtract.setCredit(alphaExtract.getCredit());
         newAlphaExtract.setPurposePayment(alphaExtract.getPurposePayment());
@@ -123,20 +122,20 @@ public class AlphaExtractController {
         return "addalphaextract";
     }
 
-    @GetMapping(value = { "/delete-alphaextract-{id}" })
+    @GetMapping(value = {"/delete-alphaextract-{id}"})
     public String deleteAlphaExtract(@PathVariable BigInteger id) {
         alphaExtractService.deleteById(id);
         return "redirect:/alphaextract";
     }
 
-    @PostMapping(value = { "/findrentors" }, produces="application/json;charset=UTF-8")
+    @PostMapping(value = {"/findrentors"}, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     GenericResponse findRentors(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
         List<Users> rentors;
         Facilities facility = facilityService.findByIdWithRentorInvestors(new BigInteger(searchSummary.getFacility()));
         rentors = facility.getInvestors().stream().filter(inv -> inv.getUserStuff().getStuff().equals("Арендатор"))
-            .collect(Collectors.toList());
+                .collect(Collectors.toList());
         StringBuilder stringBuilder = new StringBuilder("<option value='0'>Выберите арендатора</option>");
         rentors.forEach(r ->
                 stringBuilder.append("<option value=").append(r.getId()).append(">").append(r.getLogin()).append("</option>"));
@@ -145,32 +144,32 @@ public class AlphaExtractController {
         return response;
     }
 
-    @PostMapping(value = { "/findcorrecttags" }, produces="application/json;charset=UTF-8")
+    @PostMapping(value = {"/findcorrecttags"}, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     GenericResponse findCorrectTags(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
         BigInteger facilityId = new BigInteger(searchSummary.getFacility());
         BigInteger rentorId;
         List<RentorsDetails> rentorsDetailsList;
-        if(searchSummary.getRentor() != null){
+        if (searchSummary.getRentor() != null) {
             rentorId = new BigInteger(searchSummary.getRentor());
             rentorsDetailsList = rentorsDetailsService.findByRentorId(rentorId);
-        }else{
+        } else {
             rentorsDetailsList = rentorsDetailsService.findByFacilityId(facilityId);
         }
 
         List<AlphaCorrectTags> correctTagsList = alphaCorrectTagsService.findByFacilityId(facilityId);
         List<AlphaCorrectTags> correctTagsListFinal = new ArrayList<>(0);
 
-        if(rentorsDetailsList.size() > 0){
+        if (rentorsDetailsList.size() > 0) {
             for (RentorsDetails details : rentorsDetailsList) {
                 correctTagsListFinal.addAll(correctTagsList.stream()
                         .filter(corTag -> corTag.getFacility().equals(details.getFacility()) &&
-                                 corTag.getInn().equals(details.getInn()) &&
-                                         corTag.getAccount().equals(details.getAccount()))
+                                corTag.getInn().equals(details.getInn()) &&
+                                corTag.getAccount().equals(details.getAccount()))
                         .collect(Collectors.toList()));
             }
-        }else{
+        } else {
             correctTagsListFinal = new ArrayList<>(correctTagsList);
         }
         correctTagsListFinal = correctTagsListFinal.stream().distinct().collect(Collectors.toList());

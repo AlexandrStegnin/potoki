@@ -55,7 +55,7 @@ import java.util.Locale;
 @ToString
 @Entity
 @Table(name = "HISTORY_RELATIONSHIPS")
-public class HistoryRelationships implements Serializable{
+public class HistoryRelationships implements Serializable {
 
     private static final Locale RUSSIAN_LOCAL = new Locale("ru", "RU");
 
@@ -87,66 +87,71 @@ public class HistoryRelationships implements Serializable{
 
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @JoinColumn(name = "MANAGER_ID", referencedColumnName = "id")
-    public Users getManager(){
+    public Users getManager() {
         return manager;
     }
-    public void setManager(Users manager){
+
+    public void setManager(Users manager) {
         this.manager = manager;
     }
 
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @JoinColumn(name = "RENTOR_ID", referencedColumnName = "id")
-    public Users getRentor(){
+    public Users getRentor() {
         return rentor;
     }
-    public void setRentor(Users rentor){
+
+    public void setRentor(Users rentor) {
         this.rentor = rentor;
     }
 
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @JoinColumn(name = "FACILITY_ID", referencedColumnName = "ID")
-    public Facilities getFacility(){
+    public Facilities getFacility() {
         return facility;
     }
-    public void setFacility(Facilities facility){
+
+    public void setFacility(Facilities facility) {
         this.facility = facility;
     }
 
 
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @JoinColumn(name = "PAYMENT_METHOD_ID", referencedColumnName = "ID")
-    public PaymentsMethod getPaymentsMethod(){
+    public PaymentsMethod getPaymentsMethod() {
         return paymentsMethod;
     }
-    public void setPaymentsMethod(PaymentsMethod paymentsMethod){
+
+    public void setPaymentsMethod(PaymentsMethod paymentsMethod) {
         this.paymentsMethod = paymentsMethod;
     }
 
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @JoinColumn(name = "PAY_TYPE_ID", referencedColumnName = "ID")
-    public PaymentsType getPaymentsType(){
+    public PaymentsType getPaymentsType() {
         return paymentsType;
     }
-    public void setPaymentsType(PaymentsType paymentsType){
+
+    public void setPaymentsType(PaymentsType paymentsType) {
         this.paymentsType = paymentsType;
     }
 
     @Transient
-    public String getPeriodToLocalDate(){
+    public String getPeriodToLocalDate() {
         String localDate;
         SimpleDateFormat formatMonth = new SimpleDateFormat("MMMM yyyy", RUSSIAN_LOCAL);
         //SimpleDateFormat formatYear = new SimpleDateFormat("yyyy");
-        try{
+        try {
             localDate = formatMonth.format(period);
             //localDate = localDate + ' ' + formatYear.format(period);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             localDate = "";
         }
         return localDate;
     }
 
     @Transient
-    public String getDateFactToLocalDate(){
+    public String getDateFactToLocalDate() {
         String localDate = null;
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         localDate = format.format(pay_date_fact);
@@ -192,10 +197,11 @@ public class HistoryRelationships implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
-    public BigInteger getId(){
+    public BigInteger getId() {
         return id;
     }
-    public void setId(BigInteger id){
+
+    public void setId(BigInteger id) {
         this.id = id;
     }
 
@@ -203,6 +209,7 @@ public class HistoryRelationships implements Serializable{
     public Date getPeriod() {
         return period;
     }
+
     public void setPeriod(Date period) {
         this.period = period;
     }
@@ -246,6 +253,7 @@ public class HistoryRelationships implements Serializable{
     public Date getPay_date_fact() {
         return pay_date_fact;
     }
+
     public void setPay_date_fact(Date pay_date_fact) {
         this.pay_date_fact = pay_date_fact;
     }
@@ -254,6 +262,7 @@ public class HistoryRelationships implements Serializable{
     public float getSumm_fact() {
         return summ_fact;
     }
+
     public void setSumm_fact(float summ_fact) {
         this.summ_fact = summ_fact;
     }

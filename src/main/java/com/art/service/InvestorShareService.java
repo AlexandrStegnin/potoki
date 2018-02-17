@@ -23,23 +23,23 @@ public class InvestorShareService {
         return investorsShareRepository.findAll();
     }
 
-    public InvestorsShare findById(BigInteger id){
+    public InvestorsShare findById(BigInteger id) {
         return investorsShareRepository.findById(id);
     }
 
-    public InvestorsShare update(InvestorsShare investorsShare){
+    public InvestorsShare update(InvestorsShare investorsShare) {
         return investorsShareRepository.saveAndFlush(investorsShare);
     }
 
-    public void deleteById(BigInteger id){
+    public void deleteById(BigInteger id) {
         investorsShareRepository.deleteById(id);
     }
 
-    public void create(InvestorsShare investorsShare){
+    public void create(InvestorsShare investorsShare) {
         investorsShareRepository.saveAndFlush(investorsShare);
     }
 
-    public List<InvestorsShare> findByInvestor(Users investor){
+    public List<InvestorsShare> findByInvestor(Users investor) {
         return investorsShareRepository.findByInvestor(investor);
     }
 }

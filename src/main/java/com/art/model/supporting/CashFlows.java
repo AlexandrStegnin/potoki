@@ -1,19 +1,19 @@
 package com.art.model.supporting;
 
-import com.art.model.InvestorsCash;
-import com.art.model.InvestorsFlows;
-import com.art.model.MainFlows;
-import com.art.model.UsersAnnexToContracts;
+import com.art.model.*;
 
 import java.io.Serializable;
 import java.util.List;
 
-public class CashFlows implements Serializable{
+public class CashFlows implements Serializable {
 
     private List<MainFlows> mainFlowsList;
     private List<InvestorsFlows> investorsFlowsList;
     private List<InvestorsCash> investorsCashList;
     private List<UsersAnnexToContracts> annexes;
+    private List<Facilities> facilities;
+    private Facilities facility;
+    private List<Rooms> rooms;
     private String login;
 
     public List<MainFlows> getMainFlowsList() {
@@ -55,5 +55,29 @@ public class CashFlows implements Serializable{
 
     public void setAnnexes(List<UsersAnnexToContracts> annexes) {
         this.annexes = annexes;
+    }
+
+    public List<Facilities> getFacilities() {
+        return facilities;
+    }
+
+    public void setFacilities(List<Facilities> facilities) {
+        this.facilities = facilities;
+    }
+
+    public List<Rooms> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(List<Rooms> rooms) {
+        this.rooms = rooms;
+    }
+
+    public Facilities getFacility() {
+        return facility;
+    }
+
+    public void setFacility(Facilities facility) {
+        this.facility = facility;
     }
 }

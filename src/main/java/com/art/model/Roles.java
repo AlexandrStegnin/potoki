@@ -14,7 +14,7 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @Entity
 @Table(name = "ROLES")
-public class Roles implements Serializable{
+public class Roles implements Serializable {
     private Integer id;
     private String role;
 
@@ -23,6 +23,7 @@ public class Roles implements Serializable{
     public Integer getId() {
         return id;
     }
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -31,6 +32,7 @@ public class Roles implements Serializable{
     public String getRole() {
         return role;
     }
+
     public void setRole(String role) {
         this.role = role;
     }

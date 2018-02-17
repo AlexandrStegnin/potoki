@@ -1,6 +1,5 @@
 package com.art.controllers;
 
-import com.art.func.GetPrincipalFunc;
 import com.art.model.BonusTypes;
 import com.art.model.Bonuses;
 import com.art.model.Facilities;
@@ -27,9 +26,6 @@ public class BonusesController {
     @Resource(name = "bonusTypesService")
     private BonusTypesService bonusTypesService;
 
-    @Resource(name = "getPrincipalFunc")
-    private GetPrincipalFunc getPrincipalFunc;
-
     @Resource(name = "facilityService")
     private FacilityService facilityService;
 
@@ -48,7 +44,7 @@ public class BonusesController {
         return "viewbonuses";
     }
 
-    @GetMapping(value = { "/edit-bonuses-{id}" })
+    @GetMapping(value = {"/edit-bonuses-{id}"})
     public String editBonuses(@PathVariable BigInteger id, ModelMap model) {
         String title = "Обновление данных по бонусам";
         Bonuses bonuses = bonusesService.findById(id);
@@ -58,9 +54,9 @@ public class BonusesController {
         return "addbonuses";
     }
 
-    @PostMapping(value = { "/edit-bonuses-{id}" })
+    @PostMapping(value = {"/edit-bonuses-{id}"})
     public String updateBonuses(@ModelAttribute("bonuses") Bonuses bonuses,
-                                           BindingResult result, ModelMap model) {
+                                BindingResult result, ModelMap model) {
         String ret = "списку бонусов.";
         String redirectUrl = "/bonuses";
         if (result.hasErrors()) {
@@ -77,13 +73,13 @@ public class BonusesController {
         return "registrationsuccess";
     }
 
-    @GetMapping(value = { "/delete-bonuses-{id}" })
+    @GetMapping(value = {"/delete-bonuses-{id}"})
     public String deleteBonuses(@PathVariable BigInteger id) {
         bonusesService.deleteById(id);
         return "redirect:/bonuses";
     }
 
-    @GetMapping(value = { "/newbonuses" })
+    @GetMapping(value = {"/newbonuses"})
     public String newBonuses(ModelMap model) {
         String title = "Добавление бонуса";
         Bonuses bonuses = new Bonuses();
@@ -93,9 +89,9 @@ public class BonusesController {
         return "addbonuses";
     }
 
-    @PostMapping(value = { "/newbonuses" })
+    @PostMapping(value = {"/newbonuses"})
     public String saveBonuses(@ModelAttribute("bonuses") Bonuses bonuses,
-                                         BindingResult result, ModelMap model) {
+                              BindingResult result, ModelMap model) {
 
         if (result.hasErrors()) {
             return "addbonuses";

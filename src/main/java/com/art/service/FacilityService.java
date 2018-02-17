@@ -29,44 +29,23 @@ public class FacilityService {
         return facilityRepository.findAll();
     }
 
-    public Facilities findById(BigInteger id){
+    public Facilities findById(BigInteger id) {
         return facilityRepository.findById(id);
     }
 
-    /*
-    public Facilities update(Facilities facility){
-        return facilityRepository.saveAndFlush(facility);
-    }
-    */
-    /*
-    public void deleteById(BigInteger id){
-        facilityRepository.delete(id);
-    }
-    */
-    /*
-    public Facilities create(Facilities facility){
-        return facilityRepository.saveAndFlush(facility);
-    }
-    */
-    /*
-    public Facilities findByFacility(String facility){
-        return facilityRepository.findByFacility(facility);
-    }
-    */
-
-    public List<Facilities> findByIdNot(BigInteger id){
+    public List<Facilities> findByIdNot(BigInteger id) {
         return facilityRepository.findByIdNot(id);
     }
 
-    public List<UserFacilities> getInvestorsFacility(BigInteger rentorInvestorId){
+    public List<UserFacilities> getInvestorsFacility(BigInteger rentorInvestorId) {
         return facilityRepository.getInvestorsFacility(rentorInvestorId);
     }
 
-    public Facilities findByManager(Users manager){
+    public Facilities findByManager(Users manager) {
         return facilityRepository.findByManager(manager);
     }
 
-    public List<Facilities> initializeFacilities(){
+    public List<Facilities> initializeFacilities() {
         List<Facilities> facilitiesList = new ArrayList<>(0);
         Facilities facility = new Facilities();
         facility.setId(new BigInteger("0"));
@@ -76,22 +55,22 @@ public class FacilityService {
         return facilitiesList;
     }
 
-    public List<Facilities> findByIdIn(List<BigInteger> idList){
+    public List<Facilities> findByIdIn(List<BigInteger> idList) {
         return facilityRepository.findByIdIn(idList);
     }
 
-    public void updateList(List<Facilities> facilitiesList){
+    public void updateList(List<Facilities> facilitiesList) {
         facilityRepository.save(facilitiesList);
     }
 
-    public Facilities findByInvestors(Set<Users> usersSet){
+    public Facilities findByInvestors(Set<Users> usersSet) {
         return facilityRepository.findByInvestors(usersSet);
     }
 
     @PersistenceContext(name = "persistanceUnit")
     private EntityManager em;
 
-    public List<Facilities> findAllWithManagers(){
+    public List<Facilities> findAllWithManagers() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
         CriteriaQuery<Facilities> facilityesCriteriaQuery = cb.createQuery(Facilities.class);
@@ -103,7 +82,7 @@ public class FacilityService {
     }
 
 
-    public Facilities findByIdWithManagers(BigInteger id){
+    public Facilities findByIdWithManagers(BigInteger id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Facilities> facilityesCriteriaQuery = cb.createQuery(Facilities.class);
         Root<Facilities> facilityesRoot = facilityesCriteriaQuery.from(Facilities.class);
@@ -113,38 +92,39 @@ public class FacilityService {
         return em.createQuery(facilityesCriteriaQuery).getSingleResult();
     }
 
-    public Facilities findByIdWithUnderFacilities(BigInteger id){
+    public Facilities findByIdWithUnderFacilities(BigInteger id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Facilities> facilityesCriteriaQuery = cb.createQuery(Facilities.class);
         Root<Facilities> facilityesRoot = facilityesCriteriaQuery.from(Facilities.class);
-        facilityesRoot.fetch(Facilities_.underFacilities, JoinType.INNER);
+        facilityesRoot.fetch(Facilities_.underFacilities, JoinType.LEFT);
         facilityesCriteriaQuery.select(facilityesRoot).distinct(true);
         facilityesCriteriaQuery.where(cb.equal(facilityesRoot.get(Facilities_.id), id));
         return em.createQuery(facilityesCriteriaQuery).getSingleResult();
     }
 
-    public Facilities findByIdWithRentorInvestors(BigInteger id){
+    public Facilities findByIdWithRentorInvestors(BigInteger id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Facilities> facilityesCriteriaQuery = cb.createQuery(Facilities.class);
         Root<Facilities> facilityesRoot = facilityesCriteriaQuery.from(Facilities.class);
         facilityesRoot.fetch(Facilities_.investors, JoinType.LEFT)
-            .fetch(Users_.userStuff, JoinType.LEFT);
+                .fetch(Users_.userStuff, JoinType.LEFT);
         facilityesCriteriaQuery.select(facilityesRoot).distinct(true);
         facilityesCriteriaQuery.where(cb.equal(facilityesRoot.get(Facilities_.id), id));
         return em.createQuery(facilityesCriteriaQuery).getSingleResult();
     }
 
-    public Facilities findByIdWithInvestors(BigInteger id){
+    public Facilities findByIdWithInvestors(BigInteger id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Facilities> facilityesCriteriaQuery = cb.createQuery(Facilities.class);
-        Root<Facilities> facilitiesRoot = facilityesCriteriaQuery.from(Facilities.class);
+        CriteriaQuery<Facilities> facilitiesCriteriaQuery = cb.createQuery(Facilities.class);
+        Root<Facilities> facilitiesRoot = facilitiesCriteriaQuery.from(Facilities.class);
         facilitiesRoot.fetch(Facilities_.investors, JoinType.LEFT);
-        facilityesCriteriaQuery.select(facilitiesRoot).distinct(true);
-        facilityesCriteriaQuery.where(cb.equal(facilitiesRoot.get(Facilities_.id), id));
-        return em.createQuery(facilityesCriteriaQuery).getSingleResult();
+        facilitiesRoot.fetch(Facilities_.underFacilities, JoinType.LEFT);
+        facilitiesCriteriaQuery.select(facilitiesRoot).distinct(true);
+        facilitiesCriteriaQuery.where(cb.equal(facilitiesRoot.get(Facilities_.id), id));
+        return em.createQuery(facilitiesCriteriaQuery).getSingleResult();
     }
 
-    public Facilities findByIdWithRentorsInvestorsManagers(BigInteger id){
+    public Facilities findByIdWithRentorsInvestorsManagers(BigInteger id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Facilities> facilityesCriteriaQuery = cb.createQuery(Facilities.class);
         Root<Facilities> facilityesRoot = facilityesCriteriaQuery.from(Facilities.class);
@@ -155,7 +135,7 @@ public class FacilityService {
         return em.createQuery(facilityesCriteriaQuery).getSingleResult();
     }
 
-    public List<Facilities> findAllWithRentorsInvestorsManagers(){
+    public List<Facilities> findAllWithRentorsInvestorsManagers() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Facilities> facilityesCriteriaQuery = cb.createQuery(Facilities.class);
         Root<Facilities> facilityesRoot = facilityesCriteriaQuery.from(Facilities.class);
@@ -165,31 +145,31 @@ public class FacilityService {
         return em.createQuery(facilityesCriteriaQuery).getResultList();
     }
 
-    public List<Facilities> findAllWithUnderFacilitiesRentorsInvestorsManagers(){
+    public List<Facilities> findAllWithUnderFacilitiesRentorsInvestorsManagers() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Facilities> facilityesCriteriaQuery = cb.createQuery(Facilities.class);
         Root<Facilities> facilityesRoot = facilityesCriteriaQuery.from(Facilities.class);
         facilityesRoot.fetch(Facilities_.investors, JoinType.LEFT)
-            .fetch(Users_.userStuff, JoinType.LEFT);
+                .fetch(Users_.userStuff, JoinType.LEFT);
         facilityesRoot.fetch(Facilities_.manager, JoinType.LEFT)
-            .fetch(Users_.userStuff, JoinType.LEFT);
+                .fetch(Users_.userStuff, JoinType.LEFT);
         facilityesRoot.fetch(Facilities_.underFacilities, JoinType.LEFT);
         facilityesCriteriaQuery.select(facilityesRoot).distinct(true);
         return em.createQuery(facilityesCriteriaQuery).getResultList();
     }
 
-    public Facilities findByFacility(String facility){
+    public Facilities findByFacility(String facility) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Facilities> facilityesCriteriaQuery = cb.createQuery(Facilities.class);
-        Root<Facilities> facilityesRoot = facilityesCriteriaQuery.from(Facilities.class);
-        facilityesCriteriaQuery.select(facilityesRoot);
-        facilityesCriteriaQuery.where(cb.equal(facilityesRoot.get(Facilities_.facility), facility));
+        Root<Facilities> facilitiesRoot = facilityesCriteriaQuery.from(Facilities.class);
+        facilityesCriteriaQuery.select(facilitiesRoot);
+        facilityesCriteriaQuery.where(cb.equal(facilitiesRoot.get(Facilities_.facility), facility));
 
         return this.em.createQuery(facilityesCriteriaQuery).getSingleResult();
     }
 
 
-    public void deleteById(BigInteger id){
+    public void deleteById(BigInteger id) {
         CriteriaBuilder cb = this.em.getCriteriaBuilder();
         CriteriaDelete<Facilities> delete = cb.createCriteriaDelete(Facilities.class);
         Root<Facilities> facilityesRoot = delete.from(Facilities.class);
@@ -197,7 +177,7 @@ public class FacilityService {
         this.em.createQuery(delete).executeUpdate();
     }
 
-    public void update(Facilities facility){
+    public void update(Facilities facility) {
         CriteriaBuilder criteriaBuilder = this.em.getCriteriaBuilder();
         CriteriaUpdate<Facilities> update = criteriaBuilder.createCriteriaUpdate(Facilities.class);
         Root<Facilities> facilityesRoot = update.from(Facilities.class);
@@ -206,26 +186,27 @@ public class FacilityService {
         this.em.createQuery(update).executeUpdate();
     }
 
-    public void merge(Facilities facility){
+    public void merge(Facilities facility) {
         this.em.merge(facility);
     }
 
-    public void create(Facilities facility){
-        this.em.persist(facility);
+    public void create(Facilities facility) {
+        this.em.merge(facility);
     }
 
-    public Facilities findByIdWithUnderFacilitiesAndRooms(BigInteger id){
+    public Facilities findByIdWithUnderFacilitiesAndRooms(BigInteger id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Facilities> facilityesCriteriaQuery = cb.createQuery(Facilities.class);
         Root<Facilities> facilityesRoot = facilityesCriteriaQuery.from(Facilities.class);
-        facilityesRoot.fetch(Facilities_.underFacilities, JoinType.INNER)
-            .fetch(UnderFacilities_.rooms, JoinType.LEFT);
         facilityesCriteriaQuery.select(facilityesRoot).distinct(true);
         facilityesCriteriaQuery.where(cb.equal(facilityesRoot.get(Facilities_.id), id));
-        return em.createQuery(facilityesCriteriaQuery).getSingleResult();
+
+        Facilities facility = em.createQuery(facilityesCriteriaQuery).getSingleResult();
+        facility.getUnderFacilities().forEach(uf -> uf.getRooms().size());
+        return facility;
     }
 
-    public List<Facilities> init(){
+    public List<Facilities> init() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Facilities> facilityesCriteriaQuery = cb.createQuery(Facilities.class);
         Root<Facilities> facilityesRoot = facilityesCriteriaQuery.from(Facilities.class);

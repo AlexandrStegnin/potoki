@@ -23,11 +23,11 @@ public class PaymentsTypeService {
         return paymentsTypeRepository.findAll();
     }
 
-    public PaymentsType findById(BigInteger id){
+    public PaymentsType findById(BigInteger id) {
         return paymentsTypeRepository.findOne(id);
     }
 
-    public PaymentsType findByType(String type){
+    public PaymentsType findByType(String type) {
         return paymentsTypeRepository.findByType(type);
     }
 }

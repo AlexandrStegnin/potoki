@@ -12,7 +12,7 @@ import java.util.Set;
 @SqlResultSetMapping(
         name = "InvestorsFacilitiesMapping",
         classes = @ConstructorResult(
-                        targetClass = UserFacilities.class,
+                targetClass = UserFacilities.class,
                 columns = {
                         @ColumnResult(name = "id", type = BigInteger.class),
                         @ColumnResult(name = "facility", type = String.class)
@@ -39,38 +39,41 @@ public class Facilities implements Serializable {
     private Set<Users> investors;
     private Set<UnderFacilities> underFacilities;
 
-    public Facilities(){
+    public Facilities() {
 
     }
-    public Facilities(String id, String facility){
+
+    public Facilities(String id, String facility) {
         this.id = new BigInteger(id);
         this.facility = facility;
     }
 
     @ManyToOne(cascade =
             {
-                CascadeType.DETACH,
-                CascadeType.MERGE,
-                CascadeType.REFRESH,
-                CascadeType.PERSIST
+                    CascadeType.DETACH,
+                    CascadeType.MERGE,
+                    CascadeType.REFRESH,
+                    CascadeType.PERSIST
             },
             fetch = FetchType.LAZY)
     @JoinColumn(name = "MANAGER_ID", referencedColumnName = "id")
-    public Users getManager(){
+    public Users getManager() {
         return manager;
     }
-    public void setManager(Users manager){
+
+    public void setManager(Users manager) {
         this.manager = manager;
     }
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "USERS_FACILITYES",
-            joinColumns = { @JoinColumn(name = "FACILITY_ID", referencedColumnName = "id") },
+            joinColumns = {@JoinColumn(name = "FACILITY_ID", referencedColumnName = "id")},
             inverseJoinColumns = @JoinColumn(name = "RENTOR_INVESTORS_ID", referencedColumnName = "id"))
-    public Set<Users> getInvestors(){
+    public Set<Users> getInvestors() {
         return investors;
     }
-    public void setInvestors(Set<Users> investors){
+
+    public void setInvestors(Set<Users> investors) {
         this.investors = investors;
     }
 
@@ -83,20 +86,22 @@ public class Facilities implements Serializable {
             },
             fetch = FetchType.LAZY)
     @JoinColumn(name = "FacilityId", referencedColumnName = "Id")
-    public Set<UnderFacilities> getUnderFacilities(){
+    public Set<UnderFacilities> getUnderFacilities() {
         return underFacilities;
     }
-    public void setUnderFacilities(Set<UnderFacilities> underFacilities){
+
+    public void setUnderFacilities(Set<UnderFacilities> underFacilities) {
         this.underFacilities = underFacilities;
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
-    public BigInteger getId(){
+    public BigInteger getId() {
         return id;
     }
-    public void setId(BigInteger id){
+
+    public void setId(BigInteger id) {
         this.id = id;
     }
 
@@ -104,6 +109,7 @@ public class Facilities implements Serializable {
     public String getFacility() {
         return facility;
     }
+
     public void setFacility(String facility) {
         this.facility = facility;
     }
@@ -112,6 +118,7 @@ public class Facilities implements Serializable {
     public String getCity() {
         return city;
     }
+
     public void setCity(String city) {
         this.city = city;
     }
@@ -120,6 +127,7 @@ public class Facilities implements Serializable {
     public String getAddress() {
         return address;
     }
+
     public void setAddress(String address) {
         this.address = address;
     }

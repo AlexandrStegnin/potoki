@@ -13,8 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class ServiceUnavailableController {
     @MessageMapping("/turn")
     @SendTo("/support/messages")
-    public Greeting greeting(HelloMessage message) throws Exception {
-        //Thread.sleep(3000); // simulated delay
+    public Greeting greeting(HelloMessage message) {
         return new Greeting(message.getName());
     }
 

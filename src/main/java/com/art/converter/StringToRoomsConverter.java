@@ -20,11 +20,11 @@ public class StringToRoomsConverter implements Converter<String, Rooms> {
     }
 
     public Rooms convert(String id) {
-        Rooms rooms = null;
-        try{
+        Rooms rooms;
+        try {
             BigInteger IntId = new BigInteger(id);
             rooms = roomsService.findById(IntId);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             rooms = roomsService.findByRoom(id);
         }
 

@@ -34,11 +34,11 @@ public class TypeExpensesService {
         typeExpensesRepository.delete(id);
     }
 
-    public TypeExpenses findById(BigInteger id){
+    public TypeExpenses findById(BigInteger id) {
         return typeExpensesRepository.findOne(id);
     }
 
-    public TypeExpenses findByTypeExp(String typeExp){
+    public TypeExpenses findByTypeExp(String typeExp) {
         return typeExpensesRepository.findByTypeExp(typeExp);
     }
 

@@ -2,7 +2,7 @@ package com.art.model.supporting;
 
 import java.io.Serializable;
 
-public class GenericResponse implements Serializable{
+public class GenericResponse implements Serializable {
     private String message;
     private String error;
     private int cnt;
@@ -29,24 +29,27 @@ public class GenericResponse implements Serializable{
         this.cnt = cnt;
     }
 
-    public String getMessage(){
+    public String getMessage() {
         return message;
     }
-    public void setMessage(String message){
+
+    public void setMessage(String message) {
         this.message = message;
     }
 
-    public String getError(){
+    public String getError() {
         return error;
     }
-    public void setError(String error){
+
+    public void setError(String error) {
         this.error = error;
     }
 
-    public int getCnt(){
+    public int getCnt() {
         return cnt;
     }
-    public void setCnt(int cnt){
+
+    public void setCnt(int cnt) {
         this.cnt = cnt;
     }
 }

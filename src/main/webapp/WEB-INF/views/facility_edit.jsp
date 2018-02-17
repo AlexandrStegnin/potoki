@@ -26,7 +26,7 @@
 <div class="generic-container">
     <%@include file="authheader.jsp" %>
     <div class="well lead">Создание нового объекта</div>
-    <form:form method="POST" modelAttribute="facility" class="form-horizontal">
+    <form:form method="POST" modelAttribute="newFacility" class="form-horizontal">
         <form:input type="hidden" path="id" id="id"/>
 
         <div class="row">

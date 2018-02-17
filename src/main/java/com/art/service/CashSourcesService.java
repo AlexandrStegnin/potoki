@@ -19,31 +19,32 @@ public class CashSourcesService {
     @Resource(name = "cashSourcesRepository")
     private CashSourcesRepository cashSourcesRepository;
 
-    public List<CashSources> findAll(){
+    public List<CashSources> findAll() {
         return cashSourcesRepository.findAll();
     }
 
-    public CashSources create(CashSources cashSources){
+    public CashSources create(CashSources cashSources) {
         return cashSourcesRepository.saveAndFlush(cashSources);
     }
 
-    public void delete(CashSources cashSources){
+    public void delete(CashSources cashSources) {
         cashSourcesRepository.delete(cashSources);
     }
-    public void deleteById(BigInteger id){
+
+    public void deleteById(BigInteger id) {
         cashSourcesRepository.delete(id);
     }
 
 
-    public CashSources update(CashSources cashSources){
+    public CashSources update(CashSources cashSources) {
         return cashSourcesRepository.saveAndFlush(cashSources);
     }
 
-    public CashSources findById(BigInteger id){
+    public CashSources findById(BigInteger id) {
         return cashSourcesRepository.findOne(id);
     }
 
-    public List<CashSources> initializeCashSources(){
+    public List<CashSources> initializeCashSources() {
         List<CashSources> cashSources = new ArrayList<>(0);
         CashSources cashSource = new CashSources();
         cashSource.setId(new BigInteger("0"));
@@ -53,7 +54,7 @@ public class CashSourcesService {
         return cashSources;
     }
 
-    public CashSources findByCashSource(String cashSource){
+    public CashSources findByCashSource(String cashSource) {
         return cashSourcesRepository.findByCashSource(cashSource);
     }
 }

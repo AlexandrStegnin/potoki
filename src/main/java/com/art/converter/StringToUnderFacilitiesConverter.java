@@ -14,16 +14,16 @@ public class StringToUnderFacilitiesConverter implements Converter<String, Under
     @Resource(name = "underFacilitiesService")
     private UnderFacilitiesService underFacilitiesService;
 
-    public StringToUnderFacilitiesConverter(UnderFacilitiesService underFacilitiesService){
+    public StringToUnderFacilitiesConverter(UnderFacilitiesService underFacilitiesService) {
         this.underFacilitiesService = underFacilitiesService;
     }
 
     public UnderFacilities convert(String id) {
-        UnderFacilities underFacilities = null;
-        try{
+        UnderFacilities underFacilities;
+        try {
             BigInteger IntId = new BigInteger(id);
             underFacilities = underFacilitiesService.findById(IntId);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             underFacilities = underFacilitiesService.findByUnderFacility(id);
         }
         return underFacilities;

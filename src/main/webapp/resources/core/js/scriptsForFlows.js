@@ -26,13 +26,13 @@ jQuery(document).ready(function ($) {
     min = findMinMaxDate('#invFlows tbody', 1, "min");
     populateStorageUnderFacilities('uFacilities');
     populateStorageRooms();
-    $("#search-form").submit(function(event) {
+    $("#search-form").submit(function (event) {
         enableSearchButton(false);
         event.preventDefault();
         searchFlows("allInvFlows");
     });
 
-    $("#filter-form").submit(function(event) {
+    $("#filter-form").submit(function (event) {
 
         // Disble the search button
         enableSearchButton(false);
@@ -48,21 +48,23 @@ jQuery(document).ready(function ($) {
 
     $(document).on('change', ':checkbox', function () {
         var id = $(this).attr('id');
-        if(typeof id === 'undefined'){
+
+        if (typeof id === 'undefined') {
             var cnt = checkChecked();
-            if(cnt > 0){
+            if (cnt > 0) {
                 blockUnblockDropdownMenus('unblock');
-            }else {
+            } else {
                 blockUnblockDropdownMenus('block');
             }
         }
     });
 
-    $('table#invFlows').find('> tbody').find('> tr').each(function(i){
+    $('table#invFlows').find('> tbody').find('> tr').each(function (i) {
         $(this).data('passed', true);
     });
 
-    $(document).on('click', '#reinvestAll', function () {
+    $('#reinvestAll').on('click', function (event) {
+        event.preventDefault();
         $('#reInvestModal').modal({
             show: true
         })
@@ -75,17 +77,17 @@ jQuery(document).ready(function ($) {
 
     $(document).on('change', '#checkAll', function () {
         var checked = $('#checkIt').prop('checked');
-        if(!checked){
+        if (!checked) {
             $('#reinvestAll').prop('disabled', true);
-            $('table#invFlows').find('> tbody').find('> tr').each(function(){
+            $('table#invFlows').find('> tbody').find('> tr').each(function () {
                 $(this).find(':checkbox:not(:disabled)').prop('checked', false);
             });
-        }else{
+        } else {
             $('#reinvestAll').prop('disabled', false);
-            $('table#invFlows').find('> tbody').find('> tr').each(function(){
-                if(!$(this).data('passed')){
+            $('table#invFlows').find('> tbody').find('> tr').each(function () {
+                if (!$(this).data('passed')) {
                     $(this).find(':checkbox:not(:disabled)').prop('checked', false);
-                }else{
+                } else {
                     $(this).find(':checkbox:not(:disabled)').prop('checked', checked);
                 }
             });
@@ -135,25 +137,25 @@ jQuery(document).ready(function ($) {
     /* МОДАЛЬНОЕ ОКНО */
     $(document).on('click', 'a#goCash, a#goPays, a#goPaysAll, a#goArendaMonth, a#goArendaAll, a#goRashodiMonth, a#goRashodiAll', function (event) {
 
-        if($(this).attr('name') === "monthPays") {
+        if ($(this).attr('name') === "monthPays") {
             showLoader();
             showPaysMonths($("#facilities").find("option:selected").text());
-        }else if($(this).attr('name') === "allPays"){
+        } else if ($(this).attr('name') === "allPays") {
             showLoader();
             showPaysAll($("#facilities").find("option:selected").text());
-        }else if($(this).attr('name') === "monthArenda"){
+        } else if ($(this).attr('name') === "monthArenda") {
             showLoader();
             showArendaMonths($("#facilities").find("option:selected").text());
-        }else if($(this).attr('name') === "allArenda"){
+        } else if ($(this).attr('name') === "allArenda") {
             showLoader();
             showArendaAll($("#facilities").find("option:selected").text());
-        }else if($(this).attr('name') === "monthRashodi"){
+        } else if ($(this).attr('name') === "monthRashodi") {
             showLoader();
             showRashodiMonth($("#facilities").find("option:selected").text());
-        }else if($(this).attr('name') === "allRashodi"){
+        } else if ($(this).attr('name') === "allRashodi") {
             showLoader();
             showRashodiAll($("#facilities").find("option:selected").text());
-        }else {
+        } else {
             var facility = $(this).attr('name');
             showDetails(facility);
         }
@@ -186,27 +188,14 @@ jQuery(document).ready(function ($) {
         event.preventDefault();
         $('#bs-modal').modal('show');
         $('#bs-modal-calc').modal('hide');
-    })
-    /* Зaкрытие мoдaльнoгo oкнa, тут делaем тo же сaмoе нo в oбрaтнoм пoрядке */
-    /*
-    $('#modal_close, #overlay').click( function(){ // лoвим клик пo крестику или пoдлoжке
-        $('#cash-details').html("");
-        $('#modal_form')
-            .animate({opacity: 0, top: '45%'}, 200,  // плaвнo меняем прoзрaчнoсть нa 0 и oднoвременнo двигaем oкнo вверх
-                function(){ // пoсле aнимaции
-                    $(this).css('display', 'none'); // делaем ему display: none;
-                    $('#overlay').fadeOut(400); // скрывaем пoдлoжку
-                }
-            );
     });
-    */
-    /* МОДАЛЬНОЕ ОКНО */
 
-    $('#deleteAll').on('click',function (event) {
+
+    $('#deleteAll').on('click', function (event) {
         showLoader();
         event.preventDefault();
         var cashIdList = [];
-        $('table#invFlows').find('> tbody').find('> tr').each(function(){
+        $('table#invFlows').find('> tbody').find('> tr').each(function () {
             $(this).find(':checkbox:checked').not(':disabled').each(function () {
                 cashIdList.push($(this).closest('tr').attr('id'));
                 $(this).closest('tr').remove();
@@ -214,36 +203,39 @@ jQuery(document).ready(function ($) {
         });
         deleteCash(cashIdList);
     });
+
 });
 
 function howCalculate(period, facility, table) {
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
-    var search = ({"facility" : facility,
-                    "period" : period,
-                    "tableForSearch" : table });
+    var search = ({
+        "facility": facility,
+        "period": period,
+        "tableForSearch": table
+    });
 
     $.ajax({
-        type : "POST",
-        contentType : "application/json;charset=utf-8",
-        url : "showCalculating",
-        data : JSON.stringify(search),
-        dataType : 'json',
-        timeout : 100000,
-        beforeSend: function(xhr){
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: "showCalculating",
+        data: JSON.stringify(search),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         },
-        success : function(data) {
+        success: function (data) {
             closeLoader();
             showBsModalCalc(data);
             $('#close-modal-calc').text('Закрыть');
             $('#bs-modal-calc').modal({
-                show : true,
-                backdrop : 'static',
-                keyboard : false
+                show: true,
+                backdrop: 'static',
+                keyboard: false
             });
         },
-        error : function(e) {
+        error: function (e) {
             closeLoader();
             console.log(e);
         }
@@ -256,29 +248,29 @@ function searchByMonths(tableForSearch) {
     var search = ({
         //"pay" : $("#paysMonth").find("option:selected").text(),
         //"underFacility" : $("#underFacilitiesMonth").find("option:selected").text(),
-        "facility" : $("#facilities").find("option:selected").text(),
-        "tableForSearch" : tableForSearch
+        "facility": $("#facilities").find("option:selected").text(),
+        "tableForSearch": tableForSearch
     });
     showLoader();
     $.ajax({
-        type : "POST",
-        contentType : "application/json;charset=utf-8",
-        url : "mainFlowsInv",
-        data : JSON.stringify(search),
-        dataType : 'text',
-        timeout : 100000,
-        beforeSend: function(xhr){
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: "mainFlowsInv",
+        data: JSON.stringify(search),
+        dataType: 'text',
+        timeout: 100000,
+        beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         },
-        success : function(data) {
+        success: function (data) {
             closeLoader();
             display(data, tableForSearch);
         },
-        error : function(e) {
+        error: function (e) {
             closeLoader();
             console.log(e);
         },
-        done : function(e) {
+        done: function (e) {
             closeLoader();
             enableSearchButton(true);
         }
@@ -294,29 +286,29 @@ function searchFlows(tableForSearch) {
         //"iMonth" : $("#months").find("option:selected").text(),
         //"pay" : $("#pays").find("option:selected").text(),
         //"underFacility" : $("#underFacilities").find("option:selected").text(),
-        "facility" : $("#facilities").find("option:selected").text(),
-        "tableForSearch" : tableForSearch
+        "facility": $("#facilities").find("option:selected").text(),
+        "tableForSearch": tableForSearch
     });
     showLoader();
     $.ajax({
-        type : "POST",
-        contentType : "application/json;charset=utf-8",
-        url : "mainFlowsInv",
-        data : JSON.stringify(search),
-        dataType : 'text',
-        timeout : 100000,
-        beforeSend: function(xhr){
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: "mainFlowsInv",
+        data: JSON.stringify(search),
+        dataType: 'text',
+        timeout: 100000,
+        beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         },
-        success : function(data) {
+        success: function (data) {
             closeLoader();
             display(data, tableForSearch);
         },
-        error : function(e) {
+        error: function (e) {
             closeLoader();
             console.log(e);
         },
-        done : function(e) {
+        done: function (e) {
             closeLoader();
             enableSearchButton(true);
         }
@@ -327,23 +319,23 @@ function searchFlows(tableForSearch) {
 function showDetails(facility) {
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
-    var search = ({"facility" : facility});
+    var search = ({"facility": facility});
 
     $.ajax({
-        type : "POST",
-        contentType : "application/json;charset=utf-8",
-        url : "sumdetails",
-        data : JSON.stringify(search),
-        dataType : 'json',
-        timeout : 100000,
-        beforeSend: function(xhr){
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: "sumdetails",
+        data: JSON.stringify(search),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         },
-        success : function(data) {
+        success: function (data) {
             showBsModal(data);
             $('#bs-modal').modal('show');
         },
-        error : function(e) {
+        error: function (e) {
             console.log(e);
         }
     });
@@ -353,24 +345,24 @@ function showDetails(facility) {
 function showPaysMonths(facility) {
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
-    var search = ({"facility" : facility});
+    var search = ({"facility": facility});
 
     $.ajax({
-        type : "POST",
-        contentType : "application/json;charset=utf-8",
-        url : "goPays",
-        data : JSON.stringify(search),
-        dataType : 'json',
-        timeout : 100000,
-        beforeSend: function(xhr){
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: "goPays",
+        data: JSON.stringify(search),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         },
-        success : function(data) {
+        success: function (data) {
             closeLoader();
             showBsModal(data);
             $('#bs-modal').modal('show');
         },
-        error : function(e) {
+        error: function (e) {
             closeLoader();
             console.log(e);
         }
@@ -380,24 +372,24 @@ function showPaysMonths(facility) {
 function showPaysAll(facility) {
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
-    var search = ({"facility" : facility});
+    var search = ({"facility": facility});
 
     $.ajax({
-        type : "POST",
-        contentType : "application/json;charset=utf-8",
-        url : "goPaysAll",
-        data : JSON.stringify(search),
-        dataType : 'json',
-        timeout : 100000,
-        beforeSend: function(xhr){
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: "goPaysAll",
+        data: JSON.stringify(search),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         },
-        success : function(data) {
+        success: function (data) {
             closeLoader();
             showBsModal(data);
             $('#bs-modal').modal('show');
         },
-        error : function(e) {
+        error: function (e) {
             closeLoader();
             console.log(e);
         }
@@ -408,24 +400,24 @@ function showPaysAll(facility) {
 function showArendaMonths(facility) {
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
-    var search = ({"facility" : facility});
+    var search = ({"facility": facility});
 
     $.ajax({
-        type : "POST",
-        contentType : "application/json;charset=utf-8",
-        url : "goArendaMonth",
-        data : JSON.stringify(search),
-        dataType : 'json',
-        timeout : 100000,
-        beforeSend: function(xhr){
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: "goArendaMonth",
+        data: JSON.stringify(search),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         },
-        success : function(data) {
+        success: function (data) {
             closeLoader();
             showBsModal(data);
             $('#bs-modal').modal('show');
         },
-        error : function(e) {
+        error: function (e) {
             closeLoader();
             console.log(e);
         }
@@ -436,24 +428,24 @@ function showArendaMonths(facility) {
 function showArendaAll(facility) {
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
-    var search = ({"facility" : facility});
+    var search = ({"facility": facility});
 
     $.ajax({
-        type : "POST",
-        contentType : "application/json;charset=utf-8",
-        url : "goArendaAll",
-        data : JSON.stringify(search),
-        dataType : 'json',
-        timeout : 100000,
-        beforeSend: function(xhr){
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: "goArendaAll",
+        data: JSON.stringify(search),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         },
-        success : function(data) {
+        success: function (data) {
             closeLoader();
             showBsModal(data);
             $('#bs-modal').modal('show');
         },
-        error : function(e) {
+        error: function (e) {
             closeLoader();
             console.log(e);
         }
@@ -464,24 +456,24 @@ function showArendaAll(facility) {
 function showRashodiMonth(facility) {
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
-    var search = ({"facility" : facility});
+    var search = ({"facility": facility});
 
     $.ajax({
-        type : "POST",
-        contentType : "application/json;charset=utf-8",
-        url : "goRashodiMonth",
-        data : JSON.stringify(search),
-        dataType : 'json',
-        timeout : 100000,
-        beforeSend: function(xhr){
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: "goRashodiMonth",
+        data: JSON.stringify(search),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         },
-        success : function(data) {
+        success: function (data) {
             closeLoader();
             showBsModal(data);
             $('#bs-modal').modal('show');
         },
-        error : function(e) {
+        error: function (e) {
             closeLoader();
             console.log(e);
         }
@@ -492,24 +484,24 @@ function showRashodiMonth(facility) {
 function showRashodiAll(facility) {
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
-    var search = ({"facility" : facility});
+    var search = ({"facility": facility});
 
     $.ajax({
-        type : "POST",
-        contentType : "application/json;charset=utf-8",
-        url : "goRashodiAll",
-        data : JSON.stringify(search),
-        dataType : 'json',
-        timeout : 100000,
-        beforeSend: function(xhr){
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: "goRashodiAll",
+        data: JSON.stringify(search),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         },
-        success : function(data) {
+        success: function (data) {
             closeLoader();
             showBsModal(data);
             $('#bs-modal').modal('show');
         },
-        error : function(e) {
+        error: function (e) {
             closeLoader();
             console.log(e);
         }
@@ -548,33 +540,32 @@ function loadFlowsAjax(action) {
     var form = $('#invFlows')[0];
     var data = new FormData();
     var fileBuckets = [];
-    $.each($('#file')[0].files, function(k, value)
-    {
+    $.each($('#file')[0].files, function (k, value) {
         data.append(k, value);
         fileBuckets.push(k, value);
     });
 
     showLoader();
     $.ajax({
-        type : "POST",
+        type: "POST",
         enctype: "multipart/form-data",
         processData: false,
-        contentType : false,
+        contentType: false,
         cache: false,
-        url : action,
-        data : data,
-        dataType : 'json',
-        timeout : 100000,
-        beforeSend: function(xhr){
+        url: action,
+        data: data,
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         },
-        success : function(data) {
+        success: function (data) {
             $('#popup_modal_form').find('#message').append(data.message);
             closeLoader();
             showPopup();
             closePopup();
         },
-        error : function(e) {
+        error: function (e) {
             $('#popup_modal_form').find('#message').append(e.error);
             closeLoader();
             showPopup();
@@ -593,98 +584,97 @@ function prepareFilter() {
     dateBegin = dateBegin + '';
     dateEnd = dateEnd + '';
 
-    if(facility !== 'Выберите объект' && underFacility !== 'Выберите подобъект' && investor !== 'Выберите инвестора'){
+    if (facility !== 'Выберите объект' && underFacility !== 'Выберите подобъект' && investor !== 'Выберите инвестора') {
         filters = [];
         apply_filter('#invFlows tbody', 2, facility);
         apply_filter('#invFlows tbody', 3, underFacility);
         apply_filter('#invFlows tbody', 5, investor);
-    }else if(facility !== 'Выберите объект' && underFacility === 'Выберите подобъект' && investor === 'Выберите инвестора'){
+    } else if (facility !== 'Выберите объект' && underFacility === 'Выберите подобъект' && investor === 'Выберите инвестора') {
         filters = [];
         apply_filter('#invFlows tbody', 2, facility);
-    }else if(facility === 'Выберите объект' && underFacility !== 'Выберите подобъект' && investor === 'Выберите инвестора'){
+    } else if (facility === 'Выберите объект' && underFacility !== 'Выберите подобъект' && investor === 'Выберите инвестора') {
         filters = [];
         apply_filter('#invFlows tbody', 3, underFacility);
-    }else if(facility === 'Выберите объект' && underFacility === 'Выберите подобъект' && investor !== 'Выберите инвестора'){
+    } else if (facility === 'Выберите объект' && underFacility === 'Выберите подобъект' && investor !== 'Выберите инвестора') {
         filters = [];
         apply_filter('#invFlows tbody', 5, investor);
-    }else if(facility === 'Выберите объект' && underFacility === 'Выберите подобъект' && investor === 'Выберите инвестора'){
+    } else if (facility === 'Выберите объект' && underFacility === 'Выберите подобъект' && investor === 'Выберите инвестора') {
         filters = [];
         apply_filter('#invFlows tbody', 1, 'any');
-    }else if(facility !== 'Выберите объект' && underFacility !== 'Выберите подобъект' && investor === 'Выберите инвестора'){
+    } else if (facility !== 'Выберите объект' && underFacility !== 'Выберите подобъект' && investor === 'Выберите инвестора') {
         filters = [];
         apply_filter('#invFlows tbody', 2, facility);
         apply_filter('#invFlows tbody', 3, underFacility);
-    }else if(facility !== 'Выберите объект' && underFacility === 'Выберите подобъект' && investor !== 'Выберите инвестора'){
+    } else if (facility !== 'Выберите объект' && underFacility === 'Выберите подобъект' && investor !== 'Выберите инвестора') {
         filters = [];
         apply_filter('#invFlows tbody', 2, facility);
         apply_filter('#invFlows tbody', 5, investor);
-    }else if(facility === 'Выберите объект' && underFacility !== 'Выберите подобъект' && investor !== 'Выберите инвестора'){
+    } else if (facility === 'Выберите объект' && underFacility !== 'Выберите подобъект' && investor !== 'Выберите инвестора') {
         filters = [];
         apply_filter('#invFlows tbody', 3, underFacility);
         apply_filter('#invFlows tbody', 5, investor);
     }
 
-    if(dateBegin === '' && dateEnd === '') {
+    if (dateBegin === '' && dateEnd === '') {
         filters = [];
         apply_date_filter('#invFlows tbody', 1, min, max, "any");
-    }else {
+    } else {
         filters = [];
         apply_date_filter('#invFlows tbody', 1, dateBegin, dateEnd, "not");
     }
 }
 
-function apply_date_filter(table, col, dateFrom, dateTo, any){
+function apply_date_filter(table, col, dateFrom, dateTo, any) {
     var fDate, tDate, cDate;
     var parts;
     dateFrom = dateFrom + '';
     dateTo = dateTo + '';
-    if(dateFrom.length === 10){
+    if (dateFrom.length === 10) {
         parts = dateFrom.split("-");
         fDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-    }else{
+    } else {
         fDate = null;
     }
-    if(dateTo.length === 10){
+    if (dateTo.length === 10) {
         parts = dateTo.split("-");
         tDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-    }else{
+    } else {
         tDate = null;
     }
 
     filters[col] = any;
 
-    if(filters[col] !== 'any')
-    {
-        $(table).find('tr td:nth-child('+col+')').each(function(i){
+    if (filters[col] !== 'any') {
+        $(table).find('tr td:nth-child(' + col + ')').each(function (i) {
             var checkDate = $(this).text();
             parts = checkDate.split(".");
             cDate = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
-            if(fDate === null && tDate !== null){
-                if(cDate <= tDate && $(this).parent().data('passed')) {
+            if (fDate === null && tDate !== null) {
+                if (cDate <= tDate && $(this).parent().data('passed')) {
                     $(this).parent().data('passed', true);
-                }else {
+                } else {
                     $(this).parent().data('passed', false);
                 }
-            }else if(fDate !== null && tDate === null){
-                if(cDate >= fDate && $(this).parent().data('passed')) {
+            } else if (fDate !== null && tDate === null) {
+                if (cDate >= fDate && $(this).parent().data('passed')) {
                     $(this).parent().data('passed', true);
-                }else {
+                } else {
                     $(this).parent().data('passed', false);
                 }
-            }else{
-                if((cDate <= tDate && cDate >= fDate) && $(this).parent().data('passed')) {
+            } else {
+                if ((cDate <= tDate && cDate >= fDate) && $(this).parent().data('passed')) {
                     $(this).parent().data('passed', true);
-                }else {
+                } else {
                     $(this).parent().data('passed', false);
                 }
             }
         });
     }
 
-    $(table).find('tr').each(function(i){
-        if(!$(this).data('passed')){
+    $(table).find('tr').each(function (i) {
+        if (!$(this).data('passed')) {
             $(this).hide();
-        }else{
+        } else {
             $(this).show();
         }
     });
@@ -694,13 +684,13 @@ function findMinMaxDate(table, col, maxOrMin) {
     var max, min;
     var data = [];
     var cDate;
-    $(table).find('tr td:nth-child(' + col + ')').each(function(i){
+    $(table).find('tr td:nth-child(' + col + ')').each(function (i) {
         var checkDate = $(this).text();
         var parts = checkDate.split(".");
         cDate = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
         data.push(cDate);
     });
-    switch(maxOrMin){
+    switch (maxOrMin) {
         case "max":
             max = new Date(Math.max.apply(null, data));
             return max;
@@ -734,10 +724,10 @@ function prepareSaveInvestorsCash() {
 
     dateGived = $('#dateGiv').val();
 
-    if(dateGived.length === 0){
+    if (dateGived.length === 0) {
         $('#dateRepErr').css('display', 'block');
         err = true;
-    }else {
+    } else {
         $('#dateRepErr').css('display', 'none');
         err = false;
         dateGived = new Date(dateGived).getTime();
@@ -748,10 +738,10 @@ function prepareSaveInvestorsCash() {
         facility: $('#srcFacilities').find('option:selected').text()
     };
 
-    if(facility.facility.indexOf('Выберите объект') >= 0){
+    if (facility.facility.indexOf('Выберите объект') >= 0) {
         $('#facilityErr').css('display', 'block');
         err = true;
-    }else {
+    } else {
         $('#facilityErr').css('display', 'none');
         err = false;
     }
@@ -761,10 +751,10 @@ function prepareSaveInvestorsCash() {
         investorsType: $('#invType').find('option:selected').text()
     };
 
-    if(investorsType.investorsType.indexOf('Выберите вид инвестора') >= 0){
+    if (investorsType.investorsType.indexOf('Выберите вид инвестора') >= 0) {
         $('#invTypeErr').css('display', 'block');
         err = true;
-    }else {
+    } else {
         $('#invTypeErr').css('display', 'none');
         err = false;
     }
@@ -774,15 +764,15 @@ function prepareSaveInvestorsCash() {
         shareKind: $('#shareKindName').find('option:selected').text()
     };
 
-    if(shareKind.shareKind.indexOf('Выберите вид доли') >= 0){
+    if (shareKind.shareKind.indexOf('Выберите вид доли') >= 0) {
         $('#shareKindErr').css('display', 'block');
         err = true;
-    }else {
+    } else {
         $('#shareKindErr').css('display', 'none');
         err = false;
     }
 
-    if(err){
+    if (err) {
         closeLoader();
         return false;
     }
@@ -791,7 +781,7 @@ function prepareSaveInvestorsCash() {
 
     $('#reInvestModal').modal('hide');
     $('#reinvestAll').prop('disabled', true);
-    $('table#invFlows').find('> tbody').find('> tr').each(function(i){
+    $('table#invFlows').find('> tbody').find('> tr').each(function (i) {
         $(this).find(':checkbox:checked').not(':disabled').each(function () {
             $(this).closest('tr').find('input:checkbox').prop('disabled', true);
             current = $(this).closest('tr');
@@ -814,7 +804,7 @@ function prepareSaveInvestorsCash() {
                 room: current.children('td:eq(3)').text()
             };
 
-            if(room.room.length === 0){
+            if (room.room.length === 0) {
                 room = null;
             }
 
@@ -864,29 +854,30 @@ function saveReinvestCash(cashes, reinvestIdList) {
     var header = $("meta[name='_csrf_header']").attr("content");
     var search = ({
         investorsCashList: cashes,
-        reinvestIdList: reinvestIdList
+        reinvestIdList: reinvestIdList,
+        what: ""
     });
 
     $.ajax({
-        type : "POST",
-        contentType : "application/json;charset=utf-8",
-        url : "saveReCash",
-        data : JSON.stringify(search),
-        dataType : 'json',
-        timeout : 100000,
-        beforeSend: function(xhr){
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: "saveReCash",
+        data: JSON.stringify(search),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         },
-        success : function(data) {
+        success: function (data) {
             closeLoader();
             $('#msg').html(data.message);
             $('#msg-modal').modal('show');
         },
-        error : function(e) {
+        error: function (e) {
             closeLoader();
             console.log(e);
         },
-        done : function(e) {
+        done: function (e) {
             closeLoader();
             enableSearchButton(true);
         }
@@ -902,11 +893,12 @@ function showPopup() {
         .css('display', 'block') // убирaем у мoдaльнoгo oкнa display: none;
         .animate({opacity: 1, top: '50%'}, 200); // плaвнo прибaвляем прoзрaчнoсть oднoвременнo сo съезжaнием вниз
 }
+
 function closePopup() {
     setTimeout(function () {
         $('#popup_modal_form')
             .animate({opacity: 0, top: '45%'}, 200,  // плaвнo меняем прoзрaчнoсть нa 0 и oднoвременнo двигaем oкнo вверх
-                function(){ // пoсле aнимaции
+                function () { // пoсле aнимaции
                     $(this).css('display', 'none'); // делaем ему display: none;
                 }
             )
@@ -916,7 +908,7 @@ function closePopup() {
 
 function blockUnblockDropdownMenus(blockUnblock) {
     var reinvest = $('#reinvest');
-    switch (blockUnblock){
+    switch (blockUnblock) {
         case 'block':
             reinvest.find('> li').each(function () {
                 $(this).closest('li').removeClass('active').addClass('disabled');
@@ -942,7 +934,7 @@ function deleteCash(cashIdList) {
         type: "POST",
         contentType: "application/json;charset=utf-8",
         url: "/deleteFlowsList",
-        data : JSON.stringify(search),
+        data: JSON.stringify(search),
         dataType: 'json',
         timeout: 100000,
         beforeSend: function (xhr) {
@@ -965,9 +957,9 @@ function deleteCash(cashIdList) {
 function slideBox(message) {
     $('#slideBox').find('h4').html(message);
     setTimeout(function () {
-        $('#slideBox').animate({'right':'52px'},500);
+        $('#slideBox').animate({'right': '52px'}, 500);
     }, 500);
     setTimeout(function () {
-        $('#slideBox').animate({'right':'-300px'},500);
+        $('#slideBox').animate({'right': '-300px'}, 500);
     }, 4000);
 }

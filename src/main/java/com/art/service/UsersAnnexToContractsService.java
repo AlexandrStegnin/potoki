@@ -20,7 +20,7 @@ public class UsersAnnexToContractsService {
     @PersistenceContext(name = "persistanceUnit")
     private EntityManager em;
 
-    public List<UsersAnnexToContracts> findAll(){
+    public List<UsersAnnexToContracts> findAll() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
         CriteriaQuery<UsersAnnexToContracts> usersAnnexToContractsCriteriaQuery = cb.createQuery(UsersAnnexToContracts.class);
@@ -30,11 +30,11 @@ public class UsersAnnexToContractsService {
         return em.createQuery(usersAnnexToContractsCriteriaQuery).getResultList();
     }
 
-    public UsersAnnexToContracts findById(BigInteger id){
+    public UsersAnnexToContracts findById(BigInteger id) {
         return this.em.find(UsersAnnexToContracts.class, id);
     }
 
-    public List<UsersAnnexToContracts> findByUserIdAndAnnex(BigInteger userId, AnnexToContracts annex){
+    public List<UsersAnnexToContracts> findByUserIdAndAnnex(BigInteger userId, AnnexToContracts annex) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
         CriteriaQuery<UsersAnnexToContracts> usersAnnexToContractsCriteriaQuery = cb.createQuery(UsersAnnexToContracts.class);
@@ -47,7 +47,7 @@ public class UsersAnnexToContractsService {
 
     }
 
-    public List<UsersAnnexToContracts> findByUserId(BigInteger userId){
+    public List<UsersAnnexToContracts> findByUserId(BigInteger userId) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
         CriteriaQuery<UsersAnnexToContracts> usersAnnexToContractsCriteriaQuery = cb.createQuery(UsersAnnexToContracts.class);
@@ -59,7 +59,7 @@ public class UsersAnnexToContractsService {
 
     }
 
-    public void deleteById(BigInteger id){
+    public void deleteById(BigInteger id) {
         CriteriaBuilder cb = this.em.getCriteriaBuilder();
         CriteriaDelete<UsersAnnexToContracts> delete = cb.createCriteriaDelete(UsersAnnexToContracts.class);
         Root<UsersAnnexToContracts> usersAnnexToContractsRoot = delete.from(UsersAnnexToContracts.class);
@@ -67,7 +67,7 @@ public class UsersAnnexToContractsService {
         this.em.createQuery(delete).executeUpdate();
     }
 
-    public void deleteByAnnex(AnnexToContracts annex){
+    public void deleteByAnnex(AnnexToContracts annex) {
         CriteriaBuilder cb = this.em.getCriteriaBuilder();
         CriteriaDelete<UsersAnnexToContracts> delete = cb.createCriteriaDelete(UsersAnnexToContracts.class);
         Root<UsersAnnexToContracts> usersAnnexToContractsRoot = delete.from(UsersAnnexToContracts.class);
@@ -75,22 +75,13 @@ public class UsersAnnexToContractsService {
         this.em.createQuery(delete).executeUpdate();
     }
 
-    public void update(UsersAnnexToContracts usersAnnexToContracts){
+    public void update(UsersAnnexToContracts usersAnnexToContracts) {
 
         this.em.merge(usersAnnexToContracts);
-        /*
-        CriteriaBuilder criteriaBuilder = this.em.getCriteriaBuilder();
-        CriteriaUpdate<UsersAnnexToContracts> update = criteriaBuilder.createCriteriaUpdate(UsersAnnexToContracts.class);
-        Root<UsersAnnexToContracts> usersAnnexToContractsRoot = update.from(UsersAnnexToContracts.class);
-        update.set(UsersAnnexToContracts_.annexRead, usersAnnexToContracts.getAnnexRead());
-        update.set(UsersAnnexToContracts_.dateRead, usersAnnexToContracts.getDateRead());
-        update.where(criteriaBuilder.equal(usersAnnexToContractsRoot.get(UsersAnnexToContracts_.id), usersAnnexToContracts.getId()));
-        this.em.createQuery(update).executeUpdate();
-        */
 
     }
 
-    public void create(UsersAnnexToContracts usersAnnexToContracts){
+    public void create(UsersAnnexToContracts usersAnnexToContracts) {
         this.em.persist(usersAnnexToContracts);
     }
 

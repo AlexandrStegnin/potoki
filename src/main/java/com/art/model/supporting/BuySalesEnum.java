@@ -9,9 +9,10 @@ public enum BuySalesEnum {
     PLAN_SALES("Плановая продажа");
     private final String val;
 
-    BuySalesEnum(String val){
+    BuySalesEnum(String val) {
         this.val = val;
     }
+
     public String getVal() {
         return val;
     }

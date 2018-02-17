@@ -14,16 +14,16 @@ public class StringToBonusTypesConverter implements Converter<String, BonusTypes
     private BonusTypesService bonusTypesService;
 
     @Autowired
-    public StringToBonusTypesConverter(BonusTypesService bonusTypesService){
+    public StringToBonusTypesConverter(BonusTypesService bonusTypesService) {
         this.bonusTypesService = bonusTypesService;
     }
 
     public BonusTypes convert(String id) {
-        BonusTypes bonusTypes = null;
-        try{
+        BonusTypes bonusTypes;
+        try {
             BigInteger IntId = new BigInteger(id);
             bonusTypes = bonusTypesService.findById(IntId);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             bonusTypes = bonusTypesService.findByBonusType(id);
         }
 

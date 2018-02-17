@@ -17,7 +17,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @Table(name = "InvestorsFlowsSale")
-public class InvestorsFlowsSale implements Serializable{
+public class InvestorsFlowsSale implements Serializable {
     private BigInteger id;
     private Facilities facility;
     private Users investor;
@@ -36,110 +36,123 @@ public class InvestorsFlowsSale implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "Id")
-    public BigInteger getId(){
+    public BigInteger getId() {
         return id;
     }
-    public void setId(BigInteger id){
+
+    public void setId(BigInteger id) {
         this.id = id;
     }
 
     @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "facilityId", referencedColumnName = "id")
-    public Facilities getFacility(){
+    public Facilities getFacility() {
         return facility;
     }
-    public void setFacility(Facilities facility){
+
+    public void setFacility(Facilities facility) {
         this.facility = facility;
     }
 
     @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "underFacilityId", referencedColumnName = "id")
-    public UnderFacilities getUnderFacility(){
+    public UnderFacilities getUnderFacility() {
         return underFacility;
     }
-    public void setUnderFacility(UnderFacilities underFacility){
+
+    public void setUnderFacility(UnderFacilities underFacility) {
         this.underFacility = underFacility;
     }
 
     @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "investorId", referencedColumnName = "id")
-    public Users getInvestor(){
+    public Users getInvestor() {
         return investor;
     }
-    public void setInvestor(Users investor){
+
+    public void setInvestor(Users investor) {
         this.investor = investor;
     }
 
     @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "shareKindId", referencedColumnName = "id")
-    public ShareKind getShareKind(){
+    public ShareKind getShareKind() {
         return shareKind;
     }
-    public void setShareKind(ShareKind shareKind){
+
+    public void setShareKind(ShareKind shareKind) {
         this.shareKind = shareKind;
     }
 
     @Column(name = "CashInFacility")
-    public BigDecimal getCashInFacility(){
+    public BigDecimal getCashInFacility() {
         return cashInFacility;
     }
-    public void setCashInFacility(BigDecimal cashInFacility){
+
+    public void setCashInFacility(BigDecimal cashInFacility) {
         this.cashInFacility = cashInFacility;
     }
 
     @Column(name = "DateGived")
-    public Date getDateGived(){
+    public Date getDateGived() {
         return dateGived;
     }
-    public void setDateGived(Date dateGived){
+
+    public void setDateGived(Date dateGived) {
         this.dateGived = dateGived;
     }
 
     @Column(name = "InvestorShare")
-    public BigDecimal getInvestorShare(){
+    public BigDecimal getInvestorShare() {
         return investorShare;
     }
-    public void setInvestorShare(BigDecimal investorShare){
+
+    public void setInvestorShare(BigDecimal investorShare) {
         this.investorShare = investorShare;
     }
 
     @Column(name = "CashInUnderFacility")
-    public BigDecimal getCashInUnderFacility(){
+    public BigDecimal getCashInUnderFacility() {
         return cashInUnderFacility;
     }
-    public void setCashInUnderFacility(BigDecimal cashInUnderFacility){
+
+    public void setCashInUnderFacility(BigDecimal cashInUnderFacility) {
         this.cashInUnderFacility = cashInUnderFacility;
     }
 
     @Column(name = "ProfitToCashingAuto")
-    public BigDecimal getProfitToCashingAuto(){
+    public BigDecimal getProfitToCashingAuto() {
         return profitToCashingAuto;
     }
-    public void setProfitToCashingAuto(BigDecimal profitToCashingAuto){
+
+    public void setProfitToCashingAuto(BigDecimal profitToCashingAuto) {
         this.profitToCashingAuto = profitToCashingAuto;
     }
 
     @Column(name = "ProfitToCashingMain")
-    public BigDecimal getProfitToCashingMain(){
+    public BigDecimal getProfitToCashingMain() {
         return profitToCashingMain;
     }
-    public void setProfitToCashingMain(BigDecimal profitToCashingMain){
+
+    public void setProfitToCashingMain(BigDecimal profitToCashingMain) {
         this.profitToCashingMain = profitToCashingMain;
     }
 
     @Column(name = "ProfitToReInvest")
-    public BigDecimal getProfitToReInvest(){
+    public BigDecimal getProfitToReInvest() {
         return profitToReInvest;
     }
-    public void setProfitToReInvest(BigDecimal profitToReInvest){
+
+    public void setProfitToReInvest(BigDecimal profitToReInvest) {
         this.profitToReInvest = profitToReInvest;
     }
 
     @Column(name = "DateSale")
-    public Date getDateSale(){
+    public Date getDateSale() {
         return dateSale;
     }
-    public void setDateSale(Date dateSale){
+
+    public void setDateSale(Date dateSale) {
         this.dateSale = dateSale;
     }
 
@@ -147,28 +160,31 @@ public class InvestorsFlowsSale implements Serializable{
     public int getIsReinvest() {
         return isReinvest;
     }
+
     public void setIsReinvest(int isReinvest) {
         this.isReinvest = isReinvest;
     }
 
     @Transient
-    public String getDateGivedToLocalDate(){
+    public String getDateGivedToLocalDate() {
         String localDate = "";
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        try{
+        try {
             localDate = format.format(dateGived);
-        }catch(Exception ignored){}
+        } catch (Exception ignored) {
+        }
 
         return localDate;
     }
 
     @Transient
-    public String getDateSaleToLocalDate(){
+    public String getDateSaleToLocalDate() {
         String localDate = "";
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        try{
+        try {
             localDate = format.format(dateSale);
-        }catch(Exception ignored){}
+        } catch (Exception ignored) {
+        }
 
         return localDate;
     }

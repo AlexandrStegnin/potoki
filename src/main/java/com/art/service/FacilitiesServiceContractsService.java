@@ -23,23 +23,23 @@ public class FacilitiesServiceContractsService {
         return facilitiesServiceContractsRepository.findAll();
     }
 
-    public FacilitiesServiceContracts findById(BigInteger id){
+    public FacilitiesServiceContracts findById(BigInteger id) {
         return facilitiesServiceContractsRepository.findById(id);
     }
 
-    public FacilitiesServiceContracts update(FacilitiesServiceContracts facilitiesServiceContracts){
+    public FacilitiesServiceContracts update(FacilitiesServiceContracts facilitiesServiceContracts) {
         return facilitiesServiceContractsRepository.saveAndFlush(facilitiesServiceContracts);
     }
 
-    public void deleteById(BigInteger id){
+    public void deleteById(BigInteger id) {
         facilitiesServiceContractsRepository.delete(id);
     }
 
-    public FacilitiesServiceContracts create(FacilitiesServiceContracts facilitiesServiceContracts){
+    public FacilitiesServiceContracts create(FacilitiesServiceContracts facilitiesServiceContracts) {
         return facilitiesServiceContractsRepository.saveAndFlush(facilitiesServiceContracts);
     }
 
-    public List<FacilitiesServiceContracts> findByRentor(Users user){
+    public List<FacilitiesServiceContracts> findByRentor(Users user) {
         return facilitiesServiceContractsRepository.findByRentor(user);
     }
 }

@@ -16,15 +16,15 @@ public class ServiceUnavailableService {
     @Resource(name = "serviceUnavailableRepository")
     private ServiceUnavailableRepository serviceUnavailableRepository;
 
-    public ServiceUnavailable update(ServiceUnavailable serviceUnavailable){
+    public ServiceUnavailable update(ServiceUnavailable serviceUnavailable) {
         return serviceUnavailableRepository.save(serviceUnavailable);
     }
 
-    public ServiceUnavailable findServiceUnavailable(){
+    public ServiceUnavailable findServiceUnavailable() {
         return serviceUnavailableRepository.findFirstByIdIsNotNull();
     }
 
-    public int getServiceUnavailable(BigInteger id){
+    public int getServiceUnavailable(BigInteger id) {
         return serviceUnavailableRepository.findById(id).getStatus();
     }
 }

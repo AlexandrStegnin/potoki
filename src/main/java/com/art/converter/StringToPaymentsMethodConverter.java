@@ -14,16 +14,16 @@ public class StringToPaymentsMethodConverter implements Converter<String, Paymen
     private PaymentsMethodService paymentsMethodService;
 
     @Autowired
-    public StringToPaymentsMethodConverter(PaymentsMethodService paymentsMethodService){
+    public StringToPaymentsMethodConverter(PaymentsMethodService paymentsMethodService) {
         this.paymentsMethodService = paymentsMethodService;
     }
 
     public PaymentsMethod convert(String id) {
-        PaymentsMethod paymentsMethod = null;
-        try{
+        PaymentsMethod paymentsMethod;
+        try {
             BigInteger IntId = new BigInteger(id);
             paymentsMethod = paymentsMethodService.findById(IntId);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             paymentsMethod = paymentsMethodService.findByPayment(id);
         }
 

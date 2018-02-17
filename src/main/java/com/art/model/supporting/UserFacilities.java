@@ -10,31 +10,33 @@ import java.math.BigInteger;
 @ToString
 @EqualsAndHashCode
 
-public class UserFacilities implements Serializable{
+public class UserFacilities implements Serializable {
 
     private BigInteger id;
     private String facility;
 
-    public UserFacilities(){
+    public UserFacilities() {
 
     }
 
-    public UserFacilities(BigInteger id, String facility){
+    public UserFacilities(BigInteger id, String facility) {
         this.id = id;
         this.facility = facility;
     }
 
-    public BigInteger getId(){
+    public BigInteger getId() {
         return id;
     }
-    public void setId(BigInteger id){
+
+    public void setId(BigInteger id) {
         this.id = id;
     }
 
-    public String getFacility(){
+    public String getFacility() {
         return facility;
     }
-    public void setFacility(String facility){
+
+    public void setFacility(String facility) {
         this.facility = facility;
     }
 }

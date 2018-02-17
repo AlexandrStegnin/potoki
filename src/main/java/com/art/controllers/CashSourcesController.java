@@ -1,6 +1,5 @@
 package com.art.controllers;
 
-import com.art.func.GetPrincipalFunc;
 import com.art.model.CashSources;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
@@ -16,9 +15,6 @@ import java.util.List;
 @Controller
 public class CashSourcesController {
 
-    @Resource(name = "getPrincipalFunc")
-    private GetPrincipalFunc getPrincipalFunc;
-
     @Resource(name = "cashSourcesService")
     private CashSourcesService cashSourcesService;
 
@@ -32,7 +28,7 @@ public class CashSourcesController {
         return "viewcashsources";
     }
 
-    @GetMapping(value = { "/newcashsource" })
+    @GetMapping(value = {"/newcashsource"})
     public String newCashSource(ModelMap model) {
         String title = "Добавление источника денег";
         CashSources cashSources = new CashSources();
@@ -42,7 +38,7 @@ public class CashSourcesController {
         return "addcashsource";
     }
 
-    @PostMapping(value = { "/savecashsource" }, produces="application/json;charset=UTF-8")
+    @PostMapping(value = {"/savecashsource"}, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     GenericResponse saveUser(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
@@ -54,7 +50,7 @@ public class CashSourcesController {
     }
 
 
-    @GetMapping(value = { "/edit-cashsource-{id}" })
+    @GetMapping(value = {"/edit-cashsource-{id}"})
     public String editCashSource(@PathVariable BigInteger id, ModelMap model) {
         String title = "Обновление источника получения денег";
         CashSources cashSources = cashSourcesService.findById(id);
@@ -65,11 +61,7 @@ public class CashSourcesController {
         return "addcashsource";
     }
 
-    /**
-     * This method will be called on form submission, handling POST request for
-     * updating user in database. It also validates the user input
-     */
-    @PostMapping(value = { "/editcashsource" }, produces="application/json;charset=UTF-8")
+    @PostMapping(value = {"/editcashsource"}, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     GenericResponse updateSource(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
@@ -80,7 +72,7 @@ public class CashSourcesController {
         return response;
     }
 
-    @PostMapping(value = { "/deletesource" }, produces="application/json;charset=UTF-8")
+    @PostMapping(value = {"/deletesource"}, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     GenericResponse deleteSource(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();

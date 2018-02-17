@@ -1,8 +1,7 @@
 package com.art.controllers;
 
-import com.art.func.GetPrincipalFunc;
-import com.art.model.FacilitiesBuySales;
 import com.art.model.Facilities;
+import com.art.model.FacilitiesBuySales;
 import com.art.model.UnderFacilities;
 import com.art.model.supporting.BuySalesEnum;
 import com.art.service.*;
@@ -26,9 +25,6 @@ public class FacilitiesBuySalesController {
     @Resource(name = "facilitiesBuySalesService")
     private FacilitiesBuySalesService facilitiesBuySalesService;
 
-    @Resource(name = "getPrincipalFunc")
-    private GetPrincipalFunc getPrincipalFunc;
-
     @Resource(name = "facilityService")
     private FacilityService facilityService;
 
@@ -50,7 +46,7 @@ public class FacilitiesBuySalesController {
         return "viewfacilitiesbuysales";
     }
 
-    @GetMapping(value = { "/edit-buysales-{id}" })
+    @GetMapping(value = {"/edit-buysales-{id}"})
     public String editFacilitiesBuySales(@PathVariable BigInteger id, ModelMap model) {
         String title = "Обновление данных по продаже/покупке объекта";
         FacilitiesBuySales facilitiesBuySales = facilitiesBuySalesService.findById(id);
@@ -63,9 +59,9 @@ public class FacilitiesBuySalesController {
         return "addfacilitiesbuysales";
     }
 
-    @PostMapping(value = { "/edit-buysales-{id}" })
+    @PostMapping(value = {"/edit-buysales-{id}"})
     public String updateFacilitiesBuySales(@ModelAttribute("facilitiesBuySales") FacilitiesBuySales facilitiesBuySales,
-                                      BindingResult result, ModelMap model) {
+                                           BindingResult result, ModelMap model) {
         String ret = "списку продаж/покупок объектов.";
         String redirectUrl = "/facilitiesbuysales";
         if (result.hasErrors()) {
@@ -82,13 +78,13 @@ public class FacilitiesBuySalesController {
         return "registrationsuccess";
     }
 
-    @GetMapping(value = { "/delete-buysales-{id}" })
+    @GetMapping(value = {"/delete-buysales-{id}"})
     public String deleteFacilitiesBuySales(@PathVariable BigInteger id) {
         facilitiesBuySalesService.deleteById(id);
         return "redirect:/facilitiesbuysales";
     }
 
-    @GetMapping(value = { "/newbuysales" })
+    @GetMapping(value = {"/newbuysales"})
     public String newFacilitiesBuySales(ModelMap model) {
         String title = "Добавление покупки/продажи объекта";
         FacilitiesBuySales facilitiesBuySales = new FacilitiesBuySales();
@@ -101,9 +97,9 @@ public class FacilitiesBuySalesController {
         return "addfacilitiesbuysales";
     }
 
-    @PostMapping(value = { "/newbuysales" })
+    @PostMapping(value = {"/newbuysales"})
     public String saveFacilitiesBuySales(@ModelAttribute("facilitiesBuySales") FacilitiesBuySales facilitiesBuySales,
-                                    BindingResult result, ModelMap model) {
+                                         BindingResult result, ModelMap model) {
 
         if (result.hasErrors()) {
             return "addfacilitiesbuysales";

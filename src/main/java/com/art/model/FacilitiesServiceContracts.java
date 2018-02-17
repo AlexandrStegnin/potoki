@@ -13,7 +13,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-@ToString(exclude = { "facility", "paymentsMethod", "rentor" })
+@ToString(exclude = {"facility", "paymentsMethod", "rentor"})
 @EqualsAndHashCode
 @Entity
 @Table(name = "FacilitiesServiceContracts")
@@ -36,42 +36,46 @@ public class FacilitiesServiceContracts implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "Id")
-    public BigInteger getId(){
+    public BigInteger getId() {
         return id;
     }
-    public void setId(BigInteger id){
+
+    public void setId(BigInteger id) {
         this.id = id;
     }
 
     @OneToOne
     @JoinColumn(name = "FacilityId", referencedColumnName = "ID")
-    public Facilities getFacility(){
+    public Facilities getFacility() {
         return facility;
     }
-    public void setFacility(Facilities facility){
+
+    public void setFacility(Facilities facility) {
         this.facility = facility;
     }
 
     @OneToOne
     @JoinColumn(name = "PaymentsMethodId", referencedColumnName = "ID")
-    public PaymentsMethod getPaymentsMethod(){
+    public PaymentsMethod getPaymentsMethod() {
         return paymentsMethod;
     }
-    public void setPaymentsMethod(PaymentsMethod paymentsMethod){
+
+    public void setPaymentsMethod(PaymentsMethod paymentsMethod) {
         this.paymentsMethod = paymentsMethod;
     }
 
     @OneToOne
     @JoinColumn(name = "RentorId", referencedColumnName = "id")
-    public Users getRentor(){
+    public Users getRentor() {
         return rentor;
     }
-    public void setRentor(Users rentor){
+
+    public void setRentor(Users rentor) {
         this.rentor = rentor;
     }
 
     @Transient
-    public String getDateStartContractToLocalDate(){
+    public String getDateStartContractToLocalDate() {
         String localDate = null;
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         localDate = format.format(dateStartContract);

@@ -1,11 +1,11 @@
 package com.art.controllers;
 
 import com.art.func.GetPrincipalFunc;
-import com.art.model.Users;
-import com.art.model.supporting.*;
+import com.art.model.supporting.GenericResponse;
+import com.art.model.supporting.SearchSummary;
+import com.art.model.supporting.ServiceTemporarilyUnavailableException;
+import com.art.model.supporting.ServiceUnavailable;
 import com.art.service.ServiceUnavailableService;
-import com.art.service.UserService;
-import org.springframework.security.authentication.RememberMeAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -31,26 +31,25 @@ public class AppController {
     @Resource(name = "serviceUnavailableService")
     private ServiceUnavailableService serviceUnavailableService;
 
-    @Resource(name = "userService")
-    private UserService userService;
-
-    @PostMapping(value = "/switch", produces="application/json;charset=UTF-8")
+    @PostMapping(value = "/switch", produces = "application/json;charset=UTF-8")
     public @ResponseBody
-    GenericResponse checkServiceStatus(@RequestBody SearchSummary searchSummary){
+    GenericResponse checkServiceStatus(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
         String activate = "";
-        switch (searchSummary.getSwitchSite()){
-            case "1": activate = "Сайт отключен";
+        switch (searchSummary.getSwitchSite()) {
+            case "1":
+                activate = "Сайт отключен";
                 break;
-            case "0": activate = "Сайт включен";
+            case "0":
+                activate = "Сайт включен";
                 break;
         }
         ServiceUnavailable serviceUnavailable = serviceUnavailableService.findServiceUnavailable();
-        try{
+        try {
             serviceUnavailable.setStatus(Integer.parseInt(searchSummary.getSwitchSite()));
             serviceUnavailableService.update(serviceUnavailable);
             response.setMessage(activate);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             response.setError("Ошибка. Сайт не отключен");
         }
         return response;
@@ -59,14 +58,19 @@ public class AppController {
     @RequestMapping(value = {"/", "/welcome**"}, method = RequestMethod.GET)
     public String welcomePage(SecurityContextHolderAwareRequestWrapper request, ModelMap model) {
         boolean admin = request.isUserInRole("ROLE_ADMIN");
-        if(serviceUnavailableService.findServiceUnavailable().getStatus() == 1 && !admin){
+        if (serviceUnavailableService.findServiceUnavailable().getStatus() == 1 && !admin) {
             throw new ServiceTemporarilyUnavailableException("Сайт временно не доступен");
         }
 
-        if(request.isUserInRole("ROLE_INVESTOR") &&
-                (!admin && !request.isUserInRole("ROLE_DBA") && !request.isUserInRole("ROLE_BIGDADDY"))){
+        if (request.isUserInRole("ROLE_INVESTOR") &&
+                (!admin && !request.isUserInRole("ROLE_DBA") && !request.isUserInRole("ROLE_BIGDADDY"))) {
+            /*
+            if(getPrincipalFunc.getLogin().equals("investor-demo")){
+                getPrincipalFunc.updateDemoUser();
+            }
+            */
             return "viewFlows";
-        }else {
+        } else {
             return "welcome";
         }
 
@@ -88,7 +92,7 @@ public class AppController {
         if (error != null) {
             model.addObject("error", "Invalid username and password!");
             String targetUrl = getRememberMeTargetUrlFromSession(request);
-            if(StringUtils.hasText(targetUrl)){
+            if (StringUtils.hasText(targetUrl)) {
                 model.addObject("targetUrl", targetUrl);
                 model.addObject("loginUpdate", true);
             }
@@ -102,17 +106,17 @@ public class AppController {
 
     }
 
-    @RequestMapping(value="/logout", method = RequestMethod.GET)
-    public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null){
+        if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
             HttpSession session = request.getSession(false);
-            if(session != null){
+            if (session != null) {
                 session.invalidate();
             }
 
-            for(Cookie cookie : request.getCookies()) {
+            for (Cookie cookie : request.getCookies()) {
                 cookie.setMaxAge(0);
             }
 
@@ -121,45 +125,16 @@ public class AppController {
     }
 
     /**
-     * Check if user is login by remember me cookie, refer
-     * org.springframework.security.authentication.AuthenticationTrustResolverImpl
-     */
-    private boolean isRememberMeAuthenticated() {
-
-        Authentication authentication =
-                SecurityContextHolder.getContext().getAuthentication();
-        return authentication != null && RememberMeAuthenticationToken.class.isAssignableFrom(authentication.getClass());
-
-    }
-
-    /**
-     * save targetURL in session
-     */
-    private void setRememberMeTargetUrlToSession(HttpServletRequest request){
-        HttpSession session = request.getSession(false);
-        if(session!=null){
-            session.setAttribute("targetUrl", "/admin");
-        }
-    }
-
-    /**
      * get targetURL from session
      */
-    private String getRememberMeTargetUrlFromSession(HttpServletRequest request){
+    private String getRememberMeTargetUrlFromSession(HttpServletRequest request) {
         String targetUrl = "";
         HttpSession session = request.getSession(false);
-        if(session!=null){
-            targetUrl = session.getAttribute("targetUrl")==null?""
-                    :session.getAttribute("targetUrl").toString();
+        if (session != null) {
+            targetUrl = session.getAttribute("targetUrl") == null ? ""
+                    : session.getAttribute("targetUrl").toString();
         }
         return targetUrl;
-    }
-
-    private boolean checkUnreadAnnexes(String login){
-        Users user = userService.findByLoginWithAnnexes(login);
-        int unread = (int) user.getUsersAnnexToContractsList().stream()
-                .filter(u -> u.getAnnexRead() == 0).count();
-        return unread > 0;
     }
 
 }

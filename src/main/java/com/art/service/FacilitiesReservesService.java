@@ -18,27 +18,27 @@ public class FacilitiesReservesService {
     @Resource(name = "facilitiesReservesRepository")
     private FacilitiesReservesRepository facilitiesReservesRepository;
 
-    public List<FacilitiesReserves> createList(List<FacilitiesReserves> facilitiesReserves){
+    public List<FacilitiesReserves> createList(List<FacilitiesReserves> facilitiesReserves) {
         return facilitiesReservesRepository.save(facilitiesReserves);
     }
 
-    public FacilitiesReserves create(FacilitiesReserves facilitiesReserves){
+    public FacilitiesReserves create(FacilitiesReserves facilitiesReserves) {
         return facilitiesReservesRepository.saveAndFlush(facilitiesReserves);
     }
 
-    public List<FacilitiesReserves> findAll(){
+    public List<FacilitiesReserves> findAll() {
         return facilitiesReservesRepository.findAll();
     }
 
-    public FacilitiesReserves findById(BigInteger id){
+    public FacilitiesReserves findById(BigInteger id) {
         return facilitiesReservesRepository.findOne(id);
     }
 
-    public FacilitiesReserves update(FacilitiesReserves facilitiesReserves){
+    public FacilitiesReserves update(FacilitiesReserves facilitiesReserves) {
         return facilitiesReservesRepository.saveAndFlush(facilitiesReserves);
     }
 
-    public void deleteById(BigInteger id){
+    public void deleteById(BigInteger id) {
         facilitiesReservesRepository.delete(id);
     }
 

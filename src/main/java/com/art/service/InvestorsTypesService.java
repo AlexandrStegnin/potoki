@@ -22,27 +22,27 @@ public class InvestorsTypesService {
         return investorsTypesRepository.findAll();
     }
 
-    public InvestorsTypes findById(BigInteger id){
+    public InvestorsTypes findById(BigInteger id) {
         return investorsTypesRepository.findOne(id);
     }
 
-    public InvestorsTypes update(InvestorsTypes investorsTypes){
+    public InvestorsTypes update(InvestorsTypes investorsTypes) {
         return investorsTypesRepository.saveAndFlush(investorsTypes);
     }
 
-    public void deleteById(BigInteger id){
+    public void deleteById(BigInteger id) {
         investorsTypesRepository.delete(id);
     }
 
-    public void create(InvestorsTypes investorsTypes){
+    public void create(InvestorsTypes investorsTypes) {
         investorsTypesRepository.saveAndFlush(investorsTypes);
     }
 
-    public InvestorsTypes findByInvestorsTypes(String investorsType){
+    public InvestorsTypes findByInvestorsTypes(String investorsType) {
         return investorsTypesRepository.findByInvestorsType(investorsType);
     }
 
-    public List<InvestorsTypes> initializeInvestorsTypes(){
+    public List<InvestorsTypes> initializeInvestorsTypes() {
         List<InvestorsTypes> investorsTypesList = new ArrayList<>(0);
         InvestorsTypes investorsTypes = new InvestorsTypes();
         investorsTypes.setId(new BigInteger("0"));

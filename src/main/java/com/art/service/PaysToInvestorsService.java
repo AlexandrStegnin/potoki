@@ -19,16 +19,16 @@ public class PaysToInvestorsService {
     private PaysToInvestorsRepository paysToInvestorsRepository;
 
     public List<PaysToInvestors> findByInvestorIdAndFacility(BigInteger investorId,
-                                                             String facility){
+                                                             String facility) {
         return paysToInvestorsRepository.findByInvestorIdAndFacility(investorId,
                 facility);
     }
 
-    public List<PaysToInvestors> findAll(){
+    public List<PaysToInvestors> findAll() {
         return paysToInvestorsRepository.findAll();
     }
 
-    public void saveList(List<PaysToInvestors> paysToInvestorsList){
+    public void saveList(List<PaysToInvestors> paysToInvestorsList) {
         paysToInvestorsRepository.save(paysToInvestorsList);
     }
 }

@@ -26,8 +26,6 @@ import java.util.Properties;
 @ComponentScan(basePackages = {"com.art"})
 public class WebConfig extends WebMvcConfigurerAdapter {
 
-    /* BEGIN NEW */
-    // Bean name must be "multipartResolver", by default Spring uses method name as bean name.
     @Bean(name = "multipartResolver")
     public StandardServletMultipartResolver resolver() {
         return new StandardServletMultipartResolver();
@@ -38,9 +36,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         configurer.enable();
     }
 
-    /* END NEW */
-
-    public MappingJackson2HttpMessageConverter jacksonMessageConverter(){
+    public MappingJackson2HttpMessageConverter jacksonMessageConverter() {
         MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
 
         ObjectMapper mapper = new ObjectMapper();
@@ -60,7 +56,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    HandlerExceptionResolver errorHandler () {
+    HandlerExceptionResolver errorHandler() {
         SimpleMappingExceptionResolver s =
                 new SimpleMappingExceptionResolver();
 
@@ -83,7 +79,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public InternalResourceViewResolver viewResolver(){
+    public InternalResourceViewResolver viewResolver() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
         viewResolver.setViewClass(JstlView.class);
         viewResolver.setPrefix("/WEB-INF/views/");
@@ -95,42 +91,5 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
     }
-
-
-
-    /*
-	 * Configure ContentNegotiationManager
-	 */
-    /*
-	 * Configure ContentNegotiationManager
-	 */
-    /*
-    @Override
-    public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
-        configurer.ignoreAcceptHeader(true).defaultContentType(
-                MediaType.TEXT_HTML);
-    }
-    */
-    /*
-     * Configure ContentNegotiatingViewResolver
-     */
-    /*
-    @Bean
-    public ViewResolver contentNegotiatingViewResolver(ContentNegotiationManager manager) {
-        ContentNegotiatingViewResolver resolver = new ContentNegotiatingViewResolver();
-        resolver.setContentNegotiationManager(manager);
-
-        // Define all possible view resolvers
-        List<ViewResolver> resolvers = new ArrayList<ViewResolver>();
-
-        resolvers.add(viewResolver());
-
-        resolver.setViewResolvers(resolvers);
-        return resolver;
-    }
-    */
-
-
-
 
 }

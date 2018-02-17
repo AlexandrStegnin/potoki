@@ -27,61 +27,57 @@ public class MainFlowsService {
     @Resource(name = "mainFlowsRepository")
     private MainFlowsRepository mainFlowsRepository;
 
-    public MainFlows create(MainFlows mainFlows){
+    public MainFlows create(MainFlows mainFlows) {
         return mainFlowsRepository.saveAndFlush(mainFlows);
     }
 
-    public List<MainFlows> findAll(){
+    public List<MainFlows> findAll() {
         return mainFlowsRepository.findAllByOrderBySettlementDateDescUnderFacilitiesAscPaymentAsc();
     }
 
-    public MainFlows findById(BigInteger id){
+    public MainFlows findById(BigInteger id) {
         return mainFlowsRepository.findOne(id);
     }
 
-    public MainFlows update(MainFlows mainFlows){
+    public MainFlows update(MainFlows mainFlows) {
         return mainFlowsRepository.saveAndFlush(mainFlows);
     }
 
-    public void deleteById(BigInteger id){
+    public void deleteById(BigInteger id) {
         mainFlowsRepository.delete(id);
     }
 
-    public List<MainFlows> findByIdIn(List<BigInteger> idList){
+    public List<MainFlows> findByIdIn(List<BigInteger> idList) {
         return mainFlowsRepository.findByIdIn(idList);
     }
 
-    public void deleteAllFlows(){
+    public void deleteAllFlows() {
         mainFlowsRepository.deleteAll();
     }
 
-    public void createList(List<MainFlows> mainFlowsList){
+    public void createList(List<MainFlows> mainFlowsList) {
         mainFlowsRepository.save(mainFlowsList);
     }
 
-    public List<MainFlows> findAllWithCriteriaApi(){
+    public List<MainFlows> findAllWithCriteriaApi() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
         CriteriaQuery<MainFlows> mainFlowsCriteriaQuery = cb.createQuery(MainFlows.class);
         Root<MainFlows> mainFlowsRoot = mainFlowsCriteriaQuery.from(MainFlows.class);
-        /*
-        mainFlowsRoot.fetch(MainFlows_.underFacilities, JoinType.LEFT)
-                .fetch(UnderFacilities_.rooms, JoinType.LEFT);
-        */
         mainFlowsRoot.fetch(MainFlows_.underFacilities, JoinType.LEFT)
                 .fetch(UnderFacilities_.facility, JoinType.LEFT)
                 .fetch(Facilities_.investors, JoinType.LEFT);
         mainFlowsCriteriaQuery.select(mainFlowsRoot).distinct(true);
-        //List<MainFlows> mainFlows = em.createQuery(mainFlowsCriteriaQuery).getResultList();
-        //mainFlows.forEach(mf -> mf.getUnderFacilities().getRooms().size());
         return em.createQuery(mainFlowsCriteriaQuery).getResultList();
     }
 
 
-    public List<MainFlows> findByFacilityIdIn(List<BigInteger> facilityIdList){
+    public List<MainFlows> findByFacilityIdIn(List<BigInteger> facilityIdList) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<MainFlows> mainFlowsCriteriaQuery = cb.createQuery(MainFlows.class);
         Root<MainFlows> mainFlowsRoot = mainFlowsCriteriaQuery.from(MainFlows.class);
+        mainFlowsRoot.fetch(MainFlows_.underFacilities, JoinType.LEFT)
+                .fetch(UnderFacilities_.facility, JoinType.LEFT);
         mainFlowsCriteriaQuery.select(mainFlowsRoot);
         mainFlowsCriteriaQuery.where(mainFlowsRoot.get(MainFlows_.underFacilities).get(UnderFacilities_.facility).get(Facilities_.id).in(facilityIdList));
         return em.createQuery(mainFlowsCriteriaQuery).getResultList();

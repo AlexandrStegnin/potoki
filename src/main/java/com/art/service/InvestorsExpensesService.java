@@ -19,31 +19,31 @@ public class InvestorsExpensesService {
     @Resource(name = "investorsExpensesRepository")
     private InvestorsExpensesRepository investorsExpensesRepository;
 
-    public InvestorsExpenses create(InvestorsExpenses investorsExpenses){
+    public InvestorsExpenses create(InvestorsExpenses investorsExpenses) {
         return investorsExpensesRepository.saveAndFlush(investorsExpenses);
     }
 
-    public List<InvestorsExpenses> findAll(){
+    public List<InvestorsExpenses> findAll() {
         return investorsExpensesRepository.findAll();
     }
 
-    public InvestorsExpenses findById(BigInteger id){
+    public InvestorsExpenses findById(BigInteger id) {
         return investorsExpensesRepository.findOne(id);
     }
 
-    public InvestorsExpenses update(InvestorsExpenses investorsExpenses){
+    public InvestorsExpenses update(InvestorsExpenses investorsExpenses) {
         return investorsExpensesRepository.saveAndFlush(investorsExpenses);
     }
 
-    public void deleteById(BigInteger id){
+    public void deleteById(BigInteger id) {
         investorsExpensesRepository.delete(id);
     }
 
-    public List<InvestorsPlanSale> getInvestorsPlanSale(BigInteger investorId){
+    public List<InvestorsPlanSale> getInvestorsPlanSale(BigInteger investorId) {
         return investorsExpensesRepository.getInvestorsPlanSale(investorId);
     }
 
-    public List<InvestorsExpenses> findByInvestorId(BigInteger investorId){
+    public List<InvestorsExpenses> findByInvestorId(BigInteger investorId) {
         return investorsExpensesRepository.findByInvestor_Id(investorId);
     }
 

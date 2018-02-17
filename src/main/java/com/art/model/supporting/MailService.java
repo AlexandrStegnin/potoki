@@ -26,10 +26,10 @@ public class MailService {
         String fileName = "mail.ru.properties";
 
         InputStream input;
-        try{
+        try {
             input = MailService.class.getClassLoader().getResourceAsStream(fileName);
             prop.load(input);
-        }catch (IOException ex){
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
 
@@ -45,7 +45,7 @@ public class MailService {
 
     private MimeMessagePreparator getMessagePreparator(final Users user, String body, String subject) {
 
-            return mimeMessage -> {
+        return mimeMessage -> {
             mimeMessage.setFrom(new InternetAddress(prop.getProperty("mail.username"),
                     "Восстановление пароля"));
             mimeMessage.setRecipient(Message.RecipientType.TO,

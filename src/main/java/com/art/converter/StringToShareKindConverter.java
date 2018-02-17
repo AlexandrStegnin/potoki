@@ -12,16 +12,16 @@ public class StringToShareKindConverter implements Converter<String, ShareKind> 
     @Resource(name = "shareKindService")
     private ShareKindService shareKindService;
 
-    public StringToShareKindConverter(ShareKindService shareKindService){
+    public StringToShareKindConverter(ShareKindService shareKindService) {
         this.shareKindService = shareKindService;
     }
 
     public ShareKind convert(String id) {
-        ShareKind shareKind = null;
-        try{
+        ShareKind shareKind;
+        try {
             BigInteger IntId = new BigInteger(id);
             shareKind = shareKindService.findById(IntId);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             shareKind = shareKindService.findByShareKind(id);
         }
 

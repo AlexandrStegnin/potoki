@@ -10,25 +10,23 @@ import java.math.BigInteger;
 
 public class StringToFacilityConverter implements Converter<String, Facilities> {
 
-    //@Autowired
     @Resource(name = "facilityService")
     private FacilityService facilityService;
 
     @Autowired
-    public StringToFacilityConverter(FacilityService facilityService){
+    public StringToFacilityConverter(FacilityService facilityService) {
         this.facilityService = facilityService;
     }
 
     public Facilities convert(String id) {
-        Facilities facilities = null;
-        try{
+        Facilities facilities;
+        try {
             BigInteger IntId = new BigInteger(id);
             facilities = facilityService.findById(IntId);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             facilities = facilityService.findByFacility(id);
         }
 
-        System.out.println("Facility : " + facilities);
         return facilities;
     }
 }

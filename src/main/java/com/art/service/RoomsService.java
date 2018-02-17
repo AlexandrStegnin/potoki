@@ -1,9 +1,6 @@
 package com.art.service;
 
-import com.art.model.Rooms;
-import com.art.model.Rooms_;
-import com.art.model.UnderFacilities;
-import com.art.model.UnderFacilities_;
+import com.art.model.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +19,7 @@ public class RoomsService {
     @PersistenceContext(name = "persistanceUnit")
     private EntityManager em;
 
-    public List<Rooms> findAll(){
+    public List<Rooms> findAll() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
         CriteriaQuery<Rooms> roomsCriteriaQuery = cb.createQuery(Rooms.class);
@@ -34,11 +31,11 @@ public class RoomsService {
         return em.createQuery(roomsCriteriaQuery).getResultList();
     }
 
-    public Rooms findById(BigInteger id){
+    public Rooms findById(BigInteger id) {
         return this.em.find(Rooms.class, id);
     }
 
-    public Rooms findByIdWithUnderFacilities(BigInteger id){
+    public Rooms findByIdWithUnderFacilities(BigInteger id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Rooms> roomsCriteriaQuery = cb.createQuery(Rooms.class);
         Root<Rooms> roomsRoot = roomsCriteriaQuery.from(Rooms.class);
@@ -48,7 +45,7 @@ public class RoomsService {
         return em.createQuery(roomsCriteriaQuery).getSingleResult();
     }
 
-    public Rooms findByRoom(String room){
+    public Rooms findByRoom(String room) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Rooms> roomsCriteriaQuery = cb.createQuery(Rooms.class);
         Root<Rooms> roomsRoot = roomsCriteriaQuery.from(Rooms.class);
@@ -58,7 +55,7 @@ public class RoomsService {
         return em.createQuery(roomsCriteriaQuery).getSingleResult();
     }
 
-    public void deleteById(BigInteger id){
+    public void deleteById(BigInteger id) {
         CriteriaBuilder cb = this.em.getCriteriaBuilder();
         CriteriaDelete<Rooms> delete = cb.createCriteriaDelete(Rooms.class);
         Root<Rooms> roomsRoot = delete.from(Rooms.class);
@@ -66,7 +63,7 @@ public class RoomsService {
         this.em.createQuery(delete).executeUpdate();
     }
 
-    public void update(Rooms room){
+    public void update(Rooms room) {
         CriteriaBuilder criteriaBuilder = this.em.getCriteriaBuilder();
         CriteriaUpdate<Rooms> update = criteriaBuilder.createCriteriaUpdate(Rooms.class);
         Root<Rooms> roomsRoot = update.from(Rooms.class);
@@ -78,11 +75,11 @@ public class RoomsService {
         this.em.createQuery(update).executeUpdate();
     }
 
-    public void create(Rooms room){
+    public void create(Rooms room) {
         this.em.persist(room);
     }
 
-    public List<Rooms> init(){
+    public List<Rooms> init() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Rooms> roomsCriteriaQuery = cb.createQuery(Rooms.class);
         Root<Rooms> roomsRoot = roomsCriteriaQuery.from(Rooms.class);
@@ -96,13 +93,25 @@ public class RoomsService {
         return roomsList;
     }
 
-    public List<Rooms> findByUnderFacility(UnderFacilities underFacility){
+    public List<Rooms> findByUnderFacility(UnderFacilities underFacility) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Rooms> roomsCriteriaQuery = cb.createQuery(Rooms.class);
         Root<Rooms> roomsRoot = roomsCriteriaQuery.from(Rooms.class);
         roomsRoot.fetch(Rooms_.underFacility, JoinType.LEFT);
         roomsCriteriaQuery.select(roomsRoot);
         roomsCriteriaQuery.where(cb.equal(roomsRoot.get(Rooms_.underFacility), underFacility));
+        return em.createQuery(roomsCriteriaQuery).getResultList();
+    }
+
+    public List<Rooms> findByFacilitiesId(List<BigInteger> facilitiesId) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+
+        CriteriaQuery<Rooms> roomsCriteriaQuery = cb.createQuery(Rooms.class);
+        Root<Rooms> roomsRoot = roomsCriteriaQuery.from(Rooms.class);
+        roomsRoot.fetch(Rooms_.underFacility, JoinType.LEFT)
+                .fetch(UnderFacilities_.facility, JoinType.LEFT);
+        roomsCriteriaQuery.select(roomsRoot).distinct(true);
+        roomsCriteriaQuery.where(roomsRoot.get(Rooms_.underFacility).get(UnderFacilities_.facility).get(Facilities_.id).in(facilitiesId));
         return em.createQuery(roomsCriteriaQuery).getResultList();
     }
 }

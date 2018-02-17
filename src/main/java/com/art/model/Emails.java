@@ -15,25 +15,28 @@ import java.math.BigInteger;
 
 @Entity
 @Table(name = "Emails")
-public class Emails implements Serializable{
+public class Emails implements Serializable {
     private BigInteger id;
     private String email;
     private Users user;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "Id")
-    public BigInteger getId(){
+    public BigInteger getId() {
         return id;
     }
-    public void setId(BigInteger id){
+
+    public void setId(BigInteger id) {
         this.id = id;
     }
 
     @Column(name = "Email")
-    public String getEmail(){
+    public String getEmail() {
         return email;
     }
-    public void setEmail(String email){
+
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -46,10 +49,11 @@ public class Emails implements Serializable{
             },
             fetch = FetchType.LAZY)
     @JoinColumn(name = "UserId", referencedColumnName = "Id")
-    public Users getUser(){
+    public Users getUser() {
         return user;
     }
-    public void setUser(Users user){
+
+    public void setUser(Users user) {
         this.user = user;
     }
 

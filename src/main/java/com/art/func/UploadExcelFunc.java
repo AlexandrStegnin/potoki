@@ -97,7 +97,7 @@ public class UploadExcelFunc {
             ex.printStackTrace();
         }
 
-        switch (what){
+        switch (what) {
             case "alpha":
                 List<AlphaCorrectTags> alphaCorrectTagsList = new ArrayList<>(0);
                 alphaCorrectTagsList.addAll(
@@ -147,23 +147,24 @@ public class UploadExcelFunc {
                 */
 
                 assert sheet != null;
-                while (!begin){
+                while (!begin) {
                     for (Row row : sheet)
                         try {
                             format.parse(row.getCell(0).toString());
                             begin = true;
                             rowBegin = row.getRowNum();
                             break;
-                        } catch (Exception ignored) {}
+                        } catch (Exception ignored) {
+                        }
                 }
                 for (Row row : sheet) {
 
                     rowNumber = row.getRowNum();
                     if (rowNumber >= rowBegin) {
                         if (row.getLastCellNum() > 8) {
-                            try{
+                            try {
                                 format.parse(row.getCell(0).toString()).getTime();
-                            }catch (Exception ex){
+                            } catch (Exception ex) {
                                 break;
                             }
                             cntCol = row.getLastCellNum();
@@ -181,17 +182,17 @@ public class UploadExcelFunc {
                             alphaExtract.setDocNumber(row.getCell(1).toString());
                             try {
                                 debet = Float.parseFloat(row.getCell(2).toString().replaceAll("[^0-9,.]", "")
-                                    .replaceAll(",","\\."));
+                                        .replaceAll(",", "\\."));
                             } catch (Exception ignored) {
                             }
 
                             try {
                                 credit = Float.parseFloat(row.getCell(3).toString().replaceAll("[^0-9,.]", "")
-                                        .replaceAll(",","\\."));
+                                        .replaceAll(",", "\\."));
                             } catch (Exception ignored) {
                             }
 
-                            if(cntCol == 11){
+                            if (cntCol == 11) {
                                 try {
                                     inn = row.getCell(4).toString().split("\\n")[2].replaceAll("[^0-9]", "");
                                 } catch (Exception ignored) {
@@ -228,7 +229,7 @@ public class UploadExcelFunc {
                                     docType = row.getCell(10).toString();
                                 } catch (Exception ignored) {
                                 }
-                            }else if(cntCol == 13){
+                            } else if (cntCol == 13) {
                                 try {
                                     inn = row.getCell(5).toString();
                                 } catch (Exception ignored) {
@@ -268,17 +269,12 @@ public class UploadExcelFunc {
                                 }
 
                             }
-                            /*
-                            if(Objects.equals(purposePayment,
-                                    "Оплата по договору аренды №1/16 от 29.12.16 за электроэнергию за апрель2017 ; НДС не облагается")){
-                                System.out.println("OK");
-                            }
-                            */
+
                             java.sql.Date formatterDate = null;
                             StringBuilder dateStr = new StringBuilder();
                             calendar.setTime(dateOper);
                             Matcher matcher = pattern.matcher(purposePayment.toLowerCase());
-                            if(matcher.find()) {
+                            if (matcher.find()) {
                                 Matcher monthMatcher = monthPtrn.matcher(purposePayment
                                         .toLowerCase());
                                 Matcher monthDigMatcher = monthDigPtrn.matcher(purposePayment
@@ -311,7 +307,7 @@ public class UploadExcelFunc {
                                         }
                                     }
                                 } else if (monthDigMatcher.find()) {
-                                    if(matcher.group(0).split("/").length >= 2){
+                                    if (matcher.group(0).split("/").length >= 2) {
                                         dateStr.append(matcher.group(0).toLowerCase()
                                                 .replaceAll("за", "")
                                                 .replaceAll("\\s+", " ").trim());
@@ -320,7 +316,7 @@ public class UploadExcelFunc {
                                                     .getTime());
                                         } catch (Exception ignored) {
                                         }
-                                    }else if(matcher.group(0).split("/").length < 2) {
+                                    } else if (matcher.group(0).split("/").length < 2) {
                                         dateStr.append("01.")
                                                 .append(matcher.group(0).toLowerCase()
                                                         .replaceAll("за", "")
@@ -330,7 +326,7 @@ public class UploadExcelFunc {
                                                     .getTime());
                                         } catch (Exception ignored) {
                                         }
-                                    }else if(matcher.group(0).split("\\.").length == 3){
+                                    } else if (matcher.group(0).split("\\.").length == 3) {
                                         dateStr.append(matcher.group(0).toLowerCase()
                                                 .replaceAll("за", "")
                                                 .replaceAll("\\s+", " ").trim());
@@ -339,7 +335,7 @@ public class UploadExcelFunc {
                                                     .getTime());
                                         } catch (Exception ignored) {
                                         }
-                                    }else if(matcher.group(0).split("\\.").length == 2){
+                                    } else if (matcher.group(0).split("\\.").length == 2) {
                                         dateStr.append("01.")
                                                 .append(matcher.group(0).toLowerCase()
                                                         .replaceAll("за", "")
@@ -349,7 +345,7 @@ public class UploadExcelFunc {
                                                     .getTime());
                                         } catch (Exception ignored) {
                                         }
-                                    }else if(matcher.group(0).split("\\.").length == 1) {
+                                    } else if (matcher.group(0).split("\\.").length == 1) {
                                         dateStr.append("01.")
                                                 .append(matcher.group(0).toLowerCase()
                                                         .replaceAll("за", "")
@@ -359,7 +355,7 @@ public class UploadExcelFunc {
                                                     .getTime());
                                         } catch (Exception ignored) {
                                         }
-                                    }else if(matcher.group(0).split(",").length == 3){
+                                    } else if (matcher.group(0).split(",").length == 3) {
                                         dateStr.append(matcher.group(0).toLowerCase()
                                                 .replaceAll("за", "")
                                                 .replaceAll("\\s+", " ")
@@ -370,7 +366,7 @@ public class UploadExcelFunc {
                                                     .getTime());
                                         } catch (Exception ignored) {
                                         }
-                                    }else if(matcher.group(0).split(",").length == 2){
+                                    } else if (matcher.group(0).split(",").length == 2) {
                                         dateStr.append("01.")
                                                 .append(matcher.group(0).toLowerCase()
                                                         .replaceAll("за", "")
@@ -382,7 +378,7 @@ public class UploadExcelFunc {
                                                     .getTime());
                                         } catch (Exception ignored) {
                                         }
-                                    }else if(matcher.group(0).split(",").length == 1) {
+                                    } else if (matcher.group(0).split(",").length == 1) {
                                         dateStr.append("01.")
                                                 .append(matcher.group(0).toLowerCase()
                                                         .replaceAll("за", "")
@@ -413,9 +409,9 @@ public class UploadExcelFunc {
 
                             String[] tags = {"Аренда;56000", "Свет и ЖКХ;16000", "Вода;500"};
 
-                            if(alphaExtract.getInn().equals("6623091110") &&
-                                        alphaExtract.getAccount().equals("40702810216540000801") &&
-                                    alphaExtract.getCredit() == Float.parseFloat("72500")){
+                            if (alphaExtract.getInn().equals("6623091110") &&
+                                    alphaExtract.getAccount().equals("40702810216540000801") &&
+                                    alphaExtract.getCredit() == Float.parseFloat("72500")) {
 
                                 for (String tag : tags) {
                                     AlphaExtract alphaVainera = new AlphaExtract();
@@ -442,43 +438,20 @@ public class UploadExcelFunc {
 
                                 }
 
-                            }else{
+                            } else {
                                 err = addAlphaTagsV2(alphaExtract, alphaCorrectTagsList, newTagsList);
                                 err = addAlphaOrgName(alphaExtract, rentorsDetails);
                                 alphaExtractList.add(alphaExtract);
                             }
                         }
                     }
-
-
-                /*
-                //For each row, iterate through each columns
-                Iterator<Cell> cellIterator = row.cellIterator();
-                while(cellIterator.hasNext()) {
-
-                    Cell cell = cellIterator.next();
-
-                    switch(cell.getCellType()) {
-                        case Cell.CELL_TYPE_BOOLEAN:
-                            System.out.print(cell.getBooleanCellValue() + "\t\t");
-                            break;
-                        case Cell.CELL_TYPE_NUMERIC:
-                            System.out.print(cell.getNumericCellValue() + "\t\t");
-                            break;
-                        case Cell.CELL_TYPE_STRING:
-                            System.out.print(cell.getStringCellValue() + "\t\t");
-                            break;
-                    }
-                }
-                System.out.println("");
-                */
                 }
                 fileInputStream.close();
 
                 List<AlphaExtract> oldAlphaExtractList = alphaExtractService.findAll();
                 List<AlphaExtract> newAlphaExtractList = alphaExtractList.stream()
                         .filter(ae -> (oldAlphaExtractList.stream()
-                        .filter(old -> old.equals(ae)).count()<1))
+                                .filter(old -> old.equals(ae)).count() < 1))
                         .collect(Collectors.toList());
 
                 alphaExtractService.createList(newAlphaExtractList);
@@ -492,7 +465,7 @@ public class UploadExcelFunc {
 
                 for (String tags : newTagsList) {
                     for (AlphaCorrectTags aTag : alphaCorrectTagsList) {
-                        if(tags.equals(aTag.getDescription())){
+                        if (tags.equals(aTag.getDescription())) {
                             tagList.remove(tags);
                         }
                     }
@@ -519,14 +492,15 @@ public class UploadExcelFunc {
                 SimpleDateFormat formatToshl = new SimpleDateFormat("MM/dd/yy");
                 assert sheet != null;
 
-                while (!begin){
+                while (!begin) {
                     for (Row row : sheet) {
-                        try{
+                        try {
                             formatToshl.parse(row.getCell(0).toString());
                             begin = true;
                             rowBegin = row.getRowNum();
                             break;
-                        }catch (Exception ignored){}
+                        } catch (Exception ignored) {
+                        }
 
                     }
                 }
@@ -577,32 +551,13 @@ public class UploadExcelFunc {
 
                 toshlCorrectTagsList = toshlCorrectTagsService.findAll();
 
-                /*List<String> toshlTagList = new ArrayList<>(newToshlTagsList);*/
-
                 for (String tags : newToshlTagsList) {
                     for (ToshlCorrectTags tTag : toshlCorrectTagsList) {
-                        if (tags.equals(String.join(tTag.getTags(),tTag.getCategory()))){
+                        if (tags.equals(String.join(tTag.getTags(), tTag.getCategory()))) {
                             toshlTagList.remove(tags);
                         }
                     }
                 }
-                /*
-                newToshlTagsList.forEach((String tags) -> toshlCorrectTagsList.forEach((ToshlCorrectTags tTag) -> {
-                    Predicate<String> toshlPredicate = p -> p.equals(String.join(tTag.getTags(), tTag.getCategory()));
-                    toshlTagList.removeIf(toshlPredicate);
-                }));
-                */
-                /*
-                toshlTagList.forEach((String tags) -> {
-                    ToshlCorrectTags tag = new ToshlCorrectTags();
-                    String[] tagStr = tags.split("[|]");
-
-                    tag.setTags(tagStr[0]);
-                    tag.setCategory(tagStr[1]);
-                    setToshlTags.add(tag);
-                });
-                */
-
                 for (String tags : toshlTagList) {
                     ToshlCorrectTags tag = new ToshlCorrectTags();
                     String[] tagStr = tags.split("[|]");
@@ -621,7 +576,7 @@ public class UploadExcelFunc {
                 break;
             case "invFlows":
                 HttpSession session = request.getSession(true);
-                session.setMaxInactiveInterval(30*60);
+                session.setMaxInactiveInterval(30 * 60);
                 rewriteInvestorsFlows(Objects.requireNonNull(sheet));
                 break;
             case "invFlowsSale":
@@ -632,8 +587,8 @@ public class UploadExcelFunc {
     }
 
     private String addAlphaTagsV2(AlphaExtract alphaExtract,
-                                List<AlphaCorrectTags> alphaCorrectTagsList,
-                                Set<String> newTagsList){
+                                  List<AlphaCorrectTags> alphaCorrectTagsList,
+                                  Set<String> newTagsList) {
         String ok = "";
 
         /* Проходим по всем тэгам из справочника */
@@ -646,57 +601,56 @@ public class UploadExcelFunc {
 
             int priority = checkPriority(alphaExtract.getPurposePayment().toLowerCase());
 
-            if(correctTags.getDocNumber() != null && correctTags.getDateOper() != null){
-                if(correctTags.getDocNumber().equals(alphaExtract.getDocNumber()) &&
+            if (correctTags.getDocNumber() != null && correctTags.getDateOper() != null) {
+                if (correctTags.getDocNumber().equals(alphaExtract.getDocNumber()) &&
                         correctTags.getDateOper().getTime() == alphaExtract.getDateOper().getTime() &&
-                                ((correctTags.getDebetOrCredit().getVal().equals("Дебет") &&
+                        ((correctTags.getDebetOrCredit().getVal().equals("Дебет") &&
                                 alphaExtract.getDebet() > 0) ||
-                                        (correctTags.getDebetOrCredit().getVal().equals("Кредит") &&
-                                                alphaExtract.getCredit() > 0))) {
+                                (correctTags.getDebetOrCredit().getVal().equals("Кредит") &&
+                                        alphaExtract.getCredit() > 0))) {
                     if (supportingAlphaTags(alphaExtract.getPurposePayment().toLowerCase(),
                             correctTags.getDescription().toLowerCase(), "no")) {
                         alphaExtract.setTags(correctTags);
                     }
                 }
-            }else
+            } else
 
-            /* Если корректный тэг содержит ИНН или счёт, то обязательно должно быть совпадение */
-            if((correctTags.getInn() != null && correctTags.getInn().length() > 0) ||
-                    (correctTags.getAccount() != null) && correctTags.getAccount().length() > 0){
+                /* Если корректный тэг содержит ИНН или счёт, то обязательно должно быть совпадение */
+                if ((correctTags.getInn() != null && correctTags.getInn().length() > 0) ||
+                        (correctTags.getAccount() != null) && correctTags.getAccount().length() > 0) {
 
-                pInn = Pattern.compile(correctTags.getInn());
-                mInn = pInn.matcher(alphaExtract.getInn());
-                pAccount = Pattern.compile(correctTags.getAccount());
-                mAccount = pAccount.matcher(alphaExtract.getAccount());
+                    pInn = Pattern.compile(correctTags.getInn());
+                    mInn = pInn.matcher(alphaExtract.getInn());
+                    pAccount = Pattern.compile(correctTags.getAccount());
+                    mAccount = pAccount.matcher(alphaExtract.getAccount());
 
-                if (mInn.find() && mAccount.find()) {
+                    if (mInn.find() && mAccount.find()) {
+                        if (supportingAlphaTags(alphaExtract.getPurposePayment().toLowerCase(),
+                                correctTags.getDescription().toLowerCase(),
+                                "yes")) {
+                            alphaExtract.setTags(correctTags);
+                        }
+                    }
+                } else {
                     if (supportingAlphaTags(alphaExtract.getPurposePayment().toLowerCase(),
-                            correctTags.getDescription().toLowerCase(),
-                            "yes")) {
+                            correctTags.getDescription().toLowerCase(), "no")) {
                         alphaExtract.setTags(correctTags);
-                        //return ok;
                     }
                 }
-            }else{
-                if(supportingAlphaTags(alphaExtract.getPurposePayment().toLowerCase(),
-                        correctTags.getDescription().toLowerCase(), "no")){
-                    alphaExtract.setTags(correctTags);
-                }
-            }
 
-            if((priority == 3) && alphaExtract.getTags() != null){
+            if ((priority == 3) && alphaExtract.getTags() != null) {
                 return ok;
             }
 
         }
 
-        if(alphaExtract.getTags() == null) {
+        if (alphaExtract.getTags() == null) {
             newTagsList.add(alphaExtract.getPurposePayment());
         }
         return ok;
     }
 
-    private int checkPriority(String description){
+    private int checkPriority(String description) {
 
         Pattern kom = Pattern.compile(".*?(жкх.*?|свет.*?|электроэнерг.*?).*?");
         Matcher komMatcher = kom.matcher(description);
@@ -707,61 +661,46 @@ public class UploadExcelFunc {
         Pattern arend = Pattern.compile(".*?аренд.*?");
         Matcher arendMatcher = arend.matcher(description);
 
-        if(komMatcher.find()){
+        if (komMatcher.find()) {
             return 1;
-        }else if(obespMatcher.find()){
+        } else if (obespMatcher.find()) {
             return 2;
-        }else if(arendMatcher.find()){
+        } else if (arendMatcher.find()) {
             return 3;
         }
         return 0;
     }
 
     private String addAlphaOrgName(AlphaExtract alphaExtract,
-                                   List<RentorsDetails> rentorsDetails){
+                                   List<RentorsDetails> rentorsDetails) {
         String pattern = ".*?";
         Pattern orgPattern;
         List<RentorsDetails> filterList = rentorsDetails.stream()
                 .filter(rd -> rd.getAccount().equals(alphaExtract.getAccount()) &&
-                rd.getInn().equals(alphaExtract.getInn()))
+                        rd.getInn().equals(alphaExtract.getInn()))
                 .collect(Collectors.toList());
-        if(filterList.size() == 1){
+        if (filterList.size() == 1) {
             alphaExtract.setCorrectOrgName(filterList.get(0).getOrganization());
-        }else{
+        } else {
             for (RentorsDetails details : filterList) {
                 orgPattern = Pattern.compile(pattern + details.getOrganization()
                         .replaceAll("\"", " ")
                         .replaceAll("\\s+", " ")
                         .toLowerCase()
-                         + pattern);
+                        + pattern);
                 Matcher orgMatcher = orgPattern.matcher(alphaExtract.getOrgName()
                         .replaceAll("/", " ")
                         .replaceAll("\"", " ")
                         .replaceAll("\\s+", " ")
                         .toLowerCase());
 
-                /*Matcher org = orgPattern.matcher(alphaExtract.getOrgName());*/
-                if(orgMatcher.find() /*|| org.find()*/){
+                if (orgMatcher.find()) {
                     alphaExtract.setCorrectOrgName(details.getOrganization());
                     break;
                 }
 
             }
         }
-
-
-        /*
-        if(alphaExtract.getCorrectOrgName() == null &&
-                alphaExtract.getTags().getFacility() != null){
-            RentorsDetails newRentorDetails = new RentorsDetails();
-            newRentorDetails.setAccount(alphaExtract.getAccount());
-            newRentorDetails.setInn(alphaExtract.getInn());
-            newRentorDetails.setOrganization(null);
-            newRentorDetails.setFacility(alphaExtract.getTags().getFacility());
-            newRentorDetails.setRentor(alphaExtract.getTags().getFacility());
-            rentorsDetailsService.create(newRentorDetails);
-        }
-        */
 
         return "";
     }
@@ -771,8 +710,6 @@ public class UploadExcelFunc {
         String descToPtrn;
         Pattern pDescription;
         Matcher mDescription;
-
-
 
         /*
             Если в описании есть знак "+", тогда разбиваем на массив,
@@ -794,12 +731,12 @@ public class UploadExcelFunc {
                                 .replaceAll("[()&$]", "")
                                 + ptrn);
                         Matcher fMatchPtrns = fPtrns.matcher(description.trim().toLowerCase());
-                        if(cntCircle == 1){
-                            if (fMatchPtrns.find()){
+                        if (cntCircle == 1) {
+                            if (fMatchPtrns.find()) {
                                 finds = true;
                             }
-                        }else {
-                            if (fMatchPtrns.find() && finds && cntCircle > 1){
+                        } else {
+                            if (fMatchPtrns.find() && finds && cntCircle > 1) {
                                 totalFinds = true;
                             }
                         }
@@ -808,11 +745,11 @@ public class UploadExcelFunc {
                     Pattern fPtrn = Pattern.compile(ptrn + descr.trim().toLowerCase()
                             .replaceAll("[()&$]", "") + ptrn);
                     Matcher fMatcher = fPtrn.matcher(description.trim().toLowerCase());
-                    if(cntCircle == 1){
+                    if (cntCircle == 1) {
                         if (fMatcher.find()) {
                             finds = true;
                         }
-                    }else {
+                    } else {
                         if (fMatcher.find() && finds && cntCircle > 1) {
                             totalFinds = true;
                         }
@@ -856,8 +793,6 @@ public class UploadExcelFunc {
         /* Проходим по всем тэгам из справочника */
         for (ToshlCorrectTags correctTags : toshlCorrectTagsList) {
 
-
-            //toshlCorrectTagsList.forEach((ToshlCorrectTags correctTags) -> {
             Pattern pTags;
             Pattern pCategory;
 
@@ -878,18 +813,16 @@ public class UploadExcelFunc {
             }
 
             if (mTags != null && mCategory != null) {
-                //System.out.println(mTags.find());
-                //System.out.println(mCategory.find());
                 if (mTags.find() && mCategory.find()) {
-                    if(correctTags.getDateStTag() != null){
-                        if((toshlExtract.getDate().compareTo(correctTags.getDateStTag()) == 0 ||
+                    if (correctTags.getDateStTag() != null) {
+                        if ((toshlExtract.getDate().compareTo(correctTags.getDateStTag()) == 0 ||
                                 toshlExtract.getDate().compareTo(correctTags.getDateStTag()) > 0) &&
                                 (toshlExtract.getDate().compareTo(correctTags.getDateEndTag()) == 0 ||
-                                        toshlExtract.getDate().compareTo(correctTags.getDateEndTag()) < 0)){
+                                        toshlExtract.getDate().compareTo(correctTags.getDateEndTag()) < 0)) {
                             toshlExtract.setCorrectTag(correctTags);
                             return ok;
                         }
-                    }else{
+                    } else {
                         toshlExtract.setCorrectTag(correctTags);
                     }
 
@@ -904,16 +837,16 @@ public class UploadExcelFunc {
         return ok;
     }
 
-    private void rewriteSummaryData(Sheet sheet){
+    private void rewriteSummaryData(Sheet sheet) {
         List<PaysToInvestors> paysToInvestors =
                 paysToInvestorsService.findAll();
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
         for (Row row : sheet) {
 
             Calendar calendar = Calendar.getInstance();
-            try{
+            try {
                 calendar.setTime(sdf.parse(row.getCell(1).toString()));
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }
 
@@ -925,7 +858,7 @@ public class UploadExcelFunc {
             lastName = row.getCell(2).toString();
             Users user = userService
                     .findByLastName(lastName);
-            if(!Objects.equals(user, null)){
+            if (!Objects.equals(user, null)) {
                 userId = user.getId();
             }
 
@@ -934,9 +867,9 @@ public class UploadExcelFunc {
                 Calendar summaryCal = Calendar.getInstance();
                 summaryCal.setTime(pti.getEndDate());
 
-                if(pti.getFacility().equals(row.getCell(0).toString()) &&
-                    summaryCal.get(Calendar.MONTH) == calendar.get(Calendar.MONTH) &&
-                        pti.getInvestorId().equals(finalUserId)){
+                if (pti.getFacility().equals(row.getCell(0).toString()) &&
+                        summaryCal.get(Calendar.MONTH) == calendar.get(Calendar.MONTH) &&
+                        pti.getInvestorId().equals(finalUserId)) {
                     pti.setOstatokPoDole(Float.parseFloat(row.getCell(3).toString()));
                 }
             });
@@ -947,8 +880,7 @@ public class UploadExcelFunc {
 
     }
 
-    private void rewriteInvestorsFlows(Sheet sheet){
-        //investorsFlowsService.delete();
+    private void rewriteInvestorsFlows(Sheet sheet) {
 
         List<InvestorsFlows> investorsFlowsTmp = investorsFlowsService.findAll();
         List<Rooms> rooms = roomsService.findAll();
@@ -959,22 +891,22 @@ public class UploadExcelFunc {
 
         for (Row row : sheet) {
             cel++;
-            if(cel > 1){
-                if(row.getCell(0) != null && row.getCell(0).getCellTypeEnum() != CellType.BLANK){
+            if (cel > 1) {
+                if (row.getCell(0) != null && row.getCell(0).getCellTypeEnum() != CellType.BLANK) {
                     Calendar calendar = Calendar.getInstance();
-                    try{
+                    try {
                         calendar.setTime(sdf.parse(row.getCell(0).getDateCellValue().toString()));
-                    }catch (Exception ex){
+                    } catch (Exception ex) {
                         System.out.println(ex.getMessage());
                     }
 
                     java.time.LocalDate cal = calendar.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-                    try{
+                    try {
                         for (int i = 0; i < row.getLastCellNum(); i++) {
                             row.getCell(i).setCellType(CellType.STRING);
                         }
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         System.out.println(e.getMessage());
                         System.out.println(cel);
                     }
@@ -1004,7 +936,7 @@ public class UploadExcelFunc {
 
                     investorsFlows.setRoom(rooms.stream()
                             .filter(r -> r.getRoom().equalsIgnoreCase(row.getCell(3).getStringCellValue()))
-                    .findFirst().orElse(null));
+                            .findFirst().orElse(null));
 
                     investorsFlows.setInvestor(user);
                     investorsFlows.setShareKind(row.getCell(5).getStringCellValue());
@@ -1045,7 +977,7 @@ public class UploadExcelFunc {
 
                             .collect(Collectors.toList());
 
-                    if(flowsList.size() <= 0){
+                    if (flowsList.size() <= 0) {
                         investorsFlowsList.add(investorsFlows);
                     }
                 }
@@ -1057,7 +989,7 @@ public class UploadExcelFunc {
 
     }
 
-    private void rewriteInvestorsFlowsSale(Sheet sheet){
+    private void rewriteInvestorsFlowsSale(Sheet sheet) {
 
         List<InvestorsFlowsSale> investorsFlowsSales = investorsFlowsSaleService.findAll();
         int cel = 0;
@@ -1068,31 +1000,31 @@ public class UploadExcelFunc {
 
         for (Row row : sheet) {
             cel++;
-            if(cel > 1){
-                if(row.getCell(0) != null && row.getCell(0).getCellTypeEnum() != CellType.BLANK){
+            if (cel > 1) {
+                if (row.getCell(0) != null && row.getCell(0).getCellTypeEnum() != CellType.BLANK) {
                     Calendar calendar = Calendar.getInstance();
-                    try{
+                    try {
                         calendar.setTime(sdf.parse(row.getCell(4).getDateCellValue().toString()));
-                    }catch (Exception ex){
+                    } catch (Exception ex) {
                         System.out.println(ex.getMessage());
                     }
 
                     java.time.LocalDate cal = calendar.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
                     Calendar dateSale = Calendar.getInstance();
-                    try{
+                    try {
                         dateSale.setTime(sdf.parse(row.getCell(35).getDateCellValue().toString()));
-                    }catch (Exception ex){
+                    } catch (Exception ex) {
                         System.out.println(ex.getMessage());
                     }
 
                     java.time.LocalDate calSale = dateSale.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-                    try{
+                    try {
                         for (int i = 0; i < row.getLastCellNum(); i++) {
                             row.getCell(i).setCellType(CellType.STRING);
                         }
-                    }catch (Exception ignored){
+                    } catch (Exception ignored) {
                     }
 
                     String lastName;
@@ -1121,14 +1053,14 @@ public class UploadExcelFunc {
                     investorsFlowsSale.setCashInUnderFacility(new BigDecimal(row.getCell(6).getStringCellValue()));
                     BigDecimal profitToCashingAuto;
                     BigDecimal profitToCashingMain;
-                    if(row.getCell(31).getStringCellValue().length() > 0){
+                    if (row.getCell(31).getStringCellValue().length() > 0) {
                         profitToCashingAuto = new BigDecimal(row.getCell(31).getStringCellValue());
-                    }else{
+                    } else {
                         profitToCashingAuto = BigDecimal.ZERO;
                     }
-                    if(row.getCell(32).getStringCellValue().length() > 0){
+                    if (row.getCell(32).getStringCellValue().length() > 0) {
                         profitToCashingMain = new BigDecimal(row.getCell(32).getStringCellValue());
-                    }else{
+                    } else {
                         profitToCashingMain = BigDecimal.ZERO;
                     }
                     investorsFlowsSale.setProfitToCashingAuto(profitToCashingAuto);
@@ -1160,7 +1092,7 @@ public class UploadExcelFunc {
 
                             .collect(Collectors.toList());
 
-                    if(flowsSaleList.size() <= 0){
+                    if (flowsSaleList.size() <= 0) {
                         investorsFlowsSaleList.add(investorsFlowsSale);
                     }
                 }
@@ -1172,7 +1104,7 @@ public class UploadExcelFunc {
 
     }
 
-    private void writeMainFlows(Sheet sheet){
+    private void writeMainFlows(Sheet sheet) {
         int numRow = 0;
         mainFlowsService.deleteAllFlows();
         List<UnderFacilities> underFacilitiesList = underFacilitiesService.findAll();
@@ -1180,13 +1112,13 @@ public class UploadExcelFunc {
         List<MainFlows> mainFlowsList = new ArrayList<>(0);
         for (Row row : sheet) {
             numRow++;
-            if(numRow > 1 && !Objects.equals(row.getCell(0), null) &&
-                    !Objects.equals(row.getCell(0).toString(), "")){
+            if (numRow > 1 && !Objects.equals(row.getCell(0), null) &&
+                    !Objects.equals(row.getCell(0).toString(), "")) {
                 MainFlows flows = new MainFlows();
                 Calendar calendar = Calendar.getInstance();
-                try{
+                try {
                     calendar.setTime(sdf.parse(row.getCell(2).toString()));
-                }catch (Exception ex){
+                } catch (Exception ex) {
                     System.out.println(ex.getMessage());
                 }
 
@@ -1226,11 +1158,11 @@ public class UploadExcelFunc {
 
     private static Workbook getWorkbook(InputStream inputStream, String excelPath) throws IOException {
         Workbook workbook;
-        if(excelPath.endsWith("xlsx")){
+        if (excelPath.endsWith("xlsx")) {
             workbook = new XSSFWorkbook(inputStream);
-        }else if(excelPath.endsWith("xls")){
+        } else if (excelPath.endsWith("xls")) {
             workbook = new HSSFWorkbook(inputStream);
-        }else{
+        } else {
             throw new IllegalArgumentException("Файл не является excel файлом");
         }
         return workbook;

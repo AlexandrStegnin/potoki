@@ -34,7 +34,7 @@ public class RoomsController {
         return "viewRooms";
     }
 
-    @GetMapping(value = { "/edit-room-{id}" })
+    @GetMapping(value = {"/edit-room-{id}"})
     public String editRoom(@PathVariable BigInteger id, ModelMap model) {
         String title = "Обновление данных по помещению";
         Rooms room = roomsService.findByIdWithUnderFacilities(id);
@@ -44,9 +44,9 @@ public class RoomsController {
         return "addRooms";
     }
 
-    @PostMapping(value = { "/edit-room-{id}" })
+    @PostMapping(value = {"/edit-room-{id}"})
     public String updateRoom(@ModelAttribute("room") Rooms room,
-                                      BindingResult result, ModelMap model) {
+                             BindingResult result, ModelMap model) {
         String ret = "списку помещений.";
         String redirectUrl = "/rooms";
         if (result.hasErrors()) {
@@ -62,25 +62,25 @@ public class RoomsController {
         return "registrationsuccess";
     }
 
-    @GetMapping(value = { "/delete-room-{id}" })
+    @GetMapping(value = {"/delete-room-{id}"})
     public String deleteRoom(@PathVariable BigInteger id) {
         roomsService.deleteById(id);
         return "redirect:/rooms";
     }
 
-    @GetMapping(value = { "/newRoom" })
+    @GetMapping(value = {"/newRoom"})
     public String newRoom(ModelMap model) {
         String title = "Добавление помещения";
         Rooms room = new Rooms();
-        model.addAttribute("room", room);
+        model.addAttribute("rooms", room);
         model.addAttribute("edit", false);
         model.addAttribute("title", title);
         return "addRooms";
     }
 
-    @PostMapping(value = { "/newRoom" })
-    public String saveRoom(@ModelAttribute("room") Rooms room,
-                                    BindingResult result, ModelMap model) {
+    @PostMapping(value = {"/newRoom"})
+    public String saveRoom(@ModelAttribute("rooms") Rooms room,
+                           BindingResult result, ModelMap model) {
 
         if (result.hasErrors()) {
             return "addRooms";

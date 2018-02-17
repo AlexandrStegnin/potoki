@@ -49,7 +49,7 @@ public class AllowanceIpController {
         return "viewallowanceip";
     }
 
-    @GetMapping(value = { "/edit-allowance-{id}" })
+    @GetMapping(value = {"/edit-allowance-{id}"})
     public String editAllowanceIp(@PathVariable BigInteger id, ModelMap model) {
         String title = "Обновление данных по надбавке ИП";
         AllowanceIp allowanceIp = allowanceIpService.findById(id);
@@ -59,9 +59,9 @@ public class AllowanceIpController {
         return "addallowanceip";
     }
 
-    @PostMapping(value = { "/edit-allowance-{id}" })
+    @PostMapping(value = {"/edit-allowance-{id}"})
     public String updateAllowance(@ModelAttribute("allowanceIp") AllowanceIp allowanceIp,
-                                           BindingResult result, ModelMap model) {
+                                  BindingResult result, ModelMap model) {
         String ret = "списку надбавок ИП.";
         String redirectUrl = "/allowanceip";
         if (result.hasErrors()) {
@@ -78,13 +78,13 @@ public class AllowanceIpController {
         return "registrationsuccess";
     }
 
-    @GetMapping(value = { "/delete-allowance-{id}" })
+    @GetMapping(value = {"/delete-allowance-{id}"})
     public String deleteAllowanceIp(@PathVariable BigInteger id) {
         allowanceIpService.deleteById(id);
         return "redirect:/allowanceip";
     }
 
-    @GetMapping(value = { "/newallowanceip" })
+    @GetMapping(value = {"/newallowanceip"})
     public String newAllowanceIp(ModelMap model) {
         String title = "Добавление надбавки ИП";
         AllowanceIp allowanceIp = new AllowanceIp();
@@ -94,9 +94,9 @@ public class AllowanceIpController {
         return "addallowanceip";
     }
 
-    @PostMapping(value = { "/newallowanceip" })
+    @PostMapping(value = {"/newallowanceip"})
     public String saveAllowanceIp(@ModelAttribute("allowanceIp") AllowanceIp allowanceIp,
-                                         BindingResult result, ModelMap model) {
+                                  BindingResult result, ModelMap model) {
 
         if (result.hasErrors()) {
             return "addallowanceip";

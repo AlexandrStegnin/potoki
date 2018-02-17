@@ -13,7 +13,7 @@ public class StringToCashTypeConverter implements Converter<String, CashTypes> {
     private CashTypesService cashTypesService;
 
     @Autowired
-    public StringToCashTypeConverter(CashTypesService cashTypesService){
+    public StringToCashTypeConverter(CashTypesService cashTypesService) {
         this.cashTypesService = cashTypesService;
     }
 

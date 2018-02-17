@@ -3,7 +3,7 @@ package com.art.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
+import java.io.Serializable;
 import java.math.BigInteger;
 
 @ToString
@@ -15,25 +15,27 @@ import java.math.BigInteger;
 
 @Entity
 @Table(name = "CashSources")
-public class CashSources {
+public class CashSources implements Serializable {
     private BigInteger id;
     private String cashSource;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "Id")
-    public BigInteger getId(){
+    public BigInteger getId() {
         return id;
     }
-    public void setId(BigInteger id){
+
+    public void setId(BigInteger id) {
         this.id = id;
     }
 
     @Column(name = "CashSource")
-    public String getCashSource(){
+    public String getCashSource() {
         return cashSource;
     }
-    public void setCashSource(String cashSource){
+
+    public void setCashSource(String cashSource) {
         this.cashSource = cashSource;
     }
 }

@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigInteger;
 
 @Getter
@@ -14,7 +15,7 @@ import java.math.BigInteger;
 @EqualsAndHashCode
 @Entity
 @Table(name = "ShareKind")
-public class ShareKind {
+public class ShareKind implements Serializable {
 
     private BigInteger id;
     private String shareKind;
@@ -24,15 +25,17 @@ public class ShareKind {
     public BigInteger getId() {
         return id;
     }
+
     public void setId(BigInteger id) {
         this.id = id;
     }
 
     @Column(name = "ShareKind")
-    public String getShareKind(){
+    public String getShareKind() {
         return shareKind;
     }
-    public void setShareKind(String shareKind){
+
+    public void setShareKind(String shareKind) {
         this.shareKind = shareKind;
     }
 

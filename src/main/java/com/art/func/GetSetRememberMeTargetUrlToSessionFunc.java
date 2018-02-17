@@ -14,19 +14,19 @@ public class GetSetRememberMeTargetUrlToSessionFunc {
         this.httpServletRequest = httpServletRequest;
     }
 
-    public void setRememberMeTargetUrlToSession(HttpServletRequest httpServletRequest){
+    public void setRememberMeTargetUrlToSession(HttpServletRequest httpServletRequest) {
         HttpSession session = httpServletRequest.getSession(false);
-        if(session!=null){
+        if (session != null) {
             session.setAttribute("targetUrl", "/admin");
         }
     }
 
-    public String getRememberMeTargetUrlFromSession(HttpServletRequest httpServletRequest){
+    public String getRememberMeTargetUrlFromSession(HttpServletRequest httpServletRequest) {
         String targetUrl = "";
         HttpSession session = httpServletRequest.getSession(false);
-        if(session!=null){
-            targetUrl = session.getAttribute("targetUrl")==null?""
-                    :session.getAttribute("targetUrl").toString();
+        if (session != null) {
+            targetUrl = session.getAttribute("targetUrl") == null ? ""
+                    : session.getAttribute("targetUrl").toString();
         }
         return targetUrl;
     }

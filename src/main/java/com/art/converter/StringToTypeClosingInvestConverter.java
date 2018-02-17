@@ -14,16 +14,16 @@ public class StringToTypeClosingInvestConverter implements Converter<String, Typ
     @Resource(name = "typeClosingInvestService")
     private TypeClosingInvestService typeClosingInvestService;
 
-    public StringToTypeClosingInvestConverter(TypeClosingInvestService typeClosingInvestService){
+    public StringToTypeClosingInvestConverter(TypeClosingInvestService typeClosingInvestService) {
         this.typeClosingInvestService = typeClosingInvestService;
     }
 
     public TypeClosingInvest convert(String id) {
-        TypeClosingInvest typeClosingInvest = null;
-        try{
+        TypeClosingInvest typeClosingInvest;
+        try {
             BigInteger IntId = new BigInteger(id);
             typeClosingInvest = typeClosingInvestService.findById(IntId);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             typeClosingInvest = typeClosingInvestService.findByTypeClosingInvest(id);
         }
         return typeClosingInvest;

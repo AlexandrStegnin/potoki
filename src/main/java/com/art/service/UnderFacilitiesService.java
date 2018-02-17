@@ -29,37 +29,31 @@ public class UnderFacilitiesService {
         return underFacilitiesRepository.findAll();
     }
 
-    public UnderFacilities findByUnderFacility(String underFacility){
+    public UnderFacilities findByUnderFacility(String underFacility) {
         return underFacilitiesRepository.findByUnderFacility(underFacility);
     }
 
-    public UnderFacilities findById(BigInteger id){
+    public UnderFacilities findById(BigInteger id) {
         return underFacilitiesRepository.findOne(id);
     }
 
-    /*
-    public UnderFacilities update(UnderFacilities underFacilities){
-        return underFacilitiesRepository.saveAndFlush(underFacilities);
-    }
-    */
-
-    public void deleteById(BigInteger id){
+    public void deleteById(BigInteger id) {
         underFacilitiesRepository.delete(id);
     }
 
-    public void create(UnderFacilities underFacilities){
+    public void create(UnderFacilities underFacilities) {
         underFacilitiesRepository.saveAndFlush(underFacilities);
     }
 
-    public List<UnderFacilities> findByFacilityId(BigInteger id){
+    public List<UnderFacilities> findByFacilityId(BigInteger id) {
         return underFacilitiesRepository.findByFacilityId(id);
     }
 
-    public void updateList(List<UnderFacilities> underFacilitiesList){
+    public void updateList(List<UnderFacilities> underFacilitiesList) {
         underFacilitiesRepository.save(underFacilitiesList);
     }
 
-    public List<UnderFacilities> initializeUnderFacilities(){
+    public List<UnderFacilities> initializeUnderFacilities() {
         List<UnderFacilities> underFacilitiesList = new ArrayList<>(0);
         UnderFacilities underFacilities = new UnderFacilities();
         underFacilities.setId(new BigInteger("0"));
@@ -69,7 +63,7 @@ public class UnderFacilitiesService {
         return underFacilitiesList;
     }
 
-    public List<UnderFacilities> findAllWithCriteriaApi(){
+    public List<UnderFacilities> findAllWithCriteriaApi() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<UnderFacilities> facilityesCriteriaQuery = cb.createQuery(UnderFacilities.class);
         Root<UnderFacilities> underFacilitiesRoot = facilityesCriteriaQuery.from(UnderFacilities.class);
@@ -80,7 +74,7 @@ public class UnderFacilitiesService {
         return em.createQuery(facilityesCriteriaQuery).getResultList();
     }
 
-    public UnderFacilities findByIdWithCriteriaApi(BigInteger id){
+    public UnderFacilities findByIdWithCriteriaApi(BigInteger id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<UnderFacilities> underFacilitiesCriteriaQuery = cb.createQuery(UnderFacilities.class);
         Root<UnderFacilities> underFacilitiesRoot = underFacilitiesCriteriaQuery.from(UnderFacilities.class);
@@ -91,7 +85,7 @@ public class UnderFacilitiesService {
         return em.createQuery(underFacilitiesCriteriaQuery).getSingleResult();
     }
 
-    public void update(UnderFacilities underFacilities){
+    public void update(UnderFacilities underFacilities) {
         em.merge(underFacilities);
     }
 }

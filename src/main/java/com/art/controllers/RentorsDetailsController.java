@@ -1,6 +1,5 @@
 package com.art.controllers;
 
-import com.art.func.GetPrincipalFunc;
 import com.art.model.Facilities;
 import com.art.model.RentorsDetails;
 import com.art.model.Users;
@@ -23,9 +22,6 @@ import java.util.List;
 @Controller
 public class RentorsDetailsController {
 
-    @Resource(name = "getPrincipalFunc")
-    private GetPrincipalFunc getPrincipalFunc;
-
     @Resource(name = "rentorsDetailsService")
     private RentorsDetailsService rentorsDetailsService;
 
@@ -44,22 +40,20 @@ public class RentorsDetailsController {
         List<RentorsDetails> rentorsDetails = rentorsDetailsService.findAll();
 
         model.addAttribute("rentorsDetails", rentorsDetails);
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
 
         return "viewrentorsdetails";
     }
 
-    @GetMapping(value = { "/newdetails" })
+    @GetMapping(value = {"/newdetails"})
     public String newDetails(ModelMap model) {
 
         RentorsDetails rentorsDetails = new RentorsDetails();
         model.addAttribute("rentorsDetails", rentorsDetails);
         model.addAttribute("edit", false);
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         return "adddetails";
     }
 
-    @PostMapping(value = { "/newdetails" })
+    @PostMapping(value = {"/newdetails"})
     public String saveDetails(@ModelAttribute("rentorsDetails") RentorsDetails rentorsDetails,
                               BindingResult result, ModelMap model) {
 
@@ -73,27 +67,22 @@ public class RentorsDetailsController {
 
         model.addAttribute("success", "Реквизиты арендатора по объекту " + rentorsDetails.getFacility()
                 .getFacility() + " успешно добавлены.");
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         model.addAttribute("redirectUrl", redirectUrl);
         model.addAttribute("ret", ret);
         return "registrationsuccess";
     }
 
-    @GetMapping(value = { "/edit-details-{id}" })
+    @GetMapping(value = {"/edit-details-{id}"})
     public String editDetails(@PathVariable BigInteger id, ModelMap model) {
 
         RentorsDetails rentorsDetails = rentorsDetailsService.findById(id);
 
         model.addAttribute("rentorsDetails", rentorsDetails);
         model.addAttribute("edit", true);
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         return "adddetails";
     }
 
-    /**
-     * Обновление объекта в базе данных
-     */
-    @PostMapping(value = { "/edit-details-{id}" })
+    @PostMapping(value = {"/edit-details-{id}"})
     public String updateDetails(@ModelAttribute("rentorsDetails") RentorsDetails rentorsDetails,
                                 BindingResult result, ModelMap model) {
         String ret = "реквизитам арендаторов.";
@@ -106,7 +95,6 @@ public class RentorsDetailsController {
 
         model.addAttribute("success", "Реквизиты арендатора по объекту " + rentorsDetails.getFacility()
                 .getFacility() + " успешно обновлены.");
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         model.addAttribute("redirectUrl", redirectUrl);
         model.addAttribute("ret", ret);
         return "registrationsuccess";
@@ -115,18 +103,12 @@ public class RentorsDetailsController {
     /**
      * Удаление объекта по ID.
      */
-    @GetMapping(value = { "/delete-details-{id}" })
+    @GetMapping(value = {"/delete-details-{id}"})
     public String deleteDetails(@PathVariable BigInteger id) {
         rentorsDetailsService.deleteById(id);
         return "redirect:/rentorsdetails";
     }
 
-    /*
-    @ModelAttribute("rentors")
-    public List<Users> initializeRentors() {
-        return userService.findManagers(stuffService.findByStuff("Арендатор").getId());
-    }
-    */
     @ModelAttribute("rentors")
     public List<Users> initializeRentors() {
         return userService.findRentors(stuffService.findByStuff("Арендатор").getId());

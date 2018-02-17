@@ -26,7 +26,7 @@
 <div class="generic-container">
     <%@include file="authheader.jsp" %>
     <div class="well lead">${title}</div>
-    <form:form method="POST" modelAttribute="room" class="form-horizontal">
+    <form:form method="POST" modelAttribute="rooms" class="form-horizontal">
         <form:input type="hidden" path="id" id="id"/>
 
         <div class="row">
@@ -41,7 +41,7 @@
 
         <div class="row">
             <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="rooms">Подобъект:</label>
+                <label class="col-md-3 control-lable" for="rooms">Помещение:</label>
                 <div class="col-md-7">
                     <form:input type="text" path="room" id="rooms" class="form-control input-sm"/>
                 </div>

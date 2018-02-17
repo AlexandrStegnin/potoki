@@ -18,31 +18,31 @@ public class NewCashDetailsService {
     @Resource(name = "newCashDetailsRepository")
     private NewCashDetailsRepository newCashDetailsRepository;
 
-    public NewCashDetails create(NewCashDetails newCashDetails){
+    public NewCashDetails create(NewCashDetails newCashDetails) {
         return newCashDetailsRepository.saveAndFlush(newCashDetails);
     }
 
-    public List<NewCashDetails> findAll(){
+    public List<NewCashDetails> findAll() {
         return newCashDetailsRepository.findAll();
     }
 
-    public NewCashDetails findById(BigInteger id){
+    public NewCashDetails findById(BigInteger id) {
         return newCashDetailsRepository.findOne(id);
     }
 
-    public NewCashDetails update(NewCashDetails newCashDetails){
+    public NewCashDetails update(NewCashDetails newCashDetails) {
         return newCashDetailsRepository.saveAndFlush(newCashDetails);
     }
 
-    public NewCashDetails findByNewCashDetail(String newCashDetail){
+    public NewCashDetails findByNewCashDetail(String newCashDetail) {
         return newCashDetailsRepository.findByNewCashDetail(newCashDetail);
     }
 
-    public void deleteById(BigInteger id){
+    public void deleteById(BigInteger id) {
         newCashDetailsRepository.delete(id);
     }
 
-    public List<NewCashDetails> initializeNewCashDetails(){
+    public List<NewCashDetails> initializeNewCashDetails() {
         List<NewCashDetails> newCashDetailsList = new ArrayList<>(0);
         NewCashDetails newCashDetails = new NewCashDetails();
         newCashDetails.setId(new BigInteger("0"));

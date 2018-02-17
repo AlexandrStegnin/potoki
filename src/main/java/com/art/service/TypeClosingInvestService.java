@@ -20,7 +20,7 @@ public class TypeClosingInvestService {
     @PersistenceContext(name = "persistanceUnit")
     private EntityManager entityManager;
 
-    public List<TypeClosingInvest> findAllWithCriteriaApi (){
+    public List<TypeClosingInvest> findAllWithCriteriaApi() {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 
         CriteriaQuery<TypeClosingInvest> typeClosingInvestCriteriaQuery = cb.createQuery(TypeClosingInvest.class);
@@ -30,21 +30,21 @@ public class TypeClosingInvestService {
         return entityManager.createQuery(typeClosingInvestCriteriaQuery).getResultList();
     }
 
-    public TypeClosingInvest findById(BigInteger id){
+    public TypeClosingInvest findById(BigInteger id) {
         return this.entityManager.find(TypeClosingInvest.class, id);
     }
 
-    public TypeClosingInvest findByTypeClosingInvest(String typeClosingInvest){
+    public TypeClosingInvest findByTypeClosingInvest(String typeClosingInvest) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<TypeClosingInvest> typeClosingInvestCriteriaQuery = cb.createQuery(TypeClosingInvest.class);
         Root<TypeClosingInvest> typeClosingInvestRoot = typeClosingInvestCriteriaQuery.from(TypeClosingInvest.class);
         typeClosingInvestCriteriaQuery.select(typeClosingInvestRoot);
         typeClosingInvestCriteriaQuery.where(cb.equal(typeClosingInvestRoot.get(TypeClosingInvest_.typeClosingInvest), typeClosingInvest));
 
-        return  entityManager.createQuery(typeClosingInvestCriteriaQuery).getSingleResult();
+        return entityManager.createQuery(typeClosingInvestCriteriaQuery).getSingleResult();
     }
 
-    public void deleteById(BigInteger id){
+    public void deleteById(BigInteger id) {
         CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
         CriteriaDelete<TypeClosingInvest> delete = cb.createCriteriaDelete(TypeClosingInvest.class);
         Root<TypeClosingInvest> typeClosingInvestRoot = delete.from(TypeClosingInvest.class);
@@ -52,7 +52,7 @@ public class TypeClosingInvestService {
         this.entityManager.createQuery(delete).executeUpdate();
     }
 
-    public void update(TypeClosingInvest typeClosingInvest){
+    public void update(TypeClosingInvest typeClosingInvest) {
         CriteriaBuilder criteriaBuilder = this.entityManager.getCriteriaBuilder();
         CriteriaUpdate<TypeClosingInvest> update = criteriaBuilder.createCriteriaUpdate(TypeClosingInvest.class);
         Root<TypeClosingInvest> typeClosingInvestRoot = update.from(TypeClosingInvest.class);
@@ -61,11 +61,11 @@ public class TypeClosingInvestService {
         this.entityManager.createQuery(update).executeUpdate();
     }
 
-    public void create(TypeClosingInvest typeClosingInvest){
+    public void create(TypeClosingInvest typeClosingInvest) {
         this.entityManager.persist(typeClosingInvest);
     }
 
-    public List<TypeClosingInvest> init(){
+    public List<TypeClosingInvest> init() {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<TypeClosingInvest> typeClosingInvestCriteriaQuery = cb.createQuery(TypeClosingInvest.class);
         Root<TypeClosingInvest> typeClosingInvestRoot = typeClosingInvestCriteriaQuery.from(TypeClosingInvest.class);

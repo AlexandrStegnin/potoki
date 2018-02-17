@@ -9,6 +9,7 @@ public class IsRememberMeAuthenticatedFunc {
 
     private final SecurityContextHolder securityContextHolder;
     private boolean isRememberMe;
+
     @Autowired
     public IsRememberMeAuthenticatedFunc(SecurityContextHolder securityContextHolder) {
         this.securityContextHolder = securityContextHolder;
@@ -17,7 +18,7 @@ public class IsRememberMeAuthenticatedFunc {
     private boolean isRememberMeAuthenticated(SecurityContextHolder securityContextHolder) {
 
         Authentication authentication =
-                securityContextHolder.getContext().getAuthentication();
+                SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
             return false;
         }

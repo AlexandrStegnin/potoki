@@ -15,8 +15,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 import java.io.File;
 
-public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer{
-    //private int maxUploadSizeInMb = 5 * 1024 * 1024; // 5 MB
+public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override
     public void onStartup(ServletContext container) {
@@ -43,7 +42,7 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] {WebConfig.class /*, UserRepository.class*/}; // We dont need any special servlet config yet.
+        return new Class[]{WebConfig.class}; // We dont need any special servlet config yet.
     }
 
     @Override
@@ -53,7 +52,7 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
 
     @Override
     protected String[] getServletMappings() {
-        return new String[] {"/"};
+        return new String[]{"/"};
     }
 
     @Override
@@ -61,25 +60,14 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
         CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
         encodingFilter.setEncoding("UTF-8");
         encodingFilter.setForceEncoding(true);
-        //DelegatingFilterProxy securityFilterChain = new DelegatingFilterProxy("springSecurityFilterChain");
 
-        return new Filter[] { new HiddenHttpMethodFilter(), encodingFilter,
-                new HttpPutFormContentFilter() };
-        /*return new Filter[] {encodingFilter , securityFilterChain};*/
+        return new Filter[]{new HiddenHttpMethodFilter(), encodingFilter,
+                new HttpPutFormContentFilter()};
 
     }
 
     @Override
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
-
-        // upload temp file will put here
-        //File uploadDirectory = new File(System.getProperty("java.io.tmpdir"));
-
-        // register a MultipartConfigElement
-        //MultipartConfigElement multipartConfigElement =
-        //        new MultipartConfigElement(uploadDirectory.getAbsolutePath(),
-        //                maxUploadSizeInMb, maxUploadSizeInMb * 2, maxUploadSizeInMb / 2);
-
         registration.setMultipartConfig(getMultipartConfigElement());
 
     }
@@ -95,7 +83,6 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
     private static final long MAX_REQUEST_SIZE = 20971520; // 20MB : Total request size containing Multi part.
 
     private static final int FILE_SIZE_THRESHOLD = 0; // Size threshold after which files will be written to disk
-
 
 
 }

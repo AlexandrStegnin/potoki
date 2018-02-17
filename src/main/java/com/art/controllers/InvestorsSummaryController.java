@@ -1,7 +1,6 @@
 package com.art.controllers;
 
 import com.art.func.GetPrincipalFunc;
-import com.art.func.GlobalFunctions;
 import com.art.func.UploadExcelFunc;
 import com.art.model.*;
 import com.art.model.supporting.*;
@@ -38,23 +37,14 @@ public class InvestorsSummaryController {
     @Resource(name = "facilityService")
     private FacilityService facilityService;
 
-    @Resource(name = "paysToInvestorsService")
-    private PaysToInvestorsService paysToInvestorsService;
-
     @Resource(name = "uploadExcelFunc")
     private UploadExcelFunc uploadExcelFunc;
 
     @Resource(name = "investorsCashService")
     private InvestorsCashService investorsCashService;
 
-    @Resource(name = "mainFlowsService")
-    private MainFlowsService mainFlowsService;
-
     @Resource(name = "userService")
     private UserService userService;
-
-    @Resource(name = "globalFunctions")
-    private GlobalFunctions globalFunctions;
 
     @Resource(name = "investorsFlowsService")
     private InvestorsFlowsService investorsFlowsService;
@@ -75,20 +65,17 @@ public class InvestorsSummaryController {
     public String investorsSummaryPage(ModelMap model) {
 
         List<InvestorsSummary> investorsSummaries = historyRelationshipsService.getInvestorsSummary(
-            getPrincipalFunc.getPrincipalId()
+                getPrincipalFunc.getPrincipalId()
         );
         model.addAttribute("searchSummary", new SearchSummary());
         model.addAttribute("investorsSummaries", investorsSummaries);
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
-
-        //List<UserFacilities> fList = facilityService.getInvestorsFacility(getPrincipalFunc.getPrincipalId());
-
         return "investorssummary";
     }
 
     @RequestMapping(value = "/investorssummarywithfacility", method = RequestMethod.POST,
-            produces="application/json;charset=UTF-8")
-    public @ResponseBody String investorsSummaryWithFacilityPage(@RequestBody SearchSummary searchSummary) {
+            produces = "application/json;charset=UTF-8")
+    public @ResponseBody
+    String investorsSummaryWithFacilityPage(@RequestBody SearchSummary searchSummary) {
         SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
         Locale RU = new Locale("ru", "RU");
         NumberFormat fmt = NumberFormat.getCurrencyInstance(RU);
@@ -99,23 +86,20 @@ public class InvestorsSummaryController {
 
         Date dateBeg = new Date();
         Date dateEnd = new Date();
-        if(searchSummary.getDateStart() == null){
+        if (searchSummary.getDateStart() == null) {
             dateBeg = tempList.get(0).getEnd_date();
-        }else{
+        } else {
             try {
-                dateBeg = formatDate.parse(formatDate.format(searchSummary.getDateStart())) ;
+                dateBeg = formatDate.parse(formatDate.format(searchSummary.getDateStart()));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         }
-
-        //System.out.println(formatDate.format(dateBeg));
-
-        if(searchSummary.getDateEnd() == null){
-            dateEnd = tempList.get(tempList.size()-1).getEnd_date();
-        }else{
+        if (searchSummary.getDateEnd() == null) {
+            dateEnd = tempList.get(tempList.size() - 1).getEnd_date();
+        } else {
             try {
-                dateEnd = formatDate.parse(formatDate.format(searchSummary.getDateEnd())) ;
+                dateEnd = formatDate.parse(formatDate.format(searchSummary.getDateEnd()));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -123,37 +107,26 @@ public class InvestorsSummaryController {
         Date finalDateBeg = dateBeg;
         Date finalDateEnd = dateEnd;
 
-        if(!Objects.equals(searchSummary.getFacility(), "Выберите объект")){
+        if (!Objects.equals(searchSummary.getFacility(), "Выберите объект")) {
 
             investorsSummaries = tempList.stream()
                     .filter(summaries -> summaries.getFacility().equals(searchSummary.getFacility()))
                     .filter(summaries ->
                             (summaries.getEnd_date().compareTo(finalDateBeg) == 0 ||
-                                    summaries.getEnd_date().compareTo(finalDateBeg) == 1) &&
+                                    summaries.getEnd_date().compareTo(finalDateBeg) > 0) &&
                                     (summaries.getEnd_date().compareTo(finalDateEnd) == 0 ||
-                                            summaries.getEnd_date().compareTo(finalDateEnd) == -1))
+                                            summaries.getEnd_date().compareTo(finalDateEnd) < 0))
                     .collect(Collectors.toList());
-        }else{
+        } else {
 
             investorsSummaries = tempList.stream()
                     .filter(summaries ->
                             (summaries.getEnd_date().compareTo(finalDateBeg) == 0 ||
-                                    summaries.getEnd_date().compareTo(finalDateBeg) == 1) &&
+                                    summaries.getEnd_date().compareTo(finalDateBeg) > 0) &&
                                     (summaries.getEnd_date().compareTo(finalDateEnd) == 0 ||
-                                            summaries.getEnd_date().compareTo(finalDateEnd) == -1))
+                                            summaries.getEnd_date().compareTo(finalDateEnd) < 0))
                     .collect(Collectors.toList());
         }
-
-        /*
-        if(Objects.equals(searchSummary.getFacility(), "Выберите объект")){
-            investorsSummaries = historyRelationshipsService.getInvestorsSummary(
-                    getPrincipalFunc.getPrincipalId());
-        }else{
-            String facility = facilityService.findByFacility(searchSummary.getFacility()).getFacility();
-            investorsSummaries = historyRelationshipsService.getInvestorsSummaryWithFacility(
-                    getPrincipalFunc.getPrincipalId(), facility);
-        }
-        */
 
         StringBuilder result;
         result = new StringBuilder("<thead><tr><th>Название объекта</th><th>Период</th><th>Вид оплаты (аренда, продажа)</th>" +
@@ -182,7 +155,7 @@ public class InvestorsSummaryController {
     }
 
     @GetMapping(value = "/paysToInv")
-    public ModelAndView paysToInvPage(){
+    public ModelAndView paysToInvPage() {
         ModelAndView modelAndView = new ModelAndView("viewinvestorsflows");
         SearchSummary searchSummary = new SearchSummary();
         modelAndView.addObject("searchSummary", searchSummary);
@@ -190,7 +163,6 @@ public class InvestorsSummaryController {
         FileBucket fileModel = new FileBucket();
         modelAndView.addObject("fileBucket", fileModel);
         List<InvestorsFlows> investorsFlows = investorsFlowsService.findAll();
-        modelAndView.addObject("loggedinuser", getPrincipalFunc.getLogin());
         modelAndView.addObject("investorsFlows", investorsFlows);
         return modelAndView;
     }
@@ -211,12 +183,11 @@ public class InvestorsSummaryController {
     }
 
     @GetMapping(value = "/investorsCash")
-    public ModelAndView iCashPage(){
+    public ModelAndView iCashPage() {
         ModelAndView modelAndView = new ModelAndView("investorsCashSums");
         modelAndView.addObject("loggedinuser", getPrincipalFunc.getLogin());
         List<InvestorsTotalSum> investorsCashSums = investorsCashService.getInvestorsCashSums(
                 getPrincipalFunc.getPrincipalId());
-        modelAndView.addObject("loggedinuser", getPrincipalFunc.getLogin());
         modelAndView.addObject("investorsCashSums", investorsCashSums);
         return modelAndView;
     }
@@ -249,17 +220,17 @@ public class InvestorsSummaryController {
     }
 
     @ModelAttribute("investorsTypes")
-    public List<InvestorsTypes> initializeInvestorsTypes(){
+    public List<InvestorsTypes> initializeInvestorsTypes() {
         return investorsTypesService.initializeInvestorsTypes();
     }
 
     @ModelAttribute("shareKinds")
-    public List<ShareKind> initializeShareKinds(){
+    public List<ShareKind> initializeShareKinds() {
         return shareKindService.init();
     }
 
     @ModelAttribute("rooms")
-    public List<Rooms> initializeRooms(){
+    public List<Rooms> initializeRooms() {
         return roomsService.init();
     }
 }

@@ -10,8 +10,12 @@ import java.util.List;
 @Repository
 public interface AlphaCorrectTagsRepository extends JpaRepository<AlphaCorrectTags, BigInteger> {
     AlphaCorrectTags findById(BigInteger id);
+
     List<AlphaCorrectTags> findByCorrectTagIsNotNull();
+
     AlphaCorrectTags findByInnAndAccountAndCorrectTag(String inn, String account, String correctTag);
+
     AlphaCorrectTags findByCorrectTagAndFacilityId(String correctTag, BigInteger facilityId);
+
     List<AlphaCorrectTags> findByFacilityId(BigInteger facilityId);
 }

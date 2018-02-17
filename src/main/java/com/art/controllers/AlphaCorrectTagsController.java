@@ -44,7 +44,7 @@ public class AlphaCorrectTagsController {
         return "viewalphacorrecttags";
     }
 
-    @GetMapping(value = { "/newalphatag" })
+    @GetMapping(value = {"/newalphatag"})
     public String newAlphaTag(ModelMap model) {
         String title = "Добавление тэга Альфа банка";
         AlphaCorrectTags alphaCorrectTags = new AlphaCorrectTags();
@@ -58,10 +58,10 @@ public class AlphaCorrectTagsController {
         return "addalphatags";
     }
 
-    @PostMapping(value = { "/newalphatag" })
+    @PostMapping(value = {"/newalphatag"})
     public String saveAlphaTags(@ModelAttribute("alphaCorrectTags")
-                                                        AlphaCorrectTags alphaCorrectTags,
-                                                BindingResult result, ModelMap model) {
+                                        AlphaCorrectTags alphaCorrectTags,
+                                BindingResult result, ModelMap model) {
 
         if (result.hasErrors()) {
             return "addalphatags";
@@ -79,7 +79,7 @@ public class AlphaCorrectTagsController {
         return "registrationsuccess";
     }
 
-    @GetMapping(value = { "/edit-alphatags-{id}" })
+    @GetMapping(value = {"/edit-alphatags-{id}"})
     public String editAlphaTags(@PathVariable BigInteger id, ModelMap model) {
         String title = "Обновление данных по тэгам Альфа банка";
         AlphaCorrectTags alphaCorrectTags = alphaCorrectTagsService.findById(id);
@@ -97,7 +97,7 @@ public class AlphaCorrectTagsController {
      * This method will be called on form submission, handling POST request for
      * updating user in database. It also validates the user input
      */
-    @PostMapping(value = { "/edit-alphatags-{id}" })
+    @PostMapping(value = {"/edit-alphatags-{id}"})
     public String updateAlphaTags(
             @ModelAttribute("alphaCorrectTags") AlphaCorrectTags alphaCorrectTags,
             BindingResult result, ModelMap model) {
@@ -117,7 +117,7 @@ public class AlphaCorrectTagsController {
         return "registrationsuccess";
     }
 
-    @GetMapping(value = { "/delete-alphatags-{id}" })
+    @GetMapping(value = {"/delete-alphatags-{id}"})
     public String deleteAlphaTags(@PathVariable BigInteger id) {
         alphaCorrectTagsService.deleteById(id);
         return "redirect:/alphacorrecttags";

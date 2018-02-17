@@ -1,6 +1,5 @@
 package com.art.controllers;
 
-import com.art.func.GetPrincipalFunc;
 import com.art.model.InvestorsTypes;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
@@ -15,8 +14,6 @@ import java.util.List;
 
 @Controller
 public class InvestorsTypesController {
-    @Resource(name = "getPrincipalFunc")
-    private GetPrincipalFunc getPrincipalFunc;
 
     @Resource(name = "investorsTypesService")
     private InvestorsTypesService investorsTypesService;
@@ -27,23 +24,21 @@ public class InvestorsTypesController {
         List<InvestorsTypes> investorsTypes = investorsTypesService
                 .findAll();
         model.addAttribute("investorsTypes", investorsTypes);
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
 
         return "viewinvestorstypes";
     }
 
-    @GetMapping(value = { "/newinvtype" })
+    @GetMapping(value = {"/newinvtype"})
     public String newInvType(ModelMap model) {
         String title = "Добавление типа инвесторов";
         InvestorsTypes investorsTypes = new InvestorsTypes();
         model.addAttribute("investorsTypes", investorsTypes);
         model.addAttribute("edit", false);
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         model.addAttribute("title", title);
         return "addinvestorstype";
     }
 
-    @PostMapping(value = { "/saveinvtype" }, produces="application/json;charset=UTF-8")
+    @PostMapping(value = {"/saveinvtype"}, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     GenericResponse saveUser(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
@@ -55,23 +50,18 @@ public class InvestorsTypesController {
     }
 
 
-    @GetMapping(value = { "/edit-invtype-{id}" })
+    @GetMapping(value = {"/edit-invtype-{id}"})
     public String editInvType(@PathVariable BigInteger id, ModelMap model) {
         String title = "Обновление типов инвесторов";
         InvestorsTypes investorsTypes = investorsTypesService.findById(id);
 
         model.addAttribute("investorsTypes", investorsTypes);
         model.addAttribute("edit", true);
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         model.addAttribute("title", title);
         return "addinvestorstype";
     }
 
-    /**
-     * This method will be called on form submission, handling POST request for
-     * updating user in database. It also validates the user input
-     */
-    @PostMapping(value = { "/editinvtype" }, produces="application/json;charset=UTF-8")
+    @PostMapping(value = {"/editinvtype"}, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     GenericResponse updateSource(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
@@ -82,7 +72,7 @@ public class InvestorsTypesController {
         return response;
     }
 
-    @PostMapping(value = { "/deleteinvtype" }, produces="application/json;charset=UTF-8")
+    @PostMapping(value = {"/deleteinvtype"}, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     GenericResponse deleteSource(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();

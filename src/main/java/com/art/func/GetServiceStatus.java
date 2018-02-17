@@ -11,7 +11,7 @@ public class GetServiceStatus {
     @Resource(name = "serviceUnavailableService")
     private ServiceUnavailableService serviceUnavailableService;
 
-    public int getStatus(){
+    public int getStatus() {
         return serviceUnavailableService.getServiceUnavailable(new BigInteger("1"));
     }
 

@@ -18,34 +18,35 @@ public class BonusesService {
     @Resource(name = "bonusesRepository")
     private BonusesRepository bonusesRepository;
 
-    public Bonuses create(Bonuses bonuses){
+    public Bonuses create(Bonuses bonuses) {
         return bonusesRepository.saveAndFlush(bonuses);
     }
 
-    public List<Bonuses> findAll(){
+    public List<Bonuses> findAll() {
         return bonusesRepository.findAll();
     }
 
-    public Bonuses findById(BigInteger id){
+    public Bonuses findById(BigInteger id) {
         return bonusesRepository.findOne(id);
     }
 
-    public Bonuses update(Bonuses bonuses){
+    public Bonuses update(Bonuses bonuses) {
         return bonusesRepository.saveAndFlush(bonuses);
     }
 
-    public void deleteById(BigInteger id){
+    public void deleteById(BigInteger id) {
         bonusesRepository.delete(id);
     }
 
-    public List<Bonuses> findByManager(Users manager){
+    public List<Bonuses> findByManager(Users manager) {
         return bonusesRepository.findByManager(manager);
     }
 
-    public List<Bonuses> findByRentor(Users rentor){
+    public List<Bonuses> findByRentor(Users rentor) {
         return bonusesRepository.findByRentor(rentor);
     }
-    public List<Bonuses> updateList(List<Bonuses> bonuses){
+
+    public List<Bonuses> updateList(List<Bonuses> bonuses) {
         return bonusesRepository.save(bonuses);
     }
 }

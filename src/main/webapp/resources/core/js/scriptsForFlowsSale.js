@@ -22,11 +22,11 @@ jQuery(document).ready(function ($) {
 
     $(document).on('change', ':checkbox', function () {
         var id = $(this).attr('id');
-        if(typeof id === 'undefined'){
+        if (typeof id === 'undefined') {
             var cnt = checkChecked();
-            if(cnt > 0){
+            if (cnt > 0) {
                 blockUnblockDropdownMenus('unblock');
-            }else {
+            } else {
                 blockUnblockDropdownMenus('block');
             }
         }
@@ -37,13 +37,13 @@ jQuery(document).ready(function ($) {
     min = findMinMaxDate('#invFlowsSale tbody', 5, "min");
     populateStorageUnderFacilities('uFacilities');
     populateStorageRooms();
-    $("#search-form").submit(function(event) {
+    $("#search-form").submit(function (event) {
         enableSearchButton(false);
         event.preventDefault();
         searchFlows("allInvFlows");
     });
 
-    $("#filter-form").submit(function(event) {
+    $("#filter-form").submit(function (event) {
 
         // Disable the search button
         enableSearchButton(false);
@@ -71,11 +71,12 @@ jQuery(document).ready(function ($) {
     });
     */
 
-    $('table#invFlowsSale').find('> tbody').find('> tr').each(function(i){
+    $('table#invFlowsSale').find('> tbody').find('> tr').each(function (i) {
         $(this).data('passed', true);
     });
 
-    $(document).on('click', '#reinvestAll', function () {
+    $('#reinvestAll').on('click', function (event) {
+        event.preventDefault();
         $('#reInvestModal').modal({
             show: true
         })
@@ -88,17 +89,17 @@ jQuery(document).ready(function ($) {
 
     $(document).on('change', '#checkAll', function () {
         var checked = $('#checkIt').prop('checked');
-        if(!checked){
+        if (!checked) {
             $('#reinvestAll').prop('disabled', true);
-            $('table#invFlowsSale').find('> tbody').find('> tr').each(function(){
+            $('table#invFlowsSale').find('> tbody').find('> tr').each(function () {
                 $(this).find(':checkbox:not(:disabled)').prop('checked', false);
             });
-        }else{
+        } else {
             $('#reinvestAll').prop('disabled', false);
-            $('table#invFlowsSale').find('> tbody').find('> tr').each(function(){
-                if(!$(this).data('passed')){
+            $('table#invFlowsSale').find('> tbody').find('> tr').each(function () {
+                if (!$(this).data('passed')) {
                     $(this).find(':checkbox:not(:disabled)').prop('checked', false);
-                }else{
+                } else {
                     $(this).find(':checkbox:not(:disabled)').prop('checked', checked);
                 }
             });
@@ -142,11 +143,11 @@ jQuery(document).ready(function ($) {
         loadFlowsAjax("loadFlowsSaleAjax");
     });
 
-    $('#deleteAll').on('click',function (event) {
+    $('#deleteAll').on('click', function (event) {
         showLoader();
         event.preventDefault();
         var cashIdList = [];
-        $('table#invFlowsSale').find('> tbody').find('> tr').each(function(){
+        $('table#invFlowsSale').find('> tbody').find('> tr').each(function () {
             $(this).find(':checkbox:checked').not(':disabled').each(function () {
                 cashIdList.push($(this).closest('tr').attr('id'));
                 $(this).closest('tr').remove();
@@ -177,33 +178,32 @@ function loadFlowsAjax(action) {
 
     var data = new FormData();
     var fileBuckets = [];
-    $.each($('#file')[0].files, function(k, value)
-    {
+    $.each($('#file')[0].files, function (k, value) {
         data.append(k, value);
         fileBuckets.push(k, value);
     });
 
     showLoader();
     $.ajax({
-        type : "POST",
+        type: "POST",
         enctype: "multipart/form-data",
         processData: false,
-        contentType : false,
+        contentType: false,
         cache: false,
-        url : action,
-        data : data,
-        dataType : 'json',
-        timeout : 100000,
-        beforeSend: function(xhr){
+        url: action,
+        data: data,
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         },
-        success : function(data) {
+        success: function (data) {
             $('#popup_modal_form').find('#message').append(data.message);
             closeLoader();
             showPopup();
             closePopup();
         },
-        error : function(e) {
+        error: function (e) {
             $('#popup_modal_form').find('#message').append(e.error);
             closeLoader();
             showPopup();
@@ -222,98 +222,97 @@ function prepareFilter() {
     dateBegin = dateBegin + '';
     dateEnd = dateEnd + '';
 
-    if(facility !== 'Выберите объект' && underFacility !== 'Выберите подобъект' && investor !== 'Выберите инвестора'){
+    if (facility !== 'Выберите объект' && underFacility !== 'Выберите подобъект' && investor !== 'Выберите инвестора') {
         filters = [];
         apply_filter('#invFlowsSale tbody', 1, facility);
         apply_filter('#invFlowsSale tbody', 11, underFacility);
         apply_filter('#invFlowsSale tbody', 2, investor);
-    }else if(facility !== 'Выберите объект' && underFacility === 'Выберите подобъект' && investor === 'Выберите инвестора'){
+    } else if (facility !== 'Выберите объект' && underFacility === 'Выберите подобъект' && investor === 'Выберите инвестора') {
         filters = [];
         apply_filter('#invFlowsSale tbody', 1, facility);
-    }else if(facility === 'Выберите объект' && underFacility !== 'Выберите подобъект' && investor === 'Выберите инвестора'){
+    } else if (facility === 'Выберите объект' && underFacility !== 'Выберите подобъект' && investor === 'Выберите инвестора') {
         filters = [];
         apply_filter('#invFlowsSale tbody', 11, underFacility);
-    }else if(facility === 'Выберите объект' && underFacility === 'Выберите подобъект' && investor !== 'Выберите инвестора'){
+    } else if (facility === 'Выберите объект' && underFacility === 'Выберите подобъект' && investor !== 'Выберите инвестора') {
         filters = [];
         apply_filter('#invFlowsSale tbody', 2, investor);
-    }else if(facility === 'Выберите объект' && underFacility === 'Выберите подобъект' && investor === 'Выберите инвестора'){
+    } else if (facility === 'Выберите объект' && underFacility === 'Выберите подобъект' && investor === 'Выберите инвестора') {
         filters = [];
         apply_filter('#invFlowsSale tbody', 1, 'any');
-    }else if(facility !== 'Выберите объект' && underFacility !== 'Выберите подобъект' && investor === 'Выберите инвестора'){
+    } else if (facility !== 'Выберите объект' && underFacility !== 'Выберите подобъект' && investor === 'Выберите инвестора') {
         filters = [];
         apply_filter('#invFlowsSale tbody', 1, facility);
         apply_filter('#invFlowsSale tbody', 11, underFacility);
-    }else if(facility !== 'Выберите объект' && underFacility === 'Выберите подобъект' && investor !== 'Выберите инвестора'){
+    } else if (facility !== 'Выберите объект' && underFacility === 'Выберите подобъект' && investor !== 'Выберите инвестора') {
         filters = [];
         apply_filter('#invFlowsSale tbody', 1, facility);
         apply_filter('#invFlowsSale tbody', 2, investor);
-    }else if(facility === 'Выберите объект' && underFacility !== 'Выберите подобъект' && investor !== 'Выберите инвестора'){
+    } else if (facility === 'Выберите объект' && underFacility !== 'Выберите подобъект' && investor !== 'Выберите инвестора') {
         filters = [];
         apply_filter('#invFlowsSale tbody', 11, underFacility);
         apply_filter('#invFlowsSale tbody', 2, investor);
     }
 
-    if(dateBegin === '' && dateEnd === '') {
+    if (dateBegin === '' && dateEnd === '') {
         filters = [];
         apply_date_filter('#invFlowsSale tbody', 12, min, max, "any");
-    }else {
+    } else {
         filters = [];
         apply_date_filter('#invFlowsSale tbody', 12, dateBegin, dateEnd, "not");
     }
 }
 
-function apply_date_filter(table, col, dateFrom, dateTo, any){
+function apply_date_filter(table, col, dateFrom, dateTo, any) {
     var fDate, tDate, cDate;
     var parts;
     dateFrom = dateFrom + '';
     dateTo = dateTo + '';
-    if(dateFrom.length === 10){
+    if (dateFrom.length === 10) {
         parts = dateFrom.split("-");
         fDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-    }else{
+    } else {
         fDate = null;
     }
-    if(dateTo.length === 10){
+    if (dateTo.length === 10) {
         parts = dateTo.split("-");
         tDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-    }else{
+    } else {
         tDate = null;
     }
 
     filters[col] = any;
 
-    if(filters[col] !== 'any')
-    {
-        $(table).find('tr td:nth-child('+col+')').each(function(i){
+    if (filters[col] !== 'any') {
+        $(table).find('tr td:nth-child(' + col + ')').each(function (i) {
             var checkDate = $(this).text();
             parts = checkDate.split(".");
             cDate = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
-            if(fDate === null && tDate !== null){
-                if(cDate <= tDate && $(this).parent().data('passed')) {
+            if (fDate === null && tDate !== null) {
+                if (cDate <= tDate && $(this).parent().data('passed')) {
                     $(this).parent().data('passed', true);
-                }else {
+                } else {
                     $(this).parent().data('passed', false);
                 }
-            }else if(fDate !== null && tDate === null){
-                if(cDate >= fDate && $(this).parent().data('passed')) {
+            } else if (fDate !== null && tDate === null) {
+                if (cDate >= fDate && $(this).parent().data('passed')) {
                     $(this).parent().data('passed', true);
-                }else {
+                } else {
                     $(this).parent().data('passed', false);
                 }
-            }else{
-                if((cDate <= tDate && cDate >= fDate) && $(this).parent().data('passed')) {
+            } else {
+                if ((cDate <= tDate && cDate >= fDate) && $(this).parent().data('passed')) {
                     $(this).parent().data('passed', true);
-                }else {
+                } else {
                     $(this).parent().data('passed', false);
                 }
             }
         });
     }
 
-    $(table).find('tr').each(function(i){
-        if(!$(this).data('passed')){
+    $(table).find('tr').each(function (i) {
+        if (!$(this).data('passed')) {
             $(this).hide();
-        }else{
+        } else {
             $(this).show();
         }
     });
@@ -323,13 +322,13 @@ function findMinMaxDate(table, col, maxOrMin) {
     var max, min;
     var data = [];
     var cDate;
-    $(table).find('tr td:nth-child(' + col + ')').each(function(i){
+    $(table).find('tr td:nth-child(' + col + ')').each(function (i) {
         var checkDate = $(this).text();
         var parts = checkDate.split(".");
         cDate = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
         data.push(cDate);
     });
-    switch(maxOrMin){
+    switch (maxOrMin) {
         case "max":
             max = new Date(Math.max.apply(null, data));
             return max;
@@ -363,10 +362,10 @@ function prepareSaveInvestorsCash() {
 
     dateGived = $('#dateGiv').val();
 
-    if(dateGived.length === 0){
+    if (dateGived.length === 0) {
         $('#dateRepErr').css('display', 'block');
         err = true;
-    }else {
+    } else {
         $('#dateRepErr').css('display', 'none');
         err = false;
         dateGived = new Date(dateGived).getTime();
@@ -377,10 +376,10 @@ function prepareSaveInvestorsCash() {
         facility: $('#srcFacilities').find('option:selected').text()
     };
 
-    if(facility.facility.indexOf('Выберите объект') >= 0){
+    if (facility.facility.indexOf('Выберите объект') >= 0) {
         $('#facilityErr').css('display', 'block');
         err = true;
-    }else {
+    } else {
         $('#facilityErr').css('display', 'none');
         err = false;
     }
@@ -390,10 +389,10 @@ function prepareSaveInvestorsCash() {
         investorsType: $('#invType').find('option:selected').text()
     };
 
-    if(investorsType.investorsType.indexOf('Выберите вид инвестора') >= 0){
+    if (investorsType.investorsType.indexOf('Выберите вид инвестора') >= 0) {
         $('#invTypeErr').css('display', 'block');
         err = true;
-    }else {
+    } else {
         $('#invTypeErr').css('display', 'none');
         err = false;
     }
@@ -403,15 +402,15 @@ function prepareSaveInvestorsCash() {
         shareKind: $('#shareKindName').find('option:selected').text()
     };
 
-    if(shareKind.shareKind.indexOf('Выберите вид доли') >= 0){
+    if (shareKind.shareKind.indexOf('Выберите вид доли') >= 0) {
         $('#shareKindErr').css('display', 'block');
         err = true;
-    }else {
+    } else {
         $('#shareKindErr').css('display', 'none');
         err = false;
     }
 
-    if(err){
+    if (err) {
         closeLoader();
         return false;
     }
@@ -419,7 +418,7 @@ function prepareSaveInvestorsCash() {
 
     $('#reInvestModal').modal('hide');
     $('#reinvestAll').prop('disabled', true);
-    $('table#invFlowsSale').find('> tbody').find('> tr').each(function(){
+    $('table#invFlowsSale').find('> tbody').find('> tr').each(function () {
         $(this).find(':checkbox:checked').not(':disabled').each(function () {
             $(this).closest('tr').find('input:checkbox').prop('disabled', true);
             current = $(this).closest('tr');
@@ -488,25 +487,25 @@ function saveReinvestCash(cashes, reinvestIdList) {
     });
 
     $.ajax({
-        type : "POST",
-        contentType : "application/json;charset=utf-8",
-        url : "saveReCash",
-        data : JSON.stringify(search),
-        dataType : 'json',
-        timeout : 100000,
-        beforeSend: function(xhr){
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: "saveReCash",
+        data: JSON.stringify(search),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         },
-        success : function(data) {
+        success: function (data) {
             closeLoader();
             $('#msg').html(data.message);
             $('#msg-modal').modal('show');
         },
-        error : function(e) {
+        error: function (e) {
             closeLoader();
             console.log(e);
         },
-        done : function(e) {
+        done: function (e) {
             closeLoader();
             enableSearchButton(true);
         }
@@ -522,11 +521,12 @@ function showPopup() {
         .css('display', 'block') // убирaем у мoдaльнoгo oкнa display: none;
         .animate({opacity: 1, top: '50%'}, 200); // плaвнo прибaвляем прoзрaчнoсть oднoвременнo сo съезжaнием вниз
 }
+
 function closePopup() {
     setTimeout(function () {
         $('#popup_modal_form')
             .animate({opacity: 0, top: '45%'}, 200,  // плaвнo меняем прoзрaчнoсть нa 0 и oднoвременнo двигaем oкнo вверх
-                function(){ // пoсле aнимaции
+                function () { // пoсле aнимaции
                     $(this).css('display', 'none'); // делaем ему display: none;
                 }
             )
@@ -536,7 +536,7 @@ function closePopup() {
 
 function blockUnblockDropdownMenus(blockUnblock) {
     var reinvest = $('#reinvest');
-    switch (blockUnblock){
+    switch (blockUnblock) {
         case 'block':
             reinvest.find('> li').each(function () {
                 $(this).closest('li').removeClass('active').addClass('disabled');
@@ -562,7 +562,7 @@ function deleteCash(cashIdList) {
         type: "POST",
         contentType: "application/json;charset=utf-8",
         url: "/deleteFlowsList",
-        data : JSON.stringify(search),
+        data: JSON.stringify(search),
         dataType: 'json',
         timeout: 100000,
         beforeSend: function (xhr) {
@@ -587,9 +587,9 @@ function deleteCash(cashIdList) {
 function slideBox(message) {
     $('#slideBox').find('h4').html(message);
     setTimeout(function () {
-        $('#slideBox').animate({'right':'52px'},500);
+        $('#slideBox').animate({'right': '52px'}, 500);
     }, 500);
     setTimeout(function () {
-        $('#slideBox').animate({'right':'-300px'},500);
+        $('#slideBox').animate({'right': '-300px'}, 500);
     }, 4000);
 }

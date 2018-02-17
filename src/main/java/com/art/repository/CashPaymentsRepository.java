@@ -8,6 +8,6 @@ import java.math.BigInteger;
 import java.util.List;
 
 @Repository
-public interface CashPaymentsRepository extends JpaRepository<CashPayments, BigInteger>{
+public interface CashPaymentsRepository extends JpaRepository<CashPayments, BigInteger> {
     List<CashPayments> findByManagerId(BigInteger managerId);
 }

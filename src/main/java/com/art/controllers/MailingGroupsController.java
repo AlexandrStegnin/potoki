@@ -1,6 +1,5 @@
 package com.art.controllers;
 
-import com.art.func.GetPrincipalFunc;
 import com.art.model.MailingGroups;
 import com.art.model.Users;
 import com.art.model.supporting.GenericResponse;
@@ -31,22 +30,19 @@ public class MailingGroupsController {
     @Resource(name = "stuffService")
     private StuffService stuffService;
 
-    @Resource(name = "getPrincipalFunc")
-    private GetPrincipalFunc getPrincipalFunc;
-
     @GetMapping(value = "/mailinggroups")
     public String mailingGroupsPage(ModelMap model) {
 
         List<MailingGroups> mailingGroupsList = mailingGroupsService.findAllWithUsers();
         model.addAttribute("mailGroups", mailingGroupsList);
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         MailingGroups mailingGroups = new MailingGroups();
         model.addAttribute("mailingGroups", mailingGroups);
         return "mailingGroups";
     }
 
-    @PostMapping(value = { "/newmailgroup" }, produces="application/json;charset=UTF-8")
-    public @ResponseBody GenericResponse saveGroup(@RequestBody MailingGroups mailingGroups) {
+    @PostMapping(value = {"/newmailgroup"}, produces = "application/json;charset=UTF-8")
+    public @ResponseBody
+    GenericResponse saveGroup(@RequestBody MailingGroups mailingGroups) {
         GenericResponse response = new GenericResponse();
 
         List<BigInteger> idList = new ArrayList<>(0);
@@ -68,7 +64,7 @@ public class MailingGroupsController {
         return response;
     }
 
-    @RequestMapping(value = { "/edit-groups-{id}" }, method = RequestMethod.GET)
+    @RequestMapping(value = {"/edit-groups-{id}"}, method = RequestMethod.GET)
     public String editGroup(@PathVariable BigInteger id, ModelMap model) {
         String title = "Обновление данных группы рассылки";
         MailingGroups mailingGroups = mailingGroupsService.findByIdWithUsers(id);
@@ -79,7 +75,7 @@ public class MailingGroupsController {
         return "editMailingGroups";
     }
 
-    @RequestMapping(value = { "/edit-groups-{id}" }, method = RequestMethod.POST)
+    @RequestMapping(value = {"/edit-groups-{id}"}, method = RequestMethod.POST)
     public String updateGroup(@ModelAttribute("mailingGroups") MailingGroups mailingGroups, BindingResult result, ModelMap model) {
         String ret = "списку групп рассылки.";
         String redirectUrl = "/mailinggroups";
@@ -92,15 +88,15 @@ public class MailingGroupsController {
 
         List<Users> usersList = groups.getUsers();
 
-        if(usersList.size() > mailingGroups.getUsers().size()){
+        if (usersList.size() > mailingGroups.getUsers().size()) {
             usersList.forEach(ul -> {
-                if(!mailingGroups.getUsers().contains(ul)){
+                if (!mailingGroups.getUsers().contains(ul)) {
                     ul.setMailingGroups(null);
                 }
             });
-        }else if(usersList.size() < mailingGroups.getUsers().size()){
+        } else if (usersList.size() < mailingGroups.getUsers().size()) {
             mailingGroups.getUsers().forEach(users -> {
-                if(!usersList.contains(users)){
+                if (!usersList.contains(users)) {
                     usersList.add(users);
                 }
             });
@@ -111,13 +107,6 @@ public class MailingGroupsController {
             });
         }
 
-        /*
-        usersList.forEach(ul -> {
-            Users user = userService.findWithAllFields(ul.getId());
-            userService.update(user);
-        });
-        */
-        //userService.updateList(usersList);
         mailingGroupsService.update(mailingGroups);
 
         model.addAttribute("success", "Данные группы рассылки " +
@@ -128,7 +117,7 @@ public class MailingGroupsController {
         return "registrationsuccess";
     }
 
-    @RequestMapping(value = { "/delete-groups-{id}" }, method = RequestMethod.GET)
+    @RequestMapping(value = {"/delete-groups-{id}"}, method = RequestMethod.GET)
     public String deleteGroup(@PathVariable BigInteger id) {
         List<Users> usersList = userService.findByMailingGroups(mailingGroupsService.findById(id));
         usersList.forEach(u -> u.setMailingGroups(null));

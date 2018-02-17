@@ -11,5 +11,6 @@ import java.util.List;
 @Repository
 public interface AllowanceIpRepository extends JpaRepository<AllowanceIp, BigInteger> {
     List<AllowanceIp> findByFacilityId(BigInteger facilityId);
+
     List<AllowanceIp> findByInvestor(Users user);
 }

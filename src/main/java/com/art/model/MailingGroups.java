@@ -16,35 +16,38 @@ import java.util.List;
 @EqualsAndHashCode
 @Entity
 @Table(name = "MailingGroups")
-public class MailingGroups implements Serializable{
+public class MailingGroups implements Serializable {
     private BigInteger id;
     private String mailingGroup;
     private List<Users> users;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public BigInteger getId(){
+    public BigInteger getId() {
         return id;
     }
-    public void setId(BigInteger id){
+
+    public void setId(BigInteger id) {
         this.id = id;
     }
 
-    public String getMailingGroup(){
+    public String getMailingGroup() {
         return mailingGroup;
     }
-    public void setMailingGroup(String mailingGroup){
+
+    public void setMailingGroup(String mailingGroup) {
         this.mailingGroup = mailingGroup;
     }
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "UsersMailingGroups",
-            joinColumns = { @JoinColumn(name = "MailingGroupsId", referencedColumnName = "id") },
+            joinColumns = {@JoinColumn(name = "MailingGroupsId", referencedColumnName = "id")},
             inverseJoinColumns = @JoinColumn(name = "UserId", referencedColumnName = "id"))
-    public List<Users> getUsers(){
+    public List<Users> getUsers() {
         return users;
     }
-    public void setUsers(List<Users> users){
+
+    public void setUsers(List<Users> users) {
         this.users = users;
     }
 }

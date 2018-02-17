@@ -1,6 +1,5 @@
 package com.art.controllers;
 
-import com.art.func.GetPrincipalFunc;
 import com.art.model.Facilities;
 import com.art.model.Rooms;
 import com.art.model.UnderFacilities;
@@ -26,17 +25,8 @@ public class UnderFacilitiesController {
     @Resource(name = "underFacilitiesService")
     private UnderFacilitiesService underFacilitiesService;
 
-    @Resource(name = "getPrincipalFunc")
-    private GetPrincipalFunc getPrincipalFunc;
-
     @Resource(name = "facilityService")
     private FacilityService facilityService;
-
-    @Resource(name = "userService")
-    private UserService userService;
-
-    @Resource(name = "stuffService")
-    private StuffService stuffService;
 
     @Resource(name = "facilitiesBuySalesService")
     private FacilitiesBuySalesService facilitiesBuySalesService;
@@ -46,18 +36,15 @@ public class UnderFacilitiesController {
 
     @GetMapping(value = "/underfacilities")
     public String underFacilityPage(ModelMap model) {
-
-        //List<UnderFacilities> underFacilities = underFacilitiesService.findAll();
         List<UnderFacilities> underFacilities = underFacilitiesService.findAllWithCriteriaApi();
         model.addAttribute("underFacilities", underFacilities);
 
         return "viewunderfacilities";
     }
 
-    @GetMapping(value = { "/edit-underfacility-{id}" })
+    @GetMapping(value = {"/edit-underfacility-{id}"})
     public String editUnderFacility(@PathVariable BigInteger id, ModelMap model) {
         String title = "Обновление данных по подобъекту";
-        //UnderFacilities underFacilities = underFacilitiesService.findById(id);
         UnderFacilities underFacilities = underFacilitiesService.findByIdWithCriteriaApi(id);
         model.addAttribute("underFacilities", underFacilities);
         model.addAttribute("edit", true);
@@ -65,9 +52,9 @@ public class UnderFacilitiesController {
         return "addunderfacility";
     }
 
-    @PostMapping(value = { "/edit-underfacility-{id}" })
+    @PostMapping(value = {"/edit-underfacility-{id}"})
     public String updateUnderFacility(@ModelAttribute("underFacilities") UnderFacilities underFacilities,
-                              BindingResult result, ModelMap model) {
+                                      BindingResult result, ModelMap model) {
         String ret = "списку подобъектов.";
         String redirectUrl = "/underfacilities";
         if (result.hasErrors()) {
@@ -79,33 +66,31 @@ public class UnderFacilitiesController {
 
         model.addAttribute("success", "Данные по подобъекту " + underFacilities.getFacility().getFacility() +
                 " успешно обновлены.");
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         model.addAttribute("redirectUrl", redirectUrl);
         model.addAttribute("ret", ret);
         return "registrationsuccess";
     }
 
-    @GetMapping(value = { "/delete-underfacility-{id}" })
+    @GetMapping(value = {"/delete-underfacility-{id}"})
     public String deleteUnderFacility(@PathVariable BigInteger id) {
         facilitiesBuySalesService.deleteByUnderFacility(underFacilitiesService.findById(id));
         underFacilitiesService.deleteById(id);
         return "redirect:/underfacilities";
     }
 
-    @GetMapping(value = { "/newunderfacility" })
+    @GetMapping(value = {"/newunderfacility"})
     public String newUnderfacility(ModelMap model) {
         String title = "Добавление подобъекта";
         UnderFacilities underFacilities = new UnderFacilities();
         model.addAttribute("underFacilities", underFacilities);
         model.addAttribute("edit", false);
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         model.addAttribute("title", title);
         return "addunderfacility";
     }
 
-    @PostMapping(value = { "/newunderfacility" })
+    @PostMapping(value = {"/newunderfacility"})
     public String saveUnderFacility(@ModelAttribute("underFacilities") UnderFacilities underFacilities,
-                           BindingResult result, ModelMap model) {
+                                    BindingResult result, ModelMap model) {
 
         if (result.hasErrors()) {
             return "addunderfacility";
@@ -117,7 +102,6 @@ public class UnderFacilitiesController {
 
         model.addAttribute("success", "Подобъект " + underFacilities.getFacility().getFacility() +
                 " успешно добавлен.");
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         model.addAttribute("redirectUrl", redirectUrl);
         model.addAttribute("ret", ret);
         return "registrationsuccess";

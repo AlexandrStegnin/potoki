@@ -18,36 +18,36 @@ public class ToshlCorrectTagsService {
     @Resource(name = "toshlCorrectTagsRepository")
     private ToshlCorrectTagsRepository toshlCorrectTagsRepository;
 
-    public List<ToshlCorrectTags> createList(List<ToshlCorrectTags> toshlCorrectTagss){
+    public List<ToshlCorrectTags> createList(List<ToshlCorrectTags> toshlCorrectTagss) {
         return toshlCorrectTagsRepository.save(toshlCorrectTagss);
     }
 
-    public ToshlCorrectTags create(ToshlCorrectTags toshlCorrectTags){
+    public ToshlCorrectTags create(ToshlCorrectTags toshlCorrectTags) {
         return toshlCorrectTagsRepository.
                 saveAndFlush(toshlCorrectTags);
     }
 
-    public List<ToshlCorrectTags> findAll(){
+    public List<ToshlCorrectTags> findAll() {
         return toshlCorrectTagsRepository.findAll();
     }
 
-    public ToshlCorrectTags find(BigInteger id){
+    public ToshlCorrectTags find(BigInteger id) {
         return toshlCorrectTagsRepository.findOne(id);
     }
 
-    public ToshlCorrectTags update(ToshlCorrectTags toshlCorrectTags){
+    public ToshlCorrectTags update(ToshlCorrectTags toshlCorrectTags) {
         return toshlCorrectTagsRepository.saveAndFlush(toshlCorrectTags);
     }
 
-    public void deleteById(BigInteger id){
+    public void deleteById(BigInteger id) {
         toshlCorrectTagsRepository.delete(id);
     }
 
-    public void delete(){
+    public void delete() {
         toshlCorrectTagsRepository.deleteAll();
     }
 
-    public List<ToshlCorrectTags> findOrderBy(){
+    public List<ToshlCorrectTags> findOrderBy() {
         return toshlCorrectTagsRepository.findByCorrectTagNotNullOrderByDateStTag();
     }
 

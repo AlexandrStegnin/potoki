@@ -9,8 +9,9 @@ import java.math.BigInteger;
 import java.util.List;
 
 @Repository
-public interface BonusesRepository extends JpaRepository<Bonuses, BigInteger>{
+public interface BonusesRepository extends JpaRepository<Bonuses, BigInteger> {
     List<Bonuses> findByManager(Users manager);
+
     List<Bonuses> findByRentor(Users rentor);
 
 }

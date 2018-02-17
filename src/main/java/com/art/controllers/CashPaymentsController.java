@@ -108,13 +108,6 @@ public class CashPaymentsController {
         }
 
         cashPayments.setManager(userService.findByLogin(getPrincipalFunc.getLogin()));
-        /*//Uncomment below 'if block' if you WANT TO ALLOW UPDATING SSO_ID in UI which is a unique key to a User.
-        if(!userService.isUserSSOUnique(user.getId(), user.getSsoId())){
-            FieldError ssoError =new FieldError("user","ssoId",messageSource.getMessage("non.unique.ssoId", new String[]{user.getSsoId()}, Locale.getDefault()));
-            result.addError(ssoError);
-            return "registration";
-        }*/
-
         cashPaymentsService.update(cashPayments);
 
         model.addAttribute("success", "Данные по наличному платежу объекта " + cashPayments.getFacility().getFacility() + " успешно обновлены.");

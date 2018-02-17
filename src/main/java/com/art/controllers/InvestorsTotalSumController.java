@@ -27,16 +27,9 @@ public class InvestorsTotalSumController {
 
     @RequestMapping(value = "/investorstotalsum", method = RequestMethod.GET)
     public String investorsTotalSumPage(ModelMap model) {
-        /*
-        List<InvestorsTotalSum> investorsTotalSums = investorsCashService.getInvestorsTotalSum(
-                getPrincipalFunc.getPrincipalId()
-        );
-        model.addAttribute("investorsTotalSums", investorsTotalSums);
-        */
         List<InvestorsTotalSum> investorsTotalSums = investorsCashService.getInvestorsCashSums(getPrincipalFunc.getPrincipalId()
         );
         model.addAttribute("investorsTotalSums", investorsTotalSums);
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
 
         return "investorstotalsums";
     }

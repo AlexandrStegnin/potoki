@@ -1,6 +1,5 @@
 package com.art.controllers;
 
-import com.art.func.GetPrincipalFunc;
 import com.art.model.ShareKind;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
@@ -19,14 +18,11 @@ import java.util.List;
 @Controller
 public class ShareKindController {
 
-    @Resource(name = "getPrincipalFunc")
-    private GetPrincipalFunc getPrincipalFunc;
-
     @Resource(name = "shareKindService")
     private ShareKindService shareKindService;
 
     @GetMapping(value = "/viewShareKind")
-    public ModelAndView typeClosingInvestPage(){
+    public ModelAndView typeClosingInvestPage() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("viewShareKinds");
         List<ShareKind> shareKindList = shareKindService.findAll();
@@ -34,12 +30,11 @@ public class ShareKindController {
         String title = "Добавление вида доли";
         modelAndView.addObject("shareKind", shareKind);
         modelAndView.addObject("shareKindList", shareKindList);
-        modelAndView.addObject("loggedinuser", getPrincipalFunc.getLogin());
         modelAndView.addObject("title", title);
         return modelAndView;
     }
 
-    @PostMapping(value = { "/saveShareKind" }, produces="application/json;charset=UTF-8")
+    @PostMapping(value = {"/saveShareKind"}, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     GenericResponse saveShareKind(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
@@ -55,7 +50,7 @@ public class ShareKindController {
      * This method will be called on form submission, handling POST request for
      * updating user in database. It also validates the user input
      */
-    @PostMapping(value = { "/editShareKind" }, produces="application/json;charset=UTF-8")
+    @PostMapping(value = {"/editShareKind"}, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     GenericResponse updateShareKind(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
@@ -66,7 +61,7 @@ public class ShareKindController {
         return response;
     }
 
-    @PostMapping(value = { "/deleteShareKind" }, produces="application/json;charset=UTF-8")
+    @PostMapping(value = {"/deleteShareKind"}, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     GenericResponse deleteShareKind(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();

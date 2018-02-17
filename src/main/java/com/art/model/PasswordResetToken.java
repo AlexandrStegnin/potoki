@@ -14,13 +14,13 @@ import java.util.GregorianCalendar;
 @EqualsAndHashCode
 @Entity
 @Table(name = "PasswordResetToken")
-public class PasswordResetToken implements Serializable{
+public class PasswordResetToken implements Serializable {
     private static final int EXPIRATION = 24;
 
-    public PasswordResetToken(){
+    public PasswordResetToken() {
     }
 
-    public PasswordResetToken(String token, Users users){
+    public PasswordResetToken(String token, Users users) {
         this.token = token;
         this.users = users;
     }
@@ -28,18 +28,22 @@ public class PasswordResetToken implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private BigInteger id;
-    public BigInteger getId(){
+
+    public BigInteger getId() {
         return id;
     }
-    public void setId(BigInteger id){
+
+    public void setId(BigInteger id) {
         this.id = id;
     }
 
     private String token;
-    public String getToken(){
+
+    public String getToken() {
         return token;
     }
-    public void setToken(String token){
+
+    public void setToken(String token) {
         this.token = token;
     }
 
@@ -47,18 +51,21 @@ public class PasswordResetToken implements Serializable{
     @JoinColumn(nullable = false, name = "UserId")
     private Users users;
 
-    public Users getUsers(){
+    public Users getUsers() {
         return users;
     }
-    public void setUsers(Users users){
+
+    public void setUsers(Users users) {
         this.users = users;
     }
 
     private Date expiryDate;
-    public Date getExpiryDate(){
+
+    public Date getExpiryDate() {
         return expiryDate;
     }
-    public void setExpiryDate(Date expiryDate){
+
+    public void setExpiryDate(Date expiryDate) {
 
         Calendar cal = new GregorianCalendar();
         cal.setTime(expiryDate);

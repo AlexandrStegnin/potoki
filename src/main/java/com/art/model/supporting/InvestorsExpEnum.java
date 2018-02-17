@@ -7,9 +7,10 @@ public enum InvestorsExpEnum {
     TEMP("Временный");
     private final String val;
 
-    InvestorsExpEnum(String val){
+    InvestorsExpEnum(String val) {
         this.val = val;
     }
+
     public String getVal() {
         return val;
     }

@@ -21,15 +21,15 @@ public class TokenService {
         return tokenRepository.findAll();
     }
 
-    public PersistentLogin findBySeries(String series){
+    public PersistentLogin findBySeries(String series) {
         return tokenRepository.findBySeries(series);
     }
 
-    public PersistentLogin findByUsername(String username){
+    public PersistentLogin findByUsername(String username) {
         return tokenRepository.findByUsername(username);
     }
 
-    public PersistentLogin findByToken(String token){
+    public PersistentLogin findByToken(String token) {
         return tokenRepository.findByToken(token);
     }
 }

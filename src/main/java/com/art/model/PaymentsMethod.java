@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigInteger;
 
 @Getter
@@ -12,7 +13,7 @@ import java.math.BigInteger;
 @EqualsAndHashCode
 @Entity
 @Table(name = "PAYMENTS_METHOD")
-public class PaymentsMethod {
+public class PaymentsMethod implements Serializable {
     private BigInteger id;
     private String payment;
     private int manager;
@@ -20,10 +21,11 @@ public class PaymentsMethod {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
-    public BigInteger getId(){
+    public BigInteger getId() {
         return id;
     }
-    public void setId(BigInteger id){
+
+    public void setId(BigInteger id) {
         this.id = id;
     }
 
@@ -31,6 +33,7 @@ public class PaymentsMethod {
     public String getPayment() {
         return payment;
     }
+
     public void setPayment(String payment) {
         this.payment = payment;
     }
@@ -39,6 +42,7 @@ public class PaymentsMethod {
     public int getManager() {
         return manager;
     }
+
     public void setManager(int manager) {
         this.manager = manager;
     }

@@ -1,6 +1,5 @@
 package com.art.controllers;
 
-import com.art.func.GetPrincipalFunc;
 import com.art.model.Facilities;
 import com.art.model.InvestorsShare;
 import com.art.model.Users;
@@ -27,9 +26,6 @@ public class InvestorsShareController {
     @Resource(name = "investorShareService")
     private InvestorShareService investorShareService;
 
-    @Resource(name = "getPrincipalFunc")
-    private GetPrincipalFunc getPrincipalFunc;
-
     @Resource(name = "facilityService")
     private FacilityService facilityService;
 
@@ -44,26 +40,24 @@ public class InvestorsShareController {
 
         List<InvestorsShare> investorsShares = investorShareService.findAll();
         model.addAttribute("investorsShares", investorsShares);
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
 
         return "viewinvestorsshare";
     }
 
-    @RequestMapping(value = { "/edit-share-{id}" }, method = RequestMethod.GET)
+    @RequestMapping(value = {"/edit-share-{id}"}, method = RequestMethod.GET)
     public String editShare(@PathVariable BigInteger id, ModelMap model) {
         String title = "Обновление данных долей";
         InvestorsShare investorsShare = investorShareService.findById(id);
 
         model.addAttribute("investorsShare", investorsShare);
         model.addAttribute("edit", true);
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         model.addAttribute("title", title);
         return "addinvestorshare";
     }
 
-    @RequestMapping(value = { "/edit-share-{id}" }, method = RequestMethod.POST)
+    @RequestMapping(value = {"/edit-share-{id}"}, method = RequestMethod.POST)
     public String updateShare(@ModelAttribute("investorsShare") InvestorsShare investorsShare,
-                                BindingResult result, ModelMap model) {
+                              BindingResult result, ModelMap model) {
         String ret = "списку долей.";
         String redirectUrl = "/investorsshare";
         if (result.hasErrors()) {
@@ -74,30 +68,28 @@ public class InvestorsShareController {
 
         model.addAttribute("success", "Данные по доле " + investorsShare.getInvestor().getFullName() +
                 " успешно обновлены.");
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         model.addAttribute("redirectUrl", redirectUrl);
         model.addAttribute("ret", ret);
         return "registrationsuccess";
     }
 
-    @RequestMapping(value = { "/delete-share-{id}" }, method = RequestMethod.GET)
+    @RequestMapping(value = {"/delete-share-{id}"}, method = RequestMethod.GET)
     public String deleteShare(@PathVariable BigInteger id) {
         investorShareService.deleteById(id);
         return "redirect:/investorsshare";
     }
 
-    @RequestMapping(value = { "/newinvestorshare" }, method = RequestMethod.GET)
+    @RequestMapping(value = {"/newinvestorshare"}, method = RequestMethod.GET)
     public String newShare(ModelMap model) {
         String title = "Добавление доли";
         InvestorsShare investorsShare = new InvestorsShare();
         model.addAttribute("investorsShare", investorsShare);
         model.addAttribute("edit", false);
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         model.addAttribute("title", title);
         return "addinvestorshare";
     }
 
-    @RequestMapping(value = { "/newinvestorshare" }, method = RequestMethod.POST)
+    @RequestMapping(value = {"/newinvestorshare"}, method = RequestMethod.POST)
     public String saveUser(@ModelAttribute("investorsShare") InvestorsShare investorsShare,
                            BindingResult result, ModelMap model) {
 
@@ -111,7 +103,6 @@ public class InvestorsShareController {
 
         model.addAttribute("success", "Доля инвестора " + investorsShare.getInvestor().getFullName() +
                 " успешно добавлена.");
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         model.addAttribute("redirectUrl", redirectUrl);
         model.addAttribute("ret", ret);
         return "registrationsuccess";

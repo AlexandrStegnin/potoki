@@ -37,11 +37,11 @@ import java.util.Date;
 
 @Getter
 @Setter
-@ToString(exclude = { "investor", "facility" })
-@EqualsAndHashCode(exclude = { "investor", "facility" })
+@ToString(exclude = {"investor", "facility"})
+@EqualsAndHashCode(exclude = {"investor", "facility"})
 @Entity
 @Table(name = "InvestorsExpenses")
-public class InvestorsExpenses implements Serializable{
+public class InvestorsExpenses implements Serializable {
 
     private BigInteger id;
     private InvestorsExpEnum classExp;
@@ -56,67 +56,74 @@ public class InvestorsExpenses implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "Id")
-    public BigInteger getId(){
+    public BigInteger getId() {
         return id;
     }
-    public void setId(BigInteger id){
+
+    public void setId(BigInteger id) {
         this.id = id;
     }
 
     @Enumerated(EnumType.STRING)
     @Column(name = "ClassExp")
-    public InvestorsExpEnum getClassExp(){
+    public InvestorsExpEnum getClassExp() {
         return classExp;
     }
-    public void setClassExp(InvestorsExpEnum classExp){
+
+    public void setClassExp(InvestorsExpEnum classExp) {
         this.classExp = classExp;
     }
 
     @OneToOne
     @JoinColumn(name = "TypeExpId", referencedColumnName = "ID")
-    public TypeExpenses getTypeExpenses(){
+    public TypeExpenses getTypeExpenses() {
         return typeExpenses;
     }
-    public void setFacility(TypeExpenses typeExpenses){
+
+    public void setFacility(TypeExpenses typeExpenses) {
         this.typeExpenses = typeExpenses;
     }
 
     @OneToOne
     @JoinColumn(name = "FacilityId", referencedColumnName = "ID")
-    public Facilities getFacility(){
+    public Facilities getFacility() {
         return facility;
     }
-    public void setFacility(Facilities facility){
+
+    public void setFacility(Facilities facility) {
         this.facility = facility;
     }
 
     @OneToOne
     @JoinColumn(name = "InvestorId", referencedColumnName = "ID")
-    public Users getInvestor(){
+    public Users getInvestor() {
         return investor;
     }
-    public void setInvestor(Users investor){
+
+    public void setInvestor(Users investor) {
         this.investor = investor;
     }
 
     @Transient
-    public String getDateStExpToLocalDate(){
+    public String getDateStExpToLocalDate() {
         String localDate = "";
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        try{
+        try {
             localDate = format.format(dateStExp);
-        }catch(Exception ignored){}
+        } catch (Exception ignored) {
+        }
 
         return localDate;
     }
 
     @Transient
-    public String getDateEndExpToLocalDate(){
+    public String getDateEndExpToLocalDate() {
         String localDate = "";
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        try{
+        try {
             localDate = format.format(dateEndExp);
-        }catch(Exception ignored){}
+        } catch (Exception ignored) {
+        }
 
         return localDate;
     }

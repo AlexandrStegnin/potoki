@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 
 public class StringToDateConverter implements Converter<String, Date> {
 
-    public Date convert(String date){
+    public Date convert(String date) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date utilDate = null;
 
@@ -19,7 +19,6 @@ public class StringToDateConverter implements Converter<String, Date> {
             e.printStackTrace();
         }
 
-        //Date sql = new Date(utilDate.getTime());
         return utilDate;
 
     }

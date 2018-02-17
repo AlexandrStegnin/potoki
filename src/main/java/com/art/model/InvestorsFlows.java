@@ -16,7 +16,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "InvestorsFlows")
-public class InvestorsFlows implements Serializable{
+public class InvestorsFlows implements Serializable {
     private BigInteger id;
     private Date reportDate;
     private Facilities facility;
@@ -39,26 +39,26 @@ public class InvestorsFlows implements Serializable{
     private int isReinvest;
     private Rooms room;
 
-    public InvestorsFlows(){
+    public InvestorsFlows() {
 
     }
 
-    public InvestorsFlows(Facilities facility){
+    public InvestorsFlows(Facilities facility) {
         this.facility = facility;
     }
 
-    public InvestorsFlows(Facilities facility, float afterCashing){
+    public InvestorsFlows(Facilities facility, float afterCashing) {
         this.facility = facility;
         this.afterCashing = afterCashing;
     }
 
-    public InvestorsFlows(Facilities facility, UnderFacilities underFacilities, Users investor){
+    public InvestorsFlows(Facilities facility, UnderFacilities underFacilities, Users investor) {
         this.facility = facility;
         this.underFacilities = underFacilities;
         this.investor = investor;
     }
 
-    public InvestorsFlows(Facilities facility, UnderFacilities underFacilities, Users investor, float afterCashing){
+    public InvestorsFlows(Facilities facility, UnderFacilities underFacilities, Users investor, float afterCashing) {
         this.facility = facility;
         this.underFacilities = underFacilities;
         this.investor = investor;
@@ -68,182 +68,203 @@ public class InvestorsFlows implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "Id")
-    public BigInteger getId(){
+    public BigInteger getId() {
         return id;
     }
-    public void setId(BigInteger id){
+
+    public void setId(BigInteger id) {
         this.id = id;
     }
 
     @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "facilityId", referencedColumnName = "id")
-    public Facilities getFacility(){
+    public Facilities getFacility() {
         return facility;
     }
-    public void setFacility(Facilities facility){
+
+    public void setFacility(Facilities facility) {
         this.facility = facility;
     }
 
     @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "underFacilityId", referencedColumnName = "id")
-    public UnderFacilities getUnderFacilities(){
+    public UnderFacilities getUnderFacilities() {
         return underFacilities;
     }
-    public void setUnderFacilities(UnderFacilities underFacilities){
+
+    public void setUnderFacilities(UnderFacilities underFacilities) {
         this.underFacilities = underFacilities;
     }
 
     @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "investorId", referencedColumnName = "id")
-    public Users getInvestor(){
+    public Users getInvestor() {
         return investor;
     }
-    public void setInvestor(Users investor){
+
+    public void setInvestor(Users investor) {
         this.investor = investor;
     }
 
     @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "reFacilityId", referencedColumnName = "id")
-    public Facilities getReFacility(){
+    public Facilities getReFacility() {
         return reFacility;
     }
-    public void setReFacility(Facilities reFacility){
+
+    public void setReFacility(Facilities reFacility) {
         this.reFacility = reFacility;
     }
 
     @Column(name = "ReportDate")
-    public Date getReportDate(){
+    public Date getReportDate() {
         return reportDate;
     }
-    public void setReportDate(Date reportDate){
+
+    public void setReportDate(Date reportDate) {
         this.reportDate = reportDate;
     }
 
     @Column(name = "ShareKind")
-    public String getShareKind(){
+    public String getShareKind() {
         return shareKind;
     }
-    public void setShareKind(String shareKind){
+
+    public void setShareKind(String shareKind) {
         this.shareKind = shareKind;
     }
 
     @Column(name = "GivedCash")
-    public float getGivedCash(){
+    public float getGivedCash() {
         return givedCash;
     }
-    public void setGivedCash(float givedCash){
+
+    public void setGivedCash(float givedCash) {
         this.givedCash = givedCash;
     }
 
     @Column(name = "Share")
-    public float getShare(){
+    public float getShare() {
         return share;
     }
-    public void setShare(float share){
+
+    public void setShare(float share) {
         this.share = share;
     }
 
     @Column(name = "Taxation")
-    public float getTaxation(){
+    public float getTaxation() {
         return taxation;
     }
-    public void setTaxation(float taxation){
+
+    public void setTaxation(float taxation) {
         this.taxation = taxation;
     }
 
     @Column(name = "Cashing")
-    public float getCashing(){
+    public float getCashing() {
         return cashing;
     }
-    public void setCashing(float cashing){
+
+    public void setCashing(float cashing) {
         this.cashing = cashing;
     }
 
     @Column(name = "Summa")
-    public float getSumma(){
+    public float getSumma() {
         return summa;
     }
-    public void setSumma(float summa){
+
+    public void setSumma(float summa) {
         this.summa = summa;
     }
 
     @Column(name = "OnInvestors")
-    public float getOnInvestors(){
+    public float getOnInvestors() {
         return onInvestors;
     }
-    public void setOnInvestors(float onInvestors){
+
+    public void setOnInvestors(float onInvestors) {
         this.onInvestors = onInvestors;
     }
 
     @Column(name = "AfterTax")
-    public float getAfterTax(){
+    public float getAfterTax() {
         return afterTax;
     }
-    public void setAfterTax(float afterTax){
+
+    public void setAfterTax(float afterTax) {
         this.afterTax = afterTax;
     }
 
     @Column(name = "AfterCashing")
-    public float getAfterCashing(){
+    public float getAfterCashing() {
         return afterCashing;
     }
-    public void setAfterCashing(float afterCashing){
+
+    public void setAfterCashing(float afterCashing) {
         this.afterCashing = afterCashing;
     }
 
     @Column(name = "ReInvest")
-    public String getReInvest(){
+    public String getReInvest() {
         return reInvest;
     }
+
     public void setReInvest(String reInvest) {
         this.reInvest = reInvest;
     }
 
     @Column(name = "SumInUnderFacility")
-    public float getSumInUnderFacility(){
+    public float getSumInUnderFacility() {
         return sumInUnderFacility;
     }
+
     public void setSumInUnderFacility(float sumInUnderFacility) {
         this.sumInUnderFacility = sumInUnderFacility;
     }
 
     @Column(name = "ShareForSvod")
-    public float getShareForSvod(){
+    public float getShareForSvod() {
         return shareForSvod;
     }
+
     public void setShareForSvod(float shareForSvod) {
         this.shareForSvod = shareForSvod;
     }
 
     @Transient
-    public String getReportDateToLocalDate(){
+    public String getReportDateToLocalDate() {
         String localDate = "";
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        try{
+        try {
             localDate = format.format(reportDate);
-        }catch(Exception ignored){}
+        } catch (Exception ignored) {
+        }
 
         return localDate;
     }
 
     @Transient
-    public String getYearReportDate(){
+    public String getYearReportDate() {
         String localDate = "";
         SimpleDateFormat format = new SimpleDateFormat("yyyy");
-        try{
+        try {
             localDate = format.format(reportDate);
-        }catch(Exception ignored){}
+        } catch (Exception ignored) {
+        }
 
         return localDate;
     }
 
     @Transient
-    public String getMonthReportDate(){
+    public String getMonthReportDate() {
         String localDate = "";
         SimpleDateFormat format = new SimpleDateFormat("MM");
-        try{
+        try {
             localDate = format.format(reportDate);
-        }catch(Exception ignored){}
+        } catch (Exception ignored) {
+        }
 
         return localDate;
     }
@@ -252,6 +273,7 @@ public class InvestorsFlows implements Serializable{
     public float getAfterDeductionEmptyFacility() {
         return afterDeductionEmptyFacility;
     }
+
     public void setAfterDeductionEmptyFacility(float afterDeductionEmptyFacility) {
         this.afterDeductionEmptyFacility = afterDeductionEmptyFacility;
     }
@@ -260,6 +282,7 @@ public class InvestorsFlows implements Serializable{
     public int getIsReinvest() {
         return isReinvest;
     }
+
     public void setIsReinvest(int isReinvest) {
         this.isReinvest = isReinvest;
     }
@@ -269,6 +292,7 @@ public class InvestorsFlows implements Serializable{
     public Rooms getRoom() {
         return room;
     }
+
     public void setRoom(Rooms room) {
         this.room = room;
     }

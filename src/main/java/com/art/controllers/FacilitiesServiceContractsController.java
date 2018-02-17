@@ -1,6 +1,5 @@
 package com.art.controllers;
 
-import com.art.func.GetPrincipalFunc;
 import com.art.model.Facilities;
 import com.art.model.FacilitiesServiceContracts;
 import com.art.model.PaymentsMethod;
@@ -24,9 +23,6 @@ public class FacilitiesServiceContractsController {
     @Resource(name = "facilitiesServiceContractsService")
     private FacilitiesServiceContractsService facilitiesServiceContractsService;
 
-    @Resource(name = "getPrincipalFunc")
-    private GetPrincipalFunc getPrincipalFunc;
-
     @Resource(name = "facilityService")
     private FacilityService facilityService;
 
@@ -49,7 +45,7 @@ public class FacilitiesServiceContractsController {
         return "viewfacilitiesservicecontracts";
     }
 
-    @GetMapping(value = { "/newfacilitiesservicecontracts" })
+    @GetMapping(value = {"/newfacilitiesservicecontracts"})
     public String newFacilitiesServiceContracts(ModelMap model) {
         String title = "Добавление договора обслуживания";
         FacilitiesServiceContracts facilitiesServiceContracts = new FacilitiesServiceContracts();
@@ -59,10 +55,10 @@ public class FacilitiesServiceContractsController {
         return "addfacilitiesservicecontracts";
     }
 
-    @PostMapping(value = { "/newfacilitiesservicecontracts" })
+    @PostMapping(value = {"/newfacilitiesservicecontracts"})
     public String saveFacilitiesServiceContract(@ModelAttribute("facilitiesServiceContracts")
-                                                            FacilitiesServiceContracts facilitiesServiceContracts,
-                           BindingResult result, ModelMap model) {
+                                                        FacilitiesServiceContracts facilitiesServiceContracts,
+                                                BindingResult result, ModelMap model) {
 
         if (result.hasErrors()) {
             return "addfacilitiesservicecontracts";
@@ -79,7 +75,7 @@ public class FacilitiesServiceContractsController {
         return "registrationsuccess";
     }
 
-    @GetMapping(value = { "/edit-facilitiesservicecontracts-{id}" })
+    @GetMapping(value = {"/edit-facilitiesservicecontracts-{id}"})
     public String editFacilitiesServiceContracts(@PathVariable BigInteger id, ModelMap model) {
         String title = "Обновление данных по договору обслуживания";
         FacilitiesServiceContracts facilitiesServiceContracts = facilitiesServiceContractsService.findById(id);
@@ -94,10 +90,10 @@ public class FacilitiesServiceContractsController {
      * This method will be called on form submission, handling POST request for
      * updating user in database. It also validates the user input
      */
-    @PostMapping(value = { "/edit-facilitiesservicecontracts-{id}" })
+    @PostMapping(value = {"/edit-facilitiesservicecontracts-{id}"})
     public String updateFacilitiesServiceContracts(
             @ModelAttribute("facilitiesservicecontracts") FacilitiesServiceContracts facilitiesServiceContracts,
-                                BindingResult result, ModelMap model) {
+            BindingResult result, ModelMap model) {
         String ret = "списку договоров обслуживания.";
         String redirectUrl = "/viewfacilitiesservicecontracts";
         if (result.hasErrors()) {
@@ -113,7 +109,7 @@ public class FacilitiesServiceContractsController {
         return "registrationsuccess";
     }
 
-    @RequestMapping(value = { "/delete-facilitiesservicecontracts-{id}" }, method = RequestMethod.GET)
+    @RequestMapping(value = {"/delete-facilitiesservicecontracts-{id}"}, method = RequestMethod.GET)
     public String deleteFacilitiesServiceContracts(@PathVariable BigInteger id) {
         facilitiesServiceContractsService.deleteById(id);
         return "redirect:/viewfacilitiesservicecontracts";
@@ -140,7 +136,6 @@ public class FacilitiesServiceContractsController {
         dateFormat.setLenient(false);
         webDataBinder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
     }
-
 
 
 }

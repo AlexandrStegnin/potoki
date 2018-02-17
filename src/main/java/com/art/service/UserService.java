@@ -23,11 +23,9 @@ import java.util.Objects;
 @Transactional
 @Repository
 public class UserService {
-    //@Autowired
     @Resource(name = "userRepository")
     private UserRepository userRepository;
 
-    //@Autowired
     @Resource(name = "passwordEncoder")
     private PasswordEncoder passwordEncoder;
 
@@ -44,34 +42,9 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    /*
-    public Users create(Users user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.saveAndFlush(user);
-    }
-
-
-    public Users findUserById(BigInteger id) {
-        return userRepository.findOne(id);
-    }
-    */
     public Users login(String email, String password) {
-        return userRepository.findByEmailAndPassword(email,password);
+        return userRepository.findByEmailAndPassword(email, password);
     }
-
-    /*
-    public Users update(Users user) {
-        Users updUser = findUserById(user.getId());
-        user.setLogin(updUser.getLogin());
-        if(!Objects.equals(user.getPassword(), null) && !Objects.equals(user.getPassword(), "")){
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-        }else{
-            user.setPassword(updUser.getPassword());
-        }
-        return userRepository.saveAndFlush(user);
-
-    }
-    */
 
     public void deleteUser(BigInteger id) {
         userRepository.deleteById(id);
@@ -82,15 +55,13 @@ public class UserService {
     }
 
 
-    public List<Users> findRentors(BigInteger managerId){
+    public List<Users> findRentors(BigInteger managerId) {
         List<Users> usersList = new ArrayList<>(0);
-        /*Users user = new Users();
-        usersList.add(user);*/
         usersList.addAll(userRepository.findByStuffId(managerId));
         return usersList;
     }
 
-    public List<Users> findByEmail(String email){
+    public List<Users> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
@@ -99,29 +70,29 @@ public class UserService {
         passwordResetTokenService.create(myToken);
     }
 
-    public List<Users> findByIdIn(List<BigInteger> idList){
+    public List<Users> findByIdIn(List<BigInteger> idList) {
         return userRepository.findByIdIn(idList);
     }
 
-    public void changeUserPassword(Users user, String password){
+    public void changeUserPassword(Users user, String password) {
         user.setPassword(passwordEncoder.encode(password));
         userRepository.saveAndFlush(user);
 
     }
 
-    public void updateList(List<Users> users){
+    public void updateList(List<Users> users) {
         userRepository.save(users);
     }
 
-    public Users findByLastName(String lastName){
+    public Users findByLastName(String lastName) {
         return userRepository.findByLastName(lastName);
     }
 
-    public List<Users> findByStuffId(BigInteger stuffId){
+    public List<Users> findByStuffId(BigInteger stuffId) {
         return userRepository.findByStuffId(stuffId);
     }
 
-    public List<Users> initializeInvestors(){
+    public List<Users> initializeInvestors() {
         Users investor = new Users();
         investor.setId(new BigInteger("0"));
         investor.setLogin("Выберите инвестора");
@@ -131,7 +102,7 @@ public class UserService {
         return users;
     }
 
-    public List<Users> findByMailingGroups(MailingGroups mailingGroups){
+    public List<Users> findByMailingGroups(MailingGroups mailingGroups) {
         return userRepository.findByMailingGroups(mailingGroups);
     }
 
@@ -141,7 +112,7 @@ public class UserService {
 
      */
 
-    public Users findById(BigInteger id){
+    public Users findById(BigInteger id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
@@ -150,7 +121,7 @@ public class UserService {
         return em.createQuery(usersCriteriaQuery).getSingleResult();
     }
 
-    public Users findByIdWithAnnexes(BigInteger id){
+    public Users findByIdWithAnnexes(BigInteger id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
@@ -160,18 +131,18 @@ public class UserService {
         return em.createQuery(usersCriteriaQuery).getSingleResult();
     }
 
-    public Users findByIdWithAnnexesAndFacilities(BigInteger id){
+    public Users findByIdWithAnnexesAndFacilities(BigInteger id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
+        usersRoot.fetch(Users_.facilityes, JoinType.LEFT);
         usersRoot.fetch(Users_.usersAnnexToContractsList, JoinType.LEFT);
-        usersRoot.fetch(Users_.facilityes, JoinType.LEFT);
         usersCriteriaQuery.select(usersRoot).distinct(true);
         usersCriteriaQuery.where(cb.equal(usersRoot.get(Users_.id), id));
         return em.createQuery(usersCriteriaQuery).getSingleResult();
     }
 
-    public Users findByIdWithStuffs(BigInteger id){
+    public Users findByIdWithStuffs(BigInteger id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
@@ -181,7 +152,7 @@ public class UserService {
         return em.createQuery(usersCriteriaQuery).getSingleResult();
     }
 
-    public Users findByIdWithMailingGroups(BigInteger id){
+    public Users findByIdWithMailingGroups(BigInteger id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
@@ -191,7 +162,7 @@ public class UserService {
         return em.createQuery(usersCriteriaQuery).getSingleResult();
     }
 
-    public Users findByIdWithStuffsAndMailingGroupsAndFacilities(BigInteger id){
+    public Users findByIdWithStuffsAndMailingGroupsAndFacilities(BigInteger id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
@@ -203,7 +174,7 @@ public class UserService {
         return em.createQuery(usersCriteriaQuery).getSingleResult();
     }
 
-    public List<Users> findAllWithStuffs(){
+    public List<Users> findAllWithStuffs() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
@@ -212,7 +183,7 @@ public class UserService {
         return em.createQuery(usersCriteriaQuery).getResultList();
     }
 
-    public List<Users> findByIdInWithMailingGroups(List<BigInteger> idList){
+    public List<Users> findByIdInWithMailingGroups(List<BigInteger> idList) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
@@ -222,7 +193,7 @@ public class UserService {
         return em.createQuery(usersCriteriaQuery).getResultList();
     }
 
-    public List<Users> findAllWithFacilities(){
+    public List<Users> findAllWithFacilities() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
@@ -231,19 +202,19 @@ public class UserService {
         return em.createQuery(usersCriteriaQuery).getResultList();
     }
 
-    public List<Users> findAllWithFacilitiesAndUnderFacilities(){
+    public List<Users> findAllWithFacilitiesAndUnderFacilities() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
 
         usersRoot.fetch(Users_.facilityes, JoinType.LEFT)
-                    .fetch(Facilities_.underFacilities, JoinType.LEFT);
+                .fetch(Facilities_.underFacilities, JoinType.LEFT);
         usersCriteriaQuery.select(usersRoot).distinct(true);
 
         return em.createQuery(usersCriteriaQuery).getResultList();
     }
 
-    public Users findByIdWithFacilities(BigInteger id){
+    public Users findByIdWithFacilities(BigInteger id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
@@ -253,7 +224,7 @@ public class UserService {
         return em.createQuery(usersCriteriaQuery).getSingleResult();
     }
 
-    public Users findByLoginWithFacilitiesAndUnderFacilitiesAndAnnexes(String login){
+    public Users findByLoginWithFacilitiesAndUnderFacilitiesAndAnnexes(String login) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
@@ -265,7 +236,7 @@ public class UserService {
         return em.createQuery(usersCriteriaQuery).getSingleResult();
     }
 
-    public Users findByLoginWithAnnexes(String login){
+    public Users findByLoginWithAnnexes(String login) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
@@ -275,12 +246,12 @@ public class UserService {
         return em.createQuery(usersCriteriaQuery).getSingleResult();
     }
 
-    public void create(Users users){
+    public void create(Users users) {
         users.setPassword(passwordEncoder.encode(users.getPassword()));
         this.em.merge(users);
     }
 
-    public Users findWithAllFields(BigInteger id){
+    public Users findWithAllFields(BigInteger id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
@@ -294,42 +265,42 @@ public class UserService {
         return em.createQuery(usersCriteriaQuery).getSingleResult();
     }
 
-    public void update(Users user){
+    public void update(Users user) {
         Users updUser = findWithAllFields(user.getId());
         user.setLogin(updUser.getLogin());
-        if(!Objects.equals(user.getPassword(), null) && !Objects.equals(user.getPassword(), "")){
+        if (!Objects.equals(user.getPassword(), null) && !Objects.equals(user.getPassword(), "")) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-        }else{
+        } else {
             user.setPassword(updUser.getPassword());
         }
-        if(Objects.equals(null, user.getLastName())){
+        if (Objects.equals(null, user.getLastName())) {
             user.setLastName(updUser.getLastName());
         }
-        if(Objects.equals(null, user.getFirst_name())){
+        if (Objects.equals(null, user.getFirst_name())) {
             user.setFirst_name(updUser.getFirst_name());
         }
-        if(Objects.equals(null, user.getMiddle_name())){
+        if (Objects.equals(null, user.getMiddle_name())) {
             user.setMiddle_name(updUser.getMiddle_name());
         }
-        if(Objects.equals(null, user.getState())){
+        if (Objects.equals(null, user.getState())) {
             user.setState(updUser.getState());
         }
-        if(Objects.equals(null, user.getRoles())){
+        if (Objects.equals(null, user.getRoles())) {
             user.setRoles(updUser.getRoles());
         }
-        if(Objects.equals(null, user.getUserStuff())){
+        if (Objects.equals(null, user.getUserStuff())) {
             user.setUserStuff(updUser.getUserStuff());
         }
-        if(Objects.equals(null, user.getMailingGroups())){
+        if (Objects.equals(null, user.getMailingGroups())) {
             user.setMailingGroups(updUser.getMailingGroups());
         }
-        if(Objects.equals(null, user.getFacilityes())){
+        if (Objects.equals(null, user.getFacilityes())) {
             user.setFacilityes(updUser.getFacilityes());
         }
-        if(Objects.equals(null, user.getUsersAnnexToContractsList())){
+        if (Objects.equals(null, user.getUsersAnnexToContractsList())) {
             user.setUsersAnnexToContractsList(updUser.getUsersAnnexToContractsList());
         }
-        if(Objects.equals(null, user.getEmails())){
+        if (Objects.equals(null, user.getEmails())) {
             user.setEmails(updUser.getEmails());
         }
 
@@ -337,13 +308,24 @@ public class UserService {
 
     }
 
-    public Users findByLoginAndEmail(String login, String email){
+    public Users findByLoginAndEmail(String login, String email) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
         usersCriteriaQuery.select(usersRoot);
         usersCriteriaQuery.where(cb.and(cb.equal(usersRoot.get(Users_.login), login),
                 cb.equal(usersRoot.get(Users_.email), email)));
+        return em.createQuery(usersCriteriaQuery).getSingleResult();
+    }
+
+    public Users findByIdWithFacilitiesUnderFacilities(BigInteger id) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
+        Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
+        usersRoot.fetch(Users_.facilityes, JoinType.LEFT)
+                .fetch(Facilities_.underFacilities, JoinType.LEFT);
+        usersCriteriaQuery.select(usersRoot).distinct(true);
+        usersCriteriaQuery.where(cb.equal(usersRoot.get(Users_.id), id));
         return em.createQuery(usersCriteriaQuery).getSingleResult();
     }
 
