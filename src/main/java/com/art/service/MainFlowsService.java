@@ -1,6 +1,9 @@
 package com.art.service;
 
-import com.art.model.*;
+import com.art.model.Facilities_;
+import com.art.model.MainFlows;
+import com.art.model.MainFlows_;
+import com.art.model.UnderFacilities_;
 import com.art.repository.MainFlowsRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -70,7 +73,6 @@ public class MainFlowsService {
         mainFlowsCriteriaQuery.select(mainFlowsRoot).distinct(true);
         return em.createQuery(mainFlowsCriteriaQuery).getResultList();
     }
-
 
     public List<MainFlows> findByFacilityIdIn(List<BigInteger> facilityIdList) {
         CriteriaBuilder cb = em.getCriteriaBuilder();

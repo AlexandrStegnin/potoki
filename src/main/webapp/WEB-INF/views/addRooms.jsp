@@ -41,9 +41,9 @@
 
         <div class="row">
             <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="rooms">Помещение:</label>
+                <label class="col-md-3 control-lable" for="room">Помещение:</label>
                 <div class="col-md-7">
-                    <form:input type="text" path="room" id="rooms" class="form-control input-sm"/>
+                    <form:input type="text" path="room" id="room" class="form-control input-sm"/>
                 </div>
             </div>
         </div>

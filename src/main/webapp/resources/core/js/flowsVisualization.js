@@ -80,7 +80,8 @@ jQuery(document).ready(function ($) {
         green: '#80c966',
         blue: '#8bc4ea',
         purple: '#d520b5',
-        grey: '#cacaca'
+        grey: '#cacaca',
+        black: '#000000'
     };
     onStartUp();
     prepareToggle();
@@ -257,6 +258,8 @@ function getColor(i) {
             return window.chartColors.purple;
         case 7:
             return window.chartColors.grey;
+        case 8:
+            return window.chartColors.black;
     }
 }
 
@@ -522,8 +525,6 @@ function prepareIncomeDiagram(investorsFlowsList) {
         }
     }
 
-    //console.log(totals);
-
     var ds;
     var dSet = [];
     var color = 0;
@@ -682,7 +683,9 @@ function prepareIncomeDiagram(investorsFlowsList) {
                             totalSum = parseFloat(totalSum);
 
                             window.total += totalSum;
-                            return facility + ": " + totalSum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+                            if (totalSum !== 0) {
+                                return facility + ": " + totalSum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+                            }
                         },
                         footer: function () {
                             return "Итого: " + window.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
@@ -773,7 +776,16 @@ function prepareIncomeCircle(investorsFlowsList, fullDate) {
         return elDate.getMonth() === curDate.getMonth() && elDate.getFullYear() === curDate.getFullYear();
     });
 
-    //$('#incomeTitle').html(ttl);
+    var facilitiesColors = [];
+    var facilityColor = {};
+    var chartJS = window.myDoughnut1.config.data.datasets;
+    $.each(chartJS, function (ind, el) {
+        facilityColor = {
+            facility: el.label,
+            color: el.backgroundColor
+        };
+        facilitiesColors.push(facilityColor);
+    });
 
     var cash;
     var cashes = [];
@@ -819,12 +831,18 @@ function prepareIncomeCircle(investorsFlowsList, fullDate) {
     } else {
         totalIncome = 0;
     }
-
+    var clr;
     $('#totalIncome').html('<span>' + new Intl.NumberFormat('ru-RU').format(totalIncome) + '</span>' + 'рублей');
     $('#incomesList').html('');
     if (groupedCashes.length > 0) {
         $.each(groupedCashes, function (ind, el) {
-            $('#incomesList').append('<div class="circle-canvas__item" style="color: ' + getColor(ind) + '"><span>' + new Intl.NumberFormat('ru-RU').format(el.sum) + '</span>' + el.facility + '</div>');
+            clr = facilitiesColors.filter(function (indCol) {
+                return indCol.facility === el.facility;
+            });
+
+            $('#incomesList').append('<div class="circle-canvas__item" style="color: ' +
+                clr[0].color
+                + '"><span>' + new Intl.NumberFormat('ru-RU').format(el.sum) + '</span>' + el.facility + '</div>');
         });
     } else {
         for (var i = 0; i < 2; i++) {
@@ -835,11 +853,16 @@ function prepareIncomeCircle(investorsFlowsList, fullDate) {
     var facilities = [];
     var sums = [];
     var colors = [];
-    if(groupedCashes.length > 0){
+    if (groupedCashes.length > 0) {
         $.each(groupedCashes, function (i, el) {
             facilities.push(el.facility);
             sums.push(el.sum);
-            colors.push(getColor(i));
+
+            $.each(facilitiesColors, function (indCol, elCol) {
+                if (elCol.facility === el.facility) {
+                    colors.push(elCol.color)
+                }
+            });
         });
         facilities = unique(facilities);
     } else {
@@ -888,10 +911,6 @@ function prepareIncomeCircle(investorsFlowsList, fullDate) {
                     }
             }
     };
-    /*
-    var ctx2 = document.getElementById("doughnut-chart").getContext("2d");
-    window.myDoughnut2 = new Chart(ctx2, configDoughnut);
-    */
 
     var oldChart = window.myDoughnut2;
     var ctx2 = document.getElementById("doughnut-chart").getContext("2d");
@@ -1114,20 +1133,25 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
 
     var flow;
     var flows = [];
+
     $.each(mainFlows, function (ind, el) {
         settlementDates.push(new Date(el.settlementDate));
 
         if (el.summa >= 0) {
             flow = {
+                underFacility: el.underFacilities.underFacility,
                 settlementDate: new Date(el.settlementDate),
                 incomeOrExpense: 'Доходы',
-                sum: el.summa
+                sum: el.summa,
+                payment: el.payment.replace('%', '')
             };
         } else {
             flow = {
+                underFacility: el.underFacilities.underFacility,
                 settlementDate: new Date(el.settlementDate),
                 incomeOrExpense: 'Расходы',
-                sum: el.summa
+                sum: el.summa,
+                payment: el.payment
             };
         }
         flows.push(flow);
@@ -1149,55 +1173,83 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
         el.settlementDate = monthNames[el.settlementDate.getMonth()] + ' ' + el.settlementDate.getFullYear();
     });
 
-    var groupedFlows = [];
-    flows.reduce(function (res, value) {
-        if (!res[value.incomeOrExpense]) {
-            res[value.incomeOrExpense] = {
+    var items = {}, key;
+    $.each(flows, function (index, val) {
+        key = val.underFacility + val.settlementDate + val.payment + val.incomeOrExpense;
+        if (!items[key]) {
+            items[key] = {
+                //facility: val.facility,
+                underFacility: val.underFacility,
+                payment: val.payment,
                 sum: 0,
-                incomeOrExpense: value.incomeOrExpense,
-                settlementDate: value.settlementDate
+                incomeOrExpense: val.incomeOrExpense,
+                settlementDate: val.settlementDate
             };
-            groupedFlows.push(res[value.incomeOrExpense])
         }
-        if (res[value.incomeOrExpense].incomeOrExpense === value.incomeOrExpense &&
-            res[value.incomeOrExpense].settlementDate === value.settlementDate) {
-            res[value.incomeOrExpense].sum += value.sum;
+        if (items[key].underFacility === val.underFacility &&
+            items[key].incomeOrExpense === val.incomeOrExpense &&
+            items[key].settlementDate === val.settlementDate &&
+            items[key].payment === val.payment) {
+            items[key].sum += val.sum;
         } else {
-            res[value.incomeOrExpense] = {
-                sum: value.sum,
-                incomeOrExpense: value.incomeOrExpense,
-                settlementDate: value.settlementDate
+            items[key] = {
+                //facility: val.facility,
+                underFacility: val.underFacility,
+                payment: val.payment,
+                sum: val.sum,
+                incomeOrExpense: val.incomeOrExpense,
+                settlementDate: val.settlementDate
             };
-            groupedFlows.push(res[value.incomeOrExpense])
         }
+    });
 
-        return res;
-    }, {});
+    var outputArr = [];
+    $.each(items, function (key, val) {
+        outputArr.push(val);
+    });
+
     var sums = [];
-    var incomes = [];
-    var expenses = [];
-    //console.log(groupedFlows);
-    $.each(groupedFlows, function (ind, el) {
+    var incomes = {};
+    var expenses = {};
+
+    settlementDates.map(function (value) {
+        return incomes[value] = 0;
+    });
+
+    settlementDates.map(function (value) {
+        return expenses[value] = 0;
+    });
+
+    $.each(outputArr, function (ind, el) {
         if (el.incomeOrExpense === 'Доходы') {
-            incomes.push(Number(el.sum).toFixed(2));
-            sums.push(Number(el.sum).toFixed(2));
+            incomes[el.settlementDate] += parseFloat(el.sum);
+            sums.push(incomes[el.settlementDate]);
         } else {
-            expenses.push(Number(el.sum * -1).toFixed(2));
-            sums.push(Number(el.sum * -1).toFixed(2));
+            expenses[el.settlementDate] += Math.abs(parseFloat(el.sum));
+            sums.push(expenses[el.settlementDate]);
         }
+    });
+
+    $.each(settlementDates, function (ind, el) {
+        incomes[el] = incomes[el].toFixed(2);
+        expenses[el] = expenses[el].toFixed(2);
     });
 
     var max = Math.max.apply(Math, sums);
 
+    /*
     var step = Math.floor(max / parseInt('5' + zeroDigits(max.toString().indexOf('.') - 2)))
         * parseInt('1' + zeroDigits(max.toString().indexOf('.') - 2));
+    */
 
+    var zeroCount = parseInt('1' + zeroDigits(max.toFixed(2).toString().indexOf('.') - 1));
+    var step = (max / 7 / zeroCount).toFixed(2) * zeroCount;
     var min = max === 0 ? -100 : 0;
     if (max === 0) {
         step = 100;
     }
 
-    max = step * 7;
+    max = step * 8;
 
     if (settlementDates.length < 6) {
         settlementDates = appendMonths(settlementDates);
@@ -1214,26 +1266,166 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
         }
     }
 
+    var dataSets = [];
+    var dataSet = {};
+    var incomesArr = [];
+    var expensesArr = [];
+    Array.prototype.groupBy = function (prop) {
+        return this.reduce(function (groups, item) {
+            const val = item[prop];
+            groups[val] = groups[val] || [];
+            groups[val].push(item);
+            return groups
+        }, {})
+    };
+
+    const groupedByUnderFacility = outputArr.groupBy('underFacility');
+    const groupedByPayment = outputArr.groupBy('payment');
+    // console.log(groupedByPayment);
+    var counter = 0;
+    $.each(groupedByUnderFacility, function (indSd, elSd) {
+        counter = 0;
+        incomesArr = [];
+        key = indSd;
+        $.each(elSd, function (indEl, elEl) {
+            if (elEl.sum >= 0) {
+
+                if (!dataSet[key]) {
+                    //incomesArr.push(elEl.sum);
+                    dataSet[key] = {
+                        underFacility: key,
+                        settlementDate: elEl.settlementDate,
+                        sums: incomesArr
+                    };
+
+                    while (settlementDates[counter] !== elEl.settlementDate) {
+                        dataSet[key].sums.push(0);
+                        counter++;
+                    }
+                    dataSet[key].sums.push(elEl.sum);
+                } else {
+                    if (dataSet[key].settlementDate === elEl.settlementDate) {
+                        dataSet[key].sums[dataSet[key].sums.length - 1] += elEl.sum;
+                    } else {
+                        if (settlementDates[dataSet[key].sums.length] !== elEl.settlementDate) {
+                            incomesArr.push(0);
+                        } else {
+                            incomesArr.push(elEl.sum);
+                            dataSet[key] = {
+                                underFacility: key,
+                                settlementDate: elEl.settlementDate,
+                                sums: incomesArr
+                            };
+                        }
+                    }
+                }
+            }
+        });
+        if (dataSet[key]) {
+            if (settlementDates.length > dataSet[key].sums.length) {
+                for (var i = dataSet[key].sums.length - 1; i < settlementDates.length - 1; i++) {
+                    dataSet[key].sums.push(0);
+                }
+            }
+        }
+    });
+
+    $.each(dataSet, function (key, val) {
+        dataSets.push(val);
+    });
+
+    dataSet = {};
+    key = '';
+
+    $.each(groupedByPayment, function (indSd, elSd) {
+        counter = 0;
+        expensesArr = [];
+        key = indSd;
+        $.each(elSd, function (indEl, elEl) {
+            if (elEl.sum < 0) {
+                var sum = parseFloat((-1 * elEl.sum).toFixed(2));
+                if (!dataSet[key]) {
+                    dataSet[key] = {
+                        payment: key,
+                        settlementDate: elEl.settlementDate,
+                        sums: expensesArr
+                    };
+
+                    while (settlementDates[counter] !== elEl.settlementDate) {
+                        dataSet[key].sums.push(0);
+                        counter++;
+                    }
+                    dataSet[key].sums.push(sum);
+                } else {
+                    if (dataSet[key].settlementDate === elEl.settlementDate) {
+                        dataSet[key].sums[dataSet[key].sums.length - 1] += sum;
+                    } else {
+                        if (settlementDates[dataSet[key].sums.length] !== elEl.settlementDate) {
+                            expensesArr.push(0);
+                        } else {
+                            expensesArr.push(sum);
+                            dataSet[key] = {
+                                payment: key,
+                                settlementDate: elEl.settlementDate,
+                                sums: expensesArr
+                            };
+                        }
+                    }
+                }
+            }
+        });
+        if (dataSet[key]) {
+            if (settlementDates.length > dataSet[key].sums.length) {
+                for (var i = dataSet[key].sums.length - 1; i < settlementDates.length - 1; i++) {
+                    dataSet[key].sums.push(0);
+                }
+            }
+        }
+    });
+    var exDataSets = [];
+    $.each(dataSet, function (key, val) {
+        exDataSets.push(val);
+    });
+
+    // console.log(exDataSets);
+
+    var finDs = [];
+    $.each(dataSets, function (ind, el) {
+
+        finDs.push({
+            label: el.underFacility,
+            backgroundColor: window.chartColors.green,
+            borderColor: getColor(8),
+            borderWidth: 1,
+            data: el.sums,
+            fill: false,
+            stack: 'Stack 1'
+        })
+    });
+
+    var clr = 0;
+    $.each(exDataSets, function (ind, el) {
+        clr = ind >= 8 ? 0 : ind;
+        clr = clr === 4 ? ++clr : clr;
+        finDs.push({
+            label: el.payment,
+            backgroundColor: getColor(clr),
+            borderColor: getColor(8),
+            borderWidth: 1,
+            data: el.sums,
+            fill: false,
+            stack: 'Stack 2'
+        })
+    });
+
+    // console.log(finDs);
+
     var configCosts = {
-        type: 'line',
+        type: 'bar',
         data:
             {
                 labels: settlementDates,
-                datasets: [
-                    {
-                        label: "Доходы",
-                        backgroundColor: window.chartColors.green,
-                        borderColor: window.chartColors.green,
-                        data: incomes,
-                        fill: false
-                    },
-                    {
-                        label: "Расходы",
-                        fill: false,
-                        backgroundColor: window.chartColors.orange,
-                        borderColor: window.chartColors.orange,
-                        data: expenses
-                    }]
+                datasets: finDs
             },
         options:
             {
@@ -1266,7 +1458,8 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
                                 gridLines:
                                     {
                                         display: true
-                                    }
+                                    },
+                                stacked: true
                             }],
                         yAxes: [
                             {
@@ -1282,14 +1475,37 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
                                         max: max,
                                         stepSize: step,
                                         fontSize: 0
-                                    }
+                                    },
+                                stacked: true
                             }]
                     },
+                tooltips: {
+                    mode: 'x',
+                    itemSort: function (a, b) {
+                        return b.datasetIndex - a.datasetIndex
+                    },
+                    callbacks: {
+                        label: function (tooltipItem, chart) {
+                            if (tooltipItem.yLabel > 0) {
+                                return chart.datasets[tooltipItem.datasetIndex].label + ': ' + new Intl.NumberFormat('ru-RU', {
+                                    maximumFractionDigits: 2,
+                                    minimumFractionDigits: 2
+                                })
+                                    .format(tooltipItem.yLabel) + ' руб.';
+                            }
+                        }
+                    }
+                },
                 animation: {
                     onComplete: function (e) {
                         if (e.numSteps === 0) {
                             $('.chart-wrapper').stop(true, true).animate({scrollLeft: $('.chart-area-wrapper').outerWidth()}, 500);
                             $('#chart-axis2').css('height', '390px');
+                            $('#chart-costs-legend').find('ul').css({
+                                'width': '650px',
+                                'margin-left': '10%',
+                                'margin-top': '1%'
+                            });
                         }
                     }
                 }
@@ -1322,7 +1538,6 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
         window.myDoughnut.options.scales.yAxes[0].ticks.max = max;
         window.myDoughnut.options.scales.yAxes[0].ticks.stepSize = step;
 
-
         var $chartList = $(chartOptions.axisSelector);
         $chartList.append('<ul></ul>');
         $chartList.find('ul').html('');
@@ -1347,8 +1562,18 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
         chart.update();
     });
 
-    var totalIncomes = incomes[incomes.length - 1];
-    var totalExpenses = expenses[expenses.length - 1];
+    var totalIncomes = 0;
+    for (var k in incomes) {
+        if (incomes.hasOwnProperty(k)) {
+            totalIncomes = incomes[k];
+        }
+    }
+    var totalExpenses = 0;
+    for (var k in expenses) {
+        if (expenses.hasOwnProperty(k)) {
+            totalExpenses = expenses[k];
+        }
+    }
 
     if (totalIncomes === 0) totalIncomes += 0.0001;
     if (totalExpenses === 0) totalExpenses += 0.0001;
@@ -1423,7 +1648,6 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
 }
 
 function prepareInvestedMoney(investorsCashes, rooms) {
-
     maxFacility = getMaxInFacility(investorsCashes);
 
     var cashes = $.grep(investorsCashes, function (el) {
@@ -1436,9 +1660,27 @@ function prepareInvestedMoney(investorsCashes, rooms) {
 
     var totalMoney = 0;
 
+    cashes.sort(function (a, b) {
+        return new Date(a.dateGivedCash) - new Date(b.dateGivedCash);
+    });
+
+    balanceCash.sort(function (a, b) {
+        return new Date(a.dateGivedCash) - new Date(b.dateGivedCash);
+    });
+
     $.each(balanceCash, function (ind, el) {
         totalMoney += el.givedCash;
     });
+
+    /*
+    var sortedCash = unique(cashes.map(function (value) {
+        return value.facility.facility;
+    }));
+    */
+
+    var sortedCash = unique(rooms.map(function (value) {
+        return value.underFacility.facility.facility;
+    }));
 
     createInvestedAllTable(cashes);
     createInvestedTable(cashes);
@@ -1466,6 +1708,24 @@ function prepareInvestedMoney(investorsCashes, rooms) {
         return res;
     }, {});
 
+    console.log(sortedCash);
+    console.log(facilitiesCoasts);
+
+    var tmp = [];
+    $.each(sortedCash, function (ind, el) {
+        for (var i = 0; i < facilitiesCoasts.length; i++) {
+            if (facilitiesCoasts[i].facility === el) {
+                tmp.push({
+                    facility: el,
+                    coast: facilitiesCoasts[i].coast
+                })
+            }
+        }
+    });
+
+    facilitiesCoasts = tmp.slice();
+    console.log(facilitiesCoasts);
+
     var invested = [];
     cashes.reduce(function (res, value) {
         var facility = value.facility.facility;
@@ -1488,11 +1748,28 @@ function prepareInvestedMoney(investorsCashes, rooms) {
         return res;
     }, {});
 
-    /*
-    $.each(invested, function (ind, el) {
-        totalMoney += el.givedCash;
-    });
-    */
+    var investedBalance = [];
+    balanceCash.reduce(function (res, value) {
+        var facility = value.facility.facility;
+        if (!res[facility]) {
+            res[facility] = {
+                givedCash: 0,
+                facility: facility
+            };
+            investedBalance.push(res[facility])
+        }
+        if (res[facility].facility === facility) {
+            res[facility].givedCash += value.givedCash;
+        } else {
+            res[facility] = {
+                givedCash: 0,
+                facility: facility
+            };
+            investedBalance.push(res[facility])
+        }
+        return res;
+    }, {});
+
     var finalArr = [];
     $.each(facilitiesCoasts, function (ind, el) {
         var fin;
@@ -1510,17 +1787,15 @@ function prepareInvestedMoney(investorsCashes, rooms) {
     });
     $('#balance').find('span:last').html('<b>' + new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(totalMoney) + '</b>' + ' рублей');
 
-    /*
-    totalMoney = 0;
-    $.each(invested, function (ind, el) {
-        totalMoney += el.givedCash;
-    });
-    */
-
     $('#totalInvested').html('<span>' + new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(totalMoney) + '</span>' + 'рублей');
     $('#investedList').html('');
-    $.each(finalArr, function (ind, el) {
-        $('#investedList').append('<div class="circle-canvas__item" style="color: ' + getColor(ind) + '"><span>' + new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(Math.round(el.givedCash)) + '</span>' + el.facility + '</div>');
+    $.each(investedBalance, function (ind, el) {
+        if (el.givedCash > 0) {
+            $('#investedList').append('<div class="circle-canvas__item" style="color: ' + getColor(ind) + '"><span>' + new Intl.NumberFormat('ru-RU', {
+                maximumFractionDigits: 2,
+                minimumFractionDigits: 2
+            }).format(el.givedCash) + '</span>' + el.facility + '</div>');
+        }
     });
 
     var facilities = [];
@@ -1536,9 +1811,9 @@ function prepareInvestedMoney(investorsCashes, rooms) {
     var maxPriceFacility = Math.max.apply(Math, finalArr.map(function (value) {
         return value.coast
     }));
-    //console.log(maxPriceFacility);
 
-    //$('#totalSum').find('span').html(new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 }).format(totalMoney));
+    console.log(finalArr);
+
     var investedMoney = $('#investedMoney');
     investedMoney.empty();
     $.each(finalArr, function (ind, el) {
@@ -1560,11 +1835,13 @@ function prepareInvestedMoney(investorsCashes, rooms) {
             leftPerc = 40;
         }
 
-        var colPercent = $('<div style="background-color:transparent; position:absolute; bottom:10%; left:' + leftPerc + '%; font-size:12px; font-weight:600;color:#11325b">' + percentBg + '%</div>');
-        colPercent.appendTo(colBody);
         percentBg = percentBg < 5 ? 5 : percentBg;
         var colBg = $('<div style="height:' + percentBg + '%; background-color:' + getColor(ind) + ';" class="column__bg"></div>');
         colBg.appendTo(colBody);
+
+        var colPercent = $('<div style="background-color:transparent; position:absolute; bottom:' + percentBg + '%; left:' + leftPerc + '%; font-size:12px; font-weight:600;color:#11325b">' + percentBg + '%</div>');
+        colPercent.appendTo(colBody);
+
         var priceSecond = $('<div class="column__price-second">' +
             new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(Math.round(el.givedCash)) + '</div>');
         priceSecond.appendTo(colDiv);
@@ -1573,6 +1850,12 @@ function prepareInvestedMoney(investorsCashes, rooms) {
 
     });
 
+    facilities = [];
+    sums = [];
+    $.each(investedBalance, function (ind, el) {
+        facilities.push(el.facility);
+        sums.push(el.givedCash);
+    });
 
     var configDoughnutInvested = {
         type: 'doughnut',
@@ -1631,10 +1914,10 @@ function createInvestedAllTable(investorsCash) {
     invCash = $.grep(investorsCash, function (el) {
         return el.givedCash > 0;
     });
-    var facilities = unique(invCash.map(function (value) {
-        return value.facility.facility
-    }));
-    //console.log(facilities);
+
+    invCash.sort(function (a, b) {
+        return new Date(a.dateGivedCash) - new Date(b.dateGivedCash);
+    });
 
     var investedAllDetailsTable = $('#investedAllDetailsTable').find('.simplebar-content');
     investedAllDetailsTable.empty();
@@ -1682,11 +1965,10 @@ function createInvestedTable(investorsCash) {
     invCash = $.grep(investorsCash, function (el) {
         return el.givedCash > 0;
     });
-    //console.log(invCash);
-    var facilities = unique(invCash.map(function (value) {
-        return value.facility.facility
-    }));
-    //console.log(facilities);
+
+    invCash.sort(function (a, b) {
+        return new Date(a.dateGivedCash) - new Date(b.dateGivedCash);
+    });
 
     var investedDetailsTable = $('#investedDetailsTable').find('.simplebar-content');
     investedDetailsTable.empty();

@@ -36,6 +36,13 @@ public class MainFlows implements Serializable {
 
     }
 
+    public MainFlows(Date settlementDate, float summa, String payment, UnderFacilities underFacilities){
+        this.settlementDate = settlementDate;
+        this.summa = summa;
+        this.payment = payment;
+        this.underFacilities = underFacilities;
+    }
+
     public MainFlows(UnderFacilities underFacilities) {
         this.underFacilities = underFacilities;
     }

@@ -430,7 +430,7 @@ public class InvestorsFlowsController {
         List<BigInteger> idList = new ArrayList<>(0);
         investor.getFacilityes().forEach(f -> idList.add(f.getId()));
 
-        List<Rooms> rooms = roomsService.findByFacilitiesId(idList);
+        List<Rooms> rooms = roomsService.findAll();
 
         CashFlows cashFlows = new CashFlows();
         cashFlows.setInvestorsCashList(investorsCashList);

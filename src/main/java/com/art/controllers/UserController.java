@@ -336,9 +336,16 @@ public class UserController {
             response.setError(ex.getMessage());
         }
         mail.getMailingGroups().forEach(i -> mIdList.add(i.getId()));
-        List<MailingGroups> mailingGroupsList = mailingGroupsService.findByIdIn(mIdList);
+        List<MailingGroups> mailingGroupsList = new ArrayList<>(0);
+        if(mIdList.size() > 0){
+            mailingGroupsList = mailingGroupsService.findByIdIn(mIdList);
+        }
         mail.getUsers().forEach(l -> uIdList.add(l.getId()));
-        List<Users> usersList = userService.findByIdIn(uIdList);
+        List<Users> usersList = new ArrayList<>(0);
+        if(uIdList.size() > 0){
+            usersList = userService.findByIdIn(uIdList);
+        }
+
         mail.setMailingGroups(mailingGroupsList);
         mail.setUsers(usersList);
 

@@ -55,9 +55,9 @@
         <a href="<c:url value='/alphacorrecttags' />" class="btn btn-success btn-block">Тэги Альфа банка (AlphaCorrectTags)</a>
         <a href="<c:url value='/toshlcorrecttags' />" class="btn btn-success btn-block">Тэги Toshl (ToshlCorrectTags)</a>
         <a href="<c:url value='/investorsshare' />" class="btn btn-success btn-block">Доли инвесторов (INVESTORS_SHARE)</a>
-        <a href="<c:url value='/paysToInv' />" class="btn btn-success btn-block">Выплаты инвесторам (InvestorsFlows)</a>
+        <a href="<c:url value='/paysToInv' />" class="btn btn-success btn-block">Выплаты инвесторам (аренда) (InvestorsFlows)</a>
         <a href="<c:url value='/flowsSale' />" class="btn btn-success btn-block">Выплаты инвесторам (продажа) (InvestorsFlowsSale)</a>
-        <a href="<c:url value='/investorsAllFlows' />" class="btn btn-success btn-block">Потоки инвесторов (MainFlows)</a>
+        <a href="<c:url value='/investorsAllFlows' />" class="btn btn-success btn-block">Потоки объектов (MainFlows)</a>
         <a href="<c:url value='/viewcashsources' />" class="btn btn-success btn-block">Источники получения денег (CashSources)</a>
         <a href="<c:url value='/viewcashtypes' />" class="btn btn-success btn-block">Виды денег (CashTypes)</a>
         <a href="<c:url value='/viewnewcashdetails' />" class="btn btn-success btn-block">Детали новых денег (NewCashDetails)</a>

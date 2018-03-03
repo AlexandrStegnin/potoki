@@ -38,14 +38,14 @@ public class RoomsController {
     public String editRoom(@PathVariable BigInteger id, ModelMap model) {
         String title = "Обновление данных по помещению";
         Rooms room = roomsService.findByIdWithUnderFacilities(id);
-        model.addAttribute("room", room);
+        model.addAttribute("rooms", room);
         model.addAttribute("edit", true);
         model.addAttribute("title", title);
         return "addRooms";
     }
 
     @PostMapping(value = {"/edit-room-{id}"})
-    public String updateRoom(@ModelAttribute("room") Rooms room,
+    public String updateRoom(@ModelAttribute("rooms") Rooms room,
                              BindingResult result, ModelMap model) {
         String ret = "списку помещений.";
         String redirectUrl = "/rooms";
@@ -79,7 +79,7 @@ public class RoomsController {
     }
 
     @PostMapping(value = {"/newRoom"})
-    public String saveRoom(@ModelAttribute("rooms") Rooms room,
+    public String saveRoom(@ModelAttribute("room") Rooms room,
                            BindingResult result, ModelMap model) {
 
         if (result.hasErrors()) {
