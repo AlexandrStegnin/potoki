@@ -84,7 +84,7 @@ public class MailingGroupsService {
 
         MailingGroups group = em.createQuery(mailingGroupsCriteriaQuery).getSingleResult();
         group.getUsers().forEach(u -> {
-            Hibernate.initialize(u.getFacilityes());
+            Hibernate.initialize(u.getFacilities());
             Hibernate.initialize(u.getUsersAnnexToContractsList());
             Hibernate.initialize(u.getEmails());
             Hibernate.initialize(u.getUserStuff());

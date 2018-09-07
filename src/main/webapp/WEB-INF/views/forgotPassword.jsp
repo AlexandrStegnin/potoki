@@ -9,12 +9,12 @@
 
     <title>Страница восстановления пароля</title>
     <sec:csrfMetaTags />
-    <link href="<c:url value='/resources/core/css/bootstrap.min.css' />" rel="stylesheet" />
+    <link href="<c:url value='/resources/core/css/old_bootstrap.min.css' />" rel="stylesheet" />
     <link href="<c:url value='/resources/core/css/applic.css' />" rel="stylesheet" />
     <link href="<c:url value='/resources/core/css/popup.css' />" rel="stylesheet" />
     <link href="<c:url value='/resources/core/css/ajaxLoader.css' />" rel="stylesheet" />
     <script type="text/javascript" src="<c:url value='/resources/core/js/jquery-3.2.1.js' />" ></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min.js' />" ></script>
+    <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min_old.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/AjaxLoader.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/mailingScripts.js' />" ></script>

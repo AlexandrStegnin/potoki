@@ -32,6 +32,9 @@ public class UploadExcelFunc {
     private final Pattern pattern = Pattern.compile("\\s*([;+])\\s*");
     private final Locale RU = new Locale("ru", "RU");
 
+    @Resource(name = "saleOfFacilitiesService")
+    private SaleOfFacilitiesService saleOfFacilitiesService;
+
     @Resource(name = "alphaExtractService")
     private AlphaExtractService alphaExtractService;
 
@@ -582,8 +585,63 @@ public class UploadExcelFunc {
             case "invFlowsSale":
                 rewriteInvestorsFlowsSale(Objects.requireNonNull(sheet));
                 break;
+            case "saleOfFacilities":
+                writeSaleOfFacilities(Objects.requireNonNull(sheet));
+                break;
         }
         return errString;
+    }
+
+    private void writeSaleOfFacilities(Sheet sheet) {
+        int numRow = 0;
+
+        Facilities facility;
+        String strFacility;
+        String investor, investorEng;
+        BigDecimal cashInFacility, shareInvestor, leaseInYear, profitFromLease, profitFromSale, profitFromSaleInYear,
+                netProfitFromSale, netProfitFromSalePlusLease, totalYield, capitalGains, capital, balanceOfCapital;
+
+        saleOfFacilitiesService.deleteAll();
+        List<Facilities> facilities = facilityService.findAll();
+        List<SaleOfFacilities> saleOfFacilities = new ArrayList<>(0);
+        for (Row row : sheet) {
+            numRow++;
+            if (numRow > 1 && !Objects.equals(row.getCell(0), null) &&
+                    !Objects.equals(row.getCell(0).toString(), "")) {
+
+                for (int i = 0; i < row.getLastCellNum(); i++) {
+                    row.getCell(i).setCellType(CellType.STRING);
+                }
+
+                strFacility = row.getCell(0).toString();
+                String finalStrFacility = strFacility;
+                facility = facilities
+                        .stream()
+                        .filter(f -> f.getFacility().equalsIgnoreCase(finalStrFacility)).findFirst().orElse(null);
+
+                investor = row.getCell(1).toString();
+                cashInFacility = new BigDecimal(row.getCell(2).toString());
+                shareInvestor = new BigDecimal(row.getCell(3).toString());
+                leaseInYear = new BigDecimal(row.getCell(4).toString());
+                profitFromLease = new BigDecimal(row.getCell(5).toString());
+                profitFromSale = new BigDecimal(row.getCell(6).toString());
+                profitFromSaleInYear = new BigDecimal(row.getCell(7).toString());
+                netProfitFromSale = new BigDecimal(row.getCell(8).toString());
+                netProfitFromSalePlusLease = new BigDecimal(row.getCell(9).toString());
+                totalYield = new BigDecimal(row.getCell(10).toString());
+                capitalGains = new BigDecimal(row.getCell(11).toString());
+                capital = new BigDecimal(row.getCell(12).toString());
+                balanceOfCapital = new BigDecimal(row.getCell(13).toString());
+                investorEng = row.getCell(14).toString();
+                SaleOfFacilities sale = new SaleOfFacilities(facility, investor, cashInFacility, shareInvestor, leaseInYear,
+                        profitFromLease, profitFromSale, profitFromSaleInYear, netProfitFromSale, netProfitFromSalePlusLease,
+                        totalYield, capitalGains, capital, balanceOfCapital, investorEng);
+
+                saleOfFacilities.add(sale);
+
+            }
+        }
+        saleOfFacilitiesService.createList(saleOfFacilities);
     }
 
     private String addAlphaTagsV2(AlphaExtract alphaExtract,
@@ -921,11 +979,16 @@ public class UploadExcelFunc {
                     List<UnderFacilities> underFacilitiesList = new ArrayList<>(0);
 
                     assert user != null;
-                    user.getFacilityes().forEach(f -> underFacilitiesList.addAll(f.getUnderFacilities()));
+                    try {
+                        user.getFacilities().forEach(f -> underFacilitiesList.addAll(f.getUnderFacilities()));
+                    }catch (Exception ex) {
+                        System.out.println("ЯЧЕЙКА С ОШИБКОЙ =====>>> " + cel);
+                    }
+
 
                     InvestorsFlows investorsFlows = new InvestorsFlows();
                     investorsFlows.setReportDate(Date.from(cal.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-                    investorsFlows.setFacility(user.getFacilityes().stream()
+                    investorsFlows.setFacility(user.getFacilities().stream()
                             .filter(f -> f.getFacility().equalsIgnoreCase(row.getCell(1).getStringCellValue()))
                             .findFirst().orElse(null));
 
@@ -955,7 +1018,7 @@ public class UploadExcelFunc {
 
                     investorsFlows.setReInvest(row.getCell(18).getStringCellValue());
 
-                    investorsFlows.setReFacility(user.getFacilityes().stream()
+                    investorsFlows.setReFacility(user.getFacilities().stream()
                             .filter(f -> f.getFacility().equals(row.getCell(19).getStringCellValue()))
                             .findFirst().orElse(null));
 
@@ -1036,10 +1099,10 @@ public class UploadExcelFunc {
                     List<UnderFacilities> underFacilitiesList = new ArrayList<>(0);
 
                     assert user != null;
-                    user.getFacilityes().forEach(f -> underFacilitiesList.addAll(f.getUnderFacilities()));
+                    user.getFacilities().forEach(f -> underFacilitiesList.addAll(f.getUnderFacilities()));
 
                     InvestorsFlowsSale investorsFlowsSale = new InvestorsFlowsSale();
-                    investorsFlowsSale.setFacility(user.getFacilityes().stream()
+                    investorsFlowsSale.setFacility(user.getFacilities().stream()
                             .filter(f -> f.getFacility().equalsIgnoreCase(row.getCell(0).getStringCellValue()))
                             .findFirst().orElse(null));
                     investorsFlowsSale.setInvestor(user);

@@ -26,8 +26,32 @@ jQuery(document).ready(function ($) {
     } else {
         what = null
     }
-    populateStorageUnderFacilities('underFacilities');
+    populateStorageUnderFacilities('uFacilities');
     blockMenus();
+
+    $(document).on('change', '#facilities', function () {
+        hasError.errors = false;
+        hasError.allMoneyCashingFunc();
+    });
+
+    $('#investor').on('change', function () {
+        hasError.errors = false;
+        hasError.allMoneyCashingFunc();
+    });
+
+    $('#cashing').on('keyup click', function () {
+        hasError.errors = false;
+        hasError.allMoneyCashingFunc();
+    });
+
+    $('#commissionNoMore').on('keyup click', function () {
+        hasError.errors = false;
+        hasError.allMoneyCashingFunc();
+    });
+
+    $('#allMoneyCashing').on('click', function () {
+        allMoneyCashing();
+    });
     /**
 
      МАССОВОЕ РЕИНВЕСТИРОВАНИЕ НАЧАЛО
@@ -258,25 +282,25 @@ jQuery(document).ready(function ($) {
     max = findMinMaxDate('#investorsCash tbody', 6, "max");
     min = findMinMaxDate('#investorsCash tbody', 6, "min");
 
-    $(document).on('submit', "#iCashTable", function (event) {
-        event.preventDefault();
-        var modelAttributeValue = $('#edit').val();
-        if (modelAttributeValue === "true") {
-            hasError.errors = false;
-            hasError.reFacilityFunc();
-            hasError.reInvestDateFunc();
-        } else if ($('#typeClosing').find(':selected').text() === 'Перепродажа доли') {
-            hasError.errors = false;
-            hasError.investorBuyerFunc();
-        }
-
-        if (!hasError.errors) {
-            hasError.sendIt();
-            enableFields();
-        }
-        return false;
-
-    });
+    // $(document).on('submit', "#iCashTable", function (event) {
+    //     event.preventDefault();
+    //     var modelAttributeValue = $('#edit').val();
+    //     if (modelAttributeValue === "true") {
+    //         hasError.errors = false;
+    //         hasError.reFacilityFunc();
+    //         hasError.reInvestDateFunc();
+    //     } else if ($('#typeClosing').find(':selected').text() === 'Перепродажа доли') {
+    //         hasError.errors = false;
+    //         hasError.investorBuyerFunc();
+    //     }
+    //
+    //     if (!hasError.errors) {
+    //         hasError.sendIt();
+    //         enableFields();
+    //     }
+    //     return false;
+    //
+    // });
 
     var hasError = {
         'saleShareFunc': function () {
@@ -336,6 +360,22 @@ jQuery(document).ready(function ($) {
                 reInvestDateInfo.html('').hide();
             }
         },
+        'allMoneyCashingFunc': function () {
+
+            let facility = $('#facilities').find(':selected').text();
+            // var underFacility = $('#underFacilities').find(':selected').text();
+            let investor = $('#investor').find(':selected').text();
+            let cashing = $('#cashing').val();
+            let commissionNoMore = $('#commissionNoMore').val();
+            let dateCashing = $('#dateGivedCash').val();
+            if (facility === 'Выберите объект' || investor === 'Выберите инвестора' || cashing === '' || commissionNoMore === '' ||
+                dateCashing === '') {
+                hasError.errors = true;
+                $('#allMoneyCashing').hide();
+            } else {
+                $('#allMoneyCashing').show();
+            }
+        },
         'sendIt': function () {
             if (!hasError.errors) {
                 prepareCashSave(what);
@@ -343,17 +383,48 @@ jQuery(document).ready(function ($) {
         }
     };
 
+    $(document).on('click', '[id^="page_"]', function (e) {
+        $('#pageNumber').val(this.id.split('_')[1]);
+        e.preventDefault();
+        $("#search-form").submit();
+    });
+
     $("#search-form").submit(function (event) {
-
-        // Disble the search button
-        enableSearchButton(false);
-
-        // Prevent the form from submitting via the browser.
-        event.preventDefault();
-        prepareFilter();
-        enableSearchButton(true);
+        //
+        // // Disable the search button
+        // enableSearchButton(false);
+        //
+        // // Prevent the form from submitting via the browser.
+        // event.preventDefault();
+        // prepareFilter();
+        // enableSearchButton(true);
         //searchCash();
+        let facility, underFacility, investor, dateBegin, dateEnd;
+        facility = $('#fFacilities').find(":selected").val();
+        underFacility = $('#uFacilities').find(":selected").val();
+        investor = $('#investors').find(":selected").val();
+        dateBegin = $('#beginPeriod').val();
+        dateEnd = $('#endPeriod').val();
 
+        let filters = [
+            {
+                "fFacilities": facility
+            },
+            {
+                "uFacilities": underFacility
+            },
+            {
+                "investors": investor
+            },
+            {
+                "beginPeriod": dateBegin
+            },
+            {
+                "endPeriod": dateEnd
+            }
+        ];
+
+        sessionStorage.setItem("filters", JSON.stringify(filters));
 
     });
 
@@ -440,7 +511,91 @@ jQuery(document).ready(function ($) {
         getUnderFacilitiesFromLocalStorage(reFacility, 'reUnderFacilities');
     });
 
+    let filters = JSON.parse(sessionStorage.getItem("filters"));
+
+    $('#fFacilities option:eq(' + filters[0].fFacilities + ')').attr('selected', 'selected');
+    getUnderFacilitiesFromLocalStorage(filters[0].fFacilities, 'uFacilities');
+    // $('#investors option:eq(' + filters[2].investors + ')').attr('selected', 'selected');
+    $('#investors').val(filters[2].investors).change();
+
+    $('#beginPeriod').val(filters[3].beginPeriod);
+    $('#endPeriod').val(filters[4].endPeriod);
+    $('#uFacilities option:contains(' + filters[1].uFacilities + ')').attr('selected', 'selected');
 });
+
+function allMoneyCashing() {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+
+    let underFacility = $("#underFacilities").find("option:selected").text();
+    if (underFacility === 'Выберите подобъект') {
+        underFacility = null;
+    }
+
+    let search = ({
+        user: {
+            id: $("#investor").find("option:selected").val(),
+            login: $("#investor").find("option:selected").text()
+        },
+        facilities: {
+            id: $("#facilities").find("option:selected").val()
+        },
+        underFacilities: {
+            underFacility: underFacility
+        },
+        commission: $('#cashing').val(),
+        commissionNoMore: $('#commissionNoMore').val(),
+        investorsCash: {
+            facility: {
+                id: $("#facilities").find("option:selected").val(),
+                facility: $("#facilities").find("option:selected").text()
+            },
+            underFacility: {
+                // id: $("#underFacilities").find("option:selected").val(),
+                underFacility: $("#underFacilities").find("option:selected").text()
+            },
+            investor: {
+                id: $("#investor").find("option:selected").val(),
+                login: $("#investor").find("option:selected").text()
+            },
+            dateGivedCash: $('#dateGivedCash').val(),
+            givedCash: $('#cash').val()
+        }
+    });
+    showLoader();
+    $.ajax({
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: "allMoneyCashing",
+        data: JSON.stringify(search),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (data) {
+            closeLoader();
+            slideBox(data.message);
+
+            $('#facilities').prop('selectedIndex', 0);
+            $('#underFacilities').prop('selectedIndex', 0);
+            $('#investor').prop('selectedIndex', 0);
+            $('#cash').val('');
+            $('#dateGivedCash').val('');
+            $('#cashing').val('');
+            $('#commissionNoMore').val('');
+
+
+        },
+        error: function (e) {
+            closeLoader();
+            display(e);
+        },
+        done: function (e) {
+            enableSearchButton(true);
+        }
+    });
+}
 
 function searchCash() {
     var token = $("meta[name='_csrf']").attr("content");
@@ -812,6 +967,17 @@ function enableFields() {
     $('#dateRep').prop('disabled', false);
 }
 
+function prepareFilteredCashed() {
+    var facility = $('#fFacilities').find(':selected').text();
+    var underFacility = $('#uFacilities').find(':selected').text();
+    var investor = $('#investors').find(':selected').text();
+    var dateBegin = $('#beginPeriod').val();
+    var dateEnd = $('#endPeriod').val();
+    var url = window.location.href;
+    var pageNumber = url.split('investorscash/')[1];
+    filteredInvestorsCash(facility, underFacility, investor, dateBegin, dateEnd, pageNumber);
+}
+
 function prepareFilter() {
     var facility = $('#fFacilities').find(':selected').text();
     var underFacility = $('#uFacilities').find(':selected').text();
@@ -1163,7 +1329,7 @@ function saveReCash(cashes, reinvestIdList, dateClose) {
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: "saveReInvCash",
+        url: '../saveReInvCash',
         data: JSON.stringify(search),
         dataType: 'json',
         timeout: 100000,
@@ -1417,6 +1583,7 @@ function saveDivideCash(cashes, reUnderFacility, excludedUnderFacilities) {
     });
 }
 
+
 function deleteCash(cashIdList) {
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
@@ -1561,4 +1728,44 @@ function slideBox(message) {
     setTimeout(function () {
         $('#slideBox').animate({'right': '-300px'}, 500);
     }, 4000);
+}
+
+function filteredInvestorsCash(facility, underFacility, investor, dateBegin, dateEnd, pageNumber) {
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+
+    var search = ({
+        "facility": facility,
+        "underFacility": underFacility,
+        "investor": investor,
+        "dateStart": dateBegin,
+        "dateEnd": dateEnd,
+        "pageNumber": pageNumber
+    });
+
+    showLoader();
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: "../investorsCash",
+        data: JSON.stringify(search),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (data) {
+            closeLoader();
+            // $('#popup_modal_form').find('#message').append(data.message);
+            // showPopup();
+            // closePopup();
+        },
+        error: function (e) {
+            $('#popup_modal_form').find('#message').append(e.error);
+            closeLoader();
+            // showPopup();
+            // closePopup();
+        }
+    });
 }

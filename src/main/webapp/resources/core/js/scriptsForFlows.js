@@ -92,9 +92,6 @@ jQuery(document).ready(function ($) {
                 }
             });
         }
-
-        //var cnt = checkChecked();
-        //console.log(cnt);
     });
 
     $("#searchFacility").submit(function (event) {
@@ -161,15 +158,6 @@ jQuery(document).ready(function ($) {
         }
 
         event.preventDefault(); // выключaем стaндaртную рoль элементa
-        /*
-        $('#overlay').fadeIn(400, // снaчaлa плaвнo пoкaзывaем темную пoдлoжку
-            function(){ // пoсле выпoлнения предъидущей aнимaции
-                $('#modal_form')
-                    .css('display', 'block') // убирaем у мoдaльнoгo oкнa display: none;
-                    .css('overflow', 'scroll')
-                    .animate({opacity: 1, top: '50%'}, 200); // плaвнo прибaвляем прoзрaчнoсть oднoвременнo сo съезжaнием вниз
-            });
-        */
     });
 
     $('[data-toggle="tooltip"]').tooltip();

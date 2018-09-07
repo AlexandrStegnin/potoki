@@ -10,31 +10,114 @@ var maxFacility = '';
 
 jQuery(document).ready(function ($) {
 
+    $(function () {
+        function onHover(evt/**$.Event*/) {
+            if (evt.type === 'mouseenter') {
+                $(this).animate({
+                    height: '100px',
+                    'max-width': '120px',
+                    'font-size': '14px',
+                    left: '-30px',
+                    top: '-30px',
+                    'background-color': 'white',
+                    opacity: '0.9',
+                    'text-align': 'center',
+                    'z-index': 500,
+                    'border': '1px solid white',
+                    'border-radius': '5px'
+                }, 150);
+                $('.profit').css('max-width', '120px');
+                $('.splitter').css('max-width', '120px');
+                $('.gains').css('max-width', '120px');
+
+            } else {
+                $(this).animate({
+                    height: '40px',
+                    'max-width': '60px',
+                    'font-size': '6px',
+                    left: '0px',
+                    top: '0px',
+                    'background-color': 'transparent',
+                    opacity: '1',
+                    'text-align': 'center',
+                    'font-color': 'black'
+                }, 150);
+                $('.profit').css('max-width', '120px');
+                $('.splitter').css('max-width', '120px');
+                $('.gains').css('max-width', '120px');
+            }
+        }
+
+        $('.profitBox').hover(onHover);
+        $(document).on('mouseenter mouseleave', '.profitBox', onHover);
+
+    });
+
+    // $(document).on('click', 'button.btn-primary', function(){
+    //     let elem = $('div.out').css('filter', '');
+    // });
+
+    // $(document).on('click', '#investmentsAllEvent', function(e) {
+    //     e.preventDefault();
+    //     $('#investmentsAll').addClass('js-active');
+    // });
+
     $(document).on('click', '#showInvestsDetails', function (e) {
         e.preventDefault();
+
+        blurElement($('#investments').find('.popup__inner'), 4);
 
         $('#investmentsAll').removeClass('js-active');
         $('#investments').addClass('js-active');
         var facility = $(this).parent().parent().children(':first').text();
 
         $('#investmentsDetailsTitle').html('Ваши вложения в ' + facility);
-        var totalSum = 0;
-        var dataCash;
-        $.each($('#investedDetailsTable').find('.simplebar-scroll-content').find('.simplebar-content').find('.row.flex-vcenter'), function (ind, el) {
-            if ($(this).children(':last').data('facility') === facility) {
-                $(this).show();
-                dataCash = $(this).find('[data-cash]');
-                totalSum += dataCash.data('cash');
-            } else {
-                $(this).hide();
+
+        var ind = $('div#investments')
+            .find('div.box__select')
+            .find('div.selectric-hide-select')
+            .find('#in_out option:contains("Вложено")').val();
+        $('#in_out').prop('selectedIndex', ind).selectric('refresh');
+
+        //$('select#in_out').parent().parent().find('.selectric').find('span.label').text('Вложено');
+        // var totalSum = 0;
+        // var dataCash;
+        // $.each($('#investedDetailsTable').find('.simplebar-scroll-content').find('.simplebar-content').find('.row.flex-vcenter'), function (ind, el) {
+        //     if ($(this).children(':last').data('facility') === facility) {
+        //         $(this).show();
+        //         dataCash = $(this).find('[data-cash]');
+        //         totalSum += dataCash.data('cash');
+        //     } else {
+        //         $(this).hide();
+        //     }
+        // });
+        //
+        // $('#totalSumFooter').find('span').empty().html('Итого за выбранный период: ' +
+        //     new Intl.NumberFormat('ru-RU', {
+        //         minimumFractionDigits: 0
+        //     }).format(Math.round(totalSum)) + ' руб.');
+
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        $.ajax({
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            url: "getInvestorsCashList",
+            dataType: 'json',
+            timeout: 100000,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token);
             }
-        });
-
-        $('#totalSumFooter').find('span').empty().html('Итого за выбранный период: ' +
-            new Intl.NumberFormat('ru-RU', {
-                minimumFractionDigits: 0
-            }).format(Math.round(totalSum)) + ' руб.');
-
+        })
+            .done(function (data) {
+                createIncomeTable(data.investorsCashList, facility);
+            })
+            .fail(function (e) {
+                console.log(e);
+            })
+            .always(function () {
+                console.log('Деньги инвесторов загружены!');
+            });
     });
 
     $(document).on('click', '#closeInvestmentsDetails', function (e) {
@@ -149,69 +232,9 @@ jQuery(document).ready(function ($) {
             new Intl.NumberFormat('ru-RU', {
                 minimumFractionDigits: 0
             }).format(Math.round(totalSum)) + ' руб.');
-        //console.log(totalSum);
-        //console.log(dateFrom);
-        //console.log(dateTo);
-    })
+    });
+
 });
-
-function getPlugin(labelLength) {
-    var plugin = {
-        id: 'scroll-plugin',
-        rendered: false,
-        afterDraw: function (chart, options) {
-            var chartOptions = chart.options;
-
-            if (!chartOptions.scroll) {
-                return;
-            }
-            nummberColumns = chartOptions.nummberColumns > 1 ? chartOptions.nummberColumns : chart.config.data.labels.length;
-            chartOptions.scroll = false;
-
-            this.rendered = true;
-
-            var chartWrapper = $('<div class="chart-wrapper"></div>');
-            var chartAreaWrapper = $('<div class="chart-area-wrapper"></div>');
-            chartAreaWrapper.width((800 / nummberColumns) * labelLength);
-            chartAreaWrapper.height('400px');
-            $(chart.ctx.canvas).wrap(chartWrapper).wrap(chartAreaWrapper);
-            chartAreaWrapper.wrap(chartWrapper);
-
-            $(chartOptions.legendSelector).html(chart.generateLegend());
-            $(chartOptions.legendSelector + " > ul > li").on("click", function (e) {
-                var index = $(this).index(),
-                    dataset = chart.data.datasets[index];
-
-                $(this).toggleClass("hidden");
-                dataset.hidden = !dataset.hidden;
-
-                chart.update();
-            });
-
-            var copyWidth = chart.scales['y-axis-0'].width - 10;
-            var copyHeight = chart.scales['y-axis-0'].height + chart.scales['y-axis-0'].top + 10;
-
-            var chartAxis = document.querySelector(chartOptions.axisSelector);
-            chartAxis.style.height = copyHeight + 'px';
-            chartAxis.style.width = copyWidth + 'px';
-
-            var ticks = chart.scales['y-axis-0'].ticksAsNumbers;
-
-            var $chartList = $(chartOptions.axisSelector + ' > ul');
-            $chartList.html('');
-
-            ticks.forEach(function (el) {
-                $chartList.append('<li>' + new Intl.NumberFormat('ru-RU', {
-                    maximumFractionDigits: 2,
-                    minimumFractionDigits: 0
-                }).format(el) + '</li>')
-            });
-
-            $('#chart-axis').css('height', '390px');
-        }
-    };
-    return plugin;
-}
 
 function prepareToggle() {
     $('.accordion__item').each(function () {
@@ -399,6 +422,8 @@ function prepareIncomeDiagram(investorsFlowsList) {
     $(function () {
         //$('select').selectric();
         $('select#incomesAndExpenses').selectric({
+            disableOnMobile: false,
+            nativeOnMobile: false,
             onChange: function () {
                 var facility = $('.inner__row.inner__row_costs.flex-vhcenter').find('.selectric:last').find('span.label').text();
                 getMainFlowsList(facility);
@@ -406,6 +431,8 @@ function prepareIncomeDiagram(investorsFlowsList) {
         });
 
         $('select#months').selectric({
+            disableOnMobile: false,
+            nativeOnMobile: false,
             onChange: function () {
                 var month = $('.inner__row.inner__row_finance.flex-vhcenter')
                     .find('.circle')
@@ -415,6 +442,8 @@ function prepareIncomeDiagram(investorsFlowsList) {
         });
 
         $('select#years').selectric({
+            disableOnMobile: false,
+            nativeOnMobile: false,
             onChange: function () {
                 var year = $('.inner__row.inner__row_finance.flex-vhcenter')
                     .find('.circle')
@@ -451,10 +480,6 @@ function prepareIncomeDiagram(investorsFlowsList) {
 
     eachObject(res);
 
-    //console.log("После reduce");
-    //console.log(groupedCashes);
-    //console.log(reducedCash);
-
     $.each(facilities, function (ind, el) {
         sums = [];
         facilitiesDates = [];
@@ -463,15 +488,6 @@ function prepareIncomeDiagram(investorsFlowsList) {
             i++;
             $.each(reducedCash, function (indGr, elGr) {
                 if (elGr.facility === el && elGr.reportDate === elDates) {
-                    /*
-                    if(!totalSums[i]){
-                        totalSums[i] = 0;
-                    }
-
-                    if(facilityCnt < 2){
-                        totalSums[i] = elGr.sum;
-                    }
-                    */
                     if (!facilitiesDates[i]) {
                         facilitiesDates[i] = elGr.reportDate;
                     }
@@ -540,17 +556,6 @@ function prepareIncomeDiagram(investorsFlowsList) {
         dSet.push(ds);
     });
 
-    /*
-    ds = {
-        label: "Все объекты",
-        backgroundColor: getColor(7),
-        borderColor: getColor(7),
-        data: totalSums,
-        fill: false
-    };
-
-    dSet.push(ds);
-    */
     var max = Math.max.apply(Math, totalSums);
 
     var step = Math.floor(max / parseInt('5' + zeroDigits(max.toString().indexOf('.') - 2)))
@@ -644,7 +649,7 @@ function prepareIncomeDiagram(investorsFlowsList) {
                                 ticks:
                                     {
                                         fontColor: '#11325b',
-                                        fontSize: 15,
+                                        fontSize: 14,
                                         fontStyle: 600,
                                         fontFamily: 'OpenSans'
                                     },
@@ -672,6 +677,9 @@ function prepareIncomeDiagram(investorsFlowsList) {
                             }]
                     },
                 tooltips: {
+                    bodyFontSize: 14,
+                    titleFontSize: 14,
+                    footerFontSize: 14,
                     mode: 'label',
                     callbacks: {
                         afterTitle: function () {
@@ -691,6 +699,9 @@ function prepareIncomeDiagram(investorsFlowsList) {
                             return "Итого: " + window.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 
                         }
+                    },
+                    itemSort: function (a, b) {
+                        return b.datasetIndex - a.datasetIndex
                     }
                 },
                 animation: {
@@ -718,7 +729,7 @@ function prepareIncomeDiagram(investorsFlowsList) {
     }
 
     $('#chart-finance-legend').html(myDoughnut1.generateLegend());
-    $("#chart-finance-legend > ul > li").on("click", function (e) {
+    $('#chart-finance-legend > ul > li').on('click', function (e) {
         var index = $(this).index(),
             chart = e.view.myDoughnut1,
             dataset = chart.data.datasets[index]._meta[2];
@@ -726,10 +737,6 @@ function prepareIncomeDiagram(investorsFlowsList) {
         dataset.hidden = !dataset.hidden;
         chart.update();
     });
-
-    //$('.chart-wrapper:first').stop(true, true).animate({scrollLeft: $('.chart-area-wrapper:first').outerWidth()}, 500);
-    //$('#chart-axis').css('height', '390px');
-
 }
 
 function zeroDigits(numb) {
@@ -763,7 +770,9 @@ function prepareIncomeCircle(investorsFlowsList, fullDate) {
 
     var maxDate;
     if (dates.length === 0 && fullDate !== '') maxDate = fullDate;
-    else maxDate = new Date(Math.max.apply(null, dates));
+    else if (dates.length > 0) maxDate = new Date(Math.max.apply(null, dates));
+    else maxDate = new Date();
+
 
     var ttl = 'Ваш доход за ' + monthLongNames[maxDate.getMonth()].toLowerCase() + ' ' + maxDate.getFullYear();
 
@@ -941,19 +950,16 @@ function prepareDetailsProfit(investorsFlowsList, iMonth) {
             dateMonth = new Date(Math.max.apply(null, dates));
             break;
         default:
-            dateMonth = new Date(iMonth/*getDateFromString(iMonth*/);
+            dateMonth = new Date(iMonth);
     }
 
-    //console.log(investorsFlowsList);
-
     var invFlows = $.grep(investorsFlowsList, function (el) {
-        return new Date(el.reportDate).getMonth() === dateMonth.getMonth() && new Date(el.reportDate).getFullYear() === dateMonth.getFullYear();
+        return (new Date(el.reportDate).getMonth() === dateMonth.getMonth() && new Date(el.reportDate).getFullYear() === dateMonth.getFullYear())
+            && el.underFacilities.facility != null;
     });
 
     var facilitiesFlows = [];
     var facilityFlows;
-
-    //console.log(invFlows);
 
     $.each(invFlows, function (ind, el) {
         facilityFlows = {
@@ -971,7 +977,6 @@ function prepareDetailsProfit(investorsFlowsList, iMonth) {
     });
 
     var gFacilitiesFlows = [];
-    //console.log(facilitiesFlows);
     facilitiesFlows.reduce(function (res, value) {
         if (!res[value.facility]) {
             res[value.facility] = {
@@ -1021,8 +1026,6 @@ function prepareDetailsProfit(investorsFlowsList, iMonth) {
 
         return res;
     }, {});
-
-    //console.log(gFacilitiesFlows);
 
     $.each(gFacilitiesFlows, function (ind, el) {
         if (el.cnt !== el.cntKind) {
@@ -1237,11 +1240,6 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
 
     var max = Math.max.apply(Math, sums);
 
-    /*
-    var step = Math.floor(max / parseInt('5' + zeroDigits(max.toString().indexOf('.') - 2)))
-        * parseInt('1' + zeroDigits(max.toString().indexOf('.') - 2));
-    */
-
     var zeroCount = parseInt('1' + zeroDigits(max.toFixed(2).toString().indexOf('.') - 1));
     var step = (max / 7 / zeroCount).toFixed(2) * zeroCount;
     var min = max === 0 ? -100 : 0;
@@ -1255,12 +1253,12 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
         settlementDates = appendMonths(settlementDates);
     }
 
-    if (incomes.length < settlementDates.length) {
+    if (Object.keys(incomes).length < settlementDates.length) {
         for (var j = incomes.length; j < settlementDates.length; j++) {
             incomes.splice(0, 0, 0);
         }
     }
-    if (expenses.length < settlementDates.length) {
+    if (Object.keys(expenses).length < settlementDates.length) {
         for (var j = expenses.length; j < settlementDates.length; j++) {
             expenses.splice(0, 0, 0);
         }
@@ -1281,7 +1279,6 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
 
     const groupedByUnderFacility = outputArr.groupBy('underFacility');
     const groupedByPayment = outputArr.groupBy('payment');
-    // console.log(groupedByPayment);
     var counter = 0;
     $.each(groupedByUnderFacility, function (indSd, elSd) {
         counter = 0;
@@ -1360,16 +1357,17 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
                     if (dataSet[key].settlementDate === elEl.settlementDate) {
                         dataSet[key].sums[dataSet[key].sums.length - 1] += sum;
                     } else {
-                        if (settlementDates[dataSet[key].sums.length] !== elEl.settlementDate) {
+                        while (settlementDates[dataSet[key].sums.length] !== elEl.settlementDate) {
                             expensesArr.push(0);
-                        } else {
-                            expensesArr.push(sum);
-                            dataSet[key] = {
-                                payment: key,
-                                settlementDate: elEl.settlementDate,
-                                sums: expensesArr
-                            };
                         }
+
+                        expensesArr.push(sum);
+                        dataSet[key] = {
+                            payment: key,
+                            settlementDate: elEl.settlementDate,
+                            sums: expensesArr
+                        };
+
                     }
                 }
             }
@@ -1387,16 +1385,34 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
         exDataSets.push(val);
     });
 
-    // console.log(exDataSets);
+    var underFacilitiesIncomesColors = [
+        '#1f7a1f',
+        '#29a329',
+        '#33cc33',
+        '#5cd65c',
+        '#85e085',
+        '#adebad',
+        '#d6f5d6'
+    ];
+    var underFacilitiesExpensesColors = [
+        '#995c00',
+        '#cc7a00',
+        '#ff9900',
+        '#ffad33',
+        '#ffc266',
+        '#ffd699',
+        '#ffebcc'
+    ];
+
 
     var finDs = [];
     $.each(dataSets, function (ind, el) {
 
         finDs.push({
             label: el.underFacility,
-            backgroundColor: window.chartColors.green,
-            borderColor: getColor(8),
-            borderWidth: 1,
+            backgroundColor: underFacilitiesIncomesColors[ind],
+            //borderColor: getColor(8),
+            borderWidth: 0,
             data: el.sums,
             fill: false,
             stack: 'Stack 1'
@@ -1409,16 +1425,14 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
         clr = clr === 4 ? ++clr : clr;
         finDs.push({
             label: el.payment,
-            backgroundColor: getColor(clr),
-            borderColor: getColor(8),
-            borderWidth: 1,
+            backgroundColor: underFacilitiesExpensesColors[clr],
+            //borderColor: getColor(8),
+            borderWidth: 0,
             data: el.sums,
             fill: false,
             stack: 'Stack 2'
         })
     });
-
-    // console.log(finDs);
 
     var configCosts = {
         type: 'bar',
@@ -1451,7 +1465,7 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
                                 ticks:
                                     {
                                         fontColor: '#11325b',
-                                        fontSize: 15,
+                                        fontSize: 14,
                                         fontStyle: 600,
                                         fontFamily: 'OpenSans'
                                     },
@@ -1480,6 +1494,8 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
                             }]
                     },
                 tooltips: {
+                    titleFontSize: 14,
+                    bodyFontSize: 14,
                     mode: 'x',
                     itemSort: function (a, b) {
                         return b.datasetIndex - a.datasetIndex
@@ -1565,18 +1581,18 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
     var totalIncomes = 0;
     for (var k in incomes) {
         if (incomes.hasOwnProperty(k)) {
-            totalIncomes = incomes[k];
+            totalIncomes = parseFloat(incomes[k]);
         }
     }
     var totalExpenses = 0;
     for (var k in expenses) {
         if (expenses.hasOwnProperty(k)) {
-            totalExpenses = expenses[k];
+            totalExpenses = parseFloat(expenses[k]);
         }
     }
 
-    if (totalIncomes === 0) totalIncomes += 0.0001;
-    if (totalExpenses === 0) totalExpenses += 0.0001;
+    if (totalIncomes === 0) totalIncomes = 0.0001;
+    if (totalExpenses === 0) totalExpenses = 0.0001;
 
     var totalIn = totalIncomes - totalExpenses;
     $('#totalExpensesText').html('<span>' + new Intl.NumberFormat('ru-RU', {
@@ -1591,7 +1607,7 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
                 datasets: [
                     {
                         label: "",
-                        backgroundColor: [window.chartColors.green, window.chartColors.orange],
+                        backgroundColor: [underFacilitiesIncomesColors[0], underFacilitiesExpensesColors[0]],
                         borderWidth: 0,
                         data: [totalIncomes, totalExpenses]
                     }
@@ -1610,14 +1626,14 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
                             {
                                 padding: 15,
                                 fontFamily: 'OpenSans',
-                                fontSize: 15
+                                fontSize: 14
                             }
                     },
                 title:
                     {
                         display: false,
                         fontStyle: 'bold',
-                        fontSize: '15',
+                        fontSize: '14',
                         fontColor: '#11325b',
                         text: ''
                     }
@@ -1635,28 +1651,38 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
 
     var expensesList = $('#expensesList');
     expensesList.html('');
-    expensesList.append('<div class="circle-canvas__item" style="color: ' + window.chartColors.green + '"><span>' + new Intl.NumberFormat('ru-RU', {
+    expensesList.append('<div class="circle-canvas__item" style="color: ' + underFacilitiesIncomesColors[0] + '"><span>' + new Intl.NumberFormat('ru-RU', {
         maximumFractionDigits: 2,
         minimumFractionDigits: 2
     }).format(totalIncomes) + '</span>' + "Доходы" + '</div>');
-    expensesList.append('<div class="circle-canvas__item" style="color: ' + window.chartColors.orange + '"><span>' + new Intl.NumberFormat('ru-RU', {
+    expensesList.append('<div class="circle-canvas__item" style="color: ' + underFacilitiesExpensesColors[0] + '"><span>' + new Intl.NumberFormat('ru-RU', {
         maximumFractionDigits: 2,
         minimumFractionDigits: 2
     }).format(totalExpenses) + '</span>' + "Расходы" + '</div>');
-    //blurElement($('.out'), 0);
 
+    // $('div.inner__row.inner__row_costs.flex-vhcenter').find('div.box__select').find('div.selectric').find('span.label').text(maxFacility);
+    $('div.inner__row.inner__row_costs.flex-vhcenter').find('div.box__select').find('div.selectric').find('span.label').text(maxFacility);
+    var ind = $('div.inner__row.inner__row_costs.flex-vhcenter')
+        .find('div.box__select')
+        .find('div.selectric-hide-select')
+        .find('#incomesAndExpenses option:contains("' + maxFacility + '")').val();
+    $('#incomesAndExpenses').prop('selectedIndex', ind).selectric('refresh');
 }
 
-function prepareInvestedMoney(investorsCashes, rooms) {
+function prepareInvestedMoney(investorsCashes, rooms, saleOfFacilities) {
     maxFacility = getMaxInFacility(investorsCashes);
-
     var cashes = $.grep(investorsCashes, function (el) {
-        return el.typeClosingInvest === null || el.typeClosingInvest.typeClosingInvest !== 'Перепродажа доли';
+        if (el.facility.facility === 'На счете') {
+            return el.typeClosingInvest === null;
+        } else {
+            return (el.typeClosingInvest === null || el.typeClosingInvest.typeClosingInvest !== 'Перепродажа доли') && el.investor != null;
+        }
     });
 
     var balanceCash = $.grep(investorsCashes, function (el) {
-        return el.typeClosingInvest === null;
+        return el.typeClosingInvest === null && el.investor != null;
     });
+    var investor = $('#profile').find($('b')).text();
 
     var totalMoney = 0;
 
@@ -1667,16 +1693,6 @@ function prepareInvestedMoney(investorsCashes, rooms) {
     balanceCash.sort(function (a, b) {
         return new Date(a.dateGivedCash) - new Date(b.dateGivedCash);
     });
-
-    $.each(balanceCash, function (ind, el) {
-        totalMoney += el.givedCash;
-    });
-
-    /*
-    var sortedCash = unique(cashes.map(function (value) {
-        return value.facility.facility;
-    }));
-    */
 
     var sortedCash = unique(rooms.map(function (value) {
         return value.underFacility.facility.facility;
@@ -1708,9 +1724,6 @@ function prepareInvestedMoney(investorsCashes, rooms) {
         return res;
     }, {});
 
-    console.log(sortedCash);
-    console.log(facilitiesCoasts);
-
     var tmp = [];
     $.each(sortedCash, function (ind, el) {
         for (var i = 0; i < facilitiesCoasts.length; i++) {
@@ -1724,24 +1737,38 @@ function prepareInvestedMoney(investorsCashes, rooms) {
     });
 
     facilitiesCoasts = tmp.slice();
-    console.log(facilitiesCoasts);
 
     var invested = [];
+
     cashes.reduce(function (res, value) {
         var facility = value.facility.facility;
         if (!res[facility]) {
             res[facility] = {
                 givedCash: 0,
-                facility: facility
+                facility: facility,
+                myCash: 0,
+                closedCash: 0,
+                openCash: 0
             };
             invested.push(res[facility])
         }
         if (res[facility].facility === facility) {
             res[facility].givedCash += value.givedCash;
+            if (value.investor.login === investor) {
+                res[facility].myCash += value.givedCash;
+                if (value.typeClosingInvest === null) {
+                    res[facility].openCash += value.givedCash;
+                } else {
+                    res[facility].closedCash += value.givedCash;
+                }
+            }
         } else {
             res[facility] = {
                 givedCash: 0,
-                facility: facility
+                facility: facility,
+                myCash: 0,
+                closedCash: 0,
+                openCash: 0
             };
             invested.push(res[facility])
         }
@@ -1754,21 +1781,39 @@ function prepareInvestedMoney(investorsCashes, rooms) {
         if (!res[facility]) {
             res[facility] = {
                 givedCash: 0,
-                facility: facility
+                facility: facility,
+                myCash: 0,
+                closedCash: 0,
+                openCash: 0
             };
             investedBalance.push(res[facility])
         }
         if (res[facility].facility === facility) {
             res[facility].givedCash += value.givedCash;
+            if (value.investor.login === investor) {
+                res[facility].myCash += value.givedCash;
+                if (value.typeClosingInvest === null) {
+                    res[facility].openCash += value.givedCash;
+                } else {
+                    res[facility].closedCash += value.givedCash;
+                }
+            }
         } else {
             res[facility] = {
                 givedCash: 0,
-                facility: facility
+                facility: facility,
+                myCash: 0,
+                closedCash: 0,
+                openCash: 0
             };
             investedBalance.push(res[facility])
         }
         return res;
     }, {});
+
+    $.each(investedBalance, function (ind, el) {
+        totalMoney += el.myCash;
+    });
 
     var finalArr = [];
     $.each(facilitiesCoasts, function (ind, el) {
@@ -1780,81 +1825,124 @@ function prepareInvestedMoney(investorsCashes, rooms) {
             fin = {
                 facility: el.facility,
                 coast: el.coast,
-                givedCash: obj[0].givedCash
+                givedCash: obj[0].givedCash,
+                myCash: obj[0].myCash,
+                closedCash: obj[0].closedCash,
+                openCash: obj[0].openCash
             };
             finalArr.push(fin);
         }
     });
+    var colors = [];
+
     $('#balance').find('span:last').html('<b>' + new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(totalMoney) + '</b>' + ' рублей');
 
     $('#totalInvested').html('<span>' + new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(totalMoney) + '</span>' + 'рублей');
     $('#investedList').html('');
     $.each(investedBalance, function (ind, el) {
-        if (el.givedCash > 0) {
+        if (el.myCash > 0) {
+            colors.push(getColor(ind));
             $('#investedList').append('<div class="circle-canvas__item" style="color: ' + getColor(ind) + '"><span>' + new Intl.NumberFormat('ru-RU', {
                 maximumFractionDigits: 2,
                 minimumFractionDigits: 2
-            }).format(el.givedCash) + '</span>' + el.facility + '</div>');
+            }).format(el.myCash) + '</span>' + el.facility + '</div>');
         }
     });
 
     var facilities = [];
     var sums = [];
-    var colors = [];
+
     $.each(finalArr, function (i, el) {
+        // if(el.myCash > 0) {
         facilities.push(el.facility);
         sums.push(el.givedCash);
-        colors.push(getColor(i));
+        // colors.push(getColor(i));
+        // }
     });
     facilities = unique(facilities);
 
     var maxPriceFacility = Math.max.apply(Math, finalArr.map(function (value) {
-        return value.coast
+        return value.myCash
     }));
-
-    console.log(finalArr);
 
     var investedMoney = $('#investedMoney');
     investedMoney.empty();
+    
+
     $.each(finalArr, function (ind, el) {
-        var percentLen = Math.floor((el.coast / maxPriceFacility) * 100);
-        var percentBg = Math.floor((el.givedCash / el.coast) * 100);
-        var colDiv = $('<div class="column"></div>');
-        colDiv.appendTo(investedMoney);
-        var priceFirst = $('<div class="column__price-first">' + new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(el.coast) + '</div>');
-        priceFirst.appendTo(colDiv);
-        var colBody = $('<div style="height:' + percentLen + '%" class="column__body"></div>');
-        colBody.appendTo(colDiv);
+        if ((el.facility !== 'Вайнера' && el.facility !== 'Суворовский' && el.facility !== 'Энергетиков') || el.myCash > 0) {
+            var percentLen = Math.floor((el.myCash / maxPriceFacility) * 100) | 0;
+            var percentBg = Math.floor((el.openCash / el.myCash) * 100) | 0;
+            var colDiv = $('<div class="column"></div>');
+            colDiv.appendTo(investedMoney);
+            var priceFirst = $('<div class="column__price-first">' + new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(el.coast) + '</div>');
+            priceFirst.appendTo(colDiv);
+            var colBody = $('<div style="height:' + percentLen + '%" class="column__body"></div>');
+            colBody.appendTo(colDiv);
 
-        var leftPerc = 0;
-        if (percentBg === 100) {
-            leftPerc = 30;
-        } else if (percentBg >= 10 && percentBg <= 99) {
-            leftPerc = 35;
-        } else {
-            leftPerc = 40;
+
+            var percentBgStr = Math.floor((el.myCash / el.coast) * 100) | 0;//percentBg;
+
+            var leftPerc = 0;
+            if (percentBgStr >= 100) {
+                leftPerc = 30;
+            } else if (percentBgStr >= 10 && percentBgStr <= 99) {
+                leftPerc = 35;
+            } else {
+                leftPerc = 40;
+            }
+
+            percentBg = percentBg < 5 ? 0 : percentBg;
+            var colBg = $('<div style="height:' + percentBg + '%; background-color:' + getColor(ind) + ';" class="column__bg"></div>');
+            if (percentBg === 0 && percentLen !== 0) {
+                colBody.height('100%');
+                var colComplete = $('<div class="complete">Реализовано</div>');
+                colComplete.appendTo(colBody);
+
+                $.each(saleOfFacilities, function (indSof, elSof) {
+                    if (el.facility === elSof.facility.facility && elSof.investorEng === investor) {
+                        var box = $('<div class="profitBox"></div>');
+
+                        var profit = $('<div class="profit">Доходность ' + new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(elSof.totalYield * 100) + '%</div>');
+                        profit.appendTo(box);
+                        // profit.appendTo(colBody);
+                        var splitter = $('<div class="splitter">___________</div>');
+                        splitter.appendTo(box);
+                        // splitter.appendTo(colBody);
+                        var gains = $('<div class="gains">Прирост ' + new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(elSof.capitalGains * 100) + '%</div>');
+                        gains.appendTo(box);
+                        box.appendTo(colBody);
+                        // gains.appendTo(colBody);
+                    }
+                });
+            } else if (percentLen === 0) {
+                // if (el.facility !== 'Вайнера' && el.facility !== 'Суворовский' && el.facility !== 'Энергетиков') {
+                var colNotParticipate = $('<div class="notParticipate">Не участвовали</div>');
+                colNotParticipate.appendTo(colDiv);
+                // }
+            }
+            colBg.appendTo(colBody);
+
+            //var topBottom = percentLen === 0 ? 'bottom: 10%' : 'top: -10%';
+
+            var colPercent = $('<div style="background-color:transparent; position:absolute; bottom: ' + (colBody.height() + 5) + 'px; left:' + leftPerc + '%; font-size:14px; font-weight:600;color:#11325b">' + percentBgStr + '%</div>');
+            colPercent.appendTo(colBody);
+
+            var priceSecond = $('<div class="column__price-second">' +
+                new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(Math.round(el.myCash)) + '</div>');
+            priceSecond.appendTo(colDiv);
+            var colTitle = $('<div class="column__title">' + el.facility + '</div>');
+            colTitle.appendTo(colDiv);
         }
-
-        percentBg = percentBg < 5 ? 5 : percentBg;
-        var colBg = $('<div style="height:' + percentBg + '%; background-color:' + getColor(ind) + ';" class="column__bg"></div>');
-        colBg.appendTo(colBody);
-
-        var colPercent = $('<div style="background-color:transparent; position:absolute; bottom:' + percentBg + '%; left:' + leftPerc + '%; font-size:12px; font-weight:600;color:#11325b">' + percentBg + '%</div>');
-        colPercent.appendTo(colBody);
-
-        var priceSecond = $('<div class="column__price-second">' +
-            new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(Math.round(el.givedCash)) + '</div>');
-        priceSecond.appendTo(colDiv);
-        var colTitle = $('<div class="column__title">' + el.facility + '</div>');
-        colTitle.appendTo(colDiv);
-
     });
 
     facilities = [];
     sums = [];
     $.each(investedBalance, function (ind, el) {
-        facilities.push(el.facility);
-        sums.push(el.givedCash);
+        if (el.myCash > 0) {
+            facilities.push(el.facility);
+            sums.push(el.myCash);
+        }
     });
 
     var configDoughnutInvested = {
@@ -1906,80 +1994,242 @@ function prepareInvestedMoney(investorsCashes, rooms) {
         window.myDoughnutInvested.config = configDoughnutInvested;
         window.myDoughnutInvested.update();
     }
+
+    $(function () {
+        $('select#in_out').selectric({
+            disableOnMobile: false,
+            nativeOnMobile: false,
+            onChange: function () {
+                var in_out = $('#investments').find('.popup__inner').find('.popup__body').find('.head').find('.head__bottom')
+                    .find('.box__select')
+                    .find('.selectric').find('span.label').text();
+
+                var token = $("meta[name='_csrf']").attr("content");
+                var header = $("meta[name='_csrf_header']").attr("content");
+
+                switch (in_out) {
+                    case 'Вложено':
+
+                        $.ajax({
+                            type: "POST",
+                            contentType: "application/json;charset=utf-8",
+                            url: "getInvestorsCashList",
+                            dataType: 'json',
+                            timeout: 100000,
+                            beforeSend: function (xhr) {
+                                xhr.setRequestHeader(header, token);
+                            }
+                        })
+                            .done(function (data) {
+                                createIncomeTable(data.investorsCashList, '');
+                            })
+                            .fail(function (e) {
+                                console.log(e);
+                            })
+                            .always(function () {
+                                console.log('Деньги инвесторов загружены!');
+                            });
+
+                        break;
+                    case 'Выведено':
+                        blurElement($('#investments').find('.popup__inner'), 4);
+
+                        $.ajax({
+                            type: "POST",
+                            contentType: "application/json;charset=utf-8",
+                            url: "getInvestorsCashList",
+                            dataType: 'json',
+                            timeout: 100000,
+                            beforeSend: function (xhr) {
+                                xhr.setRequestHeader(header, token);
+                            }
+                        })
+                            .done(function (data) {
+                                createCashingTable(data.investorsCashList, investor);
+                            })
+                            .fail(function (e) {
+                                console.log(e);
+                            })
+                            .always(function () {
+                                console.log('Деньги инвесторов загружены!');
+                            });
+
+                        break;
+                }
+            }
+        });
+    });
 }
 
-function createInvestedAllTable(investorsCash) {
+function getToFacility(investor, facility, summ, invCash, dateGivedCash) {
+    var investorsCash = $.grep(invCash, function (el) {
+        return el.investor.login === investor &&
+            el.sourceFacility !== null &&
+            el.sourceFacility.facility === facility &&
+            // el.typeClosingInvest !== null && el.typeClosingInvest.typeClosingInvest === 'Реинвестирование' &&
+            el.dateGivedCash !== null && el.dateGivedCash === dateGivedCash &&
+            Math.round(el.givedCash) === Math.round(summ);
+    });
+    if (investorsCash.length > 0) {
+        return investorsCash[0].facility.facility;
+    } else {
+        return '';
+    }
+
+    // console.log(Math.round(summ));
+    // console.log(investorsCash);
+}
+
+function createCashingTable(invCash, investor) {
+    var cashing = getMyCash(invCash, investor);
+    var investments = $('#investments').find('.investments');
+    var investmentsHead = investments.find('.investments__head.flex');
+    investmentsHead.empty();
+    var sourceFacilityCol = $('<div class="col">Объект (откуда пришли)</div>');
+    sourceFacilityCol.appendTo(investmentsHead);
+    var sourceUnderFacilityCol = $('<div class="col">Подобъект (откуда пришли)</div>');
+    sourceUnderFacilityCol.appendTo(investmentsHead);
+
+    var invColDate = $('<div class="col">Дата вывода</div>');
+    invColDate.appendTo(investmentsHead);
+    var invColCashing = $('<div class="col">Сумма вывода</div>');
+    invColCashing.appendTo(investmentsHead);
+    var invColCommission = $('<div class="col">Сумма комиссии</div>');
+    invColCommission.appendTo(investmentsHead);
+    var invColTypeCashing = $('<div class="col">Вид вывода</div>');
+    invColTypeCashing.appendTo(investmentsHead);
+    var invColFacility = $('<div class="col" hidden>Объект</div>');
+    invColFacility.appendTo(investmentsHead);
+    var colToFacility = $('<div class="col">Объект (куда реинвестировали)</div>');
+    colToFacility.appendTo(investmentsHead);
+
+    var investedDetailsTableContent = $('#investedDetailsTable').find('.simplebar-scroll-content').find('.simplebar-content');
+    var facility = investedDetailsTableContent.find('.row.flex-vcenter:visible:first').find('.col:last').text();
+    if (facility === '') {
+        var tmp = $('#investmentsDetailsTitle').text().split(' ');
+        $.each(tmp, function (ind, el) {
+            if (ind > 2) {
+                facility += el;
+            }
+        })
+    }
+    // console.log(facility);
+
+    investedDetailsTableContent.empty();
+    var totalSum = 0;
+
+    // console.log(cashing);
+
+    $.each(cashing, function (ind, el) {
+        if (el.facility === facility) {
+
+            var toFacility = getToFacility(investor, facility, el.cashing, invCash, el.dateClosingInvest);
+
+            var row = $('<div class="row flex-vcenter"></div>');
+
+            var rowSourceFacility = $('<div class="col" style="margin-left: 15px" data-source-facility="' + el.sourceFacility + '">' +
+                el.sourceFacility +
+                '</div>');
+            rowSourceFacility.appendTo(row);
+
+            var rowSourceUnderFacility = $('<div class="col" data-source-under-facility="' + el.sourceUnderFacility + '">' +
+                el.sourceUnderFacility +
+                '</div>');
+            rowSourceUnderFacility.appendTo(row);
+
+            var dateClose = new Intl.DateTimeFormat('ru-RU').format(el.dateClosingInvest);
+            var rowDate = $('<div class="col" data-date="' + dateClose + '">' +
+                dateClose +
+                '</div>');
+            rowDate.appendTo(row);
+
+            var rowCashing = $('<div class="col" data-cash="' + el.cashing + '">' +
+                new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(Math.round(el.cashing)) + ' руб.' + '</div>');
+            rowCashing.appendTo(row);
+            var rowCommission;
+            rowCommission = $('<div class="col" data-cash="' + el.commission + '">' +
+                new Intl.NumberFormat('ru-RU', {
+                    maximumFractionDigits: 2,
+                    minimumFractionDigits: 2
+                }).format(el.commission) + ' руб.' + '</div>');
+            rowCommission.appendTo(row);
+
+            var rowTypeCashing = $('<div class="col" data-typecashing="' + el.typeClosingInvest + '">' + el.typeClosingInvest + '</div>');
+            rowTypeCashing.appendTo(row);
+
+            var rowFacility = $('<div class="col" data-facility="' + el.facility + '" hidden>' + el.facility + '</div>');
+            rowFacility.appendTo(row);
+
+            var rowToFacility = $('<div class="col" data-toFacility="' + toFacility + '">' + toFacility + '</div>');
+            rowToFacility.appendTo(row);
+
+            row.appendTo(investedDetailsTableContent);
+
+            totalSum += el.cashing + el.commission;
+        }
+
+    });
+
+    $('#totalSumFooter').find('span').empty().html('Итого за выбранный период: ' +
+        new Intl.NumberFormat('ru-RU', {
+            minimumFractionDigits: 2
+        }).format(totalSum) + ' руб.');
+
+    blurElement($('#investments').find('.popup__inner'), 0);
+}
+
+function createIncomeTable(investorsCash, gettingFacility) {
+
     var invCash;
+    var investor = $('#profile').find($('b')).text();
+
+    var investmentsHead = $('#investments').find('.investments__head.flex');
+    investmentsHead.empty();
+    var invColDate = $('<div class="col">Дата</div>');
+    invColDate.appendTo(investmentsHead);
+    var invColCashing = $('<div class="col">Сумма</div>');
+    invColCashing.appendTo(investmentsHead);
+    var invColCommission = $('<div class="col">Источник</div>');
+    invColCommission.appendTo(investmentsHead);
+    var invColFacility = $('<div class="col" hidden>Объект</div>');
+    invColFacility.appendTo(investmentsHead);
+    var curFacility = '';
+    var investedDetailsTableContent = $('#investedDetailsTable').find('.simplebar-scroll-content').find('.simplebar-content');
+    if (gettingFacility === '') {
+        curFacility = investedDetailsTableContent.find('.row.flex-vcenter:visible:first').find('.col:last').text();
+        if (curFacility === '') {
+            var tmp = $('#investmentsDetailsTitle').text().split(' ');
+            $.each(tmp, function (ind, el) {
+                if (ind > 2) {
+                    curFacility += el;
+                }
+            })
+        }
+    } else {
+        curFacility = gettingFacility;
+    }
+
+    investedDetailsTableContent.empty();
 
     invCash = $.grep(investorsCash, function (el) {
-        return el.givedCash > 0;
+        return el.givedCash > 0 && el.facility.facility === curFacility &&
+            el.investor != null && el.investor.login === investor
     });
 
     invCash.sort(function (a, b) {
         return new Date(a.dateGivedCash) - new Date(b.dateGivedCash);
     });
-
-    var investedAllDetailsTable = $('#investedAllDetailsTable').find('.simplebar-content');
-    investedAllDetailsTable.empty();
-
-    var invested = [];
-    invCash.reduce(function (res, value) {
-        var facility = value.facility.facility;
-        if (!res[facility]) {
-            res[facility] = {
-                givedCash: 0,
-                facility: facility
-            };
-            invested.push(res[facility])
-        }
-        if (res[facility].facility === facility) {
-            res[facility].givedCash += value.givedCash;
-        } else {
-            res[facility] = {
-                givedCash: 0,
-                facility: facility
-            };
-            invested.push(res[facility])
-        }
-        return res;
-    }, {});
-
-    $.each(invested, function (ind, el) {
-        var row = $('<div class="row flex-vcenter"></div>');
-        row.appendTo(investedAllDetailsTable);
-
-        var colFacility = $('<div class="col" style="margin-left: 15px">' + el.facility + '</div>');
-        colFacility.appendTo(row);
-        var colSum = $('<div class="col" data-cash="' + el.givedCash + '">' +
-            new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(Math.round(el.givedCash)) + ' руб.' + '</div>');
-        colSum.appendTo(row);
-        var colDetails = $('<div class="col"><button type="button" class="btn btn-primary" id="showInvestsDetails">Подробности</button></div>');
-        colDetails.appendTo(row);
-    });
-
-}
-
-function createInvestedTable(investorsCash) {
-    var invCash;
-
-    invCash = $.grep(investorsCash, function (el) {
-        return el.givedCash > 0;
-    });
-
-    invCash.sort(function (a, b) {
-        return new Date(a.dateGivedCash) - new Date(b.dateGivedCash);
-    });
-
-    var investedDetailsTable = $('#investedDetailsTable').find('.simplebar-content');
-    investedDetailsTable.empty();
 
     $.each(invCash, function (ind, el) {
         var row = $('<div class="row flex-vcenter"></div>');
-        row.appendTo(investedDetailsTable);
+        row.appendTo(investedDetailsTableContent);
         var dateGiv = new Intl.DateTimeFormat('ru-RU').format(el.dateGivedCash);
         var colDate = $('<div class="col" style="margin-left: 15px" data-date="' + dateGiv + '">' + dateGiv + '</div>');
         colDate.appendTo(row);
-        var colSum = $('<div class="col" data-cash="' + el.givedCash + '">' + new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(el.givedCash) + ' руб.' + '</div>');
+
+        var colSum = $('<div class="col" data-cash="' + el.givedCash + '">' +
+            new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(el.givedCash) +
+            ' руб.' + '</div>');
         colSum.appendTo(row);
         var cashSource = el.cashSource === null ? '' : el.cashSource.cashSource;
         var cashImg = '';
@@ -1999,89 +2249,228 @@ function createInvestedTable(investorsCash) {
         }
         var colImg = $('<div class="col"><img src="/resources/core/img/' + cashImg + '" title="' + cashSource + '"></div>');
         colImg.appendTo(row);
+
         var colFacility = $('<div class="col" hidden data-facility="' + el.facility.facility + '">' + el.facility.facility + '</div>');
         colFacility.appendTo(row);
     });
-
-    /*
-    $('select#invested').find('option')
-        .remove()
-        .end();
-
-    $.each(facilities, function (ind, el) {
-        var option = $('<option>' + el + '</option>');
-        option.appendTo($('select#invested'));
-    });
-    */
     var investments = $('#investments');
-
     var invested = [];
     invCash.reduce(function (res, value) {
         var facility = value.facility.facility;
         if (!res[facility]) {
             res[facility] = {
                 givedCash: 0,
-                facility: facility
+                facility: facility,
+                myCash: 0
             };
             invested.push(res[facility])
         }
         if (res[facility].facility === facility) {
             res[facility].givedCash += value.givedCash;
+            if (value.investor.login === investor) {
+                res[facility].myCash += value.givedCash;
+            }
         } else {
             res[facility] = {
                 givedCash: 0,
-                facility: facility
+                facility: facility,
+                myCash: 0
             };
             invested.push(res[facility])
         }
         return res;
     }, {});
 
-    //console.log(invCash);
-
-    /*
-    $(function () {
-
-        //$('select').selectric();
-        $('select#invested').selectric({
-            /*
-            onChange: function (element) {
-                var facility = investments
-                    .find('.popup__inner')
-                    .find('.popup__body')
-                    .find('.head')
-                    .find('.head__bottom')
-                    .find('.select')
-                    .find('.selectric-wrapper.selectric-below').find('.selectric:last').find('span.label').text();
-
-                investments.find('[data-facility]').each(function () {
-                    var cur = $(this).data('facility');
-
-                    if (cur === facility) {
-                        $(this).parent().children().show();
-                        $(this).css('color', 'transparent');
-                        $(this).parent().show();
-                    } else {
-                        $(this).parent().children().hide();
-                        $(this).parent().hide();
-                    }
-
-                });
-
-                $.each(invested, function (ind, el) {
-                    if (el.facility === facility) {
-                        var totalSum = $('#totalSumFooter');
-                        totalSum.find('strong').empty();
-                        $('<span><strong>' + Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(el.givedCash) + ' руб.' + '</strong></span>')
-                            .appendTo(totalSum);
-                    }
-                });
-            }
-
-        });
-
+    $.each(invested, function (ind, el) {
+        if (el.facility === curFacility) {
+            $('#totalSumFooter').find('span').empty().html('Итого за выбранный период: ' +
+                new Intl.NumberFormat('ru-RU', {
+                    minimumFractionDigits: 2
+                }).format(Math.round(el.givedCash)) + ' руб.');
+        }
     });
-    */
+    blurElement($('#investments').find('.popup__inner'), 0);
+
+}
+
+function createInvestedAllTable(investorsCash) {
+    var invCash;
+
+    invCash = $.grep(investorsCash, function (el) {
+        return el.givedCash > 0 && el.investor != null;
+    });
+
+    invCash.sort(function (a, b) {
+        return new Date(a.dateGivedCash) - new Date(b.dateGivedCash);
+    });
+
+    // console.log(invCash);
+
+    var investedAllDetailsTable = $('#investedAllDetailsTable').find('.simplebar-content');
+    investedAllDetailsTable.empty();
+    var investor = $('#profile').find($('b')).text();
+
+    var invested = [];
+
+    invCash.reduce(function (res, value) {
+        var facility = value.facility.facility;
+        if (!res[facility]) {
+            res[facility] = {
+                givedCash: 0,
+                facility: facility,
+                myCash: 0,
+                incomeCash: 0,
+                cashing: 0
+            };
+            invested.push(res[facility])
+        }
+        if (res[facility].facility === facility) {
+            res[facility].givedCash += value.givedCash;
+            if (value.investor.login === investor) {
+                res[facility].myCash += value.givedCash;
+                if (value.typeClosingInvest === null || value.typeClosingInvest.typeClosingInvest !== 'Перепродажа доли') {
+                    res[facility].incomeCash += value.givedCash;
+                }
+                if (value.typeClosingInvest !== null &&
+                    (value.typeClosingInvest.typeClosingInvest === 'Вывод' ||
+                        value.typeClosingInvest.typeClosingInvest === 'Вывод_комиссия' ||
+                        value.typeClosingInvest.typeClosingInvest === 'Реинвестирование')) {
+                    res[facility].cashing += value.givedCash;
+                }
+            }
+        } else {
+            res[facility] = {
+                givedCash: 0,
+                facility: facility,
+                myCash: 0,
+                incomeCash: 0,
+                cashing: 0
+            };
+            invested.push(res[facility])
+        }
+        return res;
+    }, {});
+
+    $.each(invested, function (ind, el) {
+        if (el.myCash > 0) {
+            var row = $('<div class="row flex-vcenter"></div>');
+            row.appendTo(investedAllDetailsTable);
+
+            var colFacility = $('<div class="col" style="margin-left: 15px">' + el.facility + '</div>');
+            colFacility.appendTo(row);
+
+            var colIncomeTotal = $('<div class="col" data-income="' + el.incomeCash + '">' +
+                new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(Math.round(el.incomeCash)) + ' руб.' + '</div>');
+            colIncomeTotal.appendTo(row);
+
+            var colCashingTotal = $('<div class="col" data-cashing="' + el.cashing + '">' +
+                new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(Math.round(el.cashing)) + ' руб.' + '</div>');
+            colCashingTotal.appendTo(row);
+
+            var colSum = $('<div class="col" data-cash="' + el.myCash + '">' +
+                new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(Math.round(el.incomeCash - el.cashing)) + ' руб.' + '</div>');
+            colSum.appendTo(row);
+            var colDetails = $('<div class="col"><button type="button" class="btn btn-primary" id="showInvestsDetails">Подробности</button></div>');
+            colDetails.appendTo(row);
+
+
+        }
+    });
+
+}
+
+function createInvestedTable(investorsCash) {
+    var invCash;
+    var investor = $('#profile').find($('b')).text();
+
+    invCash = $.grep(investorsCash, function (el) {
+        return el.givedCash > 0 && el.investor != null;
+    });
+
+    invCash.sort(function (a, b) {
+        return new Date(a.dateGivedCash) - new Date(b.dateGivedCash);
+    });
+
+    var investedDetailsTable = $('#investedDetailsTable').find('.simplebar-content');
+    investedDetailsTable.empty();
+
+    var investmentsHead = $('#investments').find('.investments__head.flex');
+    investmentsHead.empty();
+    var invColDate = $('<div class="col">Дата</div>');
+    invColDate.appendTo(investmentsHead);
+    var invColCashing = $('<div class="col">Сумма</div>');
+    invColCashing.appendTo(investmentsHead);
+    var invColCommission = $('<div class="col">Источник</div>');
+    invColCommission.appendTo(investmentsHead);
+    var invColFacility = $('<div class="col" hidden>Объект</div>');
+    invColFacility.appendTo(investmentsHead);
+
+    $.each(invCash, function (ind, el) {
+        if (el.investor.login === investor
+            /*&&
+            (el.typeClosingInvest === null ||
+                (el.typeClosingInvest.typeClosingInvest !== 'Вывод' && el.typeClosingInvest.typeClosingInvest !== 'Вывод_комиссия' &&
+                    el.typeClosingInvest.typeClosingInvest !== 'Реинвестирование'))*/) {
+            var row = $('<div class="row flex-vcenter"></div>');
+            row.appendTo(investedDetailsTable);
+            var dateGiv = new Intl.DateTimeFormat('ru-RU').format(el.dateGivedCash);
+            var colDate = $('<div class="col" style="margin-left: 15px" data-date="' + dateGiv + '">' + dateGiv + '</div>');
+            colDate.appendTo(row);
+
+            var colSum = $('<div class="col" data-cash="' + el.givedCash + '">' +
+                new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(el.givedCash) +
+                ' руб.' + '</div>');
+            colSum.appendTo(row);
+            var cashSource = el.cashSource === null ? '' : el.cashSource.cashSource;
+            var cashImg = '';
+            switch (cashSource) {
+                case 'Альфа':
+                case 'Карта Альфа-банка':
+                    cashImg = 'alfabank.png';
+                    break;
+                case 'Сбер':
+                    cashImg = 'sber.png';
+                    break;
+                case 'Наличка':
+                    cashImg = 'money.png';
+                    break;
+                default:
+                    cashImg = 'invoice.png';
+            }
+            var colImg = $('<div class="col"><img src="/resources/core/img/' + cashImg + '" title="' + cashSource + '"></div>');
+            colImg.appendTo(row);
+
+            var colFacility = $('<div class="col" hidden data-facility="' + el.facility.facility + '">' + el.facility.facility + '</div>');
+            colFacility.appendTo(row);
+        }
+    });
+    var investments = $('#investments');
+    var invested = [];
+    invCash.reduce(function (res, value) {
+        var facility = value.facility.facility;
+        if (!res[facility]) {
+            res[facility] = {
+                givedCash: 0,
+                facility: facility,
+                myCash: 0
+            };
+            invested.push(res[facility])
+        }
+        if (res[facility].facility === facility) {
+            res[facility].givedCash += value.givedCash;
+            if (value.investor.login === investor) {
+                res[facility].myCash += value.givedCash;
+            }
+        } else {
+            res[facility] = {
+                givedCash: 0,
+                facility: facility,
+                myCash: 0
+            };
+            invested.push(res[facility])
+        }
+        return res;
+    }, {});
 
     var facility = investments
         .find('.popup__inner')
@@ -2090,21 +2479,7 @@ function createInvestedTable(investorsCash) {
         .find('.head__bottom')
         .find('.select')
         .find('option:first').text();
-    /*
-    investments.find('[data-facility]').each(function () {
-        var cur = $(this).data('facility');
 
-        if (cur === facility) {
-            $(this).parent().children().show();
-            $(this).css('color', 'transparent');
-            $(this).parent().show();
-        } else {
-            $(this).parent().children().hide();
-            $(this).parent().hide();
-        }
-
-    });
-    */
     $.each(invested, function (ind, el) {
         if (el.facility === facility) {
             var totalSum = $('#totalSumFooter');
@@ -2113,6 +2488,59 @@ function createInvestedTable(investorsCash) {
                 .appendTo(totalSum);
         }
     });
+}
+
+function getMyCash(investorsCash, investor) {
+
+    var invCash = $.grep(investorsCash, function (el) {
+        return el.investor.login === investor && el.typeClosingInvest !== null &&
+            (el.typeClosingInvest.typeClosingInvest === 'Вывод' || el.typeClosingInvest.typeClosingInvest === 'Вывод_комиссия'
+                || el.typeClosingInvest.typeClosingInvest === 'Реинвестирование') && el.givedCash > 0;
+    });
+
+    var groupedCashes = [];
+
+    var result = invCash.reduce(function (res, value) {
+        if (res.typeClosingInvest !== null) {
+
+            var key = value.facility.facility + '' + value.dateClosingInvest;
+
+            if (!res[key]) {
+                res[key] = {
+                    cashing: 0,
+                    facility: value.facility.facility,
+                    sourceFacility: value.sourceFacility === null ? '' : value.sourceFacility.facility,
+                    sourceUnderFacility: value.sourceUnderFacility === null ? '' : value.sourceUnderFacility.underFacility,
+                    dateClosingInvest: value.dateClosingInvest,
+                    typeClosingInvest: value.typeClosingInvest.typeClosingInvest,
+                    commission: 0
+                };
+                groupedCashes.push(res[key])
+            }
+            if (res[key].facility === value.facility.facility &&
+                res[key].dateClosingInvest === value.dateClosingInvest) {
+
+                if (value.typeClosingInvest.typeClosingInvest !== 'Вывод_комиссия') {
+                    res[key].cashing += value.givedCash;
+                } else {
+                    res[key].commission += value.givedCash;
+                }
+
+            } else {
+                res[key] = {
+                    cashing: value.givedCash,
+                    facility: value.facility.facility,
+                    dateClosingInvest: value.dateClosingInvest,
+                    typeClosingInvest: value.typeClosingInvest.typeClosingInvest
+                };
+                groupedCashes.push(res[key])
+            }
+            return res;
+        }
+
+    }, {});
+    // console.log(result);
+    return result;
 }
 
 function prepareIncomeChart(mainFlowsList) {
@@ -2415,7 +2843,7 @@ function getInvestorsCash() {
         }
     })
         .done(function (data) {
-            prepareInvestedMoney(data.investorsCashList, data.rooms);
+            prepareInvestedMoney(data.investorsCashList, data.rooms, data.saleOfFacilities);
         })
         .fail(function (e) {
             console.log(e);
@@ -2575,24 +3003,6 @@ function appendMonths(months) {
 
 function createAnnexesTbl(annexes) {
 
-    /*
-    var annexList = [];
-
-    $.each(annexes, function(index, event) {
-        var events = $.grep(annexList, function (e) {
-            return event.id === e.id &&
-                event.annexName === e.annexName;
-        });
-        if (events.length === 0) {
-            annexList.push(event);
-        }
-    });
-    */
-    //console.log(annexList);
-
-    //annexes.annex = annexList;
-    //console.log(annexes);
-
     var body = $('table#tblAnnex').find('tbody');
     var tr, td, a, label, input, strDate;
     body.empty();
@@ -2640,6 +3050,7 @@ function createAnnexesTbl(annexes) {
         $('#look').attr('disabled', false);
     } else {
         blurElement($('.out'), 0);
+        $('div.out').css('filter', '');
         $('#readAnnex').css('z-index', '-1000001');
     }
 
@@ -2690,6 +3101,7 @@ function updateUnreadAnnexes() {
         }, 1500);
         $('#readAnnex').css('z-index', '-1000001');
         blurElement($('.out'), 0);
+        $('div.out').css('filter', '');
     }
 
 }

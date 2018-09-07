@@ -22,9 +22,9 @@
             </button>
             <!-- Бренд или название сайта (отображается в левой части меню) -->
             <a class="navbar-brand" href="#" style="margin-left: 60px;">
-                <span style="max-width: 5px; float: left; margin-left: -60px; margin-top: 20px">
-                    <img src="<c:url value='/resources/core/img/logo.png' />" style="max-width:60px; margin-top: -18px;"
-                         alt="ДД Колесникъ"></span><p style="margin-left: 10px; margin-top: 20px">ДД Колесникъ</p>
+                 <span style="max-width: 5px; float: left; margin-left: -60px; margin-top: 20px">
+                     <img src="<c:url value='/resources/core/img/logo.png' />" style="max-width:60px; margin-top: -18px;"
+                          alt="ДД Колесникъ"></span><p style="margin-left: 10px; margin-top: 20px">ДД Колесникъ</p>
             </a>
         </div>
         <!-- Основная часть меню (может содержать ссылки, формы и другие элементы) -->
@@ -32,12 +32,12 @@
             <!-- Содержимое основной части -->
             <ul class="nav navbar-nav navbar-right">
                 <sec:authorize access="hasRole('INVESTOR') and !hasRole('ADMIN')">
-                <li>
-                    <a id="balance" href="#">
-                        <span class="glyphicon glyphicon-rub"style="margin-right: 5px; color: dodgerblue;"></span>
-                        Баланс: <span>0</span>
-                    </a>
-                </li>
+                    <li>
+                        <a id="balance" href="#">
+                            <span class="glyphicon glyphicon-rub"style="margin-right: 5px; color: dodgerblue;"></span>
+                            Баланс: <span>0</span>
+                        </a>
+                    </li>
                 </sec:authorize>
                 <li>
                     <a id="profile" href="/profile">
@@ -60,20 +60,19 @@
                 <sec:authorize access="hasRole('ADMIN')">
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <span class="glyphicon glyphicon-cog" style="margin-right: 5px; color: dodgerblue;">
-                        </span>Администрирование<span class="caret" style="margin-left: 5px;
-                            color: dodgerblue;"></span></a>
+                         <span class="glyphicon glyphicon-cog" style="margin-right: 5px; color: dodgerblue;">
+                         </span>Администрирование<span class="caret" style="margin-left: 5px;
+                             color: dodgerblue;"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="/catalogue">
-                            <span style="margin-right: 5px; color: dodgerblue;"
-                                  class="glyphicon glyphicon-book"></span>Справочники</a></li>
+                             <span style="margin-right: 5px; color: dodgerblue;"
+                                   class="glyphicon glyphicon-book"></span>Справочники</a></li>
                             <li><a href="/newuser">
-                            <span style="margin-right: 5px;  color: dodgerblue;"
-                                  class="glyphicon glyphicon-plus"></span>Добавить пользователя</a></li>
+                             <span style="margin-right: 5px;  color: dodgerblue;"
+                                   class="glyphicon glyphicon-plus"></span>Добавить пользователя</a></li>
                             <li><a href="/newfacility">
-                            <span style="margin-right: 5px;  color: dodgerblue;"
-                                  class="glyphicon glyphicon-plus"></span>Добавить объект</a></li>
-
+                              <span style="margin-right: 5px;  color: dodgerblue;"
+                                    class="glyphicon glyphicon-plus"></span>Добавить объект</a></li><li><a href="/updateInvestorDemo" id="updateInvestorDemo"><span style="margin-right: 5px;  color: dodgerblue;" class="glyphicon glyphicon-refresh"></span>Обновить инвестор-демо</a></li>
                             <li><a href="#"><span style="margin-right: 5px;  color: dodgerblue;" class="glyphicon glyphicon-off"></span><div class="material-switch pull-right" style="margin-top: 10px;">
                                 <input id="someSwitchOptionWarning" name="someSwitchOption001" type="checkbox">
                                 <label for="someSwitchOptionWarning" id="someSwitchOptionWarningLbl" class="label-warning"></label>
@@ -87,3 +86,4 @@
         </div>
     </div>
 </nav>
+<%@include file="slideDiv.jsp" %>

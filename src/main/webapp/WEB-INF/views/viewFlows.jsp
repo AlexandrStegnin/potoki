@@ -11,18 +11,18 @@
     <title>Доходы инвесторов</title>
     <sec:csrfMetaTags/>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-    <!--
+
     <meta http-equiv='cache-control' content='no-cache'>
     <meta http-equiv='expires' content='0'>
     <meta http-equiv='pragma' content='no-cache'>
-    -->
+
     <meta name="viewport" content="width=1370">
     <meta name="theme-color" content="#fff">
     <meta name="format-detection" content="telephone=no">
     <meta name="robots" content="noindex, nofollow">
     <script type="text/javascript" src="<c:url value='/resources/core/js/app.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/Chart.js' />"></script>
-
+    <script type="text/javascript" src="<c:url value='/resources/core/js/AjaxLoader.js' />"></script>
     <link href="<c:url value='/resources/core/css/bootstrap.min.css' />" rel="stylesheet"/>
     <link href="<c:url value='/resources/core/css/app.css' />" rel="stylesheet"/>
     <script type="text/javascript" src="<c:url value='/resources/core/js/jquery-3.2.1.js' />"></script>
@@ -58,12 +58,55 @@
             -webkit-animation: chartjs-render-animation 0.001s;
             animation: chartjs-render-animation 0.001s;
         }
+
+        .profitBox {
+            position: absolute;
+            font-size: 6px;
+            font-weight: 600;
+            text-align: center;
+            max-width: 60px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            top: 5%;
+        }
+
+        .profitBox div {
+            margin: 0 15px;
+            max-width: 60px;
+        }
+
+        .profit .splitter .gains {
+            max-width: 50px;
+            margin: 0 auto;
+        }
+
+        .notParticipate {
+            color: #70696c;
+            border: 2px solid #70696c;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 3px 14px;
+            position: absolute;
+            -ms-transform: rotate(-90deg) translateY(-110%) translateX(5%);
+            transform: rotate(-90deg) translateY(-110%) translateX(5%);
+            bottom: 35%;
+            left: -20%;
+            width: 150px;
+        }
+
     </style>
 
 </head>
 
 <body>
-
+<script>var amo_social_button = {
+    id: 4009,
+    hash: "f8f8284b4bfb0a4600a985dc4d76d76e2ab7097a0dd0c3061b62634e7139bde6",
+    locale: "ru"
+};</script>
+<script id="amo_social_button_script" async="async" src="https://gso.amocrm.ru/js/button.js"></script>
 <div id="readAnnex" class="bg">
     Ознакомьтесь с новыми приложениями, после этого панель отчётов инвестора станет доступна.
     <br>
@@ -149,9 +192,11 @@
 
                     </select>
                 </div>
-                <button type="button" class="btn btn-primary btn-icon" id="searchIncomesByDate" style="position: relative; left: 395px; top: -130px;">
+                <button type="button" class="btn btn-primary btn-icon" id="searchIncomesByDate"
+                        style="position: relative; left: 395px; top: -130px;">
                     <svg class="icon-right">
-                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="resources/core/img/sprite.svg#icon-right"></use>
+                        <use xmlns:xlink="http://www.w3.org/1999/xlink"
+                             xlink:href="resources/core/img/sprite.svg#icon-right"></use>
                     </svg>
                 </button>
                 <div class="wrapper flex-vcenter">
@@ -185,9 +230,6 @@
                         <ul></ul>
                     </div>
                 </div>
-                <!--
-                <div class="box__footer flex-vhcenter"><button data-target="#allincomeProperty" type="button" class="btn btn-primary">По подобъектам</button></div>
-                -->
             </div>
 
             <div class="circle">
@@ -205,346 +247,6 @@
             </div>
         </div>
 
-        <!--
-
-        <div class="inner__row inner__row_load flex-vhcenter">
-            <div class="box">
-                <div class="box__header">
-                    <div class="title-sm">Текущая загрузка объекта</div>
-                    <div class="box__select"><select><option>Электриков</option><option>Энергетиков</option></select>
-                        <div class="sort"><button type="button" class="sort__button"><img src="img/sort.png"></button>
-                            <div class="sort__list">
-                                <div class="sort__item active">в %</div>
-                                <div class="sort__item">в тыс. руб.</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div data-simplebar class="loadObject flex">
-                    <div class="loadObject__inner">
-                        <div class="loadObject__item">
-                            <div class="loadObject__title">Сентябрь 2017</div>
-                            <div class="loadObject__body flex-vhcenter">
-                                <div class="column">
-                                    <div class="column__body">
-                                        <div class="column__title">35%</div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                    </div>
-                                    <div class="column__title-sm">Фитнес</div>
-                                </div>
-                                <div class="column">
-                                    <div class="column__body">
-                                        <div class="column__title">80%</div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                    </div>
-                                    <div class="column__title-sm">Квест</div>
-                                </div>
-                                <div class="column">
-                                    <div class="column__body">
-                                        <div class="column__title">100%</div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                    </div>
-                                    <div class="column__title-sm">Салон красоты</div>
-                                </div>
-                                <div class="column">
-                                    <div class="column__body">
-                                        <div class="column__title">0%</div>
-                                        <div class="column__item"></div>
-                                    </div>
-                                    <div class="column__title-sm">Пустое</div>
-                                </div>
-                                <div class="column">
-                                    <div class="column__body">
-                                        <div class="column__title">65%</div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                    </div>
-                                    <div class="column__title-sm"><strong>Объект целиком</strong></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="loadObject__item">
-                            <div class="loadObject__title">Сентябрь 2017</div>
-                            <div class="loadObject__body flex-vhcenter">
-                                <div class="column">
-                                    <div class="column__body">
-                                        <div class="column__title">35%</div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                    </div>
-                                    <div class="column__title-sm">Фитнес</div>
-                                </div>
-                                <div class="column">
-                                    <div class="column__body">
-                                        <div class="column__title">80%</div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                    </div>
-                                    <div class="column__title-sm">Квест</div>
-                                </div>
-                                <div class="column">
-                                    <div class="column__body">
-                                        <div class="column__title">100%</div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                    </div>
-                                    <div class="column__title-sm">Салон красоты</div>
-                                </div>
-                                <div class="column">
-                                    <div class="column__body">
-                                        <div class="column__title">0%</div>
-                                        <div class="column__item"></div>
-                                    </div>
-                                    <div class="column__title-sm">Пустое</div>
-                                </div>
-                                <div class="column">
-                                    <div class="column__body">
-                                        <div class="column__title">65%</div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                    </div>
-                                    <div class="column__title-sm"><strong>Объект целиком</strong></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="loadObject__item">
-                            <div class="loadObject__title">Сентябрь 2017</div>
-                            <div class="loadObject__body flex-vhcenter">
-                                <div class="column">
-                                    <div class="column__body">
-                                        <div class="column__title">35%</div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                    </div>
-                                    <div class="column__title-sm">Фитнес</div>
-                                </div>
-                                <div class="column">
-                                    <div class="column__body">
-                                        <div class="column__title">80%</div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                    </div>
-                                    <div class="column__title-sm">Квест</div>
-                                </div>
-                                <div class="column">
-                                    <div class="column__body">
-                                        <div class="column__title">100%</div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                    </div>
-                                    <div class="column__title-sm">Салон красоты</div>
-                                </div>
-                                <div class="column">
-                                    <div class="column__body">
-                                        <div class="column__title">0%</div>
-                                        <div class="column__item"></div>
-                                    </div>
-                                    <div class="column__title-sm">Пустое</div>
-                                </div>
-                                <div class="column">
-                                    <div class="column__body">
-                                        <div class="column__title">65%</div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                    </div>
-                                    <div class="column__title-sm"><strong>Объект целиком</strong></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="loadObject__item">
-                            <div class="loadObject__title">Сентябрь 2017</div>
-                            <div class="loadObject__body flex-vhcenter">
-                                <div class="column">
-                                    <div class="column__body">
-                                        <div class="column__title">35%</div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                    </div>
-                                    <div class="column__title-sm">Фитнес</div>
-                                </div>
-                                <div class="column">
-                                    <div class="column__body">
-                                        <div class="column__title">80%</div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                    </div>
-                                    <div class="column__title-sm">Квест</div>
-                                </div>
-                                <div class="column">
-                                    <div class="column__body">
-                                        <div class="column__title">100%</div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                    </div>
-                                    <div class="column__title-sm">Салон красоты</div>
-                                </div>
-                                <div class="column">
-                                    <div class="column__body">
-                                        <div class="column__title">0%</div>
-                                        <div class="column__item"></div>
-                                    </div>
-                                    <div class="column__title-sm">Пустое</div>
-                                </div>
-                                <div class="column">
-                                    <div class="column__body">
-                                        <div class="column__title">65%</div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                    </div>
-                                    <div class="column__title-sm"><strong>Объект целиком</strong></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="loadObject__item">
-                            <div class="loadObject__title">Сентябрь 2017</div>
-                            <div class="loadObject__body flex-vhcenter">
-                                <div class="column">
-                                    <div class="column__body">
-                                        <div class="column__title">35%</div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                    </div>
-                                    <div class="column__title-sm">Фитнес</div>
-                                </div>
-                                <div class="column">
-                                    <div class="column__body">
-                                        <div class="column__title">80%</div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                    </div>
-                                    <div class="column__title-sm">Квест</div>
-                                </div>
-                                <div class="column">
-                                    <div class="column__body">
-                                        <div class="column__title">100%</div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                    </div>
-                                    <div class="column__title-sm">Салон красоты</div>
-                                </div>
-                                <div class="column">
-                                    <div class="column__body">
-                                        <div class="column__title">0%</div>
-                                        <div class="column__item"></div>
-                                    </div>
-                                    <div class="column__title-sm">Пустое</div>
-                                </div>
-                                <div class="column">
-                                    <div class="column__body">
-                                        <div class="column__title">65%</div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                        <div class="column__item"></div>
-                                    </div>
-                                    <div class="column__title-sm"><strong>Объект целиком</strong></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="box__footer"><button type="button" class="btn btn-primary">Прогноз арендной платы</button></div>
-            </div>
-        </div>
-
-        -->
-
         <div class="inner__row inner__row_capital flex-vhcenter">
             <div class="box">
                 <div class="box__header">
@@ -552,7 +254,7 @@
                 </div>
                 <div class="attachments">
                     <div class="attachments__left"></div>
-                    <div class="attachments__inner flex">
+                    <div class="attachments__inner flex" style="padding-right: 15px">
                         <div class="left"><span><strong>Стоимость объектов</strong></span><span>Ваши вложения</span>
                         </div>
                         <div class="columns__wrapper flex" id="investedMoney">
@@ -561,7 +263,7 @@
                     </div>
                 </div>
                 <div class="box__footer flex-vhcenter">
-                    <button type="button" class="btn btn-primary" data-target="#investmentsAll">По датам</button>
+                    <button type="button" class="btn btn-primary" data-target="#investmentsAll" >По датам</button>
                 </div>
             </div>
 
@@ -576,260 +278,9 @@
                     <div class="circle-canvas__list" id="investedList">
 
                     </div>
-                    <!--</div><button type="button" data-target="#detailsProfit" class="btn btn-primary">Подробности дохода</button>-->
-
-                </div>
-                <!--
-                <div class="circle-custom">
-                    <div class="title-sm" style="margin-left:20px">Общая сумма вложений</div>
-                    <div class="circle-drow">
-                        <div class="text" id="totalSum"><span></span>рублей</div>
-                    </div>
-                    <!--<div class="circle__footer"><button type="button" class="btn btn-primary">Расчет вложений</button></div>
-                </div>
-                -->
-            </div>
-
-            <!--
-            <div class="inner__row inner__row_yield flex-vhcenter">
-                <div class="yield">
-                    <div class="box__header">
-                        <div class="title-sm">Доходность от продажи</div>
-                        <div class="box__select"><select><option>Электриков</option><option>Энергетиков</option></select></div>
-                    </div>
-                    <div class="yield__inner flex-vhcenter">
-                        <div class="left">
-                            <div class="wrapper">
-                                <div class="canvas"><canvas id="year-capital"></canvas>
-                                    <script>
-                                        var dataYearCapital = {
-                                            labels: ['Аренда', 'Продажа'],
-                                            datasets: [
-                                                {
-                                                    data: [121678.00, 221344.45],
-                                                    backgroundColor: [
-                                                        window.chartColors.blue,
-                                                        window.chartColors.orange
-                                                    ]
-                                                }]
-                                        };
-                                        var ctxYearCapital = document.getElementById("year-capital");
-                                        // And for a doughnut chart
-                                        var myDoughnutChart = new Chart(ctxYearCapital,
-                                            {
-                                                type: 'doughnut',
-                                                data: dataYearCapital,
-                                                options:
-                                                    {
-                                                        legend:
-                                                            {
-                                                                display: false
-                                                            },
-                                                        cutoutPercentage: 89,
-                                                        rotation: 1 * Math.PI,
-                                                        circumference: 1 * Math.PI
-                                                    }
-                                            });
-
-                                    </script>
-                                </div>
-                                <div class="tooltip-left">Арена<span>12 678,00 р.</span></div>
-                                <div class="tooltip-right">Продажа<span>221 344,45 р.</span></div>
-                                <div class="tooltip-center">Годовая доходность<span>34,56%</span></div>
-                            </div><button type="button" class="btn btn-primary">Детали дохода</button></div>
-                        <div class="right">
-                            <div class="yield-slider">
-                                <div>
-                                    <div class="title-15">Фитнес</div>
-                                    <div class="wrapper">
-                                        <div class="canvas"><canvas id="fitness"></canvas>
-                                            <script>
-                                                var dataFitness = {
-                                                    labels: ['Аренда', 'Продажа'],
-                                                    datasets: [
-                                                        {
-                                                            data: [121678.00, 221344.45],
-                                                            backgroundColor: [
-                                                                window.chartColors.blue,
-                                                                window.chartColors.orange
-                                                            ]
-                                                        }]
-                                                };
-                                                var ctxFitness = document.getElementById("fitness");
-                                                // And for a doughnut chart
-                                                var myDoughnutChartFitness = new Chart(ctxFitness,
-                                                    {
-                                                        type: 'doughnut',
-                                                        data: dataFitness,
-                                                        options:
-                                                            {
-                                                                tooltips:
-                                                                    {
-                                                                        enabled: false
-                                                                    },
-                                                                legend:
-                                                                    {
-                                                                        display: false
-                                                                    },
-                                                                cutoutPercentage: 77,
-                                                                rotation: 1 * Math.PI,
-                                                                circumference: 1 * Math.PI
-                                                            }
-                                                    });
-
-                                            </script>
-                                        </div>
-                                        <div class="tooltip-center"><span>22,45%</span><a href="#" class="btn-link">Детали</a></div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="title-15">Салон красоты</div>
-                                    <div class="wrapper">
-                                        <div class="canvas"><canvas id="salon"></canvas>
-                                            <script>
-                                                var dataSalon = {
-                                                    labels: ['Аренда', 'Продажа'],
-                                                    datasets: [
-                                                        {
-                                                            data: [121678.00, 221344.45],
-                                                            backgroundColor: [
-                                                                window.chartColors.blue,
-                                                                window.chartColors.orange
-                                                            ]
-                                                        }]
-                                                };
-                                                var ctxSalon = document.getElementById("salon");
-                                                // And for a doughnut chart
-                                                var myDoughnutChartSalon = new Chart(ctxSalon,
-                                                    {
-                                                        type: 'doughnut',
-                                                        data: dataSalon,
-                                                        options:
-                                                            {
-                                                                tooltips:
-                                                                    {
-                                                                        enabled: false
-                                                                    },
-                                                                legend:
-                                                                    {
-                                                                        display: false
-                                                                    },
-                                                                cutoutPercentage: 77,
-                                                                rotation: 1 * Math.PI,
-                                                                circumference: 1 * Math.PI
-                                                            }
-                                                    });
-
-                                            </script>
-                                        </div>
-                                        <div class="tooltip-center"><span>12,45%</span><a href="#" class="btn-link">Детали</a></div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="title-15">Квест</div>
-                                    <div class="wrapper">
-                                        <div class="canvas"><canvas id="quest"></canvas>
-                                            <script>
-                                                var dataQuest = {
-                                                    labels: ['Аренда', 'Продажа'],
-                                                    datasets: [
-                                                        {
-                                                            data: [121678.00, 221344.45],
-                                                            backgroundColor: [
-                                                                window.chartColors.blue,
-                                                                window.chartColors.orange
-                                                            ]
-                                                        }]
-                                                };
-                                                var ctxQuest = document.getElementById("quest");
-                                                // And for a doughnut chart
-                                                var myDoughnutChartQuest = new Chart(ctxQuest,
-                                                    {
-                                                        type: 'doughnut',
-                                                        data: dataQuest,
-                                                        options:
-                                                            {
-                                                                tooltips:
-                                                                    {
-                                                                        enabled: false
-                                                                    },
-                                                                legend:
-                                                                    {
-                                                                        display: false
-                                                                    },
-                                                                cutoutPercentage: 77,
-                                                                rotation: 1 * Math.PI,
-                                                                circumference: 1 * Math.PI
-                                                            }
-                                                    });
-
-                                            </script>
-                                        </div>
-                                        <div class="tooltip-center"><span>12,45%</span><a href="#" class="btn-link">Детали</a></div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="title-15">Тест</div>
-                                    <div class="wrapper">
-                                        <div class="canvas"><canvas id="test"></canvas>
-                                            <script>
-                                                var dataTest = {
-                                                    labels: ['Аренда', 'Продажа'],
-                                                    datasets: [
-                                                        {
-                                                            data: [121678.00, 221344.45],
-                                                            backgroundColor: [
-                                                                window.chartColors.blue,
-                                                                window.chartColors.orange
-                                                            ]
-                                                        }]
-                                                };
-                                                var ctxTest = document.getElementById("test");
-                                                // And for a doughnut chart
-                                                var myDoughnutChartTest = new Chart(ctxTest,
-                                                    {
-                                                        type: 'doughnut',
-                                                        data: dataTest,
-                                                        options:
-                                                            {
-                                                                tooltips:
-                                                                    {
-                                                                        enabled: false
-                                                                    },
-                                                                legend:
-                                                                    {
-                                                                        display: false
-                                                                    },
-                                                                cutoutPercentage: 77,
-                                                                rotation: 1 * Math.PI,
-                                                                circumference: 1 * Math.PI
-                                                            }
-                                                    });
-
-                                            </script>
-                                        </div>
-                                        <div class="tooltip-center"><span>12,45%</span><a href="#" class="btn-link">Детали</a></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
-        </div>
-            -->
 
-
-            <!--
-
-            <div class="container demo">Демонстрация модальных окон
-                <div class="wrapper"><button type="button" data-target="#salesRevenue" class="btn btn-primary">Подробности дохода с продажи</button><button type="button" data-target="#investments" class="btn btn-primary">Ваши вложения</button><button type="button" data-target="#underobject"
-                                                                                                                                                                                                                                                           class="btn btn-primary">Доход по подобъектам</button><button type="button" data-target="#incomeProperty" class="btn btn-primary">Ваш доход по каждому объекту</button><button type="button" data-target="#allincomeProperty" class="btn btn-primary">Общие доходы и расходы по каждому объекту</button>
-                    <button
-                            type="button" data-target="#forecast" class="btn btn-primary">Прогноз арендной платы по месяцам</button><button type="button" data-target="#detailsProfit" class="btn btn-primary">Подробности расчета прибыли и доли</button></div>
-            </div>
-
-            -->
         </div>
 
         <div id="salesRevenue" class="popup">
@@ -910,6 +361,12 @@
                                     <use xlink:href="resources/core/img/sprite.svg#icon-right"></use>
                                 </svg>
                             </button>
+                            <div class="box__select" style="width: 150px; margin-left: 20px">
+                                <select title="ввод_вывод" id="in_out" tabindex="-1">
+                                    <option value="Ввод" selected>Вложено</option>
+                                    <option value="Вывод">Выведено</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div class="investments">
@@ -946,6 +403,8 @@
                     <div class="investments">
                         <div class="investments__head flex">
                             <div class="col">Объект</div>
+                            <div class="col">Вложено всего</div>
+                            <div class="col">Выведено всего</div>
                             <div class="col">Сумма</div>
                             <div class="col">Детали</div>
                         </div>
@@ -1783,6 +1242,7 @@
     <!--END out-->
     <!--LOAD SCRIPTS-->
     <%@include file="loader.jsp" %>
+    <%@include file="slideDiv.jsp" %>
 </body>
 
 </html>

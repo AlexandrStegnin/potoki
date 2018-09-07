@@ -76,7 +76,7 @@ public class GetPrincipalFunc {
         demo.setLogin(demoLogin);
         demo.setPassword("123");
         List<BigInteger> idList = new ArrayList<>(0);
-        demo.getFacilityes().forEach(f -> idList.add(f.getId()));
+        demo.getFacilities().forEach(f -> idList.add(f.getId()));
 
         List<InvestorsFlows> demoInvestorsFlows = investorsFlowsService.findByInvestorId(demoId);
         List<InvestorsCash> demoInvestorsCashes = investorsCashService.findByInvestorId(demoId);

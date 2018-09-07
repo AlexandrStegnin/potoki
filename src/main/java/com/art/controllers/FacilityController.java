@@ -91,7 +91,7 @@ public class FacilityController {
 
         Facilities facility = facilityService.findByIdWithRentorsInvestorsManagers(id);
 
-        model.addAttribute("facility", facility);
+        model.addAttribute("newFacility", facility);
         model.addAttribute("edit", true);
         return "facility_edit";
     }
@@ -100,7 +100,7 @@ public class FacilityController {
      * Обновление объекта в базе данных
      */
     @RequestMapping(value = {"/edit-facility-{id}"}, method = RequestMethod.POST)
-    public String updateFacility(@ModelAttribute("facility") Facilities facility, BindingResult result, ModelMap model) {
+    public String updateFacility(@ModelAttribute("newFacility") Facilities facility, BindingResult result, ModelMap model) {
         String ret = "списку объектов.";
         String redirectUrl = "/admin_facility";
         if (result.hasErrors()) {

@@ -28,6 +28,9 @@ import java.util.stream.Collectors;
 @Controller
 public class InvestorsFlowsController {
 
+    @Resource(name = "saleOfFacilitiesService")
+    private SaleOfFacilitiesService saleOfFacilitiesService;
+
     @Resource(name = "uploadExcelFunc")
     private UploadExcelFunc uploadExcelFunc;
 
@@ -109,7 +112,7 @@ public class InvestorsFlowsController {
         Users user = emf.createQuery(criteriaQuery)
                 .setHint("javax.persistence.fetchgraph",
                         emf.getEntityGraph("users.facilityes")).getSingleResult();
-        user.getFacilityes().stream().forEach(System.out::println);
+        user.getFacilities().stream().forEach(System.out::println);
         */
         return createDataForCalculation(searchSummary.getFacility(), period, getPrincipalFunc.getPrincipalId(), searchSummary.getTableForSearch());
     }
@@ -374,7 +377,7 @@ public class InvestorsFlowsController {
         List<InvestorsFlows> investorsFlowsList = investorsFlowsService.findByInvestorId(investor.getId());
 
         List<BigInteger> facilitiesIdList = new ArrayList<>(0);
-        investor.getFacilityes().forEach(f -> facilitiesIdList.add(f.getId()));
+        investor.getFacilities().forEach(f -> facilitiesIdList.add(f.getId()));
 
         List<MainFlows> mainFlows = mainFlowsService.findByFacilityIdIn(facilitiesIdList);
 
@@ -397,8 +400,7 @@ public class InvestorsFlowsController {
     @PostMapping(value = "/getInvestorsFlows")
     public @ResponseBody
     CashFlows getInvestorsFlows(ModelMap model) {
-        Users investor = userService.findByIdWithAnnexesAndFacilities(getPrincipalFunc.getPrincipalId());
-        List<InvestorsFlows> investorsFlowsList = investorsFlowsService.findByInvestorIdWithFacilitiesUnderFacilities(investor.getId());
+        List<InvestorsFlows> investorsFlowsList = investorsFlowsService.findByInvestorIdWithFacilitiesUnderFacilities(getPrincipalFunc.getPrincipalId());
 
         CashFlows cashFlows = new CashFlows();
         cashFlows.setInvestorsFlowsList(investorsFlowsList);
@@ -426,15 +428,18 @@ public class InvestorsFlowsController {
 
     private CashFlows getCashFlows() {
         Users investor = userService.findByIdWithFacilities(getPrincipalFunc.getPrincipalId());
-        List<InvestorsCash> investorsCashList = investorsCashService.findByInvestorId(investor.getId());
+        List<InvestorsCash> investorsCashList = investorsCashService.findAllWithAllFields();
         List<BigInteger> idList = new ArrayList<>(0);
-        investor.getFacilityes().forEach(f -> idList.add(f.getId()));
+        investor.getFacilities().forEach(f -> idList.add(f.getId()));
 
         List<Rooms> rooms = roomsService.findAll();
+
+        List<SaleOfFacilities> saleOfFacilities = saleOfFacilitiesService.findAll();
 
         CashFlows cashFlows = new CashFlows();
         cashFlows.setInvestorsCashList(investorsCashList);
         cashFlows.setRooms(rooms);
+        cashFlows.setSaleOfFacilities(saleOfFacilities);
         return cashFlows;
     }
 
@@ -444,7 +449,7 @@ public class InvestorsFlowsController {
         Users investor = userService.findByIdWithFacilities(getPrincipalFunc.getPrincipalId());
 
         List<BigInteger> facilitiesIdList = new ArrayList<>(0);
-        investor.getFacilityes().forEach(f -> facilitiesIdList.add(f.getId()));
+        investor.getFacilities().forEach(f -> facilitiesIdList.add(f.getId()));
 
         List<MainFlows> mainFlows = mainFlowsService.findByFacilityIdIn(facilitiesIdList);
 

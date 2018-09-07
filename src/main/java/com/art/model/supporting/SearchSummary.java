@@ -3,6 +3,7 @@ package com.art.model.supporting;
 import com.art.model.*;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -58,6 +59,7 @@ public class SearchSummary implements Serializable {
     private String shareKindId;
 
     private String what;
+    private BigDecimal commission;
 
     private List<InvestorsCash> investorsCashList;
     private Facilities reFacility;
@@ -72,6 +74,11 @@ public class SearchSummary implements Serializable {
     private String dateClose;
     private List<BigInteger> cashIdList;
     private List<UnderFacilities> underFacilitiesList;
+    private int pageNumber;
+    private BigDecimal commissionNoMore;
+
+    private Facilities facilities;
+    private UnderFacilities underFacilities;
 
 
     public String getFacility() {
@@ -456,5 +463,45 @@ public class SearchSummary implements Serializable {
 
     public void setUnderFacilitiesList(List<UnderFacilities> underFacilitiesList) {
         this.underFacilitiesList = underFacilitiesList;
+    }
+
+    public BigDecimal getCommission() {
+        return commission;
+    }
+
+    public void setCommission(BigDecimal commission) {
+        this.commission = commission;
+    }
+
+    public int getPageNumber() {
+        return pageNumber;
+    }
+
+    public void setPageNumber(int pageNumber) {
+        this.pageNumber = pageNumber;
+    }
+
+    public BigDecimal getCommissionNoMore() {
+        return commissionNoMore;
+    }
+
+    public void setCommissionNoMore(BigDecimal commissionNoMore) {
+        this.commissionNoMore = commissionNoMore;
+    }
+
+    public Facilities getFacilities() {
+        return facilities;
+    }
+
+    public void setFacilities(Facilities facilities) {
+        this.facilities = facilities;
+    }
+
+    public UnderFacilities getUnderFacilities() {
+        return underFacilities;
+    }
+
+    public void setUnderFacilities(UnderFacilities underFacilities) {
+        this.underFacilities = underFacilities;
     }
 }

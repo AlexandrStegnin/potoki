@@ -60,30 +60,14 @@ public class HistoryRelationships implements Serializable {
     private static final Locale RUSSIAN_LOCAL = new Locale("ru", "RU");
 
     private BigInteger id;
-    //@Temporal(TemporalType.DATE)
     private Date period;
-    //private Date pay_date_agreement;
-    //private float summ_agreement;
-    //private float summ_reserv;
-    //private Date pay_date_delay;
-    //@Temporal(TemporalType.DATE)
-    //@DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date pay_date_fact;
     private float summ_fact;
-    //@Temporal(TemporalType.DATE)
-    //@DateTimeFormat(pattern = "yyyy-MM-dd")
-    //private Date date_transfer_cash;
-    //private float summ_transfer_cash;
-    //private Date date_payment_bill;
-    //private float summ_payment_bill;
-
     private Users manager;
     private Users rentor;
     private Facilities facility;
-    //private InvestorsLoad investorsLoad;
     private PaymentsMethod paymentsMethod;
     private PaymentsType paymentsType;
-    //private Set<Discounts> discounts;
 
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @JoinColumn(name = "MANAGER_ID", referencedColumnName = "id")

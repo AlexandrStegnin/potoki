@@ -164,10 +164,10 @@ function sendMail() {
         type : "POST",
         enctype: "multipart/form-data",
         processData: false,
-        contentType : false, //"application/json;charset=utf-8",
+        contentType : false,
         cache: false,
         url : "createmail",
-        data : data, //JSON.stringify(sendingMail),
+        data : data,
         dataType : 'json',
         timeout : 100000,
         beforeSend: function(xhr){
@@ -177,6 +177,7 @@ function sendMail() {
             closeLoader();
             $('#msg').html(data.message);
             $('#msg-modal').modal('show');
+            window.location.href = '/profile'
         },
         error : function(e) {
             closeLoader();

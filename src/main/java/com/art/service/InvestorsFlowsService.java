@@ -1,6 +1,8 @@
 package com.art.service;
 
-import com.art.model.*;
+import com.art.model.InvestorsFlows;
+import com.art.model.InvestorsFlows_;
+import com.art.model.Users_;
 import com.art.repository.InvestorsFlowsRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -9,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.criteria.*;
 import java.math.BigInteger;
 import java.util.List;
@@ -75,5 +78,10 @@ public class InvestorsFlowsService {
         flowsCriteriaQuery.select(flowsRoot).distinct(true);
         flowsCriteriaQuery.where(cb.equal(flowsRoot.get(InvestorsFlows_.investor).get(Users_.id), investorId));
         return em.createQuery(flowsCriteriaQuery).getResultList();
+    }
+
+    public void updateInvestorDemo(){
+        Query q = em.createNativeQuery("{call UPDATE_INVESTOR_DEMO()}");
+        q.executeUpdate();
     }
 }

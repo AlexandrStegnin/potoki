@@ -10,10 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +74,6 @@ public class UserService {
     public void changeUserPassword(Users user, String password) {
         user.setPassword(passwordEncoder.encode(password));
         userRepository.saveAndFlush(user);
-
     }
 
     public void updateList(List<Users> users) {
@@ -135,7 +131,7 @@ public class UserService {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
-        usersRoot.fetch(Users_.facilityes, JoinType.LEFT);
+        usersRoot.fetch(Users_.facilities, JoinType.LEFT);
         usersRoot.fetch(Users_.usersAnnexToContractsList, JoinType.LEFT);
         usersCriteriaQuery.select(usersRoot).distinct(true);
         usersCriteriaQuery.where(cb.equal(usersRoot.get(Users_.id), id));
@@ -168,7 +164,7 @@ public class UserService {
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
         usersRoot.fetch(Users_.userStuff, JoinType.LEFT);
         usersRoot.fetch(Users_.mailingGroups, JoinType.LEFT);
-        usersRoot.fetch(Users_.facilityes, JoinType.LEFT);
+        usersRoot.fetch(Users_.facilities, JoinType.LEFT);
         usersCriteriaQuery.select(usersRoot).distinct(true);
         usersCriteriaQuery.where(cb.equal(usersRoot.get(Users_.id), id));
         return em.createQuery(usersCriteriaQuery).getSingleResult();
@@ -197,7 +193,7 @@ public class UserService {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
-        usersRoot.fetch(Users_.facilityes, JoinType.LEFT);
+        usersRoot.fetch(Users_.facilities, JoinType.LEFT);
         usersCriteriaQuery.select(usersRoot).distinct(true);
         return em.createQuery(usersCriteriaQuery).getResultList();
     }
@@ -207,7 +203,7 @@ public class UserService {
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
 
-        usersRoot.fetch(Users_.facilityes, JoinType.LEFT)
+        usersRoot.fetch(Users_.facilities, JoinType.LEFT)
                 .fetch(Facilities_.underFacilities, JoinType.LEFT);
         usersCriteriaQuery.select(usersRoot).distinct(true);
 
@@ -218,17 +214,33 @@ public class UserService {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
-        usersRoot.fetch(Users_.facilityes, JoinType.LEFT);
+        usersRoot.fetch(Users_.facilities, JoinType.LEFT);
         usersCriteriaQuery.select(usersRoot).distinct(true);
         usersCriteriaQuery.where(cb.equal(usersRoot.get(Users_.id), id));
         return em.createQuery(usersCriteriaQuery).getSingleResult();
     }
 
+//    public Users findByIdWithFacilities(BigInteger id) {
+//        CriteriaBuilder cb = em.getCriteriaBuilder();
+//        CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
+//        Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
+////        usersRoot.fetch(Users_.facilities, JoinType.LEFT);
+////        Fetch<Users, Facilities> fetch = usersRoot.fetch(Users_.facilityes, JoinType.LEFT);
+//        Join<Users, Facilities> join = (Join<Users, Facilities>)usersRoot.fetch(Users_.facilities, JoinType.LEFT);
+////        Path facilityId = join.get(Facilities_.id);
+////        Path facilityName = join.get(Facilities_.facility);
+////        usersCriteriaQuery.multiselect(usersRoot.get(Users_.id), usersRoot.get(Users_.login), join);
+//        usersCriteriaQuery.select(cb.construct(Users.class, usersRoot.get(Users_.id), usersRoot.get(Users_.login), join));
+//        //usersCriteriaQuery.select(usersRoot).distinct(true);
+//        usersCriteriaQuery.where(cb.equal(usersRoot.get(Users_.id), id));
+//        return em.createQuery(usersCriteriaQuery).getSingleResult();
+//    }
+
     public Users findByLoginWithFacilitiesAndUnderFacilitiesAndAnnexes(String login) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
-        usersRoot.fetch(Users_.facilityes, JoinType.LEFT)
+        usersRoot.fetch(Users_.facilities, JoinType.LEFT)
                 .fetch(Facilities_.underFacilities, JoinType.LEFT);
         usersRoot.fetch(Users_.usersAnnexToContractsList, JoinType.LEFT);
         usersCriteriaQuery.select(usersRoot).distinct(true);
@@ -257,7 +269,7 @@ public class UserService {
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
         usersRoot.fetch(Users_.userStuff, JoinType.LEFT);
         usersRoot.fetch(Users_.mailingGroups, JoinType.LEFT);
-        usersRoot.fetch(Users_.facilityes, JoinType.LEFT);
+        usersRoot.fetch(Users_.facilities, JoinType.LEFT);
         usersRoot.fetch(Users_.usersAnnexToContractsList, JoinType.LEFT);
         usersRoot.fetch(Users_.emails, JoinType.LEFT);
         usersCriteriaQuery.select(usersRoot).distinct(true);
@@ -294,8 +306,8 @@ public class UserService {
         if (Objects.equals(null, user.getMailingGroups())) {
             user.setMailingGroups(updUser.getMailingGroups());
         }
-        if (Objects.equals(null, user.getFacilityes())) {
-            user.setFacilityes(updUser.getFacilityes());
+        if (Objects.equals(null, user.getFacilities())) {
+            user.setFacilities(updUser.getFacilities());
         }
         if (Objects.equals(null, user.getUsersAnnexToContractsList())) {
             user.setUsersAnnexToContractsList(updUser.getUsersAnnexToContractsList());
@@ -322,7 +334,7 @@ public class UserService {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
-        usersRoot.fetch(Users_.facilityes, JoinType.LEFT)
+        usersRoot.fetch(Users_.facilities, JoinType.LEFT)
                 .fetch(Facilities_.underFacilities, JoinType.LEFT);
         usersCriteriaQuery.select(usersRoot).distinct(true);
         usersCriteriaQuery.where(cb.equal(usersRoot.get(Users_.id), id));

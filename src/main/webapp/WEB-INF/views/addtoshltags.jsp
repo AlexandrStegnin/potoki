@@ -10,12 +10,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>${title}</title>
     <sec:csrfMetaTags />
-    <link href="<c:url value='/resources/core/css/bootstrap.min.css' />" rel="stylesheet" />
+    <link href="<c:url value='/resources/core/css/old_bootstrap.min.css' />" rel="stylesheet" />
     <link href="<c:url value='/resources/core/css/applic.css' />" rel="stylesheet" />
     <link href="<c:url value='/resources/core/css/popup.css' />" rel="stylesheet" />
     <link href="<c:url value='/resources/core/css/ajaxLoader.css' />" rel="stylesheet" />
     <script type="text/javascript" src="<c:url value='/resources/core/js/jquery-3.2.1.js' />" ></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min.js' />" ></script>
+    <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min_old.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/AjaxLoader.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/mailingScripts.js' />" ></script>
@@ -24,7 +24,7 @@
 
 <body>
 <div class="generic-container">
-    <%@include file="authheader.jsp" %>
+    <%@include file="old_authheader.jsp" %>
     <div class="well lead">${title}</div>
     <form:form method="POST" modelAttribute="toshlCorrectTags" class="form-horizontal">
         <form:input type="hidden" path="id" id="id"/>
@@ -103,5 +103,6 @@
         </div>
     </form:form>
 </div>
+<%@include file="slideDiv.jsp" %>
 </body>
 </html>

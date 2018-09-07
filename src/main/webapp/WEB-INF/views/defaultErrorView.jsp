@@ -13,7 +13,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Ошибка</title>
     <sec:csrfMetaTags />
-    <link href="<c:url value='/resources/core/css/bootstrap.min.css' />" rel="stylesheet" />
+    <link href="<c:url value='/resources/core/css/old_bootstrap.min.css' />" rel="stylesheet" />
     <link href="<c:url value='/resources/core/css/app.css' />" rel="stylesheet" />
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
 </head>

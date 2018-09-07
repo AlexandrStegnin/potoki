@@ -43,8 +43,10 @@ function populateStorageUnderFacilities(uFacilitiesId) {
             underFacility: $(this).text()
         })
     });
-    localStorage.setItem('uf', JSON.stringify(underFacilities));
-
+    var oldArray = JSON.parse(localStorage.getItem('uf'));
+    if (oldArray === null || (oldArray.length <= underFacilities.length)) {
+        localStorage.setItem('uf', JSON.stringify(underFacilities));
+    }
 }
 
 function populateStorageRooms() {

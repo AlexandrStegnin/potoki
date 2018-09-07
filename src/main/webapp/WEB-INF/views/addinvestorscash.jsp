@@ -11,12 +11,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Форма внесения денег инвесторов</title>
     <sec:csrfMetaTags />
-    <link href="<c:url value='/resources/core/css/bootstrap.min.css' />" rel="stylesheet" />
+    <link href="<c:url value='/resources/core/css/old_bootstrap.min.css' />" rel="stylesheet" />
     <link href="<c:url value='/resources/core/css/applic.css' />" rel="stylesheet" />
     <link href="<c:url value='/resources/core/css/popup.css' />" rel="stylesheet" />
     <link href="<c:url value='/resources/core/css/ajaxLoader.css' />" rel="stylesheet" />
     <script type="text/javascript" src="<c:url value='/resources/core/js/jquery-3.2.1.js' />" ></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min.js' />" ></script>
+    <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min_old.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/jsFunctions.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/AjaxLoader.js' />" ></script>
@@ -27,7 +27,7 @@
 
 <body>
 <div class="generic-container">
-    <%@include file="authheader.jsp" %>
+    <%@include file="old_authheader.jsp" %>
     <div class="well lead">${title}</div>
     <form:form method="POST" modelAttribute="investorsCash" class="form-horizontal" id="iCashTable">
         <form:input type="hidden" path="id" id="id"/>
@@ -203,7 +203,7 @@
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="investorBuyer">Инвестор покупатель:</label>
                 <div class="col-md-7">
-                    <form:select path="" id="investorBuyer" items="${investors}" multiple="false"
+                    <form:select path="investorBuyer" id="investorBuyer" items="${investors}" multiple="false"
                                  itemValue="id" itemLabel="login" class="form-control input-sm"/>
                     <div class="has-error" id="investorBuyerErr">
                     </div>
@@ -269,10 +269,10 @@
             <div class="form-actions floatRight">
                 <c:choose>
                     <c:when test="${edit}">
-                        <input type="submit" value="Обновить" class="btn btn-primary btn-sm"/> или <a href="<c:url value='/investorscash' />">Отмена</a>
+                        <input type="submit" value="Обновить" class="btn btn-primary btn-sm"/> или <a href="<c:url value='/investorscash/1' />">Отмена</a>
                     </c:when>
                     <c:otherwise>
-                        <input type="submit" value="Создать" class="btn btn-primary btn-sm"/> или <a href="<c:url value='/investorscash' />">Отмена</a>
+                        <input type="submit" value="Создать" class="btn btn-primary btn-sm"/> или <a href="<c:url value='/investorscash/1' />">Отмена</a>
                     </c:otherwise>
                 </c:choose>
             </div>
@@ -281,5 +281,6 @@
 </div>
 <%@include file="loader.jsp"%>
 <%@include file="popup.jsp"%>
+<%@include file="slideDiv.jsp" %>
 </body>
 </html>

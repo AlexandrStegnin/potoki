@@ -79,7 +79,7 @@ public class RoomsController {
     }
 
     @PostMapping(value = {"/newRoom"})
-    public String saveRoom(@ModelAttribute("room") Rooms room,
+    public String saveRoom(@ModelAttribute("rooms") Rooms room,
                            BindingResult result, ModelMap model) {
 
         if (result.hasErrors()) {

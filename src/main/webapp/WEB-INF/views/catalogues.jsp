@@ -9,12 +9,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Страница справочников</title>
     <sec:csrfMetaTags />
-    <link href="<c:url value='/resources/core/css/bootstrap.min.css' />" rel="stylesheet" />
+    <link href="<c:url value='/resources/core/css/old_bootstrap.min.css' />" rel="stylesheet" />
     <link href="<c:url value='/resources/core/css/applic.css' />" rel="stylesheet" />
     <link href="<c:url value='/resources/core/css/popup.css' />" rel="stylesheet" />
     <link href="<c:url value='/resources/core/css/ajaxLoader.css' />" rel="stylesheet" />
     <script type="text/javascript" src="<c:url value='/resources/core/js/jquery-3.2.1.js' />" ></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min.js' />" ></script>
+    <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min_old.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/AjaxLoader.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/mailingScripts.js' />" ></script>
@@ -29,7 +29,7 @@
 
 <body>
 <div class="generic-container">
-    <%@include file="authheader.jsp" %>
+    <%@include file="old_authheader.jsp" %>
     <div class="panel panel-default">
         <!-- Default panel contents -->
         <div class="panel-heading"><span class="lead">Управление справочниками:</span></div>
@@ -47,7 +47,7 @@
         <a href="<c:url value='/rentorsdetails' />" class="btn btn-success btn-block">Реквизиты арендаторов (RentorsDetails)</a>
         <a href="<c:url value='/bonustypes' />" class="btn btn-success btn-block">Типы бонусов (BonusTypes)</a>
         <a href="<c:url value='/typeexp' />" class="btn btn-success btn-block">Типы расходов (TypeExpenses)</a>
-        <a href="<c:url value='/investorscash' />" class="btn btn-success btn-block">Деньги инвесторов (InvestorsCash)</a>
+        <a href="<c:url value='/investorscash/1' />" class="btn btn-success btn-block">Деньги инвесторов (InvestorsCash)</a>
         <a href="<c:url value='/allowanceip' />" class="btn btn-success btn-block">Надбавки ИП (AllowanceIp)</a>
         <a href="<c:url value='/facilitiesreserves' />" class="btn btn-success btn-block">Резервы (FacilitiesReserves)</a>
         <a href="<c:url value='/bonuses' />" class="btn btn-success btn-block">Бонусы (Bonuses)</a>
@@ -64,10 +64,11 @@
         <a href="<c:url value='/viewinvestorstypes' />" class="btn btn-success btn-block">Типы инвесторов (InvestorsTypes)</a>
         <a href="<c:url value='/viewTypesClosingInvest' />" class="btn btn-success btn-block">Виды закрытия вложений (TypeClosingInvest)</a>
         <a href="<c:url value='/viewShareKind' />" class="btn btn-success btn-block">Виды долей (ShareKind)</a>
-        <a href="<c:url value='/cashflows' />" class="btn btn-success btn-block">Тест</a>
+        <a href="<c:url value='/saleOfFacilities' />" class="btn btn-success btn-block">Продажа объектов (SaleOfFacilities)</a>
+
         </sec:authorize>
     </div>
 </div>
-
+<%@include file="slideDiv.jsp" %>
 </body>
 </html>

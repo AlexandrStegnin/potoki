@@ -3,7 +3,9 @@ package com.art.controllers;
 import com.art.func.GetPrincipalFunc;
 import com.art.model.Stuffs;
 import com.art.model.Users;
+import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
+import com.art.service.InvestorsFlowsService;
 import com.art.service.StuffService;
 import com.art.service.UserService;
 import org.springframework.security.access.annotation.Secured;
@@ -12,10 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +32,9 @@ public class AdminController {
 
     @Resource(name = "getPrincipalFunc")
     private GetPrincipalFunc getPrincipalFunc;
+
+    @Resource(name = "investorsFlowsService")
+    private InvestorsFlowsService investorsFlowsService;
 
     /**
      * This update page is for user login with password only.
@@ -60,6 +62,15 @@ public class AdminController {
     public String cataloguePage(ModelMap model) {
         model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
         return "/catalogues";
+    }
+
+    @PostMapping(value = {"/updateInvestorDemo"}, produces = "application/json;charset=UTF-8")
+    public @ResponseBody
+    GenericResponse updateInvestorDemo() {
+        GenericResponse response = new GenericResponse();
+        investorsFlowsService.updateInvestorDemo();
+        response.setMessage("Данные инвестора демо успешно обновлены");
+        return response;
     }
 
     private void setRememberMeTargetUrlToSession(HttpServletRequest httpServletRequest) {

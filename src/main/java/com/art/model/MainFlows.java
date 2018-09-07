@@ -27,7 +27,6 @@ public class MainFlows implements Serializable {
     private String account;
     private String purposePayment;
     private String payment;
-    //private BigInteger underFacilityId;
     private String levelTwo;
     private String levelThree;
     private UnderFacilities underFacilities;

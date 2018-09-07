@@ -11,7 +11,7 @@ jQuery(document).ready(function ($) {
 function deleteFacility(facilityId) {
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
-    var search = ({"facility" : facilityId})
+    var search = ({"facility" : facilityId});
 
     showLoader();
 

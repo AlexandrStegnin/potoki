@@ -1,18 +1,23 @@
 jQuery(document).ready(function($) {
 
-    $("#search-form").submit(function(event) {
-
-        // Disble the search button
-        enableSearchButton(false);
-
-        // Prevent the form from submitting via the browser.
-        event.preventDefault();
-
-        searchViaAjax();
-
-    });
+    // $("#search-form").submit(function(event) {
+    //
+    //     // Disble the search button
+    //     enableSearchButton(false);
+    //
+    //     // Prevent the form from submitting via the browser.
+    //     event.preventDefault();
+    //
+    //     searchViaAjax();
+    //
+    // });
 
     /* МОДАЛЬНОЕ ОКНО */
+
+    $(document).on('click','a#updateInvestorDemo', function (e) {
+        e.preventDefault();
+        updateInvestorDemo();
+    });
 
     $('a#go').click( function(event){ // лoвим клик пo ссылки с id="go"
 
@@ -247,10 +252,49 @@ function savePass() {
 
 }
 
+function updateInvestorDemo() {
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+
+    // showLoader();
+
+    $.ajax({
+        type : "POST",
+        contentType : "application/json;charset=utf-8",
+        url : "../updateInvestorDemo",
+        data : "",
+        dataType : 'json',
+        timeout : 100000,
+        beforeSend: function(xhr){
+            xhr.setRequestHeader(header, token);
+        },
+        success : function(data) {
+            // closeLoader();
+            slideBox(data.message);
+        },
+        error : function(e) {
+            console.log("ERROR: ", e);
+            // show(e);
+        }
+    });
+
+
+}
+
 var i = 5;//время в сек.
 function time(message){
     $("#message").html('<p>' + message +
                        'Через <b>' + i + '</b> секунд Вы будете переадресованы на страницу входа</p>');//визуальный счетчик
     i--;//уменьшение счетчика
     if (i < 0) window.location.href = "/login"; //редирект
+}
+
+function slideBox(message) {
+    $('#slideBox').find('h4').html(message);
+    setTimeout(function () {
+        $('#slideBox').animate({'right': '52px'}, 500);
+    }, 500);
+    setTimeout(function () {
+        $('#slideBox').animate({'right': '-300px'}, 500);
+    }, 4000);
 }

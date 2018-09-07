@@ -15,6 +15,8 @@ public class CashFlows implements Serializable {
     private Facilities facility;
     private List<Rooms> rooms;
     private String login;
+    private List<SaleOfFacilities> saleOfFacilities;
+
 
     public List<MainFlows> getMainFlowsList() {
         return mainFlowsList;
@@ -79,5 +81,12 @@ public class CashFlows implements Serializable {
 
     public void setFacility(Facilities facility) {
         this.facility = facility;
+    }
+
+    public List<SaleOfFacilities> getSaleOfFacilities() {
+        return saleOfFacilities;
+    }
+    public void setSaleOfFacilities(List<SaleOfFacilities> saleOfFacilities) {
+        this.saleOfFacilities = saleOfFacilities;
     }
 }

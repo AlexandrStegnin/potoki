@@ -26,7 +26,8 @@ public class RoomsService {
         Root<Rooms> roomsRoot = roomsCriteriaQuery.from(Rooms.class);
         roomsRoot.fetch(Rooms_.underFacility, JoinType.LEFT)
                 .fetch(UnderFacilities_.facility, JoinType.LEFT);
-        roomsCriteriaQuery.select(roomsRoot).distinct(true);
+        roomsCriteriaQuery.select(roomsRoot);//.distinct(true);
+        roomsCriteriaQuery.orderBy(cb.asc(roomsRoot.get(Rooms_.underFacility).get(UnderFacilities_.facility).get(Facilities_.id)));
 
         return em.createQuery(roomsCriteriaQuery).getResultList();
     }

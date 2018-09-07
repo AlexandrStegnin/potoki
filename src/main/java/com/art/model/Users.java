@@ -1,6 +1,7 @@
 package com.art.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,9 +15,9 @@ import java.util.Set;
 
 @Getter
 @Setter
-@ToString(exclude = {"roles", "userStuff", "mailingGroups", "facilityes", "usersAnnexToContractsList", "emails"})
+@ToString(exclude = {"roles", "userStuff", "mailingGroups", "facilities", "usersAnnexToContractsList", "emails"})
 @EqualsAndHashCode(exclude = {"stuffId", "password", "lastName", "first_name", "middle_name",
-        "email", "office_id", "state", "roles", "userStuff", "mailingGroups", "facilityes",
+        "email", "office_id", "state", "roles", "userStuff", "mailingGroups", "facilities",
         "usersAnnexToContractsList", "emails"})
 @Entity
 @Table(name = "USERS")
@@ -34,7 +35,13 @@ public class Users implements Serializable {
     private List<Roles> roles;
     private Stuffs userStuff;
     private Set<MailingGroups> mailingGroups;
-    private Set<Facilities> facilityes;
+    private Set<Facilities> facilities;
+
+    @Transient
+    private transient List<BigInteger> facilityId;
+    @Transient
+    private transient List<String> facilityName;
+
     //private List<AnnexToContracts> annexes;
     //private FacilitiesServiceContracts contracts;
     private List<UsersAnnexToContracts> usersAnnexToContractsList;
@@ -47,6 +54,19 @@ public class Users implements Serializable {
     public Users(String id, String login) {
         this.id = new BigInteger(id);
         this.login = login;
+    }
+
+    public Users(BigInteger id, String login, List<BigInteger> facilityId, List<String> facilityName) {
+        this.id = id;
+        this.login = login;
+        this.facilityId = facilityId;
+        this.facilityName = facilityName;
+    }
+
+    public Users(BigInteger id, String login, Set<Facilities> facilities) {
+        this.id = id;
+        this.login = login;
+        this.facilities = facilities;
     }
 
     @OneToOne(cascade =
@@ -94,12 +114,12 @@ public class Users implements Serializable {
     @JoinTable(name = "USERS_FACILITYES",
             joinColumns = {@JoinColumn(name = "RENTOR_INVESTORS_ID", referencedColumnName = "id")},
             inverseJoinColumns = @JoinColumn(name = "FACILITY_ID", referencedColumnName = "id"))
-    public Set<Facilities> getFacilityes() {
-        return facilityes;
+    public Set<Facilities> getFacilities() {
+        return facilities;
     }
 
-    public void setFacilityes(Set<Facilities> facilityes) {
-        this.facilityes = facilityes;
+    public void setFacilities(Set<Facilities> facilities) {
+        this.facilities = facilities;
     }
 
     @Id
@@ -122,6 +142,7 @@ public class Users implements Serializable {
     }
 
     @Column(name = "password", nullable = false, length = 100)
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -269,4 +290,13 @@ public class Users implements Serializable {
         this.emails = emails;
     }
 
+    @Transient
+    public List<BigInteger> getFacilityId() {
+        return facilityId;
+    }
+
+    @Transient
+    public List<String> getFacilityName() {
+        return facilityName;
+    }
 }

@@ -145,6 +145,9 @@ public class InvestorsCash implements Serializable {
     private String source;
     private int isDivide;
 
+    @Transient
+    private transient Users investorBuyer;
+
     public InvestorsCash() {
 
     }
@@ -470,6 +473,15 @@ public class InvestorsCash implements Serializable {
         }
 
         return localDate;
+    }
+
+    @Transient
+    public Users getInvestorBuyer() {
+        return investorBuyer;
+    }
+
+    public void setInvestorBuyer(Users investorBuyer) {
+        this.investorBuyer = investorBuyer;
     }
 
     @Column(name = "IsReinvest")
