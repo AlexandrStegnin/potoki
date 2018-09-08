@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="potoki:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="Potoki.war">
+      <element id="artifact" artifact-name="potoki:war exploded" />
+    </root>
+  </artifact>
+</component>

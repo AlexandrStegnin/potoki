@@ -1,0 +1,232 @@
+html{
+	background-color:#2F2F2F;
+}
+
+body{
+	height: 100%;
+	background-color:rgb(245, 245, 245);
+}
+
+#mainWrapper {
+	height: 100%;
+	background-image: -webkit-gradient(
+	linear,
+	right bottom,
+	right top,
+	color-stop(0, #EDEDED),
+	color-stop(0.08, #EAEAEA),
+	color-stop(1, #2F2F2F),
+	color-stop(1, #AAAAAA)
+);
+background-image: -o-linear-gradient(top, #EDEDED 0%, #EAEAEA 8%, #2F2F2F 100%, #AAAAAA 100%);
+background-image: -moz-linear-gradient(top, #EDEDED 0%, #EAEAEA 8%, #2F2F2F 100%, #AAAAAA 100%);
+background-image: -webkit-linear-gradient(top, #EDEDED 0%, #EAEAEA 8%, #2F2F2F 100%, #AAAAAA 100%);
+background-image: -ms-linear-gradient(top, #EDEDED 0%, #EAEAEA 8%, #2F2F2F 100%, #AAAAAA 100%);
+background-image: linear-gradient(to top, #EDEDED 0%, #EAEAEA 8%, #2F2F2F 100%, #AAAAAA 100%);
+}
+
+.floatRight{
+	float:right;
+	margin-right: 18px;
+}
+
+.has-error{
+	color:red;
+}
+
+.generic-container {
+  position:fixed;
+  width:97%;
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 20px;
+  background-color: #EAE7E7;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 0 30px black;
+	max-height:99%;
+	overflow-x:scroll;
+	overflow-y:auto;
+}
+
+.custom-width {
+    width: 80px !important;
+}
+
+body, #mainWrapper, .form-control{
+	font-size:14px !important;
+}
+
+#mainWrapper {
+	/*height: 720px; Without explicit px values, % in children's does not work*/
+	height: 100vh; /*with Viewport-Percentage, we can handles all devices screens  */
+	padding-left:10px;
+	padding-right:10px;
+	padding-bottom:10px;
+}
+
+.login-container {
+    margin-top: 100px;
+    background-color: floralwhite;
+    width: 40%;
+    left: 30%;
+    position: absolute;
+}
+
+.login-card {
+    width: 80%;
+    margin: auto;
+}
+
+.login-form {
+    padding: 10%;
+}
+
+.authbar{
+	margin-bottom:15px;
+}
+
+/* МОДАЛЬНОЕ ОКНО */
+#modal_form, #mail_modal_form {
+	width: 1200px;
+	height: 700px; /* Рaзмеры дoлжны быть фиксирoвaны */
+	border-radius: 5px;
+	border: 3px #000 solid;
+	background: #fff;
+	position: fixed; /* чтoбы oкнo былo в видимoй зoне в любoм месте */
+	top: 45%; /* oтступaем сверху 45%, oстaльные 5% пoдвинет скрипт */
+	left: 50%; /* пoлoвинa экрaнa слевa */
+	margin-top: -350px;
+	margin-left: -600px; /* тут вся мaгия центрoвки css, oтступaем влевo и вверх минус пoлoвину ширины и высoты сooтветственнo =) */
+	display: none; /* в oбычнoм сoстoянии oкнa не дoлжнo быть */
+	opacity: 0; /* пoлнoстью прoзрaчнo для aнимирoвaния */
+	z-index: 5; /* oкнo дoлжнo быть нaибoлее бoльшем слoе */
+	padding: 20px 10px;
+}
+/* Кнoпкa зaкрыть для тех ктo в тaнке) */
+#modal_form #modal_close, #mail_modal_form #mail_modal_close{
+	width: 21px;
+	height: 21px;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	cursor: pointer;
+	display: block;
+}
+/* Пoдлoжкa */
+#overlay, #mail_overlay {
+	z-index:3; /* пoдлoжкa дoлжнa быть выше слoев элементoв сaйтa, нo ниже слoя мoдaльнoгo oкнa */
+	position:fixed; /* всегдa перекрывaет весь сaйт */
+	background-color:#000; /* чернaя */
+	opacity:0.8; /* нo немнoгo прoзрaчнa */
+	-moz-opacity:0.8; /* фикс прозрачности для старых браузеров */
+	filter:alpha(opacity=80);
+	width:100%;
+	height:100%; /* рaзмерoм вo весь экрaн */
+	top:0; /* сверху и слевa 0, oбязaтельные свoйствa! */
+	left:0;
+	cursor:pointer;
+	display:none; /* в oбычнoм сoстoянии её нет) */
+}
+/* МОДАЛЬНОЕ ОКНО */
+
+/* ЧЕКБОКСЫ - ПЕРЕКЛЮЧАТЕЛИ */
+.material-switch > input[type="checkbox"] {
+	display: none;
+}
+
+.material-switch > label {
+	cursor: pointer;
+	height: 0px;
+	position: relative;
+	width: 35px;
+}
+
+.material-switch > label::before {
+	background: rgb(0, 0, 0);
+	box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
+	border-radius: 8px;
+	content: '';
+	height: 16px;
+	margin-top: -8px;
+	position:absolute;
+	opacity: 0.3;
+	transition: all 0.4s ease-in-out;
+	width: 35px;
+}
+.material-switch > label::after {
+	background: rgb(255, 255, 255);
+	border-radius: 16px;
+	box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+	content: '';
+	height: 18px;
+	left: -4px;
+	margin-top: -5px;
+	position: absolute;
+	top: -4px;
+	transition: all 0.3s ease-in-out;
+	width: 24px;
+}
+.material-switch > input[type="checkbox"]:checked + label::before {
+	background: inherit;
+	opacity: 0.5;
+}
+.material-switch > input[type="checkbox"]:checked + label::after {
+	background: inherit;
+	left: 20px;
+}
+/* ЧЕКБОКСЫ - ПЕРЕКЛЮЧАТЕЛИ */
+
+.bg{
+	width:400px;
+	height:300px;
+	position:absolute;
+	left:50%;
+	top:50%;
+	margin:-150px 0 0 -200px;
+	text-align: center;
+	z-index: -1000001;
+}
+
+.blur-bg{
+	filter: blur(10px);
+	webkitFilter: blur(10px);
+	mozFilter: blur(10px);
+	oFilter: blur(10px);
+	msFilter: blur(10px);
+	transition:all 0.5s ease-out;
+	-webkit-transition:all 0.5s ease-out;
+	-moz-transition:all 0.5s ease-out;
+	-o-transition:all 0.5s ease-out;
+}
+
+.btn-suc{
+	background-color: #1b5b45;
+	color:#fff;
+	font-size:14px;
+	font-weight:300;
+	line-height:1;
+	padding:10px 20px;
+	border:2px solid #1b5b45;
+	min-width:160px
+}
+.btn-suc.active,.btn-suc:hover{
+	background-color:transparent;
+	color:#1b5b45
+}
+
+.btn-dang{
+	background-color: #942003;
+	color:#fff;
+	font-size:14px;
+	font-weight:300;
+	line-height:1;
+	padding:10px 20px;
+	border:2px solid #942003;
+	min-width:160px
+}
+.btn-dang.active,.btn-dang:hover{
+	background-color:transparent;
+	color: #942003
+}
