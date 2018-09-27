@@ -9,7 +9,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -23,8 +22,8 @@ public class Rooms implements Serializable {
     private String room;
     private BigDecimal coast;
     private BigDecimal roomSize;
-    private boolean sold;
-    private LocalDate dateOfSale;
+//    private boolean sold;
+//    private LocalDate dateOfSale;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -73,19 +72,19 @@ public class Rooms implements Serializable {
         this.underFacility = underFacility;
     }
 
-    public boolean isSold() {
-        return sold;
-    }
-
-    public void setSold(boolean sold) {
-        this.sold = sold;
-    }
-
-    public LocalDate getDateOfSale() {
-        return dateOfSale;
-    }
-
-    public void setDateOfSale(LocalDate dateOfSale) {
-        this.dateOfSale = dateOfSale;
-    }
+//    public boolean isSold() {
+//        return sold;
+//    }
+//
+//    public void setSold(boolean sold) {
+//        this.sold = sold;
+//    }
+//
+//    public LocalDate getDateOfSale() {
+//        return dateOfSale;
+//    }
+//
+//    public void setDateOfSale(LocalDate dateOfSale) {
+//        this.dateOfSale = dateOfSale;
+//    }
 }

@@ -74,7 +74,7 @@ public class SearchSummary implements Serializable {
     private String dateClose;
     private List<BigInteger> cashIdList;
     private List<UnderFacilities> underFacilitiesList;
-    private int pageNumber;
+    private int pageNumber = 1;
     private BigDecimal commissionNoMore;
 
     private Facilities facilities;
