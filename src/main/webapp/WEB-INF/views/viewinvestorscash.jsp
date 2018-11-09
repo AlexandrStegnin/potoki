@@ -28,6 +28,9 @@
         table, td, th {
             text-align: center;
         }
+        td{
+            word-wrap: break-word;
+        }
 
         #msg-modal .modal-dialog {
             -webkit-transform: translate(0, -50%);
@@ -135,6 +138,7 @@
                 <th>Инвестор</th>
                 <th>Переданная сумма</th>
                 <th>Дата передачи денег</th>
+                <th>Источник денег</th>
                 <th>Вид денег</th>
                 <th>Детали новых денег</th>
                 <th>Дата закрытия вложения</th>
@@ -164,6 +168,7 @@
                         <fmt:formatNumber value="${cash.givedCash}" type="currency" minFractionDigits="2"/>
                     </td>
                     <td data-report-date="${cash.dateGivedCash.time}">${cash.getDateGivedCashToLocalDate()}</td>
+                    <td data-cash-source-id="${cash.cashSource.id}">${cash.cashSource.cashSource}</td>
                     <td data-cash-type-id="${cash.cashType.id}">${cash.cashType.cashType}</td>
                     <td data-cash-details-id="${cash.newCashDetails.id}">${cash.newCashDetails.newCashDetail}</td>
                     <td data-date-closing="${cash.dateClosingInvest.time}">${cash.getDateClosingInvestToLocalDate()}</td>
@@ -173,8 +178,8 @@
                     <td data-source-facility-id="${cash.sourceFacility.id}">${cash.sourceFacility.facility}</td>
                     <td data-source-under-id="${cash.sourceUnderFacility.id}">${cash.sourceUnderFacility.underFacility}</td>
                     <td data-room-id="${cash.room.id}">${cash.room.room}</td>
-                    <td data-source="${cash.source}" style="width: 40px; word-wrap: break-word">${cash.source}</td>
-                    <td data-source-flows-id="${cash.sourceFlowsId}" style="width: 40px; word-wrap: break-word">${cash.sourceFlowsId}</td>
+                    <td data-source="${cash.source}" style="width: 40px;">${cash.source}</td>
+                    <td data-source-flows-id="${cash.sourceFlowsId}" style="width: 40px;">${cash.sourceFlowsId}</td>
                     <c:choose>
                         <c:when test="${cash.typeClosingInvest == null}">
                             <c:set var="isDisabledClass" value="isEnabled"/>
