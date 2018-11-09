@@ -148,8 +148,6 @@
                 <th>Объект источник</th>
                 <th>Подобъект источник</th>
                 <th>Помещение</th>
-                <th>Род. ID денег инв</th>
-                <th>Род. ID сумм с аренды/продажи</th>
                 <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                     <th style="text-align: center">Действие</th>
                 </sec:authorize>
@@ -178,8 +176,6 @@
                     <td data-source-facility-id="${cash.sourceFacility.id}">${cash.sourceFacility.facility}</td>
                     <td data-source-under-id="${cash.sourceUnderFacility.id}">${cash.sourceUnderFacility.underFacility}</td>
                     <td data-room-id="${cash.room.id}">${cash.room.room}</td>
-                    <td data-source="${cash.source}" style="width: 40px;">${cash.source}</td>
-                    <td data-source-flows-id="${cash.sourceFlowsId}" style="width: 40px;">${cash.sourceFlowsId}</td>
                     <c:choose>
                         <c:when test="${cash.typeClosingInvest == null}">
                             <c:set var="isDisabledClass" value="isEnabled"/>
