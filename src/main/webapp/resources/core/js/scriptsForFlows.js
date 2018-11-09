@@ -78,12 +78,12 @@ jQuery(document).ready(function ($) {
     $(document).on('change', '#checkAll', function () {
         var checked = $('#checkIt').prop('checked');
         if (!checked) {
-            $('#reinvestAll').prop('disabled', true);
+            $('#reinvestAll').addClass('disabled');
             $('table#invFlows').find('> tbody').find('> tr').each(function () {
                 $(this).find(':checkbox:not(:disabled)').prop('checked', false);
             });
         } else {
-            $('#reinvestAll').prop('disabled', false);
+            $('#reinvestAll').removeClass('disabled');
             $('table#invFlows').find('> tbody').find('> tr').each(function () {
                 if (!$(this).data('passed')) {
                     $(this).find(':checkbox:not(:disabled)').prop('checked', false);

@@ -29,14 +29,6 @@
             text-align: center;
         }
 
-        .isDisabled {
-            color: currentColor;
-            cursor: not-allowed;
-            opacity: 0.5;
-            display: inline-block; /* For IE11/ MS Edge bug */
-            text-decoration: none;
-        }
-
         #msg-modal .modal-dialog {
             -webkit-transform: translate(0, -50%);
             -o-transform: translate(0, -50%);
@@ -58,7 +50,6 @@
 </head>
 
 <body>
-<%@include file="slideDiv.jsp" %>
 <div class="generic-container">
     <%@include file="old_authheader.jsp" %>
     <div class="panel panel-default">
@@ -101,7 +92,7 @@
                                     class="glyphicon glyphicon-th-list"></span></button>
                             <ul class="dropdown-menu" id="addGetCash">
                                 <li id="addCash"><a href="<c:url value='/newinvestorscash' />">Добавить деньги</a></li>
-                                <li id="getCash"><a href="/getInvestorsCash">Вывести деньги</a></li>
+                                <li id="getCash"><a href="<c:url value='/getInvestorsCash' />">Вывести деньги</a></li>
                             </ul>
                         </div>
 
@@ -136,7 +127,7 @@
             </nav>
         </form:form>
 
-        <table class="table table-hover" style="font-size: smaller" id="investorsCash">
+        <table class="table table-hover" style="font-size: smaller; table-layout: fixed" id="investorsCash">
             <thead>
             <tr>
                 <th>Объект</th>
@@ -144,10 +135,8 @@
                 <th>Инвестор</th>
                 <th>Переданная сумма</th>
                 <th>Дата передачи денег</th>
-                <th>Источник денег</th>
                 <th>Вид денег</th>
                 <th>Детали новых денег</th>
-                <th>Вид инвестора</th>
                 <th>Дата закрытия вложения</th>
                 <th>Вид закрытия вложения</th>
                 <th>Вид доли</th>
@@ -155,6 +144,8 @@
                 <th>Объект источник</th>
                 <th>Подобъект источник</th>
                 <th>Помещение</th>
+                <th>Род. ID денег инв</th>
+                <th>Род. ID сумм с аренды/продажи</th>
                 <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                     <th style="text-align: center">Действие</th>
                 </sec:authorize>
@@ -173,10 +164,8 @@
                         <fmt:formatNumber value="${cash.givedCash}" type="currency" minFractionDigits="2"/>
                     </td>
                     <td data-report-date="${cash.dateGivedCash.time}">${cash.getDateGivedCashToLocalDate()}</td>
-                    <td data-cash-source-id="${cash.cashSource.id}">${cash.cashSource.cashSource}</td>
                     <td data-cash-type-id="${cash.cashType.id}">${cash.cashType.cashType}</td>
                     <td data-cash-details-id="${cash.newCashDetails.id}">${cash.newCashDetails.newCashDetail}</td>
-                    <td data-investors-type-id="${cash.investorsType.id}">${cash.investorsType.investorsType}</td>
                     <td data-date-closing="${cash.dateClosingInvest.time}">${cash.getDateClosingInvestToLocalDate()}</td>
                     <td data-type-closing-id="${cash.typeClosingInvest.id}">${cash.typeClosingInvest.typeClosingInvest}</td>
                     <td data-share-kind-id="${cash.shareKind.id}">${cash.shareKind.shareKind}</td>
@@ -184,7 +173,8 @@
                     <td data-source-facility-id="${cash.sourceFacility.id}">${cash.sourceFacility.facility}</td>
                     <td data-source-under-id="${cash.sourceUnderFacility.id}">${cash.sourceUnderFacility.underFacility}</td>
                     <td data-room-id="${cash.room.id}">${cash.room.room}</td>
-
+                    <td data-source="${cash.source}" style="width: 40px; word-wrap: break-word">${cash.source}</td>
+                    <td data-source-flows-id="${cash.sourceFlowsId}" style="width: 40px; word-wrap: break-word">${cash.sourceFlowsId}</td>
                     <c:choose>
                         <c:when test="${cash.typeClosingInvest == null}">
                             <c:set var="isDisabledClass" value="isEnabled"/>

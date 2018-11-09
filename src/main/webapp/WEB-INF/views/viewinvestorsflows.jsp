@@ -233,19 +233,6 @@
                         </div>
                     </div>
 
-                    <div class="row" id="invTypeRow">
-                        <div class="form-group col-md-12">
-                            <label class="col-md-3 control-lable" for="invType">Вид инвестора:</label>
-                            <div class="col-md-7">
-                                <form:select path="invType" id="invType" items="${investorsTypes}" multiple="false"
-                                             itemValue="id" itemLabel="investorsType" class="form-control input-sm"/>
-                                <div id="invTypeErr" style="color: red; display: none">Необходимо выбрать вид
-                                    инвестора
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="row" id="shareKindNameRow">
                         <div class="form-group col-md-12">
                             <label class="col-md-3 control-lable" for="shareKindName">Вид доли:</label>

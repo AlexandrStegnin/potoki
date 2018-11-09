@@ -762,16 +762,15 @@ public class InvestorsCashController {
         final Date[] dateClose = {null};
         CashTypes cashTypes = cashTypesService.findByCashType("Старые деньги");
         NewCashDetails newCashDetails = newCashDetailsService.findByNewCashDetail("Реинвестирование с продажи (сохранение)");
-        InvestorsTypes investorsTypes = investorsTypesService.findByInvestorsTypes("Старый инвестор");
+        InvestorsTypes investorsType = investorsTypesService.findByInvestorsTypes("Старый инвестор");
         TypeClosingInvest typeClosingInvest = typeClosingInvestService.findByTypeClosingInvest("Реинвестирование");
-
 
         Map<String, InvestorsCash> map = groupInvestorsCash(investorsCashes, "");
 
         map.forEach((key, value) -> {
             value.setCashType(cashTypes);
             value.setNewCashDetails(newCashDetails);
-            value.setInvestorsType(investorsTypes);
+            value.setInvestorsType(investorsType);
             value.setGivedCash(value.getGivedCash().setScale(2, RoundingMode.DOWN));
             dateClose[0] = value.getDateGivedCash();
             updateMailingGroups(value, "add");

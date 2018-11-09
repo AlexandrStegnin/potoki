@@ -87,6 +87,7 @@ jQuery(document).ready(function ($) {
 
     $(document).on('click', '#reinvestAll', function (event) {
         event.preventDefault();
+        if(linkHasClass($('#reinvestAll'))) return false;
         $('#reInvestModal').modal({
             show: true
         });
@@ -94,14 +95,16 @@ jQuery(document).ready(function ($) {
 
     $('#closeAll').find('> a').on('click', function (event) {
         event.preventDefault();
+        if (linkHasClass($('#closeAll'))) return false;
         $('#closeModal').modal({
             show: true
         })
     });
 
     $('#deleteAll').on('click', function (event) {
-        showLoader();
         event.preventDefault();
+        if (linkHasClass($('#deleteAll'))) return false;
+        showLoader();
         var cashIdList = [];
         var sourceIdList = [];
         $('table#investorsCash').find('> tbody').find('> tr').each(function () {
@@ -172,6 +175,7 @@ jQuery(document).ready(function ($) {
 
     $('#divideAll').on('click', function (event) {
         event.preventDefault();
+        if (linkHasClass($('#divideAll'))) return false;
         var chk = $('table#investorsCash').find('> tbody').find('> tr').find(':checkbox:checked:not(:disabled)');
         var facilityId = chk.closest('td').parent().find('td:eq(0)').attr('data-facility-id');
 
@@ -1645,4 +1649,8 @@ function filteredInvestorsCash(facility, underFacility, investor, dateBegin, dat
             // closePopup();
         }
     });
+}
+
+function linkHasClass(link) {
+    if (link.hasClass('disabled')) return true;
 }
