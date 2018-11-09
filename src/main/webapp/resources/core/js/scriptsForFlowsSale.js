@@ -44,32 +44,16 @@ jQuery(document).ready(function ($) {
     });
 
     $("#filter-form").submit(function (event) {
-
-        // Disable the search button
-        enableSearchButton(false);
-
         // Prevent the form from submitting via the browser.
         event.preventDefault();
+        // Disable the search button
+        enableSearchButton(false);
         prepareFilter();
         enableSearchButton(true);
         //searchCash();
 
 
     });
-
-    /*
-    $(document).on('change', ':checkbox', function () {
-        var id = $(this).attr('id');
-        if(typeof id === 'undefined'){
-            var cnt = checkChecked();
-            if(cnt > 0){
-                $('#reinvestAll').prop('disabled', false);
-            }else {
-                $('#reinvestAll').prop('disabled', true);
-            }
-        }
-    });
-    */
 
     $('table#invFlowsSale').find('> tbody').find('> tr').each(function (i) {
         $(this).data('passed', true);
@@ -90,12 +74,12 @@ jQuery(document).ready(function ($) {
     $(document).on('change', '#checkAll', function () {
         var checked = $('#checkIt').prop('checked');
         if (!checked) {
-            $('#reinvestAll').prop('disabled', true);
+            $('#reinvestAll').prop('disabled', true).hide().fadeIn('fast');
             $('table#invFlowsSale').find('> tbody').find('> tr').each(function () {
                 $(this).find(':checkbox:not(:disabled)').prop('checked', false);
             });
         } else {
-            $('#reinvestAll').prop('disabled', false);
+            $('#reinvestAll').prop('disabled', false).hide().fadeIn('fast');
             $('table#invFlowsSale').find('> tbody').find('> tr').each(function () {
                 if (!$(this).data('passed')) {
                     $(this).find(':checkbox:not(:disabled)').prop('checked', false);
@@ -104,9 +88,6 @@ jQuery(document).ready(function ($) {
                 }
             });
         }
-
-        //var cnt = checkChecked();
-        //console.log(cnt);
     });
 
     $("#searchFacility").submit(function (event) {
@@ -133,7 +114,6 @@ jQuery(document).ready(function ($) {
     });
 
     $(document).on('change', '#srcUnderFacilities', function () {
-
         var room = $(this).find('option:selected').attr('id');
         getRoomsFromLocalStorage(room);
     });
@@ -376,11 +356,24 @@ function prepareSaveInvestorsCash() {
         facility: $('#srcFacilities').find('option:selected').text()
     };
 
+    underFacility = {
+        id: reinvestData.find('#srcUnderFacilities').children(":selected").attr("id"),
+        underFacility: $('#srcUnderFacilities').find('option:selected').text()
+    };
+
     if (facility.facility.indexOf('Выберите объект') >= 0) {
         $('#facilityErr').css('display', 'block');
         err = true;
     } else {
         $('#facilityErr').css('display', 'none');
+        err = false;
+    }
+
+    if (underFacility.underFacility.indexOf('Выберите подобъект') >= 0) {
+        $('#underFacilityErr').css('display', 'block');
+        err = true;
+    } else {
+        $('#underFacilityErr').css('display', 'none');
         err = false;
     }
 
@@ -457,7 +450,7 @@ function prepareSaveInvestorsCash() {
                 cashType: cashType,
                 newCashDetails: newCashDetails,
                 investorsType: investorsType,
-                underFacility: null,
+                underFacility: underFacility,
                 dateClosingInvest: null,
                 typeClosingInvest: null,
                 shareKind: shareKind,

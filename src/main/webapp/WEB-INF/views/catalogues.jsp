@@ -65,7 +65,7 @@
         <a href="<c:url value='/viewTypesClosingInvest' />" class="btn btn-success btn-block">Виды закрытия вложений (TypeClosingInvest)</a>
         <a href="<c:url value='/viewShareKind' />" class="btn btn-success btn-block">Виды долей (ShareKind)</a>
         <a href="<c:url value='/saleOfFacilities' />" class="btn btn-success btn-block">Продажа объектов (SaleOfFacilities)</a>
-
+        <a href="<c:url value='/marketingTree' />" class="btn btn-success btn-block">Маркетинговое дерево (MarketingTree)</a>
         </sec:authorize>
     </div>
 </div>

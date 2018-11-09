@@ -2,15 +2,13 @@ package com.art.controllers;
 
 import com.art.func.GetPrincipalFunc;
 import com.art.model.*;
-import com.art.model.supporting.AfterCashing;
-import com.art.model.supporting.GenericResponse;
-import com.art.model.supporting.PaginationResult;
-import com.art.model.supporting.SearchSummary;
+import com.art.model.supporting.*;
+import com.art.repository.MarketingTreeRepository;
 import com.art.service.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -22,8 +20,6 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
-import java.text.NumberFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -33,6 +29,9 @@ import java.util.stream.Collectors;
 
 @Controller
 public class InvestorsCashController {
+
+    @Autowired
+    private MarketingTreeRepository marketingTreeRepository;
 
     @Resource(name = "afterCashingService")
     private AfterCashingService afterCashingService;
@@ -297,18 +296,24 @@ public class InvestorsCashController {
                         .filter(ic -> !Objects.equals(deleting, ic))
                         .collect(Collectors.toList());
                 if (!Objects.equals(0, investorsCashes.size())) {
-                    investorsCashes.forEach(investorsCash -> {
-                        investorsCashService.deleteById(investorsCash.getId());
-                    });
+                    investorsCashes.forEach(investorsCash -> investorsCashService.deleteById(investorsCash.getId()));
                 }
             }
 
             new Thread(() -> updateMailingGroups(deleting, "delete")).start();
             investorsCashService.deleteById(deleting.getId());
+            List<InvestorsCash> countCash = investorsCashService.findByInvestorId(deleting.getInvestor().getId());
+            if (countCash.size() == 0) {
+                marketingTreeRepository.removeByInvestorId(deleting.getInvestor().getId());
+                Users upd = userService.findById(deleting.getInvestor().getId());
+                upd.setFirstInvestmentDate(null);
+                upd.setStatus(StatusEnum.NO_ACTIVE);
+                upd.setDaysToDeactivate(0);
+                userService.update(upd);
+            }
             response.setMessage("Данные успешно удалены");
 
         });
-
         return response;
     }
 
@@ -341,30 +346,6 @@ public class InvestorsCashController {
         } else {
             response.setMessage("Что-то пошло не так ): ");
         }
-//        BigInteger investorId = searchSummary.getUser().getId();
-//        BigInteger facilityId = searchSummary.getFacilities().getId();
-//        BigInteger underFacilityId = new BigInteger(String.valueOf(BigInteger.ZERO));
-//        if (!Objects.equals(null, underFacility)) {
-//            underFacilityId = underFacility.getId();
-//        }
-//
-//        BigDecimal commission = searchSummary.getCommission();
-//        BigDecimal commissionNoMore = searchSummary.getCommissionNoMore();
-//
-//        List<InvestorsCash> cashList;
-//        if (underFacilityId.compareTo(BigInteger.ZERO) == 0) {
-//            cashList = investorsCashService.findByInvestorAndFacility(investorId, facilityId);
-//        } else {
-//            cashList = investorsCashService.findByInvestorAndFacilityAndUnderFacility(investorId, facilityId, underFacilityId);
-//        }
-//        BigDecimal cashForGetting = cashList.stream().map(InvestorsCash::getGivedCash).reduce(BigDecimal.ZERO, BigDecimal::add);
-//        commission = (cashForGetting.multiply(commission)).divide(new BigDecimal(100), BigDecimal.ROUND_CEILING);
-//
-//        if (commission.compareTo(commissionNoMore) > 0) {
-//            commission = commissionNoMore;
-//        }
-//
-//        return cashForGetting.subtract(commission).setScale(2, BigDecimal.ROUND_CEILING).floatValue();
         return response;
     }
 
@@ -386,138 +367,7 @@ public class InvestorsCashController {
         }
         String ret = "списку денег инвестора";
         String redirectUrl = "/investorscash/1";
-
-//        InvestorsCash commissionCash = new InvestorsCash();
-//        TypeClosingInvest typeClosingInvest = typeClosingInvestService.findByTypeClosingInvest("Вывод");
-//        TypeClosingInvest typeClosingCommission = typeClosingInvestService.findByTypeClosingInvest("Вывод_комиссия");
         InvestorsCash cashForGetting = searchSummary.getInvestorsCash();
-
-//        BigDecimal commission = searchSummary.getCommission();
-//        BigDecimal commissionNoMore = searchSummary.getCommissionNoMore();
-//
-//        commission = (cashForGetting.getGivedCash().multiply(commission)).divide(new BigDecimal(100), BigDecimal.ROUND_CEILING);
-//
-//        if (commission.compareTo(commissionNoMore) > 0) {
-//            commission = commissionNoMore;
-//        }
-//
-//        BigDecimal totalSum = cashForGetting.getGivedCash().add(commission);
-//
-//        commissionCash.setFacility(cashForGetting.getFacility());
-//        commissionCash.setUnderFacility(cashForGetting.getUnderFacility());
-//        commissionCash.setInvestor(cashForGetting.getInvestor());
-////        commissionCash.setGivedCash(commission);
-//        commissionCash.setTypeClosingInvest(typeClosingCommission);
-//        commissionCash.setDateClosingInvest(cashForGetting.getDateGivedCash());
-//
-//        final BigDecimal[] remainderSum = new BigDecimal[1];
-//        remainderSum[0] = totalSum;
-//        List<InvestorsCash> investorsCashes = investorsCashService.findByInvestorId(cashForGetting.getInvestor().getId())
-//                .stream()
-//                .filter(investorsCash ->
-//                        investorsCash.getFacility().getFacility().equalsIgnoreCase(cashForGetting.getFacility().getFacility()) &&
-//                                investorsCash.getGivedCash().compareTo(BigDecimal.ZERO) > 0 &&
-//                                Objects.equals(null, investorsCash.getTypeClosingInvest()) &&
-//                                (Objects.equals(null, cashForGetting.getUnderFacility()) || Objects.equals(cashForGetting.getUnderFacility(), investorsCash.getUnderFacility())))
-//                .sorted(Comparator.comparing(InvestorsCash::getDateGivedCash))
-//                .collect(Collectors.toList());
-//        BigDecimal sumCash = investorsCashes.stream().map(InvestorsCash::getGivedCash).reduce(BigDecimal.ZERO, BigDecimal::add);
-//
-//        BigDecimal deviation = new BigDecimal(BigInteger.ZERO);
-//
-//        if ((sumCash.compareTo(totalSum)) < 0) {
-//            return "getInvestorsCash";
-//        } else if (sumCash.subtract(totalSum).compareTo(new BigDecimal("25")) <= 0) {
-//            deviation = sumCash.subtract(totalSum);
-//        }
-//
-//        commissionCash.setGivedCash(commission.add(deviation));
-//
-//        List<AfterCashing> cashingList = new ArrayList<>(0);
-//        BigDecimal finalCommission = commission.add(deviation);
-//        remainderSum[0] = remainderSum[0].subtract(commission);
-//        InvestorsCash remainderCash = new InvestorsCash();
-//        investorsCashes.forEach(ic -> {
-//            if (remainderSum[0].compareTo(BigDecimal.ZERO) > 0) {
-//                if (ic.getGivedCash().subtract(remainderSum[0]).compareTo(BigDecimal.ZERO) < 0) {
-//                    remainderSum[0] = remainderSum[0].subtract(ic.getGivedCash());
-//                    cashingList.add(new AfterCashing(ic.getId(), ic.getGivedCash()));
-//                    ic.setTypeClosingInvest(typeClosingInvest);
-//                    ic.setDateClosingInvest(cashForGetting.getDateGivedCash());
-////                    ic.setGivedCash(BigDecimal.ZERO);
-//                } else {
-//                    cashingList.add(new AfterCashing(ic.getId(), ic.getGivedCash()));
-//
-//                    remainderCash.setGivedCash(remainderSum[0]);
-//                    remainderCash.setDateGivedCash(ic.getDateGivedCash());
-//                    remainderCash.setFacility(ic.getFacility());
-//                    remainderCash.setInvestor(ic.getInvestor());
-//                    remainderCash.setCashSource(ic.getCashSource());
-//                    remainderCash.setCashType(ic.getCashType());
-//                    remainderCash.setNewCashDetails(ic.getNewCashDetails());
-//                    remainderCash.setInvestorsType(ic.getInvestorsType());
-//                    remainderCash.setUnderFacility(ic.getUnderFacility());
-//                    remainderCash.setDateClosingInvest(cashForGetting.getDateGivedCash());
-//                    remainderCash.setTypeClosingInvest(typeClosingInvest);
-//                    remainderCash.setShareKind(ic.getShareKind());
-//                    remainderCash.setDateReport(ic.getDateReport());
-//                    remainderCash.setSourceFacility(ic.getSourceFacility());
-//                    remainderCash.setSourceUnderFacility(ic.getSourceUnderFacility());
-//                    remainderCash.setSourceFlowsId(ic.getSourceFlowsId());
-//                    remainderCash.setRoom(ic.getRoom());
-//                    remainderCash.setIsReinvest(ic.getIsReinvest());
-//                    remainderCash.setSourceId(ic.getSourceId());
-////                    remainderCash.setSource(remainderCash.getSource() == null ? "" + ic.getId().toString() : remainderCash.getSource() + "|" + ic.getId().toString());
-//                    remainderCash.setIsDivide(ic.getIsDivide());
-////                    investorsCashService.create(remainderCash);
-//
-//                    ic.setGivedCash(ic.getGivedCash().subtract(remainderSum[0]).subtract(finalCommission));
-//                    remainderSum[0] = BigDecimal.ZERO;
-//                }
-//                investorsCashService.update(ic);
-//                cashForGetting.setCashSource(ic.getCashSource());
-//                cashForGetting.setCashType(ic.getCashType());
-//                cashForGetting.setNewCashDetails(ic.getNewCashDetails());
-//                cashForGetting.setInvestorsType(ic.getInvestorsType());
-//                cashForGetting.setDateClosingInvest(cashForGetting.getDateGivedCash());
-//                cashForGetting.setShareKind(ic.getShareKind());
-//                cashForGetting.setDateReport(ic.getDateReport());
-//                cashForGetting.setSourceFacility(ic.getSourceFacility());
-//                cashForGetting.setSourceUnderFacility(ic.getSourceUnderFacility());
-//                cashForGetting.setRoom(ic.getRoom());
-//                cashForGetting.setSource(cashForGetting.getSource() == null ? "" + ic.getId().toString() : cashForGetting.getSource() + "|" + ic.getId().toString());
-//
-//                commissionCash.setDateGivedCash(ic.getDateGivedCash());
-//                commissionCash.setCashSource(ic.getCashSource());
-//                commissionCash.setCashType(ic.getCashType());
-//                commissionCash.setNewCashDetails(ic.getNewCashDetails());
-//                commissionCash.setInvestorsType(ic.getInvestorsType());
-//                commissionCash.setDateClosingInvest(cashForGetting.getDateGivedCash());
-//                commissionCash.setShareKind(ic.getShareKind());
-//                commissionCash.setDateReport(ic.getDateReport());
-//                commissionCash.setSourceFacility(ic.getSourceFacility());
-//                commissionCash.setSourceUnderFacility(ic.getSourceUnderFacility());
-//                commissionCash.setRoom(ic.getRoom());
-//                commissionCash.setSource(commissionCash.getSource() == null ? "" + ic.getId().toString() : commissionCash.getSource() + "|" + ic.getId().toString());
-//
-//                remainderCash.setSource(cashForGetting.getSource());
-//
-//            }
-//        });
-//
-//        if (cashForGetting.getSource().equalsIgnoreCase("")) cashForGetting.setSource(null);
-//        if (commissionCash.getSource().equalsIgnoreCase("")) cashForGetting.setSource(null);
-//
-//        cashingList.forEach(cl -> afterCashingService.create(cl));
-//        cashForGetting.setTypeClosingInvest(typeClosingInvest);
-//        investorsCashService.create(remainderCash);
-//        investorsCashService.create(commissionCash);
-//
-//        cashForGetting.setGivedCash(cashForGetting.getGivedCash().negate());
-//        commissionCash.setGivedCash(commissionCash.getGivedCash().negate());
-//        commissionCash.setDateGivedCash(cashForGetting.getDateGivedCash());
-//        investorsCashService.create(cashForGetting);
-//        investorsCashService.create(commissionCash);
 
         if (cashingMoney(searchSummary, false)) {
 
@@ -540,8 +390,6 @@ public class InvestorsCashController {
         BigDecimal commission = searchSummary.getCommission();
         BigDecimal commissionNoMore = searchSummary.getCommissionNoMore();
 
-//        commission = (cashForGetting.getGivedCash().multiply(commission)).divide(new BigDecimal(100), BigDecimal.ROUND_CEILING);
-
         commissionCash.setFacility(cashForGetting.getFacility());
         commissionCash.setUnderFacility(cashForGetting.getUnderFacility());
         commissionCash.setInvestor(cashForGetting.getInvestor());
@@ -562,34 +410,24 @@ public class InvestorsCashController {
         BigDecimal sumCash = investorsCashes.stream().map(InvestorsCash::getGivedCash).reduce(BigDecimal.ZERO, BigDecimal::add);
         if (all) {
             commission = (sumCash.multiply(commission)).divide(new BigDecimal(100), BigDecimal.ROUND_CEILING);
-            if (commission.compareTo(commissionNoMore) > 0) {
+            if (commissionNoMore != null && commission.compareTo(commissionNoMore) > 0) {
                 commission = commissionNoMore;
             }
             remainderSum[0] = sumCash;
             cashForGetting.setGivedCash(sumCash.subtract(commission));
         } else {
             commission = (cashForGetting.getGivedCash().multiply(commission)).divide(new BigDecimal(100), BigDecimal.ROUND_CEILING);
-            if (commission.compareTo(commissionNoMore) > 0) {
+            if (commissionNoMore != null && commission.compareTo(commissionNoMore) > 0) {
                 commission = commissionNoMore;
             }
             totalSum = cashForGetting.getGivedCash().add(commission);
             remainderSum[0] = totalSum;
         }
-
-
-
         commissionCash.setGivedCash(commission);
-
-//        BigDecimal deviation = new BigDecimal(BigInteger.ZERO);
 
         if ((sumCash.compareTo(totalSum)) < 0) {
             return false;
         }
-//        else if (sumCash.subtract(totalSum).compareTo(new BigDecimal("25")) <= 0) {
-//            deviation = sumCash.subtract(totalSum);
-//        }
-
-//        commissionCash.setGivedCash(commission.add(deviation));
 
         List<AfterCashing> cashingList = new ArrayList<>(0);
         BigDecimal finalCommission = commission;
@@ -600,12 +438,8 @@ public class InvestorsCashController {
                 if (ic.getGivedCash().subtract(remainderSum[0]).compareTo(BigDecimal.ZERO) < 0) {
                     remainderSum[0] = remainderSum[0].subtract(ic.getGivedCash());
                     cashingList.add(new AfterCashing(ic.getId(), ic.getGivedCash()));
-                    ic.setTypeClosingInvest(typeClosingInvest);
-                    ic.setDateClosingInvest(cashForGetting.getDateGivedCash());
-//                    ic.setGivedCash(BigDecimal.ZERO);
                 } else {
                     cashingList.add(new AfterCashing(ic.getId(), ic.getGivedCash()));
-
                     remainderCash.setGivedCash(remainderSum[0]);
                     remainderCash.setDateGivedCash(ic.getDateGivedCash());
                     remainderCash.setFacility(ic.getFacility());
@@ -625,41 +459,44 @@ public class InvestorsCashController {
                     remainderCash.setRoom(ic.getRoom());
                     remainderCash.setIsReinvest(ic.getIsReinvest());
                     remainderCash.setSourceId(ic.getSourceId());
-//                    remainderCash.setSource(remainderCash.getSource() == null ? "" + ic.getId().toString() : remainderCash.getSource() + "|" + ic.getId().toString());
                     remainderCash.setIsDivide(ic.getIsDivide());
-//                    investorsCashService.create(remainderCash);
-
                     ic.setGivedCash(ic.getGivedCash().subtract(remainderSum[0]).subtract(finalCommission));
                     remainderSum[0] = BigDecimal.ZERO;
                 }
+                ic.setTypeClosingInvest(typeClosingInvest);
+                ic.setDateClosingInvest(cashForGetting.getDateGivedCash());
                 investorsCashService.update(ic);
                 cashForGetting.setCashSource(ic.getCashSource());
                 cashForGetting.setCashType(ic.getCashType());
                 cashForGetting.setNewCashDetails(ic.getNewCashDetails());
                 cashForGetting.setInvestorsType(ic.getInvestorsType());
-                cashForGetting.setDateClosingInvest(cashForGetting.getDateGivedCash());
                 cashForGetting.setShareKind(ic.getShareKind());
                 cashForGetting.setDateReport(ic.getDateReport());
                 cashForGetting.setSourceFacility(ic.getSourceFacility());
                 cashForGetting.setSourceUnderFacility(ic.getSourceUnderFacility());
                 cashForGetting.setRoom(ic.getRoom());
                 cashForGetting.setSource(cashForGetting.getSource() == null ? "" + ic.getId().toString() : cashForGetting.getSource() + "|" + ic.getId().toString());
+                cashForGetting.setDateClosingInvest(cashForGetting.getDateGivedCash());
 
                 commissionCash.setDateGivedCash(ic.getDateGivedCash());
                 commissionCash.setCashSource(ic.getCashSource());
                 commissionCash.setCashType(ic.getCashType());
                 commissionCash.setNewCashDetails(ic.getNewCashDetails());
                 commissionCash.setInvestorsType(ic.getInvestorsType());
-                commissionCash.setDateClosingInvest(cashForGetting.getDateGivedCash());
                 commissionCash.setShareKind(ic.getShareKind());
                 commissionCash.setDateReport(ic.getDateReport());
                 commissionCash.setSourceFacility(ic.getSourceFacility());
                 commissionCash.setSourceUnderFacility(ic.getSourceUnderFacility());
                 commissionCash.setRoom(ic.getRoom());
                 commissionCash.setSource(commissionCash.getSource() == null ? "" + ic.getId().toString() : commissionCash.getSource() + "|" + ic.getId().toString());
+                commissionCash.setDateClosingInvest(cashForGetting.getDateGivedCash());
+                commissionCash.setTypeClosingInvest(typeClosingInvest);
 
                 remainderCash.setSource(cashForGetting.getSource());
-
+            } else {
+                ic.setTypeClosingInvest(typeClosingInvest);
+                ic.setDateClosingInvest(cashForGetting.getDateGivedCash());
+                investorsCashService.update(ic);
             }
         });
 
@@ -748,192 +585,14 @@ public class InvestorsCashController {
         updateMailingGroups(investorsCash, "add");
         addFacility(investorsCash);
         investorsCashService.create(investorsCash);
-
+        if (!investorsCash.getCashSource().getCashSource().equalsIgnoreCase("Бронь")) {
+            marketingTreeRepository.calculate(investorsCash.getInvestor().getLogin());
+        }
         model.addAttribute("success", "Деньги инвестора " + investorsCash.getInvestor().getLogin() +
                 " успешно добавлены.");
         model.addAttribute("redirectUrl", redirectUrl);
         model.addAttribute("ret", ret);
         return "registrationsuccess";
-    }
-
-
-    @RequestMapping(value = "/searchCash", method = RequestMethod.POST,
-            produces = "application/json;charset=UTF-8")
-    public @ResponseBody
-    String searchCashPage(@RequestBody SearchSummary searchSummary,
-                          SecurityContextHolderAwareRequestWrapper request) {
-        boolean admin = request.isUserInRole("ROLE_ADMIN");
-        boolean dba = request.isUserInRole("ROLE_DBA");
-        SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
-        Locale RU = new Locale("ru", "RU");
-        NumberFormat fmt = NumberFormat.getCurrencyInstance(RU);
-        BigInteger facilityId = new BigInteger(searchSummary.getFacility());
-        BigInteger investorId = new BigInteger(searchSummary.getInvestor());
-        BigInteger underFacilityId = new BigInteger(searchSummary.getUnderFacility());
-        Facilities facility = facilityService.findById(facilityId);
-        Users investor = userService.findById(investorId);
-        UnderFacilities underFacilities = underFacilitiesService.findById(underFacilityId);
-        Date dateBeg = new Date();
-        Date dateEnd = new Date();
-        List<InvestorsCash> tempList = investorsCashService.findAllOrderByDateGivedCashAsc()
-                .stream().filter(l -> l.getGivedCash().compareTo(BigDecimal.ZERO) > 0).collect(Collectors.toList());
-        List<InvestorsCash> investorsCashes = new ArrayList<>(0);
-        if (searchSummary.getDateStart() == null) {
-            dateBeg = tempList
-                    .get(0).getDateGivedCash();
-        } else {
-            try {
-                dateBeg = formatDate.parse(formatDate.format(searchSummary.getDateStart()));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (searchSummary.getDateEnd() == null) {
-            dateEnd = tempList.get(tempList.size() - 1).getDateGivedCash();
-        } else {
-            try {
-                dateEnd = formatDate.parse(formatDate.format(searchSummary.getDateEnd()));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-        Date finalDateBeg = dateBeg;
-        Date finalDateEnd = dateEnd;
-
-        tempList = tempList.stream()
-                .filter(tl -> (tl.getDateGivedCash().compareTo(finalDateBeg) == 0 ||
-                        tl.getDateGivedCash().compareTo(finalDateBeg) > 0) &&
-                        (tl.getDateGivedCash().compareTo(finalDateEnd) == 0 ||
-                                tl.getDateGivedCash().compareTo(finalDateEnd) < 0))
-                .collect(Collectors.toList());
-
-        if (!Objects.equals(facility, null) && !Objects.equals(investor, null) && !Objects.equals(underFacilities, null)) {
-            investorsCashes = tempList.stream()
-                    .filter(cash -> !Objects.equals(cash.getFacility(), null) && cash.getFacility().equals(facility))
-                    .filter(cash -> !Objects.equals(cash.getInvestor(), null) && cash.getInvestor().equals(investor))
-                    .filter(cash -> !Objects.equals(cash.getUnderFacility(), null) && cash.getUnderFacility().equals(underFacilities))
-                    .collect(Collectors.toList());
-        } else if (!Objects.equals(facility, null) && Objects.equals(investor, null) && Objects.equals(underFacilities, null)) {
-            investorsCashes = tempList.stream()
-                    .filter(cash -> !Objects.equals(cash.getFacility(), null) && cash.getFacility().getFacility().equals(facility.getFacility()))
-                    .collect(Collectors.toList());
-        } else if (Objects.equals(facility, null) && !Objects.equals(investor, null) && Objects.equals(underFacilities, null)) {
-            investorsCashes = tempList.stream()
-                    .filter(cash -> !Objects.equals(cash.getInvestor(), null) && cash.getInvestor().equals(investor))
-                    .collect(Collectors.toList());
-        } else if (Objects.equals(facility, null) && Objects.equals(investor, null) && Objects.equals(underFacilities, null)) {
-            investorsCashes = tempList;
-        } else if (!Objects.equals(facility, null) && !Objects.equals(investor, null) && Objects.equals(underFacilities, null)) {
-            investorsCashes = tempList.stream()
-                    .filter(cash -> !Objects.equals(cash.getFacility(), null) && cash.getFacility().equals(facility))
-                    .filter(cash -> !Objects.equals(cash.getInvestor(), null) && cash.getInvestor().equals(investor))
-                    .collect(Collectors.toList());
-        } else if (!Objects.equals(facility, null) && Objects.equals(investor, null) && !Objects.equals(underFacilities, null)) {
-            investorsCashes = tempList.stream()
-                    .filter(cash -> !Objects.equals(cash.getFacility(), null) && cash.getFacility().equals(facility))
-                    .filter(cash -> !Objects.equals(cash.getUnderFacility(), null) && cash.getUnderFacility().equals(underFacilities))
-                    .collect(Collectors.toList());
-        } else if (Objects.equals(facility, null) && !Objects.equals(investor, null) && !Objects.equals(underFacilities, null)) {
-            investorsCashes = tempList.stream()
-                    .filter(cash -> !Objects.equals(cash.getInvestor(), null) && cash.getInvestor().equals(investor))
-                    .filter(cash -> !Objects.equals(cash.getUnderFacility(), null) && cash.getUnderFacility().equals(underFacilities))
-                    .collect(Collectors.toList());
-        } else if (Objects.equals(facility, null) && Objects.equals(investor, null) && !Objects.equals(underFacilities, null)) {
-            investorsCashes = tempList.stream()
-                    .filter(cash -> !Objects.equals(cash.getUnderFacility(), null) && cash.getUnderFacility().equals(underFacilities))
-                    .collect(Collectors.toList());
-        }
-
-        StringBuilder result;
-        result = new StringBuilder("<thead><tr><th>№ п/п</th><th>Объект</th><th>Подобъект</th><th>Инвестор</th>" +
-                "<th>Переданная сумма</th><th>Дата передачи денег</th><th>Источник денег</th>" +
-                "<th>Вид денег</th><th>Детали новых денег</th><th>Вид инвестора</th><th>Дата закрытия вложения</th>" +
-                "<th>Вид закрытия вложения</th>");
-        if (admin || dba) {
-            result.append("<th style='text-align: center' colspan='4'>Действие</th>");
-        }
-
-        String cashSource;
-        String cashType;
-        String cashDetail;
-        String investorType;
-        String investorLogin;
-        String strFacility;
-        String strUnderFacility;
-        String dateClosingInvest;
-        String typeClosingInvest;
-
-        result.append("</tr></thead><tbody>");
-        for (InvestorsCash cash : investorsCashes) {
-
-            cashSource = "";
-            cashType = "";
-            cashDetail = "";
-            investorType = "";
-            investorLogin = "";
-            strFacility = "";
-            strUnderFacility = "";
-            dateClosingInvest = "";
-            typeClosingInvest = "";
-
-            if (!Objects.equals(cash.getCashSource(), null)) {
-                cashSource = cash.getCashSource().getCashSource();
-            }
-            if (!Objects.equals(cash.getCashType(), null)) {
-                cashType = cash.getCashType().getCashType();
-            }
-            if (!Objects.equals(cash.getNewCashDetails(), null)) {
-                cashDetail = cash.getNewCashDetails().getNewCashDetail();
-            }
-            if (!Objects.equals(cash.getInvestorsType(), null)) {
-                investorType = cash.getInvestorsType().getInvestorsType();
-            }
-            if (!Objects.equals(cash.getFacility(), null)) {
-                strFacility = cash.getFacility().getFacility();
-            }
-            if (!Objects.equals(cash.getInvestor(), null)) {
-                investorLogin = cash.getInvestor().getLogin();
-            }
-            if (!Objects.equals(cash.getUnderFacility(), null)) {
-                strUnderFacility = cash.getUnderFacility().getUnderFacility();
-            }
-            if (!Objects.equals(cash.getDateClosingInvest(), null)) {
-                dateClosingInvest = cash.getDateClosingInvestToLocalDate();
-            }
-            if (!Objects.equals(cash.getTypeClosingInvest(), null)) {
-                typeClosingInvest = cash.getTypeClosingInvest().getTypeClosingInvest();
-            }
-
-            result.append("<tr>")
-                    .append("<td>").append(cash.getId()).append("</td>")
-                    .append("<td>").append(strFacility).append("</td>")
-                    .append("<td>").append(strUnderFacility).append("</td>")
-                    .append("<td>").append(investorLogin).append("</td>")
-                    .append("<td>").append(fmt.format(cash.getGivedCash())).append("</td>")
-                    .append("<td>").append(cash.getDateGivedCashToLocalDate()).append("</td>")
-                    .append("<td>").append(cashSource).append("</td>")
-                    .append("<td>").append(cashType).append("</td>")
-                    .append("<td>").append(cashDetail).append("</td>")
-                    .append("<td>").append(investorType).append("</td>")
-                    .append("<td>").append(dateClosingInvest).append("</td>")
-                    .append("<td>").append(typeClosingInvest).append("</td>");
-            if (admin || dba) {
-                result.append("<td><a href='/edit-cash-").append(cash.getId()).append("'")
-                        .append(" class='btn btn-success custom-width'>Изменить</a></td>");
-                result.append("<td><a href='/double-cash-").append(cash.getId()).append("'")
-                        .append(" class='btn btn-primary custom-width'>Разделить</a></td>");
-                result.append("<td><a href='/close-cash-").append(cash.getId()).append("'")
-                        .append(" class='btn btn-primary custom-width'>Закрыть</a></td>");
-            }
-            if (admin) {
-                result.append("<td><a href='/delete-cash-").append(cash.getId()).append("'")
-                        .append(" class='btn btn-danger custom-width'>Удалить</a></td>");
-            }
-            result.append("</tr>")
-                    .append("</tbody>");
-        }
-        return result.toString();
     }
 
     @PostMapping(value = {"/saveCash"}, produces = "application/json;charset=UTF-8")
@@ -1452,6 +1111,7 @@ public class InvestorsCashController {
                 cash.setSource(ic.getSource());
                 cash.setDateGivedCash(ic.getDateGivedCash());
                 cash.setFacility(ic.getFacility());
+                cash.setUnderFacility(ic.getUnderFacility());
                 cash.setInvestor(ic.getInvestor());
                 cash.setInvestorsType(ic.getInvestorsType());
                 cash.setShareKind(ic.getShareKind());

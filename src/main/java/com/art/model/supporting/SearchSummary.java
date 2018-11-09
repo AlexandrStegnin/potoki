@@ -1,6 +1,8 @@
 package com.art.model.supporting;
 
 import com.art.model.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -8,6 +10,8 @@ import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
+@Getter
+@Setter
 public class SearchSummary implements Serializable {
     private String facility;
     private Date dateStart;
@@ -61,9 +65,12 @@ public class SearchSummary implements Serializable {
     private String what;
     private BigDecimal commission;
 
+    private MarketingTree salesChanel;
+
     private List<InvestorsCash> investorsCashList;
     private Facilities reFacility;
     private UnderFacilities reUnderFacility;
+    private UnderFacilities reUnderFacilities;
     private Date dateReinvest;
     private InvestorsCash investorsCash;
     private List<BigInteger> reinvestIdList;
@@ -74,7 +81,7 @@ public class SearchSummary implements Serializable {
     private String dateClose;
     private List<BigInteger> cashIdList;
     private List<UnderFacilities> underFacilitiesList;
-    private int pageNumber = 1;
+    private int pageNumber;
     private BigDecimal commissionNoMore;
 
     private Facilities facilities;
@@ -503,5 +510,13 @@ public class SearchSummary implements Serializable {
 
     public void setUnderFacilities(UnderFacilities underFacilities) {
         this.underFacilities = underFacilities;
+    }
+
+    public UnderFacilities getReUnderFacilities() {
+        return reUnderFacilities;
+    }
+
+    public void setReUnderFacilities(UnderFacilities reUnderFacilities) {
+        this.reUnderFacilities = reUnderFacilities;
     }
 }

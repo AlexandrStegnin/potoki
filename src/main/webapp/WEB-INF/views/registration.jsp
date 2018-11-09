@@ -100,6 +100,26 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label class="col-md-3 control-lable" for="sChanel">Канал привлечения:</label>
+                <div class="col-md-7">
+                    <form:select path="" id="sChanel" items="${investors}" multiple="false"
+                                 itemValue="id" itemLabel="login" class="form-control input-sm" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label class="col-md-3 control-lable" for="kins">Степень родства:</label>
+                <div class="col-md-7">
+                    <form:select path="kin" id="kins" items="${kins}" multiple="false"
+                                 itemLabel="val" class="form-control input-sm" />
+                </div>
+            </div>
+        </div>
+
         <div class="row" style="display: none;" id="pInn">
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="inn">ИНН</label>
@@ -129,26 +149,6 @@
                     <form:input type="text" path="" id="orgname" class="form-control input-sm" />
                     <div class="has-error help-inline" id="orgnameErr">
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="facility">Объекты:</label>
-                <div class="col-md-7">
-                    <form:select path="facilities" id="facility" items="${facilities}" multiple="true"
-                                 itemValue="id" itemLabel="facility" class="form-control input-sm" />
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="mGroups">Группа рассылки:</label>
-                <div class="col-md-7">
-                    <form:select path="mailingGroups" id="mGroups" items="${mailingGroups}" multiple="true"
-                                 itemValue="id" itemLabel="mailingGroup" class="form-control input-sm" size="5"/>
                 </div>
             </div>
         </div>

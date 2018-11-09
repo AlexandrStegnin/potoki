@@ -12,4 +12,6 @@ public interface InvestorsFlowsRepository extends JpaRepository<InvestorsFlows, 
     List<InvestorsFlows> findByInvestorId(BigInteger investorId);
 
     List<InvestorsFlows> findByIdIn(List<BigInteger> idList);
+
+    List<InvestorsFlows> findByRoomId(BigInteger roomId);
 }

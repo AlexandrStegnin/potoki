@@ -30,4 +30,6 @@ public interface InvestorsCashRepository extends JpaRepository<InvestorsCash, Bi
 
     List<InvestorsCash> findAllByOrderByDateGivedCashAsc();
 
+    List<InvestorsCash> findByRoomId(BigInteger roomId);
+
 }

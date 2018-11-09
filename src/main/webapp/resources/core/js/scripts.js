@@ -19,6 +19,11 @@ jQuery(document).ready(function($) {
         updateInvestorDemo();
     });
 
+    $(document).on('click', 'a#updateMarketingTree', function (e) {
+        e.preventDefault();
+        updateMarketingTree();
+    });
+
     $('a#go').click( function(event){ // лoвим клик пo ссылки с id="go"
 
         var facility = $(this).attr('name');
@@ -277,8 +282,31 @@ function updateInvestorDemo() {
             // show(e);
         }
     });
+}
 
-
+function updateMarketingTree() {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+    showLoader();
+    $.ajax({
+        type : "POST",
+        contentType : "application/json;charset=utf-8",
+        url : "../updateMarketingTree",
+        data : "",
+        dataType : 'json',
+        timeout : 100000,
+        beforeSend: function(xhr){
+            xhr.setRequestHeader(header, token);
+        },
+        success : function(data) {
+            closeLoader();
+            slideBox(data.message);
+        },
+        error : function(e) {
+            closeLoader();
+            slideBox(e);
+        }
+    });
 }
 
 var i = 5;//время в сек.

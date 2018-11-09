@@ -1,6 +1,8 @@
 package com.art.model;
 
 
+import com.art.model.supporting.KinEnum;
+import com.art.model.supporting.StatusEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -10,6 +12,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -36,6 +39,21 @@ public class Users implements Serializable {
     private Stuffs userStuff;
     private Set<MailingGroups> mailingGroups;
     private Set<Facilities> facilities;
+//    private MarketingTree salesChanel;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "Kin")
+    private KinEnum kin;
+
+    @Column
+    private Date firstInvestmentDate;
+
+    @Enumerated(EnumType.STRING)
+    @Column
+    private StatusEnum status;
+
+    @Column
+    private int daysToDeactivate;
 
     @Transient
     private transient List<BigInteger> facilityId;
@@ -241,26 +259,19 @@ public class Users implements Serializable {
         this.roles = roles;
     }
 
-    /*
-    @ManyToMany(cascade =
-            {
-                    CascadeType.DETACH,
-                    CascadeType.MERGE,
-                    CascadeType.REFRESH,
-                    CascadeType.PERSIST
-            },
-            fetch = FetchType.EAGER)
-    @JoinTable(name = "UsersAnnexToContracts",
-            joinColumns = { @JoinColumn(name = "UserId") },
-            inverseJoinColumns = @JoinColumn(name = "AnnexToContractsId")
-    )
-    public List<AnnexToContracts> getAnnexes() {
-        return annexes;
-    }
-    public void setAnnexes(List<AnnexToContracts> annexes) {
-        this.annexes = annexes;
-    }
-    */
+    @Column
+    private BigInteger partnerId;
+
+//    @JsonGetter
+//    @OneToOne
+//    @JoinColumn(name = "Id", referencedColumnName = "InvestorId")
+//    public MarketingTree getSalesChanel() {
+//        return this.salesChanel;
+//    }
+//
+//    public void setSalesChanel(MarketingTree salesChanel) {
+//        this.salesChanel = salesChanel;
+//    }
 
     @ManyToMany(cascade =
             {

@@ -1,6 +1,7 @@
 package com.art.service;
 
 import com.art.model.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,12 @@ import java.util.List;
 public class RoomsService {
     @PersistenceContext(name = "persistanceUnit")
     private EntityManager em;
+
+    @Autowired
+    private InvestorsFlowsService flowsService;
+
+    @Autowired
+    private InvestorsCashService cashService;
 
     public List<Rooms> findAll() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -57,6 +64,13 @@ public class RoomsService {
     }
 
     public void deleteById(BigInteger id) {
+        List<InvestorsFlows> flows = flowsService.findByRoomId(id);
+        flows.forEach(f -> f.setRoom(null));
+        flowsService.saveList(flows);
+        List<InvestorsCash> cashes = cashService.findByRoomId(id);
+        cashes.forEach(c -> c.setRoom(null));
+        cashService.saveAll(cashes);
+
         CriteriaBuilder cb = this.em.getCriteriaBuilder();
         CriteriaDelete<Rooms> delete = cb.createCriteriaDelete(Rooms.class);
         Root<Rooms> roomsRoot = delete.from(Rooms.class);

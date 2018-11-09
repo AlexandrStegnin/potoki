@@ -69,10 +69,11 @@ public class UnderFacilities implements Serializable {
                     CascadeType.DETACH,
                     CascadeType.MERGE,
                     CascadeType.REFRESH,
-                    CascadeType.PERSIST
+                    CascadeType.PERSIST,
+                    CascadeType.REMOVE
             },
-            fetch = FetchType.LAZY)
-    @JoinColumn(name = "UnderFacilityId", referencedColumnName = "Id")
+            fetch = FetchType.LAZY, mappedBy = "underFacility")
+//    @JoinColumn(name = "UnderFacilityId", referencedColumnName = "Id")
     public Set<Rooms> getRooms() {
         return rooms;
     }

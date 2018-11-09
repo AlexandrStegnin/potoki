@@ -32,6 +32,10 @@ public class InvestorsFlowsService {
         return investorsFlowsRepository.findAll();
     }
 
+    public List<InvestorsFlows> findByRoomId(BigInteger roomId) {
+        return investorsFlowsRepository.findByRoomId(roomId);
+    }
+
     public void delete() {
         investorsFlowsRepository.deleteAll();
     }

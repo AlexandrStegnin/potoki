@@ -289,6 +289,17 @@
                         </div>
                     </div>
 
+                    <div class="row" id="underFacilityRow">
+                        <div class="form-group col-md-12">
+                            <label class="col-md-3 control-lable" for="srcUnderFacilities">Подобъект:</label>
+                            <div class="col-md-7">
+                                <form:select path="reUnderFacility" id="srcUnderFacilities" items="${underFacilities}" multiple="false"
+                                             itemValue="id" itemLabel="underFacility" class="form-control input-sm"/>
+                                <div id="underFacilityErr" style="color: red; display: none">Необходимо выбрать подобъект</div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row" id="shareKindNameRow">
                         <div class="form-group col-md-12">
                             <label class="col-md-3 control-lable" for="shareKindName">Вид доли:</label>
@@ -327,11 +338,11 @@
                         <div class="form-group col-md-12">
                             <label class="col-md-3 control-lable" for="underFacilities">Подобъект:</label>
                             <div class="col-md-7">
-                                <form:select path="reUnderFacility" id="underFacilities" items="${underFacilities}"
+                                <form:select path="reUnderFacilities" id="underFacilities" items="${underFacilities}"
                                              multiple="false"
                                              itemValue="id" itemLabel="underFacility" class="form-control input-sm"/>
-                                <div id="underFacilityErr" style="color: red; display: none">Необходимо выбрать
-                                    подобъект
+                                <div id="underFacilityErr" style="color: red; display: none">
+                                    Необходимо выбрать подобъект
                                 </div>
                             </div>
                         </div>

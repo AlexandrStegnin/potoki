@@ -1,6 +1,5 @@
 package com.art.controllers;
 
-import com.art.config.AppSecurityConfig;
 import com.art.func.GetServiceStatus;
 import com.art.func.PersonalMailService;
 import com.art.model.*;
@@ -10,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +19,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigInteger;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
@@ -80,18 +79,6 @@ public class UserController {
     @Resource(name = "usersAnnexToContractsService")
     private UsersAnnexToContractsService usersAnnexToContractsService;
 
-    private Properties getProp() {
-        String fileName = "mail.ru.properties";
-        Properties prop = new Properties();
-        InputStream input;
-        try {
-            input = AppSecurityConfig.class.getClassLoader().getResourceAsStream(fileName);
-            prop.load(input);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        return prop;
-    }
     /*
      * В профиль
      *
@@ -139,9 +126,11 @@ public class UserController {
         Users user = new Users();
         List<ActiveEnum> active = new ArrayList<>(
                 Arrays.asList(ActiveEnum.values()));
-
+        List<KinEnum> kins = new ArrayList<>(
+                Arrays.asList(KinEnum.values()));
         model.addAttribute("user", user);
         model.addAttribute("edit", false);
+        model.addAttribute("kins", kins);
         model.addAttribute("active", active);
         model.addAttribute("title", title);
         return "registration";
@@ -158,22 +147,6 @@ public class UserController {
         String uuid = UUID.randomUUID().toString().substring(0, 8);
         user.setPassword(uuid);
         userService.create(user);
-        if (user.getUserStuff().getStuff().equalsIgnoreCase("Инвестор")) {
-            SendingMail mail = new SendingMail();
-            mail.setSubject("Добро пожаловать в Доходный Дом Колесникъ!");
-            mail.setBody("Здравствуйте, уважаемый " + user.getUserStuff().getStuff() + "!<br/>" +
-                    "Вам предоставлен доступ в личный кабинет Доходного Дома &#171;Колесникъ&#187; (https://www.ddkolesnik.com)<br/>" +
-                    "Наша видео инструкция поможет сориентироваться (https://youtu.be/nWtQdlP5GDU)<br/>" +
-                    "Данные для входа:<br/>" +
-                    "login: " + user.getLogin() + "<br/>" +
-                    "Пароль: " + uuid + "<br/>" +
-                    "С уважением,<br/>" +
-                    "Сергей Колесник.");
-            String who = "ДД Колесникъ";
-            Properties prop = getProp();
-            personalMailService.sendEmails(user, mail, prop.getProperty("mail.kolesnik"), prop.getProperty("mail.kolesnikpwd"), who,
-                    null);
-        }
 
         model.addAttribute("success", "Пользователь " + user.getLogin() + " успешно добавлен.");
         model.addAttribute("redirectUrl", redirectUrl);
@@ -317,7 +290,7 @@ public class UserController {
     public @ResponseBody
     GenericResponse sendMail(MultipartHttpServletRequest request) {
         String who = "ДД Колесникъ";
-        Properties prop = getProp();
+        Properties prop = userService.getProp();
         GenericResponse response = new GenericResponse();
 
         Iterator<String> itr = request.getFileNames();
@@ -380,13 +353,13 @@ public class UserController {
         if (Objects.equals(user.getMailingGroups(), null)) {
             user.setMailingGroups(null);
         }
-        if (searchSummary.getInn() != null) {
+        if (StringUtils.hasText(searchSummary.getInn())) {
             inn = searchSummary.getInn();
         }
-        if (searchSummary.getAccount() != null) {
+        if (StringUtils.hasText(searchSummary.getAccount())) {
             account = searchSummary.getAccount();
         }
-        if (searchSummary.getOrganization() != null) {
+        if (StringUtils.hasText(searchSummary.getOrganization())) {
             organization = searchSummary.getOrganization();
         }
 
@@ -428,7 +401,11 @@ public class UserController {
                     break;
             }
         });
-        userService.create(user);
+        if (user.getId() == null) {
+            userService.create(user);
+        } else {
+            userService.update(user);
+        }
         facilityService.updateList(facilitiesList);
         alphaCorrectTagsService.createList(newACorTagsList);
         rentorsDetailsService.createList(newRdList);
@@ -476,7 +453,7 @@ public class UserController {
 
     @ModelAttribute("investors")
     public List<Users> initializeInvestors() {
-        return userService.findRentors(stuffService.findByStuff("Инвестор").getId());
+        return userService.initializeInvestors();
     }
 
     @ModelAttribute("facilities")

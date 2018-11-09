@@ -49,7 +49,6 @@
 </head>
 
 <body>
-<%@include file="slideDiv.jsp" %>
 <div class="generic-container">
     <%@include file="old_authheader.jsp" %>
     <div class="panel panel-default">
@@ -210,6 +209,17 @@
                                 <form:select path="reFacility" id="srcFacilities" items="${facilities}" multiple="false"
                                              itemValue="id" itemLabel="facility" class="form-control input-sm"/>
                                 <div id="facilityErr" style="color: red; display: none">Необходимо выбрать объект</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" id="underFacilitiesRow">
+                        <div class="form-group col-md-12">
+                            <label class="col-md-3 control-lable" for="srcUnderFacilities">Подобъект:</label>
+                            <div class="col-md-7">
+                                <form:select path="reUnderFacility" id="srcUnderFacilities" items="${underFacilities}" multiple="false"
+                                             itemValue="id" itemLabel="underFacility" class="form-control input-sm"/>
+                                <div id="reFacilityErr" style="color: red; display: none">Необходимо выбрать подобъект</div>
                             </div>
                         </div>
                     </div>

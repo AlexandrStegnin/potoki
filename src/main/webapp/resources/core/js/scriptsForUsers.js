@@ -75,9 +75,10 @@ jQuery(document).ready(function ($) {
         }
     };
 
-    $('#send').click(function (){
+    $('#send').click(function (event){
+        event.preventDefault();
         var modelAttributeValue = $('#edit').val();
-        if(modelAttributeValue.equals(true)){
+        if(modelAttributeValue === true){
             jVal.errors = false;
             jVal.login();
             jVal.readAnnexes();
@@ -132,7 +133,10 @@ jQuery(document).ready(function ($) {
 function prepareUserSave() {
     var roles = [];
     $('#roles').find(':selected').each(function(i, selected){
-        roles.push({id: $(selected).val(), role: $(selected).text()});
+        roles.push({
+            id: $(selected).val(),
+            role: $(selected).text()
+        });
     });
 
     var facilities = [];
@@ -143,16 +147,25 @@ function prepareUserSave() {
     var stuffs = $('#stuffs');
     var stuff = {id : stuffs.find(':selected').val(), stuff : stuffs.find(':selected').text()};
 
-    var mGroups = $('#mGroups');
-    var mailingGroup = {id: mGroups.find(':selected').val(), mailingGroup: mGroups.find(':selected').text()};
-
     var inn = $('#inn').val();
     var account = $('#account').val();
     var orgName = $('#orgname').val();
+    var sChanel = $('#sChanel');
+    var partner = {
+        id: sChanel.find(':selected').val(),
+        login: sChanel.find(':selected').text()
+    };
+
+    var kin = $('#kins').val();
+
+    var salesChanel = {
+        "partnerId": partner.id,
+        "kin": kin
+    };
 
     var user = {
-        id : null,
-        last_name: $('#last_name').val(),
+        id : $('#id').val(),
+        lastName: $('#last_name').val(),
         first_name: $('#first_name').val(),
         middle_name: $('#middle_name').val(),
         login: $('#login').val(),
@@ -160,8 +173,10 @@ function prepareUserSave() {
         email: $('#email').val(),
         state: $('#state').val(),
         userStuff: stuff,
-        mailingGroups: mailingGroup,
-        roles: roles};
+        roles: roles,
+        kin: kin,
+        partnerId: salesChanel.partnerId
+    };
     saveUser(user, facilities, inn, account, orgName);
 }
 

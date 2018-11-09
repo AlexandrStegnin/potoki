@@ -62,7 +62,7 @@ public class Rooms implements Serializable {
         this.roomSize = roomSize;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "UnderFacilityId", referencedColumnName = "Id")
     public UnderFacilities getUnderFacility() {
         return underFacility;

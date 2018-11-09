@@ -1,6 +1,5 @@
 package com.art.service;
 
-import com.art.func.GetPrincipalFunc;
 import com.art.model.*;
 import com.art.model.supporting.InvestorsTotalSum;
 import com.art.model.supporting.PaginationResult;
@@ -33,9 +32,6 @@ public class InvestorsCashService {
 
     @Resource(name = "investorsCashRepository")
     private InvestorsCashRepository investorsCashRepository;
-
-    @Resource(name = "getPrincipalFunc")
-    private GetPrincipalFunc getPrincipalFunc;
 
     public List<InvestorsCash> findAll() {
         return investorsCashRepository.findAll();
@@ -78,6 +74,9 @@ public class InvestorsCashService {
         investorsCashRepository.save(investorsCashes);
     }
 
+    public List<InvestorsCash> findByRoomId(BigInteger roomId) {
+        return investorsCashRepository.findByRoomId(roomId);
+    }
 
     @PersistenceContext(name = "persistanceUnit")
     private EntityManager em;
