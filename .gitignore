@@ -22,4 +22,14 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
+.idea/*
+*.iml
+out/*
+target/*
+target
+.idea
+!.mvn/wrapper/maven-wrapper.jar
+mvnw*
 *.properties
+dependency-reduced-pom.xml
+buildNumber.properties
