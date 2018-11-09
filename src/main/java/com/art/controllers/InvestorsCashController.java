@@ -709,7 +709,7 @@ public class InvestorsCashController {
     GenericResponse saveReCash(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
         List<InvestorsCash> investorsCashes = searchSummary.getInvestorsCashList();
-
+        InvestorsTypes investorsType = investorsTypesService.findByInvestorsTypes("Старый инвестор");
         CashTypes cashTypes = cashTypesService.findByCashType("Новые деньги");
         NewCashDetails newCashDetails;
 
@@ -738,6 +738,7 @@ public class InvestorsCashController {
             map.forEach((key, value) -> {
                 value.setCashType(cashTypes);
                 value.setNewCashDetails(finalNewCashDetails);
+                value.setInvestorsType(investorsType);
                 value.setGivedCash(value.getGivedCash().setScale(2, RoundingMode.CEILING));
                 updateMailingGroups(value, "add");
                 addFacility(value);
