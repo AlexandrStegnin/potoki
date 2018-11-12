@@ -298,6 +298,15 @@ public class InvestorsCashController {
                 if (!Objects.equals(0, investorsCashes.size())) {
                     investorsCashes.forEach(investorsCash -> investorsCashService.deleteById(investorsCash.getId()));
                 }
+
+                InvestorsCash parentCash = investorsCashService.findById(deleting.getSourceId());
+                if (!Objects.equals(null, parentCash)) {
+                    parentCash.setIsReinvest(0);
+                    parentCash.setIsDivide(0);
+                    parentCash.setTypeClosingInvest(null);
+                    parentCash.setDateClosingInvest(null);
+                    investorsCashService.update(parentCash);
+                }
             }
 
             new Thread(() -> updateMailingGroups(deleting, "delete")).start();

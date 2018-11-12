@@ -1549,7 +1549,7 @@ function closeCash(cashIdList, invBuyer, dateClosingInvest, what) {
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: "closeCash",
+        url: "../closeCash",
         data: JSON.stringify(search),
         dataType: 'json',
         timeout: 100000,
