@@ -104,7 +104,7 @@
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="sChanel">Канал привлечения:</label>
                 <div class="col-md-7">
-                    <form:select path="" id="sChanel" items="${investors}" multiple="false"
+                    <form:select path="partnerId" id="sChanel" items="${investors}" multiple="false"
                                  itemValue="id" itemLabel="login" class="form-control input-sm" />
                 </div>
             </div>

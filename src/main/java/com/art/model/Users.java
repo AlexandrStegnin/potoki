@@ -60,8 +60,6 @@ public class Users implements Serializable {
     @Transient
     private transient List<String> facilityName;
 
-    //private List<AnnexToContracts> annexes;
-    //private FacilitiesServiceContracts contracts;
     private List<UsersAnnexToContracts> usersAnnexToContractsList;
     private Set<Emails> emails;
 

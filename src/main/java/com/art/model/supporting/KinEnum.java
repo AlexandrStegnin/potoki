@@ -1,6 +1,7 @@
 package com.art.model.supporting;
 
 public enum KinEnum {
+    EMPTY(null),
     KIN("Родственник"),
     NO_KIN("Не родственник"),
     SPOUSE("Супруг/супруга");

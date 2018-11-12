@@ -160,10 +160,13 @@ public class UserController {
         Users user = userService.findByIdWithStuffsAndMailingGroupsAndFacilities(id);
         List<ActiveEnum> active = new ArrayList<>(
                 Arrays.asList(ActiveEnum.values()));
-        user.setPassword("");
+
+        List<KinEnum> kins = new ArrayList<>(
+                Arrays.asList(KinEnum.values()));
         model.addAttribute("user", user);
         model.addAttribute("edit", true);
         model.addAttribute("active", active);
+        model.addAttribute("kins", kins);
         model.addAttribute("title", title);
         return "registration";
     }
@@ -401,15 +404,17 @@ public class UserController {
                     break;
             }
         });
+        String whatWeDo = "добавлен.";
         if (user.getId() == null) {
             userService.create(user);
         } else {
             userService.update(user);
+            whatWeDo = "обновлён.";
         }
         facilityService.updateList(facilitiesList);
         alphaCorrectTagsService.createList(newACorTagsList);
         rentorsDetailsService.createList(newRdList);
-        response.setMessage("Пользователь <b>" + user.getLogin() + "</b> успешно добавлен.");
+        response.setMessage("Пользователь <b>" + user.getLogin() + "</b> успешно " + whatWeDo);
         return response;
     }
 
