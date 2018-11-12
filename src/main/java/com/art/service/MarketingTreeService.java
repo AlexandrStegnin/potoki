@@ -165,7 +165,7 @@ public class MarketingTreeService implements MarketingTreeRepository {
 
     @Override
     public int getSerialNumber(BigInteger partnerId, Date firstInvestmentDate) {
-        int serialNumber = 0;
+        int serialNumber = 1;
         if (firstInvestmentDate == null) return serialNumber;
         final List<MarketingTree> trees = new ArrayList<>(findByPartnerIdAndFirstInvestmentDate(partnerId, firstInvestmentDate));
         if (!trees.isEmpty()) {
