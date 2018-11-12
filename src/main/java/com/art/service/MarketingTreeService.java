@@ -102,30 +102,24 @@ public class MarketingTreeService implements MarketingTreeRepository {
                 }
             }
             if (!finalTrees.isEmpty()) {
-                finalTrees.forEach(t -> {
-                    if (u.getId().equals(t.getInvestor().getId())) {
-                        serNumber.set(getSerialNumber(t.getPartner().getPartnerId(), firstInvestment));
-                        t.setDaysToDeactivate(u.getDaysToDeactivate());
-                        t.setInvStatus(u.getStatus());
-                        t.setKin(u.getKin());
-                        t.setSerNumber(serNumber.get());
-                        t.setFirstInvestmentDate(u.getFirstInvestmentDate());
-                    }
-                });
+                if (finalTrees.stream().noneMatch(t -> t.getInvestor().getId().equals(u.getId()))) {
+                    populateTree(u, firstInvestment, serNumber);
+                } else {
+                    finalTrees.forEach(t -> {
+                        if (u.getId().equals(t.getInvestor().getId())) {
+                            serNumber.set(getSerialNumber(t.getPartner().getPartnerId(), firstInvestment));
+                            t.setDaysToDeactivate(u.getDaysToDeactivate());
+                            t.setInvStatus(u.getStatus());
+                            t.setKin(u.getKin());
+                            t.setSerNumber(serNumber.get());
+                            t.setFirstInvestmentDate(u.getFirstInvestmentDate());
+                        }
+                    });
+                }
             } else {
-                MarketingTree tree = new MarketingTree();
-                tree.setFirstInvestmentDate(u.getFirstInvestmentDate());
-                tree.setKin(u.getKin());
-                tree.setInvStatus(u.getStatus());
-                tree.setDaysToDeactivate(u.getDaysToDeactivate());
-                tree.setInvestor(u);
-                tree.setPartner(userService.findById(u.getPartnerId()));
-                serNumber.set(getSerialNumber(tree.getPartner().getId(), firstInvestment));
-                tree.setSerNumber(serNumber.get());
-                save(tree);
+                populateTree(u, firstInvestment, serNumber);
             }
         });
-
         finalTrees.forEach(this::update);
         return true;
     }
@@ -179,5 +173,19 @@ public class MarketingTreeService implements MarketingTreeRepository {
             serialNumber++;
         }
         return serialNumber;
+    }
+
+    @Override
+    public void populateTree(Users u, Date firstInvestment, AtomicInteger serNumber) {
+        MarketingTree tree = new MarketingTree();
+        tree.setFirstInvestmentDate(u.getFirstInvestmentDate());
+        tree.setKin(u.getKin());
+        tree.setInvStatus(u.getStatus());
+        tree.setDaysToDeactivate(u.getDaysToDeactivate());
+        tree.setInvestor(u);
+        tree.setPartner(userService.findById(u.getPartnerId()));
+        serNumber.set(getSerialNumber(tree.getPartner().getId(), firstInvestment));
+        tree.setSerNumber(serNumber.get());
+        save(tree);
     }
 }

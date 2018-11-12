@@ -365,7 +365,7 @@ public class UserController {
         if (StringUtils.hasText(searchSummary.getOrganization())) {
             organization = searchSummary.getOrganization();
         }
-
+        if (Objects.equals(BigInteger.ZERO, user.getPartnerId())) user.setPartnerId(null);
         String[] tags = {"Свет:свет", "ЖКХ:жкх", "Аренда:аренд", "Обеспечительный:обеспеч"};
 
         List<AlphaCorrectTags> newACorTagsList = new ArrayList<>(0);
