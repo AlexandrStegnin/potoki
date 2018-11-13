@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -42,7 +43,7 @@ public class MarketingTreeController {
     public @ResponseBody
     GenericResponse updateMarketingTree() {
         GenericResponse response = new GenericResponse();
-        marketingTreeRepository.calculate("all");
+        marketingTreeRepository.updateMarketingTree(BigInteger.ZERO);
         response.setMessage("Данные маркетингового дерева успешно обновлены");
         return response;
     }

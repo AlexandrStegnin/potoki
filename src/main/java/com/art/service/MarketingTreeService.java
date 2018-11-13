@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.StoredProcedureQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -24,6 +26,8 @@ import java.util.stream.Collectors;
 public class MarketingTreeService implements MarketingTreeRepository {
 
     private static double CONSTANT_DAYS = 366 * 1.5;
+    private static final String INVESTOR = "Инвестор";
+    private static final String ALL = "all";
 
     private final UserService userService;
     private final InvestorsCashService cashService;
@@ -56,12 +60,14 @@ public class MarketingTreeService implements MarketingTreeRepository {
         List<Users> users = new ArrayList<>();
         List<InvestorsCash> cashes = new ArrayList<>();
         List<MarketingTree> trees = new ArrayList<>();
-        if (login.equalsIgnoreCase("all")) {
+        if (login.equalsIgnoreCase(ALL)) {
             users = userService.findAllWithAllFields().stream()
-                    .filter(u -> u.getUserStuff().getStuff().equalsIgnoreCase("Инвестор") &&
+                    .filter(u -> u.getUserStuff().getStuff().equalsIgnoreCase(INVESTOR) &&
                             !Objects.equals(null, u.getPartnerId()))
                     .collect(Collectors.toList());
-            cashes = cashService.findAllWithAllFields();
+            cashes = cashService.findAllWithAllFields().stream()
+                    .filter(c -> c.getGivedCash().compareTo(BigDecimal.ZERO) > 0)
+                    .collect(Collectors.toList());
             trees = findAll().stream().filter(t -> !Objects.equals(null, t.getPartner())).collect(Collectors.toList());
         } else {
             users.add(userService.findByLogin(login));
@@ -187,5 +193,12 @@ public class MarketingTreeService implements MarketingTreeRepository {
         serNumber.set(getSerialNumber(tree.getPartner().getId(), firstInvestment));
         tree.setSerNumber(serNumber.get());
         save(tree);
+    }
+
+    @Override
+    public void updateMarketingTree(BigInteger invId){
+        StoredProcedureQuery query = this.em.createNamedStoredProcedureQuery("updateMarketingTree");
+        query.setParameter("invId", invId);
+        query.execute();
     }
 }

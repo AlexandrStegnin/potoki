@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
+
 @Service
 public class ScheduledService {
 
@@ -17,6 +19,6 @@ public class ScheduledService {
 
     @Scheduled(cron = "0 0 1 * * ?")
     public void calculateMarketingTree() {
-        marketingTreeRepository.calculate("all");
+        marketingTreeRepository.updateMarketingTree(BigInteger.ZERO);
     }
 }

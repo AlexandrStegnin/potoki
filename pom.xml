@@ -19,7 +19,8 @@
         <springsecurity.version>4.2.0.RELEASE</springsecurity.version>
         <jspapi.version>2.2.1-b03</jspapi.version>
         <taglibs-standard-jstlel.version>1.2.5</taglibs-standard-jstlel.version>
-        <mysql.connector.version>5.1.31</mysql.connector.version>
+        <mysql.old.connector.version>5.1.31</mysql.old.connector.version>
+        <mysql.connector.version>8.0.13</mysql.connector.version>
         <hibernate.version>4.3.6.Final</hibernate.version>
         <slf4j.version>1.7.5</slf4j.version>
         <junit.version>4.12</junit.version>

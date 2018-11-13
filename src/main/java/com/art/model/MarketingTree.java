@@ -11,6 +11,13 @@ import java.util.Date;
 
 @Data
 @Entity
+@NamedStoredProcedureQuery(
+        name = "updateMarketingTree",
+        procedureName = "UpdateMarketingTree",
+        parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = BigInteger.class, name = "invId")
+        }
+)
 public class MarketingTree implements Serializable {
 
     @Id

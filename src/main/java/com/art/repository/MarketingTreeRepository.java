@@ -29,4 +29,6 @@ public interface MarketingTreeRepository {
     List<MarketingTree> findByPartnerIdAndFirstInvestmentDate(BigInteger partnerId, Date firstInvestmentDate);
 
     void populateTree(Users u, Date firstInvestmentDate, AtomicInteger serNumber);
+
+    void updateMarketingTree(BigInteger invId);
 }

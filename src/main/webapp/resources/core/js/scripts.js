@@ -287,7 +287,6 @@ function updateInvestorDemo() {
 function updateMarketingTree() {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
-    showLoader();
     $.ajax({
         type : "POST",
         contentType : "application/json;charset=utf-8",
@@ -299,11 +298,9 @@ function updateMarketingTree() {
             xhr.setRequestHeader(header, token);
         },
         success : function(data) {
-            closeLoader();
             slideBox(data.message);
         },
         error : function(e) {
-            closeLoader();
             slideBox(e);
         }
     });

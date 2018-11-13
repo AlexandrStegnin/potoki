@@ -595,7 +595,7 @@ public class InvestorsCashController {
         addFacility(investorsCash);
         investorsCashService.create(investorsCash);
         if (!investorsCash.getCashSource().getCashSource().equalsIgnoreCase("Бронь")) {
-            marketingTreeRepository.calculate(investorsCash.getInvestor().getLogin());
+            marketingTreeRepository.updateMarketingTree(investorsCash.getInvestor().getId());
         }
         model.addAttribute("success", "Деньги инвестора " + investorsCash.getInvestor().getLogin() +
                 " успешно добавлены.");
