@@ -2,9 +2,11 @@ package com.art.service;
 
 import com.art.config.AppSecurityConfig;
 import com.art.func.PersonalMailService;
-import com.art.model.*;
+import com.art.model.Facilities_;
+import com.art.model.MailingGroups;
+import com.art.model.Users;
+import com.art.model.Users_;
 import com.art.model.supporting.SendingMail;
-import com.art.model.supporting.StatusEnum;
 import com.art.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
@@ -196,7 +198,6 @@ public class UserService {
     }
 
     public void create(Users user) {
-        user.setStatus(StatusEnum.NO_ACTIVE);
         sendWelcomeMessage(user);
         this.em.merge(user);
     }

@@ -51,7 +51,6 @@
                 <th>Имя пользователя</th>
                 <th>Email</th>
                 <th>Роль</th>
-                <th>Статус</th>
                 <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                     <th style="text-align: center;" colspan="2">Действие</th>
                 </sec:authorize>
@@ -65,7 +64,6 @@
                     <td>${user.login}</td>
                     <td>${user.email}</td>
                     <td>${user.userStuff.stuff}</td>
-                    <td>${user.status.val}</td>
                     <sec:authorize access="isFullyAuthenticated()">
                         <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                             <td><a href="<c:url value='/edit-user-${user.id}' />" class="btn btn-success custom-width">Изменить</a></td>

@@ -2,7 +2,6 @@ package com.art.model;
 
 
 import com.art.model.supporting.KinEnum;
-import com.art.model.supporting.StatusEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -12,7 +11,6 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -39,21 +37,10 @@ public class Users implements Serializable {
     private Stuffs userStuff;
     private Set<MailingGroups> mailingGroups;
     private Set<Facilities> facilities;
-//    private MarketingTree salesChanel;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "Kin")
     private KinEnum kin;
-
-    @Column
-    private Date firstInvestmentDate;
-
-    @Enumerated(EnumType.STRING)
-    @Column
-    private StatusEnum status;
-
-    @Column
-    private int daysToDeactivate;
 
     @Transient
     private transient List<BigInteger> facilityId;

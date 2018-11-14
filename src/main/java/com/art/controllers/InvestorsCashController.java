@@ -311,15 +311,6 @@ public class InvestorsCashController {
 
             new Thread(() -> updateMailingGroups(deleting, "delete")).start();
             investorsCashService.deleteById(deleting.getId());
-            List<InvestorsCash> countCash = investorsCashService.findByInvestorId(deleting.getInvestor().getId());
-            if (countCash.size() == 0) {
-                marketingTreeRepository.removeByInvestorId(deleting.getInvestor().getId());
-                Users upd = userService.findById(deleting.getInvestor().getId());
-                upd.setFirstInvestmentDate(null);
-                upd.setStatus(StatusEnum.NO_ACTIVE);
-                upd.setDaysToDeactivate(0);
-                userService.update(upd);
-            }
             response.setMessage("Данные успешно удалены");
 
         });
