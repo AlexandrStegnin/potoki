@@ -32,7 +32,7 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    $('#reinvestAll').prop('disabled', true);
+    $('#reinvestAll').addClass('disabled');
     max = findMinMaxDate('#invFlowsSale tbody', 5, "max");
     min = findMinMaxDate('#invFlowsSale tbody', 5, "min");
     populateStorageUnderFacilities('uFacilities');
@@ -61,6 +61,7 @@ jQuery(document).ready(function ($) {
 
     $('#reinvestAll').on('click', function (event) {
         event.preventDefault();
+        if(linkHasClass($('#reinvestAll'))) return false;
         $('#reInvestModal').modal({
             show: true
         })
@@ -74,12 +75,14 @@ jQuery(document).ready(function ($) {
     $(document).on('change', '#checkAll', function () {
         var checked = $('#checkIt').prop('checked');
         if (!checked) {
-            $('#reinvestAll').prop('disabled', true).hide().fadeIn('fast');
-            $('table#invFlowsSale').find('> tbody').find('> tr').each(function () {
+            $('#reinvestAll').removeClass('active').addClass('disabled');
+            $('#deleteAll').removeClass('active').addClass('disabled');
+            $('table#invFlows').find('> tbody').find('> tr').each(function () {
                 $(this).find(':checkbox:not(:disabled)').prop('checked', false);
             });
         } else {
-            $('#reinvestAll').prop('disabled', false).hide().fadeIn('fast');
+            $('#reinvestAll').removeClass('disabled').addClass('active');
+            $('#deleteAll').removeClass('disabled').addClass('active');
             $('table#invFlowsSale').find('> tbody').find('> tr').each(function () {
                 if (!$(this).data('passed')) {
                     $(this).find(':checkbox:not(:disabled)').prop('checked', false);
@@ -124,8 +127,9 @@ jQuery(document).ready(function ($) {
     });
 
     $('#deleteAll').on('click', function (event) {
-        showLoader();
         event.preventDefault();
+        if(linkHasClass($('#reinvestAll'))) return false;
+        showLoader();
         var cashIdList = [];
         $('table#invFlowsSale').find('> tbody').find('> tr').each(function () {
             $(this).find(':checkbox:checked').not(':disabled').each(function () {
@@ -585,4 +589,8 @@ function slideBox(message) {
     setTimeout(function () {
         $('#slideBox').animate({'right': '-300px'}, 500);
     }, 4000);
+}
+
+function linkHasClass(link) {
+    if (link.hasClass('disabled')) return true;
 }
