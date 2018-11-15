@@ -396,7 +396,7 @@ public class InvestorsCashController {
         commissionCash.setTypeClosingInvest(typeClosingCommission);
         commissionCash.setDateClosingInvest(cashForGetting.getDateGivedCash());
         BigDecimal totalSum = new BigDecimal(BigInteger.ZERO);
-        final BigDecimal[] remainderSum = new BigDecimal[1];
+        final BigDecimal[] remainderSum = new BigDecimal[1]; // сумма, которую надо вывести
 
         List<InvestorsCash> investorsCashes = investorsCashService.findByInvestorId(cashForGetting.getInvestor().getId())
                 .stream()
@@ -438,6 +438,8 @@ public class InvestorsCashController {
                 if (ic.getGivedCash().subtract(remainderSum[0]).compareTo(BigDecimal.ZERO) < 0) {
                     remainderSum[0] = remainderSum[0].subtract(ic.getGivedCash());
                     cashingList.add(new AfterCashing(ic.getId(), ic.getGivedCash()));
+                    ic.setTypeClosingInvest(typeClosingInvest);
+                    ic.setDateClosingInvest(cashForGetting.getDateGivedCash());
                 } else {
                     cashingList.add(new AfterCashing(ic.getId(), ic.getGivedCash()));
                     remainderCash.setGivedCash(remainderSum[0]);
@@ -463,8 +465,6 @@ public class InvestorsCashController {
                     ic.setGivedCash(ic.getGivedCash().subtract(remainderSum[0]).subtract(finalCommission));
                     remainderSum[0] = BigDecimal.ZERO;
                 }
-                ic.setTypeClosingInvest(typeClosingInvest);
-                ic.setDateClosingInvest(cashForGetting.getDateGivedCash());
                 investorsCashService.update(ic);
                 cashForGetting.setCashSource(ic.getCashSource());
                 cashForGetting.setCashType(ic.getCashType());
