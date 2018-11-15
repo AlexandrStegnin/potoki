@@ -489,8 +489,6 @@ public class InvestorsCashController {
                 commissionCash.setSourceUnderFacility(ic.getSourceUnderFacility());
                 commissionCash.setRoom(ic.getRoom());
                 commissionCash.setSource(commissionCash.getSource() == null ? "" + ic.getId().toString() : commissionCash.getSource() + "|" + ic.getId().toString());
-                commissionCash.setDateClosingInvest(cashForGetting.getDateGivedCash());
-                commissionCash.setTypeClosingInvest(typeClosingInvest);
 
                 remainderCash.setSource(cashForGetting.getSource());
             } else {
