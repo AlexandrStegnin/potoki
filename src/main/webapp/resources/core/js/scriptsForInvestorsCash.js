@@ -71,7 +71,8 @@ jQuery(document).ready(function ($) {
     $(document).on('change', ':checkbox', function () {
         var id = $(this).attr('id');
         var noDivide;
-        noDivide = $(this).closest('tr').find('> td:eq(1)').text().length > 0 && $(this).prop('checked') === true;
+        noDivide = $(this).closest('tr').find('> td:eq(1)').text().length > 0 && $(this).prop('checked') === true &&
+            ($(this).closest('tr').find('> td:eq(1)').text().indexOf('_Целиком') < 0);
         if (typeof id === 'undefined') {
             var cnt = checkChecked();
             if (cnt > 0) {
@@ -87,7 +88,7 @@ jQuery(document).ready(function ($) {
 
     $(document).on('click', '#reinvestAll', function (event) {
         event.preventDefault();
-        if(linkHasClass($('#reinvestAll'))) return false;
+        if (linkHasClass($('#reinvestAll'))) return false;
         $('#reInvestModal').modal({
             show: true
         });
@@ -222,7 +223,8 @@ jQuery(document).ready(function ($) {
                     if ($(this).find('td:eq(9)').text() === '') {
                         $(this).find(':checkbox:not(:disabled)').prop('checked', function () {
                             if (!noDivide) {
-                                noDivide = $(this).closest('tr').find('> td:eq(1)').text().length > 0;
+                                noDivide = ($(this).closest('tr').find('> td:eq(1)').text().length > 0 &&
+                                    ($(this).closest('tr').find('> td:eq(1)').text().indexOf('_Целиком') < 0));
                             }
                             return checked;
                         });
