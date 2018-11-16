@@ -16,13 +16,14 @@ jQuery(document).ready(function ($) {
                 nameInfo.html('Имя пользователя может содержать только буквы латинского алфавита, ' +
                     'цифры, знак подчёркивания (_) и точку (.)').show();
             } else {
+                jVal.errors = false;
                 nameInfo.html('').hide();
             }
         },
 
         'readAnnexes': function () {
             var errUnread = $('#errUnread');
-            jVal.errors = !!errUnread.css('display', 'block');
+            jVal.errors = !errUnread.css('display', 'block');
         },
 
         'email': function () {
@@ -34,6 +35,7 @@ jQuery(document).ready(function ($) {
                 emailInfo.html('Введите Email в формате mymail@example.ru').show();
             } else {
                 emailInfo.html('').hide();
+                jVal.errors = false;
             }
         },
         'inn': function () {
@@ -45,6 +47,7 @@ jQuery(document).ready(function ($) {
                 innInfo.html('ИНН должен содержать от 6 до 20 цифр').show();
             } else {
                 innInfo.html('').hide();
+                jVal.errors = false;
             }
         },
         'account': function () {
@@ -56,6 +59,7 @@ jQuery(document).ready(function ($) {
                 accountInfo.html('№ счёта может содержать от 16 до 30 цифр').show();
             } else {
                 accountInfo.html('').hide();
+                jVal.errors = false;
             }
         },
         'orgname': function () {
@@ -66,6 +70,7 @@ jQuery(document).ready(function ($) {
                 orgnameInfo.html('Название организации не может быть пустым').show();
             } else {
                 orgnameInfo.html('').hide();
+                jVal.errors = false;
             }
         },
         'sendIt': function () {
@@ -78,8 +83,8 @@ jQuery(document).ready(function ($) {
     $('#send').click(function (event) {
         event.preventDefault();
         var modelAttributeValue = $('#edit').val();
+        jVal.errors = false;
         if (modelAttributeValue === true) {
-            jVal.errors = false;
             jVal.login();
             jVal.readAnnexes();
             /* jVal.email(); */
