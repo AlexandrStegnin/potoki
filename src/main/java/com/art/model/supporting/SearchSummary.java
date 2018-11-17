@@ -64,7 +64,8 @@ public class SearchSummary implements Serializable {
 
     private String what;
     private BigDecimal commission;
-
+    private BigDecimal divideSum;
+    private BigInteger divideSumId;
     private MarketingTree salesChanel;
 
     private List<InvestorsCash> investorsCashList;
@@ -518,5 +519,13 @@ public class SearchSummary implements Serializable {
 
     public void setReUnderFacilities(UnderFacilities reUnderFacilities) {
         this.reUnderFacilities = reUnderFacilities;
+    }
+
+    public BigDecimal getDivideSum() {
+        return this.divideSum;
+    }
+
+    public void setDivideSum(BigDecimal divideSum) {
+        this.divideSum = divideSum;
     }
 }

@@ -129,6 +129,9 @@
                 <th>Подобъект</th>
                 <th>Дата продажи</th>
                 <th>Реинвестировать</th>
+                <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
+                    <th style="text-align: center">Действие</th>
+                </sec:authorize>
             </tr>
             </thead>
             <tbody>
@@ -172,6 +175,22 @@
                         </c:choose>
                         <input type="checkbox" title="Выбрать" ${checked} ${disabled}/>
                     </td>
+
+                    <sec:authorize access="isFullyAuthenticated()">
+                        <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
+                            <td style="text-align: center">
+                                <div class="btn-group">
+                                    <button type="button" data-toggle="dropdown"
+                                            class="btn btn-primary btn-sm dropdown-toggle"><span
+                                            class="glyphicon glyphicon-cog"></span></button>
+                                    <ul class="dropdown-menu">
+                                        <li id="liDivide"><a href="<c:url value='#' />">Разделить</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </sec:authorize>
+                    </sec:authorize>
                 </tr>
             </c:forEach>
             </tbody>
@@ -240,6 +259,41 @@
                         <div class="form-actions floatRight">
                             <input type="submit" value="Реинвестировать" class="btn btn-primary btn-sm"/> или <a
                                 href="<c:url value='/#' />" id="cancelReinvest">Отмена</a>
+                        </div>
+                    </div>
+                </form:form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divideModal" class="modal fade" role="dialog">
+    <div class="modal-dialog" style="width: 90%">
+        <div class="modal-content" id="divideContent">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4></h4>
+            </div>
+            <div class="modal-body">
+                <form:form method="POST" modelAttribute="searchSummary" class="form-horizontal" id="divideData">
+                    <form:input type="hidden" path="divideSumId" id="divideId"/>
+                    <form:input type="hidden" path="" id="flowMaxSum"/>
+                    <div class="row" id="cashRow">
+                        <div class="form-group col-md-12">
+                            <label class="col-md-3 control-lable" for="divideCash">Выделить сумму:</label>
+                            <div class="col-md-7">
+                                <form:input type="number" path="divideSum" id="divideCash" min="0.00" step="any" class="form-control input-sm"/>
+                                <div id="divideCashErr" style="color: red; display: none">
+                                    Необходимо ввести сумму > 0 и меньше разделяемой суммы
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-actions floatRight">
+                            <input type="submit" value="Разделить" class="btn btn-primary btn-sm"/> или <a
+                                href="<c:url value='/#' />" id="cancelDivide">Отмена</a>
                         </div>
                     </div>
                 </form:form>

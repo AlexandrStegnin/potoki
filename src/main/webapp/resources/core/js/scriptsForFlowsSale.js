@@ -5,8 +5,8 @@ var min;
 
 jQuery(document).ready(function ($) {
 
-    blockUnblockDropdownMenus('block');
-
+    blockUnblockDropdownMenus('block', false);
+    blockUnblockDivide();
     $('#msg-modal').on('shown.bs.modal', function () {
         // if data-timer attribute is set use that, otherwise use default (7000)
         var timer = 3000;
@@ -20,14 +20,48 @@ jQuery(document).ready(function ($) {
         prepareSaveInvestorsCash();
     });
 
+    $(document).on('click', '#liDivide', function (e) {
+        e.preventDefault();
+        if (linkHasClass($(this))) return false;
+        let divideModal = $('#divideModal');
+        let flowId = $(this).parent().parent().parent().parent().attr('id');
+        let flowMaxSum = $(this).parent().parent().parent().parent().find('> td:eq(9)').data('givedCash');
+        divideModal.modal('show');
+        divideModal.find('#divideId').val(flowId);
+        divideModal.find('#flowMaxSum').val(flowMaxSum);
+    });
+
+    $(document).on('click', '#cancelDivide', function (e) {
+        e.preventDefault();
+        $('#divideModal').modal('hide');
+    });
+
+    $(document).on('submit', '#divideData', function (e) {
+        e.preventDefault();
+        let divideModal = $('#divideModal');
+        let flowId = parseFloat(divideModal.find('#divideId').val());
+        let divideSum = parseFloat(divideModal.find('#divideCash').val());
+        let divideCashErr = $('#divideCashErr');
+        let flowMaxSum = parseFloat(divideModal.find('#flowMaxSum').val());
+        if (divideSum <= 0 || divideSum > flowMaxSum) {
+            divideCashErr.show();
+            return false;
+        } else {
+            divideCashErr.hide();
+        }
+        divideCash(flowId, divideSum);
+    });
+
     $(document).on('change', ':checkbox', function () {
         var id = $(this).attr('id');
+        var noDivide;
+        noDivide = $(this).closest('tr').find('> td:eq(1)').text().length > 0 && $(this).prop('checked') === true;
         if (typeof id === 'undefined') {
             var cnt = checkChecked();
             if (cnt > 0) {
-                blockUnblockDropdownMenus('unblock');
+                blockUnblockDropdownMenus('unblock', noDivide);
             } else {
-                blockUnblockDropdownMenus('block');
+                blockUnblockDropdownMenus('block', noDivide);
             }
         }
     });
@@ -74,22 +108,28 @@ jQuery(document).ready(function ($) {
 
     $(document).on('change', '#checkAll', function () {
         var checked = $('#checkIt').prop('checked');
+        var noDivide = false;
         if (!checked) {
-            $('#reinvestAll').removeClass('active').addClass('disabled');
-            $('#deleteAll').removeClass('active').addClass('disabled');
+            blockUnblockDropdownMenus('block', noDivide);
             $('table#invFlows').find('> tbody').find('> tr').each(function () {
                 $(this).find(':checkbox:not(:disabled)').prop('checked', false);
             });
         } else {
-            $('#reinvestAll').removeClass('disabled').addClass('active');
-            $('#deleteAll').removeClass('disabled').addClass('active');
             $('table#invFlowsSale').find('> tbody').find('> tr').each(function () {
                 if (!$(this).data('passed')) {
                     $(this).find(':checkbox:not(:disabled)').prop('checked', false);
                 } else {
-                    $(this).find(':checkbox:not(:disabled)').prop('checked', checked);
+                    if ($(this).find('td:eq(9)').text() === '') {
+                        $(this).find(':checkbox:not(:disabled)').prop('checked', function () {
+                            if (!noDivide) {
+                                noDivide = $(this).closest('tr').find('> td:eq(1)').text().length > 0;
+                            }
+                            return checked;
+                        });
+                    }
                 }
             });
+            blockUnblockDropdownMenus('unblock', noDivide);
         }
     });
 
@@ -128,7 +168,7 @@ jQuery(document).ready(function ($) {
 
     $('#deleteAll').on('click', function (event) {
         event.preventDefault();
-        if(linkHasClass($('#reinvestAll'))) return false;
+        if(linkHasClass($('#deleteAll'))) return false;
         showLoader();
         var cashIdList = [];
         $('table#invFlowsSale').find('> tbody').find('> tr').each(function () {
@@ -138,6 +178,29 @@ jQuery(document).ready(function ($) {
             })
         });
         deleteCash(cashIdList);
+    });
+
+    $('#divideAll').on('click', function (event) {
+        event.preventDefault();
+        if (linkHasClass($('#divideAll'))) return false;
+        var chk = $('table#investorsCash').find('> tbody').find('> tr').find(':checkbox:checked:not(:disabled)');
+        var facilityId = chk.closest('td').parent().find('td:eq(0)').attr('data-facility-id');
+
+        getUnderFacilitiesFromLocalStorage(
+            facilityId,
+            'underFacilities');
+        getUnderFacilitiesFromLocalStorage(
+            facilityId,
+            'underFacilitiesList');
+        $('#underFacilitiesList').find('option:contains(Выберите подобъект)').remove();
+        $('#divideModal').modal({
+            show: true
+        });
+    });
+
+    $(document).on('click', 'a#cancelDivide', function (event) {
+        event.preventDefault();
+        $('#divideModal').modal("hide");
     });
 
 });
@@ -531,7 +594,7 @@ function closePopup() {
     }, 3000);
 }
 
-function blockUnblockDropdownMenus(blockUnblock) {
+function blockUnblockDropdownMenus(blockUnblock, noDivide) {
     var reinvest = $('#reinvest');
     switch (blockUnblock) {
         case 'block':
@@ -541,7 +604,11 @@ function blockUnblockDropdownMenus(blockUnblock) {
             break;
         case 'unblock':
             reinvest.find('> li').each(function () {
-                $(this).closest('li').removeClass('disabled').addClass('active');
+                if ($(this).find($(":first-child")).text() === 'Массовое разделение сумм' && noDivide) {
+                    $(this).closest('li').removeClass('active').addClass('disabled');
+                } else {
+                    $(this).closest('li').removeClass('disabled').addClass('active');
+                }
             });
             break;
     }
@@ -593,4 +660,47 @@ function slideBox(message) {
 
 function linkHasClass(link) {
     if (link.hasClass('disabled')) return true;
+}
+
+function divideCash(flowId, divideSum) {
+    showLoader();
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    var search = ({
+        divideSumId: flowId,
+        divideSum: divideSum
+    });
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: "/divideFlows",
+        data: JSON.stringify(search),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        }
+    })
+        .done(function (data) {
+            closeLoader();
+            $('#flowMaxSum').val(data.message);
+            $('#divideCash').val(data.message);
+        })
+        .fail(function (e) {
+            console.log(e);
+        })
+        .always(function () {
+            console.log('Закончили!');
+        });
+}
+
+function blockUnblockDivide() {
+    $('table#invFlowsSale').find('> tbody').find('> tr').each(function () {
+        if ($(this).find(':checkbox').attr('checked') === 'checked') {
+            $(this).find('td:last-child').find('ul.dropdown-menu').find('#liDivide').removeClass('active').addClass('disabled');
+        } else {
+            $(this).find('td:last-child').find('ul.dropdown-menu').find('#liDivide').removeClass('disabled').addClass('active');
+        }
+    });
 }

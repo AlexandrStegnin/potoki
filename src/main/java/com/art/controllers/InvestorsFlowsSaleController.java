@@ -17,6 +17,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -82,6 +84,23 @@ public class InvestorsFlowsSaleController {
             response.setError(e.getLocalizedMessage());
         }
 
+        return response;
+    }
+
+    @PostMapping(value = "/divideFlows", produces = "application/json;charset=UTF-8")
+    public @ResponseBody
+    GenericResponse divideFlowsSale(@RequestBody SearchSummary searchSummary) {
+        GenericResponse response = new GenericResponse();
+        BigInteger flowId = searchSummary.getDivideSumId();
+        BigDecimal divideSum = searchSummary.getDivideSum();
+        InvestorsFlowsSale oldFlows = investorsFlowsSaleService.findById(flowId);
+        InvestorsFlowsSale newFlows = investorsFlowsSaleService.findById(flowId);
+        oldFlows.setProfitToReInvest(oldFlows.getProfitToReInvest().subtract(divideSum));
+        newFlows.setId(null);
+        newFlows.setProfitToReInvest(divideSum);
+        investorsFlowsSaleService.update(oldFlows);
+        investorsFlowsSaleService.create(newFlows);
+        response.setMessage(oldFlows.getProfitToReInvest().toPlainString());
         return response;
     }
 
