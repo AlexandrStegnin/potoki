@@ -475,7 +475,25 @@ public class InvestorsFlowsController {
         try {
             switch (searchSummary.getWhat()) {
                 case "sale":
-                    investorsFlowsSaleService.deleteByIdIn(searchSummary.getCashIdList());
+                    List<BigInteger> deletedChildesIds = new ArrayList<>();
+                    List<InvestorsFlowsSale> listToDelete = investorsFlowsSaleService.findByIdIn(searchSummary.getCashIdList());
+                    listToDelete.forEach(ltd -> {
+                        if (!deletedChildesIds.contains(ltd.getId())) {
+                            List<InvestorsFlowsSale> childFlows = new ArrayList<>();
+                            InvestorsFlowsSale parentFlow = investorsFlowsSaleService.findParentFlow(ltd, childFlows);
+                            childFlows = investorsFlowsSaleService.findAllChildes(parentFlow, childFlows, 0);
+                            childFlows.sort(Comparator.comparing(InvestorsFlowsSale::getId).reversed());
+                            childFlows.forEach(cf -> {
+                                deletedChildesIds.add(cf.getId());
+                                parentFlow.setProfitToReInvest(parentFlow.getProfitToReInvest().add(cf.getProfitToReInvest()));
+                                investorsFlowsSaleService.deleteById(cf.getId());
+                                investorsFlowsSaleService.update(parentFlow);
+                            });
+                            if (parentFlow.getId().equals(ltd.getId())) {
+                                investorsFlowsSaleService.deleteById(parentFlow.getId());
+                            }
+                        }
+                    });
                     break;
 
                 default:
@@ -485,11 +503,39 @@ public class InvestorsFlowsController {
             response.setMessage("Данные успешно удалены");
 
         } catch (Exception ex) {
-            System.out.println(ex.getLocalizedMessage());
+            ex.printStackTrace();
         }
 
         return response;
     }
+
+    public InvestorsFlowsSale findParentFlow(InvestorsFlowsSale flowsSale, List<InvestorsFlowsSale> childFlows) {
+        if (!Objects.equals(null, flowsSale.getSourceId())) {
+            childFlows.add(flowsSale);
+            flowsSale = investorsFlowsSaleService.findById(flowsSale.getSourceId());
+            return findParentFlow(flowsSale, childFlows);
+        }
+        return flowsSale;
+    }
+
+    public InvestorsFlowsSale lastChild(InvestorsFlowsSale flowsSale) {
+        if (!Objects.equals(null, flowsSale.getSourceId())) {
+            flowsSale = investorsFlowsSaleService.findById(flowsSale.getSourceId());
+            return lastChild(flowsSale);
+        }
+        return flowsSale;
+    }
+
+//    public InvestorsFlowsSale parentWithSum(InvestorsFlowsSale flowsSale, List<InvestorsFlowsSale> flowsToDelete) {
+//        List<InvestorsFlowsSale> oldFlows = investorsFlowsSaleService.findBySourceId(flowsSale.getId());
+//        if (!Objects.equals(null, flowsSale.getSourceId())) {
+//            oldFlows = investorsFlowsSaleService.findBySourceId(flowsSale.getId());
+//            oldFlows.setProfitToReInvest(oldFlows.getProfitToReInvest().add(flowsSale.getProfitToReInvest()));
+//            flowsToDelete.add(flowsSale);
+//            return parentWithSum(oldFlows, flowsToDelete);
+//        }
+//        return oldFlows;
+//    }
 
     @GetMapping(value = "/deleteFlows")
     public String deleteFlows() {

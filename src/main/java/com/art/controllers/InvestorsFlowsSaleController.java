@@ -98,6 +98,7 @@ public class InvestorsFlowsSaleController {
         oldFlows.setProfitToReInvest(oldFlows.getProfitToReInvest().subtract(divideSum));
         newFlows.setId(null);
         newFlows.setProfitToReInvest(divideSum);
+        newFlows.setSourceId(oldFlows.getId());
         investorsFlowsSaleService.update(oldFlows);
         investorsFlowsSaleService.create(newFlows);
         response.setMessage(oldFlows.getProfitToReInvest().toPlainString());

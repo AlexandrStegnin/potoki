@@ -11,6 +11,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -99,5 +100,43 @@ public class InvestorsFlowsSaleService {
         Root<InvestorsFlowsSale> flowsSaleRoot = delete.from(InvestorsFlowsSale.class);
         delete.where(cb.equal(flowsSaleRoot.get(InvestorsFlowsSale_.id), id));
         this.em.createQuery(delete).executeUpdate();
+    }
+
+    public List<InvestorsFlowsSale> findBySourceId(BigInteger sourceId) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<InvestorsFlowsSale> saleCriteriaQuery = cb.createQuery(InvestorsFlowsSale.class);
+        Root<InvestorsFlowsSale> saleRoot = saleCriteriaQuery.from(InvestorsFlowsSale.class);
+        saleRoot.fetch(InvestorsFlowsSale_.facility, JoinType.LEFT);
+        saleRoot.fetch(InvestorsFlowsSale_.investor, JoinType.LEFT);
+        saleRoot.fetch(InvestorsFlowsSale_.shareKind, JoinType.LEFT);
+        saleRoot.fetch(InvestorsFlowsSale_.underFacility, JoinType.LEFT);
+        saleCriteriaQuery.select(saleRoot).distinct(true);
+        saleCriteriaQuery.where(cb.equal(saleRoot.get(InvestorsFlowsSale_.sourceId), sourceId));
+        return em.createQuery(saleCriteriaQuery).getResultList();
+    }
+
+    public InvestorsFlowsSale findParentFlow(InvestorsFlowsSale flowsSale, List<InvestorsFlowsSale> childFlows) {
+        if (!Objects.equals(null, flowsSale.getSourceId())) {
+            childFlows.add(flowsSale);
+            InvestorsFlowsSale finalFlowsSale = flowsSale;
+            flowsSale = findById(finalFlowsSale.getSourceId());
+            return findParentFlow(flowsSale, childFlows);
+        }
+        return flowsSale;
+    }
+
+    public List<InvestorsFlowsSale> findAllChildes(InvestorsFlowsSale parentFlow, List<InvestorsFlowsSale> childFlows, int next) {
+        List<InvestorsFlowsSale> tmp = findBySourceId(parentFlow.getId());
+        tmp.forEach(t -> {
+            if (!childFlows.contains(t)) {
+                childFlows.add(t);
+            }
+        });
+        if (next >= childFlows.size()) next--;
+        InvestorsFlowsSale parent = childFlows.get(next);
+        if (parentFlow.getId().equals(parent.getId())) return childFlows;
+        next++;
+        return findAllChildes(parent, childFlows, next);
+
     }
 }

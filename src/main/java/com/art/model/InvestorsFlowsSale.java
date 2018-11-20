@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"facility", "investor", "shareKind", "underFacility"})
 @Getter
 @Setter
 @AllArgsConstructor
@@ -32,6 +32,9 @@ public class InvestorsFlowsSale implements Serializable {
     private UnderFacilities underFacility;
     private Date dateSale;
     private int isReinvest;
+
+    @Column
+    private BigInteger sourceId;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
