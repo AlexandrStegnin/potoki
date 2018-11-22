@@ -509,34 +509,6 @@ public class InvestorsFlowsController {
         return response;
     }
 
-    public InvestorsFlowsSale findParentFlow(InvestorsFlowsSale flowsSale, List<InvestorsFlowsSale> childFlows) {
-        if (!Objects.equals(null, flowsSale.getSourceId())) {
-            childFlows.add(flowsSale);
-            flowsSale = investorsFlowsSaleService.findById(flowsSale.getSourceId());
-            return findParentFlow(flowsSale, childFlows);
-        }
-        return flowsSale;
-    }
-
-    public InvestorsFlowsSale lastChild(InvestorsFlowsSale flowsSale) {
-        if (!Objects.equals(null, flowsSale.getSourceId())) {
-            flowsSale = investorsFlowsSaleService.findById(flowsSale.getSourceId());
-            return lastChild(flowsSale);
-        }
-        return flowsSale;
-    }
-
-//    public InvestorsFlowsSale parentWithSum(InvestorsFlowsSale flowsSale, List<InvestorsFlowsSale> flowsToDelete) {
-//        List<InvestorsFlowsSale> oldFlows = investorsFlowsSaleService.findBySourceId(flowsSale.getId());
-//        if (!Objects.equals(null, flowsSale.getSourceId())) {
-//            oldFlows = investorsFlowsSaleService.findBySourceId(flowsSale.getId());
-//            oldFlows.setProfitToReInvest(oldFlows.getProfitToReInvest().add(flowsSale.getProfitToReInvest()));
-//            flowsToDelete.add(flowsSale);
-//            return parentWithSum(oldFlows, flowsToDelete);
-//        }
-//        return oldFlows;
-//    }
-
     @GetMapping(value = "/deleteFlows")
     public String deleteFlows() {
         investorsFlowsService.delete();

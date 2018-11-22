@@ -197,13 +197,13 @@ public class InvestorsCashController {
     public @ResponseBody
     GenericResponse deleteCashList(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
-        List<InvestorsCash> cashList = investorsCashService.findByIdIn(searchSummary.getCashIdList());
+        List<InvestorsCash> listToDelete = investorsCashService.findByIdIn(searchSummary.getCashIdList());
         List<AfterCashing> afterCashingList = afterCashingService.findAll();
         Comparator<AfterCashing> comparator = Comparator.comparing(AfterCashing::getId);
 
         afterCashingList.sort(comparator.reversed());
 
-        cashList.forEach(deleting -> {
+        listToDelete.forEach(deleting -> {
             if (!Objects.equals(null, deleting.getSourceFlowsId())) {
                 String[] tmp = deleting.getSourceFlowsId().split(Pattern.quote("|"));
                 List<BigInteger> sourceIdList = new ArrayList<>(0);
@@ -317,6 +317,10 @@ public class InvestorsCashController {
         return response;
     }
 
+    private void deleteAllCashList(SearchSummary searchSummary) {
+
+    }
+
     @GetMapping(value = {"/newinvestorscash"})
     public String newCash(ModelMap model) {
         String title = "Добавление денег инвестора";
@@ -384,8 +388,8 @@ public class InvestorsCashController {
     private boolean cashingMoney(SearchSummary searchSummary, boolean all) {
 
         InvestorsCash commissionCash = new InvestorsCash();
-        TypeClosingInvest typeClosingInvest = typeClosingInvestService.findByTypeClosingInvest("Вывод");
-        TypeClosingInvest typeClosingCommission = typeClosingInvestService.findByTypeClosingInvest("Вывод_комиссия");
+        final TypeClosingInvest typeClosingInvest = typeClosingInvestService.findByTypeClosingInvest("Вывод");
+        final TypeClosingInvest typeClosingCommission = typeClosingInvestService.findByTypeClosingInvest("Вывод_комиссия");
         InvestorsCash cashForGetting = searchSummary.getInvestorsCash();
         BigDecimal commission = searchSummary.getCommission();
         BigDecimal commissionNoMore = searchSummary.getCommissionNoMore();
@@ -492,9 +496,11 @@ public class InvestorsCashController {
 
                 remainderCash.setSource(cashForGetting.getSource());
             } else {
-                ic.setTypeClosingInvest(typeClosingInvest);
-                ic.setDateClosingInvest(cashForGetting.getDateGivedCash());
-                investorsCashService.update(ic);
+                if (all) {
+                    ic.setTypeClosingInvest(typeClosingInvest);
+                    ic.setDateClosingInvest(cashForGetting.getDateGivedCash());
+                    investorsCashService.update(ic);
+                }
             }
         });
 
@@ -759,12 +765,12 @@ public class InvestorsCashController {
         GenericResponse response = new GenericResponse();
         List<InvestorsCash> investorsCashes = searchSummary.getInvestorsCashList();
         final Date[] dateClose = {null};
-        CashTypes cashTypes = cashTypesService.findByCashType("Старые деньги");
-        NewCashDetails newCashDetails = newCashDetailsService.findByNewCashDetail("Реинвестирование с продажи (сохранение)");
-        InvestorsTypes investorsType = investorsTypesService.findByInvestorsTypes("Старый инвестор");
-        TypeClosingInvest typeClosingInvest = typeClosingInvestService.findByTypeClosingInvest("Реинвестирование");
+        final CashTypes cashTypes = cashTypesService.findByCashType("Старые деньги");
+        final NewCashDetails newCashDetails = newCashDetailsService.findByNewCashDetail("Реинвестирование с продажи (сохранение)");
+        final InvestorsTypes investorsType = investorsTypesService.findByInvestorsTypes("Старый инвестор");
+        final TypeClosingInvest typeClosingInvest = typeClosingInvestService.findByTypeClosingInvest("Реинвестирование");
 
-        Map<String, InvestorsCash> map = groupInvestorsCash(investorsCashes, "");
+        final Map<String, InvestorsCash> map = groupInvestorsCash(investorsCashes, "");
 
         map.forEach((key, value) -> {
             value.setCashType(cashTypes);
@@ -778,7 +784,7 @@ public class InvestorsCashController {
         });
 
         List<InvestorsCash> oldCash = investorsCashService.findByIdIn(searchSummary.getReinvestIdList());
-        Date finalDateClose = dateClose[0];
+        final Date finalDateClose = dateClose[0];
         oldCash.forEach(f -> {
             f.setIsReinvest(1);
             f.setDateClosingInvest(finalDateClose);
