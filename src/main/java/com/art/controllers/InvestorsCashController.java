@@ -309,7 +309,7 @@ public class InvestorsCashController {
                 }
             }
 
-            new Thread(() -> updateMailingGroups(deleting, "delete")).start();
+            updateMailingGroups(deleting, "delete");
             investorsCashService.deleteById(deleting.getId());
             response.setMessage("Данные успешно удалены");
 
