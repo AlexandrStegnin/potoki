@@ -803,7 +803,8 @@ public class InvestorsCashController {
     public @ResponseBody
     GenericResponse saveDivideCash(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
-        List<InvestorsCash> investorsCashes = searchSummary.getInvestorsCashList();
+        List<BigInteger> idsList = searchSummary.getInvestorsCashList().stream().map(InvestorsCash::getId).collect(Collectors.toList());
+        List<InvestorsCash> investorsCashes = investorsCashService.findByIdIn(idsList);
 
         List<UnderFacilities> remainingUnderFacilitiesList = searchSummary.getUnderFacilitiesList();
 
@@ -820,7 +821,6 @@ public class InvestorsCashController {
             }
         }));
 
-        //underFacilitiesList.forEach(u -> rooms.addAll(u.getRooms()));
         BigDecimal coastFacility = rooms
                 .stream()
                 .map(Rooms::getCoast)
@@ -834,7 +834,6 @@ public class InvestorsCashController {
         BigDecimal divided = coastUnderFacility.divide(coastFacility, 20, BigDecimal.ROUND_CEILING);
 
         investorsCashes.forEach(f -> {
-
             BigDecimal invCash = f.getGivedCash();
             BigDecimal sumInUnderFacility = divided.multiply(invCash);
             BigDecimal sumRemainder = invCash.subtract(sumInUnderFacility);
