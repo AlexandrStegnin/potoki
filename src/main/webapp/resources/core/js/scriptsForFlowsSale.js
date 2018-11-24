@@ -33,6 +33,10 @@ jQuery(document).ready(function ($) {
 
     $(document).on('click', '#cancelDivide', function (e) {
         e.preventDefault();
+        let divideModal = $('#divideModal');
+        let flowId = divideModal.find('#divideId').val();
+        let flowMaxSum = divideModal.find('#flowMaxSum').val();
+        divideCash(flowId, flowMaxSum);
         $('#divideModal').modal('hide');
     });
 
@@ -191,12 +195,6 @@ jQuery(document).ready(function ($) {
             show: true
         });
     });
-
-    $(document).on('click', 'a#cancelDivide', function (event) {
-        event.preventDefault();
-        $('#divideModal').modal("hide");
-    });
-
 });
 
 function show(data) {
@@ -658,9 +656,9 @@ function linkHasClass(link) {
 
 function divideCash(flowId, divideSum) {
     showLoader();
-    var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
-    var search = ({
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+    let search = ({
         divideSumId: flowId,
         divideSum: divideSum
     });

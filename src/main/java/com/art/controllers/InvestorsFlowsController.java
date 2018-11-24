@@ -473,32 +473,29 @@ public class InvestorsFlowsController {
     GenericResponse deleteFlowsList(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
         try {
-            switch (searchSummary.getWhat()) {
-                case "sale":
-                    List<BigInteger> deletedChildesIds = new ArrayList<>();
-                    List<InvestorsFlowsSale> listToDelete = investorsFlowsSaleService.findByIdIn(searchSummary.getCashIdList());
-                    listToDelete.forEach(ltd -> {
-                        if (!deletedChildesIds.contains(ltd.getId())) {
-                            List<InvestorsFlowsSale> childFlows = new ArrayList<>();
-                            InvestorsFlowsSale parentFlow = investorsFlowsSaleService.findParentFlow(ltd, childFlows);
-                            childFlows = investorsFlowsSaleService.findAllChildes(parentFlow, childFlows, 0);
-                            childFlows.sort(Comparator.comparing(InvestorsFlowsSale::getId).reversed());
-                            childFlows.forEach(cf -> {
-                                deletedChildesIds.add(cf.getId());
-                                parentFlow.setProfitToReInvest(parentFlow.getProfitToReInvest().add(cf.getProfitToReInvest()));
-                                investorsFlowsSaleService.deleteById(cf.getId());
-                                investorsFlowsSaleService.update(parentFlow);
-                            });
-                            if (parentFlow.getId().equals(ltd.getId())) {
-                                investorsFlowsSaleService.deleteById(parentFlow.getId());
-                            }
+            if ("sale".equals(searchSummary.getWhat())) {
+                List<BigInteger> deletedChildesIds = new ArrayList<>();
+                List<InvestorsFlowsSale> listToDelete = investorsFlowsSaleService.findByIdIn(searchSummary.getCashIdList());
+                listToDelete.forEach(ltd -> {
+                    if (!deletedChildesIds.contains(ltd.getId())) {
+                        List<InvestorsFlowsSale> childFlows = new ArrayList<>();
+                        InvestorsFlowsSale parentFlow = investorsFlowsSaleService.findParentFlow(ltd, childFlows);
+                        if (parentFlow.getIsReinvest() == 1) parentFlow.setIsReinvest(0);
+                        childFlows = investorsFlowsSaleService.findAllChildes(parentFlow, childFlows, 0);
+                        childFlows.sort(Comparator.comparing(InvestorsFlowsSale::getId).reversed());
+                        childFlows.forEach(cf -> {
+                            deletedChildesIds.add(cf.getId());
+                            parentFlow.setProfitToReInvest(parentFlow.getProfitToReInvest().add(cf.getProfitToReInvest()));
+                            investorsFlowsSaleService.deleteById(cf.getId());
+                            investorsFlowsSaleService.update(parentFlow);
+                        });
+                        if (parentFlow.getId().equals(ltd.getId())) {
+                            investorsFlowsSaleService.deleteById(parentFlow.getId());
                         }
-                    });
-                    break;
-
-                default:
-                    investorsFlowsService.deleteByIdIn(searchSummary.getCashIdList());
-                    break;
+                    }
+                });
+            } else {
+                investorsFlowsService.deleteByIdIn(searchSummary.getCashIdList());
             }
             response.setMessage("Данные успешно удалены");
 
