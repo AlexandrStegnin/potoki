@@ -6,16 +6,144 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7a6f4bb5-47a8-4ceb-b2dc-38f18b3a613b" name="Default" comment="Тест2">
-      <change beforePath="$PROJECT_DIR$/.idea/hotswap_agent.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/hotswap_agent.xml" afterDir="false" />
+    <list default="true" id="251e4d15-74eb-4e9a-8105-51151090c1ed" name="Выплаты инвесторам. Продажа. Разделение строк, как в деньгах инвесторов." comment="Выплаты инвесторам. Продажа. Разделение строк, как в деньгах инвесторов. Откат при удалении сумм.">
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/potoki_war.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/potoki_war.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/art/model/Rooms.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/art/model/Rooms.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/art/model/supporting/SearchSummary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/art/model/supporting/SearchSummary.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/resources/core/js/scriptsForInvestorsCash.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/resources/core/js/scriptsForInvestorsCash.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/art/config/application/testPackage/testClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/art/config/application/testPackage/testClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/art/controllers/InvestorsCashController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/art/controllers/InvestorsCashController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/META-INF/MANIFEST.MF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/classes/logback.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/classes/logback.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/accessDenied.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/accessDenied.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addallowanceip.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addallowanceip.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addalphaextract.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addalphaextract.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addalphatags.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addalphatags.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addbonuses.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addbonuses.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addbonustypes.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addbonustypes.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addcashpayments.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addcashpayments.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/adddetails.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/adddetails.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addfacilitiesbuysales.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addfacilitiesbuysales.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addfacilitiesreserves.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addfacilitiesreserves.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addfacilitiesservicecontracts.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addfacilitiesservicecontracts.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addinvestorscash.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addinvestorscash.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addinvestorsexp.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addinvestorsexp.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addinvestorshare.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addinvestorshare.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addpayments.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addpayments.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addtoshltags.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addtoshltags.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addtypeexp.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addtypeexp.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addunderfacility.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addunderfacility.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/admin_facility.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/admin_facility.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/authheader.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/authheader.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/changepass.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/changepass.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/createmail.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/createmail.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/defaultErrorView.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/defaultErrorView.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/facility_edit.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/facility_edit.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/forgotPassword.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/forgotPassword.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/investorsCashSums.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/investorsCashSums.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/investorsplansales.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/investorsplansales.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/investorssummary.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/investorssummary.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/investorstotalsums.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/investorstotalsums.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/loader.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/loader.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/login.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/login.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/mailingGroups.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/mailingGroups.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/popup.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/popup.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/profile.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/profile.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/registrationsuccess.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/registrationsuccess.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/serviceUnavailable.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/serviceUnavailable.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/success.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/success.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/uploadexcel.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/uploadexcel.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewallowanceip.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewallowanceip.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewalphacorrecttags.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewalphacorrecttags.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewalphaextract.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewalphaextract.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewbonuses.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewbonuses.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewbonustypes.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewbonustypes.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewcashpayments.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewcashpayments.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewfacilitiesbuysales.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewfacilitiesbuysales.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewfacilitiesreserves.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewfacilitiesreserves.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewfacilitiesservicecontracts.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewfacilitiesservicecontracts.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewinvestorsexp.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewinvestorsexp.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewinvestorsshare.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewinvestorsshare.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewmainflows.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewmainflows.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewmainflowsinv.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewmainflowsinv.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewmainflowsinv2.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewmainflowsinv2.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewpayments.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewpayments.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewrentorsdetails.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewrentorsdetails.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewtoshlcorrecttags.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewtoshlcorrecttags.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewtoshlextract.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewtoshlextract.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewtypeexp.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewtypeexp.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewunderfacilities.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewunderfacilities.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/welcome.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/welcome.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/css/ajaxLoader.css" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/css/ajaxLoader.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/css/applic.css" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/css/applic.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/css/bootstrap.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/css/bootstrap.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/css/bootstrap.min.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/css/bootstrap.min.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/css/common.css" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/css/common.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/css/datatables.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/css/datatables.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/css/login_style.css" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/css/login_style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/css/popup.css" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/css/popup.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansBold/OpenSansBold.eot" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansBold/OpenSansBold.eot" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansBold/OpenSansBold.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansBold/OpenSansBold.ttf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansBold/OpenSansBold.woff" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansBold/OpenSansBold.woff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansLight/OpenSansLight.eot" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansLight/OpenSansLight.eot" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansLight/OpenSansLight.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansLight/OpenSansLight.ttf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansLight/OpenSansLight.woff" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansLight/OpenSansLight.woff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansRegular/OpenSansRegular.eot" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansRegular/OpenSansRegular.eot" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansRegular/OpenSansRegular.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansRegular/OpenSansRegular.ttf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansRegular/OpenSansRegular.woff" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansRegular/OpenSansRegular.woff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansSemiBold/OpenSansSemiBold.eot" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansSemiBold/OpenSansSemiBold.eot" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansSemiBold/OpenSansSemiBold.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansSemiBold/OpenSansSemiBold.ttf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansSemiBold/OpenSansSemiBold.woff" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansSemiBold/OpenSansSemiBold.woff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/glyphicons-halflings-regular.eot" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/glyphicons-halflings-regular.eot" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/glyphicons-halflings-regular.svg" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/glyphicons-halflings-regular.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/glyphicons-halflings-regular.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/glyphicons-halflings-regular.ttf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/glyphicons-halflings-regular.woff" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/glyphicons-halflings-regular.woff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/glyphicons-halflings-regular.woff2" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/glyphicons-halflings-regular.woff2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/img/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/img/favicon.ico" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/img/kolesnik_logo_cmyk.png" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/img/kolesnik_logo_cmyk.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/AjaxLoader.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/AjaxLoader.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/alphaExtractScripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/alphaExtractScripts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/applic.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/applic.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/bootstrap.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/bootstrap.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/checkService.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/checkService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/datatables.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/datatables.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/jquery-3.2.1.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/jquery-3.2.1.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/jquery.selectric.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/jquery.selectric.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/mailingScripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/mailingScripts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/popupScripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/popupScripts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/scriptsForFacilities.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/scriptsForFacilities.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/socketScripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/socketScripts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/sockjs-0.3.4.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/sockjs-0.3.4.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/stomp.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/stomp.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/tagsScripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/tagsScripts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/logback.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/logback.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/InvestorsFlowsSale_.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/InvestorsFlowsSale_.java" afterDir="false" />
     </list>
+    <list id="7a6f4bb5-47a8-4ceb-b2dc-38f18b3a613b" name="Default" comment="Удалено поле &quot;вид инвестора&quot; из &quot;выплаты с аренды&quot; и &quot;выплаты с продажи&quot;&#10;исправление: исправлена блокировка нажатия на ссылку, если она не активна&#10;Мелкий рефакторинг.">
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/potoki_war_exploded.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/potoki_war_exploded.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__mysql_mysql_connector_java_5_1_31.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/potoki.iml" beforeDir="false" afterPath="$PROJECT_DIR$/potoki.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/PSS Project/resources/core/js/flowsVisualization.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/admin.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/admin.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/catalogues.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/catalogues.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/paysInvestors.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/paysInvestors.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/registration.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/registration.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewInvestorsFlowsSale.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewInvestorsFlowsSale.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewinvestorscash.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewinvestorscash.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewinvestorsflows.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewinvestorsflows.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/scripts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/scriptsForFlows.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/scriptsForFlows.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/scriptsForFlowsSale.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/scriptsForFlowsSale.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/scriptsForInvestorsCash.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/scriptsForInvestorsCash.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/scriptsForUsers.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/scriptsForUsers.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/Rooms_.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/Rooms_.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/Users_.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/Users_.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+    </list>
+    <list id="5d2ca7a4-18ec-4eae-b42c-9a7c4a92d346" name="Выплаты инвесторам. Показ по 100 записей" comment="Выплаты инвесторам. Показ по 100 записей" />
     <ignored path="$PROJECT_DIR$/target/" />
-    <ignored mask=".propertirs" />
+    <ignored mask=".properties" />
     <ignored mask=".iml" />
+    <ignored path="$PROJECT_DIR$/.idea/shelf/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,55 +157,41 @@
     <option name="PATCH_PATH" value="" />
   </component>
   <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
     <option name="GROUP_SCHEMA" value="true" />
     <option name="GROUP_CONTENTS" value="false" />
     <option name="SORT_POSITIONED" value="false" />
-    <option name="SHOW_TABLE_DETAILS" value="true" />
     <option name="SHOW_EMPTY_GROUPS" value="false" />
     <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
-  </component>
-  <component name="FUSProjectUsageTrigger">
-    <session id="-1060526478">
-      <usages-collector id="statistics.lifecycle.project">
-        <counts>
-          <entry key="project.closed" value="2" />
-          <entry key="project.open.time.10" value="1" />
-          <entry key="project.open.time.2" value="1" />
-          <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="3" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.open">
-        <counts>
-          <entry key="java" value="5" />
-          <entry key="js" value="1" />
-          <entry key="properties" value="1" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.open">
-        <counts>
-          <entry key="JAVA" value="5" />
-          <entry key="JavaScript" value="1" />
-          <entry key="Properties" value="1" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.edit">
-        <counts>
-          <entry key="java" value="28" />
-          <entry key="js" value="16" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.vcs.git.usages" />
-      <usages-collector id="statistics.spring.boot.mvc.usages" />
-      <usages-collector id="statistics.js.language.service.starts" />
-      <usages-collector id="statistics.file.types.edit">
-        <counts>
-          <entry key="JAVA" value="28" />
-          <entry key="JavaScript" value="16" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.spring.boot.run.usages" />
-    </session>
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="@DDK" type="feb32156:DbDataSourceImpl" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="@DDK" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="@DDK" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="pss_projects: schema" type="c314c289:MysqlImplModel$Schema" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="@DDK" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="pss_projects: schema" type="c314c289:MysqlImplModel$Schema" />
+        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+    </expand>
+    <select />
   </component>
   <component name="FavoritesManager">
     <favorites_list name="potoki" />
@@ -85,28 +199,57 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/webapp/resources/core/js/flowsVisualization.js">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/art/controllers/InvestorsFlowsSaleController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-8701">
-              <caret line="957" column="50" selection-start-line="957" selection-start-column="50" selection-end-line="957" selection-end-column="50" />
+            <state relative-caret-position="1155">
+              <caret line="101" column="36" selection-start-line="101" selection-start-column="36" selection-end-line="101" selection-end-column="36" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/art/controllers/InvestorsFlowsController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="4635">
+              <caret line="331" selection-start-line="331" selection-end-line="331" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/art/service/InvestorsFlowsSaleService.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1845">
+              <caret line="140" column="5" selection-start-line="117" selection-start-column="4" selection-end-line="140" selection-end-column="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/art/controllers/InvestorsCashController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="474">
+              <caret line="259" column="25" selection-start-line="259" selection-start-column="25" selection-end-line="259" selection-end-column="25" />
               <folding>
-                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#label#0;n#!!top" expanded="true" />
+                <element signature="e#56090#56091#0" expanded="true" />
+                <element signature="e#56247#56248#0" expanded="true" />
+                <element signature="e#56384#56385#0" expanded="true" />
+                <element signature="e#56540#56541#0" expanded="true" />
+                <element signature="e#56686#56687#0" expanded="true" />
+                <element signature="e#56857#56858#0" expanded="true" />
+                <element signature="e#57028#57029#0" expanded="true" />
+                <element signature="e#57551#57552#0" expanded="true" />
+                <element signature="e#57683#57684#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/art/service/InvestorsCashService.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="391">
+              <caret line="244" column="5" selection-start-line="244" selection-start-column="5" selection-end-line="244" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -114,50 +257,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="26" column="29" selection-start-line="26" selection-start-column="29" selection-end-line="26" selection-end-column="29" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/Rooms.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret line="54" lean-forward="true" selection-start-line="54" selection-end-line="54" />
+            <state relative-caret-position="60">
+              <caret line="4" column="39" selection-start-line="4" selection-start-column="39" selection-end-line="7" selection-end-column="25" />
               <folding>
-                <marker date="1538024642613" expanded="true" signature="1666:1991" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/webapp/resources/core/js/scriptsForInvestorsCash.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="177">
-              <caret line="1556" column="22" lean-forward="true" selection-start-line="1556" selection-start-column="22" selection-end-line="1556" selection-end-column="22" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/art/controllers/InvestorsCashController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="1138" column="28" selection-start-line="1138" selection-start-column="28" selection-end-line="1138" selection-end-column="28" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/supporting/SearchSummary.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="76" column="30" selection-start-line="76" selection-start-column="30" selection-end-line="76" selection-end-column="30" />
-              <folding>
-                <element signature="e#10443#10444#0" expanded="true" />
-                <element signature="e#10476#10477#0" expanded="true" />
+                <marker date="1543054200952" expanded="true" signature="170:306" ph="..." />
+                <marker date="1543054200952" expanded="true" signature="376:385" ph="..." />
               </folding>
             </state>
           </provider>
@@ -171,43 +275,45 @@
         <option value="CSS File" />
         <option value="jsf" />
         <option value="JavaScript File" />
+        <option value="Interface" />
         <option value="Jsp File" />
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>createIncomeTable</find>
-      <find>createCashingTable</find>
-      <find>getMyCash</find>
-      <find>showInvestsDetails</find>
-      <find>по датам</find>
-      <find>.popup.js-active</find>
-      <find>createIncome</find>
-      <find>createI</find>
-      <find>.popup:</find>
-      <find>detailsProfit</find>
-      <find>.popup__inner</find>
-      <find>investmentsAll</find>
-      <find>.js-active</find>
-      <find>createInv</find>
-      <find>.popup</find>
-      <find>detailsP</find>
-      <find>blurElem</find>
-      <find>blurElement($('.out'), 4)</find>
-      <find>blurElement($('.out'),</find>
-      <find>#investmentsAll</find>
-      <find>removeBlur();</find>
-      <find>blurElement</find>
-      <find>blurElement($('.out')</find>
-      <find>$('div.out').css</find>
-      <find>Users_</find>
-      <find>model</find>
-      <find>compareTo</find>
-      <find>mainFlows</find>
-      <find>/getInvestorsF</find>
-      <find>saveDivideCash</find>
+      <find>edit-</find>
+      <find>UPDATE_</find>
+      <find>/updateMa</find>
+      <find>/newi</find>
+      <find>mysql</find>
+      <find>checkAll</find>
+      <find>divi</find>
+      <find>/getInvestorsCash</find>
+      <find>/dele</find>
+      <find>:che</find>
+      <find>checkI</find>
+      <find>doubl</find>
+      <find>form:in</find>
+      <find>parent</find>
+      <find>form:inp</find>
+      <find>reinvest</find>
+      <find>double-ca</find>
+      <find>liDivide</find>
+      <find>data</find>
+      <find>eq</find>
+      <find>linkHas</find>
+      <find>comission</find>
+      <find>#deleteAll</find>
+      <find>deleteFlowsList</find>
+      <find>deleteC</find>
+      <find>cashing</find>
+      <find>sumdetails</find>
+      <find>#del</find>
+      <find>investorsCashes</find>
+      <find>delete</find>
     </findStrings>
     <replaceStrings>
       <replace>/old_bootstrap.min.css</replace>
@@ -223,77 +329,72 @@
     </dirStrings>
   </component>
   <component name="Git.Settings">
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="WARN_ABOUT_CRLF" value="false" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewbonuses.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewbonustypes.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewcashpayments.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewcashsources.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewcashtypes.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewfacilitiesbuysales.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewfacilitiesreserves.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewfacilitiesservicecontracts.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewinvestorscash.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewinvestorsexp.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewinvestorsflows.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewInvestorsFlowsSale.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewinvestorsshare.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewinvestorstypes.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewmainflows.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewmainflowsinv.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewmainflowsinv2.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewnewcashdetails.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewpayments.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewrentorsdetails.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewRooms.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewSaleOfFacilities.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewShareKinds.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewtoshlcorrecttags.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewtoshlextract.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewtypeexp.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewTypesClosingInvest.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewunderfacilities.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/welcome.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/loader.jsp" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/controllers/FacilityController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/service/InvestorsCashService.java" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/getInvestorsCash.jsp" />
-        <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/controllers/InvestorsCashController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/controllers/InvestorsFlowsController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/model/HistoryRelationships.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/model/MainFlows.java" />
         <option value="$PROJECT_DIR$/src/main/webapp/resources/core/js/mailingScripts.js" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewFlows.jsp" />
         <option value="$PROJECT_DIR$/src/main/webapp/resources/core/js/app.js" />
         <option value="$PROJECT_DIR$/src/main/webapp/resources/core/css/app.css" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/service/UserService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/func/UploadExcelFunc.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/service/InvestorsFlowsService.java" />
         <option value="$PROJECT_DIR$/src/main/webapp/resources/core/js/flowsVisualization.js" />
-        <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
-        <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/src/main/java/com/art/model/UnderFacilities.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/art/repository/InvestorsCashRepository.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/art/service/RoomsService.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/art/model/Rooms.java" />
-        <option value="$PROJECT_DIR$/src/main/webapp/resources/core/js/scriptsForInvestorsCash.js" />
+        <option value="$PROJECT_DIR$/src/main/java/com/art/service/AlphaCorrectTagsService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/art/config/application/WebConfig.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/art/model/supporting/StatusEnum.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/art/func/GetPrincipalFunc.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/art/model/SecurityUser.java" />
+        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewmarketingtree.jsp" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/paysInvestors.jsp" />
+        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewinvestorsflows.jsp" />
+        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/catalogues.jsp" />
+        <option value="$PROJECT_DIR$/src/main/webapp/resources/core/js/scriptsForFlows.js" />
+        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/registration.jsp" />
+        <option value="$PROJECT_DIR$/src/main/java/com/art/model/supporting/KinEnum.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/art/controllers/UserController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/art/model/MarketingTree.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/art/controllers/MarketingTreeController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/art/service/ScheduledService.java" />
+        <option value="$PROJECT_DIR$/src/main/webapp/resources/core/js/scripts.js" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/art/repository/MarketingTreeRepository.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/art/service/MarketingTreeService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/art/service/UserService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/art/model/Users.java" />
+        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/admin.jsp" />
+        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewinvestorscash.jsp" />
+        <option value="$PROJECT_DIR$/src/main/java/com/art/func/UploadExcelFunc.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/art/controllers/InvestorsSummaryController.java" />
+        <option value="$PROJECT_DIR$/src/main/webapp/resources/core/js/scriptsForUsers.js" />
+        <option value="$PROJECT_DIR$/src/main/java/com/art/service/InvestorsFlowsService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/art/repository/InvestorsFlowsRepository.java" />
+        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewInvestorsFlowsSale.jsp" />
         <option value="$PROJECT_DIR$/src/main/java/com/art/model/supporting/SearchSummary.java" />
+        <option value="$PROJECT_DIR$/src/main/webapp/resources/core/js/scriptsForFlowsSale.js" />
+        <option value="$PROJECT_DIR$/src/main/java/com/art/controllers/InvestorsFlowsSaleController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/art/config/application/testPackage/testClass.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/art/service/InvestorsFlowsSaleService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/art/model/InvestorsFlowsSale.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/art/controllers/InvestorsFlowsController.java" />
+        <option value="$PROJECT_DIR$/src/main/webapp/resources/core/js/scriptsForInvestorsCash.js" />
+        <option value="$PROJECT_DIR$/src/main/java/com/art/service/InvestorsCashService.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
+        <option value="$PROJECT_DIR$/src/main/java/com/art/controllers/InvestorsCashController.java" />
       </list>
     </option>
   </component>
-  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
   <component name="JsFlowSettings">
     <service-enabled>true</service-enabled>
     <exe-path />
     <other-services-enabled>true</other-services-enabled>
     <auto-save>true</auto-save>
-  </component>
-  <component name="JsGulpfileManager">
-    <detection-done>true</detection-done>
-    <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="LogFilters">
     <option name="FILTER_ERRORS" value="false" />
@@ -325,7 +426,7 @@
       <select />
     </treeState>
   </component>
-  <component name="ProjectFrameBounds" fullScreen="true">
+  <component name="ProjectFrameBounds" extendedState="6" fullScreen="true">
     <option name="y" value="504" />
     <option name="width" value="80" />
     <option name="height" value="22" />
@@ -355,6 +456,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -395,7 +497,7 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="art" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
+              <item name="config" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="potoki" type="b2602c69:ProjectViewProjectNode" />
@@ -404,8 +506,37 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="art" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-              <item name="supporting" type="462c0819:PsiDirectoryNode" />
+              <item name="config" type="462c0819:PsiDirectoryNode" />
+              <item name="application" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="potoki" type="b2602c69:ProjectViewProjectNode" />
+              <item name="potoki" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="art" type="462c0819:PsiDirectoryNode" />
+              <item name="config" type="462c0819:PsiDirectoryNode" />
+              <item name="application" type="462c0819:PsiDirectoryNode" />
+              <item name="testPackage" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="potoki" type="b2602c69:ProjectViewProjectNode" />
+              <item name="potoki" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="art" type="462c0819:PsiDirectoryNode" />
+              <item name="controllers" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="potoki" type="b2602c69:ProjectViewProjectNode" />
+              <item name="potoki" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="art" type="462c0819:PsiDirectoryNode" />
+              <item name="service" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="potoki" type="b2602c69:ProjectViewProjectNode" />
@@ -448,6 +579,23 @@
               <item name="core" type="462c0819:PsiDirectoryNode" />
               <item name="js" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="potoki" type="b2602c69:ProjectViewProjectNode" />
+              <item name="potoki" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="WEB-INF" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="potoki" type="b2602c69:ProjectViewProjectNode" />
+              <item name="potoki" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="WEB-INF" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -463,15 +611,15 @@
           <select />
         </subPane>
       </pane>
-      <pane id="AndroidView" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="mysql" />
     <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538049543540" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542859677230" />
+    <property name="database.console.LAST_STATE" value="false" />
     <property name="extract.method.default.visibility" value="private" />
     <property name="findjar.last.used.dir" value="$PROJECT_DIR$" />
     <property name="js.eslint.eslintPackage" value="" />
@@ -482,19 +630,20 @@
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
+    <property name="restartRequiresConfirmation" value="false" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Ignored.Files" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
   </component>
   <component name="RecentsManager">
     <key name="OPEN_URL_DIALOG">
       <recent name="https://github.com/vitaly-chibrikov/homework_tester/tree/master/HWTester" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
+    <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/webapp/resources/core/css" />
-      <recent name="$PROJECT_DIR$/src/main/java/com/art/config/application" />
-      <recent name="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/abstractview" />
-      <recent name="C:\Users\Александр\IdeaProjects\potoki\src\main\webapp\resources\core\img" />
-      <recent name="C:\Users\Александр\IdeaProjects\potoki\src\main\webapp\resources\core" />
+      <recent name="$PROJECT_DIR$/src/main/webapp/resources/core/js" />
+      <recent name="$PROJECT_DIR$/src/main/webapp/WEB-INF/views" />
+      <recent name="$PROJECT_DIR$/src/main/webapp/resources/core/img" />
+      <recent name="$PROJECT_DIR$/src/main/webapp/resources/core/fonts" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.art.model.supporting" />
@@ -503,12 +652,12 @@
       <recent name="com.art.repository" />
       <recent name="com.art.model" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
+    <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/webapp/resources/core/css" />
-      <recent name="$PROJECT_DIR$/src/main/webapp/resources/core/js" />
-      <recent name="$PROJECT_DIR$/src/main/webapp/WEB-INF/views" />
-      <recent name="$PROJECT_DIR$/src/main/webapp/resources/core/img" />
-      <recent name="$PROJECT_DIR$/src/main/webapp/resources/core/fonts" />
+      <recent name="$PROJECT_DIR$/src/main/java/com/art/config/application" />
+      <recent name="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/abstractview" />
+      <recent name="C:\Users\Александр\IdeaProjects\potoki\src\main\webapp\resources\core\img" />
+      <recent name="C:\Users\Александр\IdeaProjects\potoki\src\main\webapp\resources\core" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -567,7 +716,7 @@
       <recursive>false</recursive>
       <method />
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
+    <configuration default="true" type="Applet">
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -621,12 +770,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="FlashRunConfigurationType" factoryName="Flash App">
+    <configuration default="true" type="FlashRunConfigurationType">
       <option name="BCName" value="" />
       <option name="IOSSimulatorSdkPath" value="" />
       <option name="adlOptions" value="" />
       <option name="airProgramParameters" value="" />
       <option name="appDescriptorForEmulator" value="Android" />
+      <option name="clearAppDataOnEachLaunch" value="true" />
       <option name="debugTransport" value="USB" />
       <option name="debuggerSdkRaw" value="BC SDK" />
       <option name="emulator" value="NexusOne" />
@@ -658,7 +808,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="FlexUnitRunConfigurationType" factoryName="FlexUnit" appDescriptorForEmulator="Android" class_name="" emulatorAdlOptions="" method_name="" package_name="" scope="Class">
+    <configuration default="true" type="FlexUnitRunConfigurationType" appDescriptorForEmulator="Android" class_name="" emulatorAdlOptions="" method_name="" package_name="" scope="Class">
       <option name="BCName" value="" />
       <option name="launcherParameters">
         <LauncherParameters>
@@ -740,13 +890,14 @@
       </MavenSettings>
       <method v="2" />
     </configuration>
-    <configuration name="1gb.ru" type="Remote" factoryName="Remote">
+    <configuration name="1gb.ru" type="Remote">
       <module name="potoki" />
       <option name="USE_SOCKET_TRANSPORT" value="true" />
       <option name="SERVER_MODE" value="false" />
       <option name="SHMEM_ADDRESS" value="javadebug" />
       <option name="HOST" value="ftp.ipcashflows-ru.1gb.ru" />
       <option name="PORT" value="2222" />
+      <option name="AUTO_RESTART" value="false" />
       <RunnerSettings RunnerId="Debug">
         <option name="DEBUG_PORT" value="2222" />
         <option name="LOCAL" value="false" />
@@ -757,7 +908,7 @@
         </option>
       </method>
     </configuration>
-    <configuration default="true" type="TestNG" factoryName="TestNG">
+    <configuration default="true" type="TestNG">
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
       <properties />
       <listeners />
@@ -769,8 +920,6 @@
       <option name="OPEN_IN_BROWSER" value="false" />
       <option name="BROWSER_ID" value="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" />
       <option name="START_JAVASCRIPT_DEBUGGER" value="true" />
-      <option name="UPDATE_ON_FRAME_DEACTIVATION" value="true" />
-      <option name="UPDATE_CLASSES_ON_FRAME_DEACTIVATION" value="true" />
       <option name="SHOW_DIALOG_ON_UPDATE" value="false" />
       <deployment>
         <artifact name="potoki:war exploded">
@@ -783,11 +932,11 @@
         <option name="BASE_DIRECTORY_NAME" value="Unnamed_potoki" />
         <option name="PRESERVE_SESSIONS" value="true" />
       </server-settings>
-      <predefined_log_file id="Tomcat" enabled="true" />
-      <predefined_log_file id="Tomcat Catalina" enabled="true" />
-      <predefined_log_file id="Tomcat Manager" enabled="false" />
-      <predefined_log_file id="Tomcat Host Manager" enabled="false" />
-      <predefined_log_file id="Tomcat Localhost Access" enabled="false" />
+      <predefined_log_file enabled="true" id="Tomcat" />
+      <predefined_log_file enabled="true" id="Tomcat Catalina" />
+      <predefined_log_file id="Tomcat Manager" />
+      <predefined_log_file id="Tomcat Host Manager" />
+      <predefined_log_file id="Tomcat Localhost Access" />
       <RunnerSettings RunnerId="Debug">
         <option name="DEBUG_PORT" value="35551" />
       </RunnerSettings>
@@ -852,8 +1001,8 @@
           <host-id />
         </data>
       </server-settings>
-      <predefined_log_file id="Tomcat" enabled="true" />
-      <predefined_log_file id="TOMCAT_LOCALHOST_LOG_ID" enabled="true" />
+      <predefined_log_file enabled="true" id="Tomcat" />
+      <predefined_log_file enabled="true" id="TOMCAT_LOCALHOST_LOG_ID" />
       <RunnerSettings RunnerId="Debug">
         <option name="DEBUG_PORT" value="14463" />
         <option name="LOCAL" value="false" />
@@ -862,16 +1011,16 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
+    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType">
       <module name="" />
       <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
       <option name="PROGRAM_PARAMETERS" />
-      <predefined_log_file id="idea.log" enabled="true" />
+      <predefined_log_file enabled="true" id="idea.log" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+    <configuration default="true" type="js.build_tools.gulp">
       <node-interpreter>project</node-interpreter>
       <node-options />
       <gulpfile />
@@ -881,12 +1030,12 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Maven.Maven build" />
-      <item itemvalue="Remote.1gb.ru" />
-      <item itemvalue="Tomcat Server.Tomcat deploy" />
       <item itemvalue="Application.testClass" />
       <item itemvalue="Application.AppMailSender" />
       <item itemvalue="Application.TlsEmail" />
+      <item itemvalue="Maven.Maven build" />
+      <item itemvalue="Remote.1gb.ru" />
+      <item itemvalue="Tomcat Server.Tomcat deploy" />
     </list>
     <recent_temporary>
       <list>
@@ -896,12 +1045,21 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="ShelveChangesManager">
+    <option name="remove_strategy" value="true" />
+  </component>
+  <component name="StructureViewFactory">
+    <option name="AUTOSCROLL_FROM_SOURCE" value="true" />
+    <option name="ACTIVE_ACTIONS" value=",SHOW_FIELDS" />
+  </component>
   <component name="SvnConfiguration">
     <configuration>$USER_HOME$/.subversion</configuration>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="7a6f4bb5-47a8-4ceb-b2dc-38f18b3a613b" name="Default" comment="" />
+      <changelist id="5d2ca7a4-18ec-4eae-b42c-9a7c4a92d346" name="Выплаты инвесторам. Показ по 100 записей" comment="" />
+      <changelist id="251e4d15-74eb-4e9a-8105-51151090c1ed" name="Выплаты инвесторам. Продажа. Разделение строк, как в деньгах инвесторов." comment="" />
       <created>1484724381163</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -1399,7 +1557,47 @@
       <workItem from="1536342885277" duration="7428000" />
       <workItem from="1537944874639" duration="394000" />
       <workItem from="1537949007127" duration="32000" />
-      <workItem from="1538023934124" duration="3976000" />
+      <workItem from="1538023934124" duration="6213000" />
+      <workItem from="1538218935467" duration="180000" />
+      <workItem from="1538227071638" duration="121000" />
+      <workItem from="1538228582954" duration="336000" />
+      <workItem from="1538286799182" duration="418000" />
+      <workItem from="1538592071479" duration="480000" />
+      <workItem from="1538941987500" duration="117000" />
+      <workItem from="1538981636627" duration="186000" />
+      <workItem from="1539056090658" duration="5233000" />
+      <workItem from="1539063227767" duration="894000" />
+      <workItem from="1539153428147" duration="826000" />
+      <workItem from="1539231694871" duration="1755000" />
+      <workItem from="1539580212882" duration="832000" />
+      <workItem from="1539747487000" duration="11574000" />
+      <workItem from="1539927841224" duration="906000" />
+      <workItem from="1540205489521" duration="1527000" />
+      <workItem from="1540383283656" duration="525000" />
+      <workItem from="1540443134377" duration="448000" />
+      <workItem from="1540454976437" duration="4159000" />
+      <workItem from="1540835007579" duration="610000" />
+      <workItem from="1540958562383" duration="352000" />
+      <workItem from="1540966955988" duration="2580000" />
+      <workItem from="1540996076504" duration="802000" />
+      <workItem from="1541045253839" duration="419000" />
+      <workItem from="1541045699976" duration="4701000" />
+      <workItem from="1541060770459" duration="55849000" />
+      <workItem from="1541584380144" duration="6756000" />
+      <workItem from="1541649561686" duration="7475000" />
+      <workItem from="1541671273759" duration="64100000" />
+      <workItem from="1542254558093" duration="21065000" />
+      <workItem from="1542482611010" duration="1504000" />
+      <workItem from="1542484476247" duration="577000" />
+      <workItem from="1542620999718" duration="789000" />
+      <workItem from="1542622543883" duration="24462000" />
+      <workItem from="1542859854531" duration="221000" />
+      <workItem from="1542860312095" duration="4440000" />
+      <workItem from="1542880923407" duration="29000" />
+      <workItem from="1542884954727" duration="5413000" />
+      <workItem from="1542907835263" duration="403000" />
+      <workItem from="1542945443515" duration="2000" />
+      <workItem from="1542973941772" duration="6625000" />
     </task>
     <task id="LOCAL-00001" summary="Тест из IDEA">
       <created>1515327675870</created>
@@ -1499,11 +1697,242 @@
       <option name="project" value="LOCAL" />
       <updated>1536386692305</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Тест2">
+      <created>1538049563643</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1538049563644</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Обновлён .gitignore">
+      <created>1541742636705</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1541742636705</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Добавлено маркетинговое дерево и методы для работы с ним.&#10;Добавлена поддержка запланированных заданий.&#10;Добавлено запланированное задание, для заполнения маркетингового дерева.&#10;Добавлена ссылка в справочник.&#10;Добавлены поля в форму создания пользователя (канал продаж и родство),&#10;удалены из формы группы рассылки и объекты.&#10;Исправлен вывод всех денег, не проставлялся тип закрытия и дата закрытия&#10;по некторым суммам.&#10;Добавлено поле выбора подобъекта при реинвесте/выводе.&#10;При удалении &quot;помещения&quot; сбрасывать его привязку в деньгах инвесторов и &#10;в выплатах инвесторам с аренды.&#10;Мелкий рефакторинг.">
+      <created>1541743908747</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1541743908747</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Удалено поле &quot;вид инвестора&quot; из &quot;выплаты с аренды&quot; и &quot;выплаты с продажи&quot;&#10;исправление: исправлена блокировка нажатия на ссылку, если она не активна&#10;Мелкий рефакторинг.">
+      <created>1541755276424</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1541755276424</updated>
+    </task>
+    <task id="LOCAL-00019" summary="исправление: добавлен вид инвестора &quot;Старый инвестор&quot; при реинвестировании">
+      <created>1541756188109</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1541756188109</updated>
+    </task>
+    <task id="LOCAL-00020" summary="исправление: вернули &quot;Источник денег&quot; на страницу">
+      <created>1541758276205</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1541758276205</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Удалены поля род id из &quot;денег инв&quot;">
+      <created>1541758838384</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1541758838384</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Выплаты инвесторам. Показ по 100 записей">
+      <created>1541914535039</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1541914535040</updated>
+    </task>
+    <task id="LOCAL-00023" summary="исправление: не срабатывал чекбокс &quot;выбрать всё&quot;">
+      <created>1541915301978</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1541915301978</updated>
+    </task>
+    <task id="LOCAL-00024" summary="исправление: при откате перепродажи доли не скидывались тип и дата закрытия">
+      <created>1542009041707</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1542009041707</updated>
+    </task>
+    <task id="LOCAL-00025" summary="исправление: при сохранении пользователя не давал выбрать степень родства и не сохранял связь с маркетинговым деревом. &#10;Добавлено отсутствие признака родства (null).">
+      <created>1542013762364</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1542013762364</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Изменено формирование маркетингового дерева. Если данные в дереве есть, проходило только обновление данных, новой информации не вносилось в БД.">
+      <created>1542015850258</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1542015850258</updated>
+    </task>
+    <task id="LOCAL-00027" summary="исправление: порядковый номер начинается с 1">
+      <created>1542016019449</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1542016019449</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Вынесено на MySQL сервер обновление маркетингового дерева.">
+      <created>1542111486206</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1542111486206</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Удалены поля пользователя: статус, дней до деактивации, дата первого вложения.&#10;Мелкий рефакторинг.">
+      <created>1542186594196</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1542186594196</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Возвращаем поле &quot;вид инвестора&quot; на страницу">
+      <created>1542191802681</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1542191802681</updated>
+    </task>
+    <task id="LOCAL-00031" summary="исправление: Выплаты инвесторам - продажа. Активация/деактивация ссылок">
+      <created>1542195188445</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1542195188445</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Выплаты инвесторам. Показ по 100 записей">
+      <created>1542195222110</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1542195222110</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Выплаты инвесторам. Продажа. Разделение строк, как в деньгах инвесторов.">
+      <created>1542215132945</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1542215132945</updated>
+    </task>
+    <task id="LOCAL-00034" summary="исправление: Вывод денег. Не верно выводились деньги.">
+      <created>1542272806607</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1542272806607</updated>
+    </task>
+    <task id="LOCAL-00035" summary="исправление: дата и тип закрытия у комиссии проставлялась дважды, второй раз не верно">
+      <created>1542277222584</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1542277222584</updated>
+    </task>
+    <task id="LOCAL-00036" summary="исправление: не создавался пользователь, если внести ФИО">
+      <created>1542356005990</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1542356005990</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Добавлена возможность &quot;массовых&quot; действий, если подобъект включает слово &quot;_Целиком&quot;">
+      <created>1542385417554</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1542385417561</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Выплаты инвесторам. Продажа. Разделение строк, как в деньгах инвесторов.">
+      <created>1542386252951</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1542386252951</updated>
+    </task>
+    <task id="LOCAL-00039" summary="Выплаты инвесторам. Продажа. Разделение строк, как в деньгах инвесторов.">
+      <created>1542429975039</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1542429975039</updated>
+    </task>
+    <task id="LOCAL-00040" summary="Выплаты инвесторам. Показ по 100 записей">
+      <created>1542430541357</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1542430541357</updated>
+    </task>
+    <task id="LOCAL-00041" summary="Выплаты инвесторам. Продажа. Разделение строк, как в деньгах инвесторов.">
+      <created>1542484226281</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1542484226281</updated>
+    </task>
+    <task id="LOCAL-00042" summary="fix: Выплаты инвесторам. Продажа. Разделение строк. Откат при удалении сумм.">
+      <created>1542703984232</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1542703984232</updated>
+    </task>
+    <task id="LOCAL-00043" summary="fix: Выплаты инвесторам. Продажа. Разделение строк. Откат при удалении сумм.">
+      <created>1542711779335</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1542711779335</updated>
+    </task>
+    <task id="LOCAL-00044" summary="исправление: при выводе денег блокировались все суммы, а должны только при выводе всех денег.&#10;Мелкий рефакторинг.">
+      <created>1542868913233</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1542868913233</updated>
+    </task>
+    <task id="LOCAL-00045" summary="fix: откат при удалении суммы в деньгах инвесторов.">
+      <created>1542888797362</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1542888797362</updated>
+    </task>
+    <task id="LOCAL-00046" summary="fix: При разделении сумм терялся sourceFlowsId">
+      <created>1542907996223</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1542907996223</updated>
+    </task>
+    <task id="LOCAL-00047" summary="Откат денег. При удалении заглядываем в таблицу AfterCashing, если удаляемая сумма с типом закрытия &quot;Вывод&quot; или &quot;Вывод_комиссия&quot;">
+      <created>1543054150934</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1543054150934</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4359380000" />
+    <option name="totallyTimeSpent" value="4601308000" />
   </component>
   <component name="TodoView" selected-index="2">
     <todo-panel id="selected-file">
@@ -1518,8 +1947,52 @@
     <frame x="0" y="0" width="1680" height="1050" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49004593" visible="true" weight="0.30647132" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.24940476" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.55618775" visible="true" weight="0.21550672" />
+      <window_info id="Structure" order="1" sideWeight="0.44381222" side_tool="true" visible="true" weight="0.21550672" />
+      <window_info id="Nl-Palette" order="2" />
+      <window_info id="Designer" order="3" />
+      <window_info id="UI Designer" order="4" />
+      <window_info id="Image Layers" order="5" />
+      <window_info id="Web" order="6" sideWeight="0.50995404" side_tool="true" weight="0.26190478" />
+      <window_info id="Favorites" order="7" sideWeight="0.5035751" side_tool="true" weight="0.35042736" />
+      <window_info id="Capture Tool" order="8" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3265306" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.28265306" />
+      <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
+      <window_info anchor="bottom" id="Debug" order="5" sideWeight="0.49570355" weight="0.43061224" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.3299285" />
+      <window_info anchor="bottom" id="Application Servers" order="7" weight="0.32890704" />
+      <window_info anchor="bottom" id="Messages" order="8" weight="0.3265306" />
+      <window_info anchor="bottom" id="Version Control" order="9" weight="0.327551" />
+      <window_info anchor="bottom" id="Java Enterprise" order="10" weight="0.32890704" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.327551" />
+      <window_info anchor="bottom" id="Event Log" order="12" sideWeight="0.5042965" side_tool="true" weight="0.4065373" />
+      <window_info anchor="bottom" id="Database Changes" order="13" weight="0.32959184" />
+      <window_info anchor="bottom" id="Dependency Viewer" order="14" weight="0.3299285" />
+      <window_info anchor="bottom" id="Spring" order="15" weight="0.32890704" />
+      <window_info anchor="bottom" id="Database Console" order="16" weight="0.32985386" />
+      <window_info anchor="bottom" id="Docker" order="17" show_stripe_button="false" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.24969475" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="CDI" order="4" />
+      <window_info anchor="right" id="Properties" order="5" />
+      <window_info anchor="right" id="Database" order="6" weight="0.1898657" />
+      <window_info anchor="right" id="JSF" order="7" />
+      <window_info anchor="right" id="Palette&#9;" order="8" />
+      <window_info anchor="right" id="Capture Analysis" order="9" />
+      <window_info anchor="right" id="Bean Validation" order="10" />
+      <window_info anchor="right" id="Theme Preview" order="11" />
+      <window_info anchor="right" id="Maven Projects" order="12" weight="0.32905984" />
+      <window_info anchor="right" id="Key Promoter" order="13" />
+      <window_info anchor="right" id="Maven" order="14" />
+    </layout>
+    <layout-to-restore>
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.57758623" visible="true" weight="0.24114774" />
+      <window_info id="Structure" order="1" sideWeight="0.4224138" side_tool="true" visible="true" weight="0.24114774" />
       <window_info id="Nl-Palette" order="2" />
       <window_info id="Designer" order="3" />
       <window_info id="UI Designer" order="4" />
@@ -1529,10 +2002,10 @@
       <window_info id="Capture Tool" order="8" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3271795" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.2902564" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.2897959" />
       <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
-      <window_info anchor="bottom" id="Debug" order="5" sideWeight="0.49570355" visible="true" weight="0.43163267" />
+      <window_info anchor="bottom" id="Debug" order="5" sideWeight="0.49570355" weight="0.43163267" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3299285" />
       <window_info anchor="bottom" id="Application Servers" order="7" weight="0.32890704" />
       <window_info anchor="bottom" id="Messages" order="8" weight="0.327551" />
@@ -1557,7 +2030,7 @@
       <window_info anchor="right" id="Theme Preview" order="11" />
       <window_info anchor="right" id="Maven Projects" order="12" weight="0.32905984" />
       <window_info anchor="right" id="Key Promoter" order="13" />
-    </layout>
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -1587,22 +2060,53 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list />
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Тест из IDEA" />
-    <MESSAGE value="Добавлен метод для извлечения потоков инвесторов по объектам, закрепленным за инвестором." />
-    <MESSAGE value="Исправлено изменение суммы вложенных денег инвесторов, при котором терялись связи с предыдущими суммами." />
-    <MESSAGE value="Тест" />
-    <MESSAGE value="Initial commit" />
-    <MESSAGE value="Тест2" />
-    <MESSAGE value="update .gitignore" />
-    <option name="LAST_COMMIT_MESSAGE" value="update .gitignore" />
+    <MESSAGE value="Удалено поле &quot;вид инвестора&quot; из &quot;выплаты с аренды&quot; и &quot;выплаты с продажи&quot;&#10;исправление: исправлена блокировка нажатия на ссылку, если она не активна&#10;Мелкий рефакторинг." />
+    <MESSAGE value="исправление: добавлен вид инвестора &quot;Старый инвестор&quot; при реинвестировании" />
+    <MESSAGE value="исправление: вернули &quot;Источник денег&quot; на страницу" />
+    <MESSAGE value="Удалены поля род id из &quot;денег инв&quot;" />
+    <MESSAGE value="исправление: не срабатывал чекбокс &quot;выбрать всё&quot;" />
+    <MESSAGE value="исправление: при откате перепродажи доли не скидывались тип и дата закрытия" />
+    <MESSAGE value="исправление: при сохранении пользователя не давал выбрать степень родства и не сохранял связь с маркетинговым деревом. &#10;Добавлено отсутствие признака родства (null)." />
+    <MESSAGE value="Изменено формирование маркетингового дерева. Если данные в дереве есть, проходило только обновление данных, новой информации не вносилось в БД." />
+    <MESSAGE value="исправление: порядковый номер начинается с 1" />
+    <MESSAGE value="Вынесено на MySQL сервер обновление маркетингового дерева." />
+    <MESSAGE value="Удалены поля пользователя: статус, дней до деактивации, дата первого вложения.&#10;Мелкий рефакторинг." />
+    <MESSAGE value="Возвращаем поле &quot;вид инвестора&quot; на страницу" />
+    <MESSAGE value="исправление: Выплаты инвесторам - продажа. Активация/деактивация ссылок" />
+    <MESSAGE value="исправление: Вывод денег. Не верно выводились деньги." />
+    <MESSAGE value="исправление: дата и тип закрытия у комиссии проставлялась дважды, второй раз не верно" />
+    <MESSAGE value="исправление: не создавался пользователь, если внести ФИО" />
+    <MESSAGE value="Добавлена возможность &quot;массовых&quot; действий, если подобъект включает слово &quot;_Целиком&quot;" />
+    <MESSAGE value="Выплаты инвесторам. Показ по 100 записей" />
+    <MESSAGE value="Выплаты инвесторам. Продажа. Разделение строк, как в деньгах инвесторов." />
+    <MESSAGE value="Выплаты инвесторам. Продажа. Разделение строк, как в деньгах инвесторов. Откат при удалении сумм." />
+    <MESSAGE value="fix: Выплаты инвесторам. Продажа. Разделение строк. Откат при удалении сумм." />
+    <MESSAGE value="исправление: при выводе денег блокировались все суммы, а должны только при выводе всех денег.&#10;Мелкий рефакторинг." />
+    <MESSAGE value="fix: откат при удалении суммы в деньгах инвесторов." />
+    <MESSAGE value="fix: При разделении сумм терялся sourceFlowsId" />
+    <MESSAGE value="Откат денег. При удалении заглядываем в таблицу AfterCashing, если удаляемая сумма с типом закрытия &quot;Вывод&quot; или &quot;Вывод_комиссия&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Откат денег. При удалении заглядываем в таблицу AfterCashing, если удаляемая сумма с типом закрытия &quot;Вывод&quot; или &quot;Вывод_комиссия&quot;" />
+    <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1613,400 +2117,420 @@
           <properties />
           <option name="timeStamp" value="1879" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/art/func/UploadExcelFunc.java</url>
-          <line>984</line>
-          <properties />
-          <option name="timeStamp" value="2072" />
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/main/webapp/resources/core/js/scriptsForInvestorsCash.js</url>
+          <line>209</line>
+          <option name="timeStamp" value="2143" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/main/webapp/resources/core/js/scriptsForFlowsSale.js</url>
+          <line>664</line>
+          <option name="timeStamp" value="2145" />
         </line-breakpoint>
       </breakpoints>
-      <breakpoints-dialog>
-        <breakpoints-dialog />
-      </breakpoints-dialog>
     </breakpoint-manager>
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
     <option name="FILTER_TARGETS" value="false" />
   </component>
+  <component name="com.vaadin.designer2.intellij.settings.SizePresetsSettingsComponent">
+    <option name="sizePresets">
+      <list>
+        <SizePreset>
+          <option name="caption" value="Phone" />
+          <option name="height" value="568" />
+          <option name="width" value="320" />
+        </SizePreset>
+        <SizePreset>
+          <option name="caption" value="Tablet" />
+          <option name="height" value="1024" />
+          <option name="width" value="768" />
+        </SizePreset>
+        <SizePreset>
+          <option name="caption" value="Desktop" />
+          <option name="height" value="900" />
+          <option name="width" value="1440" />
+        </SizePreset>
+      </list>
+    </option>
+  </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="watch">
+      <expression>
+        <expression-string>ic.getGivedCash().subtract(remainderSum[0]).compareTo(BigDecimal.ZERO) &lt; 0</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>deleting.getSourceId()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>deleting.getSource()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>deleting.getSourceFlowsId()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>ic.getGivedCash()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>ic.getGivedCash().subtract(remainderSum[0])</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>firstInvestment.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()</expression-string>
+        <language-id>JAVA</language-id>
+        <custom-info>java.time.ZoneId</custom-info>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>firstInvestment.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>LocalDate.from(Instant.ofEpochMilli(firstInvestment.getTime()))</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>Instant.ofEpochMilli(firstInvestment.getTime())</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+  </component>
+  <component name="designer2.settings">
+    <option name="autodetectServerAddress" value="true" />
+    <option name="serverIp" value="localhost" />
+  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/HistoryRelationships.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="291">
-          <caret line="61" column="4" selection-start-line="61" selection-start-column="4" selection-end-line="69" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/InvestorsExpenses.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="486">
-          <caret line="53" column="27" lean-forward="true" selection-start-line="45" selection-start-column="4" selection-end-line="53" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/InvestorsFlows.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/InvestorsFlowsSale.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="32" column="26" lean-forward="true" selection-start-line="32" selection-start-column="26" selection-end-line="32" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/InvestorsLoad.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="12" column="7" lean-forward="true" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/InvestorsShare.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="34" column="32" lean-forward="true" selection-start-line="34" selection-start-column="32" selection-end-line="34" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/InvestorsTypes.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/MarketingTree.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
-          <caret line="16" column="31" lean-forward="true" selection-start-line="16" selection-start-column="31" selection-end-line="16" selection-end-column="31" />
+          <caret line="17" column="105" selection-start-line="17" selection-start-column="105" selection-end-line="17" selection-end-column="105" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/MainFlows.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/controllers/MarketingTreeController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="15" column="7" lean-forward="true" selection-start-line="15" selection-start-column="7" selection-end-line="15" selection-end-column="7" />
+        <state relative-caret-position="345">
+          <caret line="45" column="69" lean-forward="true" selection-start-line="45" selection-start-column="69" selection-end-line="45" selection-end-column="69" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/NewCashDetails.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="19" column="33" lean-forward="true" selection-start-line="19" selection-start-column="33" selection-end-line="19" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/PasswordResetToken.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="16" column="31" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/PaymentsMethod.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="15" column="53" lean-forward="true" selection-start-line="15" selection-start-column="53" selection-end-line="15" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/PaymentsType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="16" column="4" lean-forward="true" selection-start-line="16" selection-start-column="4" selection-end-line="17" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/RentorsDetails.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/Roles.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/supporting/KinEnum.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
-          <caret line="18" column="24" lean-forward="true" selection-start-line="18" selection-start-column="24" selection-end-line="18" selection-end-column="24" />
+          <caret line="16" column="5" selection-start-line="16" selection-start-column="5" selection-end-line="16" selection-end-column="5" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/SaleOfFacilities.java">
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/resources/core/js/scripts.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="19" column="29" lean-forward="true" selection-start-line="19" selection-start-column="29" selection-end-line="19" selection-end-column="29" />
+        <state relative-caret-position="230">
+          <caret line="299" column="34" selection-start-line="299" selection-start-column="34" selection-end-line="299" selection-end-column="34" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/SecurityUser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/ShareKind.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="13" column="9" lean-forward="true" selection-start-line="13" selection-start-column="9" selection-end-line="13" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/ToshlCorrectTags.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="38" lean-forward="true" selection-start-line="38" selection-end-line="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/ToshlExtract.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="29" column="27" selection-start-line="29" selection-start-column="27" selection-end-line="29" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/TypeClosingInvest.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/service/ScheduledService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
-          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+          <caret line="21" column="69" selection-start-line="21" selection-start-column="69" selection-end-line="21" selection-end-column="69" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/TypeExpenses.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/repository/MarketingTreeRepository.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
+        <state relative-caret-position="165">
+          <caret line="11" column="34" selection-start-line="11" selection-start-column="34" selection-end-line="11" selection-end-column="34" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/UnderFacilities.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/service/MarketingTreeService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="24" column="25" selection-start-line="24" selection-start-column="25" selection-end-line="24" selection-end-column="25" />
+        <state relative-caret-position="285">
+          <caret line="19" column="21" selection-start-line="19" selection-start-column="21" selection-end-line="19" selection-end-column="21" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/UsersAnnexToContracts.java">
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/admin.jsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="66" column="13" lean-forward="true" selection-start-line="66" selection-start-column="13" selection-end-line="66" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/resources/core/js/mailingScripts.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2490">
-          <caret line="166" column="28" selection-start-line="166" selection-start-column="28" selection-end-line="166" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/resources/core/js/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-996" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewFlows.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3975">
-          <caret line="265" column="94" selection-start-line="265" selection-start-column="94" selection-end-line="265" selection-end-column="94" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/resources/core/css/app.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="113">
-          <caret column="19331" selection-start-column="19323" selection-end-column="19331" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/Users_.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="19" column="62" lean-forward="true" selection-start-line="19" selection-start-column="62" selection-end-line="19" selection-end-column="62" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/Stuffs.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/MailingGroups.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/config/WebAppInitializer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/Users.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="37" column="39" lean-forward="true" selection-start-line="26" selection-start-column="4" selection-end-line="37" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/config/AppSecurityConfig.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1202">
-          <caret line="35" column="13" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/config/PersistenceConfig.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="615">
-          <caret line="58" column="78" selection-start-line="58" selection-start-column="78" selection-end-line="58" selection-end-column="78" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/javax/javaee-web-api/7.0/javaee-web-api-7.0.jar!/javax/persistence/PersistenceContext.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="14" column="18" selection-start-line="14" selection-start-column="18" selection-end-line="14" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/config/application/WebConfig.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="26" column="13" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/func/UploadExcelFunc.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="214">
-          <caret line="1191" column="62" lean-forward="true" selection-start-line="1191" selection-start-column="62" selection-end-line="1191" selection-end-column="62" />
-          <folding>
-            <element signature="e#59715#59716#0" expanded="true" />
-            <element signature="e#59756#59757#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/InvestorsCash.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="283">
-          <caret line="127" column="27" lean-forward="true" selection-start-line="127" selection-start-column="27" selection-end-line="127" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/service/InvestorsFlowsService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="840">
-          <caret line="78" column="33" selection-start-line="78" selection-start-column="33" selection-end-line="78" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/controllers/InvestorsFlowsController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5670">
-          <caret line="402" column="87" selection-start-line="402" selection-start-column="87" selection-end-line="402" selection-end-column="87" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/service/UserService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="35" column="26" selection-start-line="35" selection-start-column="26" selection-end-line="35" selection-end-column="26" />
+        <state relative-caret-position="334">
+          <caret line="52" column="29" selection-start-line="52" selection-start-column="29" selection-end-line="52" selection-end-column="29" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4650">
-          <caret line="310" column="21" selection-start-line="306" selection-start-column="8" selection-end-line="310" selection-end-column="21" />
+        <state relative-caret-position="2625">
+          <caret line="183" column="28" selection-start-line="183" selection-start-column="28" selection-end-line="183" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/func/UploadExcelFunc.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="241">
+          <caret line="1100" column="40" lean-forward="true" selection-start-line="1100" selection-start-column="40" selection-end-line="1100" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/catalogues.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="303">
+          <caret line="57" column="41" selection-start-line="57" selection-start-column="41" selection-end-line="57" selection-end-column="41" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/mail.ru.properties">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/controllers/ResetPasswordController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="23" selection-start-line="23" selection-end-line="23" />
+        <state relative-caret-position="318">
+          <caret line="87" column="20" selection-start-line="87" selection-start-column="20" selection-end-line="87" selection-end-column="20" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/resources/core/js/flowsVisualization.js">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/supporting/MailService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-8701">
-          <caret line="957" column="50" selection-start-line="957" selection-start-column="50" selection-end-line="957" selection-end-column="50" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#label#0;n#!!top" expanded="true" />
-          </folding>
+        <state relative-caret-position="336">
+          <caret line="47" column="22" selection-start-line="47" selection-start-column="22" selection-end-line="47" selection-end-column="22" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/controllers/UserController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="26" column="29" selection-start-line="26" selection-start-column="29" selection-end-line="26" selection-end-column="29" />
+        <state relative-caret-position="334">
+          <caret line="336" column="43" selection-start-line="336" selection-start-column="43" selection-end-line="336" selection-end-column="43" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/Rooms.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/service/UserService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="54" lean-forward="true" selection-start-line="54" selection-end-line="54" />
-          <folding>
-            <marker date="1538024642613" expanded="true" signature="1666:1991" ph="..." />
-          </folding>
+        <state relative-caret-position="350">
+          <caret line="279" column="32" selection-start-line="279" selection-start-column="32" selection-end-line="279" selection-end-column="32" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/service/InvestorsCashService.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/func/PersonalMailService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="173">
-          <caret line="89" column="28" selection-start-line="89" selection-start-column="28" selection-end-line="89" selection-end-column="28" />
+        <state relative-caret-position="244">
+          <caret line="26" column="34" selection-start-line="26" selection-start-column="34" selection-end-line="26" selection-end-column="34" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/controllers/InvestorsCashController.java">
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/resources/core/js/scriptsForUsers.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="1138" column="28" selection-start-line="1138" selection-start-column="28" selection-end-line="1138" selection-end-column="28" />
+        <state relative-caret-position="204">
+          <caret line="86" column="43" selection-start-line="86" selection-start-column="43" selection-end-line="86" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/registration.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1307">
+          <caret line="106" column="48" selection-start-line="106" selection-start-column="48" selection-end-line="106" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewinvestorscash.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="359">
+          <caret line="318" lean-forward="true" selection-start-line="318" selection-end-line="318" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/resources/core/js/scriptsForFlows.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-306">
+          <caret line="48" column="30" selection-start-line="48" selection-start-column="30" selection-end-line="48" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewinvestorsflows.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-722">
+          <caret line="52" column="43" lean-forward="true" selection-start-line="52" selection-start-column="43" selection-end-line="52" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/service/InvestorsFlowsService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="25" selection-start-line="25" selection-end-line="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/InvestorsFlows.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/repository/InvestorsFlowsRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="10" column="86" selection-start-line="10" selection-start-column="86" selection-end-line="10" selection-end-column="86" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/controllers/InvestorsSummaryController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="385">
+          <caret line="168" lean-forward="true" selection-start-line="168" selection-end-line="168" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/controllers/MainFlowsController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="66" column="40" lean-forward="true" selection-start-line="66" selection-start-column="28" selection-end-line="66" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/4.3.4.RELEASE/spring-web-4.3.4.RELEASE.jar!/org/springframework/web/method/support/InvocableHandlerMethod.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="129" selection-start-line="129" selection-end-line="129" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/supporting/SearchSummary.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="76" column="30" selection-start-line="76" selection-start-column="30" selection-end-line="76" selection-end-column="30" />
+        <state relative-caret-position="870">
+          <caret line="66" column="22" selection-start-line="66" selection-start-column="12" selection-end-line="66" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewInvestorsFlowsSale.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="106" column="49" selection-start-line="106" selection-start-column="40" selection-end-line="106" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://65cb158f-8ea9-460f-9e29-e29f96b3015d/schema/pss_projects/table/investorsflowssale" />
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/resources/core/js/scriptsForFlowsSale.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="227">
+          <caret line="179" column="8" selection-start-line="179" selection-start-column="8" selection-end-line="179" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://65cb158f-8ea9-460f-9e29-e29f96b3015d/schema/pss_projects/table/aftercashing" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/config/application/testPackage/testClass.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="202">
+          <caret line="57" column="11" selection-start-line="54" selection-start-column="8" selection-end-line="57" selection-end-column="11" />
           <folding>
-            <element signature="e#10443#10444#0" expanded="true" />
-            <element signature="e#10476#10477#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/Facilities.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="173">
+          <caret line="28" selection-start-line="28" selection-end-line="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/InvestorsFlowsSale.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="12" column="81" selection-start-line="12" selection-start-column="81" selection-end-line="12" selection-end-column="81" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://5cc596b5-d302-4178-9e09-b790768140c1/schema/pss_projects/table/InvestorsFlowsSale" />
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/5cc596b5-d302-4178-9e09-b790768140c1/console.sql">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="das://5cc596b5-d302-4178-9e09-b790768140c1/schema/pss_projects/table/FACILITYES" />
+    <entry file="das://5cc596b5-d302-4178-9e09-b790768140c1/schema/pss_projects/table/UnderFacilities" />
+    <entry file="das://5cc596b5-d302-4178-9e09-b790768140c1/schema/pss_projects/table/Rooms" />
+    <entry file="das://5cc596b5-d302-4178-9e09-b790768140c1/schema/pss_projects/table/USERS" />
+    <entry file="das://5cc596b5-d302-4178-9e09-b790768140c1/schema/pss_projects/table/InvestorsFlows" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/model/Users.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="356">
+          <caret line="99" column="100" lean-forward="true" selection-start-line="97" selection-start-column="4" selection-end-line="99" selection-end-column="100" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/resources/core/js/scriptsForInvestorsCash.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="1556" column="22" lean-forward="true" selection-start-line="1556" selection-start-column="22" selection-end-line="1556" selection-end-column="22" />
+        <state relative-caret-position="297">
+          <caret line="86" column="7" lean-forward="true" selection-start-line="86" selection-start-column="7" selection-end-line="86" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/controllers/InvestorsFlowsSaleController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1155">
+          <caret line="101" column="36" selection-start-line="101" selection-start-column="36" selection-end-line="101" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/controllers/InvestorsFlowsController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4635">
+          <caret line="331" selection-start-line="331" selection-end-line="331" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/service/InvestorsFlowsSaleService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1845">
+          <caret line="140" column="5" selection-start-line="117" selection-start-column="4" selection-end-line="140" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/service/InvestorsCashService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="244" column="5" selection-start-line="244" selection-start-column="5" selection-end-line="244" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="39" selection-start-line="4" selection-start-column="39" selection-end-line="7" selection-end-column="25" />
+          <folding>
+            <marker date="1543054200952" expanded="true" signature="170:306" ph="..." />
+            <marker date="1543054200952" expanded="true" signature="376:385" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/art/controllers/InvestorsCashController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="474">
+          <caret line="259" column="25" selection-start-line="259" selection-start-column="25" selection-end-line="259" selection-end-column="25" />
+          <folding>
+            <element signature="e#56090#56091#0" expanded="true" />
+            <element signature="e#56247#56248#0" expanded="true" />
+            <element signature="e#56384#56385#0" expanded="true" />
+            <element signature="e#56540#56541#0" expanded="true" />
+            <element signature="e#56686#56687#0" expanded="true" />
+            <element signature="e#56857#56858#0" expanded="true" />
+            <element signature="e#57028#57029#0" expanded="true" />
+            <element signature="e#57551#57552#0" expanded="true" />
+            <element signature="e#57683#57684#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

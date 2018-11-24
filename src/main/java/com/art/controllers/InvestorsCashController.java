@@ -2,7 +2,10 @@ package com.art.controllers;
 
 import com.art.func.GetPrincipalFunc;
 import com.art.model.*;
-import com.art.model.supporting.*;
+import com.art.model.supporting.AfterCashing;
+import com.art.model.supporting.GenericResponse;
+import com.art.model.supporting.PaginationResult;
+import com.art.model.supporting.SearchSummary;
 import com.art.repository.MarketingTreeRepository;
 import com.art.service.*;
 import org.json.JSONArray;
@@ -239,14 +242,21 @@ public class InvestorsCashController {
                         List<AfterCashing> afterCashing = afterCashingList.stream()
                                 .filter(ac -> ac.getOldId().equals(parentCashId))
                                 .collect(Collectors.toList());
-                        if (afterCashing.size() > 0) {
-                            List<InvestorsCash> childCash = investorsCashService.findBySource(deleting.getSource());
-                            AfterCashing cashToDel = afterCashing.stream()
-                                    .filter(ac -> ac.getOldId().equals(parentCashId))
-                                    .findFirst().orElse(afterCashing.get(0));
-                            parentCash.setGivedCash(cashToDel.getOldValue());
-                            childCash.forEach(cbs -> investorsCashService.deleteById(cbs.getId()));
-                            afterCashingService.deleteById(cashToDel.getId());
+                        if ((!Objects.equals(null, deleting.getTypeClosingInvest()) &&
+                                (
+                                        deleting.getTypeClosingInvest().getTypeClosingInvest().equalsIgnoreCase("Вывод") ||
+                                                deleting.getTypeClosingInvest().getTypeClosingInvest().equalsIgnoreCase("Вывод_комиссия")
+                                )
+                        )) {
+                            if (afterCashing.size() > 0) {
+                                List<InvestorsCash> childCash = investorsCashService.findBySource(deleting.getSource());
+                                AfterCashing cashToDel = afterCashing.stream()
+                                        .filter(ac -> ac.getOldId().equals(parentCashId))
+                                        .findFirst().orElse(afterCashing.get(0));
+                                parentCash.setGivedCash(cashToDel.getOldValue());
+                                childCash.forEach(cbs -> investorsCashService.deleteById(cbs.getId()));
+                                afterCashingService.deleteById(cashToDel.getId());
+                            }
                         }
 
                         parentCash.setIsReinvest(0);
@@ -335,7 +345,8 @@ public class InvestorsCashController {
     }
 
     @PostMapping(value = "/allMoneyCashing", produces = "application/json;charset=UTF-8")
-    public @ResponseBody GenericResponse allMoneyCashing(@RequestBody SearchSummary searchSummary) {
+    public @ResponseBody
+    GenericResponse allMoneyCashing(@RequestBody SearchSummary searchSummary) {
 
         GenericResponse response = new GenericResponse();
 
