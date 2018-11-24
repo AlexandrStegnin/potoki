@@ -95,7 +95,7 @@ jQuery(document).ready(function ($) {
 
     $('#reinvestAll').on('click', function (event) {
         event.preventDefault();
-        if(linkHasClass($('#reinvestAll'))) return false;
+        if (linkHasClass($('#reinvestAll'))) return false;
         $('#reInvestModal').modal({
             show: true
         })
@@ -106,12 +106,11 @@ jQuery(document).ready(function ($) {
         $('#reInvestModal').modal("hide");
     });
 
-    $(document).on('change', '#checkAll', function () {
+    $(document).on('change', '#checkIt', function () {
         var checked = $('#checkIt').prop('checked');
-        var noDivide = false;
         if (!checked) {
-            blockUnblockDropdownMenus('block', noDivide);
-            $('table#invFlows').find('> tbody').find('> tr').each(function () {
+            blockUnblockDropdownMenus('block', false);
+            $('table#invFlowsSale').find('> tbody').find('> tr').each(function () {
                 $(this).find(':checkbox:not(:disabled)').prop('checked', false);
             });
         } else {
@@ -119,17 +118,12 @@ jQuery(document).ready(function ($) {
                 if (!$(this).data('passed')) {
                     $(this).find(':checkbox:not(:disabled)').prop('checked', false);
                 } else {
-                    if ($(this).find('td:eq(9)').text() === '') {
-                        $(this).find(':checkbox:not(:disabled)').prop('checked', function () {
-                            if (!noDivide) {
-                                noDivide = $(this).closest('tr').find('> td:eq(1)').text().length > 0;
-                            }
-                            return checked;
-                        });
-                    }
+                    $(this).find(':checkbox:not(:disabled)').prop('checked', function () {
+                        return checked;
+                    });
                 }
             });
-            blockUnblockDropdownMenus('unblock', noDivide);
+            blockUnblockDropdownMenus('unblock', false);
         }
     });
 
@@ -168,7 +162,7 @@ jQuery(document).ready(function ($) {
 
     $('#deleteAll').on('click', function (event) {
         event.preventDefault();
-        if(linkHasClass($('#deleteAll'))) return false;
+        if (linkHasClass($('#deleteAll'))) return false;
         showLoader();
         var cashIdList = [];
         $('table#invFlowsSale').find('> tbody').find('> tr').each(function () {
