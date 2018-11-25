@@ -37,7 +37,7 @@ jQuery(document).ready(function ($) {
         let flowId = divideModal.find('#divideId').val();
         let flowMaxSum = divideModal.find('#flowMaxSum').val();
         divideCash(flowId, flowMaxSum);
-        $('#divideModal').modal('hide');
+        divideModal.modal('hide');
     });
 
     $(document).on('submit', '#divideData', function (e) {
@@ -676,6 +676,8 @@ function divideCash(flowId, divideSum) {
     })
         .done(function (data) {
             closeLoader();
+            let sum = parseInt(data.message, 10);
+            if (sum === 0)  $('#divideModal').modal('hide');
             $('#flowMaxSum').val(data.message);
             $('#divideCash').val(data.message);
         })
