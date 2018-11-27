@@ -506,17 +506,18 @@ public class InvestorsCashController {
                 commissionCash.setSource(commissionCash.getSource() == null ? "" + ic.getId().toString() : commissionCash.getSource() + "|" + ic.getId().toString());
 
                 remainderCash.setSource(cashForGetting.getSource());
-            } else {
-                if (all) {
-                    ic.setTypeClosingInvest(typeClosingInvest);
-                    ic.setDateClosingInvest(cashForGetting.getDateGivedCash());
-                    investorsCashService.update(ic);
-                }
+            }
+            if (all) {
+                ic.setTypeClosingInvest(typeClosingInvest);
+                ic.setDateClosingInvest(cashForGetting.getDateGivedCash());
+                investorsCashService.update(ic);
             }
         });
 
-        if (cashForGetting.getSource().equalsIgnoreCase("")) cashForGetting.setSource(null);
-        if (commissionCash.getSource().equalsIgnoreCase("")) cashForGetting.setSource(null);
+        if (!Objects.equals(null, cashForGetting.getSource()) &&
+                cashForGetting.getSource().equalsIgnoreCase("")) cashForGetting.setSource(null);
+        if (!Objects.equals(null, commissionCash.getSource()) &&
+                commissionCash.getSource().equalsIgnoreCase("")) cashForGetting.setSource(null);
 
         cashingList.forEach(cl -> afterCashingService.create(cl));
         cashForGetting.setTypeClosingInvest(typeClosingInvest);
