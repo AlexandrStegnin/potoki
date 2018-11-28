@@ -99,7 +99,8 @@ public class InvestorsFlowsSaleController {
         newFlows.setId(null);
         newFlows.setProfitToReInvest(divideSum);
         newFlows.setSourceId(oldFlows.getId());
-        if (oldFlows.getProfitToReInvest().compareTo(BigDecimal.ZERO) == 0) {
+        if (oldFlows.getProfitToReInvest().compareTo(BigDecimal.ZERO) == 0 ||
+                oldFlows.getProfitToReInvest().negate().compareTo(BigDecimal.ZERO) == 0) {
             oldFlows.setIsReinvest(1);
         }
         investorsFlowsSaleService.update(oldFlows);
