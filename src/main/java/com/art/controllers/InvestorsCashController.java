@@ -605,7 +605,8 @@ public class InvestorsCashController {
         updateMailingGroups(investorsCash, "add");
         addFacility(investorsCash);
         investorsCashService.create(investorsCash);
-        if (!investorsCash.getCashSource().getCashSource().equalsIgnoreCase("Бронь")) {
+        if (!Objects.equals(null, investorsCash.getCashSource()) &&
+                !investorsCash.getCashSource().getCashSource().equalsIgnoreCase("Бронь")) {
             marketingTreeRepository.updateMarketingTree(investorsCash.getInvestor().getId());
         }
         model.addAttribute("success", "Деньги инвестора " + investorsCash.getInvestor().getLogin() +
