@@ -478,7 +478,7 @@ public class InvestorsCashController {
                     remainderCash.setSourceId(ic.getSourceId());
                     remainderCash.setIsDivide(ic.getIsDivide());
                     ic.setGivedCash(ic.getGivedCash().subtract(remainderSum[0]).subtract(finalCommission));
-                    if (ic.getGivedCash().compareTo(BigDecimal.ZERO) <= 0) {
+                    if (ic.getGivedCash().compareTo(BigDecimal.ZERO) == 0) {
                         ic.setIsDivide(1);
                         ic.setIsReinvest(1);
                     }
