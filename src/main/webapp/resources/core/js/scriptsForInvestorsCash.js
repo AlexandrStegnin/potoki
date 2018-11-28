@@ -5,16 +5,22 @@ var min;
 
 jQuery(document).ready(function ($) {
 
+    blockDeleteLink();
+
     $(document).on('mousedown', '#underFacilitiesList > option', function (e) {
         e.preventDefault();
         this.selected = !this.selected;
     });
 
-    var newCash = $('#newCash').val();
-    var edit = $('#edit').val();
-    var doubleCash = $('#doubleCash').val();
-    var closeCash = $('#closeCash').val();
-    var what;
+    $(document).on('click', '.disabled', function (e) {
+        e.preventDefault();
+    });
+
+    let newCash = $('#newCash').val();
+    let edit = $('#edit').val();
+    let doubleCash = $('#doubleCash').val();
+    let closeCash = $('#closeCash').val();
+    let what;
     if (newCash === 'true') {
         what = 'newCash'
     } else if (edit === 'true') {
@@ -141,8 +147,10 @@ jQuery(document).ready(function ($) {
     });
 
     $('a#del').on('click', function (event) {
-        showLoader();
         event.preventDefault();
+        console.log($(this).parent());
+        if (linkHasClass($(this).parent())) return false;
+        showLoader();
         var cashIdList = [];
         var sourceIdList = [];
         cashIdList.push($(this).data('delete'));
@@ -1601,6 +1609,15 @@ function blockUnblockDropdownMenus(blockUnblock, noDivide) {
             });
             break;
     }
+}
+
+function blockDeleteLink() {
+    let current;
+    $('table#investorsCash tbody tr td:contains("Вывод"), td:contains("Вывод_комиссия")').each(function () {
+        current = $(this).closest('tr');
+        let cash = parseFloat(current.find('td[data-gived-cash]').data('gived-cash'));
+        if (cash >= 0) current.find('#liDelete').addClass('disabled').find('a#del').css('color', '');
+    });
 }
 
 function slideBox(message) {

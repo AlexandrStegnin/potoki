@@ -195,15 +195,15 @@
                                             class="btn btn-primary btn-sm dropdown-toggle"><span
                                             class="glyphicon glyphicon-cog"></span></button>
                                     <ul class="dropdown-menu">
-                                        <li id="liEdit"><a href="<c:url value='/edit-cash-${cash.id}' />"
+                                        <li id="liEdit"><a id="aEdit" href="<c:url value='/edit-cash-${cash.id}' />"
                                                            class="${isDisabledClass}">Изменить</a>
                                         </li>
-                                        <li id="liDivide"><a
+                                        <li id="liDivide"><a id="aDivide"
                                                 href="<c:url value='/double-cash-${cash.id}' />">Разделить</a></li>
-                                        <li><a href="<c:url value='/close-cash-${cash.id}' />">Закрыть</a></li>
+                                        <li id="liDouble"><a id="aDouble" href="<c:url value='/close-cash-${cash.id}' />">Закрыть</a></li>
                                         <li class="divider"></li>
-                                        <li><a id="del" data-delete="${cash.id}" href="<c:url value='/#' />"
-                                               style="color: red">Удалить</a></li>
+                                        <li id="liDelete"><a id="del" data-delete="${cash.id}" href="<c:url value='/#' />"
+                                               style="color: #ff0000;">Удалить</a></li>
                                     </ul>
                                 </div>
                             </td>
