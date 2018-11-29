@@ -510,11 +510,21 @@ public class InvestorsCashController {
                 commissionCash.setSource(commissionCash.getSource() == null ? "" + ic.getId().toString() : commissionCash.getSource() + "|" + ic.getId().toString());
 
                 remainderCash.setSource(cashForGetting.getSource());
-            }
-            if (all) {
-                ic.setTypeClosingInvest(typeClosingInvest);
-                ic.setDateClosingInvest(cashForGetting.getDateGivedCash());
-                investorsCashService.update(ic);
+            } else {
+                if (all) {
+                    ic.setTypeClosingInvest(typeClosingInvest);
+                    ic.setDateClosingInvest(cashForGetting.getDateGivedCash());
+                    cashForGetting.setSource(cashForGetting.getSource() == null ?
+                            "" + ic.getId().toString() :
+                            cashForGetting.getSource() + "|" + ic.getId().toString());
+                    commissionCash.setSource(commissionCash.getSource() == null ?
+                            "" + ic.getId().toString() :
+                            commissionCash.getSource() + "|" + ic.getId().toString());
+                    remainderCash.setSource(remainderCash.getSource() == null ?
+                            "" + ic.getId().toString() :
+                            remainderCash.getSource() + "|" + ic.getId().toString());
+                    investorsCashService.update(ic);
+                }
             }
         });
 
