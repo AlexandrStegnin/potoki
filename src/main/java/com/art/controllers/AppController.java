@@ -71,7 +71,7 @@ public class AppController {
             */
             return "viewFlows";
         } else {
-            return "welcome";
+            return "catalogues";
         }
 
     }
