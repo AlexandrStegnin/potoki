@@ -258,11 +258,17 @@ public class InvestorsCashController {
                                 afterCashingService.deleteById(cashToDel.getId());
                             }
                         }
-
-                        parentCash.setIsReinvest(0);
-                        parentCash.setIsDivide(0);
-                        parentCash.setTypeClosingInvest(null);
-                        parentCash.setDateClosingInvest(null);
+                        InvestorsCash makeDelete =
+                                investorsCashService.findBySource(parentCash.getId().toString())
+                                        .stream()
+                                        .filter(m -> !m.getId().equals(deleting.getId()))
+                                        .findFirst().orElse(null);
+                        if (Objects.equals(null, makeDelete)) {
+                            parentCash.setIsReinvest(0);
+                            parentCash.setIsDivide(0);
+                            parentCash.setTypeClosingInvest(null);
+                            parentCash.setDateClosingInvest(null);
+                        }
 
                         if (deleting.getFacility().equals(parentCash.getFacility()) &&
                                 deleting.getInvestor().equals(parentCash.getInvestor()) &&
@@ -693,8 +699,7 @@ public class InvestorsCashController {
     }
 
     @PostMapping(value = "/double-cash-{id}")
-    public ModelAndView doubleCash(@ModelAttribute("investorsCash") InvestorsCash investorsCash, @PathVariable("id") int id) {
-        ModelAndView model = new ModelAndView("addinvestorscash");
+    public String doubleCash(@ModelAttribute("investorsCash") InvestorsCash investorsCash, @PathVariable("id") int id) {
         InvestorsCash newInvestorsCash = investorsCashService.findById(investorsCash.getId());
         InvestorsCash inMemoryCash = investorsCashService.findById(investorsCash.getId());
         investorsCash.setFacility(newInvestorsCash.getFacility());
@@ -729,12 +734,16 @@ public class InvestorsCashController {
             updateMailingGroups(c, "add");
             addFacility(c);
         }));
-
+        if (investorsCash.getGivedCash().compareTo(BigDecimal.ZERO) == 0) investorsCash.setIsReinvest(1);
         investorsCashService.update(newInvestorsCash);
         investorsCashService.update(investorsCash);
-        model.addObject("investorsCash", investorsCash);
-
-        return model;
+        ModelAndView model = new ModelAndView("addinvestorscash");
+        if (investorsCash.getGivedCash().compareTo(BigDecimal.ZERO) == 0) {
+            return "redirect: /investorscash/1";
+        } else {
+            model.addObject("investorsCash", investorsCash);
+            return model.getViewName();
+        }
     }
 
     @PostMapping(value = {"/saveReCash"}, produces = "application/json;charset=UTF-8")
