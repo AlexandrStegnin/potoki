@@ -5,8 +5,8 @@ let min;
 
 jQuery(document).ready(function ($) {
 
-    blockDeleteLink();
     blockActions();
+    blockDeleteLink();
     $(document).on('mousedown', '#underFacilitiesList > option', function (e) {
         e.preventDefault();
         this.selected = !this.selected;
@@ -1616,6 +1616,7 @@ function blockDeleteLink() {
     $('table#investorsCash tbody tr td:contains("Вывод")').each(function () {
         current = $(this).closest('tr');
         if ($(this).text() === 'Вывод') current.find('#liDelete').addClass('disabled').find('a#del').css('color', '');
+        else current.find('#liDelete').removeClass('disabled').addClass('active').find('a#del').css('cssText', 'color: #ff0000 !important');
     });
 }
 
