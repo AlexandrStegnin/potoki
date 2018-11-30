@@ -719,7 +719,7 @@ public class InvestorsCashController {
         newInvestorsCash.setId(null);
         newInvestorsCash.setSource(investorsCash.getId().toString());
         newInvestorsCash.setUnderFacility(investorsCash.getUnderFacility());
-        newInvestorsCash.setSourceFacility(investorsCash.getFacility());
+        newInvestorsCash.setSourceFacility(investorsCash.getSourceFacility());
         newInvestorsCash.setDateReport(null);
         investorsCash.setUnderFacility(inMemoryCash.getUnderFacility());
         investorsCash.setIsDivide(1);
