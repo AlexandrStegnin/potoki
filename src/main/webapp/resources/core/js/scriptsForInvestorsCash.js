@@ -1613,10 +1613,9 @@ function blockUnblockDropdownMenus(blockUnblock, noDivide) {
 
 function blockDeleteLink() {
     let current;
-    $('table#investorsCash tbody tr td:contains("Вывод"), td:contains("Вывод_комиссия")').each(function () {
+    $('table#investorsCash tbody tr td:contains("Вывод")').each(function () {
         current = $(this).closest('tr');
-        let cash = parseFloat(current.find('td[data-gived-cash]').data('gived-cash'));
-        if (cash >= 0) current.find('#liDelete').addClass('disabled').find('a#del').css('color', '');
+        if ($(this).text() === 'Вывод') current.find('#liDelete').addClass('disabled').find('a#del').css('color', '');
     });
 }
 
