@@ -1,12 +1,12 @@
-var filters = [];
+let filters = [];
 
-var max;
-var min;
+let max;
+let min;
 
 jQuery(document).ready(function ($) {
 
     blockDeleteLink();
-
+    blockActions();
     $(document).on('mousedown', '#underFacilitiesList > option', function (e) {
         e.preventDefault();
         this.selected = !this.selected;
@@ -1616,6 +1616,16 @@ function blockDeleteLink() {
     $('table#investorsCash tbody tr td:contains("Вывод")').each(function () {
         current = $(this).closest('tr');
         if ($(this).text() === 'Вывод') current.find('#liDelete').addClass('disabled').find('a#del').css('color', '');
+    });
+}
+
+function blockActions() {
+    $('table#investorsCash').find('> tbody').find('> tr').each(function () {
+        $(this).find(':checkbox:disabled').each(function () {
+            $(this).closest('tr').find('#liDivide').addClass('disabled');
+            $(this).closest('tr').find('#liDouble').addClass('disabled');
+            $(this).closest('tr').find('#liEdit').addClass('disabled');
+        })
     });
 }
 
