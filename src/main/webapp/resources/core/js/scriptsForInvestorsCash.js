@@ -1625,6 +1625,7 @@ function blockActions() {
             $(this).closest('tr').find('#liDivide').addClass('disabled');
             $(this).closest('tr').find('#liDouble').addClass('disabled');
             $(this).closest('tr').find('#liEdit').addClass('disabled');
+            $(this).closest('tr').find('#liDelete').addClass('disabled').find('a#del').css('color', '');
         })
     });
 }
