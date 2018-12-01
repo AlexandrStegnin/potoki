@@ -7,6 +7,7 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -88,6 +89,8 @@ public class SearchSummary implements Serializable {
     private Facilities facilities;
     private UnderFacilities underFacilities;
 
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     public String getFacility() {
         return facility;

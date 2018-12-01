@@ -9,11 +9,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @ToString
+@AllArgsConstructor
 @EqualsAndHashCode
 @Getter
 @Setter
-@AllArgsConstructor
-
 @Entity
 @Table(name = "InvestorsFlows")
 public class InvestorsFlows implements Serializable {

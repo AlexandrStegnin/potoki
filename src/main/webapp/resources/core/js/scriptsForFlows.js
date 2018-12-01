@@ -36,10 +36,38 @@ jQuery(document).ready(function ($) {
 
         // Disble the search button
         enableSearchButton(false);
+        let fFacility = $('#fFacilities');
+        let uFacility = $('#uFacilities');
+        let inv = $('#investors');
 
+        let facility = fFacility.find('option:selected').val();
+        let underFacility = uFacility.find('option:selected').val();
+        let investor = inv.find('option:selected').val();
+
+        let dateFrom = $('#beginPeriod').val() + '';
+        let dateTo = $('#endPeriod').val() + '';
+
+        if (dateFrom.length === 0) dateFrom = null;
+        if (dateTo.length === 0) dateTo = null;
+
+        let facilityParam = facility === 'Выберите объект' ? '' : '?facility=' + facility;
+        let uFacilityParam = underFacility === 'Выберите подобъект' ? facilityParam + '' : facilityParam.indexOf('?') === 0 ?
+            facilityParam + '&underFacility=' + underFacility : '?underFacility=' + underFacility;
+        let investorParam = investor === 'Выберите инвестора' ? uFacilityParam + '' : uFacilityParam.indexOf('?') === 0 ?
+            uFacilityParam + '&investor=' + investor : '?investor=' + investor;
+        let startDateParam = (dateFrom === null || dateFrom.length === 0) ? investorParam + '' : investorParam.indexOf('?') === 0 ? investorParam + '&startDate=' + dateFrom :
+            '?startDate=' + dateFrom;
+        let endDateParam = (dateTo === null || dateTo.length === 0) ? startDateParam + '' : startDateParam.indexOf('?') === 0 ? startDateParam + '&endDate=' + dateTo :
+            '?endDate=' + dateTo;
+
+        let params = endDateParam.indexOf('?') === 0 ? endDateParam : '';
         // Prevent the form from submitting via the browser.
         event.preventDefault();
-        prepareFilter();
+        window.location.href = window.location.pathname + params;
+
+        // getByPageNumber(facility, underFacility, investor, dateFrom, dateTo);
+
+        // prepareFilter();
         enableSearchButton(true);
         //searchCash();
 
@@ -950,4 +978,35 @@ function slideBox(message) {
     setTimeout(function () {
         $('#slideBox').animate({'right': '-300px'}, 500);
     }, 4000);
+}
+
+function getByPageNumber(facility, underFacility, investor, dateFrom, dateTo) {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+    let search = ({
+        "facilities": facility,
+        "underFacilities": underFacility,
+        "user": investor,
+        "dateStart": dateFrom,
+        "dateEnd": dateTo
+    });
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: "/paysToInv/1",
+        data: JSON.stringify(search),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function () {
+            closeLoader();
+        },
+        error: function (e) {
+            closeLoader();
+            console.log(e);
+        }
+    });
 }

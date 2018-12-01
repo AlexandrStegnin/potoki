@@ -6,7 +6,12 @@ import com.art.model.*;
 import com.art.model.supporting.*;
 import com.art.service.*;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -19,10 +24,8 @@ import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -60,6 +63,8 @@ public class InvestorsSummaryController {
 
     @Resource(name = "roomsService")
     private RoomsService roomsService;
+
+    private SearchSummary filters = new SearchSummary();
 
     @RequestMapping(value = "/investorssummary", method = RequestMethod.GET)
     public String investorsSummaryPage(ModelMap model) {
@@ -155,15 +160,33 @@ public class InvestorsSummaryController {
     }
 
     @GetMapping(value = "/paysToInv")
-    public ModelAndView paysToInvPage() {
+    public ModelAndView paysToInvByPageNumber(@PageableDefault(size = 100, sort = "id") Pageable pageable,
+                                              @RequestParam(name = "facility", required = false) String facility,
+                                              @RequestParam(name = "underFacility", required = false) String underFacility,
+                                              @RequestParam(name = "investor", required = false) String investor,
+                                              @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                              @RequestParam(value = "startDate", required = false) LocalDate startDate,
+                                              @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                              @RequestParam(value = "endDate", required = false) LocalDate endDate,
+                                              Model model, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("viewinvestorsflows");
-        SearchSummary searchSummary = new SearchSummary();
-        modelAndView.addObject("searchSummary", searchSummary);
-        modelAndView.addObject("loggedinuser", getPrincipalFunc.getLogin());
+        filters.setStartDate(startDate);
+        filters.setEndDate(endDate);
+        filters.setFacility(facility);
+        filters.setUnderFacility(underFacility);
+        filters.setInvestor(investor);
         FileBucket fileModel = new FileBucket();
+        Page<InvestorsFlows> flowsList = investorsFlowsService.findAllFiltering(pageable, filters);
+        int pageCount = flowsList.getTotalPages();
+        List<InvestorsFlows> investorsFlows = flowsList.getContent();
+        String queryParams = request.getQueryString();
+        if (!Objects.equals(null, queryParams)) queryParams = "&" + queryParams;
+        modelAndView.addObject("searchSummary", filters);
         modelAndView.addObject("fileBucket", fileModel);
-        List<InvestorsFlows> investorsFlows = investorsFlowsService.findAll();
+        modelAndView.addObject("pageCount", pageCount);
         modelAndView.addObject("investorsFlows", investorsFlows);
+        modelAndView.addObject("queryParams", queryParams);
+
         return modelAndView;
     }
 
@@ -232,5 +255,10 @@ public class InvestorsSummaryController {
     @ModelAttribute("rooms")
     public List<Rooms> initializeRooms() {
         return roomsService.init();
+    }
+
+    @ModelAttribute("searchSummary")
+    public SearchSummary addSearchSummary() {
+        return filters;
     }
 }
