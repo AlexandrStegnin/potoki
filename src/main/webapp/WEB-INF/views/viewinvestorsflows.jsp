@@ -97,6 +97,7 @@
                 <input id="endPeriod" name="endDate" type="date" class="form-control input-sm" value="${searchSummary.endDate}"
                        style="margin-right:5px">
                 <button type="submit" id="bth-search" class="btn btn-primary btn-sm">Фильтр</button>
+                <button type="submit" id="bth-clear" class="btn btn-danger btn-sm">Сбросить фильтры</button>
             </div>
         </form:form>
         <sec:authorize access="isFullyAuthenticated()">

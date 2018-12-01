@@ -20,6 +20,16 @@ jQuery(document).ready(function ($) {
         prepareSaveInvestorsCash();
     });
 
+    $(document).on('click', '#bth-clear', function (e) {
+        e.preventDefault();
+        $('#fFacilities').find('option:eq(0)').prop('selected', true);
+        $('#uFacilities').find('option:eq(0)').prop('selected', true);
+        $('#investors').find('option:eq(0)').prop('selected', true);
+        $('#beginPeriod').val('');
+        $('#endPeriod').val('');
+
+        window.location.href = window.location.pathname;
+    });
 
     $('#reinvestAll').prop('disabled', true);
     max = findMinMaxDate('#invFlows tbody', 1, "max");
