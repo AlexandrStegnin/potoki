@@ -12,6 +12,17 @@ jQuery(document).ready(function ($) {
         this.selected = !this.selected;
     });
 
+    $(document).on('click', '#bth-clear', function (e) {
+        e.preventDefault();
+        $('#fFacilities').find('option:eq(0)').prop('selected', true);
+        $('#uFacilities').find('option:eq(0)').prop('selected', true);
+        $('#investors').find('option:eq(0)').prop('selected', true);
+        $('#beginPeriod').val('');
+        $('#endPeriod').val('');
+
+        window.location.href = window.location.pathname;
+    });
+
     $(document).on('click', '.disabled', function (e) {
         e.preventDefault();
     });
@@ -378,40 +389,44 @@ jQuery(document).ready(function ($) {
         }
     };
 
-    $(document).on('click', '[id^="page_"]', function (e) {
-        $('#pageNumber').val(this.id.split('_')[1]);
-        e.preventDefault();
-        $("#search-form").submit();
-    });
+    // $(document).on('click', '[id^="page_"]', function (e) {
+    //     $('#pageNumber').val(this.id.split('_')[1]);
+    //     e.preventDefault();
+    //     $("#search-form").submit();
+    // });
 
     $("#search-form").submit(function (event) {
-        let facility, underFacility, investor, dateBegin, dateEnd;
-        facility = $('#fFacilities').find(":selected").val();
-        underFacility = $('#uFacilities').find(":selected").val();
-        investor = $('#investors').find(":selected").val();
-        dateBegin = $('#beginPeriod').val();
-        dateEnd = $('#endPeriod').val();
+        // Disble the search button
+        enableSearchButton(false);
+        let fFacility = $('#fFacilities');
+        let uFacility = $('#uFacilities');
+        let inv = $('#investors');
 
-        let filters = [
-            {
-                "fFacilities": facility
-            },
-            {
-                "uFacilities": underFacility
-            },
-            {
-                "investors": investor
-            },
-            {
-                "beginPeriod": dateBegin
-            },
-            {
-                "endPeriod": dateEnd
-            }
-        ];
+        let facility = fFacility.find('option:selected').val();
+        let underFacility = uFacility.find('option:selected').val();
+        let investor = inv.find('option:selected').val();
 
-        sessionStorage.setItem("filters", JSON.stringify(filters));
+        let dateFrom = $('#beginPeriod').val() + '';
+        let dateTo = $('#endPeriod').val() + '';
 
+        if (dateFrom.length === 0) dateFrom = null;
+        if (dateTo.length === 0) dateTo = null;
+
+        let facilityParam = facility === 'Выберите объект' ? '' : '?facility=' + facility;
+        let uFacilityParam = underFacility === 'Выберите подобъект' ? facilityParam + '' : facilityParam.indexOf('?') === 0 ?
+            facilityParam + '&underFacility=' + underFacility : '?underFacility=' + underFacility;
+        let investorParam = investor === 'Выберите инвестора' ? uFacilityParam + '' : uFacilityParam.indexOf('?') === 0 ?
+            uFacilityParam + '&investor=' + investor : '?investor=' + investor;
+        let startDateParam = (dateFrom === null || dateFrom.length === 0) ? investorParam + '' : investorParam.indexOf('?') === 0 ? investorParam + '&startDate=' + dateFrom :
+            '?startDate=' + dateFrom;
+        let endDateParam = (dateTo === null || dateTo.length === 0) ? startDateParam + '' : startDateParam.indexOf('?') === 0 ? startDateParam + '&endDate=' + dateTo :
+            '?endDate=' + dateTo;
+
+        let params = endDateParam.indexOf('?') === 0 ? endDateParam : '';
+        // Prevent the form from submitting via the browser.
+        event.preventDefault();
+        window.location.href = window.location.pathname + params;
+        enableSearchButton(true);
     });
 
     $('#facilities').change(function () {
@@ -493,14 +508,6 @@ jQuery(document).ready(function ($) {
         getUnderFacilitiesFromLocalStorage(reFacility, 'reUnderFacilities');
     });
 
-    let filters = JSON.parse(sessionStorage.getItem("filters"));
-
-    $('#fFacilities option:eq(' + filters[0].fFacilities + ')').attr('selected', 'selected');
-    getUnderFacilitiesFromLocalStorage(filters[0].fFacilities, 'uFacilities');
-    $('#investors').val(filters[2].investors).change();
-    $('#beginPeriod').val(filters[3].beginPeriod);
-    $('#endPeriod').val(filters[4].endPeriod);
-    $('#uFacilities option:contains(' + filters[1].uFacilities + ')').attr('selected', 'selected');
 });
 
 function allMoneyCashing() {

@@ -2,17 +2,19 @@ package com.art.controllers;
 
 import com.art.func.GetPrincipalFunc;
 import com.art.model.*;
-import com.art.model.supporting.AfterCashing;
-import com.art.model.supporting.GenericResponse;
-import com.art.model.supporting.PaginationResult;
-import com.art.model.supporting.SearchSummary;
+import com.art.model.supporting.*;
 import com.art.repository.MarketingTreeRepository;
 import com.art.service.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -20,10 +22,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -81,65 +85,48 @@ public class InvestorsCashController {
     @Resource(name = "getPrincipalFunc")
     private GetPrincipalFunc getPrincipalFunc;
 
+    private SearchSummary filters = new SearchSummary();
+
+//    @GetMapping(value = "/investorscash")
+//    public String investorsCashPage(ModelMap model) {
+//
+//        List<InvestorsCash> investorsCashes = investorsCashService.findAll()
+//                .stream().filter(cash -> !Objects.equals(null, cash.getFacility())).collect(Collectors.toList());
+//        model.addAttribute("searchSummary", new SearchSummary());
+//        model.addAttribute("investorsCashes", investorsCashes);
+//
+//        return "viewinvestorscash";
+//    }
+
     @GetMapping(value = "/investorscash")
-    public String investorsCashPage(ModelMap model) {
+    public ModelAndView invCashByPageNumber(@PageableDefault(size = 100, sort = "id") Pageable pageable,
+                                            @RequestParam(name = "facility", required = false) String facility,
+                                            @RequestParam(name = "underFacility", required = false) String underFacility,
+                                            @RequestParam(name = "investor", required = false) String investor,
+                                            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                            @RequestParam(value = "startDate", required = false) LocalDate startDate,
+                                            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                            @RequestParam(value = "endDate", required = false) LocalDate endDate,
+                                            Model model, HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView("viewinvestorscash");
+        filters.setStartDate(startDate);
+        filters.setEndDate(endDate);
+        filters.setFacility(facility);
+        filters.setUnderFacility(underFacility);
+        filters.setInvestor(investor);
+        FileBucket fileModel = new FileBucket();
+        Page<InvestorsCash> cashList = investorsCashService.findAllFiltering(pageable, filters);
+        int pageCount = cashList.getTotalPages();
+        List<InvestorsCash> investorsCashes = cashList.getContent();
+        String queryParams = request.getQueryString();
+        if (!Objects.equals(null, queryParams)) queryParams = "&" + queryParams;
+        modelAndView.addObject("searchSummary", filters);
+        modelAndView.addObject("fileBucket", fileModel);
+        modelAndView.addObject("pageCount", pageCount);
+        modelAndView.addObject("investorsCashes", investorsCashes);
+        modelAndView.addObject("queryParams", queryParams);
 
-        List<InvestorsCash> investorsCashes = investorsCashService.findAll()
-                .stream().filter(cash -> !Objects.equals(null, cash.getFacility())).collect(Collectors.toList());
-        model.addAttribute("searchSummary", new SearchSummary());
-        model.addAttribute("investorsCashes", investorsCashes);
-
-        return "viewinvestorscash";
-    }
-
-    @GetMapping(value = "/investorscash/{pageNumber}")
-    public String investorsCashPagePagination(ModelMap model, @PathVariable("pageNumber") int pageNumber) {
-        PaginationResult result = investorsCashService.getAllWithPageable(pageNumber, new HashMap<>(0));
-        List<InvestorsCash> investorsCashes = result.getList();
-        int totalPages = result.getTotalPages();
-//        int totalRecords = result.getTotalRecords();
-        // 1 2 3 4 5 ... 11 12 13
-        List<Integer> navPages = result.getNavigationPages();
-
-        model.addAttribute("searchSummary", new SearchSummary());
-        model.addAttribute("investorsCashes", investorsCashes);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("navPages", navPages);
-
-        return "viewinvestorscash";
-    }
-
-    @PostMapping(value = "/investorscash/{pageNumber}")
-    public ModelAndView investorsCashPagePagination(ModelMap model, @ModelAttribute("searchSummary") SearchSummary searchSummary) {
-
-        String facility = searchSummary.getFacility();
-        String underFacility = searchSummary.getUnderFacility();
-        String investor = searchSummary.getInvestor();
-        Date dateBegin = searchSummary.getDateStart();
-        Date dateEnd = searchSummary.getDateEnd();
-//        int pageNumber = searchSummary.getPageNumber();
-
-        Map<String, String> search = new HashMap<>(0);
-        search.put("facility", !Objects.equals("0", facility) ? facility : "");
-        search.put("underFacility", !Objects.equals("Выберите подобъект", underFacility) ? underFacility : "");
-        search.put("investor", !Objects.equals("0", investor) ? investor : "");
-        search.put("dateBegin", !Objects.equals(null, dateBegin) ? String.valueOf(dateBegin.getTime()) : "");
-        search.put("dateEnd", !Objects.equals(null, dateEnd) ? String.valueOf(dateEnd.getTime()) : "");
-
-        PaginationResult result = investorsCashService.getAllWithPageable(searchSummary.getPageNumber(), search);
-        List<InvestorsCash> investorsCashes = result.getList();
-        int totalPages = result.getTotalPages();
-//        int totalRecords = result.getTotalRecords();
-
-        // 1 2 3 4 5 ... 11 12 13
-        List<Integer> navPages = result.getNavigationPages();
-
-        model.addAttribute("searchSummary", new SearchSummary());
-        model.addAttribute("investorsCashes", investorsCashes);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("navPages", navPages);
-
-        return new ModelAndView("viewinvestorscash", model);
+        return modelAndView;
     }
 
     @GetMapping(value = {"/edit-cash-{id}"})
@@ -1241,5 +1228,10 @@ public class InvestorsCashController {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setLenient(false);
         webDataBinder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+    }
+
+    @ModelAttribute("searchSummary")
+    public SearchSummary addSearchSummary() {
+        return filters;
     }
 }

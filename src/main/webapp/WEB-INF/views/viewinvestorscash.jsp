@@ -61,34 +61,53 @@
 
         </div>
 
-        <form:form modelAttribute="searchSummary" method="POST" class="form-inline" id="search-form">
+        <form:form modelAttribute="searchSummary" method="GET" action="/investorscash" class="form-inline" id="search-form">
             <div class="row" style="margin-top:10px; margin-left:10px; margin-bottom:10px; margin-right:10px">
                 <label class="sr-only" for="fFacilities">Объект:</label>
-                <form:select path="facility" id="fFacilities" items="${facilities}" multiple="false"
-                             itemValue="id" itemLabel="facility" class="form-control input-sm"/>
+                <form:select path="facility" id="fFacilities" multiple="false" class="form-control input-sm">
+                <c:forEach var="f" items="${facilities}">
+                    <option
+                            <c:choose>
+                                <c:when test="${f.facility eq 'Выберите объект'}">selected="selected"</c:when>
+                                <c:when test="${f.facility eq searchSummary.facility}">selected="selected"</c:when>
+                            </c:choose>
+                            value="${f.facility}" id="${f.id}">${f.facility}
+                    </option>
+                </c:forEach>
+                </form:select>
                 <label class="sr-only" for="uFacilities">Подобъект:</label>
                 <form:select path="underFacility" id="uFacilities" multiple="false" class="form-control input-sm">
                     <c:forEach var="uf" items="${underFacilities}">
-                        <form:option value="${uf.underFacility}" id="${uf.id}" data-parent-id="${uf.facilityId}">
-
-                        </form:option>
+                        <option
+                                <c:choose>
+                                    <c:when test="${uf.underFacility eq 'Выберите подобъект'}">selected="selected"</c:when>
+                                    <c:when test="${uf.underFacility eq searchSummary.underFacility}">selected="selected"</c:when>
+                                </c:choose>
+                                value="${uf.underFacility}" id="${uf.id}"  data-parent-id="${uf.facilityId}">${uf.underFacility}
+                        </option>
                     </c:forEach>
                 </form:select>
                 <label class="sr-only" for="investors">Инвестор:</label>
-                <form:select path="investor" id="investors" items="${investors}" multiple="false"
-                             itemValue="id" itemLabel="login" class="form-control input-sm"/>
+                <form:select path="investor" id="investors" multiple="false" class="form-control input-sm">
+                    <c:forEach var="inv" items="${investors}">
+                        <option
+                                <c:choose>
+                                    <c:when test="${inv.login eq 'Выберите инвестора'}">selected="selected"</c:when>
+                                    <c:when test="${inv.login eq searchSummary.investor}">selected="selected"</c:when>
+                                </c:choose> value="${inv.login}" id="${inv.id}">${inv.login}
+                        </option>
+                    </c:forEach>
+                </form:select>
                 <label for="beginPeriod" style="margin-left:10px; margin-right:5px; font-size:14px">Период с:</label>
-                <input id="beginPeriod" name="dateStart" type="date" class="form-control input-sm" value="">
+                <input id="beginPeriod" name="startDate" type="date" class="form-control input-sm" value="${searchSummary.startDate}">
                 <label for="endPeriod" style="margin-left:10px; margin-right:5px; font-size:14px">по:</label>
-                <input id="endPeriod" name="dateEnd" type="date" class="form-control input-sm" value=""
+                <input id="endPeriod" name="dateEnd" type="date" class="form-control input-sm" value="${searchSummary.endDate}"
                        style="margin-right:5px">
-                <form:input type="hidden" path="pageNumber" name="pageNumber" id="pageNumber"/>
                 <button type="submit" id="bth-search" class="btn btn-primary btn-sm">Фильтр</button>
+                <button type="submit" id="bth-clear" class="btn btn-danger btn-sm">Сбросить фильтры</button>
 
                 <sec:authorize access="isFullyAuthenticated()">
                     <sec:authorize access="hasRole('ADMIN')">
-                        <%--<a href="<c:url value='/newinvestorscash' />" class="btn btn-default btn-sm pull-right">Добавить--%>
-                        <%--деньги</a>--%>
                         <div class="dropdown pull-right" style="margin-right: 10px">
                             <button id="addActions" type="button" data-toggle="dropdown"
                                     class="btn btn-warning btn-sm dropdown-toggle pull-right">Деньги <span
@@ -116,15 +135,12 @@
             </div>
             <nav class="text-center" aria-label="Деньги инвесторов">
                 <ul class="pagination pagination-sm justify-content-center">
-                    <c:forEach items="${navPages}" var="page">
-                        <c:if test="${page != -1 }">
-                            <li class="page-item" data-page="${page}"><a id="page_${page}" class="page-link"
-                                                                         href="<c:url value='/investorscash/${page}' />">${page}</a>
-                            </li>
-                        </c:if>
-                        <c:if test="${page == -1 }">
-                            <li class="page-item"><a class="page-link" href="#">...</a></li>
-                        </c:if>
+                    <c:forEach begin="1" end="${pageCount}" varStatus="page">
+                        <c:set var="link" value="/investorscash?page=${page.index - 1}&size=100${queryParams}" />
+                        <li class="page-item" data-page="${page.index}">
+                            <a id="page_${page.index}" class="page-link"
+                               href="<c:url value='${link}' />">${page.index}</a>
+                        </li>
                     </c:forEach>
                 </ul>
             </nav>

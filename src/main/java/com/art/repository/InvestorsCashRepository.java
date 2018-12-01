@@ -2,11 +2,15 @@ package com.art.repository;
 
 import com.art.model.InvestorsCash;
 import com.art.model.supporting.InvestorsTotalSum;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -31,5 +35,25 @@ public interface InvestorsCashRepository extends JpaRepository<InvestorsCash, Bi
     List<InvestorsCash> findAllByOrderByDateGivedCashAsc();
 
     List<InvestorsCash> findByRoomId(BigInteger roomId);
+
+    @Query(
+            "SELECT ic FROM InvestorsCash ic " +
+                    "JOIN ic.investor u " +
+                    "JOIN ic.facility f " +
+                    "JOIN ic.underFacility uf " +
+                    "WHERE (:investor IS NULL OR u.login = :investor) AND " +
+                    "(:facility IS NULL OR f.facility = :facility) AND " +
+                    "(:underFacility IS NULL OR uf.underFacility = :underFacility) AND " +
+                    "(:startDate IS NULL OR ic.dateGivedCash >= :startDate) AND " +
+                    "(:endDate IS NULL OR ic.dateGivedCash <= :endDate) "
+    )
+    Page<InvestorsCash> findFiltering(
+            Pageable pageable,
+            @Param(value = "investor") String investor,
+            @Param(value = "facility") String facility,
+            @Param(value = "underFacility") String underFacility,
+            @Param(value = "startDate") Date startDate,
+            @Param(value = "endDate") Date endDate
+    );
 
 }

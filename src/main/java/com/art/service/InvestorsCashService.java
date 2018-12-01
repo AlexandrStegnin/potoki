@@ -3,10 +3,13 @@ package com.art.service;
 import com.art.model.*;
 import com.art.model.supporting.InvestorsTotalSum;
 import com.art.model.supporting.PaginationResult;
+import com.art.model.supporting.SearchSummary;
 import com.art.repository.InvestorsCashRepository;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +24,8 @@ import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -242,5 +247,23 @@ public class InvestorsCashService {
         });
 
         return cash;
+    }
+
+    public Page<InvestorsCash> findAllFiltering(Pageable pageable, SearchSummary filters) {
+        String investor = filters.getInvestor();
+        String facility = filters.getFacility();
+        String underFacility = filters.getUnderFacility();
+        LocalDate startDate = filters.getStartDate();
+        LocalDate endDate = filters.getEndDate();
+        java.util.Date start = null;
+        java.util.Date end = null;
+        if (!Objects.equals(null, startDate)) start = java.util.Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        if (!Objects.equals(null, endDate)) end = java.util.Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        if (!Objects.equals(null, investor) && investor.equalsIgnoreCase("Выберите инвестора")) investor = null;
+        if (!Objects.equals(null, facility) && facility.equalsIgnoreCase("Выберите объект")) facility = null;
+        if (!Objects.equals(null, underFacility) && underFacility.equalsIgnoreCase("Выберите подобъект")) underFacility = null;
+
+        return investorsCashRepository.findFiltering(pageable, investor, facility, underFacility, start, end);
     }
 }

@@ -47,7 +47,7 @@
         <a href="<c:url value='/rentorsdetails' />" class="btn btn-success btn-block">Реквизиты арендаторов (RentorsDetails)</a>
         <a href="<c:url value='/bonustypes' />" class="btn btn-success btn-block">Типы бонусов (BonusTypes)</a>
         <a href="<c:url value='/typeexp' />" class="btn btn-success btn-block">Типы расходов (TypeExpenses)</a>
-        <a href="<c:url value='/investorscash/1' />" class="btn btn-success btn-block">Деньги инвесторов (InvestorsCash)</a>
+        <a href="<c:url value='/investorscash' />" class="btn btn-success btn-block">Деньги инвесторов (InvestorsCash)</a>
         <a href="<c:url value='/allowanceip' />" class="btn btn-success btn-block">Надбавки ИП (AllowanceIp)</a>
         <a href="<c:url value='/facilitiesreserves' />" class="btn btn-success btn-block">Резервы (FacilitiesReserves)</a>
         <a href="<c:url value='/bonuses' />" class="btn btn-success btn-block">Бонусы (Bonuses)</a>
