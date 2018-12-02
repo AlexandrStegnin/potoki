@@ -435,7 +435,7 @@ jQuery(document).ready(function ($) {
     });
 
     $('#fFacilities').change(function () {
-        var facility = $(this).val();
+        let facility = $(this).find('option:selected').attr('id');
         getUnderFacilitiesFromLocalStorage(facility, 'uFacilities');
     });
 
