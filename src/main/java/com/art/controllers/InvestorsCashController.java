@@ -374,7 +374,7 @@ public class InvestorsCashController {
             return "getInvestorsCash";
         }
         String ret = "списку денег инвестора";
-        String redirectUrl = "/investorscash/1";
+        String redirectUrl = "/investorscash";
         InvestorsCash cashForGetting = searchSummary.getInvestorsCash();
 
         if (cashingMoney(searchSummary, false)) {
@@ -471,8 +471,10 @@ public class InvestorsCashController {
                     remainderCash.setSourceId(ic.getSourceId());
                     remainderCash.setIsDivide(ic.getIsDivide());
                     ic.setGivedCash(ic.getGivedCash().subtract(remainderSum[0]).subtract(finalCommission));
-                    ic.setTypeClosingInvest(typeClosingInvest);
-                    ic.setDateClosingInvest(cashForGetting.getDateGivedCash());
+                    if (all) {
+                        ic.setTypeClosingInvest(typeClosingInvest);
+                        ic.setDateClosingInvest(cashForGetting.getDateGivedCash());
+                    }
                     if (ic.getGivedCash().compareTo(BigDecimal.ZERO) == 0) {
                         ic.setIsDivide(1);
                         ic.setIsReinvest(1);
@@ -606,7 +608,7 @@ public class InvestorsCashController {
             return "addinvestorscash";
         }
         String ret = "списку денег инвестора";
-        String redirectUrl = "/investorscash/1";
+        String redirectUrl = "/investorscash";
         updateMailingGroups(investorsCash, "add");
         addFacility(investorsCash);
         investorsCashService.create(investorsCash);
@@ -682,7 +684,7 @@ public class InvestorsCashController {
         modelAndView.addObject("searchSummary", searchSummary);
         modelAndView.addObject("investorsCash", investorsCashService.findAll());
 
-        return "redirect: /investorscash/1";
+        return "redirect: /investorscash";
     }
 
     @PostMapping(value = "/double-cash-{id}")
@@ -726,7 +728,7 @@ public class InvestorsCashController {
         investorsCashService.update(investorsCash);
         ModelAndView model = new ModelAndView("addinvestorscash");
         if (investorsCash.getGivedCash().compareTo(BigDecimal.ZERO) == 0) {
-            return "redirect: /investorscash/1";
+            return "redirect: /investorscash";
         } else {
             model.addObject("investorsCash", investorsCash);
             return model.getViewName();
@@ -968,7 +970,7 @@ public class InvestorsCashController {
 
         }
         modelAndView.addObject("investorsCash", investorsCashService.findAll());
-        return "redirect: /investorscash/1";
+        return "redirect: /investorscash";
     }
 
     @PostMapping(value = {"/closeCash"}, produces = "application/json;charset=UTF-8")

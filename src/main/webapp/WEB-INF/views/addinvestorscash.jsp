@@ -269,10 +269,10 @@
             <div class="form-actions floatRight">
                 <c:choose>
                     <c:when test="${edit}">
-                        <input type="submit" value="Обновить" class="btn btn-primary btn-sm"/> или <a href="<c:url value='/investorscash/1' />">Отмена</a>
+                        <input type="submit" value="Обновить" class="btn btn-primary btn-sm"/> или <a href="<c:url value='/investorscash' />">Отмена</a>
                     </c:when>
                     <c:otherwise>
-                        <input type="submit" value="Создать" class="btn btn-primary btn-sm"/> или <a href="<c:url value='/investorscash/1' />">Отмена</a>
+                        <input type="submit" value="Создать" class="btn btn-primary btn-sm"/> или <a href="<c:url value='/investorscash' />">Отмена</a>
                     </c:otherwise>
                 </c:choose>
             </div>
