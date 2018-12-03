@@ -2,7 +2,10 @@ package com.art.controllers;
 
 import com.art.func.GetPrincipalFunc;
 import com.art.model.*;
-import com.art.model.supporting.*;
+import com.art.model.supporting.AfterCashing;
+import com.art.model.supporting.FileBucket;
+import com.art.model.supporting.GenericResponse;
+import com.art.model.supporting.SearchSummary;
 import com.art.repository.MarketingTreeRepository;
 import com.art.service.*;
 import org.json.JSONArray;
@@ -11,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -87,19 +92,10 @@ public class InvestorsCashController {
 
     private SearchSummary filters = new SearchSummary();
 
-//    @GetMapping(value = "/investorscash")
-//    public String investorsCashPage(ModelMap model) {
-//
-//        List<InvestorsCash> investorsCashes = investorsCashService.findAll()
-//                .stream().filter(cash -> !Objects.equals(null, cash.getFacility())).collect(Collectors.toList());
-//        model.addAttribute("searchSummary", new SearchSummary());
-//        model.addAttribute("investorsCashes", investorsCashes);
-//
-//        return "viewinvestorscash";
-//    }
-
     @GetMapping(value = "/investorscash")
-    public ModelAndView invCashByPageNumber(@PageableDefault(size = 100, sort = "id") Pageable pageable,
+    public ModelAndView invCashByPageNumber(@PageableDefault(size = 100)
+                                                @SortDefault(sort = {"investor.lastName", "givedCash", "dateGivedCash"},
+                                                        direction = Sort.Direction.ASC) Pageable pageable,
                                             @RequestParam(name = "facility", required = false) String facility,
                                             @RequestParam(name = "underFacility", required = false) String underFacility,
                                             @RequestParam(name = "investor", required = false) String investor,
