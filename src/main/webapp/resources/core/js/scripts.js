@@ -281,10 +281,16 @@ function populateFilters(pageName) {
     switch (pageName) {
         case "investorscash":
         case "paysToInv":
-        // case "flowsSale":
             facilityId = $('#fFacilities').find('option:selected').attr('id');
             underFacilityId = $('#uFacilities').find('option:selected').attr('id');
             investorId = $('#investors').find('option:selected').attr('id');
+            startDate = $('#beginPeriod').val();
+            endDate = $('#endPeriod').val();
+            break;
+        case "flowsSale":
+            facilityId = $('#fFacilities').find('option:selected').val();
+            underFacilityId = $('#uFacilities').find('option:selected').val();
+            investorId = $('#investors').find('option:selected').val();
             startDate = $('#beginPeriod').val();
             endDate = $('#endPeriod').val();
             break;
@@ -306,12 +312,18 @@ function getFiltersFromLS(pageName) {
         switch (pageName) {
             case "investorscash":
             case "paysToInv":
-            // case "flowsSale":
                 $('#fFacilities option[id=' + lastFilters[0].facilityId + ']').attr('selected', 'selected');
                 $('#uFacilities option[id=' + lastFilters[0].underFacilityId + ']').attr('selected', 'selected');
                 $('#investors option[id=' + lastFilters[0].investorId + ']').attr('selected', 'selected');
                 $('#beginPeriod').text(lastFilters[0].startDateVal);
                 $('#endPeriod').text(lastFilters[0].endDateVal);
+                break;
+            case "flowsSale":
+                $('#fFacilities option[value="' + lastFilters[0].facilityId + '"]').attr('selected', 'selected');
+                $('#uFacilities option[value="' + lastFilters[0].underFacilityId + '"]').attr('selected', 'selected');
+                $('#investors option[value="' + lastFilters[0].investorId + '"]').attr('selected', 'selected');
+                $('#beginPeriod').val(lastFilters[0].startDateVal);
+                $('#endPeriod').val(lastFilters[0].endDateVal);
                 break;
         }
     }
