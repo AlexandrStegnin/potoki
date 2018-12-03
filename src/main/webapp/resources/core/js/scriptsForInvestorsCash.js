@@ -442,11 +442,16 @@ jQuery(document).ready(function ($) {
         getUnderFacilitiesFromLocalStorage(facility, 'uFacilities');
     });
 
+    $('#srcFacilities').change(function () {
+        let facility = $(this).find('option:selected').val();
+        getUnderFacilitiesFromLocalStorage(facility, 'srcUnderFacilities');
+    });
+
     $(document).on("change", "#typeClosing", function () {
 
-        var typeClosing = $('#typeClosingRow');
-        var reFacility = $('#sourceFacility');
-        var reUnderFacility = $('#sourceUnderFacility');
+        let typeClosing = $('#typeClosingRow');
+        let reFacility = $('#sourceFacility');
+        let reUnderFacility = $('#sourceUnderFacility');
 
 
         if ($(this).find(':selected').text() === 'Реинвестирование') {
