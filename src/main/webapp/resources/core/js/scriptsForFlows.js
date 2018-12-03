@@ -6,6 +6,7 @@ var min;
 jQuery(document).ready(function ($) {
 
     blockUnblockDropdownMenus('block');
+    getFiltersFromLS((window.location.pathname + '').split("/")[1]);
 
     $('#msg-modal').on('shown.bs.modal', function () {
         // if data-timer attribute is set use that, otherwise use default (7000)
@@ -46,6 +47,7 @@ jQuery(document).ready(function ($) {
 
         // Disble the search button
         enableSearchButton(false);
+        populateFilters((window.location.pathname + '').split("/")[1]);
         let fFacility = $('#fFacilities');
         let uFacility = $('#uFacilities');
         let inv = $('#investors');

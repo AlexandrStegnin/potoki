@@ -24,6 +24,11 @@
     <script type="text/javascript" src="<c:url value='/resources/core/js/scriptsForInvestorsCash.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
+
+    <link rel="stylesheet" type="text/css" href="<c:url value='https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css' />">
+
+    <script type="text/javascript" charset="utf8" src="<c:url value='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js' />"></script>
+
     <style type="text/css">
         table, td, th {
             text-align: center;
@@ -123,10 +128,10 @@
                                     class="btn btn-success btn-sm dropdown-toggle pull-right">Действия <span
                                     class="glyphicon glyphicon-th-list"></span></button>
                             <ul class="dropdown-menu" id="reinvest">
-                                <li id="reinvestAll"><a href="/#">Массовое реинвестирование</a></li>
-                                <li id="divideAll"><a href="/#">Массовое разделение сумм</a></li>
-                                <li id="deleteAll"><a href="/#">Удалить выбранные суммы</a></li>
-                                <li id="closeAll"><a href="/#">Закрыть выбранные суммы</a></li>
+                                <li id="reinvestAll"><a href="#">Массовое реинвестирование</a></li>
+                                <li id="divideAll"><a href="#">Массовое разделение сумм</a></li>
+                                <li id="deleteAll"><a href="#">Удалить выбранные суммы</a></li>
+                                <li id="closeAll"><a href="#">Закрыть выбранные суммы</a></li>
                             </ul>
                         </div>
                     </sec:authorize>

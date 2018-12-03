@@ -7,6 +7,7 @@ jQuery(document).ready(function ($) {
 
     blockActions();
     blockDeleteLink();
+    getFiltersFromLS((window.location.pathname + '').split("/")[1]);
     $(document).on('mousedown', '#underFacilitiesList > option', function (e) {
         e.preventDefault();
         this.selected = !this.selected;
@@ -411,6 +412,8 @@ jQuery(document).ready(function ($) {
 
         if (dateFrom.length === 0) dateFrom = null;
         if (dateTo.length === 0) dateTo = null;
+
+        populateFilters((window.location.pathname + '').split("/")[1]);
 
         let facilityParam = facility === 'Выберите объект' ? '' : '?facility=' + facility;
         let uFacilityParam = underFacility === 'Выберите подобъект' ? facilityParam + '' : facilityParam.indexOf('?') === 0 ?
@@ -883,13 +886,13 @@ function enableFields() {
 }
 
 function prepareFilteredCashed() {
-    var facility = $('#fFacilities').find(':selected').text();
-    var underFacility = $('#uFacilities').find(':selected').text();
-    var investor = $('#investors').find(':selected').text();
-    var dateBegin = $('#beginPeriod').val();
-    var dateEnd = $('#endPeriod').val();
-    var url = window.location.href;
-    var pageNumber = url.split('investorscash/')[1];
+    let facility = $('#fFacilities').find(':selected').text();
+    let underFacility = $('#uFacilities').find(':selected').text();
+    let investor = $('#investors').find(':selected').text();
+    let dateBegin = $('#beginPeriod').val();
+    let dateEnd = $('#endPeriod').val();
+    let url = window.location.href;
+    let pageNumber = url.split('investorscash/')[1];
     filteredInvestorsCash(facility, underFacility, investor, dateBegin, dateEnd, pageNumber);
 }
 

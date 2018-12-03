@@ -3,10 +3,13 @@ var filters = [];
 var max;
 var min;
 
+// let pageName = (window.location.pathname + '').split("/")[1];
+
 jQuery(document).ready(function ($) {
 
     blockUnblockDropdownMenus('block', false);
     blockUnblockDivide();
+    // getFiltersFromLS(pageName);
     $('#msg-modal').on('shown.bs.modal', function () {
         // if data-timer attribute is set use that, otherwise use default (7000)
         var timer = 3000;
@@ -86,6 +89,7 @@ jQuery(document).ready(function ($) {
         event.preventDefault();
         // Disable the search button
         enableSearchButton(false);
+        // populateFilters(pageName);
         prepareFilter();
         enableSearchButton(true);
         //searchCash();
