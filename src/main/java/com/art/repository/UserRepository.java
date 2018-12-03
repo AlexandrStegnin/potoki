@@ -13,7 +13,7 @@ public interface UserRepository extends JpaRepository<Users, BigInteger> {
     Users findByLogin(String login);
     Users findByEmailAndPassword(String email, String password);
     void deleteById(BigInteger id);
-    List<Users> findByStuffId(BigInteger stuffId);
+    List<Users> findByStuffIdOrderByLastName(BigInteger stuffId);
     List<Users> findByEmail(String email);
     List<Users> findByIdIn(List<BigInteger> idList);
     Users findByLastName(String lastName);
