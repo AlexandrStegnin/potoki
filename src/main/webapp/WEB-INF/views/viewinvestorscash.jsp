@@ -141,10 +141,13 @@
             <nav class="text-center" aria-label="Деньги инвесторов">
                 <ul class="pagination pagination-sm justify-content-center">
                     <c:forEach begin="1" end="${pageCount}" varStatus="page">
-                        <c:set var="link" value="/investorscash?page=${page.index - 1}&size=100${queryParams}" />
+                        <c:set var="link" value="/investorscash?page=${page.index - 1}&size=100" />
+                        <c:if test="${!queryParams.startsWith('&')}" >
+                            <c:set var="link" value="${link.concat('&')}" />
+                        </c:if>
                         <li class="page-item" data-page="${page.index}">
                             <a id="page_${page.index}" class="page-link"
-                               href="<c:url value='${link}' />">${page.index}</a>
+                               href="<c:url value='${link}${queryParams}' />">${page.index}</a>
                         </li>
                     </c:forEach>
                 </ul>

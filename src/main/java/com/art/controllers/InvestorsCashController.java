@@ -94,8 +94,8 @@ public class InvestorsCashController {
 
     @GetMapping(value = "/investorscash")
     public ModelAndView invCashByPageNumber(@PageableDefault(size = 100)
-                                                @SortDefault(sort = {"investor.lastName", "givedCash", "dateGivedCash"},
-                                                        direction = Sort.Direction.ASC) Pageable pageable,
+                                            @SortDefault(sort = {"investor.lastName", "givedCash", "dateGivedCash"},
+                                                    direction = Sort.Direction.ASC) Pageable pageable,
                                             @RequestParam(name = "facility", required = false) String facility,
                                             @RequestParam(name = "underFacility", required = false) String underFacility,
                                             @RequestParam(name = "investor", required = false) String investor,
@@ -105,6 +105,7 @@ public class InvestorsCashController {
                                             @RequestParam(value = "endDate", required = false) LocalDate endDate,
                                             Model model, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("viewinvestorscash");
+        String replacer = "page=" + pageable.getPageNumber() + "&size=" + pageable.getPageSize();
         filters.setStartDate(startDate);
         filters.setEndDate(endDate);
         filters.setFacility(facility);
@@ -115,7 +116,9 @@ public class InvestorsCashController {
         int pageCount = cashList.getTotalPages();
         List<InvestorsCash> investorsCashes = cashList.getContent();
         String queryParams = request.getQueryString();
-        if (!Objects.equals(null, queryParams)) queryParams = "&" + queryParams;
+        if (!Objects.equals(null, queryParams)) {
+            queryParams = queryParams.replace(replacer, "");
+        }
         modelAndView.addObject("searchSummary", filters);
         modelAndView.addObject("fileBucket", fileModel);
         modelAndView.addObject("pageCount", pageCount);
