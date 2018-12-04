@@ -103,6 +103,7 @@ public class InvestorsCashController {
                                             @RequestParam(value = "startDate", required = false) LocalDate startDate,
                                             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                             @RequestParam(value = "endDate", required = false) LocalDate endDate,
+                                            @RequestParam(value = "allRows", defaultValue = "false") boolean allRows,
                                             Model model, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("viewinvestorscash");
         String replacer = "page=" + pageable.getPageNumber() + "&size=" + pageable.getPageSize();
@@ -112,18 +113,25 @@ public class InvestorsCashController {
         filters.setUnderFacility(underFacility);
         filters.setInvestor(investor);
         FileBucket fileModel = new FileBucket();
-        Page<InvestorsCash> cashList = investorsCashService.findAllFiltering(pageable, filters);
-        int pageCount = cashList.getTotalPages();
-        List<InvestorsCash> investorsCashes = cashList.getContent();
+        List<InvestorsCash> investorsCashes;
+        int pageCount;
+        if (!allRows) {
+            Page<InvestorsCash> cashList = investorsCashService.findAllFiltering(pageable, filters);
+            pageCount = cashList.getTotalPages();
+            investorsCashes = cashList.getContent();
+            modelAndView.addObject("pageCount", pageCount);
+        } else {
+            investorsCashes = investorsCashService.findAllFiltering(filters);
+        }
         String queryParams = request.getQueryString();
         if (!Objects.equals(null, queryParams)) {
             queryParams = queryParams.replace(replacer, "");
         }
         modelAndView.addObject("searchSummary", filters);
         modelAndView.addObject("fileBucket", fileModel);
-        modelAndView.addObject("pageCount", pageCount);
         modelAndView.addObject("investorsCashes", investorsCashes);
         modelAndView.addObject("queryParams", queryParams);
+        modelAndView.addObject("allRows", allRows);
 
         return modelAndView;
     }

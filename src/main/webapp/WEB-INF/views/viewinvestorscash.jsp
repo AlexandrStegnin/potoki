@@ -25,10 +25,6 @@
     <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
 
-    <link rel="stylesheet" type="text/css" href="<c:url value='https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css' />">
-
-    <script type="text/javascript" charset="utf8" src="<c:url value='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js' />"></script>
-
     <style type="text/css">
         table, td, th {
             text-align: center;
@@ -110,6 +106,12 @@
                        style="margin-right:5px">
                 <button type="submit" id="bth-search" class="btn btn-primary btn-sm">Фильтр</button>
                 <button type="submit" id="bth-clear" class="btn btn-danger btn-sm">Сбросить фильтры</button>
+                <div class="btn btn-info btn-sm" id="allRows">
+                    <label class="checkbox-inline">
+                        <input type="checkbox" name="allRows" id="all" value=""
+                        <c:if test="${allRows == true}"> checked="checked" </c:if> >На одной странице
+                    </label>
+                </div>
 
                 <sec:authorize access="isFullyAuthenticated()">
                     <sec:authorize access="hasRole('ADMIN')">
@@ -138,6 +140,7 @@
                 </sec:authorize>
 
             </div>
+            <c:if test="${allRows == false}">
             <nav class="text-center" aria-label="Деньги инвесторов">
                 <ul class="pagination pagination-sm justify-content-center">
                     <c:forEach begin="1" end="${pageCount}" varStatus="page">
@@ -152,6 +155,7 @@
                     </c:forEach>
                 </ul>
             </nav>
+            </c:if>
         </form:form>
 
         <table class="table table-hover" style="font-size: smaller; table-layout: fixed" id="investorsCash">

@@ -266,4 +266,22 @@ public class InvestorsCashService {
 
         return investorsCashRepository.findFiltering(pageable, investor, facility, underFacility, start, end);
     }
+
+    public List<InvestorsCash> findAllFiltering(SearchSummary filters) {
+        String investor = filters.getInvestor();
+        String facility = filters.getFacility();
+        String underFacility = filters.getUnderFacility();
+        LocalDate startDate = filters.getStartDate();
+        LocalDate endDate = filters.getEndDate();
+        java.util.Date start = null;
+        java.util.Date end = null;
+        if (!Objects.equals(null, startDate)) start = java.util.Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        if (!Objects.equals(null, endDate)) end = java.util.Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        if (!Objects.equals(null, investor) && investor.equalsIgnoreCase("Выберите инвестора")) investor = null;
+        if (!Objects.equals(null, facility) && facility.equalsIgnoreCase("Выберите объект")) facility = null;
+        if (!Objects.equals(null, underFacility) && underFacility.equalsIgnoreCase("Выберите подобъект")) underFacility = null;
+
+        return investorsCashRepository.findFiltering(investor, facility, underFacility, start, end);
+    }
 }

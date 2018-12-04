@@ -409,6 +409,7 @@ jQuery(document).ready(function ($) {
 
         let dateFrom = $('#beginPeriod').val() + '';
         let dateTo = $('#endPeriod').val() + '';
+        let all = $('#all').prop('checked');
 
         if (dateFrom.length === 0) dateFrom = null;
         if (dateTo.length === 0) dateTo = null;
@@ -426,6 +427,15 @@ jQuery(document).ready(function ($) {
             '?endDate=' + dateTo;
 
         let params = endDateParam.indexOf('?') === 0 ? endDateParam : '';
+        let allRows;
+        if (params.indexOf('?') === 0) {
+            allRows = '&allRows=' + all + '';
+        } else {
+            allRows = '?allRows=' + all + '';
+        }
+
+        params = params + allRows;
+
         // Prevent the form from submitting via the browser.
         event.preventDefault();
         window.location.href = window.location.pathname + params;

@@ -56,4 +56,23 @@ public interface InvestorsCashRepository extends JpaRepository<InvestorsCash, Bi
             @Param(value = "endDate") Date endDate
     );
 
+    @Query(
+            "SELECT ic FROM InvestorsCash ic " +
+                    "JOIN ic.investor u " +
+                    "JOIN ic.facility f " +
+                    "JOIN ic.underFacility uf " +
+                    "WHERE (:investor IS NULL OR u.login = :investor) AND " +
+                    "(:facility IS NULL OR f.facility = :facility) AND " +
+                    "(:underFacility IS NULL OR uf.underFacility = :underFacility) AND " +
+                    "(:startDate IS NULL OR ic.dateGivedCash >= :startDate) AND " +
+                    "(:endDate IS NULL OR ic.dateGivedCash <= :endDate) "
+    )
+    List<InvestorsCash> findFiltering(
+            @Param(value = "investor") String investor,
+            @Param(value = "facility") String facility,
+            @Param(value = "underFacility") String underFacility,
+            @Param(value = "startDate") Date startDate,
+            @Param(value = "endDate") Date endDate
+    );
+
 }
