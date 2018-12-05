@@ -278,21 +278,27 @@ function populateFilters(pageName) {
     let startDate;
     let endDate;
 
+    let fFacilities = $('#fFacilities');
+    let uFacilities = $('#uFacilities');
+    let investors = $('#investors');
+    let beginPeriod = $('#beginPeriod');
+    let endPeriod = $('#endPeriod');
+
     switch (pageName) {
         case "investorscash":
         case "paysToInv":
-            facilityId = $('#fFacilities').find('option:selected').attr('id');
-            underFacilityId = $('#uFacilities').find('option:selected').attr('id');
-            investorId = $('#investors').find('option:selected').attr('id');
-            startDate = $('#beginPeriod').val();
-            endDate = $('#endPeriod').val();
+            facilityId = fFacilities.find('option:selected').attr('id');
+            underFacilityId = uFacilities.find('option:selected').attr('id');
+            investorId = investors.find('option:selected').attr('id');
+            startDate = beginPeriod.val();
+            endDate = endPeriod.val();
             break;
         case "flowsSale":
-            facilityId = $('#fFacilities').find('option:selected').val();
-            underFacilityId = $('#uFacilities').find('option:selected').val();
-            investorId = $('#investors').find('option:selected').val();
-            startDate = $('#beginPeriod').val();
-            endDate = $('#endPeriod').val();
+            facilityId = fFacilities.find('option:selected').val();
+            underFacilityId = uFacilities.find('option:selected').val();
+            investorId = investors.find('option:selected').val();
+            startDate = beginPeriod.val();
+            endDate = endPeriod.val();
             break;
     }
     let filter = {
@@ -309,21 +315,24 @@ function populateFilters(pageName) {
 function getFiltersFromLS(pageName) {
     let lastFilters = JSON.parse(localStorage.getItem(pageName + 'Filters'));
     if (lastFilters != null && (lastFilters.length > 0)) {
+        let beginPeriod = $('#beginPeriod');
+        let endPeriod = $('#endPeriod');
+
         switch (pageName) {
             case "investorscash":
             case "paysToInv":
                 $('#fFacilities option[id=' + lastFilters[0].facilityId + ']').attr('selected', 'selected');
                 $('#uFacilities option[id=' + lastFilters[0].underFacilityId + ']').attr('selected', 'selected');
                 $('#investors option[id=' + lastFilters[0].investorId + ']').attr('selected', 'selected');
-                $('#beginPeriod').text(lastFilters[0].startDateVal);
-                $('#endPeriod').text(lastFilters[0].endDateVal);
+                beginPeriod.text(lastFilters[0].startDateVal);
+                endPeriod.text(lastFilters[0].endDateVal);
                 break;
             case "flowsSale":
                 $('#fFacilities option[value="' + lastFilters[0].facilityId + '"]').attr('selected', 'selected');
                 $('#uFacilities option[value="' + lastFilters[0].underFacilityId + '"]').attr('selected', 'selected');
                 $('#investors option[value="' + lastFilters[0].investorId + '"]').attr('selected', 'selected');
-                $('#beginPeriod').val(lastFilters[0].startDateVal);
-                $('#endPeriod').val(lastFilters[0].endDateVal);
+                beginPeriod.val(lastFilters[0].startDateVal);
+                endPeriod.val(lastFilters[0].endDateVal);
                 break;
         }
     }

@@ -1120,22 +1120,22 @@ function checkChecked() {
 }
 
 function prepareSaveCash() {
-    var cashes = [];
-    var cash;
-    var givedCash;
-    var dateGived;
-    var facility;
-    var underFacility;
-    var investor;
-    var investorsType;
-    var dateReport;
-    var dateClose;
-    var shareKind;
-    var sourceFacility;
-    var sourceUnderFacility;
-    var reinvestData = $('form#reInvestData');
-    var reinvestIdList = [];
-    var sourceId;
+    let cashes = [];
+    let cash;
+    let givedCash;
+    let dateGived;
+    let facility;
+    let underFacility;
+    let investor;
+    let investorsType;
+    let dateReport;
+    let dateClose;
+    let shareKind;
+    let sourceFacility;
+    let sourceUnderFacility;
+    let reinvestData = $('form#reInvestData');
+    let reinvestIdList = [];
+    let sourceId;
 
     dateClose = $('#dateClose').val();
     dateGived = new Date(dateClose).getTime();
@@ -1152,7 +1152,7 @@ function prepareSaveCash() {
     };
 
     underFacility = {
-        id: reinvestData.find('#srcUnderFacilities').val(),
+        id: reinvestData.find('#srcUnderFacilities option:selected').attr('id'),
         underFacility: $('#srcUnderFacilities').find('option:selected').text()
     };
 
@@ -1211,8 +1211,6 @@ function prepareSaveCash() {
             }
 
             dateReport = current.children('td:eq(4)').attr('data-report-date');
-            //tmpDate = dateReport.split(".");
-            //dateReport = new Date(parseInt(tmpDate[2]), parseInt(tmpDate[1]) - 1, parseInt(tmpDate[0])).getTime();
 
             investor = {
                 id: current.children('td:eq(2)').attr('data-investor-id'),
@@ -1265,7 +1263,7 @@ function saveReCash(cashes, reinvestIdList, dateClose) {
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: '../saveReInvCash',
+        url: '/saveReInvCash',
         data: JSON.stringify(search),
         dataType: 'json',
         timeout: 100000,
@@ -1477,7 +1475,7 @@ function saveDivideCash(cashes, reUnderFacility, excludedUnderFacilities) {
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: "../saveDivideCash",
+        url: "/saveDivideCash",
         data: JSON.stringify(search),
         dataType: 'json',
         timeout: 1000000,
@@ -1584,7 +1582,7 @@ function closeCash(cashIdList, invBuyer, dateClosingInvest, what) {
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: "../closeCash",
+        url: "/closeCash",
         data: JSON.stringify(search),
         dataType: 'json',
         timeout: 100000,
@@ -1684,7 +1682,7 @@ function filteredInvestorsCash(facility, underFacility, investor, dateBegin, dat
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: "../investorsCash",
+        url: "/investorsCash",
         data: JSON.stringify(search),
         dataType: 'json',
         timeout: 100000,
