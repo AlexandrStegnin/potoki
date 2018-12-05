@@ -43,8 +43,6 @@
         <a href="<c:url value='/underfacilities' />" class="btn btn-success btn-block">Подобъекы (UnderFacilities)</a>
         <a href="<c:url value='/rooms' />" class="btn btn-success btn-block">Помещения (Rooms)</a>
         <a href="<c:url value='/facilitiesbuysales' />" class="btn btn-success btn-block">Покупка/продажа объектов (FacilitiesBuySales)</a>
-        <a href="<c:url value='/viewfacilitiesservicecontracts' />" class="btn btn-success btn-block">Договоры обслуживания (FacilitiesServiceContracts)</a>
-        <a href="<c:url value='/rentorsdetails' />" class="btn btn-success btn-block">Реквизиты арендаторов (RentorsDetails)</a>
         <a href="<c:url value='/investorscash' />" class="btn btn-success btn-block">Деньги инвесторов (InvestorsCash)</a>
         <a href="<c:url value='/paysToInv' />" class="btn btn-success btn-block">Выплаты инвесторам (аренда) (InvestorsFlows)</a>
         <a href="<c:url value='/flowsSale' />" class="btn btn-success btn-block">Выплаты инвесторам (продажа) (InvestorsFlowsSale)</a>
