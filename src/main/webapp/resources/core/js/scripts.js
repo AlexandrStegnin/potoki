@@ -278,20 +278,51 @@ function populateFilters(pageName) {
     let startDate;
     let endDate;
 
-    let fFacilities = $('#fFacilities');
-    let uFacilities = $('#uFacilities');
-    let investors = $('#investors');
-    let beginPeriod = $('#beginPeriod');
-    let endPeriod = $('#endPeriod');
+    let fFacilities;
+    let uFacilities;
+    let investors;
+    let beginPeriod;
+    let endPeriod;
+
+    let elDateClose;
+    let elSrcFacilities;
+    let elSrcUnderFacilities;
+    let elShareKindName;
+
+    let dateClose;
+    let srcFacility;
+    let srcUnderFacility;
+    let shareKindName;
+    let reInvestData;
 
     switch (pageName) {
         case "investorscash":
         case "paysToInv":
+            //Search form
+            fFacilities = $('#fFacilities');
+            uFacilities = $('#uFacilities');
+            investors = $('#investors');
+            beginPeriod = $('#beginPeriod');
+            endPeriod = $('#endPeriod');
+
             facilityId = fFacilities.find('option:selected').attr('id');
             underFacilityId = uFacilities.find('option:selected').attr('id');
             investorId = investors.find('option:selected').attr('id');
             startDate = beginPeriod.val();
             endDate = endPeriod.val();
+
+            //ReInvest form
+            reInvestData = $('#reInvestData');
+            elDateClose = reInvestData.find('#dateClose');
+            elSrcFacilities = reInvestData.find('#srcFacilities');
+            elSrcUnderFacilities = reInvestData.find('#srcUnderFacilities');
+            elShareKindName = reInvestData.find('#shareKindName');
+
+            dateClose = elDateClose.val();
+            srcFacility = elSrcFacilities.find('option:selected').val();
+            srcUnderFacility = elSrcUnderFacilities.find('option:selected').val();
+            shareKindName = elShareKindName.find('option:selected').val();
+
             break;
         case "flowsSale":
             facilityId = fFacilities.find('option:selected').val();
@@ -309,6 +340,14 @@ function populateFilters(pageName) {
         endDateVal: endDate
     };
     filters.push(filter);
+    filter = {
+        dateClose: dateClose,
+        srcFacility: srcFacility,
+        srcUnderFacility: srcUnderFacility,
+        shareKindName: shareKindName
+    };
+    filters.push(filter);
+
     localStorage.setItem(pageName + 'Filters', JSON.stringify(filters));
 }
 
@@ -326,6 +365,11 @@ function getFiltersFromLS(pageName) {
                 $('#investors option[id=' + lastFilters[0].investorId + ']').attr('selected', 'selected');
                 beginPeriod.text(lastFilters[0].startDateVal);
                 endPeriod.text(lastFilters[0].endDateVal);
+
+                $('#dateClose').val(lastFilters[1].dateClose);
+                $('#srcFacilities').val(lastFilters[1].srcFacility);
+                $('#srcUnderFacilities').val(lastFilters[1].srcUnderFacility);
+                $('#shareKindName').val(lastFilters[1].shareKindName);
                 if (lastFilters[0].facilityId !== 0) getUnderFacilitiesFromLocalStorage(lastFilters[0].facilityId, 'uFacilities');
                 break;
             case "flowsSale":

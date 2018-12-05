@@ -262,6 +262,7 @@ jQuery(document).ready(function ($) {
 
     $(document).on('submit', '#reInvestData', function (event) {
         event.preventDefault();
+        populateFilters((window.location.pathname + '').split("/")[1]);
         prepareSaveCash();
     });
 
@@ -1152,7 +1153,7 @@ function prepareSaveCash() {
     };
 
     underFacility = {
-        id: reinvestData.find('#srcUnderFacilities option:selected').attr('id'),
+        id: reinvestData.find('#srcUnderFacilities option:selected').val(),
         underFacility: $('#srcUnderFacilities').find('option:selected').text()
     };
 
