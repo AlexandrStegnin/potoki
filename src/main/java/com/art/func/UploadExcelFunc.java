@@ -1184,9 +1184,10 @@ public class UploadExcelFunc {
                 } catch (Exception ex) {
                     System.out.println(ex.getMessage());
                 }
-
                 for (int i = 0; i < row.getLastCellNum(); i++) {
-                    row.getCell(i).setCellType(CellType.STRING);
+                    if (!Objects.equals(null, row.getCell(i))) {
+                        row.getCell(i).setCellType(CellType.STRING);
+                    }
                 }
 
                 UnderFacilities underFacilities = underFacilitiesList
@@ -1195,18 +1196,18 @@ public class UploadExcelFunc {
                         .findFirst()
                         .orElse(null);
 
-                flows.setPlanFact(row.getCell(0).toString());
-                flows.setFileName(row.getCell(1).toString());
+                flows.setPlanFact(row.getCell(0) == null ? "" : row.getCell(0).toString());
+                flows.setFileName(row.getCell(1) == null ? "" : row.getCell(1).toString());
                 flows.setSettlementDate(calendar.getTime());
-                flows.setSumma(Float.parseFloat(row.getCell(7).toString()));
-                flows.setOrgName(row.getCell(8).toString());
-                flows.setInn(row.getCell(9).toString());
-                flows.setAccount(row.getCell(10).toString());
-                flows.setPurposePayment(row.getCell(11).toString());
-                flows.setPayment(row.getCell(12).toString());
+                flows.setSumma(Float.parseFloat(row.getCell(7) == null ? "0" : row.getCell(7).toString()));
+                flows.setOrgName(row.getCell(8) == null ? "" : row.getCell(8).toString());
+                flows.setInn(row.getCell(9) == null ? "" : row.getCell(9).toString());
+                flows.setAccount(row.getCell(10) == null ? "" : row.getCell(10).toString());
+                flows.setPurposePayment(row.getCell(11) == null ? "" : row.getCell(11).toString());
+                flows.setPayment(row.getCell(12) == null ? "" : row.getCell(12).toString());
                 flows.setUnderFacilities(underFacilities);
-                flows.setLevelTwo(row.getCell(14).toString());
-                flows.setLevelThree(row.getCell(15).toString());
+                flows.setLevelTwo(row.getCell(14) == null ? "" : row.getCell(14).toString());
+                flows.setLevelThree(row.getCell(15) == null ? "" : row.getCell(15).toString());
 
                 mainFlowsList.add(flows);
 
