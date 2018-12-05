@@ -896,14 +896,9 @@ public class InvestorsCashController {
             addFacility(f);
             addFacility(cash);
             if (f.getGivedCash().signum() == 0) {
-                List<InvestorsCash> cashList = investorsCashService.findBySourceId(f.getId());
-                if (cashList.size() > 0) {
-                    cashList.forEach(c -> {
-                        c.setSourceId(null);
-                        investorsCashService.update(c);
-                    });
-                }
-                investorsCashService.deleteById(f.getId());
+                f.setIsDivide(1);
+                f.setIsReinvest(1);
+                investorsCashService.update(f);
             } else {
                 investorsCashService.create(f);
             }
