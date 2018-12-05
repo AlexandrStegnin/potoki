@@ -326,6 +326,7 @@ function getFiltersFromLS(pageName) {
                 $('#investors option[id=' + lastFilters[0].investorId + ']').attr('selected', 'selected');
                 beginPeriod.text(lastFilters[0].startDateVal);
                 endPeriod.text(lastFilters[0].endDateVal);
+                if (lastFilters[0].facilityId !== 0) getUnderFacilitiesFromLocalStorage(lastFilters[0].facilityId, 'uFacilities');
                 break;
             case "flowsSale":
                 $('#fFacilities option[value="' + lastFilters[0].facilityId + '"]').attr('selected', 'selected');
