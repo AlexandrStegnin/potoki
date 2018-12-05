@@ -617,7 +617,6 @@ public class InvestorsCashController {
         String ret = "списку денег инвестора";
         String redirectUrl = "/investorscash";
         updateMailingGroups(investorsCash, "add");
-        addFacility(investorsCash);
         investorsCashService.create(investorsCash);
         if (!Objects.equals(null, investorsCash.getCashSource()) &&
                 !investorsCash.getCashSource().getCashSource().equalsIgnoreCase("Бронь")) {
@@ -663,7 +662,6 @@ public class InvestorsCashController {
             newInvestorsCash.setInvestorsType(investorsTypesService.findByInvestorsTypes("Старый инвестор"));
             newInvestorsCash.setShareKind(investorsCash.getShareKind());
             updateMailingGroups(newInvestorsCash, "add");
-            addFacility(newInvestorsCash);
             investorsCashService.create(newInvestorsCash);
             whatWeDoWithCash = "добавлены.";
         }
@@ -673,7 +671,6 @@ public class InvestorsCashController {
             updateMailingGroups(investorsCash, "delete");
         } else {
             updateMailingGroups(investorsCash, "add");
-            addFacility(investorsCash);
         }
         response.setMessage("Деньги инвестора " + invLogin + " успешно " + whatWeDoWithCash);
         return response;
@@ -684,7 +681,6 @@ public class InvestorsCashController {
         ModelAndView modelAndView = new ModelAndView("viewinvestorscash");
 
         updateMailingGroups(investorsCash, "add");
-        addFacility(investorsCash);
 
         investorsCashService.update(investorsCash);
         SearchSummary searchSummary = new SearchSummary();
@@ -726,11 +722,11 @@ public class InvestorsCashController {
 
         ExecutorService service = Executors.newCachedThreadPool();
 
-        cash.forEach(c -> service.submit(() -> {
-            updateMailingGroups(c, "add");
-            addFacility(c);
-        }));
-        if (investorsCash.getGivedCash().compareTo(BigDecimal.ZERO) == 0) investorsCash.setIsReinvest(1);
+        cash.forEach(c -> service.submit(() -> updateMailingGroups(c, "add")));
+        if (investorsCash.getGivedCash().compareTo(BigDecimal.ZERO) == 0) {
+            investorsCash.setIsReinvest(1);
+            investorsCash.setIsDivide(1);
+        }
         investorsCashService.update(newInvestorsCash);
         investorsCashService.update(investorsCash);
         ModelAndView model = new ModelAndView("addinvestorscash");
@@ -779,7 +775,6 @@ public class InvestorsCashController {
                 value.setInvestorsType(investorsType);
                 value.setGivedCash(value.getGivedCash().setScale(2, RoundingMode.CEILING));
                 updateMailingGroups(value, "add");
-                addFacility(value);
                 investorsCashService.create(value);
             });
 
@@ -813,7 +808,6 @@ public class InvestorsCashController {
             value.setGivedCash(value.getGivedCash().setScale(2, RoundingMode.DOWN));
             dateClose[0] = value.getDateGivedCash();
             updateMailingGroups(value, "add");
-            addFacility(value);
             investorsCashService.create(value);
         });
 
@@ -824,7 +818,6 @@ public class InvestorsCashController {
             f.setDateClosingInvest(finalDateClose);
             f.setTypeClosingInvest(typeClosingInvest);
             updateMailingGroups(f, "add");
-            addFacility(f);
             investorsCashService.create(f);
         });
 
@@ -893,8 +886,6 @@ public class InvestorsCashController {
             f.setGivedCash(sumRemainder);
             updateMailingGroups(f, "add");
             updateMailingGroups(cash, "add");
-            addFacility(f);
-            addFacility(cash);
             if (f.getGivedCash().signum() == 0) {
                 f.setIsDivide(1);
                 f.setIsReinvest(1);
@@ -953,7 +944,6 @@ public class InvestorsCashController {
 
             cashes.forEach(c -> service.submit(() -> {
                 updateMailingGroups(c, "add");
-                addFacility(c);
             }));
 
             investorsCashService.create(cash);
@@ -968,7 +958,6 @@ public class InvestorsCashController {
             investorsCashService.update(updatedCash);
 
             updateMailingGroups(updatedCash, "delete");
-            addFacility(updatedCash);
 
         }
         modelAndView.addObject("investorsCash", investorsCashService.findAll());
@@ -1021,7 +1010,6 @@ public class InvestorsCashController {
 
                 cashes.forEach(ca -> service.submit(() -> {
                     updateMailingGroups(ca, "add");
-                    addFacility(ca);
                 }));
 
                 service.shutdown();
@@ -1037,7 +1025,6 @@ public class InvestorsCashController {
             }
 
             updateMailingGroups(c, "delete");
-            addFacility(c);
         });
 
         response.setMessage("Массовое закрытие прошло успешно.");
@@ -1094,17 +1081,6 @@ public class InvestorsCashController {
                     break;
             }
 
-        }
-    }
-
-    private void addFacility(InvestorsCash cash) {
-        Facilities facility = facilityService.findByIdWithInvestors(cash.getFacility().getId());
-        Users investor = userService.findByIdWithFacilities(cash.getInvestor().getId());
-        Set<Users> investors = facility.getInvestors();
-        if (!investors.contains(investor)) {
-            investors.add(investor);
-            facility.setInvestors(investors);
-            facilityService.merge(facility);
         }
     }
 
