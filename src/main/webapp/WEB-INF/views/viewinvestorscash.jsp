@@ -11,16 +11,22 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Список дненег инвесторов</title>
     <sec:csrfMetaTags/>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <%--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"--%>
+          <%--integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">--%>
     <link href="<c:url value='/resources/core/css/old_bootstrap.min.css' />" rel="stylesheet"/>
     <link href="<c:url value='/resources/core/css/applic.css' />" rel="stylesheet"/>
     <link href="<c:url value='/resources/core/css/popup.css' />" rel="stylesheet"/>
     <link href="<c:url value='/resources/core/css/ajaxLoader.css' />" rel="stylesheet"/>
-    <link href="<c:url value='/resources/core/css/jquery-ui.min.css' />" rel="stylesheet"/>
+    <%--<link href="<c:url value='/resources/core/css/jquery-ui.min.css' />" rel="stylesheet"/>--%>
 
-    <script type="text/javascript" src="<c:url value='/resources/core/js/jquery-3.2.1.js' />"></script>
-    <script type="text/javascript"
-            src="<c:url value="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.0.4/popper.js" /> "></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/jquery-ui.min.js' />"></script>
+    <%--<script type="text/javascript" src="<c:url value='/resources/core/js/jquery-3.2.1.js' />"></script>--%>
+    <%--<script type="text/javascript"--%>
+            <%--src="<c:url value="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.0.4/popper.js" /> "></script>--%>
+    <%--<script type="text/javascript" src="<c:url value='/resources/core/js/jquery-ui.min.js' />"></script>--%>
 
     <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min_old.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/AjaxLoader.js' />"></script>
@@ -28,10 +34,6 @@
     <script type="text/javascript" src="<c:url value='/resources/core/js/scriptsForInvestorsCash.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
-
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/css/bootstrap-select.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
 
     <style type="text/css">
         table, td, th {
@@ -90,7 +92,7 @@
                 <form:select path="underFacility" id="uFacilities" multiple="false" class="selectpicker"
                              data-live-search="true" data-width="160px" data-actions-box="true">
                     <c:forEach var="uf" items="${underFacilities}">
-                        <option
+                        <option data-tokens="${uf.facilityId}"
                                 <c:choose>
                                     <c:when test="${uf.underFacility eq searchSummary.underFacility}">selected="selected"</c:when>
                                 </c:choose>
@@ -491,5 +493,12 @@
 </div>
 <%@include file="slideDiv.jsp" %>
 <%@include file="loader.jsp" %>
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/css/bootstrap-select.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
+<%--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"--%>
+        <%--integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>--%>
+
 </body>
 </html>

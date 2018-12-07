@@ -1,34 +1,26 @@
-function apply_filter(table, col, text){
+function apply_filter(table, col, text) {
     filters[col] = text;
 
-    $(table).find('tr').each(function(i){
+    $(table).find('tr').each(function (i) {
         $(this).data('passed', true);
     });
 
-    for(let index in filters)
-    {
-        if(filters[index] !== 'any')
-        {
-            $(table).find('tr td:nth-child('+index+')').each(function(){
-                if($(this).text() === filters[index] && $(this).parent().data('passed'))
-                {
+    for (let index in filters) {
+        if (filters[index] !== 'any') {
+            $(table).find('tr td:nth-child(' + index + ')').each(function () {
+                if ($(this).text() === filters[index] && $(this).parent().data('passed')) {
                     $(this).parent().data('passed', true);
-                }
-                else
-                {
+                } else {
                     $(this).parent().data('passed', false);
                 }
             });
         }
     }
 
-    $(table).find('tr').each(function(i){
-        if(!$(this).data('passed'))
-        {
+    $(table).find('tr').each(function (i) {
+        if (!$(this).data('passed')) {
             $(this).hide();
-        }
-        else
-        {
+        } else {
             $(this).show();
         }
     });
@@ -68,25 +60,25 @@ function getUnderFacilitiesFromLocalStorage(facilityId, uFacilitiesId) {
 
     let options;
     if (underFacilities === null) populateStorageUnderFacilities(uFacilitiesId);
-    if(parseInt(facilityId) === 0){
-        options = underFacilities.map(function(item) {
+    if (parseInt(facilityId) === 0) {
+        options = underFacilities.map(function (item) {
 
             option = document.createElement('option');
             option.setAttribute('id', item.id);
-            option.setAttribute('data-parrent-id', item.facilityId);
+            option.setAttribute('data-parent-id', item.facilityId);
             option.innerText = item.underFacility;
 
             return option;
 
         });
-    }else {
-        options = underFacilities.filter(function(item){
+    } else {
+        options = underFacilities.filter(function (item) {
             return item.facilityId === parseInt(facilityId);
-        }).map(function(item) {
+        }).map(function (item) {
 
             option = document.createElement('option');
             option.setAttribute('id', item.id);
-            option.setAttribute('data-parrent-id', item.facilityId);
+            option.setAttribute('data-parent-id', item.facilityId);
             option.innerText = item.underFacility;
 
             return option;
@@ -113,8 +105,8 @@ function getRoomsFromLocalStorage(underFacilityId) {
 
     let options;
 
-    if(parseInt(underFacilityId) === 0){
-        options = rooms.map(function(item) {
+    if (parseInt(underFacilityId) === 0) {
+        options = rooms.map(function (item) {
 
             option = document.createElement('option');
             option.setAttribute('id', item.id);
@@ -124,10 +116,10 @@ function getRoomsFromLocalStorage(underFacilityId) {
             return option;
 
         });
-    }else {
-        options = rooms.filter(function(item){
+    } else {
+        options = rooms.filter(function (item) {
             return item.underFacilityId === parseInt(underFacilityId);
-        }).map(function(item) {
+        }).map(function (item) {
 
             option = document.createElement('option');
             option.setAttribute('id', item.id);
