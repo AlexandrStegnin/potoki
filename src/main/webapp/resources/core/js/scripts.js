@@ -358,25 +358,12 @@ function getFiltersFromLS(pageName) {
     if (lastFilters != null && (lastFilters.length > 0)) {
         let beginPeriod = $('#beginPeriod');
         let endPeriod = $('#endPeriod');
-        let investors = [];
         switch (pageName) {
-            case "investorscash":
             case "paysToInv":
-                $('#fFacilities option[id=' + lastFilters[0].facilityId + ']').attr('selected', 'selected');
-                $('#uFacilities option[id=' + lastFilters[0].underFacilityId + ']').attr('selected', 'selected');
-                investors = lastFilters[0].investorId;
-                $.each(investors, function(ind, el) {
-                    $('#investors option[id=' + el + ']').attr('selected', 'selected');
-                });
-
-                beginPeriod.text(lastFilters[0].startDateVal);
-                endPeriod.text(lastFilters[0].endDateVal);
-
-                $('#dateClose').val(lastFilters[1].dateClose);
-                $('#srcFacilities').val(lastFilters[1].srcFacility);
-                $('#srcUnderFacilities').val(lastFilters[1].srcUnderFacility);
-                $('#shareKindName').val(lastFilters[1].shareKindName);
-                if (lastFilters[0].facilityId !== 0) getUnderFacilitiesFromLocalStorage(lastFilters[0].facilityId, 'uFacilities');
+                getFilters("paysToInv", lastFilters);
+                break;
+            case "investorscash":
+                getFilters("investorscash", lastFilters);
                 break;
             case "flowsSale":
                 $('#fFacilities option[value="' + lastFilters[0].facilityId + '"]').attr('selected', 'selected');
@@ -387,4 +374,25 @@ function getFiltersFromLS(pageName) {
                 break;
         }
     }
+}
+
+function getFilters(pageName, lastFilters) {
+    let beginPeriod = $('#beginPeriod');
+    let endPeriod = $('#endPeriod');
+    let investors;
+    $('#fFacilities option[id=' + lastFilters[0].facilityId + ']').attr('selected', 'selected');
+    investors = lastFilters[0].investorId;
+    $.each(investors, function (ind, el) {
+        $('#investors option[id=' + el + ']').attr('selected', 'selected');
+    });
+
+    beginPeriod.text(lastFilters[0].startDateVal);
+    endPeriod.text(lastFilters[0].endDateVal);
+
+    $('#dateClose').val(lastFilters[1].dateClose);
+    $('#srcFacilities').val(lastFilters[1].srcFacility);
+    $('#srcUnderFacilities').val(lastFilters[1].srcUnderFacility);
+    $('#shareKindName').val(lastFilters[1].shareKindName);
+    if (lastFilters[0].facilityId !== 0) getUnderFacilitiesFromLocalStorage(lastFilters[0].facilityId, 'uFacilities');
+    $('#uFacilities option[id=' + lastFilters[0].underFacilityId + ']').attr('selected', 'selected');
 }
