@@ -5,12 +5,13 @@ import com.art.model.supporting.InvestorsTotalSum;
 import com.art.model.supporting.PaginationResult;
 import com.art.model.supporting.SearchSummary;
 import com.art.repository.InvestorsCashRepository;
+import com.art.specifications.InvestorsCashSpecification;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,13 +27,11 @@ import java.math.BigInteger;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
-@Repository
 public class InvestorsCashService {
 
     @Resource(name = "investorsCashRepository")
@@ -249,39 +248,36 @@ public class InvestorsCashService {
         return cash;
     }
 
-    public Page<InvestorsCash> findAllFiltering(Pageable pageable, SearchSummary filters) {
-        String investor = filters.getInvestor();
+    public Page<InvestorsCash> findAll(SearchSummary filters, Pageable pageable) {
+        List<String> loginList = new ArrayList<>();
+        if (!Objects.equals(null, filters.getInvestors())) {
+            loginList = Arrays.stream(filters.getInvestors()).collect(Collectors.toList());
+        }
+
         String facility = filters.getFacility();
         String underFacility = filters.getUnderFacility();
         LocalDate startDate = filters.getStartDate();
         LocalDate endDate = filters.getEndDate();
         java.util.Date start = null;
         java.util.Date end = null;
-        if (!Objects.equals(null, startDate)) start = java.util.Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        if (!Objects.equals(null, endDate)) end = java.util.Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        if (!Objects.equals(null, startDate))
+            start = java.util.Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        if (!Objects.equals(null, endDate))
+            end = java.util.Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-        if (!Objects.equals(null, investor) && investor.equalsIgnoreCase("Выберите инвестора")) investor = null;
-        if (!Objects.equals(null, facility) && facility.equalsIgnoreCase("Выберите объект")) facility = null;
-        if (!Objects.equals(null, underFacility) && underFacility.equalsIgnoreCase("Выберите подобъект")) underFacility = null;
+        if (!Objects.equals(null, facility) && facility.equalsIgnoreCase("Выберите объект"))
+            facility = null;
+        if (!Objects.equals(null, underFacility) && underFacility.equalsIgnoreCase("Выберите подобъект"))
+            underFacility = null;
 
-        return investorsCashRepository.findFiltering(pageable, investor, facility, underFacility, start, end);
-    }
-
-    public List<InvestorsCash> findAllFiltering(SearchSummary filters) {
-        String investor = filters.getInvestor();
-        String facility = filters.getFacility();
-        String underFacility = filters.getUnderFacility();
-        LocalDate startDate = filters.getStartDate();
-        LocalDate endDate = filters.getEndDate();
-        java.util.Date start = null;
-        java.util.Date end = null;
-        if (!Objects.equals(null, startDate)) start = java.util.Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        if (!Objects.equals(null, endDate)) end = java.util.Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-
-        if (!Objects.equals(null, investor) && investor.equalsIgnoreCase("Выберите инвестора")) investor = null;
-        if (!Objects.equals(null, facility) && facility.equalsIgnoreCase("Выберите объект")) facility = null;
-        if (!Objects.equals(null, underFacility) && underFacility.equalsIgnoreCase("Выберите подобъект")) underFacility = null;
-
-        return investorsCashRepository.findFiltering(investor, facility, underFacility, start, end);
+        return investorsCashRepository.findAll(
+                Specifications.where(
+                        InvestorsCashSpecification.dateGivenCashBetween(start, end))
+                        .and(InvestorsCashSpecification.facilityEqual(facility))
+                        .and(InvestorsCashSpecification.underFacilityEqual(underFacility))
+                        .and(InvestorsCashSpecification.loginIn(loginList))
+                        .and(InvestorsCashSpecification.facilityIsNotNull()),
+                pageable
+        );
     }
 }

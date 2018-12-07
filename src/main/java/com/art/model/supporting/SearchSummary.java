@@ -92,6 +92,8 @@ public class SearchSummary implements Serializable {
     private LocalDate startDate;
     private LocalDate endDate;
 
+    private String[] investors;
+
     public String getFacility() {
         return facility;
     }

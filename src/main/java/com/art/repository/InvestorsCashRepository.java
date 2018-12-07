@@ -4,7 +4,9 @@ import com.art.model.InvestorsCash;
 import com.art.model.supporting.InvestorsTotalSum;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -14,7 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface InvestorsCashRepository extends JpaRepository<InvestorsCash, BigInteger>{
+public interface InvestorsCashRepository extends JpaRepository<InvestorsCash, BigInteger>, JpaSpecificationExecutor<InvestorsCash> {
     InvestorsCash findById(BigInteger id);
     void deleteById(BigInteger id);
 
@@ -41,7 +43,7 @@ public interface InvestorsCashRepository extends JpaRepository<InvestorsCash, Bi
                     "JOIN ic.investor u " +
                     "JOIN ic.facility f " +
                     "JOIN ic.underFacility uf " +
-                    "WHERE (:investor IS NULL OR u.login = :investor) AND " +
+                    "WHERE (:investors IS NULL OR u.login IN (:investors)) AND " +
                     "(:facility IS NULL OR f.facility = :facility) AND " +
                     "(:underFacility IS NULL OR uf.underFacility = :underFacility) AND " +
                     "(:startDate IS NULL OR ic.dateGivedCash >= :startDate) AND " +
@@ -49,7 +51,7 @@ public interface InvestorsCashRepository extends JpaRepository<InvestorsCash, Bi
     )
     Page<InvestorsCash> findFiltering(
             Pageable pageable,
-            @Param(value = "investor") String investor,
+            @Param(value = "investors") List<String> investors,
             @Param(value = "facility") String facility,
             @Param(value = "underFacility") String underFacility,
             @Param(value = "startDate") Date startDate,
@@ -74,5 +76,7 @@ public interface InvestorsCashRepository extends JpaRepository<InvestorsCash, Bi
             @Param(value = "startDate") Date startDate,
             @Param(value = "endDate") Date endDate
     );
+
+    Page<InvestorsCash> findAll(Specification<InvestorsCash> specification, Pageable pageable);
 
 }

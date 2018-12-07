@@ -274,7 +274,7 @@ function populateFilters(pageName) {
     let filters = [];
     let facilityId;
     let underFacilityId;
-    let investorId;
+    let investorsId = [];
     let startDate;
     let endDate;
 
@@ -307,7 +307,9 @@ function populateFilters(pageName) {
 
             facilityId = fFacilities.find('option:selected').attr('id');
             underFacilityId = uFacilities.find('option:selected').attr('id');
-            investorId = investors.find('option:selected').attr('id');
+            investors.find('option:selected').each(function () {
+                investorsId.push($(this).attr('id'));
+            });
             startDate = beginPeriod.val();
             endDate = endPeriod.val();
 
@@ -327,7 +329,7 @@ function populateFilters(pageName) {
         case "flowsSale":
             facilityId = fFacilities.find('option:selected').val();
             underFacilityId = uFacilities.find('option:selected').val();
-            investorId = investors.find('option:selected').val();
+            investorsId = investors.find('option:selected').val();
             startDate = beginPeriod.val();
             endDate = endPeriod.val();
             break;
@@ -335,7 +337,7 @@ function populateFilters(pageName) {
     let filter = {
         facilityId: facilityId,
         underFacilityId: underFacilityId,
-        investorId: investorId,
+        investorId: investorsId,
         startDateVal: startDate,
         endDateVal: endDate
     };
@@ -356,13 +358,17 @@ function getFiltersFromLS(pageName) {
     if (lastFilters != null && (lastFilters.length > 0)) {
         let beginPeriod = $('#beginPeriod');
         let endPeriod = $('#endPeriod');
-
+        let investors = [];
         switch (pageName) {
             case "investorscash":
             case "paysToInv":
                 $('#fFacilities option[id=' + lastFilters[0].facilityId + ']').attr('selected', 'selected');
                 $('#uFacilities option[id=' + lastFilters[0].underFacilityId + ']').attr('selected', 'selected');
-                $('#investors option[id=' + lastFilters[0].investorId + ']').attr('selected', 'selected');
+                investors = lastFilters[0].investorId;
+                $.each(investors, function(ind, el) {
+                    $('#investors option[id=' + el + ']').attr('selected', 'selected');
+                });
+
                 beginPeriod.text(lastFilters[0].startDateVal);
                 endPeriod.text(lastFilters[0].endDateVal);
 

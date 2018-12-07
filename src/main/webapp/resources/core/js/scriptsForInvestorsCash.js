@@ -44,6 +44,9 @@ jQuery(document).ready(function ($) {
     } else {
         what = null
     }
+
+    $('.selectpicker').selectpicker('refresh');
+
     populateStorageUnderFacilities('uFacilities');
     blockMenus();
 
@@ -298,7 +301,7 @@ jQuery(document).ready(function ($) {
         moveFields('closeCash');
     }
 
-    var url = window.location.href;
+    let url = window.location.href;
     if (url.indexOf('newinvestorscash') >= 0 || url.indexOf('edit-cash') >= 0 || url.indexOf('double-cash') >= 0 || url.indexOf('close-cash') >= 0) {
         populateStorageUnderFacilities('underFacilities');
     } else {
@@ -391,14 +394,8 @@ jQuery(document).ready(function ($) {
         }
     };
 
-    // $(document).on('click', '[id^="page_"]', function (e) {
-    //     $('#pageNumber').val(this.id.split('_')[1]);
-    //     e.preventDefault();
-    //     $("#search-form").submit();
-    // });
-
     $("#search-form").submit(function (event) {
-        // Disble the search button
+        // Disable the search button
         enableSearchButton(false);
         let fFacility = $('#fFacilities');
         let uFacility = $('#uFacilities');
@@ -407,6 +404,11 @@ jQuery(document).ready(function ($) {
         let facility = fFacility.find('option:selected').val();
         let underFacility = uFacility.find('option:selected').val();
         let investor = inv.find('option:selected').val();
+
+        let invArray = [];
+        $('#investors > option:selected').each(function () {
+            invArray.push($(this).val());
+        });
 
         let dateFrom = $('#beginPeriod').val() + '';
         let dateTo = $('#endPeriod').val() + '';
@@ -421,7 +423,7 @@ jQuery(document).ready(function ($) {
         let uFacilityParam = underFacility === 'Выберите подобъект' ? facilityParam + '' : facilityParam.indexOf('?') === 0 ?
             facilityParam + '&underFacility=' + underFacility : '?underFacility=' + underFacility;
         let investorParam = investor === 'Выберите инвестора' ? uFacilityParam + '' : uFacilityParam.indexOf('?') === 0 ?
-            uFacilityParam + '&investor=' + investor : '?investor=' + investor;
+            uFacilityParam + '&investor=' + invArray : '?investor=' + invArray;
         let startDateParam = (dateFrom === null || dateFrom.length === 0) ? investorParam + '' : investorParam.indexOf('?') === 0 ? investorParam + '&startDate=' + dateFrom :
             '?startDate=' + dateFrom;
         let endDateParam = (dateTo === null || dateTo.length === 0) ? startDateParam + '' : startDateParam.indexOf('?') === 0 ? startDateParam + '&endDate=' + dateTo :
@@ -444,13 +446,14 @@ jQuery(document).ready(function ($) {
     });
 
     $('#facilities').change(function () {
-        var facility = $(this).val();
+        let facility = $(this).val();
         getUnderFacilitiesFromLocalStorage(facility, 'underFacilities');
     });
 
     $('#fFacilities').change(function () {
         let facility = $(this).find('option:selected').attr('id');
         getUnderFacilitiesFromLocalStorage(facility, 'uFacilities');
+        $('#uFacilities').selectpicker('refresh');
     });
 
     $('#srcFacilities').change(function () {

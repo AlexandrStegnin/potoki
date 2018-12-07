@@ -1,6 +1,7 @@
 package com.art.service;
 
-import com.art.model.*;
+import com.art.model.UnderFacilities;
+import com.art.model.UnderFacilities_;
 import com.art.repository.UnderFacilitiesRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -9,7 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Root;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;

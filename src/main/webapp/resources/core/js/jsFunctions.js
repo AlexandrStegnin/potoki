@@ -5,11 +5,11 @@ function apply_filter(table, col, text){
         $(this).data('passed', true);
     });
 
-    for(var index in filters)
+    for(let index in filters)
     {
         if(filters[index] !== 'any')
         {
-            $(table).find('tr td:nth-child('+index+')').each(function(i){
+            $(table).find('tr td:nth-child('+index+')').each(function(){
                 if($(this).text() === filters[index] && $(this).parent().data('passed'))
                 {
                     $(this).parent().data('passed', true);
@@ -35,7 +35,7 @@ function apply_filter(table, col, text){
 }
 
 function populateStorageUnderFacilities(uFacilitiesId) {
-    var underFacilities = [];
+    let underFacilities = [];
     $('#' + uFacilitiesId).find('option').each(function (i) {
         underFacilities.push({
             id: $(this).attr('id'),
@@ -43,14 +43,14 @@ function populateStorageUnderFacilities(uFacilitiesId) {
             underFacility: $(this).text()
         })
     });
-    var oldArray = JSON.parse(localStorage.getItem('uf'));
+    let oldArray = JSON.parse(localStorage.getItem('uf'));
     if (oldArray === null || (oldArray.length <= underFacilities.length)) {
         localStorage.setItem('uf', JSON.stringify(underFacilities));
     }
 }
 
 function populateStorageRooms() {
-    var rooms = [];
+    let rooms = [];
     $('#rooms').find('option').each(function (i) {
         rooms.push({
             id: $(this).attr('id'),
@@ -62,12 +62,12 @@ function populateStorageRooms() {
 }
 
 function getUnderFacilitiesFromLocalStorage(facilityId, uFacilitiesId) {
-    var underFacilities;
+    let underFacilities;
     underFacilities = JSON.parse(localStorage.getItem('uf'));
-    var option;
+    let option;
 
-    var options;
-
+    let options;
+    if (underFacilities === null) populateStorageUnderFacilities(uFacilitiesId);
     if(parseInt(facilityId) === 0){
         options = underFacilities.map(function(item) {
 
@@ -108,10 +108,10 @@ function getUnderFacilitiesFromLocalStorage(facilityId, uFacilitiesId) {
 }
 
 function getRoomsFromLocalStorage(underFacilityId) {
-    var rooms = JSON.parse(localStorage.getItem('rooms'));
-    var option;
+    let rooms = JSON.parse(localStorage.getItem('rooms'));
+    let option;
 
-    var options;
+    let options;
 
     if(parseInt(underFacilityId) === 0){
         options = rooms.map(function(item) {

@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -98,7 +99,7 @@ public class InvestorsCashController {
                                                     direction = Sort.Direction.ASC) Pageable pageable,
                                             @RequestParam(name = "facility", required = false) String facility,
                                             @RequestParam(name = "underFacility", required = false) String underFacility,
-                                            @RequestParam(name = "investor", required = false) String investor,
+                                            @RequestParam(name = "investor", required = false) String[] investors,
                                             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                             @RequestParam(value = "startDate", required = false) LocalDate startDate,
                                             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -111,18 +112,16 @@ public class InvestorsCashController {
         filters.setEndDate(endDate);
         filters.setFacility(facility);
         filters.setUnderFacility(underFacility);
-        filters.setInvestor(investor);
+        filters.setInvestors(investors);
         FileBucket fileModel = new FileBucket();
         List<InvestorsCash> investorsCashes;
         int pageCount;
-        if (!allRows) {
-            Page<InvestorsCash> cashList = investorsCashService.findAllFiltering(pageable, filters);
-            pageCount = cashList.getTotalPages();
-            investorsCashes = cashList.getContent();
-            modelAndView.addObject("pageCount", pageCount);
-        } else {
-            investorsCashes = investorsCashService.findAllFiltering(filters);
-        }
+        if (allRows) pageable = new PageRequest(0, Integer.MAX_VALUE, Sort.Direction.DESC);
+        Page<InvestorsCash> cashList = investorsCashService.findAll(filters, pageable);
+        pageCount = cashList.getTotalPages();
+        investorsCashes = cashList.getContent();
+        modelAndView.addObject("pageCount", pageCount);
+
         String queryParams = request.getQueryString();
         if (!Objects.equals(null, queryParams)) {
             queryParams = queryParams.replace(replacer, "");
@@ -1089,28 +1088,21 @@ public class InvestorsCashController {
 
         cashList.forEach(ic -> {
             InvestorsCash keyMap;
-            switch (what) {
-                case "sale":
-                    keyMap = map.get(ic.getInvestor().getLogin() +
-                            ic.getSourceUnderFacility().getUnderFacility());
-                    break;
-
-                default:
-                    keyMap = map.get(ic.getInvestor().getLogin() + ic.getSourceFacility().getFacility());
-                    break;
+            if ("sale".equals(what)) {
+                keyMap = map.get(ic.getInvestor().getLogin() +
+                        ic.getSourceUnderFacility().getUnderFacility());
+            } else {
+                keyMap = map.get(ic.getInvestor().getLogin() + ic.getSourceFacility().getFacility());
             }
 
             if (Objects.equals(null, keyMap)) {
-                switch (what) {
-                    case "sale":
-                        map.put(ic.getInvestor().getLogin() +
-                                        ic.getSourceUnderFacility().getUnderFacility(),
-                                ic);
-                        break;
-                    default:
-                        map.put(ic.getInvestor().getLogin() + ic.getSourceFacility().getFacility(),
-                                ic);
-                        break;
+                if ("sale".equals(what)) {
+                    map.put(ic.getInvestor().getLogin() +
+                                    ic.getSourceUnderFacility().getUnderFacility(),
+                            ic);
+                } else {
+                    map.put(ic.getInvestor().getLogin() + ic.getSourceFacility().getFacility(),
+                            ic);
                 }
 
             } else {

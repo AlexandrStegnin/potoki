@@ -15,9 +15,13 @@
     <link href="<c:url value='/resources/core/css/applic.css' />" rel="stylesheet"/>
     <link href="<c:url value='/resources/core/css/popup.css' />" rel="stylesheet"/>
     <link href="<c:url value='/resources/core/css/ajaxLoader.css' />" rel="stylesheet"/>
+    <link href="<c:url value='/resources/core/css/jquery-ui.min.css' />" rel="stylesheet"/>
+
     <script type="text/javascript" src="<c:url value='/resources/core/js/jquery-3.2.1.js' />"></script>
     <script type="text/javascript"
             src="<c:url value="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.0.4/popper.js" /> "></script>
+    <script type="text/javascript" src="<c:url value='/resources/core/js/jquery-ui.min.js' />"></script>
+
     <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min_old.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/AjaxLoader.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/jsFunctions.js' />"></script>
@@ -25,11 +29,16 @@
     <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
 
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/css/bootstrap-select.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
+
     <style type="text/css">
         table, td, th {
             text-align: center;
         }
-        td{
+
+        td {
             word-wrap: break-word;
         }
 
@@ -62,47 +71,56 @@
 
         </div>
 
-        <form:form modelAttribute="searchSummary" method="GET" action="/investorscash" class="form-inline" id="search-form">
+        <form:form modelAttribute="searchSummary" method="GET" action="/investorscash" class="form-inline"
+                   id="search-form">
             <div class="row" style="margin-top:10px; margin-left:10px; margin-bottom:10px; margin-right:10px">
                 <label class="sr-only" for="fFacilities">Объект:</label>
-                <form:select path="facility" id="fFacilities" multiple="false" class="form-control input-sm">
-                <c:forEach var="f" items="${facilities}">
-                    <option
-                            <c:choose>
-                                <c:when test="${f.facility eq 'Выберите объект'}">selected="selected"</c:when>
-                                <c:when test="${f.facility eq searchSummary.facility}">selected="selected"</c:when>
-                            </c:choose>
-                            value="${f.facility}" id="${f.id}">${f.facility}
-                    </option>
-                </c:forEach>
+                <form:select path="facility" id="fFacilities" multiple="false" class="selectpicker"
+                             data-live-search="true" data-width="130px">
+                    <c:forEach var="f" items="${facilities}">
+                        <option
+                                <c:choose>
+                                    <c:when test="${f.facility eq searchSummary.facility}">selected="selected"</c:when>
+                                </c:choose>
+                                value="${f.facility}" id="${f.id}">${f.facility}
+                        </option>
+                    </c:forEach>
                 </form:select>
                 <label class="sr-only" for="uFacilities">Подобъект:</label>
-                <form:select path="underFacility" id="uFacilities" multiple="false" class="form-control input-sm">
+                <form:select path="underFacility" id="uFacilities" multiple="false" class="selectpicker"
+                             data-live-search="true" data-width="160px" data-actions-box="true">
                     <c:forEach var="uf" items="${underFacilities}">
                         <option
                                 <c:choose>
-                                    <c:when test="${uf.underFacility eq 'Выберите подобъект'}">selected="selected"</c:when>
                                     <c:when test="${uf.underFacility eq searchSummary.underFacility}">selected="selected"</c:when>
                                 </c:choose>
-                                value="${uf.underFacility}" id="${uf.id}"  data-parent-id="${uf.facilityId}">${uf.underFacility}
+                                value="${uf.underFacility}" id="${uf.id}"
+                                data-parent-id="${uf.facilityId}">${uf.underFacility}
                         </option>
                     </c:forEach>
                 </form:select>
                 <label class="sr-only" for="investors">Инвестор:</label>
-                <form:select path="investor" id="investors" multiple="false" class="form-control input-sm">
+                <form:select path="investors" id="investors" class="selectpicker" data-container="body"
+                             title="Выберите инвестора..." multiple="true"
+                             data-live-search="true" data-size="7">
                     <c:forEach var="inv" items="${investors}">
-                        <option
-                                <c:choose>
-                                    <c:when test="${inv.login eq 'Выберите инвестора'}">selected="selected"</c:when>
-                                    <c:when test="${inv.login eq searchSummary.investor}">selected="selected"</c:when>
-                                </c:choose> value="${inv.login}" id="${inv.id}">${inv.login}
-                        </option>
+                        <c:if test="${inv.login ne 'Выберите инвестора'}">
+                            <option
+                                    <c:choose>
+                                        <%--<c:when test="${inv.login eq 'Выберите инвестора'}">selected="selected"</c:when>--%>
+                                        <c:when test="${inv.login eq searchSummary.investor}">selected="selected"</c:when>
+                                    </c:choose> value="${inv.login}" id="${inv.id}">${inv.login}
+                            </option>
+                        </c:if>
                     </c:forEach>
                 </form:select>
-                <label for="beginPeriod" style="margin-left:10px; margin-right:5px; font-size:14px">Период с:</label>
-                <input id="beginPeriod" name="startDate" type="date" class="form-control input-sm" value="${searchSummary.startDate}">
+                <label for="beginPeriod" style="margin-left:10px; margin-right:5px; font-size:14px" class="date-picker">Период
+                    с:</label>
+                <input id="beginPeriod" name="startDate" type="date" class="form-control input-sm"
+                       value="${searchSummary.startDate}">
                 <label for="endPeriod" style="margin-left:10px; margin-right:5px; font-size:14px">по:</label>
-                <input id="endPeriod" name="dateEnd" type="date" class="form-control input-sm" value="${searchSummary.endDate}"
+                <input id="endPeriod" name="endDate" type="date" class="form-control input-sm"
+                       value="${searchSummary.endDate}"
                        style="margin-right:5px">
                 <button type="submit" id="bth-search" class="btn btn-primary btn-sm">Фильтр</button>
                 <button type="submit" id="bth-clear" class="btn btn-danger btn-sm">Сбросить фильтры</button>
@@ -141,20 +159,20 @@
 
             </div>
             <c:if test="${allRows == false}">
-            <nav class="text-center" aria-label="Деньги инвесторов">
-                <ul class="pagination pagination-sm justify-content-center">
-                    <c:forEach begin="1" end="${pageCount}" varStatus="page">
-                        <c:set var="link" value="/investorscash?page=${page.index - 1}&size=100" />
-                        <c:if test="${!queryParams.startsWith('&')}" >
-                            <c:set var="link" value="${link.concat('&')}" />
-                        </c:if>
-                        <li class="page-item" data-page="${page.index}">
-                            <a id="page_${page.index}" class="page-link"
-                               href="<c:url value='${link}${queryParams}' />">${page.index}</a>
-                        </li>
-                    </c:forEach>
-                </ul>
-            </nav>
+                <nav class="text-center" aria-label="Деньги инвесторов">
+                    <ul class="pagination pagination-sm justify-content-center">
+                        <c:forEach begin="1" end="${pageCount}" varStatus="page">
+                            <c:set var="link" value="/investorscash?page=${page.index - 1}&size=100"/>
+                            <c:if test="${!queryParams.startsWith('&')}">
+                                <c:set var="link" value="${link.concat('&')}"/>
+                            </c:if>
+                            <li class="page-item" data-page="${page.index}">
+                                <a id="page_${page.index}" class="page-link"
+                                   href="<c:url value='${link}${queryParams}' />">${page.index}</a>
+                            </li>
+                        </c:forEach>
+                    </ul>
+                </nav>
             </c:if>
         </form:form>
 
@@ -227,11 +245,15 @@
                                                            class="${isDisabledClass}">Изменить</a>
                                         </li>
                                         <li id="liDivide"><a id="aDivide"
-                                                href="<c:url value='/double-cash-${cash.id}' />">Разделить</a></li>
-                                        <li id="liDouble"><a id="aDouble" href="<c:url value='/close-cash-${cash.id}' />">Закрыть</a></li>
+                                                             href="<c:url value='/double-cash-${cash.id}' />">Разделить</a>
+                                        </li>
+                                        <li id="liDouble"><a id="aDouble"
+                                                             href="<c:url value='/close-cash-${cash.id}' />">Закрыть</a>
+                                        </li>
                                         <li class="divider"></li>
-                                        <li id="liDelete"><a id="del" data-delete="${cash.id}" href="<c:url value='/#' />"
-                                               style="color: #ff0000;">Удалить</a></li>
+                                        <li id="liDelete"><a id="del" data-delete="${cash.id}"
+                                                             href="<c:url value='/#' />"
+                                                             style="color: #ff0000;">Удалить</a></li>
                                     </ul>
                                 </div>
                             </td>
@@ -313,9 +335,12 @@
                         <div class="form-group col-md-12">
                             <label class="col-md-3 control-lable" for="srcUnderFacilities">Подобъект:</label>
                             <div class="col-md-7">
-                                <form:select path="reUnderFacility" id="srcUnderFacilities" items="${underFacilities}" multiple="false"
+                                <form:select path="reUnderFacility" id="srcUnderFacilities" items="${underFacilities}"
+                                             multiple="false"
                                              itemValue="id" itemLabel="underFacility" class="form-control input-sm"/>
-                                <div id="underFacilityErr" style="color: red; display: none">Необходимо выбрать подобъект</div>
+                                <div id="underFacilityErr" style="color: red; display: none">Необходимо выбрать
+                                    подобъект
+                                </div>
                             </div>
                         </div>
                     </div>
