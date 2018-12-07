@@ -116,7 +116,7 @@ public class InvestorsCashController {
         FileBucket fileModel = new FileBucket();
         List<InvestorsCash> investorsCashes;
         int pageCount;
-        if (allRows) pageable = new PageRequest(0, Integer.MAX_VALUE, Sort.Direction.DESC);
+        if (allRows) pageable = new PageRequest(0, Integer.MAX_VALUE);
         Page<InvestorsCash> cashList = investorsCashService.findAll(filters, pageable);
         pageCount = cashList.getTotalPages();
         investorsCashes = cashList.getContent();

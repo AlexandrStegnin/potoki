@@ -204,10 +204,10 @@ function savePass() {
 }
 
 function updateInvestorDemo() {
-    var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
 
-    // showLoader();
+    showLoader();
 
     $.ajax({
         type: "POST",
@@ -220,12 +220,12 @@ function updateInvestorDemo() {
             xhr.setRequestHeader(header, token);
         },
         success: function (data) {
-            // closeLoader();
+            closeLoader();
             slideBox(data.message);
         },
         error: function (e) {
             console.log("ERROR: ", e);
-            // show(e);
+            closeLoader();
         }
     });
 }
