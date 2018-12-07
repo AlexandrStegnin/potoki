@@ -45,8 +45,6 @@ jQuery(document).ready(function ($) {
         what = null
     }
 
-    $('.selectpicker').selectpicker('refresh');
-
     populateStorageUnderFacilities('uFacilities');
     blockMenus();
 
