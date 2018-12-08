@@ -65,7 +65,7 @@
 
         </div>
 
-        <form:form modelAttribute="searchSummary" method="GET" action="/investorscash" class="form-inline"
+        <form:form modelAttribute="cashFilters" method="GET" action="/investorscash" class="form-inline"
                    id="search-form">
             <div class="row" style="margin-top:10px; margin-left:10px; margin-bottom:10px; margin-right:10px">
                 <label class="sr-only" for="fFacilities">Объект:</label>
@@ -74,7 +74,7 @@
                     <c:forEach var="f" items="${facilities}">
                         <option
                                 <c:choose>
-                                    <c:when test="${f.facility eq searchSummary.facility}">selected="selected"</c:when>
+                                    <c:when test="${f.facility eq cashFilters.facility}">selected="selected"</c:when>
                                 </c:choose>
                                 value="${f.facility}" id="${f.id}">${f.facility}
                         </option>
@@ -86,7 +86,7 @@
                     <c:forEach var="uf" items="${underFacilities}">
                         <option
                                 <c:choose>
-                                    <c:when test="${uf.underFacility eq searchSummary.underFacility}">selected="selected"</c:when>
+                                    <c:when test="${uf.underFacility eq cashFilters.underFacility}">selected="selected"</c:when>
                                 </c:choose>
                                 value="${uf.underFacility}" id="${uf.id}"
                                 data-parent-id="${uf.facilityId}">${uf.underFacility}
@@ -100,10 +100,12 @@
                     <c:forEach var="inv" items="${investors}">
                         <c:if test="${inv.login ne 'Выберите инвестора'}">
                             <option
-                                    <c:choose>
-                                        <%--<c:when test="${inv.login eq 'Выберите инвестора'}">selected="selected"</c:when>--%>
-                                        <c:when test="${inv.login eq searchSummary.investor}">selected="selected"</c:when>
-                                    </c:choose> value="${inv.login}" id="${inv.id}">${inv.login}
+                                    <c:forEach var="investor" items="${cashFilters.investors}">
+                                        <c:choose>
+                                            <c:when test="${inv.login eq investor}">selected="selected"</c:when>
+                                        </c:choose>
+                                    </c:forEach>
+                                    value="${inv.login}" id="${inv.id}">${inv.login}
                             </option>
                         </c:if>
                     </c:forEach>
@@ -111,10 +113,10 @@
                 <label for="beginPeriod" style="margin-left:10px; margin-right:5px; font-size:14px" class="date-picker">Период
                     с:</label>
                 <input id="beginPeriod" name="startDate" type="date" class="form-control input-sm"
-                       value="${searchSummary.startDate}">
+                       value="${cashFilters.fromDate}">
                 <label for="endPeriod" style="margin-left:10px; margin-right:5px; font-size:14px">по:</label>
                 <input id="endPeriod" name="endDate" type="date" class="form-control input-sm"
-                       value="${searchSummary.endDate}"
+                       value="${cashFilters.toDate}"
                        style="margin-right:5px">
                 <button type="submit" id="bth-search" class="btn btn-primary btn-sm">Фильтр</button>
                 <button type="submit" id="bth-clear" class="btn btn-danger btn-sm">Сбросить фильтры</button>
@@ -490,7 +492,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/css/bootstrap-select.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
 <%--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"--%>
-        <%--integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>--%>
+<%--integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>--%>
 
 </body>
 </html>

@@ -96,24 +96,6 @@ public class InvestorsFlowsController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        /*
-        Query q = this.emf.createQuery("SELECT u FROM Users u JOIN FETCH u.facilityes i WHERE u.id = :id");
-        q.setParameter("id", new BigInteger("32"));
-        Users user = (Users) q.getSingleResult();
-        */
-        /*
-        EntityGraph<Users> graph = emf.createEntityGraph(Users.class);
-        graph.addAttributeNodes("facilityes");
-        CriteriaBuilder builder = emf.getCriteriaBuilder();
-        CriteriaQuery<Users> query = builder.createQuery(Users.class);
-        Root<Users> root = query.from(Users.class);
-        CriteriaQuery<Users> criteriaQuery =
-                query.select(root).where(builder.and(builder.equal(root.get("id"),  new BigInteger("32"))));
-        Users user = emf.createQuery(criteriaQuery)
-                .setHint("javax.persistence.fetchgraph",
-                        emf.getEntityGraph("users.facilityes")).getSingleResult();
-        user.getFacilities().stream().forEach(System.out::println);
-        */
         return createDataForCalculation(searchSummary.getFacility(), period, getPrincipalFunc.getPrincipalId(), searchSummary.getTableForSearch());
     }
 

@@ -1,21 +1,20 @@
 package com.art.service;
 
-import com.art.model.*;
+import com.art.model.Facilities;
+import com.art.model.InvestorsCash;
+import com.art.model.InvestorsCash_;
+import com.art.model.Users_;
+import com.art.model.supporting.filters.CashFilter;
 import com.art.model.supporting.InvestorsTotalSum;
-import com.art.model.supporting.PaginationResult;
-import com.art.model.supporting.SearchSummary;
 import com.art.repository.InvestorsCashRepository;
 import com.art.specifications.InvestorsCashSpecification;
 import org.hibernate.Hibernate;
-import org.hibernate.Query;
-import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -24,18 +23,20 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @Service
 @Transactional
 public class InvestorsCashService {
 
-    @Resource(name = "investorsCashRepository")
     private InvestorsCashRepository investorsCashRepository;
+    private InvestorsCashSpecification specification;
+    
+    @Autowired
+    public InvestorsCashService(InvestorsCashRepository investorsCashRepository, InvestorsCashSpecification specification) {
+        this.investorsCashRepository = investorsCashRepository;
+        this.specification = specification;
+    }
 
     public List<InvestorsCash> findAll() {
         return investorsCashRepository.findAll();
@@ -53,25 +54,12 @@ public class InvestorsCashService {
         investorsCashRepository.deleteById(id);
     }
 
-
-    public List<InvestorsTotalSum> getInvestorsTotalSum(BigInteger investorId) {
-        return investorsCashRepository.getInvestorsTotalSum(investorId);
-    }
-
-    public List<InvestorsTotalSum> getInvestorsTotalSumDetails(BigInteger investorId) {
-        return investorsCashRepository.getInvestorsTotalSumDetails(investorId);
-    }
-
     public List<InvestorsTotalSum> getInvestorsCashSums(BigInteger investorId) {
         return investorsCashRepository.getInvestorsCashSums(investorId);
     }
 
     public List<InvestorsTotalSum> getInvestorsCashSumsDetails(BigInteger investorId) {
         return investorsCashRepository.getInvestorsCashSumsDetails(investorId);
-    }
-
-    public List<InvestorsCash> findAllOrderByDateGivedCashAsc() {
-        return investorsCashRepository.findAllByOrderByDateGivedCashAsc();
     }
 
     public void saveAll(List<InvestorsCash> investorsCashes) {
@@ -88,54 +76,6 @@ public class InvestorsCashService {
     public InvestorsCash create(InvestorsCash investorsCash) {
         InvestorsCash cash = this.em.merge(investorsCash);
         return cash;
-    }
-
-    public PaginationResult getAllWithPageable(int pageNumber, Map<String, String> search) {
-        String facilityId = search.get("facility");
-        String underFacility = search.get("underFacility");
-        String investor = search.get("investor");
-
-        String dateBegin = search.get("dateBegin");
-
-        Date dateBeg = null;
-        if (!Objects.equals(null, dateBegin) && !Objects.equals(0, dateBegin.length())) {
-            dateBeg = new Date(Long.parseLong(dateBegin));
-        }
-
-        String dateEnd = search.get("dateEnd");
-
-        Date dateEnded = null;
-        if (!Objects.equals(null, dateEnd) && !Objects.equals(0, dateEnd.length())) {
-            dateEnded = new Date(Long.parseLong(dateEnd));
-        }
-        String sql = "SELECT ic FROM InvestorsCash ic ";
-        StringBuilder builder = new StringBuilder("WHERE ");
-        if (Objects.equals(null, facilityId) || Objects.equals(0, facilityId.length())) {
-            builder.append("ic.facility is not null ");
-        } else {
-            builder.append("ic.facility.id = ").append(facilityId).append(" ");
-        }
-        if (!Objects.equals(null, underFacility) && !Objects.equals(0, underFacility.length())) {
-            builder.append("AND underFacility.underFacility = '").append(underFacility).append("' ");
-        }
-        if (!Objects.equals(null, investor) && !Objects.equals(0, investor.length())) {
-            builder.append("AND investor.id = ").append(investor).append(" ");
-        }
-        if (!Objects.equals(null, dateBegin) && !Objects.equals(0, dateBegin.length())) {
-            builder.append("AND dateGivedCash >= '").append(dateBeg).append("' ");
-        }
-        if (!Objects.equals(null, dateEnd) && !Objects.equals(0, dateBegin.length())) {
-            builder.append("AND dateGivedCash <= '").append(dateEnded).append("' ");
-        }
-
-        String orderBy = "order by ic.id";
-        sql = sql.concat(builder.toString()).concat(orderBy);
-
-        Session session = em.unwrap(Session.class);
-        Query query = session.createQuery(sql);
-        int maxResult = 100;
-        int maxNavigationResult = 20;
-        return new PaginationResult<InvestorsCash>(query, pageNumber, maxResult, maxNavigationResult);
     }
 
     public List<InvestorsCash> findByIdIn(List<BigInteger> idList) {
@@ -180,21 +120,6 @@ public class InvestorsCashService {
         return em.createQuery(investorsCashCriteriaQuery).getResultList();
     }
 
-    public List<InvestorsCash> findByInvestorAndFacilityAndUnderFacility(BigInteger investorId, BigInteger facilityId, BigInteger underFacilityId) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<InvestorsCash> investorsCashCriteriaQuery = cb.createQuery(InvestorsCash.class);
-        Root<InvestorsCash> investorsCashRoot = investorsCashCriteriaQuery.from(InvestorsCash.class);
-        investorsCashCriteriaQuery.select(investorsCashRoot);
-        investorsCashCriteriaQuery.where(
-                cb.and(
-                        cb.equal(investorsCashRoot.get(InvestorsCash_.investorId), investorId),
-                        cb.equal(investorsCashRoot.get(InvestorsCash_.facilityId), facilityId),
-                        cb.equal(investorsCashRoot.get(InvestorsCash_.underFacility).get(UnderFacilities_.id), underFacilityId),
-                        cb.gt(investorsCashRoot.get(InvestorsCash_.givedCash), 0),
-                        cb.isNull(investorsCashRoot.get(InvestorsCash_.typeClosingInvest))));
-        return em.createQuery(investorsCashCriteriaQuery).getResultList();
-    }
-
     public List<InvestorsCash> findByInvestorId(BigInteger investorId) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<InvestorsCash> investorsCashCriteriaQuery = cb.createQuery(InvestorsCash.class);
@@ -214,7 +139,6 @@ public class InvestorsCashService {
                 cb.sum(investorsCashRoot.get(InvestorsCash_.givedCash)));
         investorsCashCriteriaQuery.where(cb.equal(investorsCashRoot.get(InvestorsCash_.investor).get(Users_.id), investorId));
         investorsCashCriteriaQuery.groupBy(investorsCashRoot.get(InvestorsCash_.facility));
-        //investorsCashCriteriaQuery.orderBy(cb.desc(investorsCashRoot.get(InvestorsCash_.givedCash)));
         List<InvestorsCash> cash = em.createQuery(investorsCashCriteriaQuery).getResultList();
         final Facilities[] facility = {new Facilities()};
         final BigDecimal[] max = {new BigDecimal(BigInteger.ZERO)};
@@ -248,35 +172,9 @@ public class InvestorsCashService {
         return cash;
     }
 
-    public Page<InvestorsCash> findAll(SearchSummary filters, Pageable pageable) {
-        List<String> loginList = new ArrayList<>();
-        if (!Objects.equals(null, filters.getInvestors())) {
-            loginList = Arrays.stream(filters.getInvestors()).collect(Collectors.toList());
-        }
-
-        String facility = filters.getFacility();
-        String underFacility = filters.getUnderFacility();
-        LocalDate startDate = filters.getStartDate();
-        LocalDate endDate = filters.getEndDate();
-        java.util.Date start = null;
-        java.util.Date end = null;
-        if (!Objects.equals(null, startDate))
-            start = java.util.Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        if (!Objects.equals(null, endDate))
-            end = java.util.Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-
-        if (!Objects.equals(null, facility) && facility.equalsIgnoreCase("Выберите объект"))
-            facility = null;
-        if (!Objects.equals(null, underFacility) && underFacility.equalsIgnoreCase("Выберите подобъект"))
-            underFacility = null;
-
+    public Page<InvestorsCash> findAll(CashFilter filters, Pageable pageable) {
         return investorsCashRepository.findAll(
-                Specifications.where(
-                        InvestorsCashSpecification.dateGivenCashBetween(start, end))
-                        .and(InvestorsCashSpecification.facilityEqual(facility))
-                        .and(InvestorsCashSpecification.underFacilityEqual(underFacility))
-                        .and(InvestorsCashSpecification.loginIn(loginList))
-                        .and(InvestorsCashSpecification.facilityIsNotNull()),
+                specification.getFilter(filters),
                 pageable
         );
     }

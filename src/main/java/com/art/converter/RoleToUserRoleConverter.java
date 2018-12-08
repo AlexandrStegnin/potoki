@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 
 /**
- * A converter class used in views to map id's to actual userProfile objects.
+ * A converter class used in views toDate map id's toDate actual userProfile objects.
  */
 
 @Component

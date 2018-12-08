@@ -17,10 +17,11 @@ jQuery(document).ready(function ($) {
         e.preventDefault();
         $('#fFacilities').find('option:eq(0)').prop('selected', true);
         $('#uFacilities').find('option:eq(0)').prop('selected', true);
-        $('#investors').find('option:eq(0)').prop('selected', true);
+        $('#investors').selectpicker('deselectAll'); //find('option:eq(0)').prop('selected', true);
+        $('.selectpicker').selectpicker('refresh');
         $('#beginPeriod').val('');
         $('#endPeriod').val('');
-
+        populateFilters((window.location.pathname + '').split("/")[1]);
         window.location.href = window.location.pathname;
     });
 
@@ -1037,21 +1038,21 @@ function apply_date_filter(table, col, dateFrom, dateTo, any) {
 
 function moveFields(mAttribute) {
 
-    var facilities = $('#facilitiesRow');
-    var underFacilities = $('#underFacilitiesRow');
-    var investor = $('#investorRow');
-    var cash = $('#cashRow');
-    var dateGivedCash = $('#dateGivedCashRow');
-    var cashSrc = $('#cashSrcRow');
-    var cashTyp = $('#cashTypRow');
-    var cashDetail = $('#cashDetailRow');
-    var invType = $('#invTypeRow');
-    var dateCloseInv = $('#dateCloseInvRow');
-    var typeClosing = $('#typeClosingRow');
-    var dateRep = $('#dateRepRow');
-    var reFacility = $('#reFacility');
-    var reUnderFacility = $('#reUnderFacility');
-    var shareKindName = $('#shareKindNameRow');
+    let facilities = $('#facilitiesRow');
+    let underFacilities = $('#underFacilitiesRow');
+    let investor = $('#investorRow');
+    let cash = $('#cashRow');
+    let dateGivedCash = $('#dateGivedCashRow');
+    let cashSrc = $('#cashSrcRow');
+    let cashTyp = $('#cashTypRow');
+    let cashDetail = $('#cashDetailRow');
+    let invType = $('#invTypeRow');
+    let dateCloseInv = $('#dateCloseInvRow');
+    let typeClosing = $('#typeClosingRow');
+    let dateRep = $('#dateRepRow');
+    let reFacility = $('#reFacility');
+    let reUnderFacility = $('#reUnderFacility');
+    let shareKindName = $('#shareKindNameRow');
 
     switch (mAttribute) {
         case "newCash":

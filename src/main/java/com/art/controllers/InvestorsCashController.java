@@ -2,10 +2,8 @@ package com.art.controllers;
 
 import com.art.func.GetPrincipalFunc;
 import com.art.model.*;
-import com.art.model.supporting.AfterCashing;
-import com.art.model.supporting.FileBucket;
-import com.art.model.supporting.GenericResponse;
-import com.art.model.supporting.SearchSummary;
+import com.art.model.supporting.*;
+import com.art.model.supporting.filters.CashFilter;
 import com.art.repository.MarketingTreeRepository;
 import com.art.service.*;
 import org.json.JSONArray;
@@ -34,6 +32,7 @@ import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -93,6 +92,8 @@ public class InvestorsCashController {
 
     private SearchSummary filters = new SearchSummary();
 
+    private CashFilter cashFilters = new CashFilter();
+
     @GetMapping(value = "/investorscash")
     public ModelAndView invCashByPageNumber(@PageableDefault(size = 100)
                                             @SortDefault(sort = {"investor.lastName", "givedCash", "dateGivedCash"},
@@ -108,16 +109,17 @@ public class InvestorsCashController {
                                             Model model, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("viewinvestorscash");
         String replacer = "page=" + pageable.getPageNumber() + "&size=" + pageable.getPageSize();
-        filters.setStartDate(startDate);
-        filters.setEndDate(endDate);
-        filters.setFacility(facility);
-        filters.setUnderFacility(underFacility);
-        filters.setInvestors(investors);
+        cashFilters.setFromDate(startDate == null ? null : Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        cashFilters.setToDate(endDate == null ? null : Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        cashFilters.setFacility(facility);
+        cashFilters.setUnderFacility(underFacility);
+        cashFilters.setInvestors(investors == null ? null : Arrays.asList(investors));
+
         FileBucket fileModel = new FileBucket();
         List<InvestorsCash> investorsCashes;
         int pageCount;
         if (allRows) pageable = new PageRequest(0, Integer.MAX_VALUE);
-        Page<InvestorsCash> cashList = investorsCashService.findAll(filters, pageable);
+        Page<InvestorsCash> cashList = investorsCashService.findAll(cashFilters, pageable);
         pageCount = cashList.getTotalPages();
         investorsCashes = cashList.getContent();
         modelAndView.addObject("pageCount", pageCount);
@@ -126,6 +128,7 @@ public class InvestorsCashController {
         if (!Objects.equals(null, queryParams)) {
             queryParams = queryParams.replace(replacer, "");
         }
+        modelAndView.addObject("cashFilters", cashFilters);
         modelAndView.addObject("searchSummary", filters);
         modelAndView.addObject("fileBucket", fileModel);
         modelAndView.addObject("investorsCashes", investorsCashes);
