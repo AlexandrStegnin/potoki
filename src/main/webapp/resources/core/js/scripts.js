@@ -295,15 +295,17 @@ function populateFilters(pageName) {
     let shareKindName;
     let reInvestData;
 
+    fFacilities = $('#fFacilities');
+    uFacilities = $('#uFacilities');
+    investors = $('#investors');
+    beginPeriod = $('#beginPeriod');
+    endPeriod = $('#endPeriod');
+
     switch (pageName) {
         case "investorscash":
         case "paysToInv":
             //Search form
-            fFacilities = $('#fFacilities');
-            uFacilities = $('#uFacilities');
-            investors = $('#investors');
-            beginPeriod = $('#beginPeriod');
-            endPeriod = $('#endPeriod');
+
 
             facilityId = fFacilities.find('option:selected').attr('id');
             underFacilityId = uFacilities.find('option:selected').attr('id');

@@ -255,11 +255,11 @@ function loadFlowsAjax(action) {
 }
 
 function prepareFilter() {
-    var facility = $('#fFacilities').find(':selected').text();
-    var underFacility = $('#uFacilities').find(':selected').text();
-    var investor = $('#investors').find(':selected').text();
-    var dateBegin = $('#beginPeriod').val();
-    var dateEnd = $('#endPeriod').val();
+    let facility = $('#fFacilities').find(':selected').text();
+    let underFacility = $('#uFacilities').find(':selected').text();
+    let investor = $('#investors').find(':selected').text();
+    let dateBegin = $('#beginPeriod').val();
+    let dateEnd = $('#endPeriod').val();
     dateBegin = dateBegin + '';
     dateEnd = dateEnd + '';
 
