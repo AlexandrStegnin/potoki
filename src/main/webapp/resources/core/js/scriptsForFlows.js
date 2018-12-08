@@ -87,10 +87,10 @@ jQuery(document).ready(function ($) {
     });
 
     $(document).on('change', ':checkbox', function () {
-        var id = $(this).attr('id');
+        let id = $(this).attr('id');
 
         if (typeof id === 'undefined') {
-            var cnt = checkChecked();
+            let cnt = checkChecked();
             if (cnt > 0) {
                 blockUnblockDropdownMenus('unblock');
             } else {
@@ -116,14 +116,16 @@ jQuery(document).ready(function ($) {
     });
 
     $(document).on('change', '#checkAll', function () {
-        var checked = $('#checkIt').prop('checked');
+        let checked = $('#checkIt').prop('checked');
         if (!checked) {
             $('#reinvestAll').addClass('disabled');
+            $('#deleteAll').addClass('disabled');
             $('table#invFlows').find('> tbody').find('> tr').each(function () {
                 $(this).find(':checkbox:not(:disabled)').prop('checked', false);
             });
         } else {
             $('#reinvestAll').removeClass('disabled');
+            $('#deleteAll').removeClass('disabled');
             $('table#invFlows').find('> tbody').find('> tr').each(function () {
                 if (!$(this).data('passed')) {
                     $(this).find(':checkbox:not(:disabled)').prop('checked', false);
@@ -935,7 +937,7 @@ function closePopup() {
 }
 
 function blockUnblockDropdownMenus(blockUnblock) {
-    var reinvest = $('#reinvest');
+    let reinvest = $('#reinvest');
     switch (blockUnblock) {
         case 'block':
             reinvest.find('> li').each(function () {
@@ -951,9 +953,9 @@ function blockUnblockDropdownMenus(blockUnblock) {
 }
 
 function deleteCash(cashIdList) {
-    var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
-    var search = ({
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+    let search = ({
         cashIdList: cashIdList,
         what: ""
     });
@@ -990,35 +992,4 @@ function slideBox(message) {
     setTimeout(function () {
         $('#slideBox').animate({'right': '-300px'}, 500);
     }, 4000);
-}
-
-function getByPageNumber(facility, underFacility, investor, dateFrom, dateTo) {
-    let token = $("meta[name='_csrf']").attr("content");
-    let header = $("meta[name='_csrf_header']").attr("content");
-    let search = ({
-        "facilities": facility,
-        "underFacilities": underFacility,
-        "user": investor,
-        "dateStart": dateFrom,
-        "dateEnd": dateTo
-    });
-
-    $.ajax({
-        type: "POST",
-        contentType: "application/json;charset=utf-8",
-        url: "/paysToInv/1",
-        data: JSON.stringify(search),
-        dataType: 'json',
-        timeout: 100000,
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader(header, token);
-        },
-        success: function () {
-            closeLoader();
-        },
-        error: function (e) {
-            closeLoader();
-            console.log(e);
-        }
-    });
 }
