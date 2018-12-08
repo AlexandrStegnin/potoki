@@ -47,7 +47,7 @@ public class InvestorsFlowsSale implements Serializable {
         this.id = id;
     }
 
-    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "facilityId", referencedColumnName = "id")
     public Facilities getFacility() {
         return facility;
@@ -57,7 +57,7 @@ public class InvestorsFlowsSale implements Serializable {
         this.facility = facility;
     }
 
-    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "underFacilityId", referencedColumnName = "id")
     public UnderFacilities getUnderFacility() {
         return underFacility;
@@ -67,7 +67,7 @@ public class InvestorsFlowsSale implements Serializable {
         this.underFacility = underFacility;
     }
 
-    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "investorId", referencedColumnName = "id")
     public Users getInvestor() {
         return investor;
@@ -77,7 +77,7 @@ public class InvestorsFlowsSale implements Serializable {
         this.investor = investor;
     }
 
-    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "shareKindId", referencedColumnName = "id")
     public ShareKind getShareKind() {
         return shareKind;

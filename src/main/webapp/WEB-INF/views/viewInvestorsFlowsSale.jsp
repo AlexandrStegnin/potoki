@@ -54,28 +54,60 @@
     <div class="panel panel-default">
         <!-- Default panel contents -->
         <div class="panel-heading"><span class="lead">Выплаты инвесторам (продажа)</span></div>
-        <form:form modelAttribute="searchSummary" method="POST" class="form-inline" id="filter-form">
+        <form:form modelAttribute="flowsSaleFilters" action="/flowsSale" method="POST" class="form-inline" id="filter-form">
             <div class="row" style="margin: 10px;">
-                <label class="sr-only" for="fFacilities">Объект:</label>
-                <form:select path="facility" id="fFacilities" items="${facilities}" multiple="false"
-                             itemValue="id" itemLabel="facility" class="form-control input-sm"/>
-                <label class="sr-only" for="uFacilities">Подобъект:</label>
-                <form:select path="underFacility" id="uFacilities" multiple="false" class="form-control input-sm">
-                    <c:forEach var="uf" items="${underFacilities}">
-                        <form:option value="${uf.underFacility}" id="${uf.id}" data-parent-id="${uf.facilityId}">
+                <input type="hidden" id="pageNumber" name="pageNumber" value="0">
+                <input type="hidden" id="pageSize" name="pageSize" value="${flowsSaleFilters.pageSize}">
+                <input type="hidden" id="total" name="total" value="${page.content.size()}">
 
-                        </form:option>
+                <label class="sr-only" for="fFacilities">Объект:</label>
+                <form:select path="facility" id="fFacilities" multiple="false">
+                    <c:forEach var="f" items="${facilities}">
+                        <option
+                                <c:choose>
+                                    <c:when test="${f.facility eq flowsSaleFilters.facility}">selected="selected"</c:when>
+                                </c:choose>
+                                value="${f.facility}" id="${f.id}">${f.facility}
+                        </option>
+                    </c:forEach>
+                </form:select>
+                <label class="sr-only" for="uFacilities">Подобъект:</label>
+                <form:select path="underFacility" id="uFacilities" multiple="false">
+                    <c:forEach var="uf" items="${underFacilities}">
+                        <option
+                                <c:choose>
+                                    <c:when test="${uf.underFacility eq flowsSaleFilters.underFacility}">selected="selected"</c:when>
+                                </c:choose>
+                                value="${uf.underFacility}" id="${uf.id}"
+                                data-parent-id="${uf.facilityId}">${uf.underFacility}
+                        </option>
                     </c:forEach>
                 </form:select>
                 <label class="sr-only" for="investors">Инвестор:</label>
-                <form:select path="investor" id="investors" items="${investors}" multiple="false"
-                             itemValue="id" itemLabel="login" class="form-control input-sm"/>
+                <form:select path="investors" id="investors" multiple="false">
+                    <c:forEach var="inv" items="${investors}">
+                            <option
+                                    <c:forEach var="investor" items="${flowsSaleFilters.investors}">
+                                        <c:choose>
+                                            <c:when test="${inv.login eq investor}">selected="selected"</c:when>
+                                        </c:choose>
+                                    </c:forEach>
+                                    value="${inv.login}" id="${inv.id}">${inv.login}
+                            </option>
+                    </c:forEach>
+                </form:select>
                 <label for="beginPeriod" style="margin-left:10px; margin-right:5px; font-size:14px">Период с:</label>
-                <input id="beginPeriod" name="dateStart" type="date" class="form-control input-sm" value="">
+                <input id="beginPeriod" name="fromDate" type="date" class="form-control input-sm" value="">
                 <label for="endPeriod" style="margin-left:10px; margin-right:5px; font-size:14px">по:</label>
-                <input id="endPeriod" name="dateEnd" type="date" class="form-control input-sm" value=""
+                <input id="endPeriod" name="toDate" type="date" class="form-control input-sm" value=""
                        style="margin-right:5px">
                 <button type="submit" id="bth-search" class="btn btn-primary btn-sm">Фильтр</button>
+                <button type="submit" id="bth-clear" class="btn btn-danger btn-sm">Сбросить фильтры</button>
+                <div class="btn btn-info btn-sm" id="allRows">
+                    <label class="checkbox-inline">
+                        <input type="checkbox" name="allRows" id="all" checked="${flowsSaleFilters.allRows}">На одной странице
+                    </label>
+                </div>
             </div>
         </form:form>
         <sec:authorize access="isFullyAuthenticated()">
@@ -113,6 +145,19 @@
             </sec:authorize>
         </sec:authorize>
 
+        <c:if test="${flowsSaleFilters.allRows == false}">
+            <nav class="text-center" aria-label="Деньги инвесторов">
+                <ul class="pagination pagination-sm justify-content-center">
+                    <c:forEach begin="1" end="${page.totalPages}" varStatus="page">
+                        <li class="page-item" data-page="${page.index}">
+                            <a id="${page.index}" name="page_${page.index}" class="page-link"
+                               href="#">${page.index}</a>
+                        </li>
+                    </c:forEach>
+                </ul>
+            </nav>
+        </c:if>
+
         <table class="table table-hover" style="font-size: small" id="invFlowsSale">
             <thead>
             <tr>
@@ -135,7 +180,7 @@
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${investorsFlowsSale}" var="flows">
+            <c:forEach items="${page.content}" var="flows">
                 <tr id="${flows.id}">
                     <td data-facility-id="${flows.facility.id}">${flows.facility.facility}</td>
                     <td data-investor-id="${flows.investor.id}">${flows.investor.login}</td>

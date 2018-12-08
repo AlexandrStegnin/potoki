@@ -82,17 +82,22 @@ jQuery(document).ready(function ($) {
         searchFlows("allInvFlows");
     });
 
+    $(document).on('click', 'a[name*="page_"]', function (e) {
+        e.preventDefault();
+        $('#pageNumber').val(parseInt($(this).attr('id')) - 1);
+        let pageSize = 100;
+        if ($('#all').prop('checked')) pageSize = 0;
+        $('#pageSize').val(pageSize);
+        $('#filter-form').submit();
+    });
+
     $("#filter-form").submit(function (event) {
         // Prevent the form from submitting via the browser.
-        event.preventDefault();
+        // event.preventDefault();
         // Disable the search button
         enableSearchButton(false);
         populateFilters((window.location.pathname + '').split("/")[1]);
-        prepareFilter();
         enableSearchButton(true);
-        //searchCash();
-
-
     });
 
     $('table#invFlowsSale').find('> tbody').find('> tr').each(function (i) {
@@ -147,7 +152,7 @@ jQuery(document).ready(function ($) {
     });
 
     $('#fFacilities').change(function () {
-        var facility = $(this).val();
+        let facility = $(this).find('option:selected').attr('id');
         getUnderFacilitiesFromLocalStorage(facility, 'uFacilities');
     });
 

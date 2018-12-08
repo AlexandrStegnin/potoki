@@ -295,11 +295,14 @@ function populateFilters(pageName) {
     let shareKindName;
     let reInvestData;
 
+    let allRows;
+
     fFacilities = $('#fFacilities');
     uFacilities = $('#uFacilities');
     investors = $('#investors');
     beginPeriod = $('#beginPeriod');
     endPeriod = $('#endPeriod');
+    allRows = $('#all').attr('checked');
 
     switch (pageName) {
         case "investorscash":
@@ -341,7 +344,8 @@ function populateFilters(pageName) {
         underFacilityId: underFacilityId,
         investorId: investorsId,
         startDateVal: startDate,
-        endDateVal: endDate
+        endDateVal: endDate,
+        allRows: allRows
     };
     filters.push(filter);
     filter = {
@@ -360,6 +364,7 @@ function getFiltersFromLS(pageName) {
     if (lastFilters != null && (lastFilters.length > 0)) {
         let beginPeriod = $('#beginPeriod');
         let endPeriod = $('#endPeriod');
+        let allRows = $('#all');
         switch (pageName) {
             case "paysToInv":
                 getFilters("paysToInv", lastFilters);
@@ -373,6 +378,7 @@ function getFiltersFromLS(pageName) {
                 $('#investors option[value="' + lastFilters[0].investorId + '"]').attr('selected', 'selected');
                 beginPeriod.val(lastFilters[0].startDateVal);
                 endPeriod.val(lastFilters[0].endDateVal);
+                allRows.prop('checked', !!lastFilters[0].allRows);
                 break;
         }
     }

@@ -18,4 +18,12 @@ public abstract class AbstractFilter {
 
     private List<String> investors;
 
+    private boolean allRows = false;
+
+    private int pageNumber = 0;
+
+    private int pageSize = 100;
+
+    private int total;
+
 }

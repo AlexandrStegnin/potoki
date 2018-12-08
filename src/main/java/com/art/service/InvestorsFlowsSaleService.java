@@ -2,6 +2,13 @@ package com.art.service;
 
 import com.art.model.InvestorsFlowsSale;
 import com.art.model.InvestorsFlowsSale_;
+import com.art.model.supporting.filters.FlowsSaleFilter;
+import com.art.repository.InvestorsFlowsSaleRepository;
+import com.art.specifications.InvestorsFlowsSaleSpecification;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,18 +27,16 @@ public class InvestorsFlowsSaleService {
     @PersistenceContext(name = "persistanceUnit")
     private EntityManager em;
 
-    public InvestorsFlowsSale findWithAllFields(BigInteger id) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<InvestorsFlowsSale> saleCriteriaQuery = cb.createQuery(InvestorsFlowsSale.class);
-        Root<InvestorsFlowsSale> saleRoot = saleCriteriaQuery.from(InvestorsFlowsSale.class);
-        saleRoot.fetch(InvestorsFlowsSale_.facility, JoinType.LEFT);
-        saleRoot.fetch(InvestorsFlowsSale_.investor, JoinType.LEFT);
-        saleRoot.fetch(InvestorsFlowsSale_.shareKind, JoinType.LEFT);
-        saleRoot.fetch(InvestorsFlowsSale_.underFacility, JoinType.LEFT);
-        saleCriteriaQuery.select(saleRoot).distinct(true);
-        saleCriteriaQuery.where(cb.equal(saleRoot.get(InvestorsFlowsSale_.id), id));
-        return em.createQuery(saleCriteriaQuery).getSingleResult();
+    private final InvestorsFlowsSaleRepository saleRepository;
+    private final InvestorsFlowsSaleSpecification saleSpecification;
+
+    @Autowired
+    public InvestorsFlowsSaleService(InvestorsFlowsSaleRepository saleRepository,
+                                     InvestorsFlowsSaleSpecification saleSpecification) {
+        this.saleRepository = saleRepository;
+        this.saleSpecification = saleSpecification;
     }
+
 
     public void create(InvestorsFlowsSale sale) {
         this.em.persist(sale);
@@ -73,14 +78,6 @@ public class InvestorsFlowsSaleService {
         saleCriteriaQuery.select(saleRoot);
         saleCriteriaQuery.where(saleRoot.get(InvestorsFlowsSale_.id).in(idList));
         return em.createQuery(saleCriteriaQuery).getResultList();
-    }
-
-    public void deleteByIdIn(List<BigInteger> idList) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaDelete<InvestorsFlowsSale> query = cb.createCriteriaDelete(InvestorsFlowsSale.class);
-        Root<InvestorsFlowsSale> root = query.from(InvestorsFlowsSale.class);
-        query.where(root.get(InvestorsFlowsSale_.id).in(idList));
-        em.createQuery(query).executeUpdate();
     }
 
     public InvestorsFlowsSale findById(BigInteger id) {
@@ -138,5 +135,13 @@ public class InvestorsFlowsSaleService {
         next++;
         return findAllChildes(parent, childFlows, next);
 
+    }
+
+    public Page<InvestorsFlowsSale> findAll(FlowsSaleFilter filters, Pageable pageable) {
+        if (filters.getPageSize() == 0) pageable = new PageRequest(filters.getPageNumber(), filters.getTotal() + 1);
+        return saleRepository.findAll(
+                saleSpecification.getFilter(filters),
+                pageable
+        );
     }
 }

@@ -5,8 +5,14 @@ import com.art.model.*;
 import com.art.model.supporting.FileBucket;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
+import com.art.model.supporting.filters.FlowsSaleFilter;
 import com.art.service.*;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -49,15 +55,35 @@ public class InvestorsFlowsSaleController {
     @Resource(name = "shareKindService")
     private ShareKindService shareKindService;
 
+    private FlowsSaleFilter filters = new FlowsSaleFilter();
+
     @GetMapping(value = "/flowsSale")
-    public ModelAndView flowsSale() {
+    public ModelAndView flowsSale(@PageableDefault(size = 100) @SortDefault Pageable pageable) {
         ModelAndView modelAndView = new ModelAndView("viewInvestorsFlowsSale");
+        modelAndView.addObject("flowsSaleFilters", filters);
         SearchSummary searchSummary = new SearchSummary();
-        modelAndView.addObject("searchSummary", searchSummary);
         FileBucket fileModel = new FileBucket();
         modelAndView.addObject("fileBucket", fileModel);
-        List<InvestorsFlowsSale> investorsFlowsSale = investorsFlowsSaleService.findAll();
-        modelAndView.addObject("investorsFlowsSale", investorsFlowsSale);
+        Page<InvestorsFlowsSale> page = investorsFlowsSaleService.findAll(filters, pageable);
+        modelAndView.addObject("page", page);
+        modelAndView.addObject("searchSummary", searchSummary);
+        return modelAndView;
+    }
+
+    @PostMapping(value = "/flowsSale")
+    public ModelAndView flowsSaleWithFilter(
+            @ModelAttribute("flowsSaleFilters") FlowsSaleFilter filters) {
+        FileBucket fileModel = new FileBucket();
+        SearchSummary searchSummary = new SearchSummary();
+        ModelAndView modelAndView = new ModelAndView("viewInvestorsFlowsSale");
+        Pageable pageable = new PageRequest(filters.getPageNumber(), filters.getPageSize());
+        Page<InvestorsFlowsSale> page = investorsFlowsSaleService.findAll(filters, pageable);
+
+        modelAndView.addObject("page", page);
+        modelAndView.addObject("fileBucket", fileModel);
+        modelAndView.addObject("flowsSaleFilters", filters);
+        modelAndView.addObject("searchSummary", searchSummary);
+
         return modelAndView;
     }
 

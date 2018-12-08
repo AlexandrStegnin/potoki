@@ -17,17 +17,13 @@ public class InvestorsCashSpecification extends BaseSpecification<InvestorsCash,
 
     @Override
     public Specification<InvestorsCash> getFilter(CashFilter request) {
-        return (root, query, cb) -> {
-//            query.distinct(true); //Important because of the join in the child entities specifications
-            return where(
-                    dateGivenCashBetween(request.getFromDate(), request.getToDate()))
-                    .and(facilityEqual(request.getFacility()))
-                    .and(underFacilityEqual(request.getUnderFacility()))
-                    .and(loginIn(request.getInvestors()))
-                    .and(facilityIsNotNull())
-                    .toPredicate(root, query, cb);
-        };
-
+        return (root, query, cb) -> where(
+                dateGivenCashBetween(request.getFromDate(), request.getToDate()))
+                .and(facilityEqual(request.getFacility()))
+                .and(underFacilityEqual(request.getUnderFacility()))
+                .and(loginIn(request.getInvestors()))
+                .and(facilityIsNotNull())
+                .toPredicate(root, query, cb);
     }
 
     private static Specification<InvestorsCash> dateGivenCashBetween(Date min, Date max) {

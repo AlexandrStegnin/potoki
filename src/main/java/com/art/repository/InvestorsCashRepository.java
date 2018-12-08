@@ -18,19 +18,11 @@ public interface InvestorsCashRepository extends JpaRepository<InvestorsCash, Bi
     InvestorsCash findById(BigInteger id);
     void deleteById(BigInteger id);
 
-    @Query(name = "InvestorsTotalSum", nativeQuery = true)
-    List<InvestorsTotalSum> getInvestorsTotalSum(BigInteger investorId);
-
-    @Query(name = "InvestorsTotalSumDetails", nativeQuery = true)
-    List<InvestorsTotalSum> getInvestorsTotalSumDetails(BigInteger investorId);
-
     @Query(name = "InvestorsCashSums", nativeQuery = true)
     List<InvestorsTotalSum> getInvestorsCashSums(BigInteger investorId);
 
     @Query(name = "InvestorsCashSumsDetails", nativeQuery = true)
     List<InvestorsTotalSum> getInvestorsCashSumsDetails(BigInteger investorId);
-
-    List<InvestorsCash> findAllByOrderByDateGivedCashAsc();
 
     List<InvestorsCash> findByRoomId(BigInteger roomId);
 
