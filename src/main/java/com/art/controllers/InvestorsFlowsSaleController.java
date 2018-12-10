@@ -60,13 +60,14 @@ public class InvestorsFlowsSaleController {
     @GetMapping(value = "/flowsSale")
     public ModelAndView flowsSale(@PageableDefault(size = 100) @SortDefault Pageable pageable) {
         ModelAndView modelAndView = new ModelAndView("viewInvestorsFlowsSale");
-        modelAndView.addObject("flowsSaleFilters", filters);
         SearchSummary searchSummary = new SearchSummary();
         FileBucket fileModel = new FileBucket();
-        modelAndView.addObject("fileBucket", fileModel);
         Page<InvestorsFlowsSale> page = investorsFlowsSaleService.findAll(filters, pageable);
         modelAndView.addObject("page", page);
+        modelAndView.addObject("fileBucket", fileModel);
+        modelAndView.addObject("flowsSaleFilters", filters);
         modelAndView.addObject("searchSummary", searchSummary);
+
         return modelAndView;
     }
 
@@ -78,7 +79,6 @@ public class InvestorsFlowsSaleController {
         ModelAndView modelAndView = new ModelAndView("viewInvestorsFlowsSale");
         Pageable pageable = new PageRequest(filters.getPageNumber(), filters.getPageSize());
         Page<InvestorsFlowsSale> page = investorsFlowsSaleService.findAll(filters, pageable);
-
         modelAndView.addObject("page", page);
         modelAndView.addObject("fileBucket", fileModel);
         modelAndView.addObject("flowsSaleFilters", filters);

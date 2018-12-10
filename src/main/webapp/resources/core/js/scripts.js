@@ -297,18 +297,25 @@ function populateFilters(pageName) {
 
     let allRows;
 
+    let investorId;
+    let partners;
+    let partnerId;
+    let kins;
+    let kinId;
+
+    let filter;
+
     fFacilities = $('#fFacilities');
     uFacilities = $('#uFacilities');
     investors = $('#investors');
     beginPeriod = $('#beginPeriod');
     endPeriod = $('#endPeriod');
-    allRows = $('#all').attr('checked');
+    allRows = $('#all').attr('checked') === 'checked';
 
     switch (pageName) {
         case "investorscash":
         case "paysToInv":
             //Search form
-
 
             facilityId = fFacilities.find('option:selected').attr('id');
             underFacilityId = uFacilities.find('option:selected').attr('id');
@@ -338,8 +345,27 @@ function populateFilters(pageName) {
             startDate = beginPeriod.val();
             endDate = endPeriod.val();
             break;
+        case "marketingTree":
+            investorId = investors.find('option:selected').val();
+            partners = $('#partners');
+            partnerId = partners.find('option:selected').val();
+            kins = $('#kins');
+            kinId = kins.find('option:selected').val();
+            startDate = beginPeriod.val();
+            endDate = endPeriod.val();
+            allRows = $('#all').attr('checked') === 'checked';
+            filter = {
+                investorId: investorId,
+                partnerId: partnerId,
+                kinId: kinId,
+                startDateVal: startDate,
+                endDateVal: endDate,
+                allRows: allRows
+            };
+            filters.push(filter);
+            break;
     }
-    let filter = {
+    filter = {
         facilityId: facilityId,
         underFacilityId: underFacilityId,
         investorId: investorsId,
@@ -376,6 +402,14 @@ function getFiltersFromLS(pageName) {
                 $('#fFacilities option[value="' + lastFilters[0].facilityId + '"]').attr('selected', 'selected');
                 $('#uFacilities option[value="' + lastFilters[0].underFacilityId + '"]').attr('selected', 'selected');
                 $('#investors option[value="' + lastFilters[0].investorId + '"]').attr('selected', 'selected');
+                beginPeriod.val(lastFilters[0].startDateVal);
+                endPeriod.val(lastFilters[0].endDateVal);
+                allRows.prop('checked', !!lastFilters[0].allRows);
+                break;
+            case "marketingTree":
+                $('#investors option[value="' + lastFilters[0].investorId + '"]').attr('selected', 'selected');
+                $('#partners option[value="' + lastFilters[0].partnerId + '"]').attr('selected', 'selected');
+                $('#kins option[value="' + lastFilters[0].kinId + '"]').attr('selected', 'selected');
                 beginPeriod.val(lastFilters[0].startDateVal);
                 endPeriod.val(lastFilters[0].endDateVal);
                 allRows.prop('checked', !!lastFilters[0].allRows);

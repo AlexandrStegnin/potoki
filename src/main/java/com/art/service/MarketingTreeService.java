@@ -1,7 +1,12 @@
 package com.art.service;
 
 import com.art.model.MarketingTree;
+import com.art.model.supporting.filters.MarketingTreeFilter;
 import com.art.repository.MarketingTreeRepository;
+import com.art.specifications.MarketingTreeSpecification;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -14,12 +19,20 @@ import java.math.BigInteger;
 import java.util.List;
 
 @Service
-public class MarketingTreeService implements MarketingTreeRepository {
+public class MarketingTreeService {
 
     @PersistenceContext(name = "persistanceUnit")
     EntityManager em;
 
-    @Override
+    private final MarketingTreeSpecification specification;
+    private final MarketingTreeRepository marketingTreeRepository;
+
+    @Autowired
+    public MarketingTreeService(MarketingTreeSpecification specification, MarketingTreeRepository marketingTreeRepository) {
+        this.specification = specification;
+        this.marketingTreeRepository = marketingTreeRepository;
+    }
+
     public List<MarketingTree> findAll() {
         final CriteriaBuilder cb = em.getCriteriaBuilder();
         final CriteriaQuery<MarketingTree> marketingTreeCriteriaQuery = cb.createQuery(MarketingTree.class);
@@ -28,10 +41,16 @@ public class MarketingTreeService implements MarketingTreeRepository {
         return em.createQuery(marketingTreeCriteriaQuery).getResultList();
     }
 
-    @Override
     public void updateMarketingTree(BigInteger invId){
         StoredProcedureQuery query = this.em.createNamedStoredProcedureQuery("updateMarketingTree");
         query.setParameter("invId", invId);
         query.execute();
+    }
+
+    public Page<MarketingTree> findAll(MarketingTreeFilter filters, Pageable pageable) {
+        return marketingTreeRepository.findAll(
+                specification.getFilter(filters),
+                pageable
+        );
     }
 }

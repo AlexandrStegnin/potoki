@@ -4,7 +4,6 @@ import com.art.func.GetPrincipalFunc;
 import com.art.model.*;
 import com.art.model.supporting.*;
 import com.art.model.supporting.filters.CashFilter;
-import com.art.repository.MarketingTreeRepository;
 import com.art.service.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -43,7 +42,7 @@ import java.util.stream.Collectors;
 public class InvestorsCashController {
 
     @Autowired
-    private MarketingTreeRepository marketingTreeRepository;
+    private MarketingTreeService marketingTreeService;
 
     @Resource(name = "afterCashingService")
     private AfterCashingService afterCashingService;
@@ -622,7 +621,7 @@ public class InvestorsCashController {
         investorsCashService.create(investorsCash);
         if (!Objects.equals(null, investorsCash.getCashSource()) &&
                 !investorsCash.getCashSource().getCashSource().equalsIgnoreCase("Бронь")) {
-            marketingTreeRepository.updateMarketingTree(investorsCash.getInvestor().getId());
+            marketingTreeService.updateMarketingTree(investorsCash.getInvestor().getId());
         }
         model.addAttribute("success", "Деньги инвестора " + investorsCash.getInvestor().getLogin() +
                 " успешно добавлены.");

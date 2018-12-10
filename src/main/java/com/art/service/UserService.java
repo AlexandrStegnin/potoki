@@ -85,11 +85,19 @@ public class UserService {
     }
 
     public List<Users> initializeInvestors() {
-        Users investor = new Users();
-        investor.setId(new BigInteger("0"));
-        investor.setLogin("Выберите инвестора");
+        return getUsers("Выберите инвестора");
+    }
+
+    public List<Users> initializePartners() {
+        return getUsers("Выберите партнёра");
+    }
+
+    private List<Users> getUsers(String s) {
+        Users partner = new Users();
+        partner.setId(new BigInteger("0"));
+        partner.setLogin(s);
         List<Users> users = new ArrayList<>(0);
-        users.add(investor);
+        users.add(partner);
         users.addAll(userRepository.findByStuffIdOrderByLastName(stuffService.findByStuff("Инвестор").getId()));
         return users;
     }
