@@ -419,7 +419,7 @@ jQuery(document).ready(function ($) {
         populateFilters((window.location.pathname + '').split("/")[1]);
 
         let facilityParam = facility === 'Выберите объект' ? '' : '?facility=' + facility;
-        let uFacilityParam = underFacility === 'Выберите подобъект' ? facilityParam + '' : facilityParam.indexOf('?') === 0 ?
+        let uFacilityParam = (underFacility === 'Выберите подобъект' || underFacility === '0') ? facilityParam + '' : facilityParam.indexOf('?') === 0 ?
             facilityParam + '&underFacility=' + underFacility : '?underFacility=' + underFacility;
         let investorParam = investor === 'Выберите инвестора' ? uFacilityParam + '' : uFacilityParam.indexOf('?') === 0 ?
             uFacilityParam + '&investor=' + invArray : '?investor=' + invArray;

@@ -66,6 +66,8 @@ function getUnderFacilitiesFromLocalStorage(facilityId, uFacilitiesId) {
             option = document.createElement('option');
             option.setAttribute('id', item.id);
             option.setAttribute('data-parent-id', item.facilityId);
+            option.setAttribute('value', item.id);
+
             option.innerText = item.underFacility;
 
             return option;
@@ -79,6 +81,7 @@ function getUnderFacilitiesFromLocalStorage(facilityId, uFacilitiesId) {
             option = document.createElement('option');
             option.setAttribute('id', item.id);
             option.setAttribute('data-parent-id', item.facilityId);
+            option.setAttribute('value', item.id);
             option.innerText = item.underFacility;
 
             return option;

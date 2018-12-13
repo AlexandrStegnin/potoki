@@ -435,6 +435,13 @@ function getFilters(pageName, lastFilters) {
     $('#srcFacilities').val(lastFilters[1].srcFacility);
     $('#srcUnderFacilities').val(lastFilters[1].srcUnderFacility);
     $('#shareKindName').val(lastFilters[1].shareKindName);
-    if (lastFilters[0].facilityId !== 0) getUnderFacilitiesFromLocalStorage(lastFilters[0].facilityId, 'uFacilities');
+    if (lastFilters[0].facilityId !== 0) {
+        getUnderFacilitiesFromLocalStorage(lastFilters[0].facilityId, 'uFacilities');
+    }
+    if (lastFilters[1].srcFacility !== 0) {
+        getUnderFacilitiesFromLocalStorage(lastFilters[1].srcFacility, 'srcUnderFacilities');
+    }
+
     $('#uFacilities option[id=' + lastFilters[0].underFacilityId + ']').attr('selected', 'selected');
+    $('#srcUnderFacilities option[id=' + lastFilters[1].srcUnderFacility + ']').attr('selected', 'selected');
 }
