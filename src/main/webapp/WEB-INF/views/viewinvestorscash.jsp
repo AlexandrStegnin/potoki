@@ -254,8 +254,8 @@
                     <td>
                         <c:choose>
                             <c:when test="${cash.isReinvest == 1}">
-                                <c:set var="checked" value="checked"/>
-                                <c:set var="disabled" value="disabled"/>
+                                <c:set var="checked" value="checked "/>
+                                <c:set var="disabled" value="disabled "/>
                             </c:when>
                             <c:otherwise>
                                 <c:set var="checked" value=""/>
@@ -265,7 +265,7 @@
                         <c:choose>
                             <c:when test="${cash.typeClosingInvest.typeClosingInvest.length() > 0 &&
                                             (cash.givedCash > 0 || cash.givedCash < 0)}">
-                                <c:set var="enabled" value="disabled"/>
+                                <c:set var="enabled" value="disabled "/>
                             </c:when>
                             <c:otherwise>
                                 <c:set var="enabled" value=""/>
