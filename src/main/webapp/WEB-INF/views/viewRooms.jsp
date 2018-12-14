@@ -1,9 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page trimDirectiveWhitespaces="true" %>
 <%@ page isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html lang="en-RU">
 
 <head>
@@ -50,6 +52,8 @@
                 <th>Помещение</th>
                 <th>Квадратура</th>
                 <th>Стоимость</th>
+                <th>Продано</th>
+                <th>Дата продажи</th>
                 <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                     <th style="text-align: center">Действие</th>
                 </sec:authorize>
@@ -69,6 +73,16 @@
                     </td>
                     <td>
                         <fmt:formatNumber value="${room.coast}" type="currency" minFractionDigits="2"/>
+                    </td>
+                    <td>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="sold" id="sold" value=""
+                            <c:if test="${room.sold == true}"> checked="checked" </c:if>
+                            disabled>
+                        </label>
+                    </td>
+                    <td>
+                        <fmt:formatDate value="${room.dateOfSale}" pattern="dd.MM.yyyy"/>
                     </td>
                     <sec:authorize access="isFullyAuthenticated()">
                         <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">

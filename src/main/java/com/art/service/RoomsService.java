@@ -86,6 +86,8 @@ public class RoomsService {
         update.set(Rooms_.coast, room.getCoast());
         update.set(Rooms_.roomSize, room.getRoomSize());
         update.set(Rooms_.underFacility, room.getUnderFacility());
+        update.set(Rooms_.sold, room.isSold());
+        update.set(Rooms_.dateOfSale, room.getDateOfSale());
         update.where(criteriaBuilder.equal(roomsRoot.get(Rooms_.id), room.getId()));
         this.em.createQuery(update).executeUpdate();
     }

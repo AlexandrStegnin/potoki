@@ -9,82 +9,37 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Date;
 
 @Getter
 @Setter
-@ToString(exclude = "underFacility")
-@EqualsAndHashCode(exclude = "underFacility")
 @Entity
 @Table(name = "Rooms")
+@ToString(exclude = "underFacility")
+@EqualsAndHashCode(exclude = "underFacility")
 public class Rooms implements Serializable {
-    private BigInteger id;
-    private UnderFacilities underFacility;
-    private String room;
-    private BigDecimal coast;
-    private BigDecimal roomSize;
-//    private boolean sold;
-//    private LocalDate dateOfSale;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public BigInteger getId() {
-        return id;
-    }
-
-    public void setId(BigInteger id) {
-        this.id = id;
-    }
+    private BigInteger id;
 
     @Column(name = "Room")
-    public String getRoom() {
-        return room;
-    }
-
-    public void setRoom(String room) {
-        this.room = room;
-    }
+    private String room;
 
     @Column(name = "Coast")
-    public BigDecimal getCoast() {
-        return coast;
-    }
-
-    public void setCoast(BigDecimal coast) {
-        this.coast = coast;
-    }
+    private BigDecimal coast;
 
     @Column(name = "RoomSize")
-    public BigDecimal getRoomSize() {
-        return roomSize;
-    }
+    private BigDecimal roomSize;
 
-    public void setRoomSize(BigDecimal roomSize) {
-        this.roomSize = roomSize;
-    }
+    @Column(name = "Sold")
+    private boolean sold;
+
+    @Column(name = "DateOfSale")
+    private Date dateOfSale;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "UnderFacilityId", referencedColumnName = "Id")
-    public UnderFacilities getUnderFacility() {
-        return underFacility;
-    }
+    private UnderFacilities underFacility;
 
-    public void setUnderFacility(UnderFacilities underFacility) {
-        this.underFacility = underFacility;
-    }
-
-//    public boolean isSold() {
-//        return sold;
-//    }
-//
-//    public void setSold(boolean sold) {
-//        this.sold = sold;
-//    }
-//
-//    public LocalDate getDateOfSale() {
-//        return dateOfSale;
-//    }
-//
-//    public void setDateOfSale(LocalDate dateOfSale) {
-//        this.dateOfSale = dateOfSale;
-//    }
 }

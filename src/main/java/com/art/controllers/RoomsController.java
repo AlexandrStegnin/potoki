@@ -4,16 +4,17 @@ import com.art.model.Rooms;
 import com.art.model.UnderFacilities;
 import com.art.service.RoomsService;
 import com.art.service.UnderFacilitiesService;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -59,7 +60,7 @@ public class RoomsController {
                 " успешно обновлены.");
         model.addAttribute("redirectUrl", redirectUrl);
         model.addAttribute("ret", ret);
-        return "registrationsuccess";
+        return "redirect:/rooms";
     }
 
     @GetMapping(value = {"/delete-room-{id}"})
@@ -100,5 +101,12 @@ public class RoomsController {
     @ModelAttribute("underFacilities")
     public List<UnderFacilities> initializeUnderFacilities() {
         return underFacilitiesService.initializeUnderFacilities();
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder webDataBinder) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setLenient(false);
+        webDataBinder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
     }
 }
