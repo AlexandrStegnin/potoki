@@ -7,6 +7,11 @@ jQuery(document).ready(function ($) {
         updateInvestorDemo();
     });
 
+    $(document).on('click', '#clearLS', function (e) {
+        e.preventDefault();
+        if (window.localStorage) localStorage.clear();
+    });
+
     $(document).on('click', 'a#updateMarketingTree', function (e) {
         e.preventDefault();
         updateMarketingTree();

@@ -79,6 +79,22 @@ jQuery(document).ready(function ($) {
         $('#search-form').submit();
     });
 
+    $('#investors').selectpicker({
+        actionsBox: true,
+        selectAllText: 'Выбрать всё',
+        deselectAllText: 'Сбросить всё'
+    }).on('changed.bs.select', function () {
+        let options = $("#investors option");
+        options.sort(function (a, b) {
+            if ($(a).attr('data-lastName') > $(b).attr('data-lastName')) return 1;
+            else if ($(a).attr('data-lastName') < $(b).attr('data-lastName')) return -1;
+            else return 0;
+        });
+        $("#investors").empty().append(options);
+        $('#investors option:selected').prependTo('#investors');
+        $(this).selectpicker('refresh');
+    });
+
     /**
 
      МАССОВОЕ РЕИНВЕСТИРОВАНИЕ НАЧАЛО

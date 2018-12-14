@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page trimDirectiveWhitespaces="true" %>
 <%@ page isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -108,7 +109,7 @@
                                             <c:when test="${inv.login eq investor}">selected="selected"</c:when>
                                         </c:choose>
                                     </c:forEach>
-                                    value="${inv.login}" id="${inv.id}">${inv.login}
+                                    value="${inv.login}" id="${inv.id}" data-lastName="${inv.lastName}">${inv.login}
                             </option>
                         </c:if>
                     </c:forEach>

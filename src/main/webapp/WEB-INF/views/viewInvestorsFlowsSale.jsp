@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page trimDirectiveWhitespaces="true" %>
 <%@ page isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -105,8 +106,8 @@
                 <button type="submit" id="bth-clear" class="btn btn-danger btn-sm">Сбросить фильтры</button>
                 <div class="btn btn-info btn-sm" id="allRows">
                     <label class="checkbox-inline">
-                        <input type="checkbox" name="allRows" id="all" checked="${flowsSaleFilters.allRows}">На одной странице
-                    </label>
+                        <input type="checkbox" name="allRows" id="all"
+                        <c:if test="${flowsSaleFilters.allRows == true}"> checked="checked" </c:if> >На одной странице</label>
                 </div>
             </div>
         </form:form>
