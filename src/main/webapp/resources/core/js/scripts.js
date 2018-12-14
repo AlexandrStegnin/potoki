@@ -334,7 +334,7 @@ function populateFilters(pageName) {
 
             dateClose = elDateClose.val();
             srcFacility = elSrcFacilities.find('option:selected').val();
-            srcUnderFacility = elSrcUnderFacilities.find('option:selected').val();
+            srcUnderFacility = elSrcUnderFacilities.find('option:selected').attr('id');
             shareKindName = elShareKindName.find('option:selected').val();
 
             break;
@@ -428,8 +428,8 @@ function getFilters(pageName, lastFilters) {
         $('#investors option[id=' + el + ']').attr('selected', 'selected');
     });
 
-    beginPeriod.text(lastFilters[0].startDateVal);
-    endPeriod.text(lastFilters[0].endDateVal);
+    beginPeriod.val(lastFilters[0].startDateVal);
+    endPeriod.val(lastFilters[0].endDateVal);
 
     $('#dateClose').val(lastFilters[1].dateClose);
     $('#srcFacilities').val(lastFilters[1].srcFacility);

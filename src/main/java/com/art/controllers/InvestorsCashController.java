@@ -2,7 +2,9 @@ package com.art.controllers;
 
 import com.art.func.GetPrincipalFunc;
 import com.art.model.*;
-import com.art.model.supporting.*;
+import com.art.model.supporting.AfterCashing;
+import com.art.model.supporting.GenericResponse;
+import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.filters.CashFilter;
 import com.art.service.*;
 import org.json.JSONArray;
@@ -12,12 +14,9 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -25,13 +24,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -94,46 +90,23 @@ public class InvestorsCashController {
     private CashFilter cashFilters = new CashFilter();
 
     @GetMapping(value = "/investorscash")
-    public ModelAndView invCashByPageNumber(@PageableDefault(size = 100)
-                                            @SortDefault(sort = {"investor.lastName", "givedCash", "dateGivedCash"},
-                                                    direction = Sort.Direction.ASC) Pageable pageable,
-                                            @RequestParam(name = "facility", required = false) String facility,
-                                            @RequestParam(name = "underFacility", required = false) String underFacility,
-                                            @RequestParam(name = "investor", required = false) String[] investors,
-                                            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-                                            @RequestParam(value = "startDate", required = false) LocalDate startDate,
-                                            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-                                            @RequestParam(value = "endDate", required = false) LocalDate endDate,
-                                            @RequestParam(value = "allRows", defaultValue = "false") boolean allRows,
-                                            Model model, HttpServletRequest request) {
+    public ModelAndView invCashByPageNumber(@PageableDefault(size = 100) @SortDefault Pageable pageable) {
         ModelAndView modelAndView = new ModelAndView("viewinvestorscash");
-        String replacer = "page=" + pageable.getPageNumber() + "&size=" + pageable.getPageSize();
-        cashFilters.setFromDate(startDate == null ? null : Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-        cashFilters.setToDate(endDate == null ? null : Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-        cashFilters.setFacility(facility);
-        cashFilters.setUnderFacility(underFacility);
-        cashFilters.setInvestors(investors == null ? null : Arrays.asList(investors));
-
-        FileBucket fileModel = new FileBucket();
-        List<InvestorsCash> investorsCashes;
-        int pageCount;
-        if (allRows) pageable = new PageRequest(0, Integer.MAX_VALUE);
-        Page<InvestorsCash> cashList = investorsCashService.findAll(cashFilters, pageable);
-        pageCount = cashList.getTotalPages();
-        investorsCashes = cashList.getContent();
-        modelAndView.addObject("pageCount", pageCount);
-
-        String queryParams = request.getQueryString();
-        if (!Objects.equals(null, queryParams)) {
-            queryParams = queryParams.replace(replacer, "");
-        }
+        Page<InvestorsCash> page = investorsCashService.findAll(cashFilters, pageable);
+        modelAndView.addObject("page", page);
         modelAndView.addObject("cashFilters", cashFilters);
         modelAndView.addObject("searchSummary", filters);
-        modelAndView.addObject("fileBucket", fileModel);
-        modelAndView.addObject("investorsCashes", investorsCashes);
-        modelAndView.addObject("queryParams", queryParams);
-        modelAndView.addObject("allRows", allRows);
+        return modelAndView;
+    }
 
+    @PostMapping(value = "/investorscash")
+    public ModelAndView invCashPageable(@ModelAttribute(value = "cashFilters") CashFilter cashFilters) {
+        Pageable pageable = new PageRequest(cashFilters.getPageNumber(), cashFilters.getPageSize());
+        ModelAndView modelAndView = new ModelAndView("viewinvestorscash");
+        Page<InvestorsCash> page = investorsCashService.findAll(cashFilters, pageable);
+        modelAndView.addObject("page", page);
+        modelAndView.addObject("cashFilters", cashFilters);
+        modelAndView.addObject("searchSummary", filters);
         return modelAndView;
     }
 

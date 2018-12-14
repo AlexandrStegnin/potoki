@@ -65,9 +65,12 @@
 
         </div>
 
-        <form:form modelAttribute="cashFilters" method="GET" action="/investorscash" class="form-inline"
+        <form:form modelAttribute="cashFilters" method="POST" action="/investorscash" class="form-inline"
                    id="search-form">
             <div class="row" style="margin-top:10px; margin-left:10px; margin-bottom:10px; margin-right:10px">
+                <input type="hidden" id="pageNumber" name="pageNumber" value="0">
+                <input type="hidden" id="pageSize" name="pageSize" value="${cashFilters.pageSize}">
+                <input type="hidden" id="total" name="total" value="${page.content.size()}">
                 <label class="sr-only" for="fFacilities">Объект:</label>
                 <form:select path="facility" id="fFacilities" multiple="false" class="selectpicker"
                              data-live-search="true" data-width="130px">
@@ -110,20 +113,16 @@
                         </c:if>
                     </c:forEach>
                 </form:select>
-                <label for="beginPeriod" style="margin-left:10px; margin-right:5px; font-size:14px" class="date-picker">Период
-                    с:</label>
-                <input id="beginPeriod" name="startDate" type="date" class="form-control input-sm"
-                       value="${cashFilters.fromDate}">
+                <label for="beginPeriod" style="margin-left:10px; margin-right:5px; font-size:14px" >Период с:</label>
+                <input id="beginPeriod" name="fromDate" type="date" class="form-control input-sm" value="">
                 <label for="endPeriod" style="margin-left:10px; margin-right:5px; font-size:14px">по:</label>
-                <input id="endPeriod" name="endDate" type="date" class="form-control input-sm"
-                       value="${cashFilters.toDate}"
-                       style="margin-right:5px">
+                <input id="endPeriod" name="toDate" type="date" class="form-control input-sm" value="" style="margin-right:5px">
                 <button type="submit" id="bth-search" class="btn btn-primary btn-sm">Фильтр</button>
                 <button type="submit" id="bth-clear" class="btn btn-danger btn-sm">Сбросить фильтры</button>
                 <div class="btn btn-info btn-sm" id="allRows">
                     <label class="checkbox-inline">
                         <input type="checkbox" name="allRows" id="all" value=""
-                        <c:if test="${allRows == true}"> checked="checked" </c:if> >На одной странице
+                        <c:if test="${cashFilters.allRows == true}"> checked="checked" </c:if> >На одной странице
                     </label>
                 </div>
 
@@ -154,17 +153,13 @@
                 </sec:authorize>
 
             </div>
-            <c:if test="${allRows == false}">
+            <c:if test="${cashFilters.allRows == false}">
                 <nav class="text-center" aria-label="Деньги инвесторов">
                     <ul class="pagination pagination-sm justify-content-center">
-                        <c:forEach begin="1" end="${pageCount}" varStatus="page">
-                            <c:set var="link" value="/investorscash?page=${page.index - 1}&size=100"/>
-                            <c:if test="${!queryParams.startsWith('&')}">
-                                <c:set var="link" value="${link.concat('&')}"/>
-                            </c:if>
+                        <c:forEach begin="1" end="${page.totalPages}" varStatus="page">
                             <li class="page-item" data-page="${page.index}">
-                                <a id="page_${page.index}" class="page-link"
-                                   href="<c:url value='${link}${queryParams}' />">${page.index}</a>
+                                <a id="${page.index}" name="page_${page.index}" class="page-link"
+                                   href="#">${page.index}</a>
                             </li>
                         </c:forEach>
                     </ul>
@@ -198,7 +193,7 @@
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${investorsCashes}" var="cash">
+            <c:forEach items="${page.content}" var="cash">
                 <tr id="${cash.id}">
                     <td data-facility-id="${cash.facility.id}">${cash.facility.facility}</td>
                     <td data-under-facility-id="${cash.underFacility.id}">${cash.underFacility.underFacility}</td>

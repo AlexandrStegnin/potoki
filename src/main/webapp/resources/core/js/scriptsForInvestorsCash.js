@@ -1,8 +1,5 @@
 let filters = [];
 
-let max;
-let min;
-
 jQuery(document).ready(function ($) {
 
     blockActions();
@@ -72,6 +69,16 @@ jQuery(document).ready(function ($) {
     $('#allMoneyCashing').on('click', function () {
         allMoneyCashing();
     });
+
+    $(document).on('click', 'a[name*="page_"]', function (e) {
+        e.preventDefault();
+        $('#pageNumber').val(parseInt($(this).attr('id')) - 1);
+        let pageSize = 100;
+        if ($('#all').prop('checked')) pageSize = 0;
+        $('#pageSize').val(pageSize);
+        $('#search-form').submit();
+    });
+
     /**
 
      МАССОВОЕ РЕИНВЕСТИРОВАНИЕ НАЧАЛО
@@ -312,9 +319,6 @@ jQuery(document).ready(function ($) {
 
     disableFields();
 
-    max = findMinMaxDate('#investorsCash tbody', 6, "max");
-    min = findMinMaxDate('#investorsCash tbody', 6, "min");
-
     var hasError = {
         'saleShareFunc': function () {
             var dateClosingInfo = $('#dateCloseErr');
@@ -393,54 +397,10 @@ jQuery(document).ready(function ($) {
         }
     };
 
-    $("#search-form").submit(function (event) {
+    $("#search-form").submit(function () {
         // Disable the search button
         enableSearchButton(false);
-        let fFacility = $('#fFacilities');
-        let uFacility = $('#uFacilities');
-        let inv = $('#investors');
-
-        let facility = fFacility.find('option:selected').val();
-        let underFacility = uFacility.find('option:selected').val();
-        let investor = inv.find('option:selected').val();
-
-        let invArray = [];
-        $('#investors > option:selected').each(function () {
-            invArray.push($(this).val());
-        });
-
-        let dateFrom = $('#beginPeriod').val() + '';
-        let dateTo = $('#endPeriod').val() + '';
-        let all = $('#all').prop('checked');
-
-        if (dateFrom.length === 0) dateFrom = null;
-        if (dateTo.length === 0) dateTo = null;
-
-        populateFilters((window.location.pathname + '').split("/")[1]);
-
-        let facilityParam = facility === 'Выберите объект' ? '' : '?facility=' + facility;
-        let uFacilityParam = (underFacility === 'Выберите подобъект' || underFacility === '0') ? facilityParam + '' : facilityParam.indexOf('?') === 0 ?
-            facilityParam + '&underFacility=' + underFacility : '?underFacility=' + underFacility;
-        let investorParam = investor === 'Выберите инвестора' ? uFacilityParam + '' : uFacilityParam.indexOf('?') === 0 ?
-            uFacilityParam + '&investor=' + invArray : '?investor=' + invArray;
-        let startDateParam = (dateFrom === null || dateFrom.length === 0) ? investorParam + '' : investorParam.indexOf('?') === 0 ? investorParam + '&startDate=' + dateFrom :
-            '?startDate=' + dateFrom;
-        let endDateParam = (dateTo === null || dateTo.length === 0) ? startDateParam + '' : startDateParam.indexOf('?') === 0 ? startDateParam + '&endDate=' + dateTo :
-            '?endDate=' + dateTo;
-
-        let params = endDateParam.indexOf('?') === 0 ? endDateParam : '';
-        let allRows;
-        if (params.indexOf('?') === 0) {
-            allRows = '&allRows=' + all + '';
-        } else {
-            allRows = '?allRows=' + all + '';
-        }
-
-        params = params + allRows;
-
-        // Prevent the form from submitting via the browser.
-        event.preventDefault();
-        window.location.href = window.location.pathname + params;
+        populateFilters((window.location.pathname + '').split('/')[1]);
         enableSearchButton(true);
     });
 
@@ -903,139 +863,6 @@ function enableFields() {
     $('#dateRep').prop('disabled', false);
 }
 
-function prepareFilteredCashed() {
-    let facility = $('#fFacilities').find(':selected').text();
-    let underFacility = $('#uFacilities').find(':selected').text();
-    let investor = $('#investors').find(':selected').text();
-    let dateBegin = $('#beginPeriod').val();
-    let dateEnd = $('#endPeriod').val();
-    let url = window.location.href;
-    let pageNumber = url.split('investorscash/')[1];
-    filteredInvestorsCash(facility, underFacility, investor, dateBegin, dateEnd, pageNumber);
-}
-
-function prepareFilter() {
-    var facility = $('#fFacilities').find(':selected').text();
-    var underFacility = $('#uFacilities').find(':selected').text();
-    var investor = $('#investors').find(':selected').text();
-    var dateBegin = $('#beginPeriod').val();
-    var dateEnd = $('#endPeriod').val();
-
-    if (facility !== 'Выберите объект' && underFacility !== 'Выберите подобъект' && investor !== 'Выберите инвестора') {
-        filters = [];
-        apply_filter('#investorsCash tbody', 1, facility);
-        apply_filter('#investorsCash tbody', 2, underFacility);
-        apply_filter('#investorsCash tbody', 3, investor);
-    } else if (facility !== 'Выберите объект' && underFacility === 'Выберите подобъект' && investor === 'Выберите инвестора') {
-        filters = [];
-        apply_filter('#investorsCash tbody', 1, facility);
-    } else if (facility === 'Выберите объект' && underFacility !== 'Выберите подобъект' && investor === 'Выберите инвестора') {
-        filters = [];
-        apply_filter('#investorsCash tbody', 2, underFacility);
-    } else if (facility === 'Выберите объект' && underFacility === 'Выберите подобъект' && investor !== 'Выберите инвестора') {
-        filters = [];
-        apply_filter('#investorsCash tbody', 3, investor);
-    } else if (facility === 'Выберите объект' && underFacility === 'Выберите подобъект' && investor === 'Выберите инвестора') {
-        filters = [];
-        apply_filter('#investorsCash tbody', 1, 'any');
-    } else if (facility !== 'Выберите объект' && underFacility !== 'Выберите подобъект' && investor === 'Выберите инвестора') {
-        filters = [];
-        apply_filter('#investorsCash tbody', 1, facility);
-        apply_filter('#investorsCash tbody', 2, underFacility);
-    } else if (facility !== 'Выберите объект' && underFacility === 'Выберите подобъект' && investor !== 'Выберите инвестора') {
-        filters = [];
-        apply_filter('#investorsCash tbody', 1, facility);
-        apply_filter('#investorsCash tbody', 3, investor);
-    } else if (facility === 'Выберите объект' && underFacility !== 'Выберите подобъект' && investor !== 'Выберите инвестора') {
-        filters = [];
-        apply_filter('#investorsCash tbody', 2, underFacility);
-        apply_filter('#investorsCash tbody', 3, investor);
-    }
-    if (dateBegin === '' && dateEnd === '') {
-        filters = [];
-        apply_date_filter('#investorsCash tbody', 5, min, max, "any");
-    } else {
-        filters = [];
-        apply_date_filter('#investorsCash tbody', 5, dateBegin, dateEnd, "not");
-    }
-}
-
-function findMinMaxDate(table, col, maxOrMin) {
-    var max, min;
-    var data = [];
-    var cDate;
-    $(table).find('tr td:nth-child(' + col + ')').each(function (i) {
-        var checkDate = $(this).text();
-        var parts = checkDate.split(".");
-        cDate = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
-        data.push(cDate);
-    });
-    switch (maxOrMin) {
-        case "max":
-            max = new Date(Math.max.apply(null, data));
-            return max;
-        case "min":
-            min = new Date(Math.min.apply(null, data));
-            return min;
-    }
-}
-
-function apply_date_filter(table, col, dateFrom, dateTo, any) {
-    var fDate, tDate, cDate;
-    var parts;
-    dateFrom = dateFrom + '';
-    dateTo = dateTo + '';
-    if (dateFrom.length === 10) {
-        parts = dateFrom.split("-");
-        fDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-    } else {
-        fDate = null;
-    }
-    if (dateTo.length === 10) {
-        parts = dateTo.split("-");
-        tDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-    } else {
-        tDate = null;
-    }
-
-    filters[col] = any;
-
-    if (filters[col] !== 'any') {
-        $(table).find('tr td:nth-child(' + col + ')').each(function (i) {
-            var checkDate = $(this).text();
-            parts = checkDate.split(".");
-            cDate = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
-            if (fDate === null && tDate !== null) {
-                if (cDate <= tDate && $(this).parent().data('passed')) {
-                    $(this).parent().data('passed', true);
-                } else {
-                    $(this).parent().data('passed', false);
-                }
-            } else if (fDate !== null && tDate === null) {
-                if (cDate >= fDate && $(this).parent().data('passed')) {
-                    $(this).parent().data('passed', true);
-                } else {
-                    $(this).parent().data('passed', false);
-                }
-            } else {
-                if ((cDate <= tDate && cDate >= fDate) && $(this).parent().data('passed')) {
-                    $(this).parent().data('passed', true);
-                } else {
-                    $(this).parent().data('passed', false);
-                }
-            }
-        });
-    }
-
-    $(table).find('tr').each(function (i) {
-        if (!$(this).data('passed')) {
-            $(this).hide();
-        } else {
-            $(this).show();
-        }
-    });
-}
-
 function moveFields(mAttribute) {
 
     let facilities = $('#facilitiesRow');
@@ -1155,7 +982,7 @@ function prepareSaveCash() {
     };
 
     underFacility = {
-        id: reinvestData.find('#srcUnderFacilities option:selected').val(),
+        id: reinvestData.find('#srcUnderFacilities option:selected').attr('id'),
         underFacility: $('#srcUnderFacilities').find('option:selected').text()
     };
 

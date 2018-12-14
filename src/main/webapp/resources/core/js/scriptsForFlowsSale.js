@@ -91,10 +91,7 @@ jQuery(document).ready(function ($) {
         $('#filter-form').submit();
     });
 
-    $("#filter-form").submit(function (event) {
-        // Prevent the form from submitting via the browser.
-        // event.preventDefault();
-        // Disable the search button
+    $("#filter-form").submit(function () {
         enableSearchButton(false);
         populateFilters((window.location.pathname + '').split("/")[1]);
         enableSearchButton(true);

@@ -46,7 +46,7 @@ public class InvestorsFlowsSaleSpecification extends BaseSpecification<Investors
 
     private static Specification<InvestorsFlowsSale> facilityEqual(String facility) {
         return ((root, criteriaQuery, criteriaBuilder) -> {
-            if (Objects.equals(null, facility) || StringUtils.isEmpty(facility) || "Выберите объект".equalsIgnoreCase(facility)) {
+            if (Objects.equals(null, facility) || StringUtils.isEmpty(facility) || "Выберите объект".equalsIgnoreCase(facility.trim())) {
                 return null;
             } else {
                 return criteriaBuilder.equal(root.get(InvestorsFlowsSale_.facility).get(Facilities_.facility), facility);
@@ -57,7 +57,7 @@ public class InvestorsFlowsSaleSpecification extends BaseSpecification<Investors
 
     private static Specification<InvestorsFlowsSale> underFacilityEqual(String underFacility) {
         return ((root, criteriaQuery, criteriaBuilder) -> {
-            if (Objects.equals(null, underFacility) || StringUtils.isEmpty(underFacility) || "Выберите подобъект".equalsIgnoreCase(underFacility)) {
+            if (Objects.equals(null, underFacility) || StringUtils.isEmpty(underFacility) || "Выберите подобъект".equalsIgnoreCase(underFacility.trim())) {
                 return null;
             } else {
                 return criteriaBuilder.equal(root.get(InvestorsFlowsSale_.underFacility).get(UnderFacilities_.underFacility), underFacility);
@@ -67,7 +67,7 @@ public class InvestorsFlowsSaleSpecification extends BaseSpecification<Investors
     }
 
     private static Specification<InvestorsFlowsSale> loginIn(List<String> loginList) {
-        if (loginList == null || loginList.size() == 0 || loginList.get(0).equalsIgnoreCase("Выберите инвестора")) {
+        if (loginList == null || loginList.size() == 0 || loginList.get(0).trim().equalsIgnoreCase("Выберите инвестора")) {
             return null;
         } else {
             return ((root, criteriaQuery, criteriaBuilder) ->

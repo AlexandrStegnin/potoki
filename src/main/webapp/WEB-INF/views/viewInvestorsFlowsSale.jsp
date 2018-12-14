@@ -146,7 +146,7 @@
         </sec:authorize>
 
         <c:if test="${flowsSaleFilters.allRows == false}">
-            <nav class="text-center" aria-label="Деньги инвесторов">
+            <nav class="text-center" aria-label="Выплаты инвесторам - продажа">
                 <ul class="pagination pagination-sm justify-content-center">
                     <c:forEach begin="1" end="${page.totalPages}" varStatus="page">
                         <li class="page-item" data-page="${page.index}">

@@ -46,7 +46,7 @@ public class MarketingTreeSpecification extends BaseSpecification<MarketingTree,
 
     private static Specification<MarketingTree> investorEqual(String login) {
         return ((root, criteriaQuery, criteriaBuilder) -> {
-            if (Objects.equals(null, login) || StringUtils.isEmpty(login) || "Выберите инвестора".equalsIgnoreCase(login)) {
+            if (Objects.equals(null, login) || StringUtils.isEmpty(login) || "Выберите инвестора".equalsIgnoreCase(login.trim())) {
                 return null;
             } else {
                 return criteriaBuilder.equal(root.get(MarketingTree_.investor).get(Users_.login), login);
@@ -57,7 +57,7 @@ public class MarketingTreeSpecification extends BaseSpecification<MarketingTree,
 
     private static Specification<MarketingTree> partnerEqual(String login) {
         return ((root, criteriaQuery, criteriaBuilder) -> {
-            if (Objects.equals(null, login) || StringUtils.isEmpty(login) || "Выберите партнёра".equalsIgnoreCase(login)) {
+            if (Objects.equals(null, login) || StringUtils.isEmpty(login) || "Выберите партнёра".equalsIgnoreCase(login.trim())) {
                 return null;
             } else {
                 return criteriaBuilder.equal(root.get(MarketingTree_.partner).get(Users_.login), login);
