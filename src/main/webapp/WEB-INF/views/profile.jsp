@@ -21,6 +21,7 @@
     <script type="text/javascript" src="<c:url value='/resources/core/js/AjaxLoader.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/mailingScripts.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/forLoadPdfFiles.js' />" ></script>
+    <script type="text/javascript" src="<c:url value='/resources/core/js/datatables.min.js' />" ></script>
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
 </head>
 
@@ -200,6 +201,13 @@
                 <span id="successDelete"></span>
                 <button type="button" class="btn btn-primary pull-right" id="closeAllPdf">Закрыть</button>
             </div>
+        </div>
+    </div>
+</div>
+<div id="msg-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body" id="msg" style="text-align: center"></div>
         </div>
     </div>
 </div>

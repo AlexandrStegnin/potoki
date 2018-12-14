@@ -10,6 +10,8 @@ jQuery(document).ready(function ($) {
     $(document).on('click', '#clearLS', function (e) {
         e.preventDefault();
         if (window.localStorage) localStorage.clear();
+        $('#msg').html('Локальное хранилище очищено');
+        $('#msg-modal').modal('show');
     });
 
     $(document).on('click', 'a#updateMarketingTree', function (e) {
