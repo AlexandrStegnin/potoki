@@ -34,11 +34,7 @@ jQuery(document).ready(function ($) {
 
     $(document).on('click', '#cancelDivide', function (e) {
         e.preventDefault();
-        let divideModal = $('#divideModal');
-        let flowId = divideModal.find('#divideId').val();
-        let flowMaxSum = divideModal.find('#flowMaxSum').val();
-        divideCash(flowId, flowMaxSum);
-        divideModal.modal('hide');
+        $('#divideModal').modal('hide');
     });
 
     $(document).on('submit', '#divideData', function (e) {
