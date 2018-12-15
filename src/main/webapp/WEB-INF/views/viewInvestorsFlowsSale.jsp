@@ -211,8 +211,8 @@
                     <td>
                         <c:choose>
                             <c:when test="${flows.isReinvest == 1}">
-                                <c:set var="checked" value="checked"/>
-                                <c:set var="disabled" value="disabled"/>
+                                <c:set var="checked" value="checked "/>
+                                <c:set var="disabled" value="disabled "/>
                             </c:when>
                             <c:otherwise>
                                 <c:set var="checked" value=""/>
