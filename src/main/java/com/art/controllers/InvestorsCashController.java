@@ -115,6 +115,7 @@ public class InvestorsCashController {
         String title = "Обновление данных по деньгам инвесторов";
         InvestorsCash investorsCash = investorsCashService.findById(id);
 
+        model.addAttribute("givenCashErr", 0);
         model.addAttribute("investorsCash", investorsCash);
         model.addAttribute("newCash", false);
         model.addAttribute("edit", true);
@@ -131,6 +132,7 @@ public class InvestorsCashController {
         investorsCash.setGivedCash(investorsCash.getGivedCash().setScale(2, RoundingMode.DOWN));
         model.addAttribute("investorsCash", investorsCash);
 
+        model.addAttribute("givenCashErr", 0);
         model.addAttribute("newCash", false);
         model.addAttribute("edit", false);
         model.addAttribute("closeCash", true);
@@ -154,6 +156,7 @@ public class InvestorsCashController {
                 .filter(cash -> cash.getFacility().equals(investorsCash.getFacility()))
                 .collect(Collectors.toList()));
 
+        model.addAttribute("givenCashErr", 0);
         model.addAttribute("underFacilitiesList", underFacilitiesList);
         model.addAttribute("investorsCash", investorsCash);
         model.addAttribute("newCash", false);
@@ -309,6 +312,8 @@ public class InvestorsCashController {
     public String newCash(ModelMap model) {
         String title = "Добавление денег инвестора";
         InvestorsCash investorsCash = new InvestorsCash();
+
+        model.addAttribute("givenCashErr", 0);
         model.addAttribute("investorsCash", investorsCash);
         model.addAttribute("newCash", true);
         model.addAttribute("edit", false);
@@ -342,6 +347,8 @@ public class InvestorsCashController {
     public String getCash(ModelMap model) {
         String title = "Вывод денег инвестора";
         SearchSummary searchSummary = new SearchSummary();
+
+        model.addAttribute("givenCashErr", 0);
         model.addAttribute("searchSummary", searchSummary);
         model.addAttribute("title", title);
         return "getInvestorsCash";
@@ -668,6 +675,13 @@ public class InvestorsCashController {
     public String doubleCash(@ModelAttribute("investorsCash") InvestorsCash investorsCash, @PathVariable("id") int id) {
         InvestorsCash newInvestorsCash = investorsCashService.findById(investorsCash.getId());
         InvestorsCash inMemoryCash = investorsCashService.findById(investorsCash.getId());
+        ModelAndView model = new ModelAndView("addinvestorscash");
+//        if (newInvestorsCash.getGivedCash().compareTo(investorsCash.getGivedCash()) < 0) {
+//            int givenCashErr = 1;
+//            model.addObject("givenCashErr", givenCashErr);
+//            model.addObject("investorsCash", investorsCash);
+//            return model.getViewName();
+//        }
         investorsCash.setFacility(newInvestorsCash.getFacility());
         investorsCash.setInvestor(newInvestorsCash.getInvestor());
         investorsCash.setDateGivedCash(newInvestorsCash.getDateGivedCash());
@@ -703,7 +717,7 @@ public class InvestorsCashController {
         }
         investorsCashService.update(newInvestorsCash);
         investorsCashService.update(investorsCash);
-        ModelAndView model = new ModelAndView("addinvestorscash");
+
         if (investorsCash.getGivedCash().compareTo(BigDecimal.ZERO) == 0) {
             return "redirect: /investorscash";
         } else {

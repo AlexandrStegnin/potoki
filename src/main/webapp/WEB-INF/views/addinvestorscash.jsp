@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page isELIgnored="false" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -35,6 +35,7 @@
         <form:input type="hidden" path="" id="edit" value="${edit}"/>
         <form:input type="hidden" path="" id="doubleCash" value="${doubleCash}"/>
         <form:input type="hidden" path="" id="closeCash" value="${closeCash}"/>
+        <input type="hidden" id="maxSum" value="${investorsCash.givedCash}">
 
         <div class="row" id="facilitiesRow">
             <div class="form-group col-md-12">
@@ -95,9 +96,8 @@
                 <div class="col-md-7">
                     <form:input type="number" path="givedCash" id="cash" class="form-control input-sm"
                                 min="0.0" step="any"/>
-                    <div class="has-error">
-                        <form:errors path="givedCash" class="help-inline"/>
-                    </div>
+                </div>
+                <div id="givenCashError" class="input-sm" style="color: red; display: none;">Сумма должна быть меньше ${investorsCash.givedCash.intValue()}
                 </div>
             </div>
         </div>

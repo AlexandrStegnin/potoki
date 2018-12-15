@@ -413,6 +413,17 @@ jQuery(document).ready(function ($) {
         }
     };
 
+    $(document).on('submit', '#iCashTable', function (e) {
+        let maxSum = $('#maxSum').val();
+        let doubleSum = $('#cash').val();
+        if (maxSum < doubleSum) {
+            e.preventDefault();
+            $('#givenCashError').css('display', 'block');
+        } else {
+            $('#givenCashError').css('display', 'none');
+        }
+    });
+
     $("#search-form").submit(function () {
         // Disable the search button
         enableSearchButton(false);
