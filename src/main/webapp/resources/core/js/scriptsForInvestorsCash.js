@@ -560,16 +560,7 @@ function allMoneyCashing() {
         success: function (data) {
             closeLoader();
             slideBox(data.message);
-
-            $('#facilities').prop('selectedIndex', 0);
-            $('#underFacilities').prop('selectedIndex', 0);
-            $('#investor').prop('selectedIndex', 0);
-            $('#cash').val('');
-            $('#dateGivedCash').val('');
-            $('#cashing').val('');
-            $('#commissionNoMore').val('');
-
-
+            window.location.href = '/investorscash';
         },
         error: function (e) {
             closeLoader();
