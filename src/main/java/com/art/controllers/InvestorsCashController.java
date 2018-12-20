@@ -331,7 +331,7 @@ public class InvestorsCashController {
         }
 
         searchSummary.getInvestorsCash().setUnderFacility(underFacility);
-        if (cashingMoney(searchSummary, true)) {
+        if (investorsCashService.cashingAllMoney(searchSummary)/*cashingMoney(searchSummary, true)*/) {
             response.setMessage("Деньги инвестора " + searchSummary.getUser().getLogin() + " успешно выведены.");
         } else {
             response.setMessage("Что-то пошло не так ): ");

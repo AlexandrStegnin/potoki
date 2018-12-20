@@ -1,16 +1,16 @@
 package com.art.service;
 
-import com.art.model.Facilities;
-import com.art.model.InvestorsCash;
-import com.art.model.InvestorsCash_;
-import com.art.model.Users_;
-import com.art.model.supporting.filters.CashFilter;
+import com.art.model.*;
+import com.art.model.supporting.AfterCashing;
 import com.art.model.supporting.InvestorsTotalSum;
+import com.art.model.supporting.SearchSummary;
+import com.art.model.supporting.filters.CashFilter;
 import com.art.repository.InvestorsCashRepository;
 import com.art.specifications.InvestorsCashSpecification;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,19 +23,28 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @Transactional
 public class InvestorsCashService {
 
-    private InvestorsCashRepository investorsCashRepository;
-    private InvestorsCashSpecification specification;
-    
+    private final InvestorsCashRepository investorsCashRepository;
+    private final InvestorsCashSpecification specification;
+    private final TypeClosingInvestService typeClosingInvestService;
+    private final AfterCashingService afterCashingService;
+
     @Autowired
-    public InvestorsCashService(InvestorsCashRepository investorsCashRepository, InvestorsCashSpecification specification) {
+    public InvestorsCashService(InvestorsCashRepository investorsCashRepository,
+                                InvestorsCashSpecification specification,
+                                TypeClosingInvestService typeClosingInvestService,
+                                AfterCashingService afterCashingService) {
         this.investorsCashRepository = investorsCashRepository;
         this.specification = specification;
+        this.typeClosingInvestService = typeClosingInvestService;
+        this.afterCashingService = afterCashingService;
     }
 
     public List<InvestorsCash> findAll() {
