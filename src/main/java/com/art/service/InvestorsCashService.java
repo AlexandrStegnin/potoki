@@ -187,4 +187,153 @@ public class InvestorsCashService {
                 pageable
         );
     }
+
+    public boolean cashingAllMoney(final SearchSummary searchSummary) {
+        return cashing(searchSummary, true);
+    }
+
+    public boolean cashingMoney(final SearchSummary searchSummary) {
+        return cashing(searchSummary, false);
+    }
+
+    public boolean cashing(SearchSummary searchSummary, boolean all) {
+        List<AfterCashing> cashingList = new ArrayList<>(0);
+        final InvestorsCash[] cashForGetting = {searchSummary.getInvestorsCash()};
+        List<InvestorsCash> investorsCashes = getMoneyForCashing(cashForGetting[0]);
+        if (investorsCashes.size() == 0) return false;
+        final BigDecimal sumCash = investorsCashes.stream().map(InvestorsCash::getGivedCash).reduce(BigDecimal.ZERO, BigDecimal::add); // все деньги инвестора
+        BigDecimal commission = searchSummary.getCommission(); // сумма комиссии
+        final BigDecimal commissionNoMore = searchSummary.getCommissionNoMore(); // комиссия не более
+        final BigDecimal[] remainderSum = new BigDecimal[1]; // сумма, которую надо вывести
+        BigDecimal totalSum = new BigDecimal(BigInteger.ZERO);
+        remainderSum[0] = totalSum;
+        if (all) {
+            commission = (sumCash.multiply(commission)).divide(new BigDecimal(100), BigDecimal.ROUND_CEILING);
+            if (commissionNoMore != null && commission.compareTo(commissionNoMore) > 0) {
+                commission = commissionNoMore;
+            }
+            remainderSum[0] = sumCash;
+            cashForGetting[0].setGivedCash(sumCash.subtract(commission));
+        } else {
+            commission = (cashForGetting[0].getGivedCash().multiply(commission)).divide(new BigDecimal(100), BigDecimal.ROUND_CEILING);
+            if (commissionNoMore != null && commission.compareTo(commissionNoMore) > 0) {
+                commission = commissionNoMore;
+            }
+            totalSum = cashForGetting[0].getGivedCash().add(commission);
+            remainderSum[0] = totalSum;
+        }
+        if ((sumCash.compareTo(totalSum)) < 0) {
+            return false;
+        }
+
+        final TypeClosingInvest typeClosingInvest = typeClosingInvestService.findByTypeClosingInvest("Вывод");
+        final TypeClosingInvest typeClosingCommission = typeClosingInvestService.findByTypeClosingInvest("Вывод_комиссия");
+
+        final InvestorsCash[] commissionCash = {new InvestorsCash()};
+        commissionCash[0].setGivedCash(commission.negate());
+        commissionCash[0].setTypeClosingInvest(typeClosingCommission);
+        commissionCash[0].setInvestor(cashForGetting[0].getInvestor());
+        commissionCash[0].setFacility(cashForGetting[0].getFacility());
+        commissionCash[0].setUnderFacility(cashForGetting[0].getUnderFacility());
+        commissionCash[0].setDateClosingInvest(cashForGetting[0].getDateGivedCash());
+
+        StringBuilder sourceCash = new StringBuilder();
+        final AtomicInteger[] incr = {new AtomicInteger()};
+        final InvestorsCash[] newCash = {null};
+
+        if (all) {
+            investorsCashes.forEach(ic -> {
+                cashingList.add(new AfterCashing(ic.getId(), ic.getGivedCash()));
+                ic.setTypeClosingInvest(typeClosingInvest);
+                ic.setDateClosingInvest(cashForGetting[0].getDateGivedCash());
+                if (incr[0].get() == investorsCashes.size() - 1) {
+                    sourceCash.append(ic.getId().toString());
+                } else {
+                    sourceCash.append(ic.getId().toString()).append("|");
+                }
+
+                fillCash(commissionCash[0], ic);
+                fillCash(cashForGetting[0], ic);
+
+                update(ic);
+                incr[0].getAndIncrement();
+            });
+        } else {
+
+            investorsCashes.forEach(ic -> {
+                cashingList.add(new AfterCashing(ic.getId(), ic.getGivedCash()));
+                if (incr[0].get() == investorsCashes.size() - 1) {
+                    sourceCash.append(ic.getId().toString());
+                } else {
+                    sourceCash.append(ic.getId().toString()).append("|");
+                }
+                // если сумма остатка, который надо вывести, больше текущей суммы инвестора
+                if (ic.getGivedCash().subtract(remainderSum[0]).compareTo(BigDecimal.ZERO) < 0) {
+                    // остаток = остаток - текущая сумма инвестора
+                    remainderSum[0] = remainderSum[0].subtract(ic.getGivedCash());
+                    ic.setDateClosingInvest(cashForGetting[0].getDateGivedCash());
+                    ic.setTypeClosingInvest(typeClosingInvest);
+                    update(ic);
+                } else {
+                    // иначе если сумма остатка, который надо вывести, меньше текущей суммы инвестора
+                    // вычитаем из текущей суммы сумму остатка и комиссию
+                    ic.setGivedCash(ic.getGivedCash().subtract(remainderSum[0]));
+                    ic.setIsReinvest(1);
+                    ic.setIsDivide(1);
+                    // сохраняем сумму
+                    update(ic);
+
+                    // создаём новую сумму на остаток + комиссия
+                    newCash[0] = new InvestorsCash(ic);
+                    newCash[0].setGivedCash(remainderSum[0]);
+                    newCash[0].setDateClosingInvest(cashForGetting[0].getDateGivedCash());
+                    newCash[0].setTypeClosingInvest(typeClosingInvest);
+                    remainderSum[0] = BigDecimal.ZERO;
+                    fillCash(commissionCash[0], ic);
+                    fillCash(cashForGetting[0], ic);
+                }
+                incr[0].getAndIncrement();
+            });
+        }
+
+        cashForGetting[0].setGivedCash(cashForGetting[0].getGivedCash().negate());
+        cashForGetting[0].setDateClosingInvest(cashForGetting[0].getDateGivedCash());
+        cashForGetting[0].setTypeClosingInvest(typeClosingInvest);
+
+        cashingList.forEach(afterCashingService::create);
+        cashForGetting[0].setSource(sourceCash.toString());
+        commissionCash[0].setSource(sourceCash.toString());
+        if (newCash[0] != null) {
+            newCash[0].setSource(sourceCash.toString());
+            create(newCash[0]);
+        }
+        create(cashForGetting[0]);
+        create(commissionCash[0]);
+        return true;
+    }
+
+    private void fillCash(InvestorsCash to, InvestorsCash from) {
+        to.setDateGivedCash(from.getDateGivedCash());
+        to.setCashSource(from.getCashSource());
+        to.setCashType(from.getCashType());
+        to.setNewCashDetails(from.getNewCashDetails());
+        to.setInvestorsType(from.getInvestorsType());
+        to.setShareKind(from.getShareKind());
+        to.setDateReport(from.getDateReport());
+        to.setSourceFacility(from.getSourceFacility());
+        to.setSourceUnderFacility(from.getSourceUnderFacility());
+        to.setSourceFlowsId(from.getSourceFlowsId());
+        to.setRoom(from.getRoom());
+    }
+
+    public List<InvestorsCash> getMoneyForCashing(InvestorsCash cashForGetting) {
+        CashFilter filter = new CashFilter();
+        filter.setInvestor(cashForGetting.getInvestor());
+        filter.setFacility(cashForGetting.getFacility().getFacility());
+        filter.setUnderFacility(cashForGetting.getUnderFacility().getUnderFacility());
+        Pageable pageable = new PageRequest(0, Integer.MAX_VALUE);
+        return investorsCashRepository.findAll(
+                specification.getFilterForCashing(filter), pageable).getContent();
+
+    }
 }

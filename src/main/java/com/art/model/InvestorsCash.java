@@ -186,6 +186,33 @@ public class InvestorsCash implements Serializable {
         this.isDivide = isDivide;
     }
 
+    public InvestorsCash(InvestorsCash cash) {
+        this.id = null;
+        this.investorId = null;
+        this.facilityId = null;
+        this.givedCash = cash.getGivedCash();
+        this.dateGivedCash = cash.getDateGivedCash();
+        this.facility = cash.getFacility();
+        this.investor = cash.getInvestor();
+        this.cashSource = cash.getCashSource();
+        this.cashType = cash.getCashType();
+        this.newCashDetails = cash.getNewCashDetails();
+        this.investorsType = cash.getInvestorsType();
+        this.underFacility = cash.getUnderFacility();
+        this.dateClosingInvest = cash.getDateClosingInvest();
+        this.typeClosingInvest = cash.getTypeClosingInvest();
+        this.shareKind = cash.getShareKind();
+        this.dateReport = cash.getDateReport();
+        this.sourceFacility = cash.getSourceFacility();
+        this.sourceUnderFacility = cash.sourceUnderFacility;
+        this.sourceFlowsId = cash.getSourceFlowsId();
+        this.room = cash.getRoom();
+        this.isReinvest = cash.getIsReinvest();
+        this.sourceId = cash.getSourceId();
+        this.source = cash.getId().toString();
+        this.isDivide = cash.getIsDivide();
+    }
+
     public InvestorsCash(BigDecimal givedCash, Users investor, Facilities sourceFacility) {
         this.givedCash = givedCash;
         this.investor = investor;

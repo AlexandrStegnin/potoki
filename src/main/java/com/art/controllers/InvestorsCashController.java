@@ -331,7 +331,7 @@ public class InvestorsCashController {
         }
 
         searchSummary.getInvestorsCash().setUnderFacility(underFacility);
-        if (investorsCashService.cashingAllMoney(searchSummary)/*cashingMoney(searchSummary, true)*/) {
+        if (investorsCashService.cashingAllMoney(searchSummary)) {
             response.setMessage("Деньги инвестора " + searchSummary.getUser().getLogin() + " успешно выведены.");
         } else {
             response.setMessage("Что-то пошло не так ): ");
@@ -360,7 +360,7 @@ public class InvestorsCashController {
         String redirectUrl = "/investorscash";
         InvestorsCash cashForGetting = searchSummary.getInvestorsCash();
 
-        if (cashingMoney(searchSummary, false)) {
+        if (investorsCashService.cashingMoney(searchSummary)) {
 
             model.addAttribute("success", "Деньги инвестора " + cashForGetting.getInvestor().getLogin() +
                     " успешно выведены.");
@@ -370,161 +370,6 @@ public class InvestorsCashController {
         } else {
             return "getInvestorsCash";
         }
-    }
-
-    private boolean cashingMoney(SearchSummary searchSummary, boolean all) {
-
-        InvestorsCash commissionCash = new InvestorsCash();
-        final TypeClosingInvest typeClosingInvest = typeClosingInvestService.findByTypeClosingInvest("Вывод");
-        final TypeClosingInvest typeClosingCommission = typeClosingInvestService.findByTypeClosingInvest("Вывод_комиссия");
-        InvestorsCash cashForGetting = searchSummary.getInvestorsCash();
-        BigDecimal commission = searchSummary.getCommission();
-        BigDecimal commissionNoMore = searchSummary.getCommissionNoMore();
-
-        commissionCash.setFacility(cashForGetting.getFacility());
-        commissionCash.setUnderFacility(cashForGetting.getUnderFacility());
-        commissionCash.setInvestor(cashForGetting.getInvestor());
-        commissionCash.setTypeClosingInvest(typeClosingCommission);
-        commissionCash.setDateClosingInvest(cashForGetting.getDateGivedCash());
-        BigDecimal totalSum = new BigDecimal(BigInteger.ZERO);
-        final BigDecimal[] remainderSum = new BigDecimal[1]; // сумма, которую надо вывести
-
-        List<InvestorsCash> investorsCashes = investorsCashService.findByInvestorId(cashForGetting.getInvestor().getId())
-                .stream()
-                .filter(investorsCash ->
-                        investorsCash.getFacility().getFacility().equalsIgnoreCase(cashForGetting.getFacility().getFacility()) &&
-                                investorsCash.getGivedCash().compareTo(BigDecimal.ZERO) > 0 &&
-                                Objects.equals(null, investorsCash.getTypeClosingInvest()) &&
-                                (Objects.equals(null, cashForGetting.getUnderFacility()) || Objects.equals(cashForGetting.getUnderFacility(), investorsCash.getUnderFacility())))
-                .sorted(Comparator.comparing(InvestorsCash::getDateGivedCash))
-                .collect(Collectors.toList());
-        BigDecimal sumCash = investorsCashes.stream().map(InvestorsCash::getGivedCash).reduce(BigDecimal.ZERO, BigDecimal::add);
-        if (all) {
-            commission = (sumCash.multiply(commission)).divide(new BigDecimal(100), BigDecimal.ROUND_CEILING);
-            if (commissionNoMore != null && commission.compareTo(commissionNoMore) > 0) {
-                commission = commissionNoMore;
-            }
-            remainderSum[0] = sumCash;
-            cashForGetting.setGivedCash(sumCash.subtract(commission));
-        } else {
-            commission = (cashForGetting.getGivedCash().multiply(commission)).divide(new BigDecimal(100), BigDecimal.ROUND_CEILING);
-            if (commissionNoMore != null && commission.compareTo(commissionNoMore) > 0) {
-                commission = commissionNoMore;
-            }
-            totalSum = cashForGetting.getGivedCash().add(commission);
-            remainderSum[0] = totalSum;
-        }
-        commissionCash.setGivedCash(commission);
-
-        if ((sumCash.compareTo(totalSum)) < 0) {
-            return false;
-        }
-
-        List<AfterCashing> cashingList = new ArrayList<>(0);
-        BigDecimal finalCommission = commission;
-        remainderSum[0] = remainderSum[0].subtract(commission);
-        InvestorsCash remainderCash = new InvestorsCash();
-        investorsCashes.forEach(ic -> {
-            if (remainderSum[0].compareTo(BigDecimal.ZERO) > 0) {
-                if (ic.getGivedCash().subtract(remainderSum[0]).compareTo(BigDecimal.ZERO) < 0) {
-                    remainderSum[0] = remainderSum[0].subtract(ic.getGivedCash());
-                    cashingList.add(new AfterCashing(ic.getId(), ic.getGivedCash()));
-                    ic.setTypeClosingInvest(typeClosingInvest);
-                    ic.setDateClosingInvest(cashForGetting.getDateGivedCash());
-                } else {
-                    cashingList.add(new AfterCashing(ic.getId(), ic.getGivedCash()));
-                    remainderCash.setGivedCash(remainderSum[0]);
-                    remainderCash.setDateGivedCash(ic.getDateGivedCash());
-                    remainderCash.setFacility(ic.getFacility());
-                    remainderCash.setInvestor(ic.getInvestor());
-                    remainderCash.setCashSource(ic.getCashSource());
-                    remainderCash.setCashType(ic.getCashType());
-                    remainderCash.setNewCashDetails(ic.getNewCashDetails());
-                    remainderCash.setInvestorsType(ic.getInvestorsType());
-                    remainderCash.setUnderFacility(ic.getUnderFacility());
-                    remainderCash.setDateClosingInvest(cashForGetting.getDateGivedCash());
-                    remainderCash.setTypeClosingInvest(typeClosingInvest);
-                    remainderCash.setShareKind(ic.getShareKind());
-                    remainderCash.setDateReport(ic.getDateReport());
-                    remainderCash.setSourceFacility(ic.getSourceFacility());
-                    remainderCash.setSourceUnderFacility(ic.getSourceUnderFacility());
-                    remainderCash.setSourceFlowsId(ic.getSourceFlowsId());
-                    remainderCash.setRoom(ic.getRoom());
-                    remainderCash.setIsReinvest(ic.getIsReinvest());
-                    remainderCash.setSourceId(ic.getSourceId());
-                    remainderCash.setIsDivide(ic.getIsDivide());
-                    ic.setGivedCash(ic.getGivedCash().subtract(remainderSum[0]).subtract(finalCommission));
-                    if (all) {
-                        ic.setTypeClosingInvest(typeClosingInvest);
-                        ic.setDateClosingInvest(cashForGetting.getDateGivedCash());
-                    }
-                    if (ic.getGivedCash().compareTo(BigDecimal.ZERO) == 0) {
-                        ic.setIsDivide(1);
-                        ic.setIsReinvest(1);
-                    }
-                    remainderSum[0] = BigDecimal.ZERO;
-                }
-                investorsCashService.update(ic);
-                cashForGetting.setCashSource(ic.getCashSource());
-                cashForGetting.setCashType(ic.getCashType());
-                cashForGetting.setNewCashDetails(ic.getNewCashDetails());
-                cashForGetting.setInvestorsType(ic.getInvestorsType());
-                cashForGetting.setShareKind(ic.getShareKind());
-                cashForGetting.setDateReport(ic.getDateReport());
-                cashForGetting.setSourceFacility(ic.getSourceFacility());
-                cashForGetting.setSourceUnderFacility(ic.getSourceUnderFacility());
-                cashForGetting.setRoom(ic.getRoom());
-                cashForGetting.setSource(cashForGetting.getSource() == null ? "" + ic.getId().toString() : cashForGetting.getSource() + "|" + ic.getId().toString());
-                cashForGetting.setDateClosingInvest(cashForGetting.getDateGivedCash());
-
-                commissionCash.setDateGivedCash(ic.getDateGivedCash());
-                commissionCash.setCashSource(ic.getCashSource());
-                commissionCash.setCashType(ic.getCashType());
-                commissionCash.setNewCashDetails(ic.getNewCashDetails());
-                commissionCash.setInvestorsType(ic.getInvestorsType());
-                commissionCash.setShareKind(ic.getShareKind());
-                commissionCash.setDateReport(ic.getDateReport());
-                commissionCash.setSourceFacility(ic.getSourceFacility());
-                commissionCash.setSourceUnderFacility(ic.getSourceUnderFacility());
-                commissionCash.setRoom(ic.getRoom());
-                commissionCash.setSource(commissionCash.getSource() == null ? "" + ic.getId().toString() : commissionCash.getSource() + "|" + ic.getId().toString());
-
-                remainderCash.setSource(cashForGetting.getSource());
-            } else {
-                if (all) {
-                    ic.setTypeClosingInvest(typeClosingInvest);
-                    ic.setDateClosingInvest(cashForGetting.getDateGivedCash());
-                    cashForGetting.setSource(cashForGetting.getSource() == null ?
-                            "" + ic.getId().toString() :
-                            cashForGetting.getSource() + "|" + ic.getId().toString());
-                    commissionCash.setSource(commissionCash.getSource() == null ?
-                            "" + ic.getId().toString() :
-                            commissionCash.getSource() + "|" + ic.getId().toString());
-                    remainderCash.setSource(remainderCash.getSource() == null ?
-                            "" + ic.getId().toString() :
-                            remainderCash.getSource() + "|" + ic.getId().toString());
-                    investorsCashService.update(ic);
-                }
-            }
-        });
-
-        if (!Objects.equals(null, cashForGetting.getSource()) &&
-                cashForGetting.getSource().equalsIgnoreCase("")) cashForGetting.setSource(null);
-        if (!Objects.equals(null, commissionCash.getSource()) &&
-                commissionCash.getSource().equalsIgnoreCase("")) cashForGetting.setSource(null);
-
-        cashingList.forEach(cl -> afterCashingService.create(cl));
-        cashForGetting.setTypeClosingInvest(typeClosingInvest);
-        investorsCashService.create(remainderCash);
-        investorsCashService.create(commissionCash);
-
-        cashForGetting.setGivedCash(cashForGetting.getGivedCash().negate());
-        commissionCash.setGivedCash(commissionCash.getGivedCash().negate());
-        commissionCash.setDateGivedCash(cashForGetting.getDateGivedCash());
-        investorsCashService.create(cashForGetting);
-        investorsCashService.create(commissionCash);
-
-        return true;
     }
 
     @PostMapping(value = "/getRating", produces = "application/json;charset=UTF-8")
