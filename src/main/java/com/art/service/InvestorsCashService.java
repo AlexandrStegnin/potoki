@@ -25,6 +25,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
@@ -230,6 +231,7 @@ public class InvestorsCashService {
         final TypeClosingInvest typeClosingCommission = typeClosingInvestService.findByTypeClosingInvest("Вывод_комиссия");
 
         final InvestorsCash[] commissionCash = {new InvestorsCash()};
+        final InvestorsCash[] cashForManipulate = {null};
         commissionCash[0].setGivedCash(commission.negate());
         commissionCash[0].setTypeClosingInvest(typeClosingCommission);
         commissionCash[0].setInvestor(cashForGetting[0].getInvestor());
@@ -276,8 +278,12 @@ public class InvestorsCashService {
                     update(ic);
                 } else {
                     // иначе если сумма остатка, который надо вывести, меньше текущей суммы инвестора
-                    // вычитаем из текущей суммы сумму остатка и комиссию
-                    ic.setGivedCash(ic.getGivedCash().subtract(remainderSum[0]));
+                    // создаём проводку, с которой сможем в дальнейшем проводить какие-либо действия
+                    // на сумму (текущие деньги вычитаем сумму остатка и комиссию)
+                    cashForManipulate[0] = new InvestorsCash(ic);
+                    cashForManipulate[0].setGivedCash(ic.getGivedCash().subtract(remainderSum[0]));
+                    // основную сумму блокируем для операций
+                    ic.setGivedCash(BigDecimal.ZERO);
                     ic.setIsReinvest(1);
                     ic.setIsDivide(1);
                     // сохраняем сумму
@@ -303,6 +309,10 @@ public class InvestorsCashService {
         cashingList.forEach(afterCashingService::create);
         cashForGetting[0].setSource(sourceCash.toString());
         commissionCash[0].setSource(sourceCash.toString());
+        if (!Objects.equals(null, cashForManipulate[0])) {
+            cashForManipulate[0].setSource(sourceCash.toString());
+            create(cashForManipulate[0]);
+        }
         if (newCash[0] != null) {
             newCash[0].setSource(sourceCash.toString());
             create(newCash[0]);
