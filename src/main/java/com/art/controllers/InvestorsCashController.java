@@ -7,8 +7,6 @@ import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.filters.CashFilter;
 import com.art.service.*;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
@@ -356,76 +354,16 @@ public class InvestorsCashController {
         if (result.hasErrors()) {
             return "getInvestorsCash";
         }
-        String ret = "списку денег инвестора";
-        String redirectUrl = "/investorscash";
-        InvestorsCash cashForGetting = searchSummary.getInvestorsCash();
 
         if (investorsCashService.cashingMoney(searchSummary)) {
-
-            model.addAttribute("success", "Деньги инвестора " + cashForGetting.getInvestor().getLogin() +
-                    " успешно выведены.");
-            model.addAttribute("redirectUrl", redirectUrl);
-            model.addAttribute("ret", ret);
-            return "registrationsuccess";
+            Page<InvestorsCash> page = investorsCashService.findAll(cashFilters, new PageRequest(0, Integer.MAX_VALUE));
+            model.addAttribute("page", page);
+            model.addAttribute("cashFilters", cashFilters);
+            model.addAttribute("searchSummary", filters);
+            return "redirect:/investorscash";
         } else {
             return "getInvestorsCash";
         }
-    }
-
-    @PostMapping(value = "/getRating", produces = "application/json;charset=UTF-8")
-    public @ResponseBody
-    String getRating() {
-        String myLogin = getPrincipalFunc.getLogin();
-        List<InvestorsCash> myCash = new ArrayList<>(0);
-        List<InvestorsCash> investorsCashes = investorsCashService.findAll();
-        myCash.addAll(investorsCashes.stream().filter(ic ->
-                !Objects.equals(null, ic.getInvestor()) &&
-                        ic.getInvestor().getLogin().equalsIgnoreCase(myLogin) &&
-                        Objects.equals(null, ic.getTypeClosingInvest())
-        ).collect(Collectors.toList()));
-
-        investorsCashes = investorsCashes
-                .stream()
-                .filter(investorsCash ->
-                        investorsCash.getGivedCash().compareTo(new BigDecimal(200000)) >= 0 &&
-                                Objects.equals(null, investorsCash.getTypeClosingInvest()))
-                .collect(Collectors.toList());
-
-        Map<String, BigDecimal> myMap = new HashMap<>(0);
-        myCash.forEach(ic -> myMap.merge(ic.getInvestor().getLogin(), ic.getGivedCash(), BigDecimal::add));
-
-        Map<String, BigDecimal> map = new HashMap<>(0);
-
-        Map<String, BigDecimal> finalMap = map;
-        investorsCashes.forEach(ic -> finalMap.merge(ic.getInvestor().getLogin(), ic.getGivedCash(), BigDecimal::add));
-        map = finalMap.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue, LinkedHashMap::new));
-
-        JSONObject inputData = new JSONObject();
-        JSONObject myData = new JSONObject();
-        JSONArray otherDatas = new JSONArray();
-        final JSONObject[] otherData = {new JSONObject()};
-        final int[] place = {0};
-
-        map.forEach((k, v) -> {
-            place[0]++;
-            if (k.equalsIgnoreCase(myLogin)) {
-                myData.put("place", place[0]);
-                myData.put("value", v);
-            }
-            otherData[0] = new JSONObject();
-            otherData[0].put("name", k);
-            otherData[0].put("value", v);
-            otherDatas.put(otherData[0]);
-        });
-        if (myData.length() == 0) {
-            myData.put("place", map.size() + 1);
-            myData.put("value", myMap.get(myLogin));
-        }
-        inputData.put("userData", myData);
-        inputData.put("otherDatas", otherDatas);
-
-        return inputData.toString();
     }
 
     @PostMapping(value = {"/newinvestorscash"})

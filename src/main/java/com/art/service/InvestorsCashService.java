@@ -340,7 +340,9 @@ public class InvestorsCashService {
         CashFilter filter = new CashFilter();
         filter.setInvestor(cashForGetting.getInvestor());
         filter.setFacility(cashForGetting.getFacility().getFacility());
-        filter.setUnderFacility(cashForGetting.getUnderFacility().getUnderFacility());
+        if (!Objects.equals(null, cashForGetting.getUnderFacility())) {
+            filter.setUnderFacility(cashForGetting.getUnderFacility().getUnderFacility());
+        }
         Pageable pageable = new PageRequest(0, Integer.MAX_VALUE);
         return investorsCashRepository.findAll(
                 specification.getFilterForCashing(filter), pageable).getContent();
