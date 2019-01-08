@@ -189,19 +189,19 @@ public class InvestorsCashService {
         );
     }
 
-    public boolean cashingAllMoney(final SearchSummary searchSummary) {
+    public String cashingAllMoney(final SearchSummary searchSummary) {
         return cashing(searchSummary, true);
     }
 
-    public boolean cashingMoney(final SearchSummary searchSummary) {
+    public String cashingMoney(final SearchSummary searchSummary) {
         return cashing(searchSummary, false);
     }
 
-    public boolean cashing(SearchSummary searchSummary, boolean all) {
+    public String cashing(SearchSummary searchSummary, boolean all) {
         List<AfterCashing> cashingList = new ArrayList<>(0);
         final InvestorsCash[] cashForGetting = {searchSummary.getInvestorsCash()};
         List<InvestorsCash> investorsCashes = getMoneyForCashing(cashForGetting[0]);
-        if (investorsCashes.size() == 0) return false;
+        if (investorsCashes.size() == 0) return "Нет денег для вывода";
         final BigDecimal sumCash = investorsCashes.stream().map(InvestorsCash::getGivedCash).reduce(BigDecimal.ZERO, BigDecimal::add); // все деньги инвестора
         BigDecimal commission = searchSummary.getCommission(); // сумма комиссии
         final BigDecimal commissionNoMore = searchSummary.getCommissionNoMore(); // комиссия не более
@@ -224,7 +224,7 @@ public class InvestorsCashService {
             remainderSum[0] = totalSum;
         }
         if ((sumCash.compareTo(totalSum)) < 0) {
-            return false;
+            return "Сумма должна быть не более " + String.valueOf(sumCash).substring(0, String.valueOf(sumCash).indexOf("."));
         }
 
         final TypeClosingInvest typeClosingInvest = typeClosingInvestService.findByTypeClosingInvest("Вывод");
@@ -319,7 +319,7 @@ public class InvestorsCashService {
         }
         create(cashForGetting[0]);
         create(commissionCash[0]);
-        return true;
+        return "";
     }
 
     private void fillCash(InvestorsCash to, InvestorsCash from) {

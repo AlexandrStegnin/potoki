@@ -16,6 +16,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -329,10 +330,12 @@ public class InvestorsCashController {
         }
 
         searchSummary.getInvestorsCash().setUnderFacility(underFacility);
-        if (investorsCashService.cashingAllMoney(searchSummary)) {
+        String out = investorsCashService.cashingAllMoney(searchSummary);
+
+        if (StringUtils.isEmpty(out)) {
             response.setMessage("Деньги инвестора " + searchSummary.getUser().getLogin() + " успешно выведены.");
         } else {
-            response.setMessage("Что-то пошло не так ): ");
+            response.setMessage(out);
         }
         return response;
     }
@@ -355,13 +358,16 @@ public class InvestorsCashController {
             return "getInvestorsCash";
         }
 
-        if (investorsCashService.cashingMoney(searchSummary)) {
+        String out = investorsCashService.cashingMoney(searchSummary);
+
+        if (StringUtils.isEmpty(out)) {
             Page<InvestorsCash> page = investorsCashService.findAll(cashFilters, new PageRequest(0, Integer.MAX_VALUE));
             model.addAttribute("page", page);
             model.addAttribute("cashFilters", cashFilters);
             model.addAttribute("searchSummary", filters);
             return "redirect:/investorscash";
         } else {
+            model.addAttribute("toBigSumForCashing", out);
             return "getInvestorsCash";
         }
     }

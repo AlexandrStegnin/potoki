@@ -77,7 +77,7 @@
                     <form:input type="number" path="investorsCash.givedCash" id="cash" class="form-control input-sm"
                                 min="0.0" step="any"/>
                     <div class="has-error">
-                        <form:errors path="investorsCash.givedCash" class="help-inline"/>
+                        ${toBigSumForCashing}
                     </div>
                 </div>
             </div>
