@@ -303,7 +303,7 @@ public class InvestorsCashService {
         }
 
         cashForGetting[0].setGivedCash(cashForGetting[0].getGivedCash().negate());
-        cashForGetting[0].setDateClosingInvest(cashForGetting[0].getDateGivedCash());
+        cashForGetting[0].setDateClosingInvest(commissionCash[0].getDateClosingInvest());
         cashForGetting[0].setTypeClosingInvest(typeClosingInvest);
 
         cashingList.forEach(afterCashingService::create);
