@@ -513,22 +513,19 @@ public class InvestorsCashController {
         CashTypes cashTypes = cashTypesService.findByCashType("Новые деньги");
         NewCashDetails newCashDetails;
 
-        switch (searchSummary.getWhat()) {
-            case "sale":
-                newCashDetails = newCashDetailsService.findByNewCashDetail("Реинвестирование с продажи (прибыль)");
-                List<InvestorsFlowsSale> flowsSales = investorsFlowsSaleService.
-                        findByIdInWithAllFields(searchSummary.getReinvestIdList());
-                flowsSales.forEach(f -> {
-                    f.setIsReinvest(1);
-                    investorsFlowsSaleService.update(f);
-                });
-                break;
-            default:
-                newCashDetails = newCashDetailsService.findByNewCashDetail("Реинвестирование с аренды");
-                List<InvestorsFlows> flows = investorsFlowsService.findByIdIn(searchSummary.getReinvestIdList());
-                flows.forEach(f -> f.setIsReinvest(1));
-                investorsFlowsService.saveList(flows);
-                break;
+        if ("sale".equals(searchSummary.getWhat())) {
+            newCashDetails = newCashDetailsService.findByNewCashDetail("Реинвестирование с продажи (прибыль)");
+            List<InvestorsFlowsSale> flowsSales = investorsFlowsSaleService.
+                    findByIdInWithAllFields(searchSummary.getReinvestIdList());
+            flowsSales.forEach(f -> {
+                f.setIsReinvest(1);
+                investorsFlowsSaleService.update(f);
+            });
+        } else {
+            newCashDetails = newCashDetailsService.findByNewCashDetail("Реинвестирование с аренды");
+            List<InvestorsFlows> flows = investorsFlowsService.findByIdIn(searchSummary.getReinvestIdList());
+            flows.forEach(f -> f.setIsReinvest(1));
+            investorsFlowsService.saveList(flows);
         }
 
         NewCashDetails finalNewCashDetails = newCashDetails;
@@ -547,6 +544,18 @@ public class InvestorsCashController {
             response.setMessage("Реинвестирование прошло успешно");
 
         } catch (Exception ex) {
+            if ("sale".equals(searchSummary.getWhat())) {
+                List<InvestorsFlowsSale> flowsSales = investorsFlowsSaleService.
+                        findByIdInWithAllFields(searchSummary.getReinvestIdList());
+                flowsSales.forEach(f -> {
+                    f.setIsReinvest(0);
+                    investorsFlowsSaleService.update(f);
+                });
+            } else {
+                List<InvestorsFlows> flows = investorsFlowsService.findByIdIn(searchSummary.getReinvestIdList());
+                flows.forEach(f -> f.setIsReinvest(0));
+                investorsFlowsService.saveList(flows);
+            }
             response.setError(ex.getMessage());
         }
 
