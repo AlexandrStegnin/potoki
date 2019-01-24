@@ -182,6 +182,10 @@ public class FacilityService {
         CriteriaUpdate<Facilities> update = criteriaBuilder.createCriteriaUpdate(Facilities.class);
         Root<Facilities> facilityesRoot = update.from(Facilities.class);
         update.set(Facilities_.facility, facility.getFacility());
+        update.set(Facilities_.city, facility.getCity());
+        update.set(Facilities_.address, facility.getAddress());
+        update.set(Facilities_.manager, facility.getManager());
+
         update.where(criteriaBuilder.equal(facilityesRoot.get(Facilities_.id), facility.getId()));
         this.em.createQuery(update).executeUpdate();
     }
