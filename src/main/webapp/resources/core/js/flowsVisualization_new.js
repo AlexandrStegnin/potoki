@@ -1866,10 +1866,11 @@ function prepareInvestedMoney(investorsCashes, rooms, saleOfFacilities) {
                     // gains.appendTo(colBody);
                 }
             });
-        } else if (percentLen === 0) {
+        }
+        /*else if (percentLen === 0) {
             var colNotParticipate = $('<div class="notParticipate">Не участвовали</div>');
             colNotParticipate.appendTo(colDiv);
-        }
+        }*/
         colBg.appendTo(colBody);
 
         //var topBottom = percentLen === 0 ? 'bottom: 10%' : 'top: -10%';

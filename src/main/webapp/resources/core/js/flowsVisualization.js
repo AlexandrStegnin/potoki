@@ -1867,74 +1867,77 @@ function prepareInvestedMoney(investorsCashes, rooms, saleOfFacilities) {
 
     var investedMoney = $('#investedMoney');
     investedMoney.empty();
-    
 
     $.each(finalArr, function (ind, el) {
         if ((el.facility !== 'Вайнера' && el.facility !== 'Суворовский' && el.facility !== 'Энергетиков') || el.myCash > 0) {
             var percentLen = Math.floor((el.myCash / maxPriceFacility) * 100) | 0;
             var percentBg = Math.floor((el.openCash / el.myCash) * 100) | 0;
-            var colDiv = $('<div class="column"></div>');
-            colDiv.appendTo(investedMoney);
-            var priceFirst = $('<div class="column__price-first">' + new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(el.coast) + '</div>');
-            priceFirst.appendTo(colDiv);
-            var colBody = $('<div style="height:' + percentLen + '%" class="column__body"></div>');
-            colBody.appendTo(colDiv);
+            if (percentLen !== 0) {
+                var colDiv = $('<div class="column"></div>');
+                colDiv.appendTo(investedMoney);
+                var priceFirst = $('<div class="column__price-first">' + new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(el.coast) + '</div>');
+                priceFirst.appendTo(colDiv);
+                var colBody = $('<div style="height:' + percentLen + '%" class="column__body"></div>');
+                colBody.appendTo(colDiv);
 
+                var percentBgStr = Math.floor((el.myCash / el.coast) * 100) | 0;//percentBg;
 
-            var percentBgStr = Math.floor((el.myCash / el.coast) * 100) | 0;//percentBg;
+                var leftPerc = 0;
+                if (percentBgStr >= 100) {
+                    leftPerc = 30;
+                } else if (percentBgStr >= 10 && percentBgStr <= 99) {
+                    leftPerc = 35;
+                } else {
+                    leftPerc = 40;
+                }
 
-            var leftPerc = 0;
-            if (percentBgStr >= 100) {
-                leftPerc = 30;
-            } else if (percentBgStr >= 10 && percentBgStr <= 99) {
-                leftPerc = 35;
-            } else {
-                leftPerc = 40;
+                percentBg = percentBg < 5 ? 0 : percentBg;
+                var colBg = $('<div style="height:' + percentBg + '%; background-color:' + getColor(ind) + ';" class="column__bg"></div>');
+                if (percentBg === 0 && percentLen !== 0) {
+                    colBody.parent().addClass('toRemove');
+                    // colBody.height('100%');
+                    // var colComplete = $('<div class="complete">Реализовано</div>');
+                    // colComplete.appendTo(colBody);
+                    //
+                    // $.each(saleOfFacilities, function (indSof, elSof) {
+                    //     if (el.facility === elSof.facility.facility && elSof.investorEng === investor) {
+                    //         var box = $('<div class="profitBox"></div>');
+                    //
+                    //         var profit = $('<div class="profit">Доходность ' + new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(elSof.totalYield * 100) + '%</div>');
+                    //         profit.appendTo(box);
+                    //         // profit.appendTo(colBody);
+                    //         var splitter = $('<div class="splitter">___________</div>');
+                    //         splitter.appendTo(box);
+                    //         // splitter.appendTo(colBody);
+                    //         var gains = $('<div class="gains">Прирост ' + new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(elSof.capitalGains * 100) + '%</div>');
+                    //         gains.appendTo(box);
+                    //         box.appendTo(colBody);
+                    //         // gains.appendTo(colBody);
+                    //     }
+                    // });
+                } else if (percentLen === 0) {
+                    // if (el.facility !== 'Вайнера' && el.facility !== 'Суворовский' && el.facility !== 'Энергетиков') {
+                    var colNotParticipate = $('<div class="notParticipate">Не участвовали</div>');
+                    colNotParticipate.appendTo(colDiv);
+                    // }
+                }
+                colBg.appendTo(colBody);
+
+                //var topBottom = percentLen === 0 ? 'bottom: 10%' : 'top: -10%';
+
+                var colPercent = $('<div style="background-color:transparent; position:absolute; bottom: ' + (colBody.height() + 5) + 'px; left:' + leftPerc + '%; font-size:14px; font-weight:600;color:#11325b">' + percentBgStr + '%</div>');
+                colPercent.appendTo(colBody);
+
+                var priceSecond = $('<div class="column__price-second">' +
+                    new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(Math.round(el.myCash)) + '</div>');
+                priceSecond.appendTo(colDiv);
+                var colTitle = $('<div class="column__title">' + el.facility + '</div>');
+                colTitle.appendTo(colDiv);
             }
-
-            percentBg = percentBg < 5 ? 0 : percentBg;
-            var colBg = $('<div style="height:' + percentBg + '%; background-color:' + getColor(ind) + ';" class="column__bg"></div>');
-            if (percentBg === 0 && percentLen !== 0) {
-                colBody.height('100%');
-                var colComplete = $('<div class="complete">Реализовано</div>');
-                colComplete.appendTo(colBody);
-
-                $.each(saleOfFacilities, function (indSof, elSof) {
-                    if (el.facility === elSof.facility.facility && elSof.investorEng === investor) {
-                        var box = $('<div class="profitBox"></div>');
-
-                        var profit = $('<div class="profit">Доходность ' + new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(elSof.totalYield * 100) + '%</div>');
-                        profit.appendTo(box);
-                        // profit.appendTo(colBody);
-                        var splitter = $('<div class="splitter">___________</div>');
-                        splitter.appendTo(box);
-                        // splitter.appendTo(colBody);
-                        var gains = $('<div class="gains">Прирост ' + new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(elSof.capitalGains * 100) + '%</div>');
-                        gains.appendTo(box);
-                        box.appendTo(colBody);
-                        // gains.appendTo(colBody);
-                    }
-                });
-            } else if (percentLen === 0) {
-                // if (el.facility !== 'Вайнера' && el.facility !== 'Суворовский' && el.facility !== 'Энергетиков') {
-                var colNotParticipate = $('<div class="notParticipate">Не участвовали</div>');
-                colNotParticipate.appendTo(colDiv);
-                // }
-            }
-            colBg.appendTo(colBody);
-
-            //var topBottom = percentLen === 0 ? 'bottom: 10%' : 'top: -10%';
-
-            var colPercent = $('<div style="background-color:transparent; position:absolute; bottom: ' + (colBody.height() + 5) + 'px; left:' + leftPerc + '%; font-size:14px; font-weight:600;color:#11325b">' + percentBgStr + '%</div>');
-            colPercent.appendTo(colBody);
-
-            var priceSecond = $('<div class="column__price-second">' +
-                new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(Math.round(el.myCash)) + '</div>');
-            priceSecond.appendTo(colDiv);
-            var colTitle = $('<div class="column__title">' + el.facility + '</div>');
-            colTitle.appendTo(colDiv);
         }
     });
+
+    $('.toRemove').remove();
 
     facilities = [];
     sums = [];
