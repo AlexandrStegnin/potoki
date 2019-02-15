@@ -99,6 +99,7 @@
                        style="margin-right:5px">
                 <button type="submit" id="bth-search" class="btn btn-primary btn-sm">Фильтр</button>
                 <button type="submit" id="bth-clear" class="btn btn-danger btn-sm">Сбросить фильтры</button>
+                <button data-table-id="invFlows" type="button" id="unblock_operations" class="btn btn-danger btn-sm">Разблокировать операции</button>
             </div>
         </form:form>
         <sec:authorize access="isFullyAuthenticated()">

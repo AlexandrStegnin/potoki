@@ -16,6 +16,15 @@ jQuery(document).ready(function ($) {
         });
     });
 
+    $(document).on('click', '#unblock_operations', function () {
+        let tableId = $(this).data('table-id');
+        if ($(this).text() === 'Разблокировать операции') {
+            releaseOperations(tableId, 'unblock');
+        } else {
+            releaseOperations(tableId, 'block');
+        }
+    });
+
     $(document).on('submit', '#reInvestData', function (event) {
         event.preventDefault();
         prepareSaveInvestorsCash();

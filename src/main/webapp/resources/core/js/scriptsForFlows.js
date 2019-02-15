@@ -8,6 +8,15 @@ jQuery(document).ready(function ($) {
     blockUnblockDropdownMenus('block');
     getFiltersFromLS((window.location.pathname + '').split("/")[1]);
 
+    $(document).on('click', '#unblock_operations', function () {
+        let tableId = $(this).data('table-id');
+        if ($(this).text() === 'Разблокировать операции') {
+            releaseOperations(tableId, 'unblock');
+        } else {
+            releaseOperations(tableId, 'block');
+        }
+    });
+
     $('#msg-modal').on('shown.bs.modal', function () {
         // if data-timer attribute is set use that, otherwise use default (7000)
         var timer = 3000;

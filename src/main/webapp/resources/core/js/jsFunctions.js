@@ -152,3 +152,23 @@ function getRoomsFromLocalStorage(underFacilityId) {
         .append(options)
         .prop('selected', CHOOSE_ROOM);
 }
+
+function releaseOperations(tableId, what) {
+    switch (what) {
+        case 'block':
+            $('#bth-search').click();
+            break;
+        case 'unblock':
+            $('table#' + tableId).find('> tbody').find('> tr').each(function () {
+                $(this).find(':checkbox:disabled').each(function () {
+                    $(this).closest('tr').find('#liDivide').removeClass('disabled').addClass('active');
+                    $(this).closest('tr').find('#liDouble').removeClass('disabled').addClass('active');
+                    $(this).closest('tr').find('#liEdit').removeClass('disabled').addClass('active');
+                    $(this).closest('tr').find('#liDelete').removeClass('disabled').addClass('active').find('a#del').css('cssText', 'color: #ff0000 !important');
+                    $(this).removeAttr('checked').removeAttr('disabled');
+                })
+            });
+            $('#unblock_operations').removeClass('btn-danger').addClass('btn-success').text('Заблокировать операции');
+            break;
+    }
+}

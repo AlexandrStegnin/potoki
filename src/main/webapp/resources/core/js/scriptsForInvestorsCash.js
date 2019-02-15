@@ -10,6 +10,15 @@ jQuery(document).ready(function ($) {
         this.selected = !this.selected;
     });
 
+    $(document).on('click', '#unblock_operations', function () {
+        let tableId = $(this).data('table-id');
+        if ($(this).text() === 'Разблокировать операции') {
+            releaseOperations(tableId, 'unblock');
+        } else {
+            releaseOperations(tableId, 'block');
+        }
+    });
+
     $(document).on('click', '#bth-clear', function (e) {
         e.preventDefault();
         $('#fFacilities').find('option:eq(0)').prop('selected', true);

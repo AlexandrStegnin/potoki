@@ -109,6 +109,7 @@
                         <input type="checkbox" name="allRows" id="all"
                         <c:if test="${flowsSaleFilters.allRows == true}"> checked="checked" </c:if> >На одной странице</label>
                 </div>
+                <button data-table-id="invFlowsSale" type="button" id="unblock_operations" class="btn btn-danger btn-sm">Разблокировать операции</button>
             </div>
         </form:form>
         <sec:authorize access="isFullyAuthenticated()">

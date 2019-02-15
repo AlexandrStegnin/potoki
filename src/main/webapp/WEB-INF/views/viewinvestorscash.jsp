@@ -126,7 +126,7 @@
                         <c:if test="${cashFilters.allRows == true}"> checked="checked" </c:if> >На одной странице
                     </label>
                 </div>
-
+                <button data-table-id="investorsCash" type="button" id="unblock_operations" class="btn btn-danger btn-sm">Разблокировать операции</button>
                 <sec:authorize access="isFullyAuthenticated()">
                     <sec:authorize access="hasRole('ADMIN')">
                         <div class="dropdown pull-right" style="margin-right: 10px">
