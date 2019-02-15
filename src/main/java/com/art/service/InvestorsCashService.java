@@ -24,6 +24,7 @@ import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -200,6 +201,7 @@ public class InvestorsCashService {
     public String cashing(SearchSummary searchSummary, boolean all) {
         List<AfterCashing> cashingList = new ArrayList<>(0);
         final InvestorsCash[] cashForGetting = {searchSummary.getInvestorsCash()};
+        Date dateClosingInvest = cashForGetting[0].getDateGivedCash();
         List<InvestorsCash> investorsCashes = getMoneyForCashing(cashForGetting[0]);
         if (investorsCashes.size() == 0) return "Нет денег для вывода";
         final BigDecimal sumCash = investorsCashes.stream().map(InvestorsCash::getGivedCash).reduce(BigDecimal.ZERO, BigDecimal::add); // все деньги инвестора
@@ -237,7 +239,7 @@ public class InvestorsCashService {
         commissionCash[0].setInvestor(cashForGetting[0].getInvestor());
         commissionCash[0].setFacility(cashForGetting[0].getFacility());
         commissionCash[0].setUnderFacility(cashForGetting[0].getUnderFacility());
-        commissionCash[0].setDateClosingInvest(cashForGetting[0].getDateGivedCash());
+        commissionCash[0].setDateClosingInvest(dateClosingInvest);
 
         StringBuilder sourceCash = new StringBuilder();
         final AtomicInteger[] incr = {new AtomicInteger()};
@@ -247,7 +249,7 @@ public class InvestorsCashService {
             investorsCashes.forEach(ic -> {
                 cashingList.add(new AfterCashing(ic.getId(), ic.getGivedCash()));
                 ic.setTypeClosingInvest(typeClosingInvest);
-                ic.setDateClosingInvest(cashForGetting[0].getDateGivedCash());
+                ic.setDateClosingInvest(dateClosingInvest);
                 if (incr[0].get() == investorsCashes.size() - 1) {
                     sourceCash.append(ic.getId().toString());
                 } else {
@@ -273,7 +275,7 @@ public class InvestorsCashService {
                 if (ic.getGivedCash().subtract(remainderSum[0]).compareTo(BigDecimal.ZERO) < 0) {
                     // остаток = остаток - текущая сумма инвестора
                     remainderSum[0] = remainderSum[0].subtract(ic.getGivedCash());
-                    ic.setDateClosingInvest(cashForGetting[0].getDateGivedCash());
+                    ic.setDateClosingInvest(dateClosingInvest);
                     ic.setTypeClosingInvest(typeClosingInvest);
                     update(ic);
                 } else {
@@ -292,7 +294,7 @@ public class InvestorsCashService {
                     // создаём новую сумму на остаток + комиссия
                     newCash[0] = new InvestorsCash(ic);
                     newCash[0].setGivedCash(remainderSum[0]);
-                    newCash[0].setDateClosingInvest(cashForGetting[0].getDateGivedCash());
+                    newCash[0].setDateClosingInvest(dateClosingInvest);
                     newCash[0].setTypeClosingInvest(typeClosingInvest);
                     remainderSum[0] = BigDecimal.ZERO;
                     fillCash(commissionCash[0], ic);
