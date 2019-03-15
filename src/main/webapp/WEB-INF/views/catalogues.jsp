@@ -55,7 +55,9 @@
         <a href="<c:url value='/viewShareKind' />" class="btn btn-success btn-block">Виды долей (ShareKind)</a>
         <a href="<c:url value='/saleOfFacilities' />" class="btn btn-success btn-block">Продажа объектов (SaleOfFacilities)</a>
         <a href="<c:url value='/marketingTree' />" class="btn btn-success btn-block">Маркетинговое дерево (MarketingTree)</a>
-        </sec:authorize>
+        <a href="<c:url value='/calculateInvShare' />" class="btn btn-success btn-block">Доли инвесторов (InvestorShare/InvestorShareTmp)</a>
+
+    </sec:authorize>
     </div>
 </div>
 <%@include file="slideDiv.jsp" %>

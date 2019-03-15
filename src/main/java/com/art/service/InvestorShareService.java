@@ -3,7 +3,6 @@ package com.art.service;
 import com.art.model.InvestorsShare;
 import com.art.model.Users;
 import com.art.repository.InvestorsShareRepository;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +12,6 @@ import java.util.List;
 
 @Service
 @Transactional
-@Repository
 public class InvestorShareService {
 
     @Resource(name = "investorsShareRepository")
