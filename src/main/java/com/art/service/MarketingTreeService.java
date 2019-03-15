@@ -42,7 +42,7 @@ public class MarketingTreeService {
     }
 
     public void updateMarketingTree(BigInteger invId){
-        StoredProcedureQuery query = this.em.createNamedStoredProcedureQuery("updateMarketingTree");
+        StoredProcedureQuery query = em.createNamedStoredProcedureQuery("updateMarketingTree");
         query.setParameter("invId", invId);
         query.execute();
     }

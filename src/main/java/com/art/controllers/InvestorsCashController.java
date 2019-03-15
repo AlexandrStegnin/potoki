@@ -383,10 +383,10 @@ public class InvestorsCashController {
         String redirectUrl = "/investorscash";
         updateMailingGroups(investorsCash, "add");
         investorsCashService.create(investorsCash);
-//        if (!Objects.equals(null, investorsCash.getCashSource()) &&
-//                !investorsCash.getCashSource().getCashSource().equalsIgnoreCase("Бронь")) {
-//            marketingTreeService.updateMarketingTree(investorsCash.getInvestor().getId());
-//        }
+        if (!Objects.equals(null, investorsCash.getCashSource()) &&
+                !investorsCash.getCashSource().getCashSource().equalsIgnoreCase("Бронь")) {
+            marketingTreeService.updateMarketingTree(investorsCash.getInvestor().getId());
+        }
         model.addAttribute("success", "Деньги инвестора " + investorsCash.getInvestor().getLogin() +
                 " успешно добавлены.");
         model.addAttribute("redirectUrl", redirectUrl);
