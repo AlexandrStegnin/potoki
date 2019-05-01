@@ -247,7 +247,6 @@ public class InvestorsCashController {
                             parentCash.setGivedCash(parentCash.getGivedCash().add(deleting.getGivedCash()));
                         }
 
-                        investorsCashService.update(parentCash);
                         List<InvestorsCash> oldInvCash = investorsCashService.findBySourceId(parentCashId);
                         oldInvCash = oldInvCash.stream().filter(oc -> !deleting.getId().equals(oc.getId())).collect(Collectors.toList());
                         if (oldInvCash.size() > 0) {
@@ -256,6 +255,7 @@ public class InvestorsCashController {
                                 investorsCashService.deleteById(oCash.getId());
                             });
                         }
+                        investorsCashService.update(parentCash);
                     }
 
                 });
@@ -768,6 +768,7 @@ public class InvestorsCashController {
                 cash.setDateGivedCash(dateClose);
                 cash.setSourceId(c.getId());
                 cash.setCashSource(null);
+                cash.setSource(null);
                 cash.setNewCashDetails(newCashDetails);
 
                 cash = investorsCashService.create(cash);
@@ -776,6 +777,7 @@ public class InvestorsCashController {
                 newInvestorsCash.setId(null);
                 newInvestorsCash.setGivedCash(newInvestorsCash.getGivedCash().negate());
                 newInvestorsCash.setSourceId(cash.getId());
+                newInvestorsCash.setSource(null);
                 newInvestorsCash.setDateGivedCash(dateClose);
                 newInvestorsCash.setDateClosingInvest(dateClose);
                 newInvestorsCash.setTypeClosingInvest(closingInvest);
@@ -783,9 +785,7 @@ public class InvestorsCashController {
                 ExecutorService service = Executors.newCachedThreadPool();
                 List<InvestorsCash> cashes = new ArrayList<>(Arrays.asList(newInvestorsCash, cash));
 
-                cashes.forEach(ca -> service.submit(() -> {
-                    updateMailingGroups(ca, "add");
-                }));
+                cashes.forEach(ca -> service.submit(() -> updateMailingGroups(ca, "add")));
 
                 service.shutdown();
                 investorsCashService.create(newInvestorsCash);
