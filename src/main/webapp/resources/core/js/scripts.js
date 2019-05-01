@@ -243,7 +243,7 @@ function updateMarketingTree() {
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: "../updateMarketingTree",
+        url: "/updateMarketingTree",
         data: "",
         dataType: 'json',
         timeout: 100000,
