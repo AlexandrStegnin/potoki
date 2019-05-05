@@ -317,7 +317,7 @@ function populateFilters(pageName) {
     investors = $('#investors');
     beginPeriod = $('#beginPeriod');
     endPeriod = $('#endPeriod');
-    allRows = $('#all').attr('checked') === 'checked';
+    allRows = $('#all').prop('checked');
 
     switch (pageName) {
         case "investorscash":

@@ -68,7 +68,7 @@
 
         <form:form modelAttribute="cashFilters" method="POST" action="/investorscash" class="form-inline"
                    id="search-form">
-            <div class="row" style="margin-top:10px; margin-left:10px; margin-bottom:10px; margin-right:10px">
+            <div class="row" style="margin: 10px;">
                 <input type="hidden" id="pageNumber" name="pageNumber" value="0">
                 <input type="hidden" id="pageSize" name="pageSize" value="${cashFilters.pageSize}">
                 <input type="hidden" id="total" name="total" value="${page.content.size()}">
@@ -122,7 +122,7 @@
                 <button type="submit" id="bth-clear" class="btn btn-danger btn-sm">Сбросить фильтры</button>
                 <div class="btn btn-info btn-sm" id="allRows">
                     <label class="checkbox-inline">
-                        <input type="checkbox" name="allRows" id="all" value=""
+                        <input type="checkbox" name="allRows" id="all"
                         <c:if test="${cashFilters.allRows == true}"> checked="checked" </c:if> >На одной странице
                     </label>
                 </div>
