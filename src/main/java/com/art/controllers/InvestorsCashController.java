@@ -1,6 +1,5 @@
 package com.art.controllers;
 
-import com.art.func.GetPrincipalFunc;
 import com.art.model.*;
 import com.art.model.supporting.AfterCashing;
 import com.art.model.supporting.GenericResponse;
@@ -81,9 +80,6 @@ public class InvestorsCashController {
     @Resource(name = "investorsFlowsSaleService")
     private InvestorsFlowsSaleService investorsFlowsSaleService;
 
-    @Resource(name = "getPrincipalFunc")
-    private GetPrincipalFunc getPrincipalFunc;
-
     private SearchSummary filters = new SearchSummary();
 
     private CashFilter cashFilters = new CashFilter();
@@ -100,7 +96,12 @@ public class InvestorsCashController {
 
     @PostMapping(value = "/investorscash")
     public ModelAndView invCashPageable(@ModelAttribute(value = "cashFilters") CashFilter cashFilters) {
-        Pageable pageable = new PageRequest(cashFilters.getPageNumber(), cashFilters.getPageSize());
+        Pageable pageable;
+        if (cashFilters.isAllRows()) {
+            pageable = new PageRequest(0, Integer.MAX_VALUE);
+        } else {
+            pageable = new PageRequest(cashFilters.getPageNumber(), cashFilters.getPageSize());
+        }
         ModelAndView modelAndView = new ModelAndView("viewinvestorscash");
         Page<InvestorsCash> page = investorsCashService.findAll(cashFilters, pageable);
         modelAndView.addObject("page", page);
