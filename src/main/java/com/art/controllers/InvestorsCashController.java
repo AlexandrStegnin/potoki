@@ -1,6 +1,5 @@
 package com.art.controllers;
 
-import com.art.func.GetPrincipalFunc;
 import com.art.model.*;
 import com.art.model.supporting.AfterCashing;
 import com.art.model.supporting.GenericResponse;
@@ -81,9 +80,6 @@ public class InvestorsCashController {
     @Resource(name = "investorsFlowsSaleService")
     private InvestorsFlowsSaleService investorsFlowsSaleService;
 
-    @Resource(name = "getPrincipalFunc")
-    private GetPrincipalFunc getPrincipalFunc;
-
     private SearchSummary filters = new SearchSummary();
 
     private CashFilter cashFilters = new CashFilter();
@@ -100,7 +96,12 @@ public class InvestorsCashController {
 
     @PostMapping(value = "/investorscash")
     public ModelAndView invCashPageable(@ModelAttribute(value = "cashFilters") CashFilter cashFilters) {
-        Pageable pageable = new PageRequest(cashFilters.getPageNumber(), cashFilters.getPageSize());
+        Pageable pageable;
+        if (cashFilters.isAllRows()) {
+            pageable = new PageRequest(0, Integer.MAX_VALUE);
+        } else {
+            pageable = new PageRequest(cashFilters.getPageNumber(), cashFilters.getPageSize());
+        }
         ModelAndView modelAndView = new ModelAndView("viewinvestorscash");
         Page<InvestorsCash> page = investorsCashService.findAll(cashFilters, pageable);
         modelAndView.addObject("page", page);
@@ -247,7 +248,6 @@ public class InvestorsCashController {
                             parentCash.setGivedCash(parentCash.getGivedCash().add(deleting.getGivedCash()));
                         }
 
-                        investorsCashService.update(parentCash);
                         List<InvestorsCash> oldInvCash = investorsCashService.findBySourceId(parentCashId);
                         oldInvCash = oldInvCash.stream().filter(oc -> !deleting.getId().equals(oc.getId())).collect(Collectors.toList());
                         if (oldInvCash.size() > 0) {
@@ -256,6 +256,7 @@ public class InvestorsCashController {
                                 investorsCashService.deleteById(oCash.getId());
                             });
                         }
+                        investorsCashService.update(parentCash);
                     }
 
                 });
@@ -768,6 +769,7 @@ public class InvestorsCashController {
                 cash.setDateGivedCash(dateClose);
                 cash.setSourceId(c.getId());
                 cash.setCashSource(null);
+                cash.setSource(null);
                 cash.setNewCashDetails(newCashDetails);
 
                 cash = investorsCashService.create(cash);
@@ -776,6 +778,7 @@ public class InvestorsCashController {
                 newInvestorsCash.setId(null);
                 newInvestorsCash.setGivedCash(newInvestorsCash.getGivedCash().negate());
                 newInvestorsCash.setSourceId(cash.getId());
+                newInvestorsCash.setSource(null);
                 newInvestorsCash.setDateGivedCash(dateClose);
                 newInvestorsCash.setDateClosingInvest(dateClose);
                 newInvestorsCash.setTypeClosingInvest(closingInvest);
@@ -783,9 +786,7 @@ public class InvestorsCashController {
                 ExecutorService service = Executors.newCachedThreadPool();
                 List<InvestorsCash> cashes = new ArrayList<>(Arrays.asList(newInvestorsCash, cash));
 
-                cashes.forEach(ca -> service.submit(() -> {
-                    updateMailingGroups(ca, "add");
-                }));
+                cashes.forEach(ca -> service.submit(() -> updateMailingGroups(ca, "add")));
 
                 service.shutdown();
                 investorsCashService.create(newInvestorsCash);

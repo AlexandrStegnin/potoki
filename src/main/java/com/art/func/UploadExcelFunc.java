@@ -979,11 +979,7 @@ public class UploadExcelFunc {
                     List<UnderFacilities> underFacilitiesList = new ArrayList<>(0);
 
                     assert user != null;
-                    try {
                         user.getFacilities().forEach(f -> underFacilitiesList.addAll(f.getUnderFacilities()));
-                    }catch (Exception ex) {
-                        System.out.println("ЯЧЕЙКА С ОШИБКОЙ =====>>> " + cel);
-                    }
 
 
                     InvestorsFlows investorsFlows = new InvestorsFlows();
