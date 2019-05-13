@@ -54,7 +54,7 @@ public class CalculateInvestorShareService implements CalculateInvestorShareRepo
 
     private List<LocalDate> getDatesFromYearsRange(List<Integer> yearsList) {
         LocalDate start = LocalDate.ofYearDay(yearsList.get(0), 31);
-        LocalDate end = LocalDate.ofYearDay(yearsList.get(yearsList.size() - 1), 31);
+        LocalDate end = LocalDate.now().with(lastDayOfMonth());
         return Stream.iterate(start, date -> date.plusMonths(1).with(lastDayOfMonth()))
                 .limit(ChronoUnit.MONTHS.between(start, end))
                 .collect(Collectors.toList());
