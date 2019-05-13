@@ -29,7 +29,7 @@ public class CalculateInvestorShareService implements CalculateInvestorShareRepo
     @SuppressWarnings("unchecked")
     public List<Integer> getYearsFromInvCash() {
         return (List<Integer>) em.createNativeQuery(
-                "SELECT DISTINCT YEAR(c.DateGivedCash) FROM InvestorsCash c ORDER BY c.DateGivedCash")
+                "SELECT YEAR(c.DateGivedCash) FROM InvestorsCash c GROUP BY YEAR(c.DateGivedCash) ORDER BY YEAR(c.DateGivedCash)")
                 .getResultList();
     }
 
