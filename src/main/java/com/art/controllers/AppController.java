@@ -6,7 +6,11 @@ import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.ServiceTemporarilyUnavailableException;
 import com.art.model.supporting.ServiceUnavailable;
 import com.art.service.ServiceUnavailableService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
@@ -30,6 +34,9 @@ public class AppController {
 
     @Resource(name = "serviceUnavailableService")
     private ServiceUnavailableService serviceUnavailableService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @PostMapping(value = "/switch", produces = "application/json;charset=UTF-8")
     public @ResponseBody
@@ -64,11 +71,6 @@ public class AppController {
 
         if (request.isUserInRole("ROLE_INVESTOR") &&
                 (!admin && !request.isUserInRole("ROLE_DBA") && !request.isUserInRole("ROLE_BIGDADDY"))) {
-            /*
-            if(getPrincipalFunc.getLogin().equals("investor-demo")){
-                getPrincipalFunc.updateDemoUser();
-            }
-            */
             return "viewFlows";
         } else {
             return "catalogues";
@@ -135,6 +137,17 @@ public class AppController {
                     : session.getAttribute("targetUrl").toString();
         }
         return targetUrl;
+    }
+
+    @GetMapping(value = "/demo")
+    public String demoPage() {
+        UsernamePasswordAuthenticationToken authReq
+                = new UsernamePasswordAuthenticationToken("investor-demo", "123");
+        Authentication auth = authenticationManager.authenticate(authReq);
+
+        SecurityContext sc = SecurityContextHolder.getContext();
+        sc.setAuthentication(auth);
+        return "viewFlows";
     }
 
 }
