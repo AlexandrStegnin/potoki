@@ -92,6 +92,12 @@ function getUnderFacilitiesFromLocalStorage(facilityId, uFacilitiesId) {
 
         option = document.createElement('option');
         option.setAttribute('id', "0");
+        option.setAttribute('value', 'Без подобъекта');
+        option.innerText = 'Без подобъекта';
+        options.unshift(option);
+
+        option = document.createElement('option');
+        option.setAttribute('id', "-1");
         option.setAttribute('value', CHOOSE_UNDER_FACILITY);
         option.innerText = CHOOSE_UNDER_FACILITY;
         options.unshift(option);

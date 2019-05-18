@@ -968,7 +968,7 @@ public class InvestorsCashController {
     }
 
     @ModelAttribute("shareKinds")
-    public List<ShareKind> initializehareKinds() {
+    public List<ShareKind> initializeShareKinds() {
         return shareKindService.init();
     }
 

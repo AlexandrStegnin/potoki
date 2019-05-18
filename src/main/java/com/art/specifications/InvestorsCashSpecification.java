@@ -70,6 +70,8 @@ public class InvestorsCashSpecification extends BaseSpecification<InvestorsCash,
         return ((root, criteriaQuery, criteriaBuilder) -> {
             if (Objects.equals(null, underFacility) || StringUtils.isEmpty(underFacility) || "Выберите подобъект".equalsIgnoreCase(underFacility.trim())) {
                 return null;
+            } else if ("Без подобъекта".equalsIgnoreCase(underFacility)) {
+                return criteriaBuilder.isNull(root.get(InvestorsCash_.underFacility)/*.get(UnderFacilities_.underFacility*/);
             } else {
                 return criteriaBuilder.equal(root.get(InvestorsCash_.underFacility).get(UnderFacilities_.underFacility), underFacility);
             }
