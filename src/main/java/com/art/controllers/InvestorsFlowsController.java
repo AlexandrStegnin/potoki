@@ -409,15 +409,9 @@ public class InvestorsFlowsController {
     }
 
     private CashFlows getCashFlows() {
-        Users investor = userService.findByIdWithFacilities(getPrincipalFunc.getPrincipalId());
         List<InvestorsCash> investorsCashList = investorsCashService.findAllWithAllFields();
-        List<BigInteger> idList = new ArrayList<>(0);
-        investor.getFacilities().forEach(f -> idList.add(f.getId()));
-
         List<Rooms> rooms = roomsService.findAll();
-
         List<SaleOfFacilities> saleOfFacilities = saleOfFacilitiesService.findAll();
-
         CashFlows cashFlows = new CashFlows();
         cashFlows.setInvestorsCashList(investorsCashList);
         cashFlows.setRooms(rooms);
