@@ -10,5 +10,7 @@ public interface CalculateInvestorShareRepository {
 
     List<Integer> getYearsFromInvCash();
 
-    void calculateInvShare(Integer yearFrom, Integer yearTo);
+    List<Integer> getMonths();
+
+    void calculateInvShare(Integer yearFrom, Integer yearTo, Integer monthFrom, Integer monthTo);
 }

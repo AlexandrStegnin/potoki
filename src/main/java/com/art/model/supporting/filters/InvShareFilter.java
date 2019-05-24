@@ -14,4 +14,7 @@ public class InvShareFilter extends AbstractFilter {
     private Integer yearFrom;
     private Integer yearTo;
 
+    private Integer monthFrom;
+    private Integer monthTo;
+
 }

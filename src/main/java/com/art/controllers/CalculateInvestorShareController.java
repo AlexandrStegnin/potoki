@@ -35,19 +35,24 @@ public class CalculateInvestorShareController {
     @PostMapping
     public ModelAndView calculateInvestorShare(
             @RequestParam(name = "yearFrom", required = false) Integer yearFrom,
-            @RequestParam(name = "yearTo", required = false) Integer yearTo) {
-        calcInvShareRepo.calculateInvShare(yearFrom, yearTo);
+            @RequestParam(name = "yearTo", required = false) Integer yearTo,
+            @RequestParam(name = "monthFrom", required = false) Integer monthFrom,
+            @RequestParam(name = "monthTo", required = false) Integer monthTo) {
+        calcInvShareRepo.calculateInvShare(yearFrom, yearTo, monthFrom, monthTo);
         return getModelAndView("Данные долей инвесторов успешно обновлены");
     }
 
     private ModelAndView getModelAndView(String message) {
         ModelAndView modelAndView = new ModelAndView("calculateInvestorShare");
         List<Integer> years = calcInvShareRepo.getYearsFromInvCash();
+        List<Integer> months = calcInvShareRepo.getMonths();
         InvShareFilter invShareFilter = new InvShareFilter();
         invShareFilter.setYearFrom(years.get(0));
         invShareFilter.setYearTo(years.get(years.size() - 1));
         modelAndView.addObject("yearFrom", years);
         modelAndView.addObject("yearTo", years);
+        modelAndView.addObject("monthFrom", months);
+        modelAndView.addObject("monthTo", months);
         modelAndView.addObject("invShareFilter", invShareFilter);
         modelAndView.addObject("messageResponse", message);
         return modelAndView;

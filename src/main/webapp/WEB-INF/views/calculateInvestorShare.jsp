@@ -59,6 +59,21 @@
                             </option>
                         </c:forEach>
                     </form:select>
+                    <label for="fromMonthId" style="margin-left:10px; margin-right:5px; font-size:14px">Месяц с:</label>
+                    <form:select path="monthFrom" id="fromMonthId" multiple="false" class="form-control input-sm">
+                        <c:forEach var="from" items="${monthFrom}" varStatus="status">
+                            <option value="${from}" id="${from}" ${status.first ? 'selected' : '' }>${from}
+                            </option>
+                        </c:forEach>
+                    </form:select>
+
+                    <label for="toId" style="margin-left:10px; margin-right:5px; font-size:14px">по:</label>
+                    <form:select path="monthTo" id="toId" multiple="false" class="form-control input-sm">
+                        <c:forEach var="to" items="${monthFrom}" varStatus="status">
+                            <option value="${to}" id="${to}" ${status.last ? 'selected' : '' }>${to}
+                            </option>
+                        </c:forEach>
+                    </form:select>
                     <button type="submit" id="bth-calc-period" class="btn btn-primary btn-sm">Пересчитать (за период)
                     </button>
                 </form:form>
