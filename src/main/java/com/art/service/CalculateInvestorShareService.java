@@ -15,6 +15,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
 import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 
 /**
@@ -61,9 +62,9 @@ public class CalculateInvestorShareService implements CalculateInvestorShareRepo
     }
 
     private List<LocalDate> getDatesFromYearsRange(List<Integer> yearsList) {
-        LocalDate start = LocalDate.ofYearDay(yearsList.get(0), 31);
+        LocalDate start = LocalDate.ofYearDay(yearsList.get(0), 1);
         LocalDate end = LocalDate.now().with(lastDayOfMonth());
-        return Stream.iterate(start, date -> date.plusMonths(1).with(lastDayOfMonth()))
+        return Stream.iterate(start, date -> date.plusMonths(1).with(firstDayOfMonth()))
                 .limit(ChronoUnit.MONTHS.between(start, end))
                 .collect(Collectors.toList());
     }
