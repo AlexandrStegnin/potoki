@@ -130,6 +130,7 @@ public class InvestorsFlowsSaleService {
             }
         });
         if (next >= childFlows.size()) next--;
+        if (next < 0) return childFlows;
         InvestorsFlowsSale parent = childFlows.get(next);
         if (parentFlow.getId().equals(parent.getId())) return childFlows;
         next++;
