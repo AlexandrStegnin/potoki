@@ -10,7 +10,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Потоки инвесторов. Выплаты</title>
+    <title>Выплаты инвесторам (аренда)</title>
     <sec:csrfMetaTags/>
     <link href="<c:url value='/resources/core/css/old_bootstrap.min.css' />" rel="stylesheet"/>
     <link href="<c:url value='/resources/core/css/applic.css' />" rel="stylesheet"/>
