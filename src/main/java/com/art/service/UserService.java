@@ -265,6 +265,10 @@ public class UserService {
         if (!user.getEmail().equalsIgnoreCase(updUser.getEmail())) {
             sendWelcomeMessage(user);
         }
+        if (Objects.equals(null, user.getPartnerId())) {
+            user.setPartnerId(updUser.getPartnerId());
+            user.setKin(updUser.getKin());
+        }
 
         this.em.merge(user);
 
