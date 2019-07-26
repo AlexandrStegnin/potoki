@@ -61,7 +61,7 @@ public class InvestedService {
 
     public BigDecimal getTotalMoney(BigInteger investorId) {
         Query q = em.createNativeQuery("SELECT SUM(GivedCash) givenCash FROM InvestorsCash " +
-                "WHERE InvestorId = :investorId");
+                "WHERE InvestorId = :investorId AND TypeClosingInvestId IS NULL");
         q.setParameter("investorId", investorId);
         return (BigDecimal) q.getSingleResult();
     }
