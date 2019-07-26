@@ -7,7 +7,11 @@ import com.art.model.supporting.CashFlows;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.InvestorsTotalSum;
 import com.art.model.supporting.SearchSummary;
+import com.art.model.supporting.investedMoney.Invested;
+import com.art.model.supporting.investedMoney.InvestedMoney;
+import com.art.model.supporting.investedMoney.InvestedService;
 import com.art.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -57,6 +61,9 @@ public class InvestorsFlowsController {
 
     @Resource(name = "usersAnnexToContractsService")
     private UsersAnnexToContractsService usersAnnexToContractsService;
+
+    @Autowired
+    private InvestedService investedService;
 
     private final String SHARE_KIND = "Основная доля";
 
@@ -409,13 +416,24 @@ public class InvestorsFlowsController {
     }
 
     private CashFlows getCashFlows() {
-        List<InvestorsCash> investorsCashList = investorsCashService.findAllWithAllFields();
-        List<Rooms> rooms = roomsService.findAll();
-        List<SaleOfFacilities> saleOfFacilities = saleOfFacilitiesService.findAll();
+        BigInteger investorId = getPrincipalFunc.getPrincipalId();
+
+        List<InvestorsCash> investorsCashList = investorsCashService.getInvestedMoney();
+        List<Invested> investedList = investedService.getInvested(investorId);
+
+        InvestedMoney investedMoney = new InvestedMoney();
+        investedMoney.setInvestorsCashes(investorsCashList);
+        investedMoney.setInvested(investedList);
+        investedMoney.setTotalMoney(investedService.getTotalMoney(investorId));
+        investedMoney.setFacilityWithMaxSum(investedService.getFacilityWithMaxSum(investorId));
+        investedMoney.setFacilitiesList(investedService.getFacilitiesList(investedList));
+        investedMoney.setSums(investedService.getSums(investedList));
+        investedMoney.setInvestor(getPrincipalFunc.getLogin());
+
         CashFlows cashFlows = new CashFlows();
         cashFlows.setInvestorsCashList(investorsCashList);
-        cashFlows.setRooms(rooms);
-        cashFlows.setSaleOfFacilities(saleOfFacilities);
+        cashFlows.setInvestedMoney(investedMoney);
+
         return cashFlows;
     }
 

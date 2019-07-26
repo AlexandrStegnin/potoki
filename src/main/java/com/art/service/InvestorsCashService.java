@@ -33,6 +33,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Transactional
 public class InvestorsCashService {
 
+    private static final String RESALE_SHARE = "Перепродажа доли";
     private final InvestorsCashRepository investorsCashRepository;
     private final InvestorsCashSpecification specification;
     private final TypeClosingInvestService typeClosingInvestService;
@@ -349,5 +350,10 @@ public class InvestorsCashService {
         return investorsCashRepository.findAll(
                 specification.getFilterForCashing(filter), pageable).getContent();
 
+    }
+
+    public List<InvestorsCash> getInvestedMoney() {
+        TypeClosingInvest typeClosingInvest = typeClosingInvestService.findByTypeClosingInvest(RESALE_SHARE);
+        return investorsCashRepository.findAll(specification.getInvestedMoney(typeClosingInvest.getId()));
     }
 }

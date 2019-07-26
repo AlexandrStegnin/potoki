@@ -1,12 +1,12 @@
-var monthNames = [
+let monthNames = [
     'Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сент', 'Окт', 'Ноя', 'Дек'
 ];
-var monthLongNames = [
+let monthLongNames = [
     'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
 ];
 
-var loop = 0;
-var maxFacility = '';
+let loop = 0;
+let maxFacility = '';
 
 jQuery(document).ready(function ($) {
 
@@ -53,15 +53,6 @@ jQuery(document).ready(function ($) {
 
     });
 
-    // $(document).on('click', 'button.btn-primary', function(){
-    //     let elem = $('div.out').css('filter', '');
-    // });
-
-    // $(document).on('click', '#investmentsAllEvent', function(e) {
-    //     e.preventDefault();
-    //     $('#investmentsAll').addClass('js-active');
-    // });
-
     $(document).on('click', '#showInvestsDetails', function (e) {
         e.preventDefault();
 
@@ -69,36 +60,18 @@ jQuery(document).ready(function ($) {
 
         $('#investmentsAll').removeClass('js-active');
         $('#investments').addClass('js-active');
-        var facility = $(this).parent().parent().children(':first').text();
+        let facility = $(this).parent().parent().children(':first').text();
 
         $('#investmentsDetailsTitle').html('Ваши вложения в ' + facility);
 
-        var ind = $('div#investments')
+        let ind = $('div#investments')
             .find('div.box__select')
             .find('div.selectric-hide-select')
             .find('#in_out option:contains("Вложено")').val();
         $('#in_out').prop('selectedIndex', ind).selectric('refresh');
 
-        //$('select#in_out').parent().parent().find('.selectric').find('span.label').text('Вложено');
-        // var totalSum = 0;
-        // var dataCash;
-        // $.each($('#investedDetailsTable').find('.simplebar-scroll-content').find('.simplebar-content').find('.row.flex-vcenter'), function (ind, el) {
-        //     if ($(this).children(':last').data('facility') === facility) {
-        //         $(this).show();
-        //         dataCash = $(this).find('[data-cash]');
-        //         totalSum += dataCash.data('cash');
-        //     } else {
-        //         $(this).hide();
-        //     }
-        // });
-        //
-        // $('#totalSumFooter').find('span').empty().html('Итого за выбранный период: ' +
-        //     new Intl.NumberFormat('ru-RU', {
-        //         minimumFractionDigits: 0
-        //     }).format(Math.round(totalSum)) + ' руб.');
-
-        var token = $("meta[name='_csrf']").attr("content");
-        var header = $("meta[name='_csrf_header']").attr("content");
+        let token = $("meta[name='_csrf']").attr("content");
+        let header = $("meta[name='_csrf_header']").attr("content");
         $.ajax({
             type: "POST",
             contentType: "application/json;charset=utf-8",
@@ -139,19 +112,16 @@ jQuery(document).ready(function ($) {
     $('#readAnnex').css('z-index', '-1000001');
     $('#look').attr('disabled', true);
     $(document).on('change', 'input[type="checkbox"]:checked', function () {
-        var userId = $(this).data('user-id');
-        var annex = {
+        let userId = $(this).data('user-id');
+        let annex = {
             id: $(this).data('annex-id'),
             annexName: $(this).data('annex-name')
         };
         $(this).attr('disabled', 'disabled');
-        var d = new Date();
-        var month = ('' + d.getMonth() + 1).length < 2 ? '0' + (d.getMonth() + 1) + '' : '' + (d.getMonth() + 1) + '';
-        var day = ('' + d.getDate()).length < 2 ? '0' + d.getDate() + '' : '' + d.getDate() + '';
-        var year = d.getFullYear();
-        var output = d.toLocaleDateString();//day + '.' + month + '.' + year;
+        let d = new Date();
+        let output = d.toLocaleDateString();//day + '.' + month + '.' + year;
         $('#annexDate-' + annex.id).html(output);
-        var trId = $(this).closest('tr').attr('id');
+        let trId = $(this).closest('tr').attr('id');
         setAnnexRead(trId, userId, annex, 1);
     });
 
@@ -171,9 +141,9 @@ jQuery(document).ready(function ($) {
 
     $(document).on('click', '#searchIncomesByDate', function (e) {
         e.preventDefault();
-        var month = parseInt($('#months').find('option:selected').val());
-        var year = $('#years').find('option:selected').text();
-        var fullDate = new Date(parseInt(year), month, 1);
+        let month = parseInt($('#months').find('option:selected').val());
+        let year = $('#years').find('option:selected').text();
+        let fullDate = new Date(parseInt(year), month, 1);
 
         getInvestorsFlowsList('max', fullDate);
     });
@@ -182,23 +152,16 @@ jQuery(document).ready(function ($) {
         window.location.href = '/logout'
     });
 
-    //$('#incomesAndExpenses').selectric();
-
-    //$(function(){$('select').selectric();$('select#incomesAndExpenses').selectric({onChange: function (element) {var mainFlows;var facility = $('.inner__row.inner__row_costs.flex-vhcenter').find('.selectric').find('span.label').text();if(checkLocalStorage()){mainFlows = JSON.parse(localStorage.getItem('mainFlowsList'));}else{getMainFlowsList(facility);}prepareIncomesAndExpenses(mainFlows, facility)}});})
     $('#searchInvestmentsByDate').on('click', function (e) {
         e.preventDefault();
-        var facility = $('#investmentsDetailsTitle').text().split(' ')[3];
-        var investments = $('#investments');
+        let facility = $('#investmentsDetailsTitle').text().split(' ')[3];
+        let investments = $('#investments');
 
-        /*
-        var facility = $(this).parent().find('.select')
-            .find('.selectric-wrapper').find('.selectric:last').find('span.label').text();
-        */
-        var tmp;
-        var dateFrom = $(this).parent().find('.date-select').find('.date-select-wrapper.flex-vhcenter').find('.field:first').find('input[name=from]').val();
-        var dateTo = $(this).parent().find('.date-select').find('.date-select-wrapper.flex-vhcenter').find('.field:last').find('input[name=to]').val();
+        let tmp;
+        let dateFrom = $(this).parent().find('.date-select').find('.date-select-wrapper.flex-vhcenter').find('.field:first').find('input[name=from]').val();
+        let dateTo = $(this).parent().find('.date-select').find('.date-select-wrapper.flex-vhcenter').find('.field:last').find('input[name=to]').val();
         if (typeof dateFrom === 'undefined' || dateFrom === '') {
-            var d = new Date();
+            let d = new Date();
             dateFrom = new Date(d.getFullYear() - 100, d.getMonth(), d.getDate());
         } else {
             tmp = dateFrom.split('.');
@@ -211,20 +174,18 @@ jQuery(document).ready(function ($) {
             dateTo = new Date(parseInt(tmp[2]), parseInt(tmp[1]) - 1, parseInt(tmp[0]));
         }
 
-        var totalSum = 0;
-        var dataCash;
+        let totalSum = 0;
+        let dataCash;
         investments.find('[data-date]').each(function () {
-            var cur = $(this).data('date');
-            var curFacility = $(this).parent().find('[data-facility]').text();
+            let cur = $(this).data('date');
+            let curFacility = $(this).parent().find('[data-facility]').text();
             tmp = cur.split('.');
             cur = new Date(parseInt(tmp[2]), parseInt(tmp[1]) - 1, parseInt(tmp[0]));
             if (cur >= dateFrom && cur <= dateTo && curFacility === facility) {
-                //$(this).parent().children().show();
                 $(this).parent().show();
                 dataCash = $(this).parent().find('[data-cash]');
                 totalSum += parseFloat(dataCash.data('cash'));
             } else {
-                //$(this).parent().children().hide();
                 $(this).parent().hide();
             }
         });
@@ -238,16 +199,16 @@ jQuery(document).ready(function ($) {
 
 function prepareToggle() {
     $('.accordion__item').each(function () {
-        var self = $(this);
-        var $body = self.find('.accordion__body');
-        var $btnAction = self.find('.col_action span');
+        let self = $(this);
+        let $body = self.find('.accordion__body');
+        let $btnAction = self.find('.col_action span');
 
-        var $item = self.find('.accordionChild__item');
+        let $item = self.find('.accordionChild__item');
 
         $item.each(function () {
-            var $itm = $(this);
-            var $rowAction = $itm.find('.row_action');
-            var $child = $rowAction.find('.row_child-wrapper');
+            let $itm = $(this);
+            let $rowAction = $itm.find('.row_action');
+            let $child = $rowAction.find('.row_child-wrapper');
             $rowAction.on('click', function () {
 
                 $rowAction.toggleClass('active');
@@ -287,14 +248,14 @@ function getColor(i) {
 }
 
 function prepareIncomeDiagram(investorsFlowsList) {
-    var invFlows = $.grep(investorsFlowsList, function (el) {
+    let invFlows = $.grep(investorsFlowsList, function (el) {
         return el.afterCashing >= 0;
     });
-    var reportDates = [];
-    var tmpDate = [];
+    let reportDates = [];
+    let tmpDate = [];
 
-    var cash;
-    var cashes = [];
+    let cash;
+    let cashes = [];
     $.each(invFlows, function (ind, el) {
         reportDates.push(new Date(el.reportDate));
         cash = {
@@ -317,8 +278,8 @@ function prepareIncomeDiagram(investorsFlowsList) {
         el.reportDate = monthNames[el.reportDate.getMonth()] + ' ' + el.reportDate.getFullYear();
     });
 
-    var tmpYears = [];
-    var years;
+    let tmpYears = [];
+    let years;
     $.each(reportDates, function (ind, el) {
         tmpDate.push(monthNames[el.getMonth()] + ' ' + el.getFullYear());
         tmpYears.push(el.getFullYear());
@@ -327,7 +288,7 @@ function prepareIncomeDiagram(investorsFlowsList) {
     reportDates = unique(tmpDate);
     years = unique(tmpYears);
 
-    var groupedCashes = [];
+    let groupedCashes = [];
 
     cashes.reduce(function (res, value) {
         if (!res[value.facility]) {
@@ -351,26 +312,26 @@ function prepareIncomeDiagram(investorsFlowsList) {
         return res;
     }, {});
 
-    var reducedCash = JSON.parse(JSON.stringify(groupedCashes));
+    let reducedCash = JSON.parse(JSON.stringify(groupedCashes));
 
     $.each(reducedCash, function (ind, el) {
         el.sum = Math.round(el.sum * 100) / 100;
     });
 
-    var facilities = [];
+    let facilities = [];
     $.each(reducedCash, function (i, el) {
         facilities.push(el.facility);
     });
     facilities = unique(facilities);
 
-    var months = $('#months');
+    let months = $('#months');
     months
         .find('option')
         .remove()
         .end();
 
     $.each(monthLongNames, function (key, value) {
-        var option = $('<option></option>');
+        let option = $('<option></option>');
         option.attr('value', key);
         option.text(value);
 
@@ -381,14 +342,14 @@ function prepareIncomeDiagram(investorsFlowsList) {
         option.appendTo(months);
     });
 
-    var optYears = $('#years');
+    let optYears = $('#years');
     optYears
         .find('option')
         .remove()
         .end();
 
     $.each(years, function (key, value) {
-        var option = $('<option></option>');
+        let option = $('<option></option>');
         option.attr('value', value);
         option.text(value);
 
@@ -400,7 +361,7 @@ function prepareIncomeDiagram(investorsFlowsList) {
     });
 
 
-    var incomesAndExpenses = $('#incomesAndExpenses');
+    let incomesAndExpenses = $('#incomesAndExpenses');
 
     incomesAndExpenses
         .find('option')
@@ -408,7 +369,7 @@ function prepareIncomeDiagram(investorsFlowsList) {
         .end();
 
     $.each(facilities, function (key, value) {
-        var option = $('<option></option>');
+        let option = $('<option></option>');
         option.attr('value', key);
         option.text(value);
 
@@ -425,7 +386,7 @@ function prepareIncomeDiagram(investorsFlowsList) {
             disableOnMobile: false,
             nativeOnMobile: false,
             onChange: function () {
-                var facility = $('.inner__row.inner__row_costs.flex-vhcenter').find('.selectric:last').find('span.label').text();
+                let facility = $('.inner__row.inner__row_costs.flex-vhcenter').find('.selectric:last').find('span.label').text();
                 getMainFlowsList(facility);
             }
         });
@@ -434,7 +395,7 @@ function prepareIncomeDiagram(investorsFlowsList) {
             disableOnMobile: false,
             nativeOnMobile: false,
             onChange: function () {
-                var month = $('.inner__row.inner__row_finance.flex-vhcenter')
+                let month = $('.inner__row.inner__row_finance.flex-vhcenter')
                     .find('.circle')
                     .find('.box__select:first')
                     .find('.selectric:last').find('span.label').text();
@@ -445,7 +406,7 @@ function prepareIncomeDiagram(investorsFlowsList) {
             disableOnMobile: false,
             nativeOnMobile: false,
             onChange: function () {
-                var year = $('.inner__row.inner__row_finance.flex-vhcenter')
+                let year = $('.inner__row.inner__row_finance.flex-vhcenter')
                     .find('.circle')
                     .find('.box__select:last')
                     .find('.selectric:last').find('span.label').text();
@@ -453,26 +414,25 @@ function prepareIncomeDiagram(investorsFlowsList) {
         });
     });
 
-    var totals = [];
-    var total;
-    var sums = [];
-    var totalSums = [];
-    var i = -1;
-    var facilitiesDates = [];
+    let totals = [];
+    let total;
+    let sums = [];
+    let totalSums = [];
+    let i = -1;
+    let facilitiesDates = [];
 
-    var res = groupedCashes.reduce(function (prev, cur, i) {
-        var cash = prev[cur.reportDate];
+    let res = groupedCashes.reduce(function (prev, cur, i) {
+        let cash = prev[cur.reportDate];
         if (cash) {
             cash.sum += cur.sum;
         } else {
             prev[cur.reportDate] = cur;
-            //delete cur.reportDate;
         }
         return prev;
 
     }, []);
 
-    var eachObject = function (obj) {
+    let eachObject = function (obj) {
         for (let key in obj) {
             totalSums.push(Number(obj[key].sum).toFixed(2));
         }
@@ -520,7 +480,7 @@ function prepareIncomeDiagram(investorsFlowsList) {
     }
 
     $.each(totals, function (i, el) {
-        var oldEl = JSON.parse(JSON.stringify(el));
+        let oldEl = JSON.parse(JSON.stringify(el));
         if (el.reportDates.length < reportDates.length) {
             el.reportDates = reportDates;
         }
@@ -536,14 +496,14 @@ function prepareIncomeDiagram(investorsFlowsList) {
     });
 
     if (totalSums.length < reportDates.length) {
-        for (var j = totalSums.length; j < reportDates.length; j++) {
+        for (let j = totalSums.length; j < reportDates.length; j++) {
             totalSums.splice(0, 0, 0);
         }
     }
 
-    var ds;
-    var dSet = [];
-    var color = 0;
+    let ds;
+    let dSet = [];
+    let color = 0;
     $.each(totals, function (ind, el) {
         color++;
         ds = {
@@ -556,9 +516,9 @@ function prepareIncomeDiagram(investorsFlowsList) {
         dSet.push(ds);
     });
 
-    var max = Math.max.apply(Math, totalSums);
+    let max = Math.max.apply(Math, totalSums);
 
-    var step = Math.floor(max / parseInt('5' + zeroDigits(max.toString().indexOf('.') - 2)))
+    let step = Math.floor(max / parseInt('5' + zeroDigits(max.toString().indexOf('.') - 2)))
         * parseInt('1' + zeroDigits(max.toString().indexOf('.') - 2));
     max = step * 7;
 
@@ -566,7 +526,7 @@ function prepareIncomeDiagram(investorsFlowsList) {
         id: 'scroll-plugin',
         rendered: false,
         afterDraw: function (chart, options) {
-            var chartOptions = chart.options;
+            let chartOptions = chart.options;
 
             if (!chartOptions.scroll) {
                 return;
@@ -576,15 +536,15 @@ function prepareIncomeDiagram(investorsFlowsList) {
 
             this.rendered = true;
 
-            var chartWrapper = $('<div class="chart-wrapper"></div>');
-            var chartAreaWrapper = $('<div class="chart-area-wrapper"></div>');
+            let chartWrapper = $('<div class="chart-wrapper"></div>');
+            let chartAreaWrapper = $('<div class="chart-area-wrapper"></div>');
             chartAreaWrapper.width((chart.width / nummberColumns) * chart.config.data.labels.length);
             $(chart.ctx.canvas).wrap(chartWrapper).wrap(chartAreaWrapper);
             chartAreaWrapper.wrap(chartWrapper);
 
             $(chartOptions.legendSelector).html(chart.generateLegend());
             $(chartOptions.legendSelector + " > ul > li").on("click", function (e) {
-                var index = $(this).index(),
+                let index = $(this).index(),
                     dataset = chart.data.datasets[index];
 
                 $(this).toggleClass("hidden");
@@ -593,16 +553,16 @@ function prepareIncomeDiagram(investorsFlowsList) {
                 chart.update();
             });
 
-            var copyWidth = chart.scales['y-axis-0'].width - 10;
-            var copyHeight = chart.scales['y-axis-0'].height + chart.scales['y-axis-0'].top + 10;
+            let copyWidth = chart.scales['y-axis-0'].width - 10;
+            let copyHeight = chart.scales['y-axis-0'].height + chart.scales['y-axis-0'].top + 10;
 
-            var chartAxis = document.querySelector(chartOptions.axisSelector);
+            let chartAxis = document.querySelector(chartOptions.axisSelector);
             chartAxis.style.height = copyHeight + 'px';
             chartAxis.style.width = copyWidth + 'px';
 
-            var ticks = chart.scales['y-axis-0'].ticksAsNumbers;
+            let ticks = chart.scales['y-axis-0'].ticksAsNumbers;
 
-            var $chartList = $(chartOptions.axisSelector + ' > ul');
+            let $chartList = $(chartOptions.axisSelector + ' > ul');
             $chartList.html('');
 
             ticks.forEach(function (el) {
@@ -616,7 +576,7 @@ function prepareIncomeDiagram(investorsFlowsList) {
         }
     });
 
-    var config = {
+    let config = {
         type: 'bar',
         data:
             {
@@ -686,8 +646,8 @@ function prepareIncomeDiagram(investorsFlowsList) {
                             window.total = 0;
                         },
                         label: function (tooltipItem, data) {
-                            var facility = data.datasets[tooltipItem.datasetIndex].label;
-                            var totalSum = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                            let facility = data.datasets[tooltipItem.datasetIndex].label;
+                            let totalSum = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
                             totalSum = parseFloat(totalSum);
 
                             window.total += totalSum;
@@ -716,11 +676,11 @@ function prepareIncomeDiagram(investorsFlowsList) {
             }
     };
     /*
-    var ctx1 = document.getElementById("chart-finance").getContext("2d");
+    let ctx1 = document.getElementById("chart-finance").getContext("2d");
     window.myDoughnut1 = new Chart(ctx1, config);
     */
-    var oldChart = window.myDoughnut1;
-    var ctx1 = document.getElementById("chart-finance").getContext("2d");
+    let oldChart = window.myDoughnut1;
+    let ctx1 = document.getElementById("chart-finance").getContext("2d");
     if (typeof oldChart === 'undefined') {
         window.myDoughnut1 = new Chart(ctx1, config);
     } else {
@@ -730,7 +690,7 @@ function prepareIncomeDiagram(investorsFlowsList) {
 
     $('#chart-finance-legend').html(myDoughnut1.generateLegend());
     $('#chart-finance-legend > ul > li').on('click', function (e) {
-        var index = $(this).index(),
+        let index = $(this).index(),
             chart = e.view.myDoughnut1,
             dataset = chart.data.datasets[index]._meta[2];
         $(this).toggleClass("hidden");
@@ -740,18 +700,18 @@ function prepareIncomeDiagram(investorsFlowsList) {
 }
 
 function zeroDigits(numb) {
-    var str = '';
-    for (var i = 0; i < numb; i++) {
+    let str = '';
+    for (let i = 0; i < numb; i++) {
         str += "0";
     }
     return str;
 }
 
 function prepareIncomeCircle(investorsFlowsList, fullDate) {
-    var invFlows;
-    var month = new Date(fullDate).getMonth();
-    var year = new Date(fullDate).getFullYear();
-    var elDate;
+    let invFlows;
+    let month = new Date(fullDate).getMonth();
+    let year = new Date(fullDate).getFullYear();
+    let elDate;
     if (fullDate === '') {
         invFlows = $.grep(investorsFlowsList, function (el) {
             return el.afterCashing > 0;
@@ -763,31 +723,31 @@ function prepareIncomeCircle(investorsFlowsList, fullDate) {
         });
     }
 
-    var dates = [];
+    let dates = [];
     $.each(invFlows, function (ind, el) {
         dates.push(new Date(el.reportDate));
     });
 
-    var maxDate;
+    let maxDate;
     if (dates.length === 0 && fullDate !== '') maxDate = fullDate;
     else if (dates.length > 0) maxDate = new Date(Math.max.apply(null, dates));
     else maxDate = new Date();
 
 
-    var ttl = 'Ваш доход за ' + monthLongNames[maxDate.getMonth()].toLowerCase() + ' ' + maxDate.getFullYear();
+    let ttl = 'Ваш доход за ' + monthLongNames[maxDate.getMonth()].toLowerCase() + ' ' + maxDate.getFullYear();
 
     $('#months').val(maxDate.getMonth());
     $('#years').val(maxDate.getFullYear());
 
     invFlows = $.grep(invFlows, function (el) {
-        var elDate = new Date(el.reportDate);
-        var curDate = new Date(maxDate);
+        let elDate = new Date(el.reportDate);
+        let curDate = new Date(maxDate);
         return elDate.getMonth() === curDate.getMonth() && elDate.getFullYear() === curDate.getFullYear();
     });
 
-    var facilitiesColors = [];
-    var facilityColor = {};
-    var chartJS = window.myDoughnut1.config.data.datasets;
+    let facilitiesColors = [];
+    let facilityColor = {};
+    let chartJS = window.myDoughnut1.config.data.datasets;
     $.each(chartJS, function (ind, el) {
         facilityColor = {
             facility: el.label,
@@ -796,8 +756,8 @@ function prepareIncomeCircle(investorsFlowsList, fullDate) {
         facilitiesColors.push(facilityColor);
     });
 
-    var cash;
-    var cashes = [];
+    let cash;
+    let cashes = [];
     $.each(invFlows, function (ind, el) {
         cash = {
             facility: el.facility.facility,
@@ -806,7 +766,7 @@ function prepareIncomeCircle(investorsFlowsList, fullDate) {
         cashes.push(cash);
     });
 
-    var groupedCashes = [];
+    let groupedCashes = [];
 
     cashes.reduce(function (res, value) {
         if (!res[value.facility]) {
@@ -828,7 +788,7 @@ function prepareIncomeCircle(investorsFlowsList, fullDate) {
 
         return res;
     }, {});
-    var totalIncome;
+    let totalIncome;
     if (groupedCashes.length > 1) {
         totalIncome = $.map(groupedCashes, function (el) {
             return el.sum
@@ -840,7 +800,7 @@ function prepareIncomeCircle(investorsFlowsList, fullDate) {
     } else {
         totalIncome = 0;
     }
-    var clr;
+    let clr;
     $('#totalIncome').html('<span>' + new Intl.NumberFormat('ru-RU').format(totalIncome) + '</span>' + 'рублей');
     $('#incomesList').html('');
     if (groupedCashes.length > 0) {
@@ -854,14 +814,14 @@ function prepareIncomeCircle(investorsFlowsList, fullDate) {
                 + '"><span>' + new Intl.NumberFormat('ru-RU').format(el.sum) + '</span>' + el.facility + '</div>');
         });
     } else {
-        for (var i = 0; i < 2; i++) {
+        for (let i = 0; i < 2; i++) {
             $('#incomesList').append('<div class="circle-canvas__item" style="color: transparent"><span>' + new Intl.NumberFormat('ru-RU').format(0.0001) + '</span>' + 'Объекты' + '</div>');
         }
     }
 
-    var facilities = [];
-    var sums = [];
-    var colors = [];
+    let facilities = [];
+    let sums = [];
+    let colors = [];
     if (groupedCashes.length > 0) {
         $.each(groupedCashes, function (i, el) {
             facilities.push(el.facility);
@@ -881,7 +841,7 @@ function prepareIncomeCircle(investorsFlowsList, fullDate) {
     }
 
 
-    var configDoughnut = {
+    let configDoughnut = {
         type: 'doughnut',
         data:
             {
@@ -921,8 +881,8 @@ function prepareIncomeCircle(investorsFlowsList, fullDate) {
             }
     };
 
-    var oldChart = window.myDoughnut2;
-    var ctx2 = document.getElementById("doughnut-chart").getContext("2d");
+    let oldChart = window.myDoughnut2;
+    let ctx2 = document.getElementById("doughnut-chart").getContext("2d");
     if (typeof oldChart === 'undefined') {
         window.myDoughnut2 = new Chart(ctx2, configDoughnut);
     } else {
@@ -940,8 +900,8 @@ function prepareDetailsProfit(investorsFlowsList, iMonth) {
         style: 'currency',
         currency: 'RUB'
     });
-    var dates;
-    var dateMonth;
+    let dates;
+    let dateMonth;
     switch (iMonth) {
         case 'max':
             dates = investorsFlowsList.map(function (x) {
@@ -953,13 +913,13 @@ function prepareDetailsProfit(investorsFlowsList, iMonth) {
             dateMonth = new Date(iMonth);
     }
 
-    var invFlows = $.grep(investorsFlowsList, function (el) {
+    let invFlows = $.grep(investorsFlowsList, function (el) {
         return (new Date(el.reportDate).getMonth() === dateMonth.getMonth() && new Date(el.reportDate).getFullYear() === dateMonth.getFullYear())
             && el.underFacilities.facility != null;
     });
 
-    var facilitiesFlows = [];
-    var facilityFlows;
+    let facilitiesFlows = [];
+    let facilityFlows;
 
     $.each(invFlows, function (ind, el) {
         facilityFlows = {
@@ -976,7 +936,7 @@ function prepareDetailsProfit(investorsFlowsList, iMonth) {
         facilitiesFlows.push(facilityFlows);
     });
 
-    var gFacilitiesFlows = [];
+    let gFacilitiesFlows = [];
     facilitiesFlows.reduce(function (res, value) {
         if (!res[value.facility]) {
             res[value.facility] = {
@@ -1037,11 +997,11 @@ function prepareDetailsProfit(investorsFlowsList, iMonth) {
         el.comission = el.comission / el.cnt;
     });
 
-    var elemChild;
-    var elemParent;
-    var elHead = $('#detailsProfit').find('.simplebar-content');
+    let elemChild;
+    let elemParent;
+    let elHead = $('#detailsProfit').find('.simplebar-content');
     elHead.html('');
-    var constParent;
+    let constParent;
 
     $.each(gFacilitiesFlows, function (ind, el) {
         elemChild = $('<div class="accordion__item" id="' + ind + '"></div>');
@@ -1113,9 +1073,9 @@ function prepareDetailsProfit(investorsFlowsList, iMonth) {
 
 function prepareIncomesAndExpenses(mainFlowsList, facility) {
 
-    var settlementDates = [];
-    var tmpDate = [];
-    var mainFlows;
+    let settlementDates = [];
+    let tmpDate = [];
+    let mainFlows;
     switch (facility) {
         case 'Все объекты':
             mainFlows = mainFlowsList;
@@ -1126,16 +1086,16 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
             });
     }
 
-    var dates = [];
+    let dates = [];
     $.each(mainFlows, function (ind, el) {
         dates.push(new Date(el.settlementDate));
     });
-    var maxDate = new Date(Math.max.apply(null, dates));
-    var ttl = 'Баланс ' + facility + ' за ' + monthLongNames[maxDate.getMonth()].toLowerCase() + ' ' + maxDate.getFullYear();
+    let maxDate = new Date(Math.max.apply(null, dates));
+    let ttl = 'Баланс ' + facility + ' за ' + monthLongNames[maxDate.getMonth()].toLowerCase() + ' ' + maxDate.getFullYear();
     $('#totalExpenses').html(ttl);
 
-    var flow;
-    var flows = [];
+    let flow;
+    let flows = [];
 
     $.each(mainFlows, function (ind, el) {
         settlementDates.push(new Date(el.settlementDate));
@@ -1176,7 +1136,7 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
         el.settlementDate = monthNames[el.settlementDate.getMonth()] + ' ' + el.settlementDate.getFullYear();
     });
 
-    var items = {}, key;
+    let items = {}, key;
     $.each(flows, function (index, val) {
         key = val.underFacility + val.settlementDate + val.payment + val.incomeOrExpense;
         if (!items[key]) {
@@ -1206,14 +1166,14 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
         }
     });
 
-    var outputArr = [];
+    let outputArr = [];
     $.each(items, function (key, val) {
         outputArr.push(val);
     });
 
-    var sums = [];
-    var incomes = {};
-    var expenses = {};
+    let sums = [];
+    let incomes = {};
+    let expenses = {};
 
     settlementDates.map(function (value) {
         return incomes[value] = 0;
@@ -1238,11 +1198,11 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
         expenses[el] = expenses[el].toFixed(2);
     });
 
-    var max = Math.max.apply(Math, sums);
+    let max = Math.max.apply(Math, sums);
 
-    var zeroCount = parseInt('1' + zeroDigits(max.toFixed(2).toString().indexOf('.') - 1));
-    var step = (max / 7 / zeroCount).toFixed(2) * zeroCount;
-    var min = max === 0 ? -100 : 0;
+    let zeroCount = parseInt('1' + zeroDigits(max.toFixed(2).toString().indexOf('.') - 1));
+    let step = (max / 7 / zeroCount).toFixed(2) * zeroCount;
+    let min = max === 0 ? -100 : 0;
     if (max === 0) {
         step = 100;
     }
@@ -1254,20 +1214,20 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
     }
 
     if (Object.keys(incomes).length < settlementDates.length) {
-        for (var j = incomes.length; j < settlementDates.length; j++) {
+        for (let j = incomes.length; j < settlementDates.length; j++) {
             incomes.splice(0, 0, 0);
         }
     }
     if (Object.keys(expenses).length < settlementDates.length) {
-        for (var j = expenses.length; j < settlementDates.length; j++) {
+        for (let j = expenses.length; j < settlementDates.length; j++) {
             expenses.splice(0, 0, 0);
         }
     }
 
-    var dataSets = [];
-    var dataSet = {};
-    var incomesArr = [];
-    var expensesArr = [];
+    let dataSets = [];
+    let dataSet = {};
+    let incomesArr = [];
+    let expensesArr = [];
     Array.prototype.groupBy = function (prop) {
         return this.reduce(function (groups, item) {
             const val = item[prop];
@@ -1279,7 +1239,7 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
 
     const groupedByUnderFacility = outputArr.groupBy('underFacility');
     const groupedByPayment = outputArr.groupBy('payment');
-    var counter = 0;
+    let counter = 0;
     $.each(groupedByUnderFacility, function (indSd, elSd) {
         counter = 0;
         incomesArr = [];
@@ -1320,7 +1280,7 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
         });
         if (dataSet[key]) {
             if (settlementDates.length > dataSet[key].sums.length) {
-                for (var i = dataSet[key].sums.length - 1; i < settlementDates.length - 1; i++) {
+                for (let i = dataSet[key].sums.length - 1; i < settlementDates.length - 1; i++) {
                     dataSet[key].sums.push(0);
                 }
             }
@@ -1340,7 +1300,7 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
         key = indSd;
         $.each(elSd, function (indEl, elEl) {
             if (elEl.sum < 0) {
-                var sum = parseFloat((-1 * elEl.sum).toFixed(2));
+                let sum = parseFloat((-1 * elEl.sum).toFixed(2));
                 if (!dataSet[key]) {
                     dataSet[key] = {
                         payment: key,
@@ -1374,18 +1334,18 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
         });
         if (dataSet[key]) {
             if (settlementDates.length > dataSet[key].sums.length) {
-                for (var i = dataSet[key].sums.length - 1; i < settlementDates.length - 1; i++) {
+                for (let i = dataSet[key].sums.length - 1; i < settlementDates.length - 1; i++) {
                     dataSet[key].sums.push(0);
                 }
             }
         }
     });
-    var exDataSets = [];
+    let exDataSets = [];
     $.each(dataSet, function (key, val) {
         exDataSets.push(val);
     });
 
-    var underFacilitiesIncomesColors = [
+    let underFacilitiesIncomesColors = [
         '#1f7a1f',
         '#29a329',
         '#33cc33',
@@ -1394,7 +1354,7 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
         '#adebad',
         '#d6f5d6'
     ];
-    var underFacilitiesExpensesColors = [
+    let underFacilitiesExpensesColors = [
         '#995c00',
         '#cc7a00',
         '#ff9900',
@@ -1405,7 +1365,7 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
     ];
 
 
-    var finDs = [];
+    let finDs = [];
     $.each(dataSets, function (ind, el) {
 
         finDs.push({
@@ -1419,7 +1379,7 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
         })
     });
 
-    var clr = 0;
+    let clr = 0;
     $.each(exDataSets, function (ind, el) {
         clr = ind >= 8 ? 0 : ind;
         clr = clr === 4 ? ++clr : clr;
@@ -1434,7 +1394,7 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
         })
     });
 
-    var configCosts = {
+    let configCosts = {
         type: 'bar',
         data:
             {
@@ -1528,15 +1488,15 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
             }
     };
 
-    var chartOptions;
+    let chartOptions;
 
-    var oldChart = window.myDoughnut;
-    var ctxCosts = document.getElementById("chart-costs").getContext("2d");
+    let oldChart = window.myDoughnut;
+    let ctxCosts = document.getElementById("chart-costs").getContext("2d");
     if (typeof oldChart === 'undefined') {
         window.myDoughnut = new Chart(ctxCosts, configCosts);
     } else {
         chartOptions = window.myDoughnut.options;
-        var nummberColumns = chartOptions.nummberColumns;
+        let nummberColumns = chartOptions.nummberColumns;
         ctxCosts.canvas.parentNode.style.width = (oldChart.width / nummberColumns) * settlementDates.length + 'px';
         oldChart.clear();
         oldChart.destroy();
@@ -1554,11 +1514,11 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
         window.myDoughnut.options.scales.yAxes[0].ticks.max = max;
         window.myDoughnut.options.scales.yAxes[0].ticks.stepSize = step;
 
-        var $chartList = $(chartOptions.axisSelector);
+        let $chartList = $(chartOptions.axisSelector);
         $chartList.append('<ul></ul>');
         $chartList.find('ul').html('');
 
-        for (var i = max; i >= min; i -= step) {
+        for (let i = max; i >= min; i -= step) {
             $chartList.find('ul').append('<li>' + new Intl.NumberFormat('ru-RU', {
                 maximumFractionDigits: 2,
                 minimumFractionDigits: 0
@@ -1567,10 +1527,10 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
         //window.myDoughnut.update();
     }
 
-    var chartLegend = $('#chart-costs-legend');
+    let chartLegend = $('#chart-costs-legend');
     chartLegend.html(myDoughnut.generateLegend());
     chartLegend.find("> ul > li").on("click", function (e) {
-        var index = $(this).index(),
+        let index = $(this).index(),
             chart = e.view.myDoughnut,
             dataset = chart.data.datasets[index]._meta[4];
         $(this).toggleClass("hidden");
@@ -1578,14 +1538,14 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
         chart.update();
     });
 
-    var totalIncomes = 0;
-    for (var k in incomes) {
+    let totalIncomes = 0;
+    for (let k in incomes) {
         if (incomes.hasOwnProperty(k)) {
             totalIncomes = parseFloat(incomes[k]);
         }
     }
-    var totalExpenses = 0;
-    for (var k in expenses) {
+    let totalExpenses = 0;
+    for (let k in expenses) {
         if (expenses.hasOwnProperty(k)) {
             totalExpenses = parseFloat(expenses[k]);
         }
@@ -1594,12 +1554,12 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
     if (totalIncomes === 0) totalIncomes = 0.0001;
     if (totalExpenses === 0) totalExpenses = 0.0001;
 
-    var totalIn = totalIncomes - totalExpenses;
+    let totalIn = totalIncomes - totalExpenses;
     $('#totalExpensesText').html('<span>' + new Intl.NumberFormat('ru-RU', {
         maximumFractionDigits: 2,
         minimumFractionDigits: 2
     }).format(totalIn) + '</span>' + 'рублей');
-    var configDoughnutExpenses = {
+    let configDoughnutExpenses = {
         type: 'doughnut',
         data:
             {
@@ -1640,8 +1600,8 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
             }
     };
 
-    var oldChartExpenses = window.myDoughnutExpenses;
-    var ctxExpenses = document.getElementById("doughnut-chart-expenses").getContext("2d");
+    let oldChartExpenses = window.myDoughnutExpenses;
+    let ctxExpenses = document.getElementById("doughnut-chart-expenses").getContext("2d");
     if (typeof oldChartExpenses === 'undefined') {
         window.myDoughnutExpenses = new Chart(ctxExpenses, configDoughnutExpenses);
     } else {
@@ -1649,7 +1609,7 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
         window.myDoughnutExpenses.update();
     }
 
-    var expensesList = $('#expensesList');
+    let expensesList = $('#expensesList');
     expensesList.html('');
     expensesList.append('<div class="circle-canvas__item" style="color: ' + underFacilitiesIncomesColors[0] + '"><span>' + new Intl.NumberFormat('ru-RU', {
         maximumFractionDigits: 2,
@@ -1660,180 +1620,26 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
         minimumFractionDigits: 2
     }).format(totalExpenses) + '</span>' + "Расходы" + '</div>');
 
-    // $('div.inner__row.inner__row_costs.flex-vhcenter').find('div.box__select').find('div.selectric').find('span.label').text(maxFacility);
     $('div.inner__row.inner__row_costs.flex-vhcenter').find('div.box__select').find('div.selectric').find('span.label').text(maxFacility);
-    var ind = $('div.inner__row.inner__row_costs.flex-vhcenter')
+    let ind = $('div.inner__row.inner__row_costs.flex-vhcenter')
         .find('div.box__select')
         .find('div.selectric-hide-select')
         .find('#incomesAndExpenses option:contains("' + maxFacility + '")').val();
     $('#incomesAndExpenses').prop('selectedIndex', ind).selectric('refresh');
 }
 
-function prepareInvestedMoney(investorsCashes, rooms, saleOfFacilities) {
-    maxFacility = getMaxInFacility(investorsCashes);
-    var cashes = $.grep(investorsCashes, function (el) {
-        if (el.facility.facility === 'На счете') {
-            return el.typeClosingInvest === null;
-        } else {
-            return (el.typeClosingInvest === null || el.typeClosingInvest.typeClosingInvest !== 'Перепродажа доли') && el.investor != null;
-        }
-    });
+function prepareInvestedMoney(investorsCashes, investedMoneyDb) {
+    maxFacility = investedMoneyDb.facilityWithMaxSum;
+    
+    let investor = investedMoneyDb.investor;
 
-    var balanceCash = $.grep(investorsCashes, function (el) {
-        return el.typeClosingInvest === null && el.investor != null;
-    });
-    var investor = $('#profile').find($('b')).text();
+    let totalMoney = investedMoneyDb.totalMoney;
 
-    var totalMoney = 0;
+    let investedBalance = investedMoneyDb.invested;
 
-    cashes.sort(function (a, b) {
-        return new Date(a.dateGivedCash) - new Date(b.dateGivedCash);
-    });
+    let finalArr = investedMoneyDb.invested;
 
-    balanceCash.sort(function (a, b) {
-        return new Date(a.dateGivedCash) - new Date(b.dateGivedCash);
-    });
-
-    var sortedCash = unique(rooms.map(function (value) {
-        return value.underFacility.facility.facility;
-    }));
-
-    createInvestedAllTable(cashes);
-    createInvestedTable(cashes);
-    var facilitiesCoasts = [];
-
-    rooms.reduce(function (res, value) {
-        var facility = value.underFacility.facility.facility;
-        if (!res[facility]) {
-            res[facility] = {
-                coast: 0,
-                facility: facility
-            };
-            facilitiesCoasts.push(res[facility])
-        }
-        if (res[facility].facility === facility) {
-            res[facility].coast += value.coast;
-        } else {
-            res[facility] = {
-                coast: 0,
-                facility: facility
-            };
-            facilitiesCoasts.push(res[facility])
-        }
-
-        return res;
-    }, {});
-
-    var tmp = [];
-    $.each(sortedCash, function (ind, el) {
-        for (var i = 0; i < facilitiesCoasts.length; i++) {
-            if (facilitiesCoasts[i].facility === el) {
-                tmp.push({
-                    facility: el,
-                    coast: facilitiesCoasts[i].coast
-                })
-            }
-        }
-    });
-
-    facilitiesCoasts = tmp.slice();
-
-    var invested = [];
-
-    cashes.reduce(function (res, value) {
-        var facility = value.facility.facility;
-        if (!res[facility]) {
-            res[facility] = {
-                givedCash: 0,
-                facility: facility,
-                myCash: 0,
-                closedCash: 0,
-                openCash: 0
-            };
-            invested.push(res[facility])
-        }
-        if (res[facility].facility === facility) {
-            res[facility].givedCash += value.givedCash;
-            if (value.investor.login === investor) {
-                res[facility].myCash += value.givedCash;
-                if (value.typeClosingInvest === null) {
-                    res[facility].openCash += value.givedCash;
-                } else {
-                    res[facility].closedCash += value.givedCash;
-                }
-            }
-        } else {
-            res[facility] = {
-                givedCash: 0,
-                facility: facility,
-                myCash: 0,
-                closedCash: 0,
-                openCash: 0
-            };
-            invested.push(res[facility])
-        }
-        return res;
-    }, {});
-
-    var investedBalance = [];
-    balanceCash.reduce(function (res, value) {
-        var facility = value.facility.facility;
-        if (!res[facility]) {
-            res[facility] = {
-                givedCash: 0,
-                facility: facility,
-                myCash: 0,
-                closedCash: 0,
-                openCash: 0
-            };
-            investedBalance.push(res[facility])
-        }
-        if (res[facility].facility === facility) {
-            res[facility].givedCash += value.givedCash;
-            if (value.investor.login === investor) {
-                res[facility].myCash += value.givedCash;
-                if (value.typeClosingInvest === null) {
-                    res[facility].openCash += value.givedCash;
-                } else {
-                    res[facility].closedCash += value.givedCash;
-                }
-            }
-        } else {
-            res[facility] = {
-                givedCash: 0,
-                facility: facility,
-                myCash: 0,
-                closedCash: 0,
-                openCash: 0
-            };
-            investedBalance.push(res[facility])
-        }
-        return res;
-    }, {});
-
-    $.each(investedBalance, function (ind, el) {
-        totalMoney += el.myCash;
-    });
-
-    var finalArr = [];
-    $.each(facilitiesCoasts, function (ind, el) {
-        var fin;
-        var obj = $.grep(invested, function (grEl) {
-            return grEl.facility === el.facility
-        });
-        if (typeof obj[0] !== 'undefined') {
-            fin = {
-                facility: el.facility,
-                coast: el.coast,
-                givedCash: obj[0].givedCash,
-                myCash: obj[0].myCash,
-                closedCash: obj[0].closedCash,
-                openCash: obj[0].openCash
-            };
-            finalArr.push(fin);
-        }
-    });
-    var colors = [];
+    let colors = [];
 
     $('#balance').find('span:last').html('<b>' + new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(totalMoney) + '</b>' + ' рублей');
 
@@ -1849,40 +1655,28 @@ function prepareInvestedMoney(investorsCashes, rooms, saleOfFacilities) {
         }
     });
 
-    var facilities = [];
-    var sums = [];
-
-    $.each(finalArr, function (i, el) {
-        // if(el.myCash > 0) {
-        facilities.push(el.facility);
-        sums.push(el.givedCash);
-        // colors.push(getColor(i));
-        // }
-    });
-    facilities = unique(facilities);
-
-    var maxPriceFacility = Math.max.apply(Math, finalArr.map(function (value) {
+    let maxPriceFacility = Math.max.apply(Math, finalArr.map(function (value) {
         return value.myCash
     }));
 
-    var investedMoney = $('#investedMoney');
+    let investedMoney = $('#investedMoney');
     investedMoney.empty();
 
     $.each(finalArr, function (ind, el) {
         if ((el.facility !== 'Вайнера' && el.facility !== 'Суворовский' && el.facility !== 'Энергетиков') || el.myCash > 0) {
-            var percentLen = Math.floor((el.myCash / maxPriceFacility) * 100) | 0;
-            var percentBg = Math.floor((el.openCash / el.myCash) * 100) | 0;
+            let percentLen = Math.floor((el.myCash / maxPriceFacility) * 100) | 0;
+            let percentBg = Math.floor((el.openCash / el.myCash) * 100) | 0;
             if (percentLen !== 0) {
-                var colDiv = $('<div class="column"></div>');
+                let colDiv = $('<div class="column"></div>');
                 colDiv.appendTo(investedMoney);
-                var priceFirst = $('<div class="column__price-first">' + new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(el.coast) + '</div>');
+                let priceFirst = $('<div class="column__price-first">' + new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(el.coast) + '</div>');
                 priceFirst.appendTo(colDiv);
-                var colBody = $('<div style="height:' + percentLen + '%" class="column__body"></div>');
+                let colBody = $('<div style="height:' + percentLen + '%" class="column__body"></div>');
                 colBody.appendTo(colDiv);
 
-                var percentBgStr = Math.floor((el.myCash / el.coast) * 100) | 0;//percentBg;
+                let percentBgStr = Math.floor((el.myCash / el.coast) * 100) | 0;//percentBg;
 
-                var leftPerc = 0;
+                let leftPerc = 0;
                 if (percentBgStr >= 100) {
                     leftPerc = 30;
                 } else if (percentBgStr >= 10 && percentBgStr <= 99) {
@@ -1892,46 +1686,22 @@ function prepareInvestedMoney(investorsCashes, rooms, saleOfFacilities) {
                 }
 
                 percentBg = percentBg < 5 ? 0 : percentBg;
-                var colBg = $('<div style="height:' + percentBg + '%; background-color:' + getColor(ind) + ';" class="column__bg"></div>');
+                let colBg = $('<div style="height:' + percentBg + '%; background-color:' + getColor(ind) + ';" class="column__bg"></div>');
                 if (percentBg === 0 && percentLen !== 0) {
                     colBody.parent().addClass('toRemove');
-                    // colBody.height('100%');
-                    // var colComplete = $('<div class="complete">Реализовано</div>');
-                    // colComplete.appendTo(colBody);
-                    //
-                    // $.each(saleOfFacilities, function (indSof, elSof) {
-                    //     if (el.facility === elSof.facility.facility && elSof.investorEng === investor) {
-                    //         var box = $('<div class="profitBox"></div>');
-                    //
-                    //         var profit = $('<div class="profit">Доходность ' + new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(elSof.totalYield * 100) + '%</div>');
-                    //         profit.appendTo(box);
-                    //         // profit.appendTo(colBody);
-                    //         var splitter = $('<div class="splitter">___________</div>');
-                    //         splitter.appendTo(box);
-                    //         // splitter.appendTo(colBody);
-                    //         var gains = $('<div class="gains">Прирост ' + new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(elSof.capitalGains * 100) + '%</div>');
-                    //         gains.appendTo(box);
-                    //         box.appendTo(colBody);
-                    //         // gains.appendTo(colBody);
-                    //     }
-                    // });
                 } else if (percentLen === 0) {
-                    // if (el.facility !== 'Вайнера' && el.facility !== 'Суворовский' && el.facility !== 'Энергетиков') {
-                    var colNotParticipate = $('<div class="notParticipate">Не участвовали</div>');
+                    let colNotParticipate = $('<div class="notParticipate">Не участвовали</div>');
                     colNotParticipate.appendTo(colDiv);
-                    // }
                 }
                 colBg.appendTo(colBody);
 
-                //var topBottom = percentLen === 0 ? 'bottom: 10%' : 'top: -10%';
-
-                var colPercent = $('<div style="background-color:transparent; position:absolute; bottom: ' + (colBody.height() + 5) + 'px; left:' + leftPerc + '%; font-size:14px; font-weight:600;color:#11325b">' + percentBgStr + '%</div>');
+                let colPercent = $('<div style="background-color:transparent; position:absolute; bottom: ' + (colBody.height() + 5) + 'px; left:' + leftPerc + '%; font-size:14px; font-weight:600;color:#11325b">' + percentBgStr + '%</div>');
                 colPercent.appendTo(colBody);
 
-                var priceSecond = $('<div class="column__price-second">' +
+                let priceSecond = $('<div class="column__price-second">' +
                     new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(Math.round(el.myCash)) + '</div>');
                 priceSecond.appendTo(colDiv);
-                var colTitle = $('<div class="column__title">' + el.facility + '</div>');
+                let colTitle = $('<div class="column__title">' + el.facility + '</div>');
                 colTitle.appendTo(colDiv);
             }
         }
@@ -1939,16 +1709,10 @@ function prepareInvestedMoney(investorsCashes, rooms, saleOfFacilities) {
 
     $('.toRemove').remove();
 
-    facilities = [];
-    sums = [];
-    $.each(investedBalance, function (ind, el) {
-        if (el.myCash > 0) {
-            facilities.push(el.facility);
-            sums.push(el.myCash);
-        }
-    });
+    let facilities = investedMoneyDb.facilitiesList;
+    let sums = investedMoneyDb.sums;
 
-    var configDoughnutInvested = {
+    let configDoughnutInvested = {
         type: 'doughnut',
         data:
             {
@@ -1989,8 +1753,8 @@ function prepareInvestedMoney(investorsCashes, rooms, saleOfFacilities) {
             }
     };
 
-    var oldChart = window.myDoughnutInvested;
-    var ctxInvested = document.getElementById("doughnut-chart-invested").getContext("2d");
+    let oldChart = window.myDoughnutInvested;
+    let ctxInvested = document.getElementById("doughnut-chart-invested").getContext("2d");
     if (typeof oldChart === 'undefined') {
         window.myDoughnutInvested = new Chart(ctxInvested, configDoughnutInvested);
     } else {
@@ -2003,12 +1767,12 @@ function prepareInvestedMoney(investorsCashes, rooms, saleOfFacilities) {
             disableOnMobile: false,
             nativeOnMobile: false,
             onChange: function () {
-                var in_out = $('#investments').find('.popup__inner').find('.popup__body').find('.head').find('.head__bottom')
+                let in_out = $('#investments').find('.popup__inner').find('.popup__body').find('.head').find('.head__bottom')
                     .find('.box__select')
                     .find('.selectric').find('span.label').text();
 
-                var token = $("meta[name='_csrf']").attr("content");
-                var header = $("meta[name='_csrf_header']").attr("content");
+                let token = $("meta[name='_csrf']").attr("content");
+                let header = $("meta[name='_csrf_header']").attr("content");
 
                 switch (in_out) {
                     case 'Вложено':
@@ -2062,14 +1826,16 @@ function prepareInvestedMoney(investorsCashes, rooms, saleOfFacilities) {
             }
         });
     });
+
+    createInvestedAllTable(investorsCashes);
+    createInvestedTable(investorsCashes);
 }
 
 function getToFacility(investor, facility, summ, invCash, dateGivedCash) {
-    var investorsCash = $.grep(invCash, function (el) {
+    let investorsCash = $.grep(invCash, function (el) {
         return el.investor.login === investor &&
             el.sourceFacility !== null &&
             el.sourceFacility.facility === facility &&
-            // el.typeClosingInvest !== null && el.typeClosingInvest.typeClosingInvest === 'Реинвестирование' &&
             el.dateGivedCash !== null && el.dateGivedCash === dateGivedCash &&
             Math.round(el.givedCash) === Math.round(summ);
     });
@@ -2078,78 +1844,72 @@ function getToFacility(investor, facility, summ, invCash, dateGivedCash) {
     } else {
         return '';
     }
-
-    // console.log(Math.round(summ));
-    // console.log(investorsCash);
 }
 
 function createCashingTable(invCash, investor) {
-    var cashing = getMyCash(invCash, investor);
-    var investments = $('#investments').find('.investments');
-    var investmentsHead = investments.find('.investments__head.flex');
+    let cashing = getMyCash(invCash, investor);
+    let investments = $('#investments').find('.investments');
+    let investmentsHead = investments.find('.investments__head.flex');
     investmentsHead.empty();
-    var sourceFacilityCol = $('<div class="col">Объект (откуда пришли)</div>');
+    let sourceFacilityCol = $('<div class="col">Объект (откуда пришли)</div>');
     sourceFacilityCol.appendTo(investmentsHead);
-    var sourceUnderFacilityCol = $('<div class="col">Подобъект (откуда пришли)</div>');
+    let sourceUnderFacilityCol = $('<div class="col">Подобъект (откуда пришли)</div>');
     sourceUnderFacilityCol.appendTo(investmentsHead);
 
-    var invColDate = $('<div class="col">Дата вывода</div>');
+    let invColDate = $('<div class="col">Дата вывода</div>');
     invColDate.appendTo(investmentsHead);
-    var invColCashing = $('<div class="col">Сумма вывода</div>');
+    let invColCashing = $('<div class="col">Сумма вывода</div>');
     invColCashing.appendTo(investmentsHead);
-    var invColCommission = $('<div class="col">Сумма комиссии</div>');
+    let invColCommission = $('<div class="col">Сумма комиссии</div>');
     invColCommission.appendTo(investmentsHead);
-    var invColTypeCashing = $('<div class="col">Вид вывода</div>');
+    let invColTypeCashing = $('<div class="col">Вид вывода</div>');
     invColTypeCashing.appendTo(investmentsHead);
-    var invColFacility = $('<div class="col" hidden>Объект</div>');
+    let invColFacility = $('<div class="col" hidden>Объект</div>');
     invColFacility.appendTo(investmentsHead);
-    var colToFacility = $('<div class="col">Объект (куда реинвестировали)</div>');
+    let colToFacility = $('<div class="col">Объект (куда реинвестировали)</div>');
     colToFacility.appendTo(investmentsHead);
 
-    var investedDetailsTableContent = $('#investedDetailsTable').find('.simplebar-scroll-content').find('.simplebar-content');
-    var facility = investedDetailsTableContent.find('.row.flex-vcenter:visible:first').find('.col:last').text();
+    let investedDetailsTableContent = $('#investedDetailsTable').find('.simplebar-scroll-content').find('.simplebar-content');
+    let facility = investedDetailsTableContent.find('.row.flex-vcenter:visible:first').find('.col:last').text();
     if (facility === '') {
-        var tmp = $('#investmentsDetailsTitle').text().split(' ');
+        let tmp = $('#investmentsDetailsTitle').text().split(' ');
         $.each(tmp, function (ind, el) {
             if (ind > 2) {
                 facility += el;
             }
         })
     }
-    // console.log(facility);
 
     investedDetailsTableContent.empty();
-    var totalSum = 0;
-
-    // console.log(cashing);
+    let totalSum = 0;
 
     $.each(cashing, function (ind, el) {
         if (el.facility === facility) {
 
-            var toFacility = getToFacility(investor, facility, el.cashing, invCash, el.dateClosingInvest);
+            let toFacility = getToFacility(investor, facility, el.cashing, invCash, el.dateClosingInvest);
 
-            var row = $('<div class="row flex-vcenter"></div>');
+            let row = $('<div class="row flex-vcenter"></div>');
 
-            var rowSourceFacility = $('<div class="col" style="margin-left: 15px" data-source-facility="' + el.sourceFacility + '">' +
+            let rowSourceFacility = $('<div class="col" style="margin-left: 15px" data-source-facility="' + el.sourceFacility + '">' +
                 el.sourceFacility +
                 '</div>');
             rowSourceFacility.appendTo(row);
 
-            var rowSourceUnderFacility = $('<div class="col" data-source-under-facility="' + el.sourceUnderFacility + '">' +
+            let rowSourceUnderFacility = $('<div class="col" data-source-under-facility="' + el.sourceUnderFacility + '">' +
                 el.sourceUnderFacility +
                 '</div>');
             rowSourceUnderFacility.appendTo(row);
 
-            var dateClose = new Intl.DateTimeFormat('ru-RU').format(el.dateClosingInvest);
-            var rowDate = $('<div class="col" data-date="' + dateClose + '">' +
+            let dateClose = new Intl.DateTimeFormat('ru-RU').format(el.dateClosingInvest);
+            let rowDate = $('<div class="col" data-date="' + dateClose + '">' +
                 dateClose +
                 '</div>');
             rowDate.appendTo(row);
 
-            var rowCashing = $('<div class="col" data-cash="' + el.cashing + '">' +
+            let rowCashing = $('<div class="col" data-cash="' + el.cashing + '">' +
                 new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(Math.round(el.cashing)) + ' руб.' + '</div>');
             rowCashing.appendTo(row);
-            var rowCommission;
+            let rowCommission;
             rowCommission = $('<div class="col" data-cash="' + el.commission + '">' +
                 new Intl.NumberFormat('ru-RU', {
                     maximumFractionDigits: 2,
@@ -2157,13 +1917,13 @@ function createCashingTable(invCash, investor) {
                 }).format(el.commission) + ' руб.' + '</div>');
             rowCommission.appendTo(row);
 
-            var rowTypeCashing = $('<div class="col" data-typecashing="' + el.typeClosingInvest + '">' + el.typeClosingInvest + '</div>');
+            let rowTypeCashing = $('<div class="col" data-typecashing="' + el.typeClosingInvest + '">' + el.typeClosingInvest + '</div>');
             rowTypeCashing.appendTo(row);
 
-            var rowFacility = $('<div class="col" data-facility="' + el.facility + '" hidden>' + el.facility + '</div>');
+            let rowFacility = $('<div class="col" data-facility="' + el.facility + '" hidden>' + el.facility + '</div>');
             rowFacility.appendTo(row);
 
-            var rowToFacility = $('<div class="col" data-toFacility="' + toFacility + '">' + toFacility + '</div>');
+            let rowToFacility = $('<div class="col" data-toFacility="' + toFacility + '">' + toFacility + '</div>');
             rowToFacility.appendTo(row);
 
             row.appendTo(investedDetailsTableContent);
@@ -2183,25 +1943,25 @@ function createCashingTable(invCash, investor) {
 
 function createIncomeTable(investorsCash, gettingFacility) {
 
-    var invCash;
-    var investor = $('#profile').find($('b')).text();
+    let invCash;
+    let investor = $('#profile').find($('b')).text();
 
-    var investmentsHead = $('#investments').find('.investments__head.flex');
+    let investmentsHead = $('#investments').find('.investments__head.flex');
     investmentsHead.empty();
-    var invColDate = $('<div class="col">Дата</div>');
+    let invColDate = $('<div class="col">Дата</div>');
     invColDate.appendTo(investmentsHead);
-    var invColCashing = $('<div class="col">Сумма</div>');
+    let invColCashing = $('<div class="col">Сумма</div>');
     invColCashing.appendTo(investmentsHead);
-    var invColCommission = $('<div class="col">Источник</div>');
+    let invColCommission = $('<div class="col">Источник</div>');
     invColCommission.appendTo(investmentsHead);
-    var invColFacility = $('<div class="col" hidden>Объект</div>');
+    let invColFacility = $('<div class="col" hidden>Объект</div>');
     invColFacility.appendTo(investmentsHead);
-    var curFacility = '';
-    var investedDetailsTableContent = $('#investedDetailsTable').find('.simplebar-scroll-content').find('.simplebar-content');
+    let curFacility = '';
+    let investedDetailsTableContent = $('#investedDetailsTable').find('.simplebar-scroll-content').find('.simplebar-content');
     if (gettingFacility === '') {
         curFacility = investedDetailsTableContent.find('.row.flex-vcenter:visible:first').find('.col:last').text();
         if (curFacility === '') {
-            var tmp = $('#investmentsDetailsTitle').text().split(' ');
+            let tmp = $('#investmentsDetailsTitle').text().split(' ');
             $.each(tmp, function (ind, el) {
                 if (ind > 2) {
                     curFacility += el;
@@ -2224,18 +1984,18 @@ function createIncomeTable(investorsCash, gettingFacility) {
     });
 
     $.each(invCash, function (ind, el) {
-        var row = $('<div class="row flex-vcenter"></div>');
+        let row = $('<div class="row flex-vcenter"></div>');
         row.appendTo(investedDetailsTableContent);
-        var dateGiv = new Intl.DateTimeFormat('ru-RU').format(el.dateGivedCash);
-        var colDate = $('<div class="col" style="margin-left: 15px" data-date="' + dateGiv + '">' + dateGiv + '</div>');
+        let dateGiv = new Intl.DateTimeFormat('ru-RU').format(el.dateGivedCash);
+        let colDate = $('<div class="col" style="margin-left: 15px" data-date="' + dateGiv + '">' + dateGiv + '</div>');
         colDate.appendTo(row);
 
-        var colSum = $('<div class="col" data-cash="' + el.givedCash + '">' +
+        let colSum = $('<div class="col" data-cash="' + el.givedCash + '">' +
             new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(el.givedCash) +
             ' руб.' + '</div>');
         colSum.appendTo(row);
-        var cashSource = el.cashSource === null ? '' : el.cashSource.cashSource;
-        var cashImg = '';
+        let cashSource = el.cashSource === null ? '' : el.cashSource.cashSource;
+        let cashImg = '';
         switch (cashSource) {
             case 'Альфа':
             case 'Карта Альфа-банка':
@@ -2250,16 +2010,16 @@ function createIncomeTable(investorsCash, gettingFacility) {
             default:
                 cashImg = 'invoice.png';
         }
-        var colImg = $('<div class="col"><img src="/resources/core/img/' + cashImg + '" title="' + cashSource + '"></div>');
+        let colImg = $('<div class="col"><img src="/resources/core/img/' + cashImg + '" title="' + cashSource + '"></div>');
         colImg.appendTo(row);
 
-        var colFacility = $('<div class="col" hidden data-facility="' + el.facility.facility + '">' + el.facility.facility + '</div>');
+        let colFacility = $('<div class="col" hidden data-facility="' + el.facility.facility + '">' + el.facility.facility + '</div>');
         colFacility.appendTo(row);
     });
-    var investments = $('#investments');
-    var invested = [];
+    let investments = $('#investments');
+    let invested = [];
     invCash.reduce(function (res, value) {
-        var facility = value.facility.facility;
+        let facility = value.facility.facility;
         if (!res[facility]) {
             res[facility] = {
                 givedCash: 0,
@@ -2297,7 +2057,7 @@ function createIncomeTable(investorsCash, gettingFacility) {
 }
 
 function createInvestedAllTable(investorsCash) {
-    var invCash;
+    let invCash;
 
     invCash = $.grep(investorsCash, function (el) {
         return el.givedCash > 0 && el.investor != null;
@@ -2309,14 +2069,14 @@ function createInvestedAllTable(investorsCash) {
 
     // console.log(invCash);
 
-    var investedAllDetailsTable = $('#investedAllDetailsTable').find('.simplebar-content');
+    let investedAllDetailsTable = $('#investedAllDetailsTable').find('.simplebar-content');
     investedAllDetailsTable.empty();
-    var investor = $('#profile').find($('b')).text();
+    let investor = $('#profile').find($('b')).text();
 
-    var invested = [];
+    let invested = [];
 
     invCash.reduce(function (res, value) {
-        var facility = value.facility.facility;
+        let facility = value.facility.facility;
         if (!res[facility]) {
             res[facility] = {
                 givedCash: 0,
@@ -2356,35 +2116,33 @@ function createInvestedAllTable(investorsCash) {
 
     $.each(invested, function (ind, el) {
         if (el.myCash > 0) {
-            var row = $('<div class="row flex-vcenter"></div>');
+            let row = $('<div class="row flex-vcenter"></div>');
             row.appendTo(investedAllDetailsTable);
 
-            var colFacility = $('<div class="col" style="margin-left: 15px">' + el.facility + '</div>');
+            let colFacility = $('<div class="col" style="margin-left: 15px">' + el.facility + '</div>');
             colFacility.appendTo(row);
 
-            var colIncomeTotal = $('<div class="col" data-income="' + el.incomeCash + '">' +
+            let colIncomeTotal = $('<div class="col" data-income="' + el.incomeCash + '">' +
                 new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(Math.round(el.incomeCash)) + ' руб.' + '</div>');
             colIncomeTotal.appendTo(row);
 
-            var colCashingTotal = $('<div class="col" data-cashing="' + el.cashing + '">' +
+            let colCashingTotal = $('<div class="col" data-cashing="' + el.cashing + '">' +
                 new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(Math.round(el.cashing)) + ' руб.' + '</div>');
             colCashingTotal.appendTo(row);
 
-            var colSum = $('<div class="col" data-cash="' + el.myCash + '">' +
+            let colSum = $('<div class="col" data-cash="' + el.myCash + '">' +
                 new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(Math.round(el.incomeCash - el.cashing)) + ' руб.' + '</div>');
             colSum.appendTo(row);
-            var colDetails = $('<div class="col"><button type="button" class="btn btn-primary" id="showInvestsDetails">Подробности</button></div>');
+            let colDetails = $('<div class="col"><button type="button" class="btn btn-primary" id="showInvestsDetails">Подробности</button></div>');
             colDetails.appendTo(row);
-
-
         }
     });
 
 }
 
 function createInvestedTable(investorsCash) {
-    var invCash;
-    var investor = $('#profile').find($('b')).text();
+    let invCash;
+    let investor = $('#profile').find($('b')).text();
 
     invCash = $.grep(investorsCash, function (el) {
         return el.givedCash > 0 && el.investor != null;
@@ -2394,18 +2152,18 @@ function createInvestedTable(investorsCash) {
         return new Date(a.dateGivedCash) - new Date(b.dateGivedCash);
     });
 
-    var investedDetailsTable = $('#investedDetailsTable').find('.simplebar-content');
+    let investedDetailsTable = $('#investedDetailsTable').find('.simplebar-content');
     investedDetailsTable.empty();
 
-    var investmentsHead = $('#investments').find('.investments__head.flex');
+    let investmentsHead = $('#investments').find('.investments__head.flex');
     investmentsHead.empty();
-    var invColDate = $('<div class="col">Дата</div>');
+    let invColDate = $('<div class="col">Дата</div>');
     invColDate.appendTo(investmentsHead);
-    var invColCashing = $('<div class="col">Сумма</div>');
+    let invColCashing = $('<div class="col">Сумма</div>');
     invColCashing.appendTo(investmentsHead);
-    var invColCommission = $('<div class="col">Источник</div>');
+    let invColCommission = $('<div class="col">Источник</div>');
     invColCommission.appendTo(investmentsHead);
-    var invColFacility = $('<div class="col" hidden>Объект</div>');
+    let invColFacility = $('<div class="col" hidden>Объект</div>');
     invColFacility.appendTo(investmentsHead);
 
     $.each(invCash, function (ind, el) {
@@ -2414,18 +2172,18 @@ function createInvestedTable(investorsCash) {
             (el.typeClosingInvest === null ||
                 (el.typeClosingInvest.typeClosingInvest !== 'Вывод' && el.typeClosingInvest.typeClosingInvest !== 'Вывод_комиссия' &&
                     el.typeClosingInvest.typeClosingInvest !== 'Реинвестирование'))*/) {
-            var row = $('<div class="row flex-vcenter"></div>');
+            let row = $('<div class="row flex-vcenter"></div>');
             row.appendTo(investedDetailsTable);
-            var dateGiv = new Intl.DateTimeFormat('ru-RU').format(el.dateGivedCash);
-            var colDate = $('<div class="col" style="margin-left: 15px" data-date="' + dateGiv + '">' + dateGiv + '</div>');
+            let dateGiv = new Intl.DateTimeFormat('ru-RU').format(el.dateGivedCash);
+            let colDate = $('<div class="col" style="margin-left: 15px" data-date="' + dateGiv + '">' + dateGiv + '</div>');
             colDate.appendTo(row);
 
-            var colSum = $('<div class="col" data-cash="' + el.givedCash + '">' +
+            let colSum = $('<div class="col" data-cash="' + el.givedCash + '">' +
                 new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(el.givedCash) +
                 ' руб.' + '</div>');
             colSum.appendTo(row);
-            var cashSource = el.cashSource === null ? '' : el.cashSource.cashSource;
-            var cashImg = '';
+            let cashSource = el.cashSource === null ? '' : el.cashSource.cashSource;
+            let cashImg = '';
             switch (cashSource) {
                 case 'Альфа':
                 case 'Карта Альфа-банка':
@@ -2440,17 +2198,17 @@ function createInvestedTable(investorsCash) {
                 default:
                     cashImg = 'invoice.png';
             }
-            var colImg = $('<div class="col"><img src="/resources/core/img/' + cashImg + '" title="' + cashSource + '"></div>');
+            let colImg = $('<div class="col"><img src="/resources/core/img/' + cashImg + '" title="' + cashSource + '"></div>');
             colImg.appendTo(row);
 
-            var colFacility = $('<div class="col" hidden data-facility="' + el.facility.facility + '">' + el.facility.facility + '</div>');
+            let colFacility = $('<div class="col" hidden data-facility="' + el.facility.facility + '">' + el.facility.facility + '</div>');
             colFacility.appendTo(row);
         }
     });
-    var investments = $('#investments');
-    var invested = [];
+    let investments = $('#investments');
+    let invested = [];
     invCash.reduce(function (res, value) {
-        var facility = value.facility.facility;
+        let facility = value.facility.facility;
         if (!res[facility]) {
             res[facility] = {
                 givedCash: 0,
@@ -2475,7 +2233,7 @@ function createInvestedTable(investorsCash) {
         return res;
     }, {});
 
-    var facility = investments
+    let facility = investments
         .find('.popup__inner')
         .find('.popup__body')
         .find('.head')
@@ -2485,7 +2243,7 @@ function createInvestedTable(investorsCash) {
 
     $.each(invested, function (ind, el) {
         if (el.facility === facility) {
-            var totalSum = $('#totalSumFooter');
+            let totalSum = $('#totalSumFooter');
             totalSum.find('strong').empty();
             $('<span><strong>' + Intl.NumberFormat('ru-RU', {maximumFractionDigits: 0}).format(Math.round(el.givedCash)) + ' руб.' + '</strong></span>')
                 .appendTo(totalSum);
@@ -2495,18 +2253,18 @@ function createInvestedTable(investorsCash) {
 
 function getMyCash(investorsCash, investor) {
 
-    var invCash = $.grep(investorsCash, function (el) {
+    let invCash = $.grep(investorsCash, function (el) {
         return el.investor.login === investor && el.typeClosingInvest !== null &&
             (el.typeClosingInvest.typeClosingInvest === 'Вывод' || el.typeClosingInvest.typeClosingInvest === 'Вывод_комиссия'
                 || el.typeClosingInvest.typeClosingInvest === 'Реинвестирование') && el.givedCash > 0;
     });
 
-    var groupedCashes = [];
+    let groupedCashes = [];
 
-    var result = invCash.reduce(function (res, value) {
+    let result = invCash.reduce(function (res, value) {
         if (res.typeClosingInvest !== null) {
 
-            var key = value.facility.facility + '' + value.dateClosingInvest;
+            let key = value.facility.facility + '' + value.dateClosingInvest;
 
             if (!res[key]) {
                 res[key] = {
@@ -2546,222 +2304,6 @@ function getMyCash(investorsCash, investor) {
     return result;
 }
 
-function prepareIncomeChart(mainFlowsList) {
-
-    var invFlows = $.grep(mainFlowsList, function (el) {
-        return el.summa > 0
-    });
-    var settlementDates = [];
-    var tmpDate = [];
-
-    var cash;
-    var cashes = [];
-    $.each(invFlows, function (ind, el) {
-        settlementDates.push(new Date(el.settlementDate));
-        cash = {
-            settlementDate: new Date(el.settlementDate),
-            facility: el.underFacilities.facility.facility,
-            sum: el.summa
-        };
-        cashes.push(cash);
-    });
-    settlementDates.sort(function (a, b) {
-        return new Date(a) - new Date(b);
-    });
-
-    cashes.sort(function (a, b) {
-        return a.settlementDate - b.settlementDate;
-    });
-
-    $.each(cashes, function (ind, el) {
-        el.settlementDate = monthNames[el.settlementDate.getMonth()] + ' ' + el.settlementDate.getFullYear();
-    });
-
-    $.each(settlementDates, function (ind, el) {
-        tmpDate.push(monthNames[el.getMonth()] + ' ' + el.getFullYear())
-    });
-
-    settlementDates = unique(tmpDate);
-    var ds;
-    var dSet = [];
-
-    var groupedCashes = [];
-
-    cashes.reduce(function (res, value) {
-        if (!res[value.facility]) {
-            res[value.facility] = {
-                sum: 0,
-                facility: value.facility,
-                settlementDate: value.settlementDate
-            };
-            groupedCashes.push(res[value.facility])
-        }
-        if (res[value.facility].facility === value.facility && res[value.facility].settlementDate === value.settlementDate) {
-            res[value.facility].sum += value.sum;
-        } else {
-            res[value.facility] = {
-                sum: value.sum,
-                facility: value.facility,
-                settlementDate: value.settlementDate
-            };
-            groupedCashes.push(res[value.facility])
-        }
-
-        return res;
-    }, {});
-
-    var facilities = [];
-    $.each(groupedCashes, function (i, el) {
-        facilities.push(el.facility);
-    });
-    facilities = unique(facilities);
-
-    var totals = [];
-    var total;
-    var sums = [];
-    var totalSums = [];
-    var i = -1;
-    var facilitiesDates = [];
-    $.each(facilities, function (ind, el) {
-        sums = [];
-        facilitiesDates = [];
-        i = -1;
-        $.each(settlementDates, function (indDates, elDates) {
-            i++;
-
-            $.each(groupedCashes, function (indGr, elGr) {
-                if (elGr.facility === el && elGr.settlementDate === elDates) {
-
-                    if (!totalSums[i]) {
-                        totalSums[i] = 0;
-                    }
-                    if (!facilitiesDates[i]) {
-                        facilitiesDates[i] = elGr.settlementDate;
-                    }
-                    if (facilitiesDates[i].length === 0) {
-                        sums.push(0);
-                    } else {
-                        sums.push(elGr.sum);
-                    }
-                }
-                if (elGr.facility !== el && elGr.settlementDate === elDates) {
-                    if (!totalSums[i]) {
-                        totalSums[i] = elGr.sum;
-                    } else {
-                        if (elGr.facility !== el && elGr.settlementDate === elDates) {
-                            totalSums[i] = totalSums[i] + elGr.sum;
-                        }
-                    }
-                }
-            });
-        });
-
-        $.each(facilitiesDates, function (ind, el) {
-            if (typeof el === 'undefined') {
-                sums.splice(ind, 0, 0);
-            }
-        });
-
-        total =
-            {
-                facility: el,
-                settlementDates: facilitiesDates,
-                sums: sums
-            };
-        totals.push(total);
-    });
-    var color = 0;
-    $.each(totals, function (ind, el) {
-        color++;
-        ds = {
-            label: el.facility,
-            backgroundColor: getColor(color),
-            borderColor: getColor(color),
-            data: el.sums,
-            fill: false
-        };
-        dSet.push(ds);
-    });
-
-    ds = {
-        label: "Все объекты",
-        backgroundColor: getColor(8),
-        borderColor: getColor(8),
-        data: totalSums,
-        fill: false
-    };
-
-    dSet.push(ds);
-
-    var max = Math.max.apply(Math, totalSums);
-    var step = Math.floor(max / 60000) * 10000;
-    max = step * 7;
-
-    var config = {
-        type: 'line',
-        data:
-            {
-                labels: settlementDates,
-                datasets: dSet
-            },
-        options:
-            {
-                legend:
-                    {
-                        position: 'top',
-                        labels:
-                            {
-                                padding: 15,
-                                fontFamily: 'OpenSans',
-                                fontSize: 15
-                            }
-                    },
-                responsive: true,
-                title:
-                    {
-                        display: false,
-                        text: ''
-                    },
-                scales:
-                    {
-                        xAxes: [
-                            {
-                                ticks:
-                                    {
-                                        fontColor: '#11325b',
-                                        fontSize: 15,
-                                        fontStyle: 600,
-                                        fontFamily: 'OpenSans'
-                                    },
-                                gridLines:
-                                    {
-                                        display: true
-                                    }
-                            }],
-                        yAxes: [
-                            {
-                                gridLines:
-                                    {
-                                        display: true
-                                    },
-                                ticks:
-                                    {
-                                        min: 0,
-                                        max: max,
-                                        stepSize: step,
-                                        fontColor: '#11325b',
-                                        fontSize: 15,
-                                        fontFamily: 'OpenSans'
-                                    }
-                            }]
-                    }
-            }
-    };
-
-    var ctx1 = document.getElementById("chart-finance").getContext("2d");
-    window.myDoughnut = new Chart(ctx1, config);
-}
-
 function onStartUp() {
     getInvestorsCash();
     getInvestorsFlowsList('max', '');
@@ -2770,8 +2312,8 @@ function onStartUp() {
 }
 
 function getInvestorsFlowsList(iMonth, fullDate) {
-    var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
 
     $.ajax({
         type: "POST",
@@ -2784,7 +2326,7 @@ function getInvestorsFlowsList(iMonth, fullDate) {
         }
     })
         .done(function (data) {
-            var invFlows = data.investorsFlowsList;
+            let invFlows = data.investorsFlowsList;
             if (fullDate === '') {
                 prepareDetailsProfit(invFlows, iMonth);
                 prepareIncomeDiagram(invFlows);
@@ -2805,8 +2347,8 @@ function getInvestorsFlowsList(iMonth, fullDate) {
 }
 
 function getMainFlowsList(facility) {
-    var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
 
     $.ajax({
         type: "POST",
@@ -2832,8 +2374,8 @@ function getMainFlowsList(facility) {
 }
 
 function getInvestorsCash() {
-    var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
 
     $.ajax({
         type: "POST",
@@ -2846,7 +2388,7 @@ function getInvestorsCash() {
         }
     })
         .done(function (data) {
-            prepareInvestedMoney(data.investorsCashList, data.rooms, data.saleOfFacilities);
+            prepareInvestedMoney(data.investorsCashList, data.investedMoney);
         })
         .fail(function (e) {
             console.log(e);
@@ -2858,8 +2400,8 @@ function getInvestorsCash() {
 }
 
 function getAnnexes() {
-    var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
 
     $.ajax({
         type: "POST",
@@ -2882,75 +2424,14 @@ function getAnnexes() {
         });
 }
 
-
 function checkLocalStorage() {
     return window.localStorage;
 }
 
-function getDateFromString(strDate) {
-    var parts = strDate.split(' ');
-    var iMonth = 0;
-    var reportDate;
-    switch (parts[0]) {
-        case 'January':
-        case 'Январь':
-            iMonth = 0;
-            break;
-        case 'February':
-        case 'Февраль':
-            iMonth = 1;
-            break;
-        case 'March':
-        case 'Март':
-            iMonth = 2;
-            break;
-        case 'April':
-        case 'Апрель':
-            iMonth = 3;
-            break;
-        case 'May':
-        case 'Май':
-            iMonth = 4;
-            break;
-        case 'June':
-        case 'Июнь':
-            iMonth = 5;
-            break;
-        case 'July':
-        case 'Июль':
-            iMonth = 6;
-            break;
-        case 'August':
-        case 'Август':
-            iMonth = 7;
-            break;
-        case 'September':
-        case 'Сентябрь':
-            iMonth = 8;
-            break;
-        case 'October':
-        case 'Октябрь':
-            iMonth = 9;
-            break;
-        case 'November':
-        case 'Ноябрь':
-            iMonth = 10;
-            break;
-        case 'December':
-        case 'Декабрь':
-            iMonth = 11;
-            break;
-    }
-
-    reportDate = new Date(parseInt(parts[1]), iMonth, 1);
-    return Date.parse(reportDate.toDateString());
-
-}
-
 function appendMonths(months) {
-    var month;
-    var monthNumb;
-    var year;
+    let month;
+    let monthNumb;
+    let year;
     month = months[0].split(' ')[0];
     year = months[0].split(' ')[1];
     switch (month) {
@@ -2991,7 +2472,7 @@ function appendMonths(months) {
             monthNumb = 11;
             break;
     }
-    for (var i = months.length; i < 6; i++) {
+    for (let i = months.length; i < 6; i++) {
         monthNumb--;
         if (monthNumb < 0) {
             monthNumb = 11;
@@ -3006,8 +2487,8 @@ function appendMonths(months) {
 
 function createAnnexesTbl(annexes) {
 
-    var body = $('table#tblAnnex').find('tbody');
-    var tr, td, a, label, input, strDate;
+    let body = $('table#tblAnnex').find('tbody');
+    let tr, td, a, label, input, strDate;
     body.empty();
 
     $.each(annexes, function (i, el) {
@@ -3046,7 +2527,7 @@ function createAnnexesTbl(annexes) {
 
     });
 
-    var unread = checkUnreadAnnex();
+    let unread = checkUnreadAnnex();
     if (unread > 0) {
         blurElement($('.out'), 4);
         $('#readAnnex').css('z-index', '1000001');
@@ -3059,21 +2540,15 @@ function createAnnexesTbl(annexes) {
 
 }
 
-function setAnnexRead(id, userId, annex, read) {
-    var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
+function setAnnexRead(id) {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
 
-    var usersAnnexToContracts = {
+    let usersAnnexToContracts = {
         id: id
-        /*
-        userId: userId,
-        annex: annex,
-        annexRead: read,
-        dateRead: new Date().getTime()
-        */
     };
 
-    var search = ({
+    let search = ({
         "usersAnnexToContracts": usersAnnexToContracts
     });
     $.ajax({
@@ -3096,8 +2571,8 @@ function setAnnexRead(id, userId, annex, read) {
 }
 
 function updateUnreadAnnexes() {
-    var unchecked = checkUnreadAnnex();
-    var read = $('#read');
+    let unchecked = checkUnreadAnnex();
+    let read = $('#read');
     if (unchecked === 0) {
         setTimeout(function () {
             read.removeClass('js-active')
@@ -3114,7 +2589,7 @@ function checkUnreadAnnex() {
 }
 
 function blurElement(element, size) {
-    var filterVal = 'blur(' + size + 'px)';
+    let filterVal = 'blur(' + size + 'px)';
     $(element).css({
         'filter': filterVal,
         'webkitFilter': filterVal,
@@ -3126,53 +2601,6 @@ function blurElement(element, size) {
         '-moz-transition': 'all 0.5s ease-out',
         '-o-transition': 'all 0.5s ease-out'
     });
-
-}
-
-var localStorageSpace = function () {
-    var allStrings = '';
-    for (var key in window.localStorage) {
-        if (window.localStorage.hasOwnProperty(key)) {
-            allStrings += window.localStorage[key];
-        }
-    }
-    return allStrings ? 3 + ((allStrings.length * 16) / (8 * 1024)) + ' KB' : 'Empty (0 KB)';
-};
-
-function getMaxInFacility(cashes) {
-    var invested = [];
-    cashes.reduce(function (res, value) {
-        var facility = value.facility.facility;
-        if (!res[facility]) {
-            res[facility] = {
-                givedCash: 0,
-                facility: facility
-            };
-            invested.push(res[facility])
-        }
-        if (res[facility].facility === facility) {
-            res[facility].givedCash += value.givedCash;
-        } else {
-            res[facility] = {
-                givedCash: 0,
-                facility: facility
-            };
-            invested.push(res[facility])
-        }
-        return res;
-    }, {});
-
-    var max = 0;
-    var indMax = -1;
-    var facility;
-    $.each(invested, function (ind, el) {
-        if (max < el.givedCash) {
-            max = el.givedCash;
-            indMax = ind;
-        }
-    });
-    facility = invested[indMax].facility;
-    return facility;
 
 }
 

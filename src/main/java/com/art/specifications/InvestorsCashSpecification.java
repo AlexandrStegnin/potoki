@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -120,4 +121,20 @@ public class InvestorsCashSpecification extends BaseSpecification<InvestorsCash,
                 criteriaBuilder.isNull(root.get(InvestorsCash_.typeClosingInvest))
         );
     }
+
+    private static Specification<InvestorsCash> notResale(final BigInteger typeClosingInvestId) {
+        return (root, criteriaQuery, criteriaBuilder) ->
+                criteriaBuilder.notEqual(root
+                        .get(InvestorsCash_.typeClosingInvest)
+                        .get(TypeClosingInvest_.id), typeClosingInvestId);
+    }
+
+    public Specification<InvestorsCash> getInvestedMoney(final BigInteger typeClosingInvestId) {
+        return (root, query, cb) -> where(
+                facilityIsNotNull())
+                .and(notClosing())
+                .or(notResale(typeClosingInvestId))
+                .toPredicate(root, query.orderBy(cb.asc(root.get(InvestorsCash_.dateGivedCash))), cb);
+    }
+
 }
