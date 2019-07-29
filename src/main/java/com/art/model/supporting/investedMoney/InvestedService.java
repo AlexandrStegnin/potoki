@@ -35,7 +35,7 @@ public class InvestedService {
         this.investorsCashService = investorsCashService;
     }
 
-    public List<Invested> getInvestedList(List<InvestorsCash> investorsCashes, String investorLogin) {
+    private List<Invested> getInvestedList(List<InvestorsCash> investorsCashes, String investorLogin) {
         List<Invested> investedList = investorsCashes.stream()
                 .filter(investorsCash -> investorsCash.getFacility() != null)
                 .map(Invested::new)
@@ -81,7 +81,7 @@ public class InvestedService {
         return facility[0];
     }
 
-    public List<String> getFacilitiesList(List<Invested> invested) {
+    private List<String> getFacilitiesList(List<Invested> invested) {
         return invested
                 .stream()
                 .filter(element -> element.getMyCash().compareTo(BigDecimal.ZERO) > 0)
@@ -89,7 +89,7 @@ public class InvestedService {
                 .collect(Collectors.toList());
     }
 
-    public List<BigDecimal> getSums(List<Invested> invested) {
+    private List<BigDecimal> getSums(List<Invested> invested) {
         return invested
                 .stream()
                 .filter(element -> element.getMyCash().compareTo(BigDecimal.ZERO) > 0)

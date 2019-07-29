@@ -1630,7 +1630,7 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
 
 function prepareInvestedMoney(investorsCashes, investedMoneyDb) {
     maxFacility = investedMoneyDb.facilityWithMaxSum;
-    
+
     let investor = investedMoneyDb.investor;
 
     let totalMoney = investedMoneyDb.totalMoney;
@@ -2168,10 +2168,10 @@ function createInvestedTable(investorsCash) {
 
     $.each(invCash, function (ind, el) {
         if (el.investor.login === investor
-            /*&&
-            (el.typeClosingInvest === null ||
-                (el.typeClosingInvest.typeClosingInvest !== 'Вывод' && el.typeClosingInvest.typeClosingInvest !== 'Вывод_комиссия' &&
-                    el.typeClosingInvest.typeClosingInvest !== 'Реинвестирование'))*/) {
+        /*&&
+        (el.typeClosingInvest === null ||
+            (el.typeClosingInvest.typeClosingInvest !== 'Вывод' && el.typeClosingInvest.typeClosingInvest !== 'Вывод_комиссия' &&
+                el.typeClosingInvest.typeClosingInvest !== 'Реинвестирование'))*/) {
             let row = $('<div class="row flex-vcenter"></div>');
             row.appendTo(investedDetailsTable);
             let dateGiv = new Intl.DateTimeFormat('ru-RU').format(el.dateGivedCash);
