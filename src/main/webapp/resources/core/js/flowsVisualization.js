@@ -1827,8 +1827,8 @@ function prepareInvestedMoney(investorsCashes, investedMoneyDb) {
         });
     });
 
-    createInvestedAllTable(investorsCashes);
-    createInvestedTable(investorsCashes);
+    createInvestedAllTable(investorsCashes, investedMoneyDb.invested);
+    createInvestedTable(investorsCashes, investedMoneyDb.invested);
 }
 
 function getToFacility(investor, facility, summ, invCash, dateGivedCash) {
@@ -2056,65 +2056,12 @@ function createIncomeTable(investorsCash, gettingFacility) {
 
 }
 
-function createInvestedAllTable(investorsCash) {
-    let invCash;
-
-    invCash = $.grep(investorsCash, function (el) {
-        return el.givedCash > 0 && el.investor != null;
-    });
-
-    invCash.sort(function (a, b) {
-        return new Date(a.dateGivedCash) - new Date(b.dateGivedCash);
-    });
-
-    // console.log(invCash);
+function createInvestedAllTable(investorsCash, investedDb) {
 
     let investedAllDetailsTable = $('#investedAllDetailsTable').find('.simplebar-content');
     investedAllDetailsTable.empty();
-    let investor = $('#profile').find($('b')).text();
 
-    let invested = [];
-
-    invCash.reduce(function (res, value) {
-        let facility = value.facility.facility;
-        if (!res[facility]) {
-            res[facility] = {
-                givedCash: 0,
-                facility: facility,
-                myCash: 0,
-                incomeCash: 0,
-                cashing: 0
-            };
-            invested.push(res[facility])
-        }
-        if (res[facility].facility === facility) {
-            res[facility].givedCash += value.givedCash;
-            if (value.investor.login === investor) {
-                res[facility].myCash += value.givedCash;
-                if (value.typeClosingInvest === null || value.typeClosingInvest.typeClosingInvest !== 'Перепродажа доли') {
-                    res[facility].incomeCash += value.givedCash;
-                }
-                if (value.typeClosingInvest !== null &&
-                    (value.typeClosingInvest.typeClosingInvest === 'Вывод' ||
-                        value.typeClosingInvest.typeClosingInvest === 'Вывод_комиссия' ||
-                        value.typeClosingInvest.typeClosingInvest === 'Реинвестирование')) {
-                    res[facility].cashing += value.givedCash;
-                }
-            }
-        } else {
-            res[facility] = {
-                givedCash: 0,
-                facility: facility,
-                myCash: 0,
-                incomeCash: 0,
-                cashing: 0
-            };
-            invested.push(res[facility])
-        }
-        return res;
-    }, {});
-
-    $.each(invested, function (ind, el) {
+    $.each(investedDb, function (ind, el) {
         if (el.myCash > 0) {
             let row = $('<div class="row flex-vcenter"></div>');
             row.appendTo(investedAllDetailsTable);
@@ -2140,7 +2087,7 @@ function createInvestedAllTable(investorsCash) {
 
 }
 
-function createInvestedTable(investorsCash) {
+function createInvestedTable(investorsCash, investedDb) {
     let invCash;
     let investor = $('#profile').find($('b')).text();
 
@@ -2167,11 +2114,7 @@ function createInvestedTable(investorsCash) {
     invColFacility.appendTo(investmentsHead);
 
     $.each(invCash, function (ind, el) {
-        if (el.investor.login === investor
-        /*&&
-        (el.typeClosingInvest === null ||
-            (el.typeClosingInvest.typeClosingInvest !== 'Вывод' && el.typeClosingInvest.typeClosingInvest !== 'Вывод_комиссия' &&
-                el.typeClosingInvest.typeClosingInvest !== 'Реинвестирование'))*/) {
+        if (el.investor.login === investor) {
             let row = $('<div class="row flex-vcenter"></div>');
             row.appendTo(investedDetailsTable);
             let dateGiv = new Intl.DateTimeFormat('ru-RU').format(el.dateGivedCash);
@@ -2206,32 +2149,6 @@ function createInvestedTable(investorsCash) {
         }
     });
     let investments = $('#investments');
-    let invested = [];
-    invCash.reduce(function (res, value) {
-        let facility = value.facility.facility;
-        if (!res[facility]) {
-            res[facility] = {
-                givedCash: 0,
-                facility: facility,
-                myCash: 0
-            };
-            invested.push(res[facility])
-        }
-        if (res[facility].facility === facility) {
-            res[facility].givedCash += value.givedCash;
-            if (value.investor.login === investor) {
-                res[facility].myCash += value.givedCash;
-            }
-        } else {
-            res[facility] = {
-                givedCash: 0,
-                facility: facility,
-                myCash: 0
-            };
-            invested.push(res[facility])
-        }
-        return res;
-    }, {});
 
     let facility = investments
         .find('.popup__inner')
@@ -2241,11 +2158,11 @@ function createInvestedTable(investorsCash) {
         .find('.select')
         .find('option:first').text();
 
-    $.each(invested, function (ind, el) {
+    $.each(investedDb, function (ind, el) {
         if (el.facility === facility) {
             let totalSum = $('#totalSumFooter');
             totalSum.find('strong').empty();
-            $('<span><strong>' + Intl.NumberFormat('ru-RU', {maximumFractionDigits: 0}).format(Math.round(el.givedCash)) + ' руб.' + '</strong></span>')
+            $('<span><strong>' + Intl.NumberFormat('ru-RU', {maximumFractionDigits: 0}).format(Math.round(el.givenCash)) + ' руб.' + '</strong></span>')
                 .appendTo(totalSum);
         }
     });

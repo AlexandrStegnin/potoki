@@ -26,8 +26,6 @@ public class StringToPaymentsMethodConverter implements Converter<String, Paymen
         } catch (Exception ex) {
             paymentsMethod = paymentsMethodService.findByPayment(id);
         }
-
-        System.out.println("Payment method : " + paymentsMethod);
         return paymentsMethod;
     }
 }

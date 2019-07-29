@@ -27,8 +27,6 @@ public class StringToUserConverter implements Converter<String, Users> {
         } catch (Exception ex) {
             user = userService.findByLogin(id);
         }
-
-        System.out.println("User : " + user);
         return user;
     }
 }

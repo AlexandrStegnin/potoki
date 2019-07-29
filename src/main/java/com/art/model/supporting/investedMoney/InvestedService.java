@@ -1,7 +1,9 @@
 package com.art.model.supporting.investedMoney;
 
 import com.art.model.InvestorsCash;
+import com.art.model.Rooms;
 import com.art.service.InvestorsCashService;
+import com.art.service.RoomsService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -27,12 +29,15 @@ public class InvestedService {
     private String INVESTOR_LOGIN;
     private BigInteger INVESTOR_ID;
 
-    private static final Executor EXECUTOR = Executors.newFixedThreadPool(5);
+    private static final Executor EXECUTOR = Executors.newFixedThreadPool(7);
 
     private final InvestorsCashService investorsCashService;
 
-    public InvestedService(InvestorsCashService investorsCashService) {
+    private final RoomsService roomsService;
+
+    public InvestedService(InvestorsCashService investorsCashService, RoomsService roomsService) {
         this.investorsCashService = investorsCashService;
+        this.roomsService = roomsService;
     }
 
     private List<Invested> getInvestedList(List<InvestorsCash> investorsCashes, String investorLogin) {
@@ -58,7 +63,34 @@ public class InvestedService {
                 Collections.replaceAll(result, invested, newInvested);
             }
         });
+        fillInvestedListForTables(investorsCashes, investorLogin, result);
         return result;
+    }
+
+    private void fillInvestedListForTables(List<InvestorsCash> investorsCashes, String investorLogin, List<Invested> investedList) {
+        investorsCashes
+                .stream()
+                .filter(investorsCash -> investorsCash.getGivedCash().compareTo(BigDecimal.ZERO) > 0)
+                .map(Invested::new)
+                .forEach(invested -> {
+                    if (!investedList.contains(invested)) {
+                        investedList.add(invested);
+                    } else {
+                        Invested newInvested = investedList.get(investedList.indexOf(invested));
+                        if (invested.getInvestorLogin().equalsIgnoreCase(investorLogin)) {
+                            if (invested.getTypeClosingInvest() == null || !invested.getTypeClosingInvest().equalsIgnoreCase("Перепродажа доли")) {
+                                newInvested.setIncomeCash((newInvested.getIncomeCash().add(invested.getGivenCash())).setScale(2, BigDecimal.ROUND_CEILING));
+                            }
+                            if (invested.getTypeClosingInvest() != null &&
+                                    (invested.getTypeClosingInvest().equalsIgnoreCase("Вывод") ||
+                                            invested.getTypeClosingInvest().equalsIgnoreCase("Вывод_комиссия") ||
+                                            invested.getTypeClosingInvest().equalsIgnoreCase("Реинвестирование"))) {
+                                newInvested.setCashing((newInvested.getCashing().add(invested.getGivenCash())).setScale(2, BigDecimal.ROUND_CEILING));
+                            }
+                            Collections.replaceAll(investedList, invested, newInvested);
+                        }
+                    }
+                });
     }
 
     public BigDecimal getTotalMoney(List<InvestorsCash> investorsCashes, BigInteger investorId) {
@@ -90,11 +122,22 @@ public class InvestedService {
     }
 
     private List<BigDecimal> getSums(List<Invested> invested) {
+//        fillFacilitiesCoasts(invested);
         return invested
                 .stream()
                 .filter(element -> element.getMyCash().compareTo(BigDecimal.ZERO) > 0)
                 .map(Invested::getMyCash)
                 .collect(Collectors.toList());
+    }
+
+    private List<Invested> fillFacilitiesCoasts(List<Invested> investedList) {
+        List<Rooms> rooms = roomsService.findAll();
+        investedList.forEach(invested ->
+                invested.setCoast(rooms.stream()
+                        .filter(room -> room.getUnderFacility().getFacility().getFacility().equalsIgnoreCase(invested.getFacility()))
+                        .map(Rooms::getCoast)
+                        .reduce(BigDecimal.ZERO, BigDecimal::add)));
+        return investedList;
     }
 
     public InvestedMoney getInvestedMoney(BigInteger investorId, String investorLogin) {
@@ -113,12 +156,14 @@ public class InvestedService {
 
         CompletableFuture<List<String>> facilitiesListFuture = investedFuture.thenComposeAsync(this::getFacilitiesListFuture);
 
+        CompletableFuture<List<Invested>> facilitiesCoastsFuture = investedFuture.thenComposeAsync(this::getFacilitiesCoastsFuture);
+
         CompletableFuture<List<BigDecimal>> sumsFuture = investedFuture.thenComposeAsync(this::getSumsFuture);
 
-        CompletableFuture<Void> voidCompletableFuture = CompletableFuture.allOf(investorsCashFuture, investedFuture, totalMoneyFuture, facilityWithMaxSumFuture,
+        CompletableFuture<Void> allCompletableFutures = CompletableFuture.allOf(investorsCashFuture, investedFuture, totalMoneyFuture, facilityWithMaxSumFuture,
                 facilitiesListFuture, sumsFuture);
 
-        CompletableFuture<InvestedMoney> investedMoneyCompletableFuture = voidCompletableFuture.thenApply(v -> {
+        CompletableFuture<InvestedMoney> investedMoneyCompletableFuture = allCompletableFutures.thenApply(v -> {
             InvestedMoney investedMoney = new InvestedMoney();
             investedMoney.setInvestor(INVESTOR_LOGIN);
             investedMoney.setInvestorsCashList(investorsCashFuture.join());
@@ -127,6 +172,7 @@ public class InvestedService {
             investedMoney.setFacilityWithMaxSum(facilityWithMaxSumFuture.join());
             investedMoney.setFacilitiesList(facilitiesListFuture.join());
             investedMoney.setSums(sumsFuture.join());
+            facilitiesCoastsFuture.join();
             return investedMoney;
         });
         InvestedMoney money = new InvestedMoney();
@@ -147,12 +193,7 @@ public class InvestedService {
 
     private CompletableFuture<List<InvestorsCash>> getInvestorsCash() {
         printThreadName(Thread.currentThread());
-        return CompletableFuture.supplyAsync(() -> investorsCashService.findAll()
-                .stream()
-                .filter(invCash -> invCash.getFacility() != null &&
-                        (invCash.getTypeClosingInvest() == null ||
-                                !invCash.getTypeClosingInvest().getId().equals(new BigInteger("7"))))
-                .collect(Collectors.toList()), EXECUTOR);
+        return CompletableFuture.supplyAsync(investorsCashService::getInvestedMoney, EXECUTOR);
     }
 
     private CompletableFuture<List<Invested>> getInvestedMoney(List<InvestorsCash> investorsCashes) {
@@ -179,6 +220,11 @@ public class InvestedService {
     private CompletableFuture<List<BigDecimal>> getSumsFuture(List<Invested> investedList) {
         printThreadName(Thread.currentThread());
         return CompletableFuture.supplyAsync(() -> getSums(investedList), EXECUTOR);
+    }
+
+    private CompletableFuture<List<Invested>> getFacilitiesCoastsFuture(List<Invested> investedList) {
+        printThreadName(Thread.currentThread());
+        return CompletableFuture.supplyAsync(() -> fillFacilitiesCoasts(investedList), EXECUTOR);
     }
 
     private void printThreadName(Thread thread) {

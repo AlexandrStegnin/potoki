@@ -25,8 +25,6 @@ public class StringToPaymentsTypeConverter implements Converter<String, Payments
         } catch (Exception ex) {
             paymentsType = paymentsTypeService.findByType(id);
         }
-
-        System.out.println("Payment type : " + paymentsType);
         return paymentsType;
     }
 }

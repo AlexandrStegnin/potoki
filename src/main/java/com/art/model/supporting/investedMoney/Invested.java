@@ -35,6 +35,10 @@ public class Invested {
 
     private List<InvestorsCash> investorsCashList;
 
+    private BigDecimal incomeCash = BigDecimal.ZERO;
+
+    private BigDecimal cashing = BigDecimal.ZERO;
+
     public Invested(InvestorsCash investorsCash) {
         this.facility = investorsCash.getFacility().getFacility();
         this.givenCash = investorsCash.getGivedCash();
