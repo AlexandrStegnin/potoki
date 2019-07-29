@@ -17,21 +17,6 @@ public class GetPrincipalFunc {
     @Resource(name = "facilityService")
     private FacilityService facilityService;
 
-    @Resource(name = "userService")
-    private UserService userService;
-
-    @Resource(name = "investorsFlowsService")
-    private InvestorsFlowsService investorsFlowsService;
-
-    @Resource(name = "mainFlowsService")
-    private MainFlowsService mainFlowsService;
-
-    @Resource(name = "investorsCashService")
-    private InvestorsCashService investorsCashService;
-
-    @Resource(name = "usersAnnexToContractsService")
-    private UsersAnnexToContractsService usersAnnexToContractsService;
-
     public String getLogin() {
         String userName;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
