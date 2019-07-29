@@ -2388,7 +2388,7 @@ function getInvestorsCash() {
         }
     })
         .done(function (data) {
-            prepareInvestedMoney(data.investorsCashList, data.investedMoney);
+            prepareInvestedMoney(data.investorsCashList, data);
         })
         .fail(function (e) {
             console.log(e);

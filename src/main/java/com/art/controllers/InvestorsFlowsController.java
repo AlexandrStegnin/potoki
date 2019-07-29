@@ -7,7 +7,6 @@ import com.art.model.supporting.CashFlows;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.InvestorsTotalSum;
 import com.art.model.supporting.SearchSummary;
-import com.art.model.supporting.investedMoney.Invested;
 import com.art.model.supporting.investedMoney.InvestedMoney;
 import com.art.model.supporting.investedMoney.InvestedService;
 import com.art.service.*;
@@ -411,23 +410,23 @@ public class InvestorsFlowsController {
 
     @PostMapping(value = "/getInvestorsCashList")
     public @ResponseBody
-    CashFlows getInvestorsCash(ModelMap model) {
-        return getCashFlows();
+    InvestedMoney getInvestorsCash(ModelMap model) {
+        return investedService.getInvestedMoney(getPrincipalFunc.getPrincipalId(), getPrincipalFunc.getLogin());
     }
 
     private CashFlows getCashFlows() {
         BigInteger investorId = getPrincipalFunc.getPrincipalId();
 
         List<InvestorsCash> investorsCashList = investorsCashService.getInvestedMoney();
-        List<Invested> investedList = investedService.getInvested(investorId);
+//        List<Invested> investedList = investedService.getInvested(investorId);
 
         InvestedMoney investedMoney = new InvestedMoney();
-        investedMoney.setInvestorsCashes(investorsCashList);
-        investedMoney.setInvested(investedList);
-        investedMoney.setTotalMoney(investedService.getTotalMoney(investorId));
-        investedMoney.setFacilityWithMaxSum(investedService.getFacilityWithMaxSum(investorId));
-        investedMoney.setFacilitiesList(investedService.getFacilitiesList(investedList));
-        investedMoney.setSums(investedService.getSums(investedList));
+        investedMoney.setInvestorsCashList(investorsCashList);
+//        investedMoney.setInvested(investedList);
+        investedMoney.setTotalMoney(investedService.getTotalMoney(investorsCashList, investorId));
+        investedMoney.setFacilityWithMaxSum(investedService.getFacilityWithMaxSum(new ArrayList<>()));
+//        investedMoney.setFacilitiesList(investedService.getFacilitiesList(investedList));
+//        investedMoney.setSums(investedService.getSums(investedList));
         investedMoney.setInvestor(getPrincipalFunc.getLogin());
 
         CashFlows cashFlows = new CashFlows();

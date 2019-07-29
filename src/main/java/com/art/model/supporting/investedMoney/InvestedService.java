@@ -1,14 +1,20 @@
 package com.art.model.supporting.investedMoney;
 
+import com.art.model.InvestorsCash;
+import com.art.service.InvestorsCashService;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 /**
@@ -18,69 +24,61 @@ import java.util.stream.Collectors;
 @Service
 public class InvestedService {
 
-    @PersistenceContext(name = "persistanceUnit")
-    private EntityManager em;
+    private String INVESTOR_LOGIN;
+    private BigInteger INVESTOR_ID;
 
-    @SuppressWarnings("unchecked")
-    public List<Invested> getInvested(BigInteger investorId) {
-        Query q = em.createNativeQuery("SELECT t.FACILITY, ROUND(SUM(givenCash), 2) as givenCash, " +
-                "ROUND(SUM(myCash), 2) as myCash, ROUND(SUM(openCash), 2) as openCash, " +
-                "ROUND(SUM(closedCash), 2) as closedCash, " +
-                "IFNULL(ROUND(AVG(coast), 2), 0) coast, " +
-                "FacilityId FROM (" +
-                "SELECT f.FACILITY, FacilityId, InvestorId, SUM(GivedCash) givenCash, " +
-                "CASE WHEN InvestorId = :investorId THEN SUM(GivedCash) ELSE 0 END myCash, " +
-                "CASE WHEN InvestorId = :investorId AND TypeClosingInvestId IS NOT NULL THEN SUM(GivedCash) ELSE 0 END closedCash, " +
-                "CASE WHEN InvestorId = :investorId AND TypeClosingInvestId IS NULL THEN SUM(GivedCash) ELSE 0 END openCash " +
-                "FROM InvestorsCash ic " +
-                "JOIN FACILITYES f ON  ic.FacilityId = f.ID " +
-                "JOIN USERS u ON ic.InvestorId = u.Id " +
-                "WHERE FacilityId IS NOT NULL " +
-                "GROUP BY FacilityId, InvestorId, TypeClosingInvestId " +
-                ") t " +
-                "LEFT JOIN " +
-                "(SELECT f.FACILITY, f.ID, SUM(Coast) coast FROM Rooms r " +
-                "LEFT JOIN UnderFacilities uf on r.UnderFacilityId = uf.Id " +
-                "LEFT JOIN FACILITYES f on uf.FacilityId = f.ID " +
-                "GROUP BY f.FACILITY, f.ID " +
-                "ORDER BY f.ID) cst on t.FacilityId = cst.ID " +
-                "GROUP BY FACILITY, FacilityId " +
-                "ORDER BY FacilityId");
-        q.setParameter("investorId", investorId);
-        List<Object[]> objList = q.getResultList();
-        List<Invested> investedList = new ArrayList<>();
-        objList.forEach(record -> investedList.add(
-                new Invested((String) record[0],
-                        (BigDecimal) record[1],
-                        (BigDecimal) record[2],
-                        (BigDecimal) record[3],
-                        (BigDecimal) record[4],
-                        (BigDecimal) record[5])));
-        return investedList;
+    private static final Executor EXECUTOR = Executors.newFixedThreadPool(5);
+
+    private final InvestorsCashService investorsCashService;
+
+    public InvestedService(InvestorsCashService investorsCashService) {
+        this.investorsCashService = investorsCashService;
     }
 
-    public BigDecimal getTotalMoney(BigInteger investorId) {
-        Query q = em.createNativeQuery("SELECT SUM(GivedCash) givenCash FROM InvestorsCash " +
-                "WHERE InvestorId = :investorId AND TypeClosingInvestId IS NULL");
-        q.setParameter("investorId", investorId);
-        return (BigDecimal) q.getSingleResult();
+    public List<Invested> getInvestedList(List<InvestorsCash> investorsCashes, String investorLogin) {
+        List<Invested> investedList = investorsCashes.stream()
+                .filter(investorsCash -> investorsCash.getFacility() != null)
+                .map(Invested::new)
+                .collect(Collectors.toList());
+        List<Invested> result = new ArrayList<>();
+        investedList.forEach(invested -> {
+            if (!result.contains(invested)) {
+                result.add(invested);
+            } else {
+                Invested newInvested = result.get(result.indexOf(invested));
+                newInvested.setGivenCash(newInvested.getGivenCash().add(invested.getGivenCash()));
+                if (invested.getInvestorLogin().equalsIgnoreCase(investorLogin)) {
+                    newInvested.setMyCash(newInvested.getMyCash().add(invested.getGivenCash()));
+                    if (invested.getTypeClosingInvest() == null) {
+                        newInvested.setOpenCash(newInvested.getOpenCash().add(invested.getGivenCash()));
+                    } else {
+                        newInvested.setClosedCash(newInvested.getClosedCash().add(invested.getGivenCash()));
+                    }
+                }
+                Collections.replaceAll(result, invested, newInvested);
+            }
+        });
+        return result;
     }
 
-    public String getFacilityWithMaxSum(BigInteger investorId) {
-        Query q = em.createNativeQuery("SELECT FACILITY " +
-                "FROM " +
-                "(" +
-                "SELECT FacilityId, FACILITY, SUM(GivedCash) GivenCash " +
-                "FROM InvestorsCash ic " +
-                "JOIN FACILITYES f on ic.FacilityId = f.ID " +
-                "WHERE FacilityId IS NOT NULL AND InvestorId = :investorId " +
-                "GROUP BY FacilityId, InvestorId " +
-                ") t " +
-                "GROUP BY FacilityId, FACILITY " +
-                "ORDER BY GivenCash DESC " +
-                "LIMIT 1");
-        q.setParameter("investorId", investorId);
-        return (String) q.getSingleResult();
+    public BigDecimal getTotalMoney(List<InvestorsCash> investorsCashes, BigInteger investorId) {
+        return investorsCashes.stream()
+                .filter(ic -> ic.getInvestor() != null && ic.getInvestor().getId().equals(investorId) && ic.getTypeClosingInvest() == null)
+                .map(InvestorsCash::getGivedCash)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public String getFacilityWithMaxSum(List<Invested> investedList) {
+        final String[] facility = {""};
+        investedList.stream()
+                .collect(Collectors.toMap(
+                        Invested::getFacility,
+                        Invested::getOpenCash))
+                .entrySet()
+                .stream()
+                .max(Map.Entry.comparingByValue())
+                .ifPresent(inv -> facility[0] = inv.getKey());
+        return facility[0];
     }
 
     public List<String> getFacilitiesList(List<Invested> invested) {
@@ -98,5 +96,94 @@ public class InvestedService {
                 .map(Invested::getMyCash)
                 .collect(Collectors.toList());
     }
+
+    public InvestedMoney getInvestedMoney(BigInteger investorId, String investorLogin) {
+        long start = System.nanoTime();
+
+        INVESTOR_LOGIN = investorLogin;
+        INVESTOR_ID = investorId;
+
+        CompletableFuture<List<InvestorsCash>> investorsCashFuture = getInvestorsCash();
+
+        CompletableFuture<List<Invested>> investedFuture = investorsCashFuture.thenComposeAsync(this::getInvestedMoney);
+
+        CompletableFuture<BigDecimal> totalMoneyFuture = investorsCashFuture.thenComposeAsync(this::getTotalMoney);
+
+        CompletableFuture<String> facilityWithMaxSumFuture = investedFuture.thenComposeAsync(this::getFacilityWithMaxSumFuture);
+
+        CompletableFuture<List<String>> facilitiesListFuture = investedFuture.thenComposeAsync(this::getFacilitiesListFuture);
+
+        CompletableFuture<List<BigDecimal>> sumsFuture = investedFuture.thenComposeAsync(this::getSumsFuture);
+
+        CompletableFuture<Void> voidCompletableFuture = CompletableFuture.allOf(investorsCashFuture, investedFuture, totalMoneyFuture, facilityWithMaxSumFuture,
+                facilitiesListFuture, sumsFuture);
+
+        CompletableFuture<InvestedMoney> investedMoneyCompletableFuture = voidCompletableFuture.thenApply(v -> {
+            InvestedMoney investedMoney = new InvestedMoney();
+            investedMoney.setInvestor(INVESTOR_LOGIN);
+            investedMoney.setInvestorsCashList(investorsCashFuture.join());
+            investedMoney.setInvested(investedFuture.join());
+            investedMoney.setTotalMoney(totalMoneyFuture.join());
+            investedMoney.setFacilityWithMaxSum(facilityWithMaxSumFuture.join());
+            investedMoney.setFacilitiesList(facilitiesListFuture.join());
+            investedMoney.setSums(sumsFuture.join());
+            return investedMoney;
+        });
+        InvestedMoney money = new InvestedMoney();
+        try {
+            money = investedMoneyCompletableFuture.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        long end = System.nanoTime();
+
+        long duration = end - start;
+
+        System.out.println("ESTIMATED TIME = " + Duration.ofNanos(duration).getSeconds() + " SECONDS");
+
+        return money;
+    }
+
+    private CompletableFuture<List<InvestorsCash>> getInvestorsCash() {
+        printThreadName(Thread.currentThread());
+        return CompletableFuture.supplyAsync(() -> investorsCashService.findAll()
+                .stream()
+                .filter(invCash -> invCash.getFacility() != null &&
+                        (invCash.getTypeClosingInvest() == null ||
+                                !invCash.getTypeClosingInvest().getId().equals(new BigInteger("7"))))
+                .collect(Collectors.toList()), EXECUTOR);
+    }
+
+    private CompletableFuture<List<Invested>> getInvestedMoney(List<InvestorsCash> investorsCashes) {
+        printThreadName(Thread.currentThread());
+        return CompletableFuture.supplyAsync(() -> getInvestedList(investorsCashes, INVESTOR_LOGIN), EXECUTOR);
+    }
+
+
+    private CompletableFuture<BigDecimal> getTotalMoney(List<InvestorsCash> investorsCashes) {
+        printThreadName(Thread.currentThread());
+        return CompletableFuture.supplyAsync(() -> getTotalMoney(investorsCashes, INVESTOR_ID), EXECUTOR);
+    }
+
+    private CompletableFuture<String> getFacilityWithMaxSumFuture(List<Invested> investedList) {
+        printThreadName(Thread.currentThread());
+        return CompletableFuture.supplyAsync(() -> getFacilityWithMaxSum(investedList), EXECUTOR);
+    }
+
+    private CompletableFuture<List<String>> getFacilitiesListFuture(List<Invested> investedList) {
+        printThreadName(Thread.currentThread());
+        return CompletableFuture.supplyAsync(() -> getFacilitiesList(investedList), EXECUTOR);
+    }
+
+    private CompletableFuture<List<BigDecimal>> getSumsFuture(List<Invested> investedList) {
+        printThreadName(Thread.currentThread());
+        return CompletableFuture.supplyAsync(() -> getSums(investedList), EXECUTOR);
+    }
+
+    private void printThreadName(Thread thread) {
+        System.out.println("CURRENT THREAD NAME === " + thread.getName());
+    }
+
 
 }

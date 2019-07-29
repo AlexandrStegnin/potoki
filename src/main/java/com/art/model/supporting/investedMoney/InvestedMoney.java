@@ -15,7 +15,7 @@ public class InvestedMoney {
 
     private String investor;
 
-    private List<InvestorsCash> investorsCashes;
+    private List<InvestorsCash> investorsCashList;
 
     private List<Invested> invested;
 
