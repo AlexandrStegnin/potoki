@@ -1628,7 +1628,7 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
     $('#incomesAndExpenses').prop('selectedIndex', ind).selectric('refresh');
 }
 
-function prepareInvestedMoney(investorsCashes, investedMoneyDb) {
+function prepareInvestedMoney(investedMoneyDb) {
     maxFacility = investedMoneyDb.facilityWithMaxSum;
 
     let investor = investedMoneyDb.investor;
@@ -1638,6 +1638,8 @@ function prepareInvestedMoney(investorsCashes, investedMoneyDb) {
     let investedBalance = investedMoneyDb.invested;
 
     let finalArr = investedMoneyDb.invested;
+
+    let investorsCashes = investedMoneyDb.investorsCashList;
 
     let colors = [];
 
@@ -2221,8 +2223,51 @@ function getMyCash(investorsCash, investor) {
     return result;
 }
 
+function populateInvestedStorage() {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: "getInvestorsCashList",
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        }
+    })
+        .done(function (data) {
+            localStorage.setItem('investedMoneyDb', JSON.stringify(data));
+        })
+        .fail(function (e) {
+            console.log(e);
+        })
+        .always(function () {
+            console.log('Локальное хранилище обновлено!');
+        });
+}
+
+function fillInvestedStorage(investedMoneyDb) {
+    localStorage.setItem('investedMoneyDb', JSON.stringify(investedMoneyDb));
+}
+
+function getInvestorsCashFromLocalStorage() {
+    let investedMoneyDb;
+
+    if (checkLocalStorage() && localStorage.getItem('investedMoneyDb')) {
+        investedMoneyDb = JSON.parse(localStorage.getItem('investedMoneyDb'));
+        prepareInvestedMoney(investedMoneyDb);
+        populateInvestedStorage();
+    } else {
+        getInvestorsCash();
+    }
+
+}
+
 function onStartUp() {
-    getInvestorsCash();
+    getInvestorsCashFromLocalStorage();
+    // getInvestorsCash();
     getInvestorsFlowsList('max', '');
     getMainFlowsList('Все объекты');
     getAnnexes();
@@ -2305,7 +2350,8 @@ function getInvestorsCash() {
         }
     })
         .done(function (data) {
-            prepareInvestedMoney(data.investorsCashList, data);
+            prepareInvestedMoney(data);
+            fillInvestedStorage(data);
         })
         .fail(function (e) {
             console.log(e);
