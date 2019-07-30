@@ -60,7 +60,7 @@ public class RoomsController {
                 " успешно обновлены.");
         model.addAttribute("redirectUrl", redirectUrl);
         model.addAttribute("ret", ret);
-        return "redirect:/rooms";
+        return "registrationsuccess";
     }
 
     @GetMapping(value = {"/delete-room-{id}"})

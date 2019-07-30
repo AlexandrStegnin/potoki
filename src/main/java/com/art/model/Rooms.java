@@ -42,4 +42,10 @@ public class Rooms implements Serializable {
     @JoinColumn(name = "UnderFacilityId", referencedColumnName = "Id")
     private UnderFacilities underFacility;
 
+    @Column(name = "BuyDate")
+    private Date buyDate;
+
+    @Column(name = "SalePrice")
+    private BigDecimal salePrice;
+
 }

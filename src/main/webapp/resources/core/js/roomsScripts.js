@@ -1,5 +1,6 @@
 jQuery(document).ready(function ($) {
-    $('#dateSaleRow').css('display', 'none');
+    let sold = $('#sold').val() === 'Да' ? 'block' : 'none';
+    $('#dateSaleRow').css('display', sold);
     $('#dateSaleErr').css('display', 'none');
 
     $(document).on('change', '#sold', function () {

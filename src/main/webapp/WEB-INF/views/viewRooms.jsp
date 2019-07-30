@@ -52,8 +52,10 @@
                 <th>Помещение</th>
                 <th>Квадратура</th>
                 <th>Стоимость</th>
+                <th>Дата покупки</th>
                 <th>Продано</th>
                 <th>Дата продажи</th>
+                <th>Цена продажи</th>
                 <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                     <th style="text-align: center">Действие</th>
                 </sec:authorize>
@@ -75,6 +77,9 @@
                         <fmt:formatNumber value="${room.coast}" type="currency" minFractionDigits="2"/>
                     </td>
                     <td>
+                        <fmt:formatDate value="${room.buyDate}" pattern="dd.MM.yyyy"/>
+                    </td>
+                    <td>
                         <label class="checkbox-inline">
                             <input type="checkbox" name="sold" id="sold" value=""
                             <c:if test="${room.sold == true}"> checked="checked" </c:if>
@@ -83,6 +88,9 @@
                     </td>
                     <td>
                         <fmt:formatDate value="${room.dateOfSale}" pattern="dd.MM.yyyy"/>
+                    </td>
+                    <td>
+                        <fmt:formatNumber value="${room.salePrice}" type="currency" minFractionDigits="2"/>
                     </td>
                     <sec:authorize access="isFullyAuthenticated()">
                         <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">

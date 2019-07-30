@@ -72,11 +72,20 @@
 
         <div class="row">
             <div class="form-group col-md-12">
+                <label class="col-md-3 control-lable" for="coast">Дата покупки:</label>
+                <div class="col-md-7">
+                    <form:input type="date" path="buyDate" id="buyDate" class="form-control input-sm"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="sold">Продано:</label>
                 <div class="col-md-7">
                     <select id="sold" class="form-control input-sm">
-                        <option selected="selected" value="Нет" id="0">Нет</option>
-                        <option value="Да" id="1">Да</option>
+                        <option <c:if test="${rooms.sold == true}"> selected="selected" </c:if> value="Нет" id="0">Нет</option>
+                        <option <c:if test="${rooms.sold == true}"> selected="selected" </c:if> value="Да" id="1">Да</option>
                     </select>
                     <label for="soldHid" style="display: none;"></label>
                     <form:checkbox path="sold" id="soldHid" style="display: none;" />
@@ -92,6 +101,16 @@
                 </div>
                 <div id="dateSaleErr" style="color: red; display: none" class="col-md-2 input-sm">
                     Необходимо ввести дату продажи
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label class="col-md-3 control-lable" for="coast">Цена продажи:</label>
+                <div class="col-md-7">
+                    <form:input type="number" path="salePrice" id="salePrice" class="form-control input-sm"
+                                min="0.0" step="0.01"/>
                 </div>
             </div>
         </div>
