@@ -18,7 +18,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -74,8 +73,7 @@ public class MarketingTreeController {
     public @ResponseBody
     GenericResponse updateMarketingTree() {
         GenericResponse response = new GenericResponse();
-        marketingTreeService.updateMarketingTree(BigInteger.ZERO);
-        response.setMessage("Данные маркетингового дерева успешно обновлены");
+        response.setMessage(marketingTreeService.updateMarketingTreeFromApp());
         return response;
     }
 

@@ -72,6 +72,11 @@ public class Users implements Serializable {
         this.facilities = facilities;
     }
 
+    public Users(BigInteger id, BigInteger partnerId) {
+        this.id = id;
+        this.partnerId = partnerId;
+    }
+
     @OneToOne(cascade =
             {
                     CascadeType.DETACH,

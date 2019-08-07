@@ -331,4 +331,8 @@ public class UserService {
         return prop;
     }
 
+    public List<Users> getForFindPartnerChild() {
+        return userRepository.getForFindPartnerChild();
+    }
+
 }

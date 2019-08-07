@@ -386,7 +386,7 @@ public class InvestorsCashController {
         investorsCashService.create(investorsCash);
         if (!Objects.equals(null, investorsCash.getCashSource()) &&
                 !investorsCash.getCashSource().getCashSource().equalsIgnoreCase("Бронь")) {
-            marketingTreeService.updateMarketingTree(investorsCash.getInvestor().getId());
+            marketingTreeService.updateMarketingTreeFromApp();
         }
         model.addAttribute("success", "Деньги инвестора " + investorsCash.getInvestor().getLogin() +
                 " успешно добавлены.");
@@ -706,8 +706,6 @@ public class InvestorsCashController {
             cash.setCashSource(null);
             cash.setSource(null);
             cash.setNewCashDetails(newCashDetails);
-//            cash.setDateClosingInvest(dateClosingInvest);
-//            cash.setTypeClosingInvest(closingInvest);
 
             newInvestorsCash.setId(null);
             newInvestorsCash.setCashSource(null);
@@ -901,14 +899,11 @@ public class InvestorsCashController {
                 if (!Objects.equals(null, ic.getSourceFlowsId()) && !Objects.equals(null, keyMap.getSourceFlowsId())) {
                     cash.setSourceFlowsId(ic.getSourceFlowsId() + "|" + keyMap.getSourceFlowsId());
                 }
-                switch (what) {
-                    case "sale":
-                        map.put(ic.getInvestor().getLogin() +
-                                ic.getSourceUnderFacility().getUnderFacility(), cash);
-                        break;
-                    default:
-                        map.put(ic.getInvestor().getLogin() + ic.getSourceFacility().getFacility(), cash);
-                        break;
+                if ("sale".equals(what)) {
+                    map.put(ic.getInvestor().getLogin() +
+                            ic.getSourceUnderFacility().getUnderFacility(), cash);
+                } else {
+                    map.put(ic.getInvestor().getLogin() + ic.getSourceFacility().getFacility(), cash);
                 }
 
             }
