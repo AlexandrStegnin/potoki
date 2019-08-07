@@ -3,6 +3,7 @@ package com.art.model;
 import com.art.model.supporting.KinEnum;
 import com.art.model.supporting.StatusEnum;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -18,6 +19,7 @@ import java.util.Date;
                 @StoredProcedureParameter(mode = ParameterMode.IN, type = BigInteger.class, name = "invId")
         }
 )
+@NoArgsConstructor
 public class MarketingTree implements Serializable {
 
     @Id
