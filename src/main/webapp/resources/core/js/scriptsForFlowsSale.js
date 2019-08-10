@@ -232,15 +232,18 @@ function display(data, tableForSearch) {
 }
 
 function loadFlowsAjax(action) {
-    var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
 
-    var data = new FormData();
-    var fileBuckets = [];
+    let data = new FormData();
+    let fileBuckets = [];
     $.each($('#file')[0].files, function (k, value) {
         data.append(k, value);
         fileBuckets.push(k, value);
     });
+    if (fileBuckets.length === 0) {
+        return;
+    }
 
     showLoader();
     $.ajax({
@@ -257,13 +260,20 @@ function loadFlowsAjax(action) {
             xhr.setRequestHeader(header, token);
         },
         success: function (data) {
-            $('#popup_modal_form').find('#message').append(data.message);
+            let $message = $('#popup_modal_form').find('#message');
+            let text = "";
+            let error = data.error;
+            if (error === null) {
+                $message.append(data.message).css("color", "black");
+            } else {
+                $message.append(data.error).css("color", "red");
+            }
             closeLoader();
             showPopup();
             closePopup();
         },
-        error: function (e) {
-            $('#popup_modal_form').find('#message').append(e.error);
+        error: function(error) {
+            $('#popup_modal_form').find('#message').append(error.responseText);
             closeLoader();
             showPopup();
             closePopup();

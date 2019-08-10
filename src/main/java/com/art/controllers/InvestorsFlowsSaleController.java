@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -89,7 +90,8 @@ public class InvestorsFlowsSaleController {
 
     @PostMapping(value = "/loadFlowsSaleAjax", produces = "application/json;charset=UTF-8")
     public @ResponseBody
-    GenericResponse loadFlowsSale(MultipartHttpServletRequest request, HttpServletRequest httpServletRequest) {
+    GenericResponse loadFlowsSale(MultipartHttpServletRequest request, HttpServletRequest httpServletRequest,
+                                  HttpServletResponse res) {
 
         GenericResponse response = new GenericResponse();
 
@@ -103,7 +105,11 @@ public class InvestorsFlowsSaleController {
         String err = "";
         try {
             err = uploadExcelFunc.ExcelParser(multipartFile, "invFlowsSale", httpServletRequest);
-            response.setMessage("Файл <b>" + multipartFile.getOriginalFilename() + "</b> успешно загружен.");
+            if (err.isEmpty()) {
+                response.setMessage("Файл <b>" + multipartFile.getOriginalFilename() + "</b> успешно загружен.");
+            } else {
+                response.setError(err);
+            }
         } catch (IOException | ParseException e) {
             System.out.println(err);
             e.printStackTrace();
