@@ -204,7 +204,8 @@ public class MarketingTreeService {
 
     private void fillParentPartner() {
         marketingTreeDTOList.forEach(marketingTreeDTO -> {
-            if (partnerChild.contains(marketingTreeDTO.getInvestorId())) {
+            if (partnerChild.contains(marketingTreeDTO.getInvestorId()) ||
+                    partnerChild.contains(marketingTreeDTO.getPartnerId())) {
                 marketingTreeDTO.setParentPartnerId(kolesnikId);
             } else {
                 marketingTreeDTO.setParentPartnerId(pantyaId);
