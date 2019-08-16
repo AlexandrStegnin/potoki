@@ -258,12 +258,14 @@ function prepareIncomeDiagram(investorsFlowsList) {
     let cashes = [];
     $.each(invFlows, function (ind, el) {
         reportDates.push(new Date(el.reportDate));
-        cash = {
-            reportDate: new Date(el.reportDate),
-            facility: el.facility.facility,
-            sum: el.afterCashing
-        };
-        cashes.push(cash);
+        if (el.facility !== null) {
+            cash = {
+                reportDate: new Date(el.reportDate),
+                facility: el.facility.facility,
+                sum: el.afterCashing
+            };
+            cashes.push(cash);
+        }
     });
 
     reportDates.sort(function (a, b) {
@@ -915,7 +917,7 @@ function prepareDetailsProfit(investorsFlowsList, iMonth) {
 
     let invFlows = $.grep(investorsFlowsList, function (el) {
         return (new Date(el.reportDate).getMonth() === dateMonth.getMonth() && new Date(el.reportDate).getFullYear() === dateMonth.getFullYear())
-            && el.underFacilities.facility != null;
+            && el.underFacilities != null && el.underFacilities.facility != null;
     });
 
     let facilitiesFlows = [];
