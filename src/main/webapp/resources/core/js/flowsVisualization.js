@@ -1650,12 +1650,12 @@ function prepareInvestedMoney(investedMoneyDb) {
     $('#totalInvested').html('<span>' + new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(totalMoney) + '</span>' + 'рублей');
     $('#investedList').html('');
     $.each(investedBalance, function (ind, el) {
-        if (el.myCash > 0) {
+        if (el.openCash > 0) {
             colors.push(getColor(ind));
             $('#investedList').append('<div class="circle-canvas__item" style="color: ' + getColor(ind) + '"><span>' + new Intl.NumberFormat('ru-RU', {
                 maximumFractionDigits: 2,
                 minimumFractionDigits: 2
-            }).format(el.myCash) + '</span>' + el.facility + '</div>');
+            }).format(el.openCash) + '</span>' + el.facility + '</div>');
         }
     });
 
@@ -1703,7 +1703,7 @@ function prepareInvestedMoney(investedMoneyDb) {
                 colPercent.appendTo(colBody);
 
                 let priceSecond = $('<div class="column__price-second">' +
-                    new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(Math.round(el.myCash)) + '</div>');
+                    new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(Math.round(el.openCash)) + '</div>');
                 priceSecond.appendTo(colDiv);
                 let colTitle = $('<div class="column__title">' + el.facility + '</div>');
                 colTitle.appendTo(colDiv);
