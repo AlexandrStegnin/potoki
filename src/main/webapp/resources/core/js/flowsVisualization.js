@@ -2240,7 +2240,8 @@ function populateInvestedStorage() {
         }
     })
         .done(function (data) {
-            localStorage.setItem('investedMoneyDb', JSON.stringify(data));
+            fillInvestedStorage(data);
+            prepareInvestedMoney(data);
         })
         .fail(function (e) {
             console.log(e);
