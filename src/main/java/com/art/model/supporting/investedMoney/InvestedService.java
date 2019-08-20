@@ -48,6 +48,14 @@ public class InvestedService {
         List<Invested> result = new ArrayList<>();
         investedList.forEach(invested -> {
             if (!result.contains(invested)) {
+                if (invested.getInvestorLogin().equalsIgnoreCase(investorLogin)) {
+                    invested.setMyCash(invested.getMyCash().add(invested.getGivenCash()));
+                    if (invested.getTypeClosingInvest() == null) {
+                        invested.setOpenCash(invested.getOpenCash().add(invested.getGivenCash()));
+                    } else {
+                        invested.setClosedCash(invested.getClosedCash().add(invested.getGivenCash()));
+                    }
+                }
                 result.add(invested);
             } else {
                 Invested newInvested = result.get(result.indexOf(invested));
