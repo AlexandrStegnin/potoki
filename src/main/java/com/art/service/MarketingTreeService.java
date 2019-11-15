@@ -135,7 +135,7 @@ public class MarketingTreeService {
         EntityManager entityManager = emf.createEntityManager();
         EntityTransaction tx = entityManager.getTransaction();
         Query query = entityManager.createNativeQuery(
-                "TRUNCATE TABLE MarketingTree");
+                "TRUNCATE TABLE MarketingTree;");
         tx.begin();
         query.executeUpdate();
         tx.commit();

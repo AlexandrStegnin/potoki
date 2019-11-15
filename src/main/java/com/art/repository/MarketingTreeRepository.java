@@ -24,7 +24,7 @@ public interface MarketingTreeRepository extends JpaRepository<MarketingTree, Bi
             "inv.partnerId, inv.id, inv.kin, MIN(ic.dateGivedCash), 'NO_ACTIVE', 0, 0) " +
             "FROM InvestorsCash ic " +
             "JOIN ic.investor inv " +
-            "WHERE inv.login <> 'investor-demo' AND inv.partnerId IS NOT NULL " +
+            "WHERE inv.login <> 'investor-demo' AND inv.partnerId IS NOT NULL AND (ic.newCashDetails.id IS NULL OR ic.newCashDetails.id <> 4)" +
             "GROUP BY ic.investor " +
             "ORDER BY inv.partnerId, MIN(ic.dateGivedCash), inv.id")
     List<MarketingTreeDTO> findGroupedCash();
