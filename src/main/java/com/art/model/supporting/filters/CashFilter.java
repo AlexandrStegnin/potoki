@@ -8,4 +8,5 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class CashFilter extends AbstractFilter {
     private Users investor;
+    private int filtered = 0;
 }

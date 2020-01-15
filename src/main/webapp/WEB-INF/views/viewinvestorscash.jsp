@@ -72,6 +72,7 @@
                 <input type="hidden" id="pageNumber" name="pageNumber" value="0">
                 <input type="hidden" id="pageSize" name="pageSize" value="${cashFilters.pageSize}">
                 <input type="hidden" id="total" name="total" value="${page.content.size()}">
+                <input type="hidden" id="filtered" name="filtered" value="${cashFilters.filtered}">
                 <label class="sr-only" for="fFacilities">Объект:</label>
                 <form:select path="facility" id="fFacilities" multiple="false" class="selectpicker"
                              data-live-search="true" data-width="130px">

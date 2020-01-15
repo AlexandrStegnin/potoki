@@ -97,6 +97,9 @@ public class InvestorsCashController {
     @PostMapping(value = "/investorscash")
     public ModelAndView invCashPageable(@ModelAttribute(value = "cashFilters") CashFilter cashFilters) {
         Pageable pageable;
+        if (cashFilters.getFiltered() == 0) {
+            cashFilters.setFiltered(1);
+        }
         if (cashFilters.isAllRows()) {
             pageable = new PageRequest(0, Integer.MAX_VALUE);
         } else {

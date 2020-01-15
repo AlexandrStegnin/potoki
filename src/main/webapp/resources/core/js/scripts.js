@@ -451,4 +451,9 @@ function getFilters(pageName, lastFilters) {
 
     $('#uFacilities option[id=' + lastFilters[0].underFacilityId + ']').attr('selected', 'selected');
     $('#srcUnderFacilities option[id=' + lastFilters[1].srcUnderFacility + ']').attr('selected', 'selected');
+
+    let filtered = $('#filtered').val();
+    if (filtered === '0') {
+        $('#bth-search').click();
+    }
 }
