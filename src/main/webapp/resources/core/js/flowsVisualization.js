@@ -1092,13 +1092,18 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
     $.each(mainFlows, function (ind, el) {
         dates.push(new Date(el.settlementDate));
     });
+    if (dates.length === 0) {
+        dates.push(new Date())
+    }
     let maxDate = new Date(Math.max.apply(null, dates));
     let ttl = 'Баланс ' + facility + ' за ' + monthLongNames[maxDate.getMonth()].toLowerCase() + ' ' + maxDate.getFullYear();
     $('#totalExpenses').html(ttl);
 
     let flow;
     let flows = [];
-
+    if (mainFlows.length === 0) {
+        settlementDates.push(new Date());
+    }
     $.each(mainFlows, function (ind, el) {
         settlementDates.push(new Date(el.settlementDate));
 
@@ -1635,7 +1640,7 @@ function prepareInvestedMoney(investedMoneyDb) {
 
     let investor = investedMoneyDb.investor;
 
-    let totalMoney = investedMoneyDb.totalMoney;
+    let totalMoney = investedMoneyDb.totalMoney || 0;
 
     let investedBalance = investedMoneyDb.invested;
 
@@ -1659,9 +1664,12 @@ function prepareInvestedMoney(investedMoneyDb) {
         }
     });
 
-    let maxPriceFacility = Math.max.apply(Math, finalArr.map(function (value) {
-        return value.myCash
-    }));
+    let maxPriceFacility = 0;
+    if (finalArr !== null) {
+        maxPriceFacility = Math.max.apply(Math, finalArr.map(function (value) {
+            return value.myCash
+        }));
+    }
 
     let investedMoney = $('#investedMoney');
     investedMoney.empty();
@@ -2095,13 +2103,15 @@ function createInvestedTable(investorsCash, investedDb) {
     let invCash;
     let investor = $('#profile').find($('b')).text();
 
-    invCash = $.grep(investorsCash, function (el) {
-        return el.givedCash > 0 && el.investor != null;
-    });
+    if (investorsCash !== null) {
+        invCash = $.grep(investorsCash, function (el) {
+            return el.givedCash > 0 && el.investor != null;
+        });
 
-    invCash.sort(function (a, b) {
-        return new Date(a.dateGivedCash) - new Date(b.dateGivedCash);
-    });
+        invCash.sort(function (a, b) {
+            return new Date(a.dateGivedCash) - new Date(b.dateGivedCash);
+        });
+    }
 
     let investedDetailsTable = $('#investedDetailsTable').find('.simplebar-content');
     investedDetailsTable.empty();

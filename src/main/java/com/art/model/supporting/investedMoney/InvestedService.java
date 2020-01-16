@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -49,23 +48,35 @@ public class InvestedService {
         investedList.forEach(invested -> {
             if (!result.contains(invested)) {
                 if (invested.getInvestorLogin().equalsIgnoreCase(investorLogin)) {
-                    invested.setMyCash(invested.getMyCash().add(invested.getGivenCash()));
+                    BigDecimal myCash = invested.getMyCash() == null ? new BigDecimal(BigInteger.ZERO) : invested.getMyCash();
+                    BigDecimal givenCash = invested.getGivenCash() == null ? new BigDecimal(BigInteger.ZERO) : invested.getGivenCash();
+                    BigDecimal openCash = invested.getOpenCash() == null ? new BigDecimal(BigInteger.ZERO) : invested.getOpenCash();
+                    BigDecimal closedCash = invested.getClosedCash() == null ? new BigDecimal(BigInteger.ZERO) : invested.getClosedCash();
+
+                    invested.setMyCash(myCash.add(givenCash));
                     if (invested.getTypeClosingInvest() == null) {
-                        invested.setOpenCash(invested.getOpenCash().add(invested.getGivenCash()));
+                        invested.setOpenCash(openCash.add(givenCash));
                     } else {
-                        invested.setClosedCash(invested.getClosedCash().add(invested.getGivenCash()));
+                        invested.setClosedCash(closedCash.add(givenCash));
                     }
                 }
                 result.add(invested);
             } else {
                 Invested newInvested = result.get(result.indexOf(invested));
-                newInvested.setGivenCash(newInvested.getGivenCash().add(invested.getGivenCash()));
+
+                BigDecimal newMyCash = newInvested.getMyCash() == null ? new BigDecimal(BigInteger.ZERO) : newInvested.getMyCash();
+                BigDecimal givenCash = invested.getGivenCash() == null ? new BigDecimal(BigInteger.ZERO) : invested.getGivenCash();
+                BigDecimal newGivenCash = newInvested.getGivenCash() == null ? new BigDecimal(BigInteger.ZERO) : newInvested.getGivenCash();
+                BigDecimal newOpenCash = newInvested.getOpenCash() == null ? new BigDecimal(BigInteger.ZERO) : newInvested.getOpenCash();
+                BigDecimal newClosedCash = newInvested.getClosedCash() == null ? new BigDecimal(BigInteger.ZERO) : newInvested.getClosedCash();
+
+                newInvested.setGivenCash(newGivenCash.add(givenCash));
                 if (invested.getInvestorLogin().equalsIgnoreCase(investorLogin)) {
-                    newInvested.setMyCash(newInvested.getMyCash().add(invested.getGivenCash()));
+                    newInvested.setMyCash(newMyCash.add(givenCash));
                     if (invested.getTypeClosingInvest() == null) {
-                        newInvested.setOpenCash(newInvested.getOpenCash().add(invested.getGivenCash()));
+                        newInvested.setOpenCash(newOpenCash.add(givenCash));
                     } else {
-                        newInvested.setClosedCash(newInvested.getClosedCash().add(invested.getGivenCash()));
+                        newInvested.setClosedCash(newClosedCash.add(givenCash));
                     }
                 }
                 Collections.replaceAll(result, invested, newInvested);
@@ -76,10 +87,13 @@ public class InvestedService {
     }
 
     private void fillInvestedListForTables(List<InvestorsCash> investorsCashes, String investorLogin, List<Invested> investedList) {
-        investorsCashes
+        List<Invested> newInvestedList;
+        newInvestedList = investorsCashes
                 .stream()
-                .filter(investorsCash -> investorsCash.getGivedCash().compareTo(BigDecimal.ZERO) > 0)
+                .filter(investorsCash -> investorsCash.getGivedCash() != null && investorsCash.getGivedCash().compareTo(BigDecimal.ZERO) > 0)
                 .map(Invested::new)
+                .collect(Collectors.toList());
+        newInvestedList
                 .forEach(invested -> {
                     if (!investedList.contains(invested)) {
                         investedList.add(invested);
@@ -124,16 +138,15 @@ public class InvestedService {
     private List<String> getFacilitiesList(List<Invested> invested) {
         return invested
                 .stream()
-                .filter(element -> element.getMyCash().compareTo(BigDecimal.ZERO) > 0)
+                .filter(element -> element != null && element.getMyCash().compareTo(BigDecimal.ZERO) > 0)
                 .map(Invested::getFacility)
                 .collect(Collectors.toList());
     }
 
     private List<BigDecimal> getSums(List<Invested> invested) {
-//        fillFacilitiesCoasts(invested);
         return invested
                 .stream()
-                .filter(element -> element.getMyCash().compareTo(BigDecimal.ZERO) > 0)
+                .filter(element -> element != null && element.getMyCash().compareTo(BigDecimal.ZERO) > 0)
                 .map(Invested::getMyCash)
                 .collect(Collectors.toList());
     }
@@ -149,8 +162,6 @@ public class InvestedService {
     }
 
     public InvestedMoney getInvestedMoney(BigInteger investorId, String investorLogin) {
-        long start = System.nanoTime();
-
         INVESTOR_LOGIN = investorLogin;
         INVESTOR_ID = investorId;
 
@@ -190,54 +201,36 @@ public class InvestedService {
             e.printStackTrace();
         }
 
-        long end = System.nanoTime();
-
-        long duration = end - start;
-
-        System.out.println("ESTIMATED TIME = " + Duration.ofNanos(duration).getSeconds() + " SECONDS");
-
         return money;
     }
 
     private CompletableFuture<List<InvestorsCash>> getInvestorsCash() {
-        printThreadName(Thread.currentThread());
         return CompletableFuture.supplyAsync(investorsCashService::getInvestedMoney, EXECUTOR);
     }
 
     private CompletableFuture<List<Invested>> getInvestedMoney(List<InvestorsCash> investorsCashes) {
-        printThreadName(Thread.currentThread());
         return CompletableFuture.supplyAsync(() -> getInvestedList(investorsCashes, INVESTOR_LOGIN), EXECUTOR);
     }
 
 
     private CompletableFuture<BigDecimal> getTotalMoney(List<InvestorsCash> investorsCashes) {
-        printThreadName(Thread.currentThread());
         return CompletableFuture.supplyAsync(() -> getTotalMoney(investorsCashes, INVESTOR_ID), EXECUTOR);
     }
 
     private CompletableFuture<String> getFacilityWithMaxSumFuture(List<Invested> investedList) {
-        printThreadName(Thread.currentThread());
         return CompletableFuture.supplyAsync(() -> getFacilityWithMaxSum(investedList), EXECUTOR);
     }
 
     private CompletableFuture<List<String>> getFacilitiesListFuture(List<Invested> investedList) {
-        printThreadName(Thread.currentThread());
         return CompletableFuture.supplyAsync(() -> getFacilitiesList(investedList), EXECUTOR);
     }
 
     private CompletableFuture<List<BigDecimal>> getSumsFuture(List<Invested> investedList) {
-        printThreadName(Thread.currentThread());
         return CompletableFuture.supplyAsync(() -> getSums(investedList), EXECUTOR);
     }
 
     private CompletableFuture<List<Invested>> getFacilitiesCoastsFuture(List<Invested> investedList) {
-        printThreadName(Thread.currentThread());
         return CompletableFuture.supplyAsync(() -> fillFacilitiesCoasts(investedList), EXECUTOR);
     }
-
-    private void printThreadName(Thread thread) {
-        System.out.println("CURRENT THREAD NAME === " + thread.getName());
-    }
-
 
 }
