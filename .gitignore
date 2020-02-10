@@ -34,3 +34,5 @@ mvnw*
 *.properties
 dependency-reduced-pom.xml
 buildNumber.properties
+/target/
+/.idea/
