@@ -27,6 +27,7 @@ target
 *.iml
 out/*
 /target/*
+/target
 
 !.mvn/wrapper/maven-wrapper.jar
 mvnw*
