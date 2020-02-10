@@ -262,8 +262,8 @@ jQuery(document).ready(function ($) {
     });
 
     $(document).on('change', '#checkIt', function () {
-        var checked = $('#checkIt').prop('checked');
-        var noDivide = false;
+        const checked = $('#checkIt').prop('checked');
+        let noDivide = false;
         if (!checked) {
             blockUnblockDropdownMenus('block', noDivide);
             $('table#investorsCash').find('> tbody').find('> tr').each(function () {
@@ -285,7 +285,7 @@ jQuery(document).ready(function ($) {
                     }
                 }
             });
-            blockUnblockDropdownMenus('unblock', noDivide);
+            blockUnblockDropdownMenus('unblock', !noDivide);
         }
 
         /*
