@@ -37,7 +37,8 @@
                 <label class="col-md-3 control-lable" for="facilities">Объект:</label>
                 <div class="col-md-7">
                     <form:select path="investorsCash.facility" id="facilities" items="${facilities}" multiple="false"
-                                 itemValue="id" itemLabel="facility" class="form-control input-sm"/>
+                                 itemValue="id" itemLabel="facility" class="selectpicker form-control input-sm"
+                                 data-live-search="true"/>
                 </div>
             </div>
         </div>

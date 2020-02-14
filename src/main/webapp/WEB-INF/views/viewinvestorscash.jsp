@@ -318,7 +318,8 @@
                             <label class="col-md-3 control-lable" for="srcFacilities">Объект:</label>
                             <div class="col-md-7">
                                 <form:select path="reFacility" id="srcFacilities" items="${facilities}" multiple="false"
-                                             itemValue="id" itemLabel="facility" class="form-control input-sm"/>
+                                             itemValue="id" itemLabel="facility" class="selectpicker form-control input-sm"
+                                             data-live-search="true"/>
                                 <div id="facilityErr" style="color: red; display: none">Необходимо выбрать объект</div>
                             </div>
                         </div>
