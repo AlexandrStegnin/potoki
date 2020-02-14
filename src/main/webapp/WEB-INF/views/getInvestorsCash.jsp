@@ -66,7 +66,8 @@
                 <label class="col-md-3 control-lable" for="investor">Инвестор:</label>
                 <div class="col-md-7">
                     <form:select path="investorsCash.investor" id="investor" items="${investors}" multiple="false"
-                                 itemValue="id" itemLabel="login" class="form-control input-sm"/>
+                                 itemValue="id" itemLabel="login" class="selectpicker form-control input-sm"
+                                 data-live-search="true"/>
                 </div>
             </div>
         </div>

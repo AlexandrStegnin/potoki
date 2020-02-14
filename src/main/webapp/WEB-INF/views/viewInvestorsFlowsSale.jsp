@@ -85,7 +85,8 @@
                     </c:forEach>
                 </form:select>
                 <label class="sr-only" for="investors">Инвестор:</label>
-                <form:select path="investors" id="investors" multiple="false">
+                <form:select path="investors" id="investors" multiple="false" class="selectpicker"
+                             data-live-search="true">
                     <c:forEach var="inv" items="${investors}">
                             <option
                                     <c:forEach var="investor" items="${flowsSaleFilters.investors}">
@@ -357,5 +358,9 @@
     </div>
 </div>
 <%@include file="slideDiv.jsp" %>
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/css/bootstrap-select.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
 </body>
 </html>
