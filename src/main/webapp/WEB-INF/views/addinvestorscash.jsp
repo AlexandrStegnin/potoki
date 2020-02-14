@@ -1,6 +1,6 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page isELIgnored="false" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -10,18 +10,18 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Форма внесения денег инвесторов</title>
-    <sec:csrfMetaTags />
-    <link href="<c:url value='/resources/core/css/old_bootstrap.min.css' />" rel="stylesheet" />
-    <link href="<c:url value='/resources/core/css/applic.css' />" rel="stylesheet" />
-    <link href="<c:url value='/resources/core/css/popup.css' />" rel="stylesheet" />
-    <link href="<c:url value='/resources/core/css/ajaxLoader.css' />" rel="stylesheet" />
-    <script type="text/javascript" src="<c:url value='/resources/core/js/jquery-3.2.1.js' />" ></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min_old.js' />" ></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/jsFunctions.js' />" ></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />" ></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/AjaxLoader.js' />" ></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/mailingScripts.js' />" ></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/scriptsForInvestorsCash.js' />" ></script>
+    <sec:csrfMetaTags/>
+    <link href="<c:url value='/resources/core/css/old_bootstrap.min.css' />" rel="stylesheet"/>
+    <link href="<c:url value='/resources/core/css/applic.css' />" rel="stylesheet"/>
+    <link href="<c:url value='/resources/core/css/popup.css' />" rel="stylesheet"/>
+    <link href="<c:url value='/resources/core/css/ajaxLoader.css' />" rel="stylesheet"/>
+    <script type="text/javascript" src="<c:url value='/resources/core/js/jquery-3.2.1.js' />"></script>
+    <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min_old.js' />"></script>
+    <script type="text/javascript" src="<c:url value='/resources/core/js/jsFunctions.js' />"></script>
+    <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
+    <script type="text/javascript" src="<c:url value='/resources/core/js/AjaxLoader.js' />"></script>
+    <script type="text/javascript" src="<c:url value='/resources/core/js/mailingScripts.js' />"></script>
+    <script type="text/javascript" src="<c:url value='/resources/core/js/scriptsForInvestorsCash.js' />"></script>
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
 </head>
 
@@ -51,10 +51,10 @@
 
         <c:choose>
             <c:when test="${doubleCash}">
-                <c:set var="uf" value="${underFacilitiesList}" />
+                <c:set var="uf" value="${underFacilitiesList}"/>
             </c:when>
             <c:otherwise>
-                <c:set var="uf" value="${underFacilities}" />
+                <c:set var="uf" value="${underFacilities}"/>
             </c:otherwise>
         </c:choose>
 
@@ -62,7 +62,8 @@
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="underFacilities">Подобъект:</label>
                 <div class="col-md-7">
-                    <form:select path="underFacility" id="underFacilities" multiple="false" class="form-control input-sm">
+                    <form:select path="underFacility" id="underFacilities" multiple="false"
+                                 class="form-control input-sm">
                         <c:forEach var="uf" items="${uf}">
                             <form:option value="${uf.underFacility}" id="${uf.id}" data-parent-id="${uf.facilityId}">
 
@@ -177,7 +178,9 @@
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="dateCloseInv">Дата закрытия вложения:</label>
                 <div class="col-md-7">
-                    <form:input type="date" path="dateClosingInvest" id="dateCloseInv" class="form-control input-sm"/>
+                    <form:input type="date" path="dateClosingInvest" id="dateCloseInv"
+                                class="form-control input-sm"
+                    readonly="${edit}"/>
                     <div class="has-error" id="reInvestDateErr">
                     </div>
                 </div>
@@ -188,8 +191,10 @@
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="typeClosing">Вид закрытия вложения:</label>
                 <div class="col-md-7">
-                    <form:select path="typeClosingInvest" id="typeClosing" items="${typeClosingInvest}" multiple="false"
-                                 itemValue="id" itemLabel="typeClosingInvest" class="form-control input-sm"/>
+                    <form:select path="typeClosingInvest" id="typeClosing" items="${typeClosingInvest}"
+                                 multiple="false"
+                                 itemValue="id" itemLabel="typeClosingInvest" class="form-control input-sm"
+                                 readonly="${edit}"/>
                     <div class="has-error">
                         <form:errors path="typeClosingInvest" class="help-inline"/>
                     </div>
@@ -222,9 +227,11 @@
 
         <div class="row" style="display: none;" id="sourceFacility">
             <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="sourceFacilities" id="sourceFacilitiesLbl">Объект реинвестирования:</label>
+                <label class="col-md-3 control-lable" for="sourceFacilities" id="sourceFacilitiesLbl">Объект
+                    реинвестирования:</label>
                 <div class="col-md-7">
-                    <form:select path="sourceFacility" id="sourceFacilities" items="${sourceFacilities}" multiple="false"
+                    <form:select path="sourceFacility" id="sourceFacilities" items="${sourceFacilities}"
+                                 multiple="false"
                                  itemValue="id" itemLabel="facility" class="form-control input-sm"/>
                     <div class="has-error" id="sourceFacilityErr">
                     </div>
@@ -234,9 +241,11 @@
 
         <div class="row" style="display: none;" id="sourceUnderFacility">
             <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="sourceUnderFacilities" id="sourceUnderFacilitiesLbl">Подобъект реинвестирования:</label>
+                <label class="col-md-3 control-lable" for="sourceUnderFacilities" id="sourceUnderFacilitiesLbl">Подобъект
+                    реинвестирования:</label>
                 <div class="col-md-7">
-                    <form:select path="sourceUnderFacility" id="sourceUnderFacilities" multiple="false" class="form-control input-sm">
+                    <form:select path="sourceUnderFacility" id="sourceUnderFacilities" multiple="false"
+                                 class="form-control input-sm">
                         <c:forEach var="uf" items="${sourceUnderFacilities}">
                             <form:option value="${uf.underFacility}" id="${uf.id}" data-parent-id="${uf.facilityId}">
 
@@ -267,18 +276,20 @@
             <div class="form-actions floatRight">
                 <c:choose>
                     <c:when test="${edit}">
-                        <input type="submit" value="Обновить" class="btn btn-primary btn-sm"/> или <a href="<c:url value='/investorscash' />">Отмена</a>
+                        <input type="submit" value="Обновить" class="btn btn-primary btn-sm"/> или <a
+                            href="<c:url value='/investorscash' />">Отмена</a>
                     </c:when>
                     <c:otherwise>
-                        <input type="submit" value="Создать" class="btn btn-primary btn-sm"/> или <a href="<c:url value='/investorscash' />">Отмена</a>
+                        <input type="submit" value="Создать" class="btn btn-primary btn-sm"/> или <a
+                            href="<c:url value='/investorscash' />">Отмена</a>
                     </c:otherwise>
                 </c:choose>
             </div>
         </div>
     </form:form>
 </div>
-<%@include file="loader.jsp"%>
-<%@include file="popup.jsp"%>
+<%@include file="loader.jsp" %>
+<%@include file="popup.jsp" %>
 <%@include file="slideDiv.jsp" %>
 
 <link rel="stylesheet"
