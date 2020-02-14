@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -51,11 +52,11 @@ public class UploadImagesController {
 
     }
 
-    @PostMapping(value = "/savePdf", produces = "application/json;charset=UTF-8")
+    @PostMapping(value = "/savePdf", produces = {"application/json;charset=UTF-8", "application/octet-stream"})
     public @ResponseBody
-    GenericResponse savePdf(MultipartHttpServletRequest request) {
+    GenericResponse savePdf(@RequestParam("investorId") String invId, MultipartHttpServletRequest request) {
         GenericResponse response = new GenericResponse();
-
+        BigInteger investorId = BigInteger.valueOf(Long.parseLong(invId));
         Iterator<String> itr = request.getFileNames();
         List<MultipartFile> multipartFiles = new ArrayList<>(0);
         while (itr.hasNext()) {
@@ -83,7 +84,7 @@ public class UploadImagesController {
 
                             UsersAnnexToContracts usersAnnexToContracts = new UsersAnnexToContracts();
                             usersAnnexToContracts.setAnnex(annex);
-                            usersAnnexToContracts.setUserId(getPrincipalFunc.getPrincipalId());
+                            usersAnnexToContracts.setUserId(investorId);
                             usersAnnexToContracts.setAnnexRead(0);
                             usersAnnexToContracts.setDateRead(null);
                             usersAnnexToContractsService.create(usersAnnexToContracts);

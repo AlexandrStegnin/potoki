@@ -50,6 +50,12 @@ jQuery(document).ready(function($) {
 
     $(document).on('click', '#save', function (event) {
         event.preventDefault();
+        if ($('#investor').val() === "0") {
+            $('#chooseInvestorMsg').css("display", "block").text("Необходимо выбрать инвестора");
+            return false;
+        } else {
+            $('#chooseInvestorMsg').css("display", "none").text("");
+        }
         savePdf();
     });
 
@@ -130,12 +136,11 @@ function savePdf() {
     var header = $("meta[name='_csrf_header']").attr("content");
 
     var data = new FormData();
-    var fileBuckets = [];
-    $.each($('#file')[0].files, function(k, value)
-    {
+    $.each($('#file')[0].files, function(k, value) {
         data.append(k, value);
-        fileBuckets.push(k, value);
     });
+
+    data.append("investorId", $('#investor').val());
 
     $.ajax({
         type : "POST",
@@ -154,7 +159,6 @@ function savePdf() {
             $('#successLoad').text(data.message);
             $('#pdfForm').modal('hide');
             updateUnreadAnnexes();
-            console.log(data.message);
         },
         error : function(e) {
             console.log(e.error);
