@@ -28,7 +28,7 @@
         <commons-dbcp.version>2.1.1</commons-dbcp.version>
         <projectLombok.version>1.16.14</projectLombok.version>
         <apachiPOI.version>3.17-beta1</apachiPOI.version>
-        <jackson.version>2.6.3</jackson.version>
+        <jackson.version>2.10.2</jackson.version>
         <spring-websocket.version>4.3.9.RELEASE</spring-websocket.version>
     </properties>
 
@@ -262,7 +262,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>${jackson.version}</version>
+            <version>2.10.2</version>
         </dependency>
 
         <dependency>
