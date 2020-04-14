@@ -70,6 +70,9 @@ public class RoleConfig extends WebMvcConfigurerAdapter {
     @Resource(name = "roomsService")
     private RoomsService roomsService;
 
+    @Resource(name = "appTokenService")
+    private AppTokenService appTokenService;
+
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(new RoleToUserRoleConverter(roleService));
@@ -91,5 +94,6 @@ public class RoleConfig extends WebMvcConfigurerAdapter {
         registry.addConverter(new StringToTypeClosingInvestConverter(typeClosingInvestService));
         registry.addConverter(new StringToShareKindConverter(shareKindService));
         registry.addConverter(new StringToRoomsConverter(roomsService));
+        registry.addConverter(new StringToTokenConverter(appTokenService));
     }
 }

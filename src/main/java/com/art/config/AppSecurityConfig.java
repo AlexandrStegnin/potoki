@@ -130,6 +130,8 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**cashpayment**", "**cashsource**", "**source**",
                         "**facilities**", "/investors**")
                 .access("hasRole('ADMIN') or hasRole('DBA')")
+                .antMatchers("/tokens")
+                .access("hasRole('ADMIN') or hasRole('DBA')")
                 .and().formLogin().loginPage("/login")
                 .loginProcessingUrl("/login")
                 .usernameParameter("login").passwordParameter("password")
