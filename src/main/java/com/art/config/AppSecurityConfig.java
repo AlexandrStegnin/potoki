@@ -132,6 +132,8 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .access("hasRole('ADMIN') or hasRole('DBA')")
                 .antMatchers("/tokens")
                 .access("hasRole('ADMIN') or hasRole('DBA')")
+                .antMatchers("/bitrix/contacts")
+                .access("hasRole('ADMIN') or hasRole('DBA')")
                 .and().formLogin().loginPage("/login")
                 .loginProcessingUrl("/login")
                 .usernameParameter("login").passwordParameter("password")
