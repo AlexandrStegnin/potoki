@@ -22,6 +22,7 @@
     <script type="text/javascript" src="<c:url value='/resources/core/js/mailingScripts.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/forLoadPdfFiles.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/datatables.min.js' />"></script>
+    <script type="text/javascript" src="<c:url value='/resources/core/js/bitrixContacts.js' />"></script>
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
 </head>
 
@@ -50,7 +51,14 @@
         <button type="button" class="btn ${btnClass} btn-sm pull-right" id="unread">
             <c:out value="${annexTitle}"/> <span id="annexCnt" class="badge">${aCnt}</span></button>
         <button type="button" class="btn btn-warning btn-sm pull-right" id="clearLS" style="margin-right: 5px">
-            <c:out value="Очистить local storage"/></button>
+            <c:out value="Очистить local storage"/>
+        </button>
+        <sec:authorize access="isFullyAuthenticated()">
+            <sec:authorize access="hasAnyRole('BIGDADDY', 'ADMIN')">
+                <button type="button" class="btn btn-success btn-sm pull-right" id="updateBitrixContact" style="margin-right: 5px">
+                    <c:out value="Обновить контакты из Битрикс"/></button>
+            </sec:authorize>
+        </sec:authorize>
     </div>
     <div style="text-align: center; padding-bottom: 20px; color: red"><span id="errUnread">${errTitle}</span></div>
 
