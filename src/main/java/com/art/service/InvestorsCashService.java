@@ -266,6 +266,7 @@ public class InvestorsCashService {
         } else {
 
             investorsCashes.forEach(ic -> {
+                if (remainderSum[0].equals(BigDecimal.ZERO)) return;
                 cashingList.add(new AfterCashing(ic.getId(), ic.getGivedCash()));
                 if (incr[0].get() == investorsCashes.size() - 1) {
                     sourceCash.append(ic.getId().toString());
