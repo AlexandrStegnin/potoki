@@ -34,6 +34,7 @@
             <tr>
                 <th>ID</th>
                 <th>Название</th>
+                <th>Название (1C)</th>
                 <th>Город</th>
                 <th>Адрес</th>
                 <th>Управляющий</th>
@@ -53,6 +54,7 @@
                 <tr id="${facility.id}">
                     <td>${facility.id}</td>
                     <td>${facility.facility}</td>
+                    <td>${facility.fullName}</td>
                     <td>${facility.city}</td>
                     <td>${facility.address}</td>
                     <td>${facility.manager.login}</td>
