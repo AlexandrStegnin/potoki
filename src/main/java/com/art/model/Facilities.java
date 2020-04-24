@@ -29,7 +29,7 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = {"city", "address", "manager", "investors", "underFacilities"})
 @ToString(exclude = {"manager", "investors", "underFacilities"})
 @Entity
-@Table(name = "FACILITYES")
+@Table(name = "FACILITYES", schema = "pss_projects")
 public class Facilities implements Serializable {
     private BigInteger id;
     private String facility;
@@ -132,4 +132,14 @@ public class Facilities implements Serializable {
         this.address = address;
     }
 
+    private String fullName;
+
+    @Column(name = "full_name")
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
 }
