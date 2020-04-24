@@ -185,7 +185,7 @@ public class FacilityService {
         update.set(Facilities_.city, facility.getCity());
         update.set(Facilities_.address, facility.getAddress());
         update.set(Facilities_.manager, facility.getManager());
-
+        update.set(Facilities_.fullName, facility.getFullName());
         update.where(criteriaBuilder.equal(facilityesRoot.get(Facilities_.id), facility.getId()));
         this.em.createQuery(update).executeUpdate();
     }
