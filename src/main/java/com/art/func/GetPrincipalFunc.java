@@ -1,8 +1,9 @@
 package com.art.func;
 
-import com.art.model.*;
+import com.art.model.Roles;
+import com.art.model.SecurityUser;
 import com.art.model.supporting.UserFacilities;
-import com.art.service.*;
+import com.art.service.FacilityService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -47,4 +48,16 @@ public class GetPrincipalFunc {
         return userFacilities;
     }
 
+    public boolean haveAdminRole() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof SecurityUser) {
+            List<Roles> roles = ((SecurityUser) principal).getRoles();
+            Roles admin = roles.stream()
+                    .filter(role -> role.getRole().equalsIgnoreCase("ROLE_ADMIN"))
+                    .findFirst()
+                    .orElse(null);
+            return admin != null;
+        }
+        return false;
+    }
 }
