@@ -1095,6 +1095,7 @@ function prepareIncomesAndExpenses(mainFlowsList, facility) {
     if (dates.length === 0) {
         dates.push(new Date())
     }
+    if (facility === null) facility = '';
     let maxDate = new Date(Math.max.apply(null, dates));
     let ttl = 'Баланс ' + facility + ' за ' + monthLongNames[maxDate.getMonth()].toLowerCase() + ' ' + maxDate.getFullYear();
     $('#totalExpenses').html(ttl);
@@ -2250,7 +2251,7 @@ function populateInvestedStorage() {
         }
     })
         .done(function (data) {
-            fillInvestedStorage(data);
+            // fillInvestedStorage(data);
             prepareInvestedMoney(data);
         })
         .fail(function (e) {
@@ -2290,10 +2291,19 @@ function getInvestorsFlowsList(iMonth, fullDate) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
 
+    let invId = $('#invId').val();
+    let invLogin = $('#invLogin').val();
+
+    let search = ({
+        investor: invId,
+        login: invLogin
+    });
+
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
         url: "getInvestorsFlows",
+        data: JSON.stringify(search),
         dataType: 'json',
         timeout: 100000,
         beforeSend: function (xhr) {
@@ -2325,10 +2335,19 @@ function getMainFlowsList(facility) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
 
+    let invId = $('#invId').val();
+    let invLogin = $('#invLogin').val();
+
+    let search = ({
+        investor: invId,
+        login: invLogin
+    });
+
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: "/getMainFlows",
+        url: "getMainFlows",
+        data: JSON.stringify(search),
         dataType: 'json',
         timeout: 100000,
         beforeSend: function (xhr) {
@@ -2352,10 +2371,19 @@ function getInvestorsCash() {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
 
+    let invId = $('#invId').val();
+    let invLogin = $('#invLogin').val();
+
+    let search = ({
+        investor: invId,
+        login: invLogin
+    });
+
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
         url: "getInvestorsCashList",
+        data: JSON.stringify(search),
         dataType: 'json',
         timeout: 100000,
         beforeSend: function (xhr) {
@@ -2364,7 +2392,7 @@ function getInvestorsCash() {
     })
         .done(function (data) {
             prepareInvestedMoney(data);
-            fillInvestedStorage(data);
+            // fillInvestedStorage(data);
         })
         .fail(function (e) {
             console.log(e);
@@ -2379,10 +2407,19 @@ function getAnnexes() {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
 
+    let invId = $('#invId').val();
+    let invLogin = $('#invLogin').val();
+
+    let search = ({
+        investor: invId,
+        login: invLogin
+    });
+
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
         url: "getAnnexesList",
+        data: JSON.stringify(search),
         dataType: 'json',
         timeout: 100000,
         beforeSend: function (xhr) {
