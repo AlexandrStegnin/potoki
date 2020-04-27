@@ -228,45 +228,46 @@ public class UserController {
         List<InvestorsExpenses> investorsExpenses;
         List<RentorsDetails> rentorsDetailsList;
         Facilities facilities;
-        switch (user.getUserStuff().getStuff()) {
-            case "Арендатор":
-                bonusesList = bonusesService.findByRentor(user);
-                bonusesList.forEach(b -> {
-                    b.setRentor(null);
-                    bonusesService.update(b);
-                });
-                facilitiesServiceContracts = facilitiesServiceContractsService.findByRentor(user);
-                facilitiesServiceContracts.forEach(fsc -> facilitiesServiceContractsService.deleteById(fsc.getId()));
-                rentorsDetailsList = rentorsDetailsService.findByRentorId(user.getId());
-                rentorsDetailsList.forEach(rd -> rentorsDetailsService.deleteById(rd.getId()));
-                break;
-            case "Управляющий":
-                bonusesList = bonusesService.findByManager(user);
-                bonusesList.forEach(b -> {
-                    b.setManager(null);
-                    bonusesService.update(b);
-                });
-                cashPaymentsList = cashPaymentsService.findByManagerId(user.getId());
-                cashPaymentsList.forEach(cp -> cashPaymentsService.deleteById(cp.getId()));
-                facilities = facilityService.findByManager(user);
-                if (facilities != null) {
-                    facilities.setManager(null);
-                    facilityService.update(facilities);
-                }
+        if (user.getUserStuff() != null) {
+            switch (user.getUserStuff().getStuff()) {
+                case "Арендатор":
+                    bonusesList = bonusesService.findByRentor(user);
+                    bonusesList.forEach(b -> {
+                        b.setRentor(null);
+                        bonusesService.update(b);
+                    });
+                    facilitiesServiceContracts = facilitiesServiceContractsService.findByRentor(user);
+                    facilitiesServiceContracts.forEach(fsc -> facilitiesServiceContractsService.deleteById(fsc.getId()));
+                    rentorsDetailsList = rentorsDetailsService.findByRentorId(user.getId());
+                    rentorsDetailsList.forEach(rd -> rentorsDetailsService.deleteById(rd.getId()));
+                    break;
+                case "Управляющий":
+                    bonusesList = bonusesService.findByManager(user);
+                    bonusesList.forEach(b -> {
+                        b.setManager(null);
+                        bonusesService.update(b);
+                    });
+                    cashPaymentsList = cashPaymentsService.findByManagerId(user.getId());
+                    cashPaymentsList.forEach(cp -> cashPaymentsService.deleteById(cp.getId()));
+                    facilities = facilityService.findByManager(user);
+                    if (facilities != null) {
+                        facilities.setManager(null);
+                        facilityService.update(facilities);
+                    }
 
-                break;
-            case "Инвестор":
-                allowanceIpList = allowanceIpService.findByInvestor(user);
-                allowanceIpList.forEach(ap -> allowanceIpService.deleteById(ap.getId()));
-                investorsShareList = investorShareService.findByInvestor(user);
-                investorsShareList.forEach(ish -> investorShareService.deleteById(ish.getId()));
-                investorsCashes = investorsCashService.findByInvestorId(user.getId());
-                investorsCashes.forEach(ic -> investorsCashService.deleteById(ic.getId()));
-                investorsExpenses = investorsExpensesService.findByInvestorId(user.getId());
-                investorsExpenses.forEach(ie -> investorsExpensesService.deleteById(ie.getId()));
-                break;
+                    break;
+                case "Инвестор":
+                    allowanceIpList = allowanceIpService.findByInvestor(user);
+                    allowanceIpList.forEach(ap -> allowanceIpService.deleteById(ap.getId()));
+                    investorsShareList = investorShareService.findByInvestor(user);
+                    investorsShareList.forEach(ish -> investorShareService.deleteById(ish.getId()));
+                    investorsCashes = investorsCashService.findByInvestorId(user.getId());
+                    investorsCashes.forEach(ic -> investorsCashService.deleteById(ic.getId()));
+                    investorsExpenses = investorsExpensesService.findByInvestorId(user.getId());
+                    investorsExpenses.forEach(ie -> investorsExpensesService.deleteById(ie.getId()));
+                    break;
+            }
         }
-
         try {
             userService.deleteUser(user.getId());
             response.setMessage("Пользователь <b>" + user.getLogin() + "</b> успешно удалён.");
