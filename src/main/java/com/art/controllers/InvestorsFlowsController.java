@@ -387,8 +387,14 @@ public class InvestorsFlowsController {
 
     @PostMapping(value = "/getInvestorsFlows")
     public @ResponseBody
-    CashFlows getInvestorsFlows(ModelMap model) {
-        List<InvestorsFlows> investorsFlowsList = investorsFlowsService.findByInvestorIdWithFacilitiesUnderFacilities(getPrincipalFunc.getPrincipalId());
+    CashFlows getInvestorsFlows(ModelMap model, @RequestBody SearchSummary search) {
+        BigInteger invId = getPrincipalFunc.getPrincipalId();
+        if (getPrincipalFunc.haveAdminRole()) {
+            if (search != null && search.getInvestor() != null && !search.getInvestor().isEmpty()) {
+                invId = new BigInteger(search.getInvestor());
+            }
+        }
+        List<InvestorsFlows> investorsFlowsList = investorsFlowsService.findByInvestorIdWithFacilitiesUnderFacilities(invId);
 
         CashFlows cashFlows = new CashFlows();
         cashFlows.setInvestorsFlowsList(investorsFlowsList);
@@ -398,9 +404,14 @@ public class InvestorsFlowsController {
 
     @PostMapping(value = "/getAnnexesList")
     public @ResponseBody
-    CashFlows getAnnexes(ModelMap model) {
-        Users investor = userService.findByIdWithAnnexesAndFacilities(getPrincipalFunc.getPrincipalId());
-        List<UsersAnnexToContracts> usersAnnexToContracts = usersAnnexToContractsService.findByUserId(investor.getId());
+    CashFlows getAnnexes(ModelMap model, @RequestBody SearchSummary search) {
+        BigInteger invId = getPrincipalFunc.getPrincipalId();
+        if (getPrincipalFunc.haveAdminRole()) {
+            if (search != null && search.getInvestor() != null && !search.getInvestor().isEmpty()) {
+                invId = new BigInteger(search.getInvestor());
+            }
+        }
+        List<UsersAnnexToContracts> usersAnnexToContracts = usersAnnexToContractsService.findByUserId(invId);
 
         CashFlows cashFlows = new CashFlows();
         cashFlows.setAnnexes(usersAnnexToContracts);
@@ -410,7 +421,16 @@ public class InvestorsFlowsController {
 
     @PostMapping(value = "/getInvestorsCashList")
     public @ResponseBody
-    InvestedMoney getInvestorsCash(ModelMap model) {
+    InvestedMoney getInvestorsCash(@RequestBody SearchSummary search) {
+        if (getPrincipalFunc.haveAdminRole()) {
+            if (search != null && search.getInvestor() != null && !search.getInvestor().isEmpty()) {
+                BigInteger invId = new BigInteger(search.getInvestor());
+                Users user = userService.findById(invId);
+                if (user != null) {
+                    return investedService.getInvestedMoney(invId, user.getLogin());
+                }
+            }
+        }
         return investedService.getInvestedMoney(getPrincipalFunc.getPrincipalId(), getPrincipalFunc.getLogin());
     }
 
@@ -438,15 +458,22 @@ public class InvestorsFlowsController {
 
     @PostMapping(value = "/getMainFlows")
     public @ResponseBody
-    CashFlows getMainFlows(ModelMap model) {
-        Users investor = userService.findByIdWithFacilities(getPrincipalFunc.getPrincipalId());
+    CashFlows getMainFlows(ModelMap model, @RequestBody SearchSummary search) {
+        BigInteger invId = getPrincipalFunc.getPrincipalId();
+        if (search != null && search.getInvestor() != null && !search.getInvestor().isEmpty()) {
+            invId = new BigInteger(search.getInvestor());
+        }
+        Users investor = userService.findByIdWithFacilities(invId);
 
         List<BigInteger> facilitiesIdList = new ArrayList<>(0);
         investor.getFacilities().forEach(f -> facilitiesIdList.add(f.getId()));
 
-        List<MainFlows> mainFlows = mainFlowsService.findByFacilityIdIn(facilitiesIdList);
+        List<MainFlows> mainFlows = new ArrayList<>();
+        if (facilitiesIdList.size() > 0) {
+            mainFlows = mainFlowsService.findByFacilityIdIn(facilitiesIdList);
+        }
 
-        Facilities facility = investorsCashService.getSumCash(getPrincipalFunc.getPrincipalId());
+        Facilities facility = investorsCashService.getSumCash(invId);
 
         CashFlows cashFlows = new CashFlows();
         cashFlows.setMainFlowsList(mainFlows);
