@@ -15,13 +15,18 @@
     <link href="<c:url value='/resources/core/css/popup.css' />" rel="stylesheet"/>
     <link href="<c:url value='/resources/core/css/ajaxLoader.css' />" rel="stylesheet"/>
     <link href="<c:url value='/resources/core/css/datatables.min.css' />" rel="stylesheet"/>
+    <link href="<c:url value='/resources/core/css/jquery-ui.min.css' />" rel="stylesheet"/>
     <script type="text/javascript" src="<c:url value='/resources/core/js/jquery-3.2.1.js' />"></script>
+    <script type="text/javascript"
+            src="<c:url value="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.0.4/popper.js" /> "></script>
+    <script type="text/javascript" src="<c:url value='/resources/core/js/jquery-ui.min.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min_old.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/AjaxLoader.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/mailingScripts.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/forLoadPdfFiles.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/datatables.min.js' />"></script>
+        <script type="text/javascript" src="<c:url value='/resources/core/js/scripsForProfile.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/bitrixContacts.js' />"></script>
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
 </head>
@@ -47,7 +52,22 @@
         </c:otherwise>
     </c:choose>
 
-    <div class="well lead" style="margin-right: 30px">${title}
+    <div class="well lead" style="margin-right: 30px; min-height: 70px"><span class="pull-left">${title}</span>
+        <sec:authorize access="isFullyAuthenticated()">
+            <sec:authorize access="hasAnyRole('BIGDADDY', 'ADMIN')">
+                <form:form method="POST" modelAttribute="search" class="form-horizontal col-md-4" id="flowsAdmin"
+                           action="/admin-flows">
+                    <form:select path="investor" id="investors" class="selectpicker" data-container="body"
+                                 title="Выберите инвестора..." multiple="false"
+                                 data-live-search="true" data-size="7">
+                        <form:options items="${investors}" itemValue="id" itemLabel="login"/>
+                    </form:select>
+                    <form:button type="submit" class="btn btn-success btn-sm" id="viewInvestorData"
+                            style="margin-right: 5px" disabled="true">
+                        <c:out value="Посмотреть кабинет"/></form:button>
+                </form:form>
+            </sec:authorize>
+        </sec:authorize>
         <button type="button" class="btn ${btnClass} btn-sm pull-right" id="unread">
             <c:out value="${annexTitle}"/> <span id="annexCnt" class="badge">${aCnt}</span></button>
         <button type="button" class="btn btn-warning btn-sm pull-right" id="clearLS" style="margin-right: 5px">
@@ -55,7 +75,8 @@
         </button>
         <sec:authorize access="isFullyAuthenticated()">
             <sec:authorize access="hasAnyRole('BIGDADDY', 'ADMIN')">
-                <button type="button" class="btn btn-success btn-sm pull-right" id="updateBitrixContact" style="margin-right: 5px">
+                <button type="button" class="btn btn-success btn-sm pull-right" id="updateBitrixContact"
+                        style="margin-right: 5px">
                     <c:out value="Обновить контакты из Битрикс"/></button>
             </sec:authorize>
         </sec:authorize>
@@ -237,5 +258,9 @@
     </div>
 </div>
 <%@include file="slideDiv.jsp" %>
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/css/bootstrap-select.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
 </body>
 </html>
