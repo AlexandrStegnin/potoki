@@ -1,5 +1,6 @@
 package com.art.controllers;
 
+import com.art.func.GetPrincipalFunc;
 import com.art.func.GetServiceStatus;
 import com.art.func.PersonalMailService;
 import com.art.model.*;
@@ -79,6 +80,8 @@ public class UserController {
     @Resource(name = "usersAnnexToContractsService")
     private UsersAnnexToContractsService usersAnnexToContractsService;
 
+    @Resource(name = "getPrincipalFunc")
+    private GetPrincipalFunc getPrincipalFunc;
     /*
      * В профиль
      *
@@ -107,6 +110,7 @@ public class UserController {
         modelAndView.addObject("fileBucket", fileModel);
         modelAndView.addObject("user", user);
         modelAndView.addObject("title", title);
+        modelAndView.addObject("search", new SearchSummary());
         return modelAndView;
     }
 
@@ -115,6 +119,20 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView("welcome");
         userService.update(user);
         return modelAndView;
+    }
+
+    @PostMapping(value = "/admin-flows")
+    public ModelAndView viewFlowsAdmin(@ModelAttribute("searchSummary") SearchSummary searchSummary) {
+        ModelAndView view = new ModelAndView("viewFlows");
+        if (getPrincipalFunc.haveAdminRole()) {
+            if (searchSummary.getInvestor() != null || searchSummary.getLogin() != null) {
+                BigInteger invId = new BigInteger(searchSummary.getInvestor());
+                String login = searchSummary.getLogin();
+                view.addObject("invId", invId);
+                view.addObject("invLogin", login);
+            }
+        }
+        return view;
     }
 
     /**
