@@ -115,6 +115,8 @@
 </head>
 
 <body>
+<input type="hidden" id="invId" value="${invId}">
+<input type="hidden" id="invLogin" value="${invLogin}">
 <script>var amo_social_button = {
     id: 4009,
     hash: "f8f8284b4bfb0a4600a985dc4d76d76e2ab7097a0dd0c3061b62634e7139bde6",
