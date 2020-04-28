@@ -65,8 +65,10 @@
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="investor">Инвестор:</label>
                 <div class="col-md-7">
-                    <form:select path="investorsCash.investor" id="investor" items="${investors}" multiple="false"
-                                 itemValue="id" itemLabel="login" class="selectpicker form-control input-sm"
+                    <form:select path="investorsCash.investor" id="investor" items="${investorsMulti}"
+                                 title="Выберите инвесторов..."
+                                 multiple="true"
+                                 itemValue="id" itemLabel="login" class="selectpicker form-control input-sm investorPicker"
                                  data-live-search="true"/>
                 </div>
             </div>
@@ -97,7 +99,7 @@
 
         <div class="row" id="cashingRow">
             <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="cashing">Комиссия за вывод:</label>
+                <label class="col-md-3 control-lable" for="cashing">Комиссия за вывод (%):</label>
                 <div class="col-md-7">
                     <form:input type="number" path="commission" id="cashing" class="form-control input-sm"
                                 min="0.00" max="100" step="any"/>
@@ -118,7 +120,7 @@
         <div class="row">
             <div class="form-actions floatRight">
                 <input type="button" value="Вывести всё" id="allMoneyCashing" class="btn btn-danger btn-sm" style="margin-right: 10px; display: none">
-                <input type="submit" value="Вывести" class="btn btn-primary btn-sm" style="margin-right: 10px;"/>
+                <input type="submit" value="Вывести" id="cashingSubmit" class="btn btn-primary btn-sm" style="margin-right: 10px;" disabled="true"/>
                 <a href="<c:url value='/investorscash' />">Отмена</a>
             </div>
         </div>
