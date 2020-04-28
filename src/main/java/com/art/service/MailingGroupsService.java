@@ -100,7 +100,7 @@ public class MailingGroupsService {
         mailingGroupsRoot.fetch(MailingGroups_.users, JoinType.LEFT);
         mailingGroupsCriteriaQuery.select(mailingGroupsRoot).distinct(true);
         mailingGroupsCriteriaQuery.where(cb.like(cb.lower(mailingGroupsRoot.get(MailingGroups_.mailingGroup)),
-                "%" + group.toLowerCase() + "%"));
+                "%" + group.toLowerCase()));
         MailingGroups mailingGroups = new MailingGroups();
         try {
             mailingGroups = em.createQuery(mailingGroupsCriteriaQuery).getSingleResult();
