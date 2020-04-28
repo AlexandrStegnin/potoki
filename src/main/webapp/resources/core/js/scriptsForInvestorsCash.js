@@ -344,6 +344,18 @@ jQuery(document).ready(function ($) {
 
     disableFields();
 
+    $('.investorPicker').change(function() {
+        let selectedText = $(this).find('option:selected').map(function() {
+            return $(this).text();
+        }).get().join(',');
+        let invArray = selectedText.split(",");
+        if (invArray.length === 1) {
+            $('#cashingSubmit').removeAttr('disabled');
+        } else {
+            $('#cashingSubmit').attr('disabled', 'true');
+        }
+    });
+
     var hasError = {
         'saleShareFunc': function () {
             var dateClosingInfo = $('#dateCloseErr');
@@ -408,7 +420,7 @@ jQuery(document).ready(function ($) {
             let investor = $('#investor').find(':selected').text();
             let cashing = $('#cashing').val();
             let dateCashing = $('#dateGivedCash').val();
-            if (facility === 'Выберите объект' || investor === 'Выберите инвестора' || cashing === '' || dateCashing === '') {
+            if (facility === 'Выберите объект' || investor === 'Выберите инвесторов...' || investor === '' || cashing === '' || dateCashing === '') {
                 hasError.errors = true;
                 $('#allMoneyCashing').hide();
             } else {
