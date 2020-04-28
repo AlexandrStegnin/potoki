@@ -200,130 +200,144 @@ public class InvestorsCashService {
     }
 
     public String cashing(SearchSummary searchSummary, boolean all) {
-        List<AfterCashing> cashingList = new ArrayList<>(0);
-        final InvestorsCash[] cashForGetting = {searchSummary.getInvestorsCash()};
-        Date dateClosingInvest = cashForGetting[0].getDateGivedCash();
-        List<InvestorsCash> investorsCashes = getMoneyForCashing(cashForGetting[0]);
-        if (investorsCashes.size() == 0) return "Нет денег для вывода";
-        final BigDecimal sumCash = investorsCashes.stream().map(InvestorsCash::getGivedCash).reduce(BigDecimal.ZERO, BigDecimal::add); // все деньги инвестора
-        BigDecimal commission = searchSummary.getCommission(); // сумма комиссии
-        final BigDecimal commissionNoMore = searchSummary.getCommissionNoMore(); // комиссия не более
-        final BigDecimal[] remainderSum = new BigDecimal[1]; // сумма, которую надо вывести
-        BigDecimal totalSum = new BigDecimal(BigInteger.ZERO);
-        remainderSum[0] = totalSum;
-        if (all) {
-            commission = (sumCash.multiply(commission)).divide(new BigDecimal(100), BigDecimal.ROUND_CEILING);
-            if (commissionNoMore != null && commission.compareTo(commissionNoMore) > 0) {
-                commission = commissionNoMore;
-            }
-            remainderSum[0] = sumCash;
-            cashForGetting[0].setGivedCash(sumCash.subtract(commission));
-        } else {
-            commission = (cashForGetting[0].getGivedCash().multiply(commission)).divide(new BigDecimal(100), BigDecimal.ROUND_CEILING);
-            if (commissionNoMore != null && commission.compareTo(commissionNoMore) > 0) {
-                commission = commissionNoMore;
-            }
-            totalSum = cashForGetting[0].getGivedCash().add(commission);
-            remainderSum[0] = totalSum;
-        }
-        if ((sumCash.compareTo(totalSum)) < 0) {
-            return "Сумма должна быть не более " + String.valueOf(sumCash).substring(0, String.valueOf(sumCash).indexOf("."));
-        }
+        final String[] result = {""};
+        if (searchSummary.getInvestorsList() != null) {
+            searchSummary.getInvestorsList().forEach(user -> {
+                if (searchSummary.getInvestorsCash() != null) {
+                    InvestorsCash invCash = searchSummary.getInvestorsCash();
+                    invCash.setInvestor(user);
 
-        final TypeClosingInvest typeClosingInvest = typeClosingInvestService.findByTypeClosingInvest("Вывод");
-        final TypeClosingInvest typeClosingCommission = typeClosingInvestService.findByTypeClosingInvest("Вывод_комиссия");
+                    List<AfterCashing> cashingList = new ArrayList<>(0);
+                    final InvestorsCash[] cashForGetting = {searchSummary.getInvestorsCash()};
+                    Date dateClosingInvest = cashForGetting[0].getDateGivedCash();
+                    List<InvestorsCash> investorsCashes = getMoneyForCashing(cashForGetting[0]);
+                    if (investorsCashes.size() == 0) {
+                        result[0] = "Нет денег для вывода";
+                        return;
+                    }
+                    final BigDecimal sumCash = investorsCashes.stream().map(InvestorsCash::getGivedCash).reduce(BigDecimal.ZERO, BigDecimal::add); // все деньги инвестора
+                    BigDecimal commission = searchSummary.getCommission(); // сумма комиссии
+                    final BigDecimal commissionNoMore = searchSummary.getCommissionNoMore(); // комиссия не более
+                    final BigDecimal[] remainderSum = new BigDecimal[1]; // сумма, которую надо вывести
+                    BigDecimal totalSum = new BigDecimal(BigInteger.ZERO);
+                    remainderSum[0] = totalSum;
+                    if (all) {
+                        commission = (sumCash.multiply(commission)).divide(new BigDecimal(100), BigDecimal.ROUND_CEILING);
+                        if (commissionNoMore != null && commission.compareTo(commissionNoMore) > 0) {
+                            commission = commissionNoMore;
+                        }
+                        remainderSum[0] = sumCash;
+                        cashForGetting[0].setGivedCash(sumCash.subtract(commission));
+                    } else {
+                        commission = (cashForGetting[0].getGivedCash().multiply(commission)).divide(new BigDecimal(100), BigDecimal.ROUND_CEILING);
+                        if (commissionNoMore != null && commission.compareTo(commissionNoMore) > 0) {
+                            commission = commissionNoMore;
+                        }
+                        totalSum = cashForGetting[0].getGivedCash().add(commission);
+                        remainderSum[0] = totalSum;
+                    }
+                    if ((sumCash.compareTo(totalSum)) < 0) {
+                        result[0] = "Сумма должна быть не более " + String.valueOf(sumCash).substring(0, String.valueOf(sumCash).indexOf("."));
+                        return;
+                    }
 
-        final InvestorsCash[] commissionCash = {new InvestorsCash()};
-        final InvestorsCash[] cashForManipulate = {null};
-        commissionCash[0].setGivedCash(commission.negate());
-        commissionCash[0].setTypeClosingInvest(typeClosingCommission);
-        commissionCash[0].setInvestor(cashForGetting[0].getInvestor());
-        commissionCash[0].setFacility(cashForGetting[0].getFacility());
-        commissionCash[0].setUnderFacility(cashForGetting[0].getUnderFacility());
-        commissionCash[0].setDateClosingInvest(dateClosingInvest);
+                    final TypeClosingInvest typeClosingInvest = typeClosingInvestService.findByTypeClosingInvest("Вывод");
+                    final TypeClosingInvest typeClosingCommission = typeClosingInvestService.findByTypeClosingInvest("Вывод_комиссия");
 
-        StringBuilder sourceCash = new StringBuilder();
-        final AtomicInteger[] incr = {new AtomicInteger()};
-        final InvestorsCash[] newCash = {null};
+                    final InvestorsCash[] commissionCash = {new InvestorsCash()};
+                    final InvestorsCash[] cashForManipulate = {null};
+                    commissionCash[0].setGivedCash(commission.negate());
+                    commissionCash[0].setTypeClosingInvest(typeClosingCommission);
+                    commissionCash[0].setInvestor(cashForGetting[0].getInvestor());
+                    commissionCash[0].setFacility(cashForGetting[0].getFacility());
+                    commissionCash[0].setUnderFacility(cashForGetting[0].getUnderFacility());
+                    commissionCash[0].setDateClosingInvest(dateClosingInvest);
 
-        if (all) {
-            investorsCashes.forEach(ic -> {
-                cashingList.add(new AfterCashing(ic.getId(), ic.getGivedCash()));
-                ic.setTypeClosingInvest(typeClosingInvest);
-                ic.setDateClosingInvest(dateClosingInvest);
-                if (incr[0].get() == investorsCashes.size() - 1) {
-                    sourceCash.append(ic.getId().toString());
-                } else {
-                    sourceCash.append(ic.getId().toString()).append("|");
+                    StringBuilder sourceCash = new StringBuilder();
+                    final AtomicInteger[] incr = {new AtomicInteger()};
+                    final InvestorsCash[] newCash = {null};
+
+                    if (all) {
+                        investorsCashes.forEach(ic -> {
+                            cashingList.add(new AfterCashing(ic.getId(), ic.getGivedCash()));
+                            ic.setTypeClosingInvest(typeClosingInvest);
+                            ic.setDateClosingInvest(dateClosingInvest);
+                            if (incr[0].get() == investorsCashes.size() - 1) {
+                                sourceCash.append(ic.getId().toString());
+                            } else {
+                                sourceCash.append(ic.getId().toString()).append("|");
+                            }
+
+                            fillCash(commissionCash[0], ic);
+                            fillCash(cashForGetting[0], ic);
+
+                            update(ic);
+                            incr[0].getAndIncrement();
+                        });
+                    } else {
+
+                        investorsCashes.forEach(ic -> {
+                            if (remainderSum[0].equals(BigDecimal.ZERO)) return;
+                            cashingList.add(new AfterCashing(ic.getId(), ic.getGivedCash()));
+                            if (incr[0].get() == investorsCashes.size() - 1) {
+                                sourceCash.append(ic.getId().toString());
+                            } else {
+                                sourceCash.append(ic.getId().toString()).append("|");
+                            }
+                            // если сумма остатка, который надо вывести, больше текущей суммы инвестора
+                            if (ic.getGivedCash().subtract(remainderSum[0]).compareTo(BigDecimal.ZERO) < 0) {
+                                // остаток = остаток - текущая сумма инвестора
+                                remainderSum[0] = remainderSum[0].subtract(ic.getGivedCash());
+                                ic.setDateClosingInvest(dateClosingInvest);
+                                ic.setTypeClosingInvest(typeClosingInvest);
+                                update(ic);
+                            } else {
+                                // иначе если сумма остатка, который надо вывести, меньше текущей суммы инвестора
+                                // создаём проводку, с которой сможем в дальнейшем проводить какие-либо действия
+                                // на сумму (текущие деньги вычитаем сумму остатка и комиссию)
+                                cashForManipulate[0] = new InvestorsCash(ic);
+                                cashForManipulate[0].setGivedCash(ic.getGivedCash().subtract(remainderSum[0]));
+                                // основную сумму блокируем для операций
+                                ic.setGivedCash(BigDecimal.ZERO);
+                                ic.setIsReinvest(1);
+                                ic.setIsDivide(1);
+                                // сохраняем сумму
+                                update(ic);
+
+                                // создаём новую сумму на остаток + комиссия
+                                newCash[0] = new InvestorsCash(ic);
+                                newCash[0].setGivedCash(remainderSum[0]);
+                                newCash[0].setDateClosingInvest(dateClosingInvest);
+                                newCash[0].setTypeClosingInvest(typeClosingInvest);
+                                remainderSum[0] = BigDecimal.ZERO;
+                                fillCash(commissionCash[0], ic);
+                                fillCash(cashForGetting[0], ic);
+                            }
+                            incr[0].getAndIncrement();
+                        });
+                    }
+
+                    cashForGetting[0].setGivedCash(cashForGetting[0].getGivedCash().negate());
+                    cashForGetting[0].setDateClosingInvest(commissionCash[0].getDateClosingInvest());
+                    cashForGetting[0].setTypeClosingInvest(typeClosingInvest);
+
+                    cashingList.forEach(afterCashingService::create);
+                    cashForGetting[0].setSource(sourceCash.toString());
+                    commissionCash[0].setSource(sourceCash.toString());
+                    if (!Objects.equals(null, cashForManipulate[0])) {
+                        cashForManipulate[0].setSource(sourceCash.toString());
+                        create(cashForManipulate[0]);
+                    }
+                    if (newCash[0] != null) {
+                        newCash[0].setSource(sourceCash.toString());
+                        create(newCash[0]);
+                    }
+                    create(cashForGetting[0]);
+                    create(commissionCash[0]);
                 }
-
-                fillCash(commissionCash[0], ic);
-                fillCash(cashForGetting[0], ic);
-
-                update(ic);
-                incr[0].getAndIncrement();
             });
-        } else {
-
-            investorsCashes.forEach(ic -> {
-                if (remainderSum[0].equals(BigDecimal.ZERO)) return;
-                cashingList.add(new AfterCashing(ic.getId(), ic.getGivedCash()));
-                if (incr[0].get() == investorsCashes.size() - 1) {
-                    sourceCash.append(ic.getId().toString());
-                } else {
-                    sourceCash.append(ic.getId().toString()).append("|");
-                }
-                // если сумма остатка, который надо вывести, больше текущей суммы инвестора
-                if (ic.getGivedCash().subtract(remainderSum[0]).compareTo(BigDecimal.ZERO) < 0) {
-                    // остаток = остаток - текущая сумма инвестора
-                    remainderSum[0] = remainderSum[0].subtract(ic.getGivedCash());
-                    ic.setDateClosingInvest(dateClosingInvest);
-                    ic.setTypeClosingInvest(typeClosingInvest);
-                    update(ic);
-                } else {
-                    // иначе если сумма остатка, который надо вывести, меньше текущей суммы инвестора
-                    // создаём проводку, с которой сможем в дальнейшем проводить какие-либо действия
-                    // на сумму (текущие деньги вычитаем сумму остатка и комиссию)
-                    cashForManipulate[0] = new InvestorsCash(ic);
-                    cashForManipulate[0].setGivedCash(ic.getGivedCash().subtract(remainderSum[0]));
-                    // основную сумму блокируем для операций
-                    ic.setGivedCash(BigDecimal.ZERO);
-                    ic.setIsReinvest(1);
-                    ic.setIsDivide(1);
-                    // сохраняем сумму
-                    update(ic);
-
-                    // создаём новую сумму на остаток + комиссия
-                    newCash[0] = new InvestorsCash(ic);
-                    newCash[0].setGivedCash(remainderSum[0]);
-                    newCash[0].setDateClosingInvest(dateClosingInvest);
-                    newCash[0].setTypeClosingInvest(typeClosingInvest);
-                    remainderSum[0] = BigDecimal.ZERO;
-                    fillCash(commissionCash[0], ic);
-                    fillCash(cashForGetting[0], ic);
-                }
-                incr[0].getAndIncrement();
-            });
         }
-
-        cashForGetting[0].setGivedCash(cashForGetting[0].getGivedCash().negate());
-        cashForGetting[0].setDateClosingInvest(commissionCash[0].getDateClosingInvest());
-        cashForGetting[0].setTypeClosingInvest(typeClosingInvest);
-
-        cashingList.forEach(afterCashingService::create);
-        cashForGetting[0].setSource(sourceCash.toString());
-        commissionCash[0].setSource(sourceCash.toString());
-        if (!Objects.equals(null, cashForManipulate[0])) {
-            cashForManipulate[0].setSource(sourceCash.toString());
-            create(cashForManipulate[0]);
-        }
-        if (newCash[0] != null) {
-            newCash[0].setSource(sourceCash.toString());
-            create(newCash[0]);
-        }
-        create(cashForGetting[0]);
-        create(commissionCash[0]);
-        return "";
+        return result[0];
     }
 
     private void fillCash(InvestorsCash to, InvestorsCash from) {
