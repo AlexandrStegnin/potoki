@@ -14,6 +14,8 @@ import java.util.List;
 @Getter
 @Setter
 public class SearchSummary implements Serializable {
+
+    List<Users> investorsList;
     private String facility;
     private Date dateStart;
     private Date dateEnd;
@@ -532,5 +534,13 @@ public class SearchSummary implements Serializable {
 
     public void setDivideSum(BigDecimal divideSum) {
         this.divideSum = divideSum;
+    }
+
+    public List<Users> getInvestorsList() {
+        return investorsList;
+    }
+
+    public void setInvestorsList(List<Users> investorsList) {
+        this.investorsList = investorsList;
     }
 }

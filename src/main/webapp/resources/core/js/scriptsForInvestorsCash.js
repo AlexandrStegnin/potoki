@@ -528,6 +528,17 @@ jQuery(document).ready(function ($) {
 
 });
 
+let User = function () {}
+
+User.prototype = {
+    id: 0,
+    login: '',
+    build: function (id, login) {
+        this.id = id;
+        this.login = login;
+    }
+}
+
 function allMoneyCashing() {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
@@ -537,10 +548,20 @@ function allMoneyCashing() {
         underFacility = null;
     }
 
+    let investor = $("#investor");
+    let investors = [];
+    investor.find('option:selected').each(function() {
+        let user = new User();
+        user.build($(this).val(), $(this).text());
+        investors.push(user);
+    });
+
+    // return false;
     let search = ({
+        investorsList: investors,
         user: {
-            id: $("#investor").find("option:selected").val(),
-            login: $("#investor").find("option:selected").text()
+            id: investor.find("option:selected").val(),
+            login: investor.find("option:selected").text()
         },
         facilities: {
             id: $("#facilities").find("option:selected").val()
@@ -560,8 +581,8 @@ function allMoneyCashing() {
                 underFacility: $("#underFacilities").find("option:selected").text()
             },
             investor: {
-                id: $("#investor").find("option:selected").val(),
-                login: $("#investor").find("option:selected").text()
+                id: investor.find("option:selected").val(),
+                login: investor.find("option:selected").text()
             },
             dateGivedCash: $('#dateGivedCash').val(),
             givedCash: $('#cash').val()
