@@ -88,6 +88,10 @@ public class UserService {
         return getUsers("Выберите инвестора");
     }
 
+    public List<Users> initializeMultipleInvestors() {
+        return userRepository.findByStuffIdOrderByLastName(stuffService.findByStuff("Инвестор").getId());
+    }
+
     public List<Users> initializePartners() {
         return getUsers("Выберите партнёра");
     }

@@ -930,6 +930,11 @@ public class InvestorsCashController {
         return userService.initializeInvestors();
     }
 
+    @ModelAttribute("investorsMulti")
+    public List<Users> initializeInvestorsMultiple() {
+        return userService.initializeMultipleInvestors();
+    }
+
     @ModelAttribute("cashSources")
     public List<CashSources> initializeCashSources() {
         return cashSourcesService.initializeCashSources();
