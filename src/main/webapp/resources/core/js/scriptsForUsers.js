@@ -301,9 +301,12 @@ function searchUsers() {
 function prepareUsersFilter() {
     var stuff = $('#srchStuff').find(':selected').text();
 
-    if (stuff !== 'Все') {
+    if (stuff !== 'Все' && stuff !== 'Не подтверждён') {
         filters = [];
         apply_filter('#tblUsers tbody', 4, stuff);
+    } else if (stuff === 'Не подтверждён') {
+        filters = [];
+        apply_filter('#tblUsers tbody', 5, "Нет");
     } else {
         filters = [];
         apply_filter('#tblUsers tbody', 4, 'any');
