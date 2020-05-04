@@ -300,4 +300,15 @@ public class Users implements Serializable {
     public List<String> getFacilityName() {
         return facilityName;
     }
+
+    @Column(name = "confirmed")
+    private boolean confirmed;
+
+    public boolean isConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
+    }
 }
