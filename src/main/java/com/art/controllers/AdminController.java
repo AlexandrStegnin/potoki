@@ -89,6 +89,9 @@ public class AdminController {
 
     @ModelAttribute("stuffs")
     public List<Stuffs> initializeStuffs() {
-        return stuffService.initializeStuffs();
+        List<Stuffs> stuffs = stuffService.initializeStuffs();
+        Stuffs confirmed = new Stuffs("-1", "Не подтверждён");
+        stuffs.add(confirmed);
+        return stuffs;
     }
 }
