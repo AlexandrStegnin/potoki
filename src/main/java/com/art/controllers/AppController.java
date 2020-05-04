@@ -6,6 +6,7 @@ import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.ServiceTemporarilyUnavailableException;
 import com.art.model.supporting.ServiceUnavailable;
 import com.art.service.ServiceUnavailableService;
+import com.art.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -37,6 +38,9 @@ public class AppController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private UserService userService;
 
     @PostMapping(value = "/switch", produces = "application/json;charset=UTF-8")
     public @ResponseBody
@@ -71,6 +75,7 @@ public class AppController {
 
         if (request.isUserInRole("ROLE_INVESTOR") &&
                 (!admin && !request.isUserInRole("ROLE_DBA") && !request.isUserInRole("ROLE_BIGDADDY"))) {
+            userService.confirm(getPrincipalFunc.getPrincipalId());
             return "viewFlows";
         } else {
             return "catalogues";
