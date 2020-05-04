@@ -9,7 +9,6 @@ import com.art.model.Users_;
 import com.art.model.supporting.SendingMail;
 import com.art.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +26,6 @@ import java.util.*;
 
 @Service
 @Transactional
-@Repository
 public class UserService {
     @Resource(name = "userRepository")
     private UserRepository userRepository;
@@ -108,6 +106,15 @@ public class UserService {
 
     public List<Users> findByMailingGroups(MailingGroups mailingGroups) {
         return userRepository.findByMailingGroups(mailingGroups);
+    }
+
+    @Transactional
+    public void confirm(BigInteger userId) {
+        Users investor = findById(userId);
+        if (!investor.isConfirmed()) {
+            investor.setConfirmed(true);
+            update(investor);
+        }
     }
 
     /*
