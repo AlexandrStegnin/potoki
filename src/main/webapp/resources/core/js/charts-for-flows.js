@@ -179,15 +179,13 @@ function prepareDoughnutChart(kinds) {
                     }), this);
                 }
             },
-            labels: {
-
-            },
+            labels: {},
             tooltips: {
                 callbacks: {
-                    title: function(tooltipItem, data) {
+                    title: function (tooltipItem, data) {
                         return data['labels'][tooltipItem[0]['index']];
                     },
-                    label: function(tooltipItem, data) {
+                    label: function (tooltipItem, data) {
                         return ' ' + data['datasets'][0]['data'][tooltipItem['index']] + '%';
                     }
                 }
@@ -214,6 +212,7 @@ function getKindOnProject(login) {
         .done(function (data) {
             prepareBarChart(data);
             prepareInvestedBarChart(data);
+            prepareTreeMapChart(data);
         })
         .fail(function (e) {
             console.log(e);
@@ -346,7 +345,7 @@ function prepareInvestedBarChart(kinds) {
 }
 
 Chart.plugins.register({
-    afterDatasetsDraw: function(chartInstance, easing) {
+    afterDatasetsDraw: function (chartInstance, easing) {
         if (chartInstance.config.type === 'doughnut') {
             // To only draw at the end of animation, check for easing === 1
             let ctx = chartInstance.chart.ctx;
@@ -373,3 +372,107 @@ Chart.plugins.register({
         }
     }
 });
+
+function prepareTreeMapChart(kinds) {
+    let options = {
+        responsive: true,
+        hover: {
+            animationDuration: 0
+        },
+        scales: {
+            xAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                    fontFamily: "'Open Sans Bold', sans-serif",
+                    fontSize: 11
+                },
+                scaleLabel: {
+                    display: false
+                },
+                gridLines: {}
+            }],
+            yAxes: [{
+                gridLines: {
+                    display: false,
+                    color: "#fff",
+                    zeroLineColor: "#fff",
+                    zeroLineWidth: 0
+                },
+                ticks: {
+                    fontFamily: "'Open Sans Bold', sans-serif",
+                    fontSize: 11
+                }
+            }]
+        },
+        legend: {
+            display: false
+        },
+        title: {
+            display: true,
+            text: 'Доля средств в каждом проекте',
+            fontSize: "24"
+        },
+        tooltips: {
+            callbacks: {
+                title: function(item, data) {
+                    return '';
+                },
+                label: function(item, data) {
+                    let dataset = data.datasets[item.datasetIndex];
+                    let dataItem = dataset.data[item.index];
+                    let obj = dataItem._data;
+                    let label = obj.facility;
+                    return ' ' + label + ': ' + (dataItem.v).toLocaleString();
+                }
+            }
+        },
+        // animation: {
+        //     onComplete: function () {
+        //         let chartInstance = this.chart;
+        //         let ctx = chartInstance.ctx;
+        //         ctx.textAlign = "right";
+        //         ctx.font = "9px Open Sans";
+        //         ctx.fillStyle = "#000000";
+        //         ctx.textBaseline = 'middle';
+        //
+        //         Chart.helpers.each(this.data.datasets.forEach(function (dataset, i) {
+        //             let meta = chartInstance.controller.getDatasetMeta(i);
+        //             Chart.helpers.each(meta.data.forEach(function (bar, index) {
+        //                 let data = dataset.data[index];
+        //                 ctx.fillText(data.toLocaleString(), bar._model.x + 50, bar._model.y);
+        //             }), this)
+        //         }), this);
+        //     }
+        // },
+        pointLabelFontFamily: "Quadon Extra Bold",
+        scaleFontFamily: "Quadon Extra Bold",
+    };
+
+    let myCash = [];
+    let colors = [];
+    let treeKinds = [];
+    $.each(kinds, function (ind, el) {
+        let kind = new KindOnProject();
+        kind.build(el.facility, el.login, el.givenCash, el.projectCoast, el.percent);
+        myCash.push(el.givenCash);
+        colors.push(getRandomColor());
+        treeKinds.push(kind);
+    });
+    let ctx = document.getElementById('investedTreeMapChart').getContext('2d');
+    let treeMapChart = new Chart(ctx, {
+        type: 'treemap',
+        data: {
+            datasets: [{
+                tree: treeKinds,
+                key: 'givenCash',
+                groups: ['facility'],
+                fontColor: '#000',
+                fontFamily: 'serif',
+                fontSize: 12,
+                fontStyle: 'normal',
+                backgroundColor: colors
+            }]
+        },
+        options: options
+    });
+}
