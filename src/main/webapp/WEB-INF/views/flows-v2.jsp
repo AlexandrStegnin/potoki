@@ -17,16 +17,22 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="robots" content="noindex, nofollow">
     <script type="text/javascript" src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' />"></script>
-    <script type="text/javascript" src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js' />"></script><script type="text/javascript" src="<c:url value='/resources/core/js/charts-for-flows.js' />"></script>
+    <script type="text/javascript" src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js' />"></script>
+    <script type="text/javascript" src="<c:url value='https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@0.2.3' />"></script>
+    <script type="text/javascript" src="<c:url value='https://www.gstatic.com/charts/loader.js' />"></script>
+    <script type="text/javascript" src="<c:url value='/resources/core/js/charts-for-flows.js' />"></script>
 </head>
 <body>
-<canvas id="barChart" width="400" height="150" aria-label="Your browser does not support the canvas element." role="img">
+<canvas id="barChart" width="350" height="150" aria-label="Your browser does not support the canvas element." role="img">
     <p>Данные загружаются</p>
 </canvas>
-<canvas id="doughnutChart" width="400" height="150" aria-label="Your browser does not support the canvas element." role="img">
+<canvas id="doughnutChart" width="350" height="150" aria-label="Your browser does not support the canvas element." role="img">
     <p>Данные загружаются</p>
 </canvas>
-<canvas id="investedBarChart" width="400" height="150" aria-label="Your browser does not support the canvas element." role="img">
+<canvas id="investedBarChart" width="350" height="150" aria-label="Your browser does not support the canvas element." role="img">
+    <p>Данные загружаются</p>
+</canvas>
+<canvas id="investedTreeMapChart" width="350" height="150" aria-label="Your browser does not support the canvas element." role="img">
     <p>Данные загружаются</p>
 </canvas>
 </body>
