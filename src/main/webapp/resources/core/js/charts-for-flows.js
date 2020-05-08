@@ -159,7 +159,8 @@ function prepareDoughnutChart(kinds) {
         options: {
             title: {
                 display: true,
-                text: 'Доля средств в каждом проекте'
+                text: 'Доля средств в каждом проекте',
+                fontSize: "24"
             },
             animation: {
                 onComplete: function () {
@@ -212,6 +213,7 @@ function getKindOnProject(login) {
     })
         .done(function (data) {
             prepareBarChart(data);
+            prepareInvestedBarChart(data);
         })
         .fail(function (e) {
             console.log(e);
@@ -254,6 +256,95 @@ function getRandomColor() {
     return "rgb(" + colorR + "," + colorG + "," + colorB + ")";
 }
 
+function prepareInvestedBarChart(kinds) {
+    let options = {
+        tooltips: {
+            enabled: false
+        },
+        hover: {
+            animationDuration: 0
+        },
+        scales: {
+            xAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                    fontFamily: "'Open Sans Bold', sans-serif",
+                    fontSize: 11
+                },
+                scaleLabel: {
+                    display: false
+                },
+                gridLines: {}
+            }],
+            yAxes: [{
+                gridLines: {
+                    display: false,
+                    color: "#fff",
+                    zeroLineColor: "#fff",
+                    zeroLineWidth: 0
+                },
+                ticks: {
+                    fontFamily: "'Open Sans Bold', sans-serif",
+                    fontSize: 11
+                }
+            }]
+        },
+        legend: {
+            display: false
+        },
+        title: {
+            display: true,
+            text: 'Мои вложения',
+            fontSize: "24"
+        },
+        animation: {
+            onComplete: function () {
+                let chartInstance = this.chart;
+                let ctx = chartInstance.ctx;
+                ctx.textAlign = "right";
+                ctx.font = "9px Open Sans";
+                ctx.fillStyle = "#000000";
+                ctx.textBaseline = 'middle';
+
+                Chart.helpers.each(this.data.datasets.forEach(function (dataset, i) {
+                    let meta = chartInstance.controller.getDatasetMeta(i);
+                    Chart.helpers.each(meta.data.forEach(function (bar, index) {
+                        let data = dataset.data[index];
+                        ctx.fillText(data.toLocaleString(), bar._model.x + 50, bar._model.y);
+                    }), this)
+                }), this);
+            }
+        },
+        pointLabelFontFamily: "Quadon Extra Bold",
+        scaleFontFamily: "Quadon Extra Bold",
+    };
+
+    let labels = [];
+    let myCash = [];
+    let colors = [];
+    $.each(kinds, function (ind, el) {
+        let kind = new KindOnProject();
+        kind.build(el.facility, el.login, el.givenCash, el.projectCoast, el.percent);
+        labels.push(kind.facility);
+        myCash.push(el.givenCash);
+        colors.push(getRandomColor());
+    });
+
+    let ctx = document.getElementById('investedBarChart').getContext('2d');
+    let investedBarChart = new Chart(ctx, {
+        type: 'horizontalBar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Мои вложения',
+                data: myCash,
+                backgroundColor: colors
+            }]
+        },
+        options: options
+    });
+}
+
 Chart.plugins.register({
     afterDatasetsDraw: function(chartInstance, easing) {
         if (chartInstance.config.type === 'doughnut') {
@@ -274,7 +365,6 @@ Chart.plugins.register({
                         // Make sure alignment settings are correct
                         ctx.textAlign = 'center';
                         ctx.textBaseline = 'middle';
-                        let padding = 5;
                         let position = element.tooltipPosition();
                         ctx.fillText(dataString + '%', position.x, position.y - (fontSize / 2));
                     });
