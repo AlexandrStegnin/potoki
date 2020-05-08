@@ -9,16 +9,15 @@ import javax.persistence.Table;
 import java.math.BigDecimal;
 
 /**
- *
- * Класс для отображения представления "доля вложений инвестора в каждом проекте"
+ * Класс для отображения представления
+ * о доле каждого проекта во всех вложенных деньгах инвестора
  *
  * @author Alexandr Stegnin
  */
-
 @Entity
 @Immutable
-@Table(name = "kind_on_project")
-public class KindOnProject {
+@Table(name = "kind_project_on_all_invested_monies")
+public class KindProjectOnAllMonies {
 
     @Id
     @Column(name = "FacilityId")
@@ -30,13 +29,7 @@ public class KindOnProject {
     @Column(name = "login")
     private String login;
 
-    @Column(name = "given_cash")
-    private BigDecimal givenCash;
-
-    @Column(name = "project_coast")
-    private BigDecimal projectCoast;
-
-    @Column(name = "percent_on_project")
+    @Column(name = "percent")
     private BigDecimal percent;
 
     public String getFacility() {
@@ -45,14 +38,6 @@ public class KindOnProject {
 
     public String getLogin() {
         return login;
-    }
-
-    public BigDecimal getGivenCash() {
-        return givenCash;
-    }
-
-    public BigDecimal getProjectCoast() {
-        return projectCoast;
     }
 
     public BigDecimal getPercent() {
