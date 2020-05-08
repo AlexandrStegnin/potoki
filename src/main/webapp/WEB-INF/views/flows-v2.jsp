@@ -26,5 +26,8 @@
 <canvas id="doughnutChart" width="400" height="150" aria-label="Your browser does not support the canvas element." role="img">
     <p>Данные загружаются</p>
 </canvas>
+<canvas id="investedBarChart" width="400" height="150" aria-label="Your browser does not support the canvas element." role="img">
+    <p>Данные загружаются</p>
+</canvas>
 </body>
 </html>
