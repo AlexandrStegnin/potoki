@@ -846,7 +846,7 @@ public class InvestorsCashController {
                             .stream()
                             .filter(ic -> !ic.getId().equals(cash.getId()))
                             .filter(ic -> Objects.equals(null, ic.getTypeClosingInvest()))
-                            .filter(ic -> ic.getGivedCash().compareTo(BigDecimal.ZERO) > 0)
+                            .filter(ic -> ic.getGivedCash() != null && ic.getGivedCash().compareTo(BigDecimal.ZERO) > 0)
                             .collect(Collectors.toList());
                     if (currentCash.size() == 0) {
                         if (currentInvestors.getUsers().contains(investor)) {
