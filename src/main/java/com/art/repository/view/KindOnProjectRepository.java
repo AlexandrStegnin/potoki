@@ -13,6 +13,6 @@ import java.util.List;
 @Repository
 public interface KindOnProjectRepository extends JpaRepository<KindOnProject, Long> {
 
-    List<KindOnProject> findByLoginOrderByGivenCashDesc(String login);
+    List<KindOnProject> findByLogin(String login);
 
 }
