@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.util.Date;
 
 /**
  * Сущность для отображения представления заработок компании для инвесторов
@@ -25,7 +25,7 @@ public class CompanyProfit {
     private Long id;
 
     @Column(name = "date_sale")
-    private LocalDate dateSale;
+    private Date dateSale;
 
     @Column(name = "under_facility")
     private String underFacility;
@@ -33,7 +33,7 @@ public class CompanyProfit {
     @Column(name = "profit")
     private BigDecimal profit;
 
-    public LocalDate getDateSale() {
+    public Date getDateSale() {
         return dateSale;
     }
 
