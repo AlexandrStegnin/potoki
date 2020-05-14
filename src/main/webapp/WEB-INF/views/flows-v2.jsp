@@ -35,5 +35,8 @@
 <canvas id="investedTreeMapChart" width="350" height="150" aria-label="Your browser does not support the canvas element." role="img">
     <p>Данные загружаются</p>
 </canvas>
+<canvas id="companyProfitChart" width="350" height="150" aria-label="Your browser does not support the canvas element." role="img">
+    <p>Данные загружаются</p>
+</canvas>
 </body>
 </html>
