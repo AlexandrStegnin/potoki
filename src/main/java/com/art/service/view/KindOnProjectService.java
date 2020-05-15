@@ -20,7 +20,7 @@ public class KindOnProjectService {
     }
 
     public List<KindOnProject> findByInvestorLogin(String login) {
-        return kindOnProjectRepository.findByLogin(login);
+        return kindOnProjectRepository.findByLoginOrderByBuyDate(login);
     }
 
 }
