@@ -2,12 +2,9 @@ package com.art.model.supporting.view;
 
 import org.hibernate.annotations.Immutable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.util.UUID;
 
 /**
  * Сущность для отображения представления заработок компании для инвесторов
@@ -21,24 +18,17 @@ import java.util.Date;
 public class CompanyProfit {
 
     @Id
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "uuid", insertable = false, updatable = false)
+    private UUID id;
 
-    @Column(name = "date_sale")
-    private Date dateSale;
-
-    @Column(name = "under_facility")
-    private String underFacility;
+    @Column(name = "year_sale")
+    private int yearSale;
 
     @Column(name = "profit")
     private BigDecimal profit;
 
-    public Date getDateSale() {
-        return dateSale;
-    }
-
-    public String getUnderFacility() {
-        return underFacility;
+    public int getYearSale() {
+        return yearSale;
     }
 
     public BigDecimal getProfit() {
