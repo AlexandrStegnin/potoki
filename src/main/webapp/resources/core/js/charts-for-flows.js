@@ -34,12 +34,10 @@ KindProjectOnMonies.prototype = {
 }
 
 CompanyProfit.prototype = {
-    dateSale: '',
-    underFacility: '',
+    yearSale: '',
     profit: 0.0,
-    build: function (dateSale, underFacility, profit) {
-        this.dateSale = dateSale;
-        this.underFacility = underFacility;
+    build: function (dateSale, profit) {
+        this.yearSale = dateSale;
         this.profit = profit;
     }
 }
@@ -412,18 +410,13 @@ function prepareTreeMapChart(kinds) {
 function prepareCompanyProfit(profits) {
     let labels = [];
     let profitSums = [];
+    let colors = [];
     $.each(profits, function (ind, el) {
         let profit = new CompanyProfit();
-        let label = [];
-        profit.build(el.dateSale, el.underFacility, el.profit);
-        let underFacilitiesSeparated = profit.underFacility.split('_');
-        let cnt = underFacilitiesSeparated.length;
-        label.push(new Date(profit.dateSale).toLocaleDateString());
-        for (let i = 0; i < cnt; i++) {
-            label.push(underFacilitiesSeparated[i]);
-        }
-        labels.push(label);
+        profit.build(el.yearSale, el.profit);
+        labels.push(profit.yearSale);
         profitSums.push(profit.profit);
+        colors.push(getRandomColor());
     });
 
     let options = {
@@ -436,7 +429,10 @@ function prepareCompanyProfit(profits) {
                 label: function (tooltipItem, data) {
                     return data['datasets'][0]['data'][tooltipItem['index']].toLocaleString() + ' руб.';
                 }
-            }
+            },
+            mode: 'index',
+            intersect: true,
+            yAlign: 'bottom'
         },
         hover: {
             animationDuration: 0
@@ -449,7 +445,7 @@ function prepareCompanyProfit(profits) {
                     stepSize: 0,
                     min: 0,
                     autoSkip: false,
-                    fontSize: 11,
+                    fontSize: 14,
                     maxRotation: 0,
                     minRotation: 0
                 },
@@ -485,8 +481,8 @@ function prepareCompanyProfit(profits) {
             onComplete: function () {
                 let chartInstance = this.chart;
                 let ctx = chartInstance.ctx;
-                ctx.textAlign = "left";
-                ctx.font = "9px Open Sans";
+                ctx.textAlign = "center";
+                ctx.font = "14px Open Sans";
                 ctx.fillStyle = "#000000";
                 ctx.textBaseline = 'bottom';
 
@@ -494,7 +490,7 @@ function prepareCompanyProfit(profits) {
                     let meta = chartInstance.controller.getDatasetMeta(i);
                     Chart.helpers.each(meta.data.forEach(function (bar, index) {
                         let data = dataset.data[index];
-                        ctx.fillText(data.toLocaleString(), bar._model.x + 10, bar._model.y - 10);
+                        ctx.fillText(data.toLocaleString(), bar._model.x, bar._model.y);
                     }), this)
                 }), this);
             }
@@ -508,22 +504,12 @@ function prepareCompanyProfit(profits) {
 
     let ctx = document.getElementById('companyProfitChart').getContext('2d');
     let companyProfitChart = new Chart(ctx, {
-        type: 'line',
+        type: 'bar',
         data: {
             labels: labels,
             datasets: [{
                 data: profitSums,
-                fill: false,
-                lineTension: 0,
-                borderColor: 'blue',
-                backgroundColor: 'transparent',
-                pointBorderColor: 'blue',
-                pointBackgroundColor: 'rgb(0,63,229)',
-                pointRadius: 5,
-                pointHoverRadius: 10,
-                pointHitRadius: 30,
-                pointBorderWidth: 2,
-                pointStyle: 'rectRounded'
+                backgroundColor: colors
             }]
         },
         options: options
