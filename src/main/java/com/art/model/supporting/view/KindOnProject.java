@@ -21,7 +21,7 @@ import java.math.BigDecimal;
 public class KindOnProject {
 
     @Id
-    @Column(name = "FacilityId")
+    @Column(name = "ID")
     private Long id;
 
     @Column(name = "facility")
@@ -35,9 +35,6 @@ public class KindOnProject {
 
     @Column(name = "project_coast")
     private BigDecimal projectCoast;
-
-    @Column(name = "percent_on_project")
-    private BigDecimal percent;
 
     public String getFacility() {
         return facility;
@@ -55,7 +52,4 @@ public class KindOnProject {
         return projectCoast;
     }
 
-    public BigDecimal getPercent() {
-        return percent;
-    }
 }
