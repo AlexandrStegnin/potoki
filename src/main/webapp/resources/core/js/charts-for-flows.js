@@ -46,7 +46,7 @@ CompanyProfit.prototype = {
 
 jQuery(document).ready(function ($) {
     getKindOnProject('investor007')
-    getKindProjectOnAllMonies("investor007");
+    // getKindProjectOnAllMonies("investor007");
     getCompanyProfit();
 });
 
@@ -548,7 +548,7 @@ function getKindOnProject(login) {
         .done(function (data) {
             prepareBarChart(data);
             prepareInvestedBarChart(data);
-            prepareTreeMapChart(data);
+            // prepareTreeMapChart(data);
         })
         .fail(function (e) {
             console.log(e);
