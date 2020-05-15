@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  *
@@ -36,6 +37,9 @@ public class KindOnProject {
     @Column(name = "project_coast")
     private BigDecimal projectCoast;
 
+    @Column(name = "buy_date")
+    private Date buyDate;
+
     public String getFacility() {
         return facility;
     }
@@ -52,4 +56,7 @@ public class KindOnProject {
         return projectCoast;
     }
 
+    public Date getBuyDate() {
+        return buyDate;
+    }
 }
