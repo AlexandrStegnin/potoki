@@ -12,31 +12,39 @@
     <meta http-equiv='expires' content='0'>
     <meta http-equiv='pragma' content='no-cache'>
 
-    <meta name="viewport" content="width=1370">
-    <meta name="theme-color" content="#fff">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type="text/javascript" src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' />"></script>
     <script type="text/javascript" src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js' />"></script>
     <script type="text/javascript" src="<c:url value='https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@0.2.3' />"></script>
     <script type="text/javascript" src="<c:url value='https://www.gstatic.com/charts/loader.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/charts-for-flows.js' />"></script>
+    <link href="<c:url value='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' />" rel="stylesheet"/>
 </head>
 <body>
 <canvas id="barChart" width="350" height="150" aria-label="Your browser does not support the canvas element." role="img">
     <p>Данные загружаются</p>
 </canvas>
-<canvas id="doughnutChart" width="350" height="150" aria-label="Your browser does not support the canvas element." role="img">
-    <p>Данные загружаются</p>
-</canvas>
 <canvas id="investedBarChart" width="350" height="150" aria-label="Your browser does not support the canvas element." role="img">
     <p>Данные загружаются</p>
 </canvas>
-<canvas id="investedTreeMapChart" width="350" height="150" aria-label="Your browser does not support the canvas element." role="img">
-    <p>Данные загружаются</p>
-</canvas>
-<canvas id="companyProfitChart" width="350" height="150" aria-label="Your browser does not support the canvas element." role="img">
-    <p>Данные загружаются</p>
-</canvas>
+<div class="container-fluid" style="text-align: center; font-family: 'Open Sans', sans-serif; font-weight: bolder; font-size: 24px; color: #666666">
+    Компания заработала:
+    <div class="row">
+        <div class="col-lg-6">
+            <canvas id="companyProfitChart" width="350" height="150" aria-label="Your browser does not support the canvas element." role="img">
+                <p>Данные загружаются</p>
+            </canvas>
+        </div>
+        <div class="col-lg-6">
+            <canvas id="investorProfitChart" width="350" height="150" aria-label="Your browser does not support the canvas element." role="img">
+                <p>Данные загружаются</p>
+            </canvas>
+        </div>
+    </div>
+</div>
+
 </body>
+<script type="text/javascript" src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js' />"></script>
+<script type="text/javascript" src="<c:url value='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js' />"></script>
+
 </html>
