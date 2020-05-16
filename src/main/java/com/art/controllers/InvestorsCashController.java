@@ -361,7 +361,9 @@ public class InvestorsCashController {
         if (result.hasErrors()) {
             return "getInvestorsCash";
         }
-
+        if (searchSummary.getInvestorsList() == null) {
+            searchSummary.setInvestorsList(Collections.singletonList(searchSummary.getInvestorsCash().getInvestor()));
+        }
         String out = investorsCashService.cashingMoney(searchSummary);
 
         if (StringUtils.isEmpty(out)) {
