@@ -7,6 +7,9 @@ let KindProjectOnMonies = function () {
 let CompanyProfit = function () {
 }
 
+let InvestorProfit = function () {
+}
+
 KindOnProject.prototype = {
     facility: '',
     login: '',
@@ -42,10 +45,19 @@ CompanyProfit.prototype = {
     }
 }
 
+InvestorProfit.prototype = {
+    yearSale: '',
+    profit: 0.0,
+    build: function (yearSale, profit) {
+        this.yearSale = yearSale;
+        this.profit = profit;
+    }
+}
+
 jQuery(document).ready(function ($) {
-    getKindOnProject('investor007')
-    // getKindProjectOnAllMonies("investor007");
+    getKindOnProject('investor007');
     getCompanyProfit();
+    getInvestorProfit();
 });
 
 /**
@@ -291,13 +303,11 @@ function prepareInvestedBarChart(kinds) {
 
     let labels = [];
     let myCash = [];
-    let colors = [];
     $.each(kinds, function (ind, el) {
         let kind = new KindOnProject();
         kind.build(el.facility, el.login, el.givenCash, el.projectCoast, el.percent);
         labels.push(kind.facility);
         myCash.push(el.givenCash);
-        colors.push(getRandomColor());
     });
 
     let ctx = document.getElementById('investedBarChart').getContext('2d');
@@ -308,7 +318,7 @@ function prepareInvestedBarChart(kinds) {
             datasets: [{
                 label: 'Мои вложения',
                 data: myCash,
-                backgroundColor: colors
+                backgroundColor: getRandomColor()
             }]
         },
         options: options
@@ -405,18 +415,16 @@ function prepareTreeMapChart(kinds) {
 }
 
 /**
- * Заработок компании
+ * Заработок компании по всем инвесторам
  */
 function prepareCompanyProfit(profits) {
     let labels = [];
     let profitSums = [];
-    let colors = [];
     $.each(profits, function (ind, el) {
         let profit = new CompanyProfit();
         profit.build(el.yearSale, el.profit);
         labels.push(profit.yearSale);
         profitSums.push(profit.profit);
-        colors.push(getRandomColor());
     });
 
     let options = {
@@ -474,7 +482,7 @@ function prepareCompanyProfit(profits) {
         },
         title: {
             display: true,
-            text: 'Заработано для клиентов',
+            text: 'Для всех клиентов',
             fontSize: "24"
         },
         animation: {
@@ -509,7 +517,118 @@ function prepareCompanyProfit(profits) {
             labels: labels,
             datasets: [{
                 data: profitSums,
-                backgroundColor: colors
+                backgroundColor: getRandomColor()
+            }]
+        },
+        options: options
+    });
+}
+
+/**
+ * Заработок компании по инвестору
+ */
+function prepareInvestorProfit(profits) {
+    console.log(profits);
+    let labels = [];
+    let profitSums = [];
+    $.each(profits, function (ind, el) {
+        let profit = new InvestorProfit();
+        profit.build(el.yearSale, el.profit);
+        labels.push(profit.yearSale);
+        profitSums.push(profit.profit);
+    });
+
+    let options = {
+        tooltips: {
+            enabled: true,
+            callbacks: {
+                title: function (tooltipItem, data) {
+                    return data['labels'][tooltipItem[0]['index']];
+                },
+                label: function (tooltipItem, data) {
+                    return data['datasets'][0]['data'][tooltipItem['index']].toLocaleString() + ' руб.';
+                }
+            },
+            mode: 'index',
+            intersect: true,
+            yAlign: 'bottom'
+        },
+        hover: {
+            animationDuration: 0
+        },
+        scales: {
+            xAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                    display: true,
+                    stepSize: 0,
+                    min: 0,
+                    autoSkip: false,
+                    fontSize: 14,
+                    maxRotation: 0,
+                    minRotation: 0
+                },
+                scaleLabel: {
+                    display: false
+                },
+                gridLines: {
+                    display: false,
+                    lineWidth: 1,
+                    zeroLineWidth: 1,
+                    zeroLineColor: '#666666',
+                    drawTicks: false
+                }
+            }],
+            yAxes: [{
+                ticks: {
+                    display: false
+                },
+                gridLines: {
+                    display: false
+                }
+            }]
+        },
+        legend: {
+            display: false
+        },
+        title: {
+            display: true,
+            text: 'Для Вас',
+            fontSize: "24"
+        },
+        animation: {
+            onComplete: function () {
+                let chartInstance = this.chart;
+                let ctx = chartInstance.ctx;
+                ctx.textAlign = "center";
+                ctx.font = "14px Open Sans";
+                ctx.fillStyle = "#000000";
+                ctx.textBaseline = 'bottom';
+
+                Chart.helpers.each(this.data.datasets.forEach(function (dataset, i) {
+                    let meta = chartInstance.controller.getDatasetMeta(i);
+                    Chart.helpers.each(meta.data.forEach(function (bar, index) {
+                        let data = dataset.data[index];
+                        ctx.fillText(data.toLocaleString(), bar._model.x, bar._model.y);
+                    }), this)
+                }), this);
+            }
+        },
+        pointLabelFontFamily: "Open Sans Extra Bold",
+        scaleFontFamily: "Open Sans Extra Bold",
+        spanGaps: true,
+        responsive: true,
+        maintainAspectRatio: true
+    };
+
+    let ctx = document.getElementById('investorProfitChart').getContext('2d');
+    let investorProfitChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: profitSums,
+                backgroundColor: getRandomColor()
             }]
         },
         options: options
@@ -585,6 +704,30 @@ function getCompanyProfit() {
     })
         .done(function (data) {
             prepareCompanyProfit(data);
+        })
+        .fail(function (e) {
+            console.log(e);
+        })
+        .always(function () {
+            console.log('Данные загружены!');
+        });
+}
+
+function getInvestorProfit() {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+
+    $.ajax({
+        type: "GET",
+        contentType: "application/json;charset=utf-8",
+        url: "investor-profit",
+        timeout: 100000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        }
+    })
+        .done(function (data) {
+            prepareInvestorProfit(data);
         })
         .fail(function (e) {
             console.log(e);
