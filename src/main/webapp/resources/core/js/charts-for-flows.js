@@ -474,7 +474,7 @@ function prepareCompanyProfit(profits) {
         },
         title: {
             display: true,
-            text: 'Заработок компании',
+            text: 'Заработано для клиентов',
             fontSize: "24"
         },
         animation: {
