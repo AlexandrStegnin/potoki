@@ -27,21 +27,9 @@
 <canvas id="investedBarChart" width="350" height="150" aria-label="Your browser does not support the canvas element." role="img">
     <p>Данные загружаются</p>
 </canvas>
-<div class="container-fluid" style="text-align: center; font-family: 'Open Sans', sans-serif; font-weight: bolder; font-size: 24px; color: #666666">
-    Компания заработала:
-    <div class="row">
-        <div class="col-lg-6">
-            <canvas id="companyProfitChart" width="350" height="150" aria-label="Your browser does not support the canvas element." role="img">
-                <p>Данные загружаются</p>
-            </canvas>
-        </div>
-        <div class="col-lg-6">
-            <canvas id="investorProfitChart" width="350" height="150" aria-label="Your browser does not support the canvas element." role="img">
-                <p>Данные загружаются</p>
-            </canvas>
-        </div>
-    </div>
-</div>
+<canvas id="profitBarChart" width="350" height="150" aria-label="Your browser does not support the canvas element." role="img">
+    <p>Данные загружаются</p>
+</canvas>
 
 </body>
 <script type="text/javascript" src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js' />"></script>
