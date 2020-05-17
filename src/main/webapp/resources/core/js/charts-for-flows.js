@@ -10,6 +10,9 @@ let CompanyProfit = function () {
 let InvestorProfit = function () {
 }
 
+let Profit = function () {
+}
+
 KindOnProject.prototype = {
     facility: '',
     login: '',
@@ -54,10 +57,24 @@ InvestorProfit.prototype = {
     }
 }
 
+Profit.prototype = {
+    yearSale: '',
+    profit: 0.0,
+    login: '',
+    investorProfit: 0.0,
+    build: function (yearSale, profit, login, investorProfit) {
+        this.yearSale = yearSale;
+        this.profit = profit;
+        this.login = login;
+        this.investorProfit = investorProfit;
+    }
+}
+
 jQuery(document).ready(function ($) {
     getKindOnProject('investor007');
-    getCompanyProfit();
-    getInvestorProfit();
+    // getCompanyProfit();
+    // getInvestorProfit();
+    getUnionProfit();
 });
 
 /**
@@ -152,13 +169,11 @@ function prepareBarChart(kinds) {
             datasets: [{
                 label: 'Мои вложения',
                 data: myCash,
-                backgroundColor: "rgb(18,125,29)",
-                hoverBackgroundColor: "rgb(53,100,50)"
+                backgroundColor: "#0d345d"
             }, {
                 label: 'Стоимость проекта',
                 data: projectCoasts,
-                backgroundColor: "rgb(186,232,121)",
-                hoverBackgroundColor: "rgb(107,182,91)"
+                backgroundColor: "#95B3D7"
             }]
         },
 
@@ -318,7 +333,7 @@ function prepareInvestedBarChart(kinds) {
             datasets: [{
                 label: 'Мои вложения',
                 data: myCash,
-                backgroundColor: getRandomColor()
+                backgroundColor: "#0D345D"
             }]
         },
         options: options
@@ -653,7 +668,6 @@ function getKindOnProject(login) {
         .done(function (data) {
             prepareBarChart(data);
             prepareInvestedBarChart(data);
-            // prepareTreeMapChart(data);
         })
         .fail(function (e) {
             console.log(e);
@@ -728,6 +742,138 @@ function getInvestorProfit() {
     })
         .done(function (data) {
             prepareInvestorProfit(data);
+        })
+        .fail(function (e) {
+            console.log(e);
+        })
+        .always(function () {
+            console.log('Данные загружены!');
+        });
+}
+
+/**
+ * Заработок компании
+ *
+ * @param profits
+ */
+function prepareCompanyProfitBarChart(profits) {
+    let ctx = document.getElementById('profitBarChart').getContext('2d');
+    let barOptions_stacked = {
+        title: {
+            display: true,
+            text: 'Заработок компании',
+            fontSize: "24"
+        },
+        tooltips: {
+            enabled: false
+        },
+        hover: {
+            animationDuration: 0
+        },
+        scales: {
+            xAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                    display: true
+                },
+                scaleLabel: {
+                    display: false
+                },
+                gridLines: {
+                    display: false
+                },
+                stacked: true
+            }],
+            yAxes: [{
+                gridLines: {
+                    display: false,
+                    color: "#fff",
+                    zeroLineColor: "#fff",
+                    zeroLineWidth: 0
+                },
+                ticks: {
+                    fontFamily: "'Open Sans Bold', sans-serif",
+                    fontSize: 11,
+                    display: false
+                },
+                stacked: true
+            }]
+        },
+        legend: {
+            display: true
+        },
+
+        animation: {
+            onComplete: function () {
+                let chartInstance = this.chart;
+                let ctx = chartInstance.ctx;
+                ctx.textAlign = "center";
+                ctx.font = "14px Open Sans";
+                ctx.fillStyle = "#000000";
+                ctx.textBaseline = 'bottom';
+
+                Chart.helpers.each(this.data.datasets.forEach(function (dataset, i) {
+                    let meta = chartInstance.controller.getDatasetMeta(i);
+                    Chart.helpers.each(meta.data.forEach(function (bar, index) {
+                        let data = dataset.data[index];
+                        if (data === null) {
+                            data = 0;
+                        }
+                        ctx.fillText(data.toLocaleString(), bar._model.x, bar._model.y - 5);
+                    }), this)
+                }), this);
+            }
+        },
+        pointLabelFontFamily: "Open Sans Extra Bold",
+        scaleFontFamily: "Open Sans Extra Bold",
+    };
+
+    let labels = [];
+    let companySums = [];
+    let myCash = [];
+    $.each(profits, function (ind, el) {
+        let profit = new Profit();
+        profit.build(el.yearSale, el.profit, el.login, el.investorProfit);
+        labels.push(profit.yearSale);
+        companySums.push(profit.profit);
+        myCash.push(profit.investorProfit);
+    });
+
+    let myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+
+            datasets: [{
+                label: 'Заработано для Вас',
+                data: myCash,
+                backgroundColor: "#0d345d"
+            }, {
+                label: 'Заработано для всех',
+                data: companySums,
+                backgroundColor: "#95B3D7"
+            }]
+        },
+
+        options: barOptions_stacked,
+    });
+}
+
+function getUnionProfit() {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+
+    $.ajax({
+        type: "GET",
+        contentType: "application/json;charset=utf-8",
+        url: "union-profit",
+        timeout: 100000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        }
+    })
+        .done(function (data) {
+            prepareCompanyProfitBarChart(data);
         })
         .fail(function (e) {
             console.log(e);
