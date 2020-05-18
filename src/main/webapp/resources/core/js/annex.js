@@ -29,5 +29,4 @@ function disableScroll(disable) {
         body.removeClass('stop-scrolling');
         body.unbind('touchmove');
     }
-
 }
