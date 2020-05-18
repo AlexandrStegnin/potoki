@@ -46,26 +46,32 @@
         <div><img src="https://mc.yandex.ru/watch/53797528" style="position:absolute; left:-9999px;" alt=""/></div>
     </noscript>
     <!-- /Yandex.Metrika counter -->
+    <script type="text/javascript" src="<c:url value='/resources/core/js/annex.js' />"></script>
+    <link href="<c:url value='/resources/core/css/annex.css' />" rel="stylesheet"/>
 </head>
 <body>
-<%@include file="header.jsp" %>
-<div class="row">
-    <canvas id="barChart" width="350" height="150" aria-label="Your browser does not support the canvas element."
-            role="img">
-        <p>Данные загружаются</p>
-    </canvas>
-</div>
-<div class="row">
-    <canvas id="investedBarChart" width="350" height="150"
-            aria-label="Your browser does not support the canvas element." role="img">
-        <p>Данные загружаются</p>
-    </canvas>
-</div>
-<div class="row">
-    <canvas id="profitBarChart" width="350" height="150" aria-label="Your browser does not support the canvas element."
-            role="img">
-        <p>Данные загружаются</p>
-    </canvas>
+<%@include file="annex_popup.jsp" %>
+<div class="out">
+    <%@include file="header.jsp" %>
+    <div class="row">
+        <canvas id="barChart" width="350" height="150" aria-label="Your browser does not support the canvas element."
+                role="img">
+            <p>Данные загружаются</p>
+        </canvas>
+    </div>
+    <div class="row">
+        <canvas id="investedBarChart" width="350" height="150"
+                aria-label="Your browser does not support the canvas element." role="img">
+            <p>Данные загружаются</p>
+        </canvas>
+    </div>
+    <div class="row">
+        <canvas id="profitBarChart" width="350" height="150"
+                aria-label="Your browser does not support the canvas element."
+                role="img">
+            <p>Данные загружаются</p>
+        </canvas>
+    </div>
 </div>
 </body>
 <script type="text/javascript"
