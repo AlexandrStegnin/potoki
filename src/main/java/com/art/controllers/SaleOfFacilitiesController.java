@@ -58,8 +58,6 @@ public class SaleOfFacilitiesController {
             err = uploadExcelFunc.ExcelParser(multipartFile, "saleOfFacilities", httpServletRequest);
             response.setMessage("Файл <b>" + multipartFile.getOriginalFilename() + "</b> успешно загружен.");
         } catch (IOException | ParseException e) {
-            System.out.println(err);
-            e.printStackTrace();
             response.setError(e.getLocalizedMessage());
         }
 

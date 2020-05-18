@@ -19,7 +19,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         com.art.model.Users user = userService.findByLoginWithAnnexes(login);
         if (user == null) {
-            System.out.println("User not found");
             throw new UsernameNotFoundException("Username not found");
         }
         return new SecurityUser(user);
