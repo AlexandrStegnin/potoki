@@ -36,9 +36,14 @@
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-.annex-exit.active,.annex-exit:hover{
-    background-color:transparent;
-    color:#1b5b45
+.annex-exit.active, .annex-exit:hover {
+    background-color: white;
+    color: #1b5b45
+}
+
+.annex-look.active, .annex-look:hover {
+    background-color: white;
+    color: #0D345D
 }
 
 .stop-scrolling {
