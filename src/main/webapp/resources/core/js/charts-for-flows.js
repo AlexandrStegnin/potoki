@@ -71,10 +71,8 @@ Profit.prototype = {
 }
 
 jQuery(document).ready(function ($) {
-    getKindOnProject('investor007');
-    // getCompanyProfit();
-    // getInvestorProfit();
     getUnionProfit();
+    getKindOnProject('investor007');
 });
 
 /**
