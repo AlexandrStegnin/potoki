@@ -1,0 +1,47 @@
+.bg {
+    width: 400px;
+    height: 300px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -150px 0 0 -200px;
+    text-align: center;
+    z-index: -1000001;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.annex-look {
+    background-color: #0D345D;
+    border-radius: 0;
+    width: 100%;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 10px 20px;
+    line-height: 1;
+    min-width: 160px;
+    border: 2px solid #11325b;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.annex-exit {
+    background-color: #1b5b45;
+    border-radius: 0;
+    width: 100%;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 10px 20px;
+    line-height: 1;
+    min-width: 160px;
+    border: 2px solid #1b5b45;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.annex-exit.active,.annex-exit:hover{
+    background-color:transparent;
+    color:#1b5b45
+}
+
+.stop-scrolling {
+    height: 100%;
+    overflow: hidden;
+}
