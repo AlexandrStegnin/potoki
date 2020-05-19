@@ -110,8 +110,9 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/savePassword").permitAll()
-                .antMatchers("/kind-on-project", "/kind-project-on-monies", "/company-profit", "/investor-profit", "/union-profit")
-                .access("hasRole('ADMIN')")
+                .antMatchers("/kind-on-project", "/kind-project-on-monies", "/company-profit",
+                        "/investor-profit", "/union-profit", "/have-unread", "/mark-read-annex")
+                .access("hasAnyRole('ADMIN', 'INVESTOR')")
                 .antMatchers("/flows-v2")
                 .access("hasRole('ADMIN')")
                 .antMatchers("/", "/welcome", "/cashflows")
