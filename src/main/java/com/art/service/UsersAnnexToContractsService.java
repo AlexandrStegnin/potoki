@@ -1,24 +1,38 @@
 package com.art.service;
 
 import com.art.model.AnnexToContracts;
+import com.art.model.Users;
 import com.art.model.UsersAnnexToContracts;
 import com.art.model.UsersAnnexToContracts_;
-import org.springframework.stereotype.Repository;
+import com.art.repository.UserAnnexRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional
-@Repository
 public class UsersAnnexToContractsService {
+
+    private final UserAnnexRepository annexRepository;
+
+    private final UserService userService;
+
     @PersistenceContext(name = "persistanceUnit")
     private EntityManager em;
+
+    public UsersAnnexToContractsService(UserAnnexRepository annexRepository, UserService userService) {
+        this.annexRepository = annexRepository;
+        this.userService = userService;
+    }
 
     public List<UsersAnnexToContracts> findAll() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -59,6 +73,17 @@ public class UsersAnnexToContractsService {
 
     }
 
+    public List<UsersAnnexToContracts> findByLogin(String login) {
+        if (Objects.isNull(login)) {
+            throw new RuntimeException("Необходимо передать логин пользователя");
+        }
+        Users user = userService.findByLogin(login);
+        if (Objects.isNull(user)) {
+            throw new RuntimeException("Пользователь с логином = [" + login + "] не найден");
+        }
+        return findByUserId(user.getId());
+    }
+
     public void deleteById(BigInteger id) {
         CriteriaBuilder cb = this.em.getCriteriaBuilder();
         CriteriaDelete<UsersAnnexToContracts> delete = cb.createCriteriaDelete(UsersAnnexToContracts.class);
@@ -76,13 +101,22 @@ public class UsersAnnexToContractsService {
     }
 
     public void update(UsersAnnexToContracts usersAnnexToContracts) {
-
         this.em.merge(usersAnnexToContracts);
-
     }
 
     public void create(UsersAnnexToContracts usersAnnexToContracts) {
         this.em.persist(usersAnnexToContracts);
     }
 
+    public boolean haveUnread(String login) {
+        Users user = userService.findByLogin(login);
+        if (Objects.nonNull(user)) {
+            return haveUnread(user.getId());
+        }
+        return false;
+    }
+
+    private boolean haveUnread(BigInteger userId) {
+        return annexRepository.existsByUserIdAndDateReadIsNull(userId);
+    }
 }
