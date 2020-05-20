@@ -354,15 +354,42 @@ public class InvestorsCashController {
         return "getInvestorsCash";
     }
 
+    @PostMapping(value = "/cashing-money")
+    public @ResponseBody String cashing(@RequestBody SearchSummary summary) {
+        if (Objects.isNull(summary.getUser().getId())) {
+            throw new RuntimeException("Отсутствует id пользователя");
+        }
+        Users investor = userService.findById(summary.getUser().getId());
+        if (Objects.isNull(investor)) {
+            throw new RuntimeException("Пользователь с id = [" + summary.getUser().getId() + "] не найден");
+        }
+        summary.setInvestorsList(Collections.singletonList(investor));
+        return investorsCashService.cashingMoney(summary);
+    }
+
     @PostMapping(value = {"/getInvestorsCash"})
     public String cashing(@ModelAttribute("searchSummary") SearchSummary searchSummary,
                           BindingResult result, ModelMap model) {
-
+        Users investor = null;
         if (result.hasErrors()) {
             return "getInvestorsCash";
         }
+        InvestorsCash cash = searchSummary.getInvestorsCash();
+        if (cash != null) {
+            Users inv = searchSummary.getInvestorsCash().getInvestor();
+            if (inv != null) {
+                if (inv.getId() != null) {
+                    investor = userService.findById(inv.getId());
+                } else if (inv.getLogin() != null) {
+                    investor = userService.findByLogin(inv.getLogin());
+                }
+            }
+            if (investor == null) {
+                investor = inv;
+            }
+        }
         if (searchSummary.getInvestorsList() == null) {
-            searchSummary.setInvestorsList(Collections.singletonList(searchSummary.getInvestorsCash().getInvestor()));
+            searchSummary.setInvestorsList(Collections.singletonList(investor));
         }
         String out = investorsCashService.cashingMoney(searchSummary);
 
