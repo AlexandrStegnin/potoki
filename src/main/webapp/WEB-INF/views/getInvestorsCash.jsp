@@ -80,8 +80,7 @@
                 <div class="col-md-7">
                     <form:input type="number" path="investorsCash.givedCash" id="cash" class="form-control input-sm"
                                 min="0.0" step="any"/>
-                    <div class="has-error">
-                        ${toBigSumForCashing}
+                    <div id="toBigSumForCashing" class="has-error">
                     </div>
                 </div>
             </div>
@@ -120,7 +119,7 @@
         <div class="row">
             <div class="form-actions floatRight">
                 <input type="button" value="Вывести всё" id="allMoneyCashing" class="btn btn-danger btn-sm" style="margin-right: 10px; display: none">
-                <input type="submit" value="Вывести" id="cashingSubmit" class="btn btn-primary btn-sm" style="margin-right: 10px;" disabled="true"/>
+                <input type="button" value="Вывести" id="cashingSubmit" class="btn btn-primary btn-sm" style="margin-right: 10px;" disabled="true"/>
                 <a href="<c:url value='/investorscash' />">Отмена</a>
             </div>
         </div>

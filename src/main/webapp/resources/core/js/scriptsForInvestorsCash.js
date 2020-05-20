@@ -10,6 +10,16 @@ jQuery(document).ready(function ($) {
         this.selected = !this.selected;
     });
 
+    $('#cashingSubmit').on('click', function (e) {
+        e.preventDefault();
+        let investors = $('#investor').val();
+        let investorId = 0;
+        if ($.isArray(investors)) {
+            investorId = investors[0];
+        }
+        cashingMoney(investorId);
+    })
+
     $(document).on('click', '#unblock_operations', function () {
         let tableId = $(this).data('table-id');
         if ($(this).text() === 'Разблокировать операции') {
@@ -1163,6 +1173,84 @@ function saveReCash(cashes, reinvestIdList, dateClose) {
     });
 }
 
+function cashingMoney() {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+    let underFacility = $("#underFacilities").find("option:selected").text();
+    if (underFacility === 'Выберите подобъект') {
+        underFacility = null;
+    }
+
+    let investor = $("#investor");
+    let investors = [];
+    investor.find('option:selected').each(function() {
+        let user = new User();
+        user.build($(this).val(), $(this).text());
+        investors.push(user);
+    });
+
+    // return false;
+    let search = ({
+        investorsList: investors,
+        user: {
+            id: investor.find("option:selected").val(),
+            login: investor.find("option:selected").text()
+        },
+        facilities: {
+            id: $("#facilities").find("option:selected").val()
+        },
+        underFacilities: {
+            underFacility: underFacility
+        },
+        commission: $('#cashing').val(),
+        commissionNoMore: $('#commissionNoMore').val(),
+        investorsCash: {
+            facility: {
+                id: $("#facilities").find("option:selected").val(),
+                facility: $("#facilities").find("option:selected").text()
+            },
+            underFacility: {
+                // id: $("#underFacilities").find("option:selected").val(),
+                underFacility: $("#underFacilities").find("option:selected").text()
+            },
+            investor: {
+                id: investor.find("option:selected").val(),
+                login: investor.find("option:selected").text()
+            },
+            dateGivedCash: $('#dateGivedCash').val(),
+            givedCash: $('#cash').val()
+        }
+    });
+    showLoader();
+    $.ajax({
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: "cashing-money",
+        data: JSON.stringify(search),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (data) {
+            closeLoader();
+            if (data === '') {
+                slideBox("Деньги успешно выведены");
+                window.location.href = '/investorscash';
+            } else {
+                $('#toBigSumForCashing').html(data);
+            }
+        },
+        error: function (e) {
+            closeLoader();
+            display(e);
+        },
+        done: function (e) {
+            enableSearchButton(true);
+        }
+    });
+}
+
 function prepareDivideCash() {
     showLoader();
     var err = false;
@@ -1375,7 +1463,6 @@ function saveDivideCash(cashes, reUnderFacility, excludedUnderFacilities) {
         }
     });
 }
-
 
 function deleteCash(cashIdList) {
     var token = $("meta[name='_csrf']").attr("content");
