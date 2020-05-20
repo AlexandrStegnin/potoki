@@ -111,7 +111,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/savePassword").permitAll()
                 .antMatchers("/kind-on-project", "/kind-project-on-monies", "/company-profit",
-                        "/investor-profit", "/union-profit", "/have-unread", "/mark-read-annex")
+                        "/investor-profit", "/union-profit", "/have-unread", "/mark-read-annex", "cashing-money")
                 .access("hasAnyRole('ADMIN', 'INVESTOR')")
                 .antMatchers("/flows-v2")
                 .access("hasRole('ADMIN')")
