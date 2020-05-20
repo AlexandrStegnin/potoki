@@ -23,10 +23,7 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
@@ -86,8 +83,7 @@ public class InvestorsCashService {
     private EntityManager em;
 
     public InvestorsCash create(InvestorsCash investorsCash) {
-        InvestorsCash cash = this.em.merge(investorsCash);
-        return cash;
+        return this.em.merge(investorsCash);
     }
 
     public List<InvestorsCash> findByIdIn(List<BigInteger> idList) {
@@ -209,6 +205,9 @@ public class InvestorsCashService {
 
                     List<AfterCashing> cashingList = new ArrayList<>(0);
                     final InvestorsCash[] cashForGetting = {searchSummary.getInvestorsCash()};
+                    if (cashForGetting[0].getUnderFacility() != null && cashForGetting[0].getUnderFacility().getId() == null) {
+                        cashForGetting[0].setUnderFacility(null);
+                    }
                     Date dateClosingInvest = cashForGetting[0].getDateGivedCash();
                     List<InvestorsCash> investorsCashes = getMoneyForCashing(cashForGetting[0]);
                     if (investorsCashes.size() == 0) {
