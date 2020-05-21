@@ -35,16 +35,18 @@ public class InvestorsCashService {
     private final InvestorsCashSpecification specification;
     private final TypeClosingInvestService typeClosingInvestService;
     private final AfterCashingService afterCashingService;
+    private final UnderFacilitiesService underFacilitiesService;
 
     @Autowired
     public InvestorsCashService(InvestorsCashRepository investorsCashRepository,
                                 InvestorsCashSpecification specification,
                                 TypeClosingInvestService typeClosingInvestService,
-                                AfterCashingService afterCashingService) {
+                                AfterCashingService afterCashingService, UnderFacilitiesService underFacilitiesService) {
         this.investorsCashRepository = investorsCashRepository;
         this.specification = specification;
         this.typeClosingInvestService = typeClosingInvestService;
         this.afterCashingService = afterCashingService;
+        this.underFacilitiesService = underFacilitiesService;
     }
 
     public List<InvestorsCash> findAll() {
@@ -196,13 +198,23 @@ public class InvestorsCashService {
     }
 
     public String cashing(SearchSummary searchSummary, boolean all) {
+        UnderFacilities underFacility = null;
+        if (searchSummary.getUnderFacilities() != null) {
+            if (searchSummary.getUnderFacilities().getId() != null) {
+                underFacility = underFacilitiesService.findById(searchSummary.getUnderFacilities().getId());
+            } else if (searchSummary.getUnderFacilities().getUnderFacility() != null) {
+                underFacility = underFacilitiesService.findByUnderFacility(searchSummary.getUnderFacilities().getUnderFacility());
+            }
+            searchSummary.setUnderFacilities(underFacility);
+        }
         final String[] result = {""};
         if (searchSummary.getInvestorsList() != null) {
+            UnderFacilities finalUnderFacility = underFacility;
             searchSummary.getInvestorsList().forEach(user -> {
                 if (searchSummary.getInvestorsCash() != null) {
                     InvestorsCash invCash = searchSummary.getInvestorsCash();
                     invCash.setInvestor(user);
-
+                    invCash.setUnderFacility(finalUnderFacility);
                     List<AfterCashing> cashingList = new ArrayList<>(0);
                     final InvestorsCash[] cashForGetting = {searchSummary.getInvestorsCash()};
                     if (cashForGetting[0].getUnderFacility() != null && cashForGetting[0].getUnderFacility().getId() == null) {
