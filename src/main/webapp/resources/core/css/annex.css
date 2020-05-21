@@ -52,33 +52,8 @@
     overflow: hidden;
 }
 
-.popup_inner {
-    border-radius: 0;
-    background-color: #fff;
-    padding: 40px 45px 40px 35px;
-    max-height: 90%;
-    overflow: auto;
-}
-
-.table {
-    margin-bottom: 20px;
-    margin-top: 20px;
-}
-
-.table table thead {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    vertical-align: baseline;
-    text-align: center;
-}
-
-.table table {
-    width: 100%;
-}
-
-.table th {
-    border-top: none;
+.text-responsive {
+    font-size: calc(1vw + 1vh);
 }
 
 .modal-header {
