@@ -147,18 +147,16 @@ function createAnnexesTbl(annexes) {
         tr = $('<tr></tr>');
         tr.attr('id', annex.id);
         tr.appendTo(body);
-        td = $('<td>' + annex.annexName + '</td>');
-        td.appendTo(tr);
 
         td = $('<td></td>');
         td.data('annexName', annex.annexName);
-        a = $('<a>Посмотреть</a>');
+        a = $('<a>' + annex.annexName + '</a>');
         a.attr('href', '/annexToContract/' + annex.annexName)
             .attr('target', '_blank');
         a.appendTo(td);
         td.appendTo(tr);
 
-        label = $('<label style="margin-right: 5px">Ознакомлен</label>');
+        label = $('<label></label>');
         label.attr('htmlFor', 'annexId' + annex.id);
         input = $('<input type="checkbox">');
         input.attr('checked', annex.annexRead === 1);
@@ -166,7 +164,7 @@ function createAnnexesTbl(annexes) {
         input.data('userId', annex.userId);
         input.data('annexId', annex.id);
         input.data('annexName', annex.annexName);
-        td = $('<td></td>');
+        td = $('<td style="text-align: center"></td>');
         label.appendTo(td);
         input.appendTo(td);
         td.appendTo(tr);
