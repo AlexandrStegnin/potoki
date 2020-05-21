@@ -48,6 +48,7 @@ jQuery(document).ready(function ($) {
  * @param have
  */
 function toggleAnnexModal(have) {
+    showLoader();
     let readAnnex = $('#readAnnex');
     if (have === true) {
         getAnnexes('investor017');
@@ -64,6 +65,7 @@ function toggleAnnexModal(have) {
         readAnnex.css('display', 'none');
         disableScroll(false);
     }
+    closeLoader();
 }
 
 /**
@@ -189,7 +191,7 @@ function markAnnexRead(id) {
     let annex = {
         id: id
     };
-
+    showLoader();
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
@@ -201,9 +203,11 @@ function markAnnexRead(id) {
             xhr.setRequestHeader(header, token);
         },
         success: function () {
+            closeLoader();
             updateUnreadAnnexes();
         },
         error: function (e) {
+            closeLoader();
             console.log('Произошла ошибка - ' + e.toString());
         }
     });
