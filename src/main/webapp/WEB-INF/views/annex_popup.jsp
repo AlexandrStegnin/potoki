@@ -3,7 +3,7 @@
 
 <div class="modal fade" id="readAnnexTable" tabindex="-1" role="dialog" aria-labelledby="readAnnex" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document" style="min-width: 790px">
-        <div class="modal-content popup_inner" style="border-radius: 0; max-height: 90%; overflow: auto">
+        <div class="modal-content popup_inner">
             <div class="modal-header">
                 <h5 class="modal-title" style="font-weight: 600; color: #11325b;">Приложения для ознакомления</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Закрыть">

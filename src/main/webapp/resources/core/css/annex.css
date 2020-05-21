@@ -8,6 +8,7 @@
     text-align: center;
     z-index: -1000001;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    display: none;
 }
 
 .annex-look {
@@ -52,6 +53,7 @@
 }
 
 .popup_inner {
+    border-radius: 0;
     background-color: #fff;
     padding: 40px 45px 40px 35px;
     max-height: 90%;
