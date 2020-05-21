@@ -88,7 +88,7 @@ function prepareBarChart(kinds) {
         maintainAspectRatio: true,
         title: {
             display: true,
-            text: 'Вложения по проектам',
+            text: 'ВЛОЖЕНИЯ ПО ПРОЕКТАМ',
             fontSize: 12
         },
         tooltips: {
@@ -127,7 +127,11 @@ function prepareBarChart(kinds) {
             }]
         },
         legend: {
-            display: true
+            display: true,
+            labels: {
+                fontSize: 12,
+                fontStyle: 'bold'
+            }
         },
         animation: {
             onComplete: function () {
@@ -169,11 +173,11 @@ function prepareBarChart(kinds) {
             labels: labels,
 
             datasets: [{
-                label: 'Мои вложения',
+                label: 'МОИ ВЛОЖЕНИЯ',
                 data: myCash,
                 backgroundColor: "#0d345d"
             }, {
-                label: 'Стоимость проекта',
+                label: 'СТОИМОСТЬ ПРОЕКТА',
                 data: projectCoasts,
                 backgroundColor: "#95B3D7"
             }]
@@ -188,6 +192,7 @@ function prepareBarChart(kinds) {
         }]
     });
     myChart.options.title.fontSize = Math.round(myChart.width / 48);
+    myChart.options.legend.labels.fontSize = myChart.options.title.fontSize / 2 * 1.5;
     myChart.update();
 }
 
@@ -235,7 +240,7 @@ function prepareInvestedBarChart(kinds) {
         },
         title: {
             display: true,
-            text: 'Мои вложения',
+            text: 'МОИ ВЛОЖЕНИЯ',
             fontSize: 24
         },
         animation: {
@@ -275,7 +280,6 @@ function prepareInvestedBarChart(kinds) {
         data: {
             labels: labels,
             datasets: [{
-                label: 'Мои вложения',
                 data: myCash,
                 backgroundColor: "#0D345D"
             }]
@@ -292,33 +296,6 @@ function prepareInvestedBarChart(kinds) {
     myChart.update();
 }
 
-function getKindOnProject(login) {
-    let token = $("meta[name='_csrf']").attr("content");
-    let header = $("meta[name='_csrf_header']").attr("content");
-
-    $.ajax({
-        type: "GET",
-        contentType: "application/json;charset=utf-8",
-        url: "kind-on-project",
-        // data: JSON.stringify(search),
-        // dataType: 'json',
-        timeout: 100000,
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader(header, token);
-        }
-    })
-        .done(function (data) {
-            prepareBarChart(data);
-            prepareInvestedBarChart(data);
-        })
-        .fail(function (e) {
-            console.log(e);
-        })
-        .always(function () {
-            console.log('Данные загружены!');
-        });
-}
-
 /**
  * Заработок компании
  *
@@ -331,7 +308,7 @@ function prepareCompanyProfitBarChart(profits) {
         responsive: true,
         title: {
             display: true,
-            text: 'Заработок компании',
+            text: 'ЗАРАБОТОК КОМПАНИИ',
             fontSize: 24
         },
         tooltips: {
@@ -365,7 +342,11 @@ function prepareCompanyProfitBarChart(profits) {
             }]
         },
         legend: {
-            display: true
+            display: true,
+            labels: {
+                fontSize: 12,
+                fontStyle: 'bold'
+            }
         },
 
         animation: {
@@ -410,11 +391,11 @@ function prepareCompanyProfitBarChart(profits) {
             labels: labels,
 
             datasets: [{
-                label: 'Заработано для Вас',
+                label: 'ЗАРАБОТАНО ДЛЯ ВАС',
                 data: myCash,
                 backgroundColor: "#0d345d"
             }, {
-                label: 'Заработано для всех',
+                label: 'ЗАРАБОТАНО ДЛЯ ВСЕХ',
                 data: companySums,
                 backgroundColor: "#95B3D7"
             }]
@@ -422,7 +403,33 @@ function prepareCompanyProfitBarChart(profits) {
         options: options,
     });
     myChart.options.title.fontSize = Math.round(myChart.width / 48);
+    myChart.options.legend.labels.fontSize = myChart.options.title.fontSize / 2 * 1.5;
     myChart.update();
+}
+
+
+function getKindOnProject(login) {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+
+    $.ajax({
+        type: "GET",
+        contentType: "application/json;charset=utf-8",
+        url: "kind-on-project",
+        // data: JSON.stringify(search),
+        // dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        }
+    })
+        .done(function (data) {
+            prepareBarChart(data);
+            prepareInvestedBarChart(data);
+        })
+        .fail(function (e) {
+            console.log(e);
+        });
 }
 
 function getUnionProfit() {
@@ -443,38 +450,5 @@ function getUnionProfit() {
         })
         .fail(function (e) {
             console.log(e);
-        })
-        .always(function () {
-            console.log('Данные загружены!');
         });
 }
-
-Chart.plugins.register({
-    afterDatasetsDraw: function (chartInstance, easing) {
-        if (chartInstance.config.type === 'doughnut') {
-            // To only draw at the end of animation, check for easing === 1
-            let ctx = chartInstance.chart.ctx;
-            chartInstance.data.datasets.forEach(function (dataset, i) {
-                let meta = chartInstance.getDatasetMeta(i);
-                if (!meta.hidden) {
-                    meta.data.forEach(function (element, index) {
-                        // Draw the text in black, with the specified font
-                        ctx.fillStyle = 'black';
-                        // let fontSize = 12;
-                        // let fontStyle = 'normal';
-                        // let fontFamily = 'Open Sans';
-                        // ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
-                        // Just naively convert to string for now
-                        let dataString = dataset.data[index].toString();
-                        // Make sure alignment settings are correct
-                        ctx.textAlign = 'center';
-                        ctx.textBaseline = 'middle';
-                        let position = element.tooltipPosition();
-                        ctx.fillText(dataString + '%', position.x, position.y - (fontSize / 2));
-                    });
-                }
-            });
-        }
-    }
-});
-
