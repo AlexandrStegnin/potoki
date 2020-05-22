@@ -28,13 +28,13 @@
                 </li>
             </sec:authorize>
             <li class="nav-item mr-2">
-                <a id="profile" href="/profile" class="nav-link" style="color: #0D345D;">
+                <a id="profile" href="<c:url value='/profile' />" class="nav-link" style="color: #0D345D;">
                     <span class="fas fa-lock" style="color: #0D345D;"></span>
                     Личный кабинет / <b>${username}</b>
                 </a>
             </li>
             <li class="nav-item mr-2">
-                <a id="home" href="/welcome" class="nav-link" style="color: #0D345D;">
+                <a id="home" href="<c:url value='/welcome' />" class="nav-link" style="color: #0D345D;">
                     <span class="fas fa-home" style="color: #0D345D;"></span>
                     На главную
                 </a>
@@ -47,23 +47,23 @@
                          <span class="fas fa-cogs" style="color: #0D345D;"></span> Администрирование<span class="caret" style="color: #0D345D;"></span>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a href="/catalogue" class="dropdown-item">
+                        <a href="<c:url value='/catalogue' />" class="dropdown-item">
                             <span style="color: #0D345D;" class="fas fa-book"></span> Справочники
                         </a>
-                        <a href="/newuser" class="dropdown-item">
+                        <a href="<c:url value='/newuser' />" class="dropdown-item">
                             <span style="color: #0D345D;" class="fas fa-plus"></span> Добавить пользователя
                         </a>
-                        <a href="/newfacility" class="dropdown-item">
+                        <a href="<c:url value='/newfacility' />" class="dropdown-item">
                             <span style="color: #0D345D;" class="fas fa-plus"></span> Добавить объект
                         </a>
-                        <a href="/updateInvestorDemo" id="updateInvestorDemo" class="dropdown-item">
+                        <a href="<c:url value='/updateInvestorDemo' />" id="updateInvestorDemo" class="dropdown-item">
                             <span style="color: #0D345D;" class="fas fa-sync-alt"></span> Обновить инвестор-демо
                         </a>
                 </div>
             </li>
             </sec:authorize>
             <li class="nav-item mr-2">
-                <a id="exit" href="/logout" class="nav-link" style="color: #0D345D;">
+                <a id="exit" href="<c:url value='/logout' />" class="nav-link" style="color: #0D345D;">
                     <span class="fas fa-sign-out-alt" style="color: #0D345D;"></span>
                     Выйти
                 </a>
