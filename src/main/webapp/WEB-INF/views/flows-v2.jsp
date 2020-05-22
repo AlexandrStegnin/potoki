@@ -55,21 +55,21 @@
 <%@include file="annex_popup.jsp" %>
 <div class="out">
     <%@include file="header.jsp" %>
-    <div class="container-fluid">
+    <div class="container-fluid" id="barChartContainer">
         <div class="row">
             <canvas id="barChart" aria-label="Your browser does not support the canvas element.">
                 <p>Данные загружаются</p>
             </canvas>
         </div>
     </div>
-    <div class="container-fluid">
+    <div class="container-fluid" id="investedBarChartContainer">
         <div class="row">
             <canvas id="investedBarChart" aria-label="Your browser does not support the canvas element.">
                 <p>Данные загружаются</p>
             </canvas>
         </div>
     </div>
-    <div class="container-fluid">
+    <div class="container-fluid" id="profitBarChartContainer">
         <div class="row">
             <canvas id="profitBarChart" aria-label="Your browser does not support the canvas element.">
                 <p>Данные загружаются</p>
