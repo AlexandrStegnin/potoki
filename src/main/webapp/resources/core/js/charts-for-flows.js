@@ -237,7 +237,7 @@ function prepareInvestedBarChart(kinds) {
             maxCash = kind.givenCash;
         }
     });
-
+    $('#balanceText').text(myCash.toLocaleString());
     maxCash = maxCash + (maxCash * 0.15);
 
     let myChart;
