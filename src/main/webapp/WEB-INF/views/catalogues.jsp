@@ -57,7 +57,6 @@
         <a href="<c:url value='/marketingTree' />" class="btn btn-success btn-block">Маркетинговое дерево (MarketingTree)</a>
         <a href="<c:url value='/calculateInvShare' />" class="btn btn-success btn-block">Доли инвесторов (InvestorShare/InvestorShareTmp)</a>
         <a href="<c:url value='/tokens' />" class="btn btn-success btn-block">Токены приложений (app_tokens)</a>
-        <a href="<c:url value='/kind' />" class="btn btn-success btn-block">НОВАЯ ВИЗУАЛИЗАЦИЯ</a>
     </sec:authorize>
     </div>
 </div>

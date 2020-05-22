@@ -71,8 +71,10 @@ Profit.prototype = {
 }
 
 jQuery(document).ready(function ($) {
-    getUnionProfit(null);
-    getKindOnProject(null);
+    let login = $('#investorLogin').val();
+    if (login === '') login = null;
+    getUnionProfit(login);
+    getKindOnProject(login);
 });
 
 /**
@@ -453,15 +455,11 @@ function getKindOnProject(login) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
 
-    let user = {
-        login: login
-    }
-
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
         url: "kind-on-project",
-        data: JSON.stringify(user),
+        data: JSON.stringify(login),
         dataType: 'json',
         timeout: 100000,
         beforeSend: function (xhr) {
@@ -480,7 +478,6 @@ function getKindOnProject(login) {
 function getUnionProfit(login) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
-    login = 'investor017';
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",

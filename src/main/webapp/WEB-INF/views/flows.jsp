@@ -53,6 +53,7 @@
 </head>
 <body>
 <%@include file="annex_popup.jsp" %>
+<input type="hidden" id="investorLogin" value="${investorLogin}">
 <div class="out">
     <%@include file="header.jsp" %>
     <div class="container-fluid" id="barChartContainer">

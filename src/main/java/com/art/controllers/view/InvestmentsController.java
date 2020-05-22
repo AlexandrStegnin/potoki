@@ -1,7 +1,10 @@
 package com.art.controllers.view;
 
+import com.art.model.Users;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 /**
  * @author Alexandr Stegnin
@@ -10,8 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class InvestmentsController {
 
-    @GetMapping(path = "/investments")
-    public String showInvestments() {
+    @PostMapping(path = "/investments")
+    public String showInvestments(@ModelAttribute Users user, ModelMap model) {
+        model.addAttribute("investorLogin", user.getLogin());
         return "/flows";
     }
 

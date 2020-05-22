@@ -55,12 +55,12 @@
     <div class="well lead" style="margin-right: 30px; min-height: 70px"><span class="pull-left">${title}</span>
         <sec:authorize access="isFullyAuthenticated()">
             <sec:authorize access="hasAnyRole('BIGDADDY', 'ADMIN')">
-                <form:form method="POST" modelAttribute="search" class="form-horizontal col-md-4" id="flowsAdmin"
-                           action="/admin-flows">
-                    <form:select path="investor" id="investors" class="selectpicker" data-container="body"
+                <form:form method="POST" modelAttribute="user" class="form-horizontal col-md-4" id="flowsAdmin"
+                           action="/investments">
+                    <form:select path="login" id="investors" class="selectpicker" data-container="body"
                                  title="Выберите инвестора..." multiple="false"
                                  data-live-search="true" data-size="7">
-                        <form:options items="${investors}" itemValue="id" itemLabel="login"/>
+                        <form:options items="${investors}" itemValue="login" itemLabel="login"/>
                     </form:select>
                     <form:button type="submit" class="btn btn-success btn-sm" id="viewInvestorData"
                             style="margin-right: 5px" disabled="true">
