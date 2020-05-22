@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
  */
 
 @Controller
-public class KindController {
+public class InvestmentsController {
 
-    @GetMapping(path = "/kind")
-    public String testKind() {
-        return "/flows-v2";
+    @GetMapping(path = "/investments")
+    public String showInvestments() {
+        return "/flows";
     }
 
 }

@@ -1,6 +1,6 @@
 package com.art.controllers.view;
 
-import com.art.model.supporting.view.CompanyInvestorProfitUnion;
+import com.art.model.supporting.view.CompanyInvestorProfit;
 import com.art.model.supporting.view.CompanyProfit;
 import com.art.model.supporting.view.InvestorProfit;
 import com.art.service.view.CompanyProfitService;
@@ -17,26 +17,25 @@ import java.util.List;
  */
 
 @RestController
-public class CompanyInvestorProfitUnionController {
-
+public class ProfitController {
 
     private final CompanyProfitService companyProfitService;
 
     private final InvestorProfitService investorProfitService;
 
-    public CompanyInvestorProfitUnionController(CompanyProfitService companyProfitService,
-                                                InvestorProfitService investorProfitService) {
+    public ProfitController(CompanyProfitService companyProfitService,
+                            InvestorProfitService investorProfitService) {
         this.companyProfitService = companyProfitService;
         this.investorProfitService = investorProfitService;
     }
 
     @GetMapping(path = "/union-profit")
-    public List<CompanyInvestorProfitUnion> findByLogin(@RequestParam(required = false) String login) {
-        List<CompanyInvestorProfitUnion> profitUnions = new ArrayList<>();
+    public List<CompanyInvestorProfit> findByLogin(@RequestParam(required = false) String login) {
+        List<CompanyInvestorProfit> profitUnions = new ArrayList<>();
         List<CompanyProfit> companyProfits = companyProfitService.findAll();
         List<InvestorProfit> investorProfits = investorProfitService.findByLogin(login);
         companyProfits.forEach(companyProfit -> {
-            CompanyInvestorProfitUnion union = new CompanyInvestorProfitUnion();
+            CompanyInvestorProfit union = new CompanyInvestorProfit();
             union.setYearSale(companyProfit.getYearSale());
             union.setProfit(companyProfit.getProfit());
             profitUnions.add(union);

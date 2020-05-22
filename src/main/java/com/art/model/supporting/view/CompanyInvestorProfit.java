@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CompanyInvestorProfitUnion {
+public class CompanyInvestorProfit {
 
     private int yearSale;
 
