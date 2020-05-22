@@ -71,8 +71,8 @@ Profit.prototype = {
 }
 
 jQuery(document).ready(function ($) {
-    getUnionProfit();
-    getKindOnProject('investor007');
+    getUnionProfit(null);
+    getKindOnProject(null);
 });
 
 /**
@@ -81,8 +81,30 @@ jQuery(document).ready(function ($) {
  * @param kinds
  */
 function prepareBarChart(kinds) {
+    if (kinds.length === 0) {
+        $('#barChartContainer').css('display', 'none');
+        return;
+    } else {
+        $('#barChartContainer').css('display', 'block');
+    }
     let ctx = document.getElementById('barChart').getContext('2d');
     let myChart;
+
+    let labels = [];
+    let projectCoasts = [];
+    let myCash = [];
+    let maxProjectCoast = 0;
+    $.each(kinds, function (ind, el) {
+        let kind = new KindOnProject();
+        kind.build(el.facility, el.login, el.givenCash, el.projectCoast, el.percent);
+        labels.push(kind.facility);
+        projectCoasts.push(kind.projectCoast);
+        myCash.push(kind.givenCash);
+        if (maxProjectCoast < kind.projectCoast) {
+            maxProjectCoast = kind.projectCoast;
+        }
+    });
+    maxProjectCoast = maxProjectCoast + (maxProjectCoast * 0.15);
     let options = {
         responsive: true,
         maintainAspectRatio: true,
@@ -101,7 +123,9 @@ function prepareBarChart(kinds) {
             xAxes: [{
                 ticks: {
                     beginAtZero: true,
-                    display: false
+                    display: false,
+                    min: 0,
+                    max: maxProjectCoast
                 },
                 scaleLabel: {
                     display: false
@@ -122,7 +146,11 @@ function prepareBarChart(kinds) {
                 /* Keep y-axis width proportional to overall chart width */
                 afterFit: function(scale) {
                     let chartWidth = scale.chart.width;
-                    scale.width = chartWidth * 0.20;
+                    if (kinds.length === 1) {
+                        scale.width = chartWidth * 0.1 / kinds.length;
+                    } else {
+                        scale.width = chartWidth * 0.2;
+                    }
                 }
             }]
         },
@@ -155,17 +183,6 @@ function prepareBarChart(kinds) {
             }
         }
     };
-
-    let labels = [];
-    let projectCoasts = [];
-    let myCash = [];
-    $.each(kinds, function (ind, el) {
-        let kind = new KindOnProject();
-        kind.build(el.facility, el.login, el.givenCash, el.projectCoast, el.percent);
-        labels.push(kind.facility);
-        projectCoasts.push(el.projectCoast);
-        myCash.push(el.givenCash);
-    });
 
     myChart = new Chart(ctx, {
         type: 'horizontalBar',
@@ -202,6 +219,27 @@ function prepareBarChart(kinds) {
  * @param kinds
  */
 function prepareInvestedBarChart(kinds) {
+    if (kinds.length === 0) {
+        $('#investedBarChartContainer').css('display', 'none');
+        return;
+    } else {
+        $('#investedBarChartContainer').css('display', 'block');
+    }
+    let labels = [];
+    let myCash = [];
+    let maxCash = 0;
+    $.each(kinds, function (ind, el) {
+        let kind = new KindOnProject();
+        kind.build(el.facility, el.login, el.givenCash, el.projectCoast, el.percent);
+        labels.push(kind.facility);
+        myCash.push(kind.givenCash);
+        if (maxCash < kind.givenCash) {
+            maxCash = kind.givenCash;
+        }
+    });
+
+    maxCash = maxCash + (maxCash * 0.15);
+
     let myChart;
     let options = {
         responsive: true,
@@ -215,7 +253,8 @@ function prepareInvestedBarChart(kinds) {
             xAxes: [{
                 ticks: {
                     beginAtZero: true,
-                    display: false
+                    display: false,
+                    max: maxCash
                 },
                 scaleLabel: {
                     display: false
@@ -231,7 +270,11 @@ function prepareInvestedBarChart(kinds) {
                 /* Keep y-axis width proportional to overall chart width */
                 afterFit: function(scale) {
                     let chartWidth = scale.chart.width;
-                    scale.width = chartWidth * 0.20;
+                    if (kinds.length === 1) {
+                        scale.width = chartWidth * 0.1 / kinds.length;
+                    } else {
+                        scale.width = chartWidth * 0.2;
+                    }
                 }
             }]
         },
@@ -265,15 +308,6 @@ function prepareInvestedBarChart(kinds) {
         }
     };
 
-    let labels = [];
-    let myCash = [];
-    $.each(kinds, function (ind, el) {
-        let kind = new KindOnProject();
-        kind.build(el.facility, el.login, el.givenCash, el.projectCoast, el.percent);
-        labels.push(kind.facility);
-        myCash.push(el.givenCash);
-    });
-
     let ctx = document.getElementById('investedBarChart').getContext('2d');
     myChart = new Chart(ctx, {
         type: 'horizontalBar',
@@ -303,6 +337,24 @@ function prepareInvestedBarChart(kinds) {
  */
 function prepareCompanyProfitBarChart(profits) {
     let myChart;
+
+    let labels = [];
+    let companySums = [];
+    let myCash = [];
+    let maxCompanySum = 0;
+    $.each(profits, function (ind, el) {
+        let profit = new Profit();
+        profit.build(el.yearSale, el.profit, el.login, el.investorProfit);
+        labels.push(profit.yearSale);
+        companySums.push(profit.profit);
+        myCash.push(profit.investorProfit);
+        if (maxCompanySum < profit.profit) {
+            maxCompanySum = profit.profit;
+        }
+    });
+
+    maxCompanySum = maxCompanySum + (maxCompanySum * 0.1);
+
     let ctx = document.getElementById('profitBarChart').getContext('2d');
     let options = {
         responsive: true,
@@ -336,7 +388,8 @@ function prepareCompanyProfitBarChart(profits) {
                     display: false
                 },
                 ticks: {
-                    display: false
+                    display: false,
+                    max: maxCompanySum
                 },
                 stacked: true
             }]
@@ -373,17 +426,6 @@ function prepareCompanyProfitBarChart(profits) {
             }
         }
     };
-
-    let labels = [];
-    let companySums = [];
-    let myCash = [];
-    $.each(profits, function (ind, el) {
-        let profit = new Profit();
-        profit.build(el.yearSale, el.profit, el.login, el.investorProfit);
-        labels.push(profit.yearSale);
-        companySums.push(profit.profit);
-        myCash.push(profit.investorProfit);
-    });
 
     myChart = new Chart(ctx, {
         type: 'bar',
@@ -432,12 +474,13 @@ function getKindOnProject(login) {
         });
 }
 
-function getUnionProfit() {
+function getUnionProfit(login) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
-
+    login = 'investor017';
     $.ajax({
         type: "GET",
+        data: JSON.stringify(login),
         contentType: "application/json;charset=utf-8",
         url: "union-profit",
         timeout: 100000,
