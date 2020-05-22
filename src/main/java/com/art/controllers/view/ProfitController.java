@@ -5,8 +5,8 @@ import com.art.model.supporting.view.CompanyProfit;
 import com.art.model.supporting.view.InvestorProfit;
 import com.art.service.view.CompanyProfitService;
 import com.art.service.view.InvestorProfitService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -29,8 +29,8 @@ public class ProfitController {
         this.investorProfitService = investorProfitService;
     }
 
-    @GetMapping(path = "/union-profit")
-    public List<CompanyInvestorProfit> findByLogin(@RequestParam(required = false) String login) {
+    @PostMapping(path = "/union-profit")
+    public List<CompanyInvestorProfit> findByLogin(@RequestBody(required = false) String login) {
         List<CompanyInvestorProfit> profitUnions = new ArrayList<>();
         List<CompanyProfit> companyProfits = companyProfitService.findAll();
         List<InvestorProfit> investorProfits = investorProfitService.findByLogin(login);

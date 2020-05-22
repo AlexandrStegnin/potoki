@@ -2,7 +2,8 @@ package com.art.controllers.view;
 
 import com.art.model.supporting.view.KindOnProject;
 import com.art.service.view.KindOnProjectService;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -20,9 +21,9 @@ public class KindOnProjectController {
         this.kindOnProjectService = kindOnProjectService;
     }
 
-    @GetMapping(path = "/kind-on-project")
-    public List<KindOnProject> findByInvestorLogin() {
-        return kindOnProjectService.findByInvestorLogin("investor007");
+    @PostMapping(path = "/kind-on-project")
+    public List<KindOnProject> findByInvestorLogin(@RequestBody(required = false) String login) {
+        return kindOnProjectService.findByInvestorLogin(login);
     }
 
 }

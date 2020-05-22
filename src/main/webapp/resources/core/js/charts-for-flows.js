@@ -449,17 +449,20 @@ function prepareCompanyProfitBarChart(profits) {
     myChart.update();
 }
 
-
 function getKindOnProject(login) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
 
+    let user = {
+        login: login
+    }
+
     $.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json;charset=utf-8",
         url: "kind-on-project",
-        // data: JSON.stringify(search),
-        // dataType: 'json',
+        data: JSON.stringify(user),
+        dataType: 'json',
         timeout: 100000,
         beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
@@ -479,10 +482,11 @@ function getUnionProfit(login) {
     let header = $("meta[name='_csrf_header']").attr("content");
     login = 'investor017';
     $.ajax({
-        type: "GET",
-        data: JSON.stringify(login),
+        type: "POST",
         contentType: "application/json;charset=utf-8",
         url: "union-profit",
+        data: JSON.stringify(login),
+        dataType: 'json',
         timeout: 100000,
         beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
