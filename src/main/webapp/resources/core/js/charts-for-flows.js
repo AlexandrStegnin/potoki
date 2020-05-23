@@ -75,6 +75,7 @@ jQuery(document).ready(function ($) {
     if (login === '') login = null;
     getUnionProfit(login);
     getKindOnProject(login);
+    clearOldLocalStorageData();
 });
 
 /**
@@ -495,4 +496,10 @@ function getUnionProfit(login) {
         .fail(function (e) {
             console.log(e);
         });
+}
+
+function clearOldLocalStorageData() {
+    if (window.localStorage && localStorage.getItem('investedMoneyDb')) {
+        localStorage.setItem('investedMoneyDb', '');
+    }
 }
