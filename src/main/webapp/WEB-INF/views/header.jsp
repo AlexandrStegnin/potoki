@@ -23,7 +23,7 @@
         <div class="navbar-nav ml-auto">
             <sec:authorize access="(hasRole('INVESTOR') OR hasRole('ANONYMOUS')) AND !hasRole('ADMIN')">
                 <li class="nav-item mr-2">
-                    <a id="balance" href="#" class="nav-link" style="color: #0D345D;">
+                    <a id="balance" href="#" class="nav-link disabled" style="color: #0D345D;">
                         <span class="fas fa-ruble-sign" style="color: #0D345D;"></span>
                         Баланс: <span id="balanceText">0</span>
                     </a>
