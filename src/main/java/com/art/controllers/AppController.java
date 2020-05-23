@@ -1,6 +1,8 @@
 package com.art.controllers;
 
+import com.art.config.SecurityUtils;
 import com.art.func.GetPrincipalFunc;
+import com.art.model.Users;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.ServiceTemporarilyUnavailableException;
@@ -9,9 +11,7 @@ import com.art.service.ServiceUnavailableService;
 import com.art.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
@@ -26,6 +26,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Objects;
 
 @Controller
 public class AppController {
@@ -145,14 +146,16 @@ public class AppController {
     }
 
     @GetMapping(value = "/demo")
-    public String demoPage() {
-        UsernamePasswordAuthenticationToken authReq
-                = new UsernamePasswordAuthenticationToken("investor-demo", "123");
-        Authentication auth = authenticationManager.authenticate(authReq);
-
-        SecurityContext sc = SecurityContextHolder.getContext();
-        sc.setAuthentication(auth);
-        return "viewFlows";
+    public String demoPage(ModelMap model) {
+        Users demo = userService.findByLogin(SecurityUtils.getInvestorDemoLogin());
+        String login;
+        if (Objects.isNull(demo)) {
+            login = SecurityUtils.getUsername();
+        } else {
+            login = demo.getLogin();
+        }
+        model.addAttribute("investorLogin", login);
+        return "flows";
     }
 
 }

@@ -25,4 +25,8 @@ public final class SecurityUtils {
         return userName;
     }
 
+    public static String getInvestorDemoLogin() {
+        return "investor-demo";
+    }
+
 }
