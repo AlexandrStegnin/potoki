@@ -7,9 +7,11 @@
     <sec:authentication var="user" property="principal"/>
     <sec:authorize access="isAuthenticated()">
         <sec:authentication property="principal.username" var="username"/>
+        <c:set var="disabled" scope="page" value=""/>
     </sec:authorize>
     <sec:authorize access="!isAuthenticated()">
-        <sec:authentication property="principal" var="username"/>
+        <c:set var="username" scope="page" value="demo investor"/>
+        <c:set var="disabled" scope="page" value="disabled"/>
     </sec:authorize>
     <a href="#" class="navbar-brand">
         <img src="<c:url value='/resources/core/img/logo.png' />" height="56" alt="ДД Колесникъ">
@@ -28,25 +30,26 @@
                 </li>
             </sec:authorize>
             <li class="nav-item mr-2">
-                <a id="profile" href="<c:url value='/profile' />" class="nav-link" style="color: #0D345D;">
+                <a id="profile" href="<c:url value='/profile' />" class="nav-link ${disabled}" style="color: #0D345D;">
                     <span class="fas fa-lock" style="color: #0D345D;"></span>
                     Личный кабинет / <b>${username}</b>
                 </a>
             </li>
             <li class="nav-item mr-2">
-                <a id="home" href="<c:url value='/welcome' />" class="nav-link" style="color: #0D345D;">
+                <a id="home" href="<c:url value='/welcome' />" class="nav-link ${disabled}" style="color: #0D345D;">
                     <span class="fas fa-home" style="color: #0D345D;"></span>
                     На главную
                 </a>
             </li>
 
             <sec:authorize access="hasRole('ADMIN')">
-            <li class="nav-item dropdown mr-2">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #0D345D;">
-                         <span class="fas fa-cogs" style="color: #0D345D;"></span> Администрирование<span class="caret" style="color: #0D345D;"></span>
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li class="nav-item dropdown mr-2">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #0D345D;">
+                        <span class="fas fa-cogs" style="color: #0D345D;"></span> Администрирование<span class="caret"
+                                                                                                         style="color: #0D345D;"></span>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a href="<c:url value='/catalogue' />" class="dropdown-item">
                             <span style="color: #0D345D;" class="fas fa-book"></span> Справочники
                         </a>
@@ -59,11 +62,11 @@
                         <a href="<c:url value='/updateInvestorDemo' />" id="updateInvestorDemo" class="dropdown-item">
                             <span style="color: #0D345D;" class="fas fa-sync-alt"></span> Обновить инвестор-демо
                         </a>
-                </div>
-            </li>
+                    </div>
+                </li>
             </sec:authorize>
             <li class="nav-item mr-2">
-                <a id="exit" href="<c:url value='/logout' />" class="nav-link" style="color: #0D345D;">
+                <a id="exit" href="<c:url value='/logout' />" class="nav-link ${disabled}" style="color: #0D345D;">
                     <span class="fas fa-sign-out-alt" style="color: #0D345D;"></span>
                     Выйти
                 </a>
