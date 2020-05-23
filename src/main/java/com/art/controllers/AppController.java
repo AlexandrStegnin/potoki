@@ -67,7 +67,7 @@ public class AppController {
         return response;
     }
 
-    @RequestMapping(value = {"/", "/welcome**"}, method = RequestMethod.GET)
+    @GetMapping(value = {"/", "/investments"})
     public String welcomePage(SecurityContextHolderAwareRequestWrapper request, ModelMap model) {
         boolean admin = request.isUserInRole("ROLE_ADMIN");
         if (serviceUnavailableService.findServiceUnavailable().getStatus() == 1 && !admin) {
@@ -77,7 +77,8 @@ public class AppController {
         if (request.isUserInRole("ROLE_INVESTOR") &&
                 (!admin && !request.isUserInRole("ROLE_DBA") && !request.isUserInRole("ROLE_BIGDADDY"))) {
             userService.confirm(getPrincipalFunc.getPrincipalId());
-            return "viewFlows";
+            model.addAttribute("investorLogin", SecurityUtils.getUsername());
+            return "flows";
         } else {
             return "catalogues";
         }

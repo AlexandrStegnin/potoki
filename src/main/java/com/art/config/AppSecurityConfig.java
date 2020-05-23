@@ -143,7 +143,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().formLogin().loginPage("/login")
                 .loginProcessingUrl("/login")
                 .usernameParameter("login").passwordParameter("password")
-                .defaultSuccessUrl("/welcome")
+                .defaultSuccessUrl("/investments")
                 .and()
                 .rememberMe().rememberMeParameter("remember-me").tokenRepository(tokenRepository)
                 .tokenValiditySeconds(86400)
