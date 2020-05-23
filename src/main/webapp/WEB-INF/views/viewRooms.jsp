@@ -56,6 +56,7 @@
                 <th>Продано</th>
                 <th>Дата продажи</th>
                 <th>Цена продажи</th>
+                <th>Годовая доходность</th>
                 <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                     <th style="text-align: center">Действие</th>
                 </sec:authorize>
@@ -91,6 +92,9 @@
                     </td>
                     <td>
                         <fmt:formatNumber value="${room.salePrice}" type="currency" minFractionDigits="2"/>
+                    </td>
+                    <td>
+                        <fmt:formatNumber value="${room.totalYearProfit}" type="currency" minFractionDigits="2"/>
                     </td>
                     <sec:authorize access="isFullyAuthenticated()">
                         <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">

@@ -48,4 +48,7 @@ public class Rooms implements Serializable {
     @Column(name = "SalePrice")
     private BigDecimal salePrice;
 
+    @Column(name = "total_year_profit")
+    private BigDecimal totalYearProfit;
+
 }

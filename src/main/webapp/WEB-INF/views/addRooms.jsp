@@ -114,7 +114,15 @@
                 </div>
             </div>
         </div>
-
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label class="col-md-3 control-lable" for="coast">Годовая доходность:</label>
+                <div class="col-md-7">
+                    <form:input type="number" path="totalYearProfit" id="yearProfit" class="form-control input-sm"
+                                min="0.0" step="0.01"/>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="form-actions floatRight">
                 <c:choose>

@@ -90,6 +90,7 @@ public class RoomsService {
         update.set(Rooms_.dateOfSale, room.getDateOfSale());
         update.set(Rooms_.salePrice, room.getSalePrice());
         update.set(Rooms_.buyDate, room.getBuyDate());
+        update.set(Rooms_.totalYearProfit, room.getTotalYearProfit());
         update.where(criteriaBuilder.equal(roomsRoot.get(Rooms_.id), room.getId()));
         this.em.createQuery(update).executeUpdate();
     }
