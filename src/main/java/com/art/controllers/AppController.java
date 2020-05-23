@@ -10,6 +10,7 @@ import com.art.model.supporting.ServiceUnavailable;
 import com.art.service.ServiceUnavailableService;
 import com.art.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -148,6 +149,10 @@ public class AppController {
 
     @GetMapping(value = "/demo")
     public String demoPage(ModelMap model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (Objects.nonNull(auth) && !(auth instanceof AnonymousAuthenticationToken)) {
+            SecurityContextHolder.clearContext();
+        }
         Users demo = userService.findByLogin(SecurityUtils.getInvestorDemoLogin());
         String login;
         if (Objects.isNull(demo)) {
