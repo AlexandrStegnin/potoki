@@ -231,6 +231,7 @@ function prepareInvestedBarChart(kinds) {
     let labels = [];
     let myCash = [];
     let maxCash = 0;
+    let sumCash = 0;
     $.each(kinds, function (ind, el) {
         let kind = new KindOnProject();
         kind.build(el.facility, el.login, el.givenCash, el.projectCoast, el.percent);
@@ -239,8 +240,9 @@ function prepareInvestedBarChart(kinds) {
         if (maxCash < kind.givenCash) {
             maxCash = kind.givenCash;
         }
+        sumCash = sumCash + kind.givenCash;
     });
-    $('#balanceText').text(myCash.toLocaleString());
+    $('#balanceText').text(sumCash.toLocaleString());
     maxCash = maxCash + (maxCash * 0.15);
 
     let myChart;
