@@ -68,7 +68,7 @@ public class AppController {
         return response;
     }
 
-    @GetMapping(value = {"/", "/investments"})
+    @GetMapping(value = {"/", "/investments", "/welcome"})
     public String welcomePage(SecurityContextHolderAwareRequestWrapper request, ModelMap model) {
         boolean admin = request.isUserInRole("ROLE_ADMIN");
         if (serviceUnavailableService.findServiceUnavailable().getStatus() == 1 && !admin) {
