@@ -36,7 +36,7 @@
                 </a>
             </li>
             <li class="nav-item mr-2">
-                <a id="home" href="<c:url value='/welcome' />" class="nav-link ${disabled}" style="color: #0D345D;">
+                <a id="home" href="<c:url value='/investments' />" class="nav-link ${disabled}" style="color: #0D345D;">
                     <span class="fas fa-home" style="color: #0D345D;"></span>
                     На главную
                 </a>
@@ -66,7 +66,7 @@
                 </li>
             </sec:authorize>
             <li class="nav-item mr-2">
-                <a id="exit" href="<c:url value='/logout' />" class="nav-link ${disabled}" style="color: #0D345D;">
+                <a id="exit" href="<c:url value='/logout' />" class="nav-link" style="color: #0D345D;">
                     <span class="fas fa-sign-out-alt" style="color: #0D345D;"></span>
                     Выйти
                 </a>
