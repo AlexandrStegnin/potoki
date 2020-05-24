@@ -304,10 +304,6 @@ public class InvestorsCashController {
         return response;
     }
 
-    private void deleteAllCashList(SearchSummary searchSummary) {
-
-    }
-
     @GetMapping(value = {"/newinvestorscash"})
     public String newCash(ModelMap model) {
         String title = "Добавление денег инвестора";
@@ -638,34 +634,47 @@ public class InvestorsCashController {
     public @ResponseBody
     GenericResponse saveDivideCash(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
+        // Получаем id сумм, которые надо разделить
         List<BigInteger> idsList = searchSummary.getInvestorsCashList().stream().map(InvestorsCash::getId).collect(Collectors.toList());
+
+        // Получаем список денег по идентификаторам
         List<InvestorsCash> investorsCashes = investorsCashService.findByIdIn(idsList);
 
         List<UnderFacilities> remainingUnderFacilitiesList = searchSummary.getUnderFacilitiesList();
 
+        // Получаем подобъект, куда надо разделить сумму
         UnderFacilities underFacility = underFacilitiesService.findByIdWithCriteriaApi(
                 searchSummary.getReUnderFacility().getId());
+
+        // Получаем объект, в который надо разделить сумму
         Facilities facility = facilityService.findByIdWithUnderFacilitiesAndRooms(underFacility.getFacility().getId());
+
+        // Получаем список подобъектов объекта
         Set<UnderFacilities> underFacilitiesList = facility.getUnderFacilities();
 
         List<Rooms> rooms = new ArrayList<>(0);
 
+        // Если в списке подобъектов присутствует подобъект, из которого должен состоять остаток суммы, заносим помещения
+        // этого подобъекта в список
         underFacilitiesList.forEach(uf -> remainingUnderFacilitiesList.forEach(ruf -> {
             if (uf.getId().equals(ruf.getId())) {
                 rooms.addAll(uf.getRooms());
             }
         }));
 
+        // Вычисляем стоимость объекта, складывая стоимости помещений, из которых должен состоять остаток
         BigDecimal coastFacility = rooms
                 .stream()
                 .map(Rooms::getCoast)
                 .reduce(BigDecimal.ZERO, BigDecimal::add)
                 .setScale(2, BigDecimal.ROUND_CEILING);
 
+        // Вычисляем стоимость подобъекта, куда надо разделить сумму
         BigDecimal coastUnderFacility = underFacility.getRooms().stream()
                 .map(Rooms::getCoast)
                 .reduce(BigDecimal.ZERO, BigDecimal::add).setScale(2, BigDecimal.ROUND_CEILING);
 
+        // Вычисляем % для выделения доли
         BigDecimal divided = coastUnderFacility.divide(coastFacility, 20, BigDecimal.ROUND_CEILING);
 
         investorsCashes.forEach(f -> {

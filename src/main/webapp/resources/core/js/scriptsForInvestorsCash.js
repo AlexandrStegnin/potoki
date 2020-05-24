@@ -1253,33 +1253,32 @@ function cashingMoney() {
 
 function prepareDivideCash() {
     showLoader();
-    var err = false;
-
-    var divideData = $('form#divideData');
-    var cash;
-    var cashes = [];
-    var id;
-    var facility;
-    var underFacility;
-    var investor;
-    var givedCash;
-    var dateGivedCash;
-    var cashSource;
-    var cashType;
-    var newCashDetails;
-    var investorsType;
-    var dateClosingInvest;
-    var typeClosingInvest;
-    var shareKind;
-    var dateReport;
-    var sourceFacility;
-    var sourceUnderFacility;
-    var room;
-    var reUnderFacility;
-    var excludedUnderFacilities = [];
+    let err = false;
+    let divideData = $('form#divideData');
+    let cash;
+    let cashes = [];
+    let id;
+    let facility;
+    let underFacility;
+    let investor;
+    let givedCash;
+    let dateGivedCash;
+    let cashSource;
+    let cashType;
+    let newCashDetails;
+    let investorsType;
+    let dateClosingInvest;
+    let typeClosingInvest;
+    let shareKind;
+    let dateReport;
+    let sourceFacility;
+    let sourceUnderFacility;
+    let room;
+    let reUnderFacility;
+    let excludedUnderFacilities = [];
 
     $('#underFacilitiesList').find('option:selected').each(function () {
-        var underFacility = {
+        let underFacility = {
             id: $(this).attr('id'),
             underFacility: $(this).text()
         };
@@ -1303,7 +1302,7 @@ function prepareDivideCash() {
         closeLoader();
         return false;
     }
-    var current;
+    let current;
 
     $('#divideModal').modal('hide');
     blockUnblockDropdownMenus('block');
@@ -1335,7 +1334,6 @@ function prepareDivideCash() {
 
             givedCash = current.children('td:eq(3)').attr('data-gived-cash');
             dateGivedCash = current.children('td:eq(4)').attr('data-report-date');
-            //dateGivedCash = new Date(dateGivedCash).getTime();
 
             cashSource = {
                 id: current.children('td:eq(5)').attr('data-cash-source-id'),
@@ -1431,9 +1429,9 @@ function prepareDivideCash() {
 }
 
 function saveDivideCash(cashes, reUnderFacility, excludedUnderFacilities) {
-    var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
-    var search = ({
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+    let search = ({
         investorsCashList: cashes,
         reUnderFacility: reUnderFacility,
         underFacilitiesList: excludedUnderFacilities
@@ -1455,7 +1453,6 @@ function saveDivideCash(cashes, reUnderFacility, excludedUnderFacilities) {
             $('#msg-modal').modal('show');
         },
         error: function (e) {
-            alert(e);
             console.log(e);
         },
         done: function (e) {
