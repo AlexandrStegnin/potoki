@@ -96,6 +96,8 @@ public class SearchSummary implements Serializable {
 
     private String[] investors;
 
+    private List<UnderFacilities> reUnderFacilitiesList;
+
     public String getFacility() {
         return facility;
     }
@@ -542,5 +544,13 @@ public class SearchSummary implements Serializable {
 
     public void setInvestorsList(List<Users> investorsList) {
         this.investorsList = investorsList;
+    }
+
+    public List<UnderFacilities> getReUnderFacilitiesList() {
+        return reUnderFacilitiesList;
+    }
+
+    public void setReUnderFacilitiesList(List<UnderFacilities> reUnderFacilitiesList) {
+        this.reUnderFacilitiesList = reUnderFacilitiesList;
     }
 }

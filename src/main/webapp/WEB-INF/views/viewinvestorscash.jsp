@@ -375,10 +375,10 @@
 
                     <div class="row" id="underFacilitiesRow">
                         <div class="form-group col-md-12">
-                            <label class="col-md-3 control-lable" for="underFacilities">Подобъект:</label>
+                            <label class="col-md-3 control-lable selectric" for="underFacilities">Подобъект:</label>
                             <div class="col-md-7">
                                 <form:select path="reUnderFacilities" id="underFacilities" items="${underFacilities}"
-                                             multiple="false"
+                                             multiple="true"
                                              itemValue="id" itemLabel="underFacility" class="form-control input-sm"/>
                                 <div id="underFacilityErr" style="color: red; display: none">
                                     Необходимо выбрать подобъект

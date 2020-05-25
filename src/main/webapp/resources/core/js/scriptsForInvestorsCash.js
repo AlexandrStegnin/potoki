@@ -10,6 +10,11 @@ jQuery(document).ready(function ($) {
         this.selected = !this.selected;
     });
 
+    $(document).on('mousedown', '#underFacilities > option', function (e) {
+        e.preventDefault();
+        this.selected = !this.selected;
+    });
+
     $('#cashingSubmit').on('click', function (e) {
         e.preventDefault();
         let investors = $('#investor').val();
@@ -297,11 +302,6 @@ jQuery(document).ready(function ($) {
             });
             blockUnblockDropdownMenus('unblock', !noDivide);
         }
-
-        /*
-        var cnt = checkChecked();
-        console.log(cnt);
-        */
     });
 
     $(document).on('submit', '#reInvestData', function (event) {
@@ -1253,7 +1253,7 @@ function cashingMoney() {
 
 function prepareDivideCash() {
     showLoader();
-    let err = false;
+    let err;
     let divideData = $('form#divideData');
     let cash;
     let cashes = [];
@@ -1275,6 +1275,7 @@ function prepareDivideCash() {
     let sourceUnderFacility;
     let room;
     let reUnderFacility;
+    let reUnderFacilitiesList = [];
     let excludedUnderFacilities = [];
 
     $('#underFacilitiesList').find('option:selected').each(function () {
@@ -1284,13 +1285,22 @@ function prepareDivideCash() {
         };
         excludedUnderFacilities.push(underFacility);
     });
+    // if (multiple === true) {
+        divideData.find('#underFacilities').find('option:selected').each(function (ind, el) {
+            reUnderFacility = {
+                id: el.id,
+                underFacility: el.value
+            };
+            reUnderFacilitiesList.push(reUnderFacility);
+        });
+    // } else {
+    //     reUnderFacility = {
+    //         id: divideData.find('#underFacilities').find('option:selected').attr('id'),
+    //         underFacility: divideData.find('#underFacilities').find('option:selected').text()
+    //     };
+    // }
 
-    reUnderFacility = {
-        id: divideData.find('#underFacilities').find('option:selected').attr('id'),
-        underFacility: divideData.find('#underFacilities').find('option:selected').text()
-    };
-
-    if (reUnderFacility.underFacility.indexOf('Выберите подобъект') >= 0) {
+    if (reUnderFacilitiesList.length === 0 || reUnderFacilitiesList[0].underFacility.indexOf('Выберите подобъект') >= 0) {
         $('#underFacilityErr').css('display', 'block');
         err = true;
     } else {
@@ -1424,8 +1434,11 @@ function prepareDivideCash() {
 
         });
     });
-
-    saveDivideCash(cashes, reUnderFacility, excludedUnderFacilities);
+    if (reUnderFacilitiesList.length > 1) {
+        divideMultiple(cashes, reUnderFacilitiesList, excludedUnderFacilities);
+    } else {
+        saveDivideCash(cashes, reUnderFacilitiesList[0], excludedUnderFacilities);
+    }
 }
 
 function saveDivideCash(cashes, reUnderFacility, excludedUnderFacilities) {
@@ -1440,7 +1453,42 @@ function saveDivideCash(cashes, reUnderFacility, excludedUnderFacilities) {
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: "/saveDivideCash",
+        url: "saveDivideCash",
+        data: JSON.stringify(search),
+        dataType: 'json',
+        timeout: 0,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (data) {
+            closeLoader();
+            $('#msg').html(data.message);
+            $('#msg-modal').modal('show');
+        },
+        error: function (e) {
+            closeLoader();
+            $('#msg').html('Что-то пошло не так [' + e + ']');
+            $('#msg-modal').modal('show');
+        },
+        done: function (e) {
+            enableSearchButton(true);
+        }
+    });
+}
+
+function divideMultiple(cashes, reUnderFacilitiesList, excludedUnderFacilities) {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+    let search = ({
+        investorsCashList: cashes,
+        reUnderFacilitiesList: reUnderFacilitiesList,
+        underFacilitiesList: excludedUnderFacilities
+    });
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: "divide-multiple",
         data: JSON.stringify(search),
         dataType: 'json',
         timeout: 1000000,
@@ -1453,7 +1501,9 @@ function saveDivideCash(cashes, reUnderFacility, excludedUnderFacilities) {
             $('#msg-modal').modal('show');
         },
         error: function (e) {
-            console.log(e);
+            closeLoader();
+            $('#msg').html('Что-то пошло не так [' + e + ']');
+            $('#msg-modal').modal('show');
         },
         done: function (e) {
             enableSearchButton(true);
@@ -1462,9 +1512,9 @@ function saveDivideCash(cashes, reUnderFacility, excludedUnderFacilities) {
 }
 
 function deleteCash(cashIdList) {
-    var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
-    var search = ({
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+    let search = ({
         cashIdList: cashIdList
     });
 
@@ -1481,12 +1531,13 @@ function deleteCash(cashIdList) {
     })
         .done(function (data) {
             closeLoader();
-            slideBox(data.message);
-            //$('#msg').html(data.message);
-            //$('#msg-modal').modal('show');
+            // slideBox(data.message);
+            $('#msg').html(data.message);
+            $('#msg-modal').modal('show');
         })
         .fail(function (e) {
-            console.log(e);
+            $('#msg').html('Что-то пошло не так [' + e + ']');
+            $('#msg-modal').modal('show');
         })
         .always(function () {
             console.log('Закончили!');

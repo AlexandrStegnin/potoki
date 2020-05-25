@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -630,21 +631,25 @@ public class InvestorsCashController {
         return response;
     }
 
-    @PostMapping(value = {"/saveDivideCash"}, produces = "application/json;charset=UTF-8")
+    @PostMapping(value = "/saveDivideCash", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
     GenericResponse saveDivideCash(@RequestBody SearchSummary searchSummary) {
-        GenericResponse response = new GenericResponse();
+        return divideCash(searchSummary);
+    }
+
+    private GenericResponse divideCash(SearchSummary summary) {
         // Получаем id сумм, которые надо разделить
-        List<BigInteger> idsList = searchSummary.getInvestorsCashList().stream().map(InvestorsCash::getId).collect(Collectors.toList());
+        GenericResponse response = new GenericResponse();
+        List<BigInteger> idsList = summary.getInvestorsCashList().stream().map(InvestorsCash::getId).collect(Collectors.toList());
 
         // Получаем список денег по идентификаторам
         List<InvestorsCash> investorsCashes = investorsCashService.findByIdIn(idsList);
 
-        List<UnderFacilities> remainingUnderFacilitiesList = searchSummary.getUnderFacilitiesList();
+        List<UnderFacilities> remainingUnderFacilitiesList = summary.getUnderFacilitiesList();
 
         // Получаем подобъект, куда надо разделить сумму
         UnderFacilities underFacility = underFacilitiesService.findByIdWithCriteriaApi(
-                searchSummary.getReUnderFacility().getId());
+                summary.getReUnderFacility().getId());
 
         // Получаем объект, в который надо разделить сумму
         Facilities facility = facilityService.findByIdWithUnderFacilitiesAndRooms(underFacility.getFacility().getId());
@@ -676,8 +681,10 @@ public class InvestorsCashController {
 
         // Вычисляем % для выделения доли
         BigDecimal divided = coastUnderFacility.divide(coastFacility, 20, BigDecimal.ROUND_CEILING);
-
-        investorsCashes.forEach(f -> {
+        investorsCashes
+                .stream()
+                .filter(f -> null != f.getGivedCash())
+                .forEach(f -> {
             BigDecimal invCash = f.getGivedCash();
             BigDecimal sumInUnderFacility = divided.multiply(invCash);
             BigDecimal sumRemainder = invCash.subtract(sumInUnderFacility);
@@ -715,8 +722,26 @@ public class InvestorsCashController {
         });
 
         response.setMessage("Разделение сумм прошло успешно");
-
         return response;
+    }
+
+    @PostMapping(value = "/divide-multiple", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public @ResponseBody
+    GenericResponse divideMultipleCash(@RequestBody SearchSummary summary) {
+        final GenericResponse[] response = {new GenericResponse()};
+
+        // Получаем подобъекты, куда надо выделить долю
+        List<UnderFacilities> reUnderFacilitiesList = summary.getReUnderFacilitiesList();
+
+        // Получаем подобъекты, которые будут использоваться для расчёта процентного соотношения разделения
+        List<UnderFacilities> underFacilitiesToCalculateShare = summary.getUnderFacilitiesList();
+        reUnderFacilitiesList.forEach(reUnderFacility -> {
+            summary.setReUnderFacility(reUnderFacility);
+            response[0] = divideCash(summary);
+            underFacilitiesToCalculateShare.remove(reUnderFacility);
+            summary.setReUnderFacilitiesList(underFacilitiesToCalculateShare);
+        });
+        return response[0];
     }
 
     @PostMapping(value = "/close-cash-{id}")
