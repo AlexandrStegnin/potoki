@@ -12,6 +12,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Список дненег инвесторов</title>
     <sec:csrfMetaTags/>
+    <script type="text/javascript" src="<c:url value='/resources/core/js/progress.js' />"></script>
     <link href="<c:url value='/resources/core/css/old_bootstrap.min.css' />" rel="stylesheet"/>
     <link href="<c:url value='/resources/core/css/applic.css' />" rel="stylesheet"/>
     <link href="<c:url value='/resources/core/css/popup.css' />" rel="stylesheet"/>
@@ -27,6 +28,11 @@
     <script type="text/javascript" src="<c:url value='/resources/core/js/scriptsForInvestorsCash.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
+
+    <script type="text/javascript"
+            src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js' />"></script>
+    <script type="text/javascript"
+            src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js' />"></script>
 
     <style type="text/css">
         table, td, th {
@@ -477,9 +483,9 @@
 </div>
 
 <div id="msg-modal" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-body" id="msg" style="text-align: center"></div>
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document" style="text-align: center">
+        <div class="modal-content" style="text-align: center">
+            <div class="modal-body" id="msg"></div>
         </div>
     </div>
 </div>
