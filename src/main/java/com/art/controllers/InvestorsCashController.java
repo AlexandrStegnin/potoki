@@ -39,6 +39,9 @@ public class InvestorsCashController {
     @Autowired
     private MarketingTreeService marketingTreeService;
 
+    @Autowired
+    private StatusService statusService;
+
     @Resource(name = "afterCashingService")
     private AfterCashingService afterCashingService;
 
@@ -352,7 +355,8 @@ public class InvestorsCashController {
     }
 
     @PostMapping(value = "/cashing-money")
-    public @ResponseBody String cashing(@RequestBody SearchSummary summary) {
+    public @ResponseBody
+    String cashing(@RequestBody SearchSummary summary) {
         if (Objects.isNull(summary.getUser().getId())) {
             throw new RuntimeException("Отсутствует id пользователя");
         }
@@ -681,10 +685,16 @@ public class InvestorsCashController {
 
         // Вычисляем % для выделения доли
         BigDecimal divided = coastUnderFacility.divide(coastFacility, 20, BigDecimal.ROUND_CEILING);
-        investorsCashes
+        investorsCashes = investorsCashes
                 .stream()
                 .filter(f -> null != f.getGivedCash())
-                .forEach(f -> {
+                .collect(Collectors.toList());
+        int sumsCnt = investorsCashes.size();
+        sendStatus("Начинаем разделять суммы");
+        final int[] counter = {0};
+        investorsCashes.forEach(f -> {
+            counter[0]++;
+            sendStatus(String.format("Разделеляем %d из %d сумм", counter[0], sumsCnt));
             BigDecimal invCash = f.getGivedCash();
             BigDecimal sumInUnderFacility = divided.multiply(invCash);
             BigDecimal sumRemainder = invCash.subtract(sumInUnderFacility);
@@ -720,9 +730,13 @@ public class InvestorsCashController {
 
             investorsCashService.create(cash);
         });
-
+        sendStatus("OK");
         response.setMessage("Разделение сумм прошло успешно");
         return response;
+    }
+
+    private void sendStatus(String message) {
+        statusService.sendStatus(message);
     }
 
     @PostMapping(value = "/divide-multiple", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
