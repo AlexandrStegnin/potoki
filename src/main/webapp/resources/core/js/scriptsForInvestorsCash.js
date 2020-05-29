@@ -127,13 +127,13 @@ jQuery(document).ready(function ($) {
 
     blockUnblockDropdownMenus('block', false);
 
-    $('#msg-modal').on('shown.bs.modal', function () {
-        // if data-timer attribute is set use that, otherwise use default (7000)
-        var timer = 3000;
-        $(this).delay(timer).fadeOut(200, function () {
-            $(this).modal('hide');
-        });
-    });
+    // $('#msg-modal').on('shown.bs.modal', function () {
+    //     // if data-timer attribute is set use that, otherwise use default (7000)
+    //     var timer = 3000;
+    //     $(this).delay(timer).fadeOut(200, function () {
+    //         $(this).modal('hide');
+    //     });
+    // });
 
     $(document).on('change', ':checkbox', function () {
         var id = $(this).attr('id');
@@ -354,8 +354,8 @@ jQuery(document).ready(function ($) {
 
     disableFields();
 
-    $('.investorPicker').change(function() {
-        let selectedText = $(this).find('option:selected').map(function() {
+    $('.investorPicker').change(function () {
+        let selectedText = $(this).find('option:selected').map(function () {
             return $(this).text();
         }).get().join(',');
         let invArray = selectedText.split(",");
@@ -538,7 +538,8 @@ jQuery(document).ready(function ($) {
 
 });
 
-let User = function () {}
+let User = function () {
+}
 
 User.prototype = {
     id: 0,
@@ -560,7 +561,7 @@ function allMoneyCashing() {
 
     let investor = $("#investor");
     let investors = [];
-    investor.find('option:selected').each(function() {
+    investor.find('option:selected').each(function () {
         let user = new User();
         user.build($(this).val(), $(this).text());
         investors.push(user);
@@ -611,12 +612,12 @@ function allMoneyCashing() {
         },
         success: function (data) {
             closeLoader();
-            slideBox(data.message);
+            showPopup(data.message);
             window.location.href = '/investorscash';
         },
         error: function (e) {
             closeLoader();
-            display(e);
+            showPopup('Что-то пошло не так = [' + e.toLocaleString() + "]");
         },
         done: function (e) {
             enableSearchButton(true);
@@ -756,10 +757,9 @@ function prepareCashSave(what) {
 }
 
 function saveCash(cash, reFacility, reUnderFacility, dateReinvest, flag, invBuyer, what) {
-    var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
-
-    var search = ({
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+    let search = ({
         "investorsCash": cash,
         "reFacility": reFacility,
         "reUnderFacility": reUnderFacility,
@@ -1141,9 +1141,9 @@ function prepareSaveCash() {
 }
 
 function saveReCash(cashes, reinvestIdList, dateClose) {
-    var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
-    var search = ({
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+    let search = ({
         investorsCashList: cashes,
         reinvestIdList: reinvestIdList,
         dateClose: dateClose
@@ -1161,11 +1161,10 @@ function saveReCash(cashes, reinvestIdList, dateClose) {
         },
         success: function (data) {
             closeLoader();
-            $('#msg').html(data.message);
-            $('#msg-modal').modal('show');
+            showPopup(data.message);
         },
         error: function (e) {
-            console.log(e);
+            showPopup('Что-то пошло не так = [' + e.toLocaleString() + "]");
         },
         done: function (e) {
             enableSearchButton(true);
@@ -1183,13 +1182,12 @@ function cashingMoney() {
 
     let investor = $("#investor");
     let investors = [];
-    investor.find('option:selected').each(function() {
+    investor.find('option:selected').each(function () {
         let user = new User();
         user.build($(this).val(), $(this).text());
         investors.push(user);
     });
 
-    // return false;
     let search = ({
         investorsList: investors,
         user: {
@@ -1235,7 +1233,7 @@ function cashingMoney() {
         success: function (data) {
             closeLoader();
             if (data === '') {
-                slideBox("Деньги успешно выведены");
+                showPopup("Деньги успешно выведены");
                 window.location.href = '/investorscash';
             } else {
                 $('#toBigSumForCashing').html(data);
@@ -1243,7 +1241,7 @@ function cashingMoney() {
         },
         error: function (e) {
             closeLoader();
-            display(e);
+            showPopup('Что-то пошло не так = [' + e.toLocaleString() + "]");
         },
         done: function (e) {
             enableSearchButton(true);
@@ -1252,7 +1250,6 @@ function cashingMoney() {
 }
 
 function prepareDivideCash() {
-    showLoader();
     let err;
     let divideData = $('form#divideData');
     let cash;
@@ -1285,20 +1282,13 @@ function prepareDivideCash() {
         };
         excludedUnderFacilities.push(underFacility);
     });
-    // if (multiple === true) {
-        divideData.find('#underFacilities').find('option:selected').each(function (ind, el) {
-            reUnderFacility = {
-                id: el.id,
-                underFacility: el.value
-            };
-            reUnderFacilitiesList.push(reUnderFacility);
-        });
-    // } else {
-    //     reUnderFacility = {
-    //         id: divideData.find('#underFacilities').find('option:selected').attr('id'),
-    //         underFacility: divideData.find('#underFacilities').find('option:selected').text()
-    //     };
-    // }
+    divideData.find('#underFacilities').find('option:selected').each(function (ind, el) {
+        reUnderFacility = {
+            id: el.id,
+            underFacility: el.value
+        };
+        reUnderFacilitiesList.push(reUnderFacility);
+    });
 
     if (reUnderFacilitiesList.length === 0 || reUnderFacilitiesList[0].underFacility.indexOf('Выберите подобъект') >= 0) {
         $('#underFacilityErr').css('display', 'block');
@@ -1309,7 +1299,6 @@ function prepareDivideCash() {
     }
 
     if (err) {
-        closeLoader();
         return false;
     }
     let current;
@@ -1434,6 +1423,9 @@ function prepareDivideCash() {
 
         });
     });
+    $('#msg').html('Начинаем разделение денег...');
+    $('#msg-modal').modal('show');
+    connect();
     if (reUnderFacilitiesList.length > 1) {
         divideMultiple(cashes, reUnderFacilitiesList, excludedUnderFacilities);
     } else {
@@ -1461,14 +1453,10 @@ function saveDivideCash(cashes, reUnderFacility, excludedUnderFacilities) {
             xhr.setRequestHeader(header, token);
         },
         success: function (data) {
-            closeLoader();
-            $('#msg').html(data.message);
-            $('#msg-modal').modal('show');
+            showPopup(data.message);
         },
         error: function (e) {
-            closeLoader();
-            $('#msg').html('Что-то пошло не так [' + e + ']');
-            $('#msg-modal').modal('show');
+            showPopup('Что-то пошло не так [' + e + ']');
         },
         done: function (e) {
             enableSearchButton(true);
@@ -1491,19 +1479,15 @@ function divideMultiple(cashes, reUnderFacilitiesList, excludedUnderFacilities) 
         url: "divide-multiple",
         data: JSON.stringify(search),
         dataType: 'json',
-        timeout: 1000000,
+        timeout: 0,
         beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         },
         success: function (data) {
-            closeLoader();
-            $('#msg').html(data.message);
-            $('#msg-modal').modal('show');
+            showPopup(data.message);
         },
         error: function (e) {
-            closeLoader();
-            $('#msg').html('Что-то пошло не так [' + e + ']');
-            $('#msg-modal').modal('show');
+            showPopup('Что-то пошло не так [' + e + ']');
         },
         done: function (e) {
             enableSearchButton(true);
@@ -1531,13 +1515,10 @@ function deleteCash(cashIdList) {
     })
         .done(function (data) {
             closeLoader();
-            // slideBox(data.message);
-            $('#msg').html(data.message);
-            $('#msg-modal').modal('show');
+            showPopup(data.message);
         })
         .fail(function (e) {
-            $('#msg').html('Что-то пошло не так [' + e + ']');
-            $('#msg-modal').modal('show');
+            showPopup('Что-то пошло не так [' + e.toLocaleString() + ']');
         })
         .always(function () {
             console.log('Закончили!');
@@ -1581,10 +1562,9 @@ function prepareCloseCash() {
 }
 
 function closeCash(cashIdList, invBuyer, dateClosingInvest, what) {
-    var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
-
-    var search = ({
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+    let search = ({
         "cashIdList": cashIdList,
         "user": invBuyer,
         "dateReinvest": dateClosingInvest,
@@ -1606,13 +1586,10 @@ function closeCash(cashIdList, invBuyer, dateClosingInvest, what) {
         success: function (data) {
             $('#closeModal').modal('hide');
             closeLoader();
-            slideBox(data.message);
-
+            showPopup(data.message);
         },
         error: function (e) {
-            $('#popup_modal_form').find('#message').append(e.error);
-            closeLoader();
-            slideBox(data.message);
+            showPopup(e.toLocaleString());
         }
     });
 }
@@ -1668,15 +1645,23 @@ function blockActions() {
     });
 }
 
-function slideBox(message) {
-    $('#slideBox').find('h4').html(message);
+function showPopup(message) {
+    $('#msg').html(message);
+    $('#msg-modal').modal('show');
     setTimeout(function () {
-        $('#slideBox').animate({'right': '52px'}, 500);
-    }, 500);
-    setTimeout(function () {
-        $('#slideBox').animate({'right': '-300px'}, 500);
-    }, 4000);
+        $('#msg-modal').modal('hide');
+    }, 3000);
 }
+
+// function slideBox(message) {
+//     $('#slideBox').find('h4').html(message);
+//     setTimeout(function () {
+//         $('#slideBox').animate({'right': '52px'}, 500);
+//     }, 500);
+//     setTimeout(function () {
+//         $('#slideBox').animate({'right': '-300px'}, 500);
+//     }, 4000);
+// }
 
 function filteredInvestorsCash(facility, underFacility, investor, dateBegin, dateEnd, pageNumber) {
     var token = $("meta[name='_csrf']").attr("content");
