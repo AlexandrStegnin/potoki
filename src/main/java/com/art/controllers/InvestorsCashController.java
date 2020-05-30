@@ -638,7 +638,9 @@ public class InvestorsCashController {
     @PostMapping(value = "/saveDivideCash", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
     GenericResponse saveDivideCash(@RequestBody SearchSummary searchSummary) {
-        return divideCash(searchSummary);
+        GenericResponse response = divideCash(searchSummary);
+        sendStatus("OK");
+        return response;
     }
 
     private GenericResponse divideCash(SearchSummary summary) {
@@ -730,7 +732,6 @@ public class InvestorsCashController {
 
             investorsCashService.create(cash);
         });
-        sendStatus("OK");
         response.setMessage("Разделение сумм прошло успешно");
         return response;
     }
@@ -749,12 +750,17 @@ public class InvestorsCashController {
 
         // Получаем подобъекты, которые будут использоваться для расчёта процентного соотношения разделения
         List<UnderFacilities> underFacilitiesToCalculateShare = summary.getUnderFacilitiesList();
+        final int[] counter = {0};
+        int ufCount = underFacilitiesToCalculateShare.size();
         reUnderFacilitiesList.forEach(reUnderFacility -> {
+            counter[0]++;
+            sendStatus(String.format("Разделяем %d из %d подобъектов", counter[0], ufCount));
             summary.setReUnderFacility(reUnderFacility);
             response[0] = divideCash(summary);
             underFacilitiesToCalculateShare.remove(reUnderFacility);
             summary.setReUnderFacilitiesList(underFacilitiesToCalculateShare);
         });
+        sendStatus("OK");
         return response[0];
     }
 
