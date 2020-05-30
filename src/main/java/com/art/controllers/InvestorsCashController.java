@@ -180,8 +180,11 @@ public class InvestorsCashController {
         Comparator<AfterCashing> comparator = Comparator.comparing(AfterCashing::getId);
 
         afterCashingList.sort(comparator.reversed());
-
+        final int[] counter = {0};
+        int count = listToDelete.size();
         listToDelete.forEach(deleting -> {
+            counter[0]++;
+            sendStatus(String.format("Удаляем %d из %d сумм", counter[0], count));
             if (!Objects.equals(null, deleting.getSourceFlowsId())) {
                 String[] tmp = deleting.getSourceFlowsId().split(Pattern.quote("|"));
                 List<BigInteger> sourceIdList = new ArrayList<>(0);
@@ -305,6 +308,7 @@ public class InvestorsCashController {
             response.setMessage("Данные успешно удалены");
 
         });
+        sendStatus("OK");
         return response;
     }
 

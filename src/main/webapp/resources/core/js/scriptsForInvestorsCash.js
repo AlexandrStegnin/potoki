@@ -172,9 +172,9 @@ jQuery(document).ready(function ($) {
     $('#deleteAll').on('click', function (event) {
         event.preventDefault();
         if (linkHasClass($('#deleteAll'))) return false;
-        showLoader();
-        var cashIdList = [];
-        var sourceIdList = [];
+        // showLoader();
+        let cashIdList = [];
+        let sourceIdList = [];
         $('table#investorsCash').find('> tbody').find('> tr').each(function () {
             $(this).find(':checkbox:checked').not(':disabled').each(function () {
                 cashIdList.push($(this).closest('tr').attr('id'));
@@ -204,14 +204,16 @@ jQuery(document).ready(function ($) {
                 }
             })
         }
+        $('#msg').html('Начинаем удаление денег...');
+        $('#msg-modal').modal('show');
+        connect();
         deleteCash(cashIdList);
     });
 
     $('a#del').on('click', function (event) {
         event.preventDefault();
-        console.log($(this).parent());
         if (linkHasClass($(this).parent())) return false;
-        showLoader();
+        // showLoader();
         var cashIdList = [];
         var sourceIdList = [];
         cashIdList.push($(this).data('delete'));
@@ -240,6 +242,9 @@ jQuery(document).ready(function ($) {
         }
 
         $(this).closest('tr').remove();
+        $('#msg').html('Начинаем удаление денег...');
+        $('#msg-modal').modal('show');
+        connect();
         deleteCash(cashIdList);
     });
 
@@ -1514,7 +1519,7 @@ function deleteCash(cashIdList) {
         }
     })
         .done(function (data) {
-            closeLoader();
+            // closeLoader();
             showPopup(data.message);
         })
         .fail(function (e) {
