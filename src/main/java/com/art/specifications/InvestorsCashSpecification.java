@@ -22,7 +22,7 @@ public class InvestorsCashSpecification extends BaseSpecification<InvestorsCash,
         return (root, query, cb) -> where(
                 dateGivenCashBetween(filter.getFromDate(), filter.getToDate()))
                 .and(facilityIn(filter.getFacilities()))
-                .and(underFacilityEqual(filter.getUnderFacility()))
+                .and(underFacilityIn(filter.getUnderFacilities()))
                 .and(loginIn(filter.getInvestors()))
                 .and(facilityIsNotNull())
                 .toPredicate(root, query, cb);
@@ -153,6 +153,32 @@ public class InvestorsCashSpecification extends BaseSpecification<InvestorsCash,
                 return null;
             }
             return root.get(InvestorsCash_.facility).in(facilities);
+        }
+        );
+    }
+
+    private static Specification<InvestorsCash> underFacilityIn(List<UnderFacilities> underFacilities) {
+        return ((root, criteriaQuery, criteriaBuilder) -> {
+            if (null == underFacilities) {
+                return null;
+            }
+            if (underFacilities.size() == 0) {
+                return null;
+            }
+            UnderFacilities undefinedUnderFacility = underFacilities.stream()
+                    .filter(undefinedFacility -> undefinedFacility.getUnderFacility().equalsIgnoreCase("Выберите подобъект"))
+                    .findFirst()
+                    .orElse(null);
+            if (null != undefinedUnderFacility) {
+                undefinedUnderFacility = underFacilities.stream()
+                        .filter(undefinedFacility -> undefinedFacility.getUnderFacility().equalsIgnoreCase("Без подобъекта"))
+                        .findFirst()
+                        .orElse(null);
+                if (null != undefinedUnderFacility) {
+                    return null;
+                }
+            }
+            return root.get(InvestorsCash_.underFacility).in(underFacilities);
         }
         );
     }
