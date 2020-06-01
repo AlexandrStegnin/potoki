@@ -80,14 +80,18 @@
                 <input type="hidden" id="total" name="total" value="${page.content.size()}">
                 <input type="hidden" id="filtered" name="filtered" value="${cashFilters.filtered}">
                 <label class="sr-only" for="fFacilities">Объект:</label>
-                <form:select path="facility" id="fFacilities" multiple="false" class="selectpicker"
-                             data-live-search="true" data-width="130px">
-                    <c:forEach var="f" items="${facilities}">
+                <form:select path="facilities" id="fFacilities" multiple="true" class="selectpicker"
+                             data-live-search="true" data-width="130px" title="Выберите объект...">
+                    <c:forEach var="f" items="${facilitiesList}">
                         <option
-                                <c:choose>
-                                    <c:when test="${f.facility eq cashFilters.facility}">selected="selected"</c:when>
-                                </c:choose>
-                                value="${f.facility}" id="${f.id}">${f.facility}
+                                <c:forEach var="filterFacility" items="${cashFilters.facilities}">
+                                    <c:choose>
+                                        <c:when test="${f.facility eq filterFacility}">selected="selected"</c:when>
+                                    </c:choose>
+                                </c:forEach>
+                                value="${f.facility}" id="${f.id}"
+                                data-facility-name="${f.facility}"
+                        >${f.facility}
                         </option>
                     </c:forEach>
                 </form:select>
