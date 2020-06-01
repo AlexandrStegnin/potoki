@@ -18,7 +18,7 @@ Annex.prototype = {
 
 jQuery(document).ready(function ($) {
     blurElement($('.out'), 4);
-    checkAnnexes('investor017');
+    checkAnnexes(null);
     $('#look').on('click', function () {
         $('#readAnnex').css('display', 'none');
     });
@@ -51,7 +51,7 @@ function toggleAnnexModal(have) {
     showLoader();
     let readAnnex = $('#readAnnex');
     if (have === true) {
-        getAnnexes('investor017');
+        getAnnexes(null);
         blurElement($('.out'), 4);
         readAnnex.css('z-index', '1000001');
         readAnnex.css('display', 'block');

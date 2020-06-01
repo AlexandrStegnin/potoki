@@ -1,5 +1,6 @@
 package com.art.controllers;
 
+import com.art.config.SecurityUtils;
 import com.art.model.Users;
 import com.art.model.UsersAnnexToContracts;
 import com.art.service.UsersAnnexToContractsService;
@@ -29,12 +30,20 @@ public class UserAnnexController {
 
     @PostMapping(path = "/have-unread", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public boolean haveUnread(@RequestBody Users user) {
-        return annexService.haveUnread(user.getLogin());
+        String login = user.getLogin();
+        if (null == login) {
+            login = SecurityUtils.getUsername();
+        }
+        return annexService.haveUnread(login);
     }
 
     @PostMapping(value = "/get-annexes", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<UsersAnnexToContracts> getAnnexes(@RequestBody Users user) {
-        return usersAnnexToContractsService.findByLogin(user.getLogin());
+        String login = user.getLogin();
+        if (null == login) {
+            login = SecurityUtils.getUsername();
+        }
+        return usersAnnexToContractsService.findByLogin(login);
     }
 
     @PostMapping(value = "/mark-read-annex", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
