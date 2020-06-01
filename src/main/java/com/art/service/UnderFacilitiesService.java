@@ -67,6 +67,10 @@ public class UnderFacilitiesService {
         return underFacilitiesList;
     }
 
+    public List<UnderFacilities> initializeUnderFacilitiesList() {
+        return underFacilitiesRepository.findAll();
+    }
+
     public List<UnderFacilities> findAllWithCriteriaApi() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<UnderFacilities> facilityesCriteriaQuery = cb.createQuery(UnderFacilities.class);

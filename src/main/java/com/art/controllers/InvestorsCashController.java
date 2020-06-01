@@ -1052,6 +1052,11 @@ public class InvestorsCashController {
         return underFacilitiesService.initializeUnderFacilities();
     }
 
+    @ModelAttribute("underFacilitiesList")
+    public List<UnderFacilities> initializeUnderFacilitiesList() {
+        return underFacilitiesService.initializeUnderFacilitiesList();
+    }
+
     @ModelAttribute("sourceUnderFacilities")
     public List<UnderFacilities> initializeReUnderFacilities() {
         return underFacilitiesService.initializeUnderFacilities();
