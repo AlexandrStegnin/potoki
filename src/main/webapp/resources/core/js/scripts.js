@@ -312,7 +312,8 @@ function populateFilters(pageName) {
 
     let filter;
 
-    let  facilitiesId = [];
+    let facilitiesId = [];
+    let underFacilitiesId = [];
 
     fFacilities = $('#fFacilities');
     uFacilities = $('#uFacilities');
@@ -328,6 +329,9 @@ function populateFilters(pageName) {
                 facilitiesId.push(el.id);
             });
             facilityId = fFacilities.find('option:selected').attr('id');
+            $.each(uFacilities.find(':selected'), function (ind, el) {
+                underFacilitiesId.push(el.id);
+            });
             underFacilityId = uFacilities.find('option:selected').attr('id');
             investors.find('option:selected').each(function () {
                 investorsId.push($(this).attr('id'));
@@ -403,6 +407,7 @@ function populateFilters(pageName) {
         facilitiesId: facilitiesId,
         facilityId: facilityId,
         underFacilityId: underFacilityId,
+        underFacilitiesId: underFacilitiesId,
         investorId: investorsId,
         startDateVal: startDate,
         endDateVal: endDate,
@@ -462,8 +467,14 @@ function getFilters(pageName, lastFilters) {
         $.each(facilitiesId, function (ind, el) {
             $('#fFacilities option[id=' + el + ']').attr('selected', 'selected');
         });
+        getMultipleUFFromLS(facilitiesId, 'uFacilities');
+        let underFacilitiesId = lastFilters[0].underFacilitiesId;
+        $.each(underFacilitiesId, function (ind, el) {
+            $('#uFacilities option[id=' + el + ']').attr('selected', 'selected');
+        });
     } else {
         $('#fFacilities option[id=' + lastFilters[0].facilityId + ']').attr('selected', 'selected');
+        $('#uFacilities option[id=' + lastFilters[0].underFacilityId + ']').attr('selected', 'selected');
     }
     investors = lastFilters[0].investorId;
     $.each(investors, function (ind, el) {
@@ -477,14 +488,15 @@ function getFilters(pageName, lastFilters) {
     $('#srcFacilities').val(lastFilters[1].srcFacility);
     $('#srcUnderFacilities').val(lastFilters[1].srcUnderFacility);
     $('#shareKindName').val(lastFilters[1].shareKindName);
-    if (lastFilters[0].facilityId !== 0) {
-        getUnderFacilitiesFromLocalStorage(lastFilters[0].facilityId, 'uFacilities');
+    if (pageName !== 'investorscash') {
+        if (lastFilters[0].facilityId !== 0) {
+            getUnderFacilitiesFromLocalStorage(lastFilters[0].facilityId, 'uFacilities');
+        }
     }
     if (lastFilters[1].srcFacility !== 0) {
         getUnderFacilitiesFromLocalStorage(lastFilters[1].srcFacility, 'srcUnderFacilities');
     }
 
-    $('#uFacilities option[id=' + lastFilters[0].underFacilityId + ']').attr('selected', 'selected');
     $('#srcUnderFacilities option[id=' + lastFilters[1].srcUnderFacility + ']').attr('selected', 'selected');
 
     let filtered = $('#filtered').val();

@@ -81,7 +81,9 @@
                 <input type="hidden" id="filtered" name="filtered" value="${cashFilters.filtered}">
                 <label class="sr-only" for="fFacilities">Объект:</label>
                 <form:select path="facilities" id="fFacilities" multiple="true" class="selectpicker"
-                             data-live-search="true" data-width="130px" title="Выберите объект...">
+                             data-live-search="true" data-width="130px" title="Выберите объект..."
+                             data-actions-box="true" data-select-all-text="Выбрать всё"
+                             data-deselect-all-text="Очистить">
                     <c:forEach var="f" items="${facilitiesList}">
                         <option
                                 <c:forEach var="filterFacility" items="${cashFilters.facilities}">
@@ -96,13 +98,17 @@
                     </c:forEach>
                 </form:select>
                 <label class="sr-only" for="uFacilities">Подобъект:</label>
-                <form:select path="underFacility" id="uFacilities" multiple="false" class="selectpicker"
-                             data-live-search="true" data-width="160px">
-                    <c:forEach var="uf" items="${underFacilities}">
+                <form:select path="underFacilities" id="uFacilities" multiple="true" class="selectpicker"
+                             data-live-search="true" data-width="160px" title="Выберите подобъект..."
+                             data-actions-box="true" data-select-all-text="Выбрать всё"
+                             data-deselect-all-text="Очистить">
+                    <c:forEach var="uf" items="${underFacilitiesList}">
                         <option
-                                <c:choose>
-                                    <c:when test="${uf.underFacility eq cashFilters.underFacility}">selected="selected"</c:when>
-                                </c:choose>
+                                <c:forEach var="filterUnderFacility" items="${cashFilters.underFacilities}">
+                                    <c:choose>
+                                        <c:when test="${uf.underFacility eq filterUnderFacility}">selected="selected"</c:when>
+                                    </c:choose>
+                                </c:forEach>
                                 value="${uf.underFacility}" id="${uf.id}"
                                 data-parent-id="${uf.facilityId}">${uf.underFacility}
                         </option>
@@ -111,7 +117,9 @@
                 <label class="sr-only" for="investors">Инвестор:</label>
                 <form:select path="investors" id="investors" class="selectpicker" data-container="body"
                              title="Выберите инвестора..." multiple="true"
-                             data-live-search="true" data-size="7">
+                             data-live-search="true" data-size="7"
+                             data-actions-box="true" data-select-all-text="Выбрать всё"
+                             data-deselect-all-text="Очистить">
                     <c:forEach var="inv" items="${investors}">
                         <c:if test="${inv.login ne 'Выберите инвестора'}">
                             <option

@@ -125,11 +125,6 @@ jQuery(document).ready(function ($) {
         deselectAllText: 'Сбросить всё'
     }).on('changed.bs.select', function () {
         let options = $("#fFacilities option");
-        options.sort(function (a, b) {
-            if ($(a).attr('data-facility-name') > $(b).attr('data-facility-name')) return 1;
-            else if ($(a).attr('data-facility-name') < $(b).attr('data-facility-name')) return -1;
-            else return 0;
-        });
         $("#fFacilities").empty().append(options);
         $('#fFacilities option:selected').prependTo('#fFacilities');
         $(this).selectpicker('refresh');
@@ -478,8 +473,11 @@ jQuery(document).ready(function ($) {
     });
 
     $('#fFacilities').change(function () {
-        let facility = $(this).find('option:selected').attr('id');
-        getUnderFacilitiesFromLocalStorage(facility, 'uFacilities');
+        let facilitiesList = [];
+        $.each($(this).find(':selected'), function(ind, el) {
+            facilitiesList.push(el.id);
+        });
+        getMultipleUFFromLS(facilitiesList, 'uFacilities');
         $('#uFacilities').selectpicker('refresh');
     });
 

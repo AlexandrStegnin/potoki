@@ -111,6 +111,45 @@ function getUnderFacilitiesFromLocalStorage(facilityId, uFacilitiesId) {
         .prop('selected', CHOOSE_UNDER_FACILITY);
 }
 
+function getMultipleUFFromLS(facilitiesList, uFacilitiesId) {
+    let underFacilities;
+    underFacilities = JSON.parse(localStorage.getItem('uf'));
+    let option;
+
+    let options;
+    let finalOptions = [];
+    if (underFacilities === null) populateStorageUnderFacilities(uFacilitiesId);
+    $.each(facilitiesList, function (ind, el) {
+        if (facilitiesList.length <= 1) {
+            options = [];
+        }
+        options = underFacilities.filter(function (item) {
+            return item.facilityId === parseInt(el);
+        }).map(function (item) {
+            option = document.createElement('option');
+            option.setAttribute('id', item.id);
+            option.setAttribute('data-parent-id', item.facilityId);
+            option.setAttribute('value', item.underFacility);
+            option.innerText = item.underFacility;
+            return option;
+        });
+
+        $.each(options, function (ind, el) {
+            finalOptions.push(el);
+        });
+    });
+    option = document.createElement('option');
+    option.setAttribute('id', "0");
+    option.setAttribute('value', 'Без подобъекта');
+    option.innerText = 'Без подобъекта';
+    finalOptions.unshift(option);
+    $('#' + uFacilitiesId)
+        .find('option')
+        .remove()
+        .end()
+        .append(finalOptions);
+}
+
 function getRoomsFromLocalStorage(underFacilityId) {
     let rooms = JSON.parse(localStorage.getItem('rooms'));
     let option;
