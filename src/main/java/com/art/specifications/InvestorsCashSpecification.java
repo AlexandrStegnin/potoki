@@ -21,7 +21,7 @@ public class InvestorsCashSpecification extends BaseSpecification<InvestorsCash,
     public Specification<InvestorsCash> getFilter(CashFilter filter) {
         return (root, query, cb) -> where(
                 dateGivenCashBetween(filter.getFromDate(), filter.getToDate()))
-                .and(facilityEqual(filter.getFacility()))
+                .and(facilityIn(filter.getFacilities()))
                 .and(underFacilityEqual(filter.getUnderFacility()))
                 .and(loginIn(filter.getInvestors()))
                 .and(facilityIsNotNull())
@@ -137,4 +137,23 @@ public class InvestorsCashSpecification extends BaseSpecification<InvestorsCash,
                 .toPredicate(root, query.orderBy(cb.asc(root.get(InvestorsCash_.dateGivedCash))), cb);
     }
 
+    private static Specification<InvestorsCash> facilityIn(List<Facilities> facilities) {
+        return ((root, criteriaQuery, criteriaBuilder) -> {
+            if (null == facilities) {
+                return null;
+            }
+            if (facilities.size() == 0) {
+                return null;
+            }
+            Facilities undefinedFacility = facilities.stream()
+                    .filter(facility -> facility.getFacility().equalsIgnoreCase("Выберите объект"))
+                    .findFirst()
+                    .orElse(null);
+            if (null != undefinedFacility) {
+                return null;
+            }
+            return root.get(InvestorsCash_.facility).in(facilities);
+        }
+        );
+    }
 }
