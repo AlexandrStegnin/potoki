@@ -164,6 +164,8 @@ public class InvestorsCashSpecification extends BaseSpecification<InvestorsCash,
             }
             if (underFacilities.size() == 0) {
                 return null;
+            } else if (null == underFacilities.get(0)) {
+                return null;
             }
             UnderFacilities undefinedUnderFacility = underFacilities.stream()
                     .filter(undefinedFacility -> undefinedFacility.getUnderFacility().equalsIgnoreCase("Выберите подобъект"))
