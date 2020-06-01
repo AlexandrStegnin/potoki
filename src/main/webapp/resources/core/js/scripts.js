@@ -312,6 +312,8 @@ function populateFilters(pageName) {
 
     let filter;
 
+    let  facilitiesId = [];
+
     fFacilities = $('#fFacilities');
     uFacilities = $('#uFacilities');
     investors = $('#investors');
@@ -321,6 +323,31 @@ function populateFilters(pageName) {
 
     switch (pageName) {
         case "investorscash":
+            //Search form
+            $.each(fFacilities.find('option:selected'), function (ind, el) {
+                facilitiesId.push(el.id);
+            });
+            facilityId = fFacilities.find('option:selected').attr('id');
+            underFacilityId = uFacilities.find('option:selected').attr('id');
+            investors.find('option:selected').each(function () {
+                investorsId.push($(this).attr('id'));
+            });
+            startDate = beginPeriod.val();
+            endDate = endPeriod.val();
+
+            //ReInvest form
+            reInvestData = $('#reInvestData');
+            elDateClose = reInvestData.find('#dateClose');
+            elSrcFacilities = reInvestData.find('#srcFacilities');
+            elSrcUnderFacilities = reInvestData.find('#srcUnderFacilities');
+            elShareKindName = reInvestData.find('#shareKindName');
+
+            dateClose = elDateClose.val();
+            srcFacility = elSrcFacilities.find('option:selected').val();
+            srcUnderFacility = elSrcUnderFacilities.find('option:selected').attr('id');
+            shareKindName = elShareKindName.find('option:selected').val();
+
+            break;
         case "paysToInv":
             //Search form
 
@@ -373,6 +400,7 @@ function populateFilters(pageName) {
             break;
     }
     filter = {
+        facilitiesId: facilitiesId,
         facilityId: facilityId,
         underFacilityId: underFacilityId,
         investorId: investorsId,
@@ -429,7 +457,14 @@ function getFilters(pageName, lastFilters) {
     let beginPeriod = $('#beginPeriod');
     let endPeriod = $('#endPeriod');
     let investors;
-    $('#fFacilities option[id=' + lastFilters[0].facilityId + ']').attr('selected', 'selected');
+    if (pageName === 'investorscash') {
+        let facilitiesId = lastFilters[0].facilitiesId;
+        $.each(facilitiesId, function (ind, el) {
+            $('#fFacilities option[id=' + el + ']').attr('selected', 'selected');
+        });
+    } else {
+        $('#fFacilities option[id=' + lastFilters[0].facilityId + ']').attr('selected', 'selected');
+    }
     investors = lastFilters[0].investorId;
     $.each(investors, function (ind, el) {
         $('#investors option[id=' + el + ']').attr('selected', 'selected');
