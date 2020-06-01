@@ -1007,6 +1007,11 @@ public class InvestorsCashController {
         return facilityService.initializeFacilities();
     }
 
+    @ModelAttribute("facilitiesList")
+    public List<Facilities> initializeMultipleFacilities() {
+        return facilityService.initializeFacilitiesForMultiple();
+    }
+
     @ModelAttribute("sourceFacilities")
     public List<Facilities> initializeReFacilities() {
         return facilityService.initializeFacilities();

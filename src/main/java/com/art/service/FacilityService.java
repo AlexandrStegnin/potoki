@@ -55,6 +55,10 @@ public class FacilityService {
         return facilitiesList;
     }
 
+    public List<Facilities> initializeFacilitiesForMultiple() {
+        return facilityRepository.findAll();
+    }
+
     public List<Facilities> findByIdIn(List<BigInteger> idList) {
         return facilityRepository.findByIdIn(idList);
     }
