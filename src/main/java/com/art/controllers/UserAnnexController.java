@@ -21,11 +21,8 @@ public class UserAnnexController {
 
     private final UsersAnnexToContractsService annexService;
 
-    private final UsersAnnexToContractsService usersAnnexToContractsService;
-
-    public UserAnnexController(UsersAnnexToContractsService annexService, UsersAnnexToContractsService usersAnnexToContractsService) {
+    public UserAnnexController(UsersAnnexToContractsService annexService) {
         this.annexService = annexService;
-        this.usersAnnexToContractsService = usersAnnexToContractsService;
     }
 
     @PostMapping(path = "/have-unread", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -43,15 +40,15 @@ public class UserAnnexController {
         if (null == login) {
             login = SecurityUtils.getUsername();
         }
-        return usersAnnexToContractsService.findByLogin(login);
+        return annexService.findByLogin(login);
     }
 
     @PostMapping(value = "/mark-read-annex", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public String saveAnnexRead(@RequestBody UsersAnnexToContracts annex) {
-        UsersAnnexToContracts usersAnnexToContracts = usersAnnexToContractsService.findById(annex.getId());
+        UsersAnnexToContracts usersAnnexToContracts = annexService.findById(annex.getId());
         usersAnnexToContracts.setAnnexRead(1);
         usersAnnexToContracts.setDateRead(new Date());
-        usersAnnexToContractsService.update(usersAnnexToContracts);
+        annexService.update(usersAnnexToContracts);
         return "success";
     }
 }
