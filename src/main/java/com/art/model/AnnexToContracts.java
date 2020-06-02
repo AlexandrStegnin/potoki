@@ -8,6 +8,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -36,7 +37,40 @@ public class AnnexToContracts implements Serializable {
         return annexName;
     }
 
+    @Column(name = "FilePath")
+    private String path;
+
+    private Date dateLoad;
+
+    @Column(name = "LoadedBy")
+    private BigInteger loadedBy;
+
+    @Column(name = "DateLoad")
+    public Date getDateLoad() {
+        return dateLoad;
+    }
+
+    public void setDateLoad(Date dateLoad) {
+        this.dateLoad = dateLoad;
+    }
+
+    public BigInteger getLoadedBy() {
+        return loadedBy;
+    }
+
+    public void setLoadedBy(BigInteger loadedBy) {
+        this.loadedBy = loadedBy;
+    }
+
     public void setAnnexName(String annexName) {
         this.annexName = annexName;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }
