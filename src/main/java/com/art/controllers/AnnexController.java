@@ -1,19 +1,26 @@
 package com.art.controllers;
 
+import com.art.config.SecurityUtils;
+import com.art.model.Users;
 import com.art.model.UsersAnnexToContracts;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.filters.InvestorAnnexFilter;
 import com.art.model.supporting.view.InvestorAnnex;
+import com.art.service.UserService;
+import com.art.service.UsersAnnexToContractsService;
 import com.art.service.view.InvestorAnnexService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -28,8 +35,15 @@ public class AnnexController {
 
     private final InvestorAnnexFilter filter;
 
-    public AnnexController(InvestorAnnexService annexService) {
+    private final UserService userService;
+
+    private final UsersAnnexToContractsService usersAnnexToContractsService;
+
+    public AnnexController(InvestorAnnexService annexService, UserService userService,
+                           UsersAnnexToContractsService usersAnnexToContractsService) {
         this.annexService = annexService;
+        this.userService = userService;
+        this.usersAnnexToContractsService = usersAnnexToContractsService;
         this.filter = new InvestorAnnexFilter();
     }
 
@@ -70,6 +84,32 @@ public class AnnexController {
         String message = annexService.deleteAnnex(annex.getId());
         response.setMessage(message);
         return response;
+    }
+
+    @RequestMapping("/annexToContract/{fileName}")
+    void getFile(HttpServletResponse response, @PathVariable String fileName) throws IOException {
+        Users currentUser = userService.findByLogin(SecurityUtils.getUsername());
+        if (null == currentUser) {
+            throw new SecurityException("Пользователь не найден");
+        }
+        List<UsersAnnexToContracts> annexes = usersAnnexToContractsService.findByUserAndAnnexName(currentUser.getId(), fileName);
+        if (annexes.size() == 0) {
+            throw new RuntimeException("Приложение [" + fileName + "] не найдено");
+        }
+        String path = System.getProperty("catalina.home") + "/pdfFiles";
+
+        if (!fileName.contains(".pdf")) {
+            fileName = fileName + ".pdf";
+        }
+        path = path + File.separator + fileName;
+        File file = new File(path);
+        FileInputStream inputStream = new FileInputStream(file);
+
+        response.setContentType("application/pdf");
+        response.setContentLength((int) file.length());
+        response.setHeader("Content-Disposition", "inline;filename=\"" + fileName + "\"");
+        FileCopyUtils.copy(inputStream, response.getOutputStream());
+
     }
 
     private void prepareModel(ModelMap model, InvestorAnnexFilter filter, Pageable pageable) {
