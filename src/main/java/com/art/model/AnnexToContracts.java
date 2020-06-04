@@ -38,7 +38,7 @@ public class AnnexToContracts implements Serializable {
     }
 
     @Column(name = "FilePath")
-    private String path;
+    private String filePath;
 
     private Date dateLoad;
 
@@ -66,11 +66,11 @@ public class AnnexToContracts implements Serializable {
         this.annexName = annexName;
     }
 
-    public String getPath() {
-        return path;
+    public String getFilePath() {
+        return filePath;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 }
