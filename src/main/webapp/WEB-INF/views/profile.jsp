@@ -124,9 +124,7 @@
                 <sec:authorize access="isFullyAuthenticated()">
                     <sec:authorize access="hasRole('BIGDADDY')">
                         <div class="form-group-sm col-md-7">
-                            <a style="text-align: center;" class="btn btn-link btn-sm pull-left" href="#" id="loadPdf">Загрузить
-                                приложения</a> |
-                            <a style="text-align: center;" class="btn btn-link btn-sm"
+                            <a style="text-align: center;" class="btn btn-link btn-sm pull-left"
                                href="<c:url value='/createmail' />">Написать письмо</a>
                         </div>
                     </sec:authorize>
@@ -140,53 +138,6 @@
         </div>
     </form:form>
 
-</div>
-
-<div id="pdfForm" class="modal fade" role="dialog">
-    <div class="modal-dialog" style="width: 90%">
-        <div class="modal-content" id="content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4></h4>
-            </div>
-            <div class="modal-body">
-                <div class="well">
-                    <form:form method="POST" action="uploadImage" modelAttribute="fileBucket"
-                               enctype="multipart/form-data" class="form-horizontal">
-
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <label class="col-md-3 control-lable" for="file">Загрузить файл</label>
-                                <div class="col-md-7">
-                                    <form:input type="file" path="file" id="file" class="form-control input-sm"/>
-                                    <div class="has-error">
-                                        <form:errors path="file" class="help-inline"/>
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-sm" id="save">Загрузить</button>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <label class="col-md-3 control-lable" for="investor">Инвестор:</label>
-                                <div class="col-md-7">
-                                    <form:select id="investor" items="${investors}" multiple="false"
-                                                 itemValue="id" itemLabel="login" class="form-control input-sm"
-                                                 path=""/>
-                                </div>
-                                <div id="chooseInvestorMsg" style="display: none; color: red; font-size: 12px"></div>
-                            </div>
-                        </div>
-                    </form:form>
-
-                </div>
-            </div>
-            <div class="modal-footer" style="text-align: center; color: green;">
-                <span id="successLoad"></span>
-                <button type="button" class="btn btn-primary pull-right" id="closeLoadPdf">Закрыть</button>
-            </div>
-        </div>
-    </div>
 </div>
 
 <div id="allPdf" class="modal fade" role="dialog">
