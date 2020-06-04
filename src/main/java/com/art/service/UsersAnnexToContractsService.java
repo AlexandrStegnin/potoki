@@ -5,6 +5,7 @@ import com.art.model.Users;
 import com.art.model.UsersAnnexToContracts;
 import com.art.model.UsersAnnexToContracts_;
 import com.art.repository.UserAnnexRepository;
+import com.art.repository.UserAnnexToContractsRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,8 @@ import java.util.Objects;
 @Transactional
 public class UsersAnnexToContractsService {
 
+    private final UserAnnexToContractsRepository userAnnexToContractsRepository;
+
     private final UserAnnexRepository annexRepository;
 
     private final UserService userService;
@@ -29,9 +32,18 @@ public class UsersAnnexToContractsService {
     @PersistenceContext(name = "persistanceUnit")
     private EntityManager em;
 
-    public UsersAnnexToContractsService(UserAnnexRepository annexRepository, UserService userService) {
+    public UsersAnnexToContractsService(UserAnnexToContractsRepository userAnnexToContractsRepository,
+                                        UserAnnexRepository annexRepository, UserService userService) {
+        this.userAnnexToContractsRepository = userAnnexToContractsRepository;
         this.annexRepository = annexRepository;
         this.userService = userService;
+    }
+
+    public List<UsersAnnexToContracts> findByUserAndAnnexName(BigInteger userId, String annexName) {
+        if (!annexName.endsWith(".pdf")) {
+            annexName = annexName + ".pdf";
+        }
+        return userAnnexToContractsRepository.findByUserIdAndAnnex_AnnexName(userId, annexName);
     }
 
     public List<UsersAnnexToContracts> findAll() {
