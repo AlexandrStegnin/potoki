@@ -11,6 +11,7 @@ import com.art.service.StatusService;
 import com.art.service.UserService;
 import com.art.service.UsersAnnexToContractsService;
 import com.art.specifications.InvestorAnnexSpecification;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
  * @author Alexandr Stegnin
  */
 
+@Slf4j
 @Service
 public class InvestorAnnexService {
 
@@ -119,14 +121,20 @@ public class InvestorAnnexService {
             statusService.sendStatus(String.format("Загружаем %d из %d файлов", counter, filesCnt));
             String fileName = uploadedFile.getOriginalFilename();
             if (uploadedFile.isEmpty()) {
-                throw new RuntimeException("Файл [" + fileName + "] пустой");
+                String message = "Файл [" + fileName + "] пустой";
+                log.error(message);
+                return message;
             }
             if (!fileName.endsWith(".pdf")) {
-                throw new RuntimeException("Файл должен быть в формате .PDF");
+                String message = "Файл [" + fileName + "] должен быть в формате .PDF";
+                log.error(message);
+                return message;
             }
             File file = new File(path + fileName);
             if (file.exists()) {
-                throw new RuntimeException("Файл [" + fileName + "] уже существует");
+                String message = "Файл [" + fileName + "] уже существует";
+                log.error(message);
+                continue;
             }
             Users investor;
             try {
