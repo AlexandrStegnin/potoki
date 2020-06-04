@@ -1,7 +1,7 @@
 jQuery(document).ready(function ($) {
     $('.delete-annex').click(function (e) {
         e.preventDefault();
-        let annexId = $('.delete-annex').attr('data-annex-id');
+        let annexId = $(this).attr('data-annex-id');
         deleteAnnex(annexId);
         $(this).closest('tr').remove();
     });
