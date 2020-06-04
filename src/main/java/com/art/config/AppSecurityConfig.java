@@ -114,7 +114,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers("/mark-read-annex", "/cashing-money", "/annexToContract/**")
                 .access("hasAnyRole('ADMIN', 'INVESTOR')")
-                .antMatchers("/investor/annexes/**")
+                .antMatchers("/investor/annexes", "/investor/annexes/**")
                 .access("hasRole('ADMIN') or hasRole('DBA')")
                 .antMatchers("/", "/welcome", "/cashflows")
                 .access("hasRole('ADMIN') or hasRole('DBA') or hasRole('INVESTOR')")
