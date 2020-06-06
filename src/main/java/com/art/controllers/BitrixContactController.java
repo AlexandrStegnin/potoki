@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 @RestController
 public class BitrixContactController {
-
+    //TODO доставать ключ из базы
     private static String BITRIX_API_KEY;
 
     @Value("${bitrix.api.key}")
