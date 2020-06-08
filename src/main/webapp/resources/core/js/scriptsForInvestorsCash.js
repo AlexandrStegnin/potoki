@@ -958,6 +958,7 @@ function moveFields(mAttribute) {
     let reFacility = $('#reFacility');
     let reUnderFacility = $('#reUnderFacility');
     let shareKindName = $('#shareKindNameRow');
+    let realDateGiven = $('#realDateGivenRow');
 
     switch (mAttribute) {
         case "newCash":
@@ -1010,6 +1011,12 @@ function moveFields(mAttribute) {
             typeClosing.insertAfter(dateCloseInv);
             reFacility.insertAfter(dateRep);
             reUnderFacility.insertAfter(reFacility);
+            realDateGiven.insertAfter(typeClosing);
+            if (mAttribute === 'closeCash') {
+                realDateGiven.attr('display', 'block');
+            } else {
+                realDateGiven.attr('display', 'none');
+            }
             break;
     }
 }
@@ -1547,9 +1554,9 @@ function deleteCash(cashIdList) {
 
 function prepareCloseCash() {
 
-    var what = "closeCash";
-    var invBuyer = $('#buyer');
-    var investorBuyer = {
+    let what = "closeCash";
+    let invBuyer = $('#buyer');
+    let investorBuyer = {
         id: invBuyer.find(':selected').val(),
         login: invBuyer.find(':selected').text()
     };
@@ -1558,10 +1565,10 @@ function prepareCloseCash() {
         investorBuyer = null;
     }
 
-    var dateClosingInvest = new Date($('#dateClosing').val()).getTime();
-
-    var typeClosingInvests = $('#typeClosing');
-    var typeClosingInvest = {
+    let dateClosingInvest = new Date($('#dateClosing').val()).getTime();
+    let realDateGiven = new Date($('#realDateGiven').val()).getTime();
+    let typeClosingInvests = $('#typeClosing');
+    let typeClosingInvest = {
         id: typeClosingInvests.find(':selected').val(),
         typeClosingInvest: typeClosingInvests.find(':selected').text()
     };
@@ -1569,7 +1576,7 @@ function prepareCloseCash() {
         typeClosingInvest = null;
     }
 
-    var cashIdList = [];
+    let cashIdList = [];
     $('table#investorsCash').find('> tbody').find('> tr').each(function () {
         $(this).find(':checkbox:checked').not(':disabled').each(function () {
             cashIdList.push($(this).closest('tr').attr('id'));
@@ -1577,17 +1584,18 @@ function prepareCloseCash() {
         })
     });
 
-    closeCash(cashIdList, investorBuyer, dateClosingInvest, what);
+    closeCash(cashIdList, investorBuyer, dateClosingInvest, what, realDateGiven);
 }
 
-function closeCash(cashIdList, invBuyer, dateClosingInvest, what) {
+function closeCash(cashIdList, invBuyer, dateClosingInvest, what, realDateGiven) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
     let search = ({
         "cashIdList": cashIdList,
         "user": invBuyer,
         "dateReinvest": dateClosingInvest,
-        "what": what
+        "what": what,
+        "realDateGiven": realDateGiven
     });
 
     showLoader();

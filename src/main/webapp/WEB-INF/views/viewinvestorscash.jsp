@@ -454,6 +454,19 @@
                         </div>
                     </div>
 
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label class="col-md-3 control-lable" for="realDateGiven">Дата реальной передачи денег:</label>
+                            <div class="col-md-7">
+                                <form:input type="date" path="realDateGiven" id="realDateGiven"
+                                            class="form-control input-sm"/>
+                                <div id="dateCloseErr" style="color: red; display: none">Необходимо выбрать дату
+                                    передачи денег
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row" id="typeClosingRow">
                         <div class="form-group col-md-12">
                             <label class="col-md-3 control-lable" for="typeClosing">Вид закрытия:</label>
