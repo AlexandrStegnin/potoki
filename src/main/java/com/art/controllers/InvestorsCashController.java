@@ -770,7 +770,8 @@ public class InvestorsCashController {
 
     @PostMapping(value = "/close-cash-{id}")
     public String closeCash(@ModelAttribute("investorsCash") InvestorsCash investorsCash,
-                            @PathVariable("id") int id, @RequestParam("dateClosingInvest") Date dateClosingInvest) {
+                            @PathVariable("id") int id, @RequestParam("dateClosingInvest") Date dateClosingInvest,
+                            @RequestParam("realDateGiven") Date realDateGiven) {
         ModelAndView modelAndView = new ModelAndView("viewinvestorscash");
 
         Users invBuyer;
@@ -785,6 +786,7 @@ public class InvestorsCashController {
             InvestorsCash oldCash = investorsCashService.findById(investorsCash.getId());
             oldCash.setDateClosingInvest(dateClosingInvest);
             oldCash.setTypeClosingInvest(closingInvest);
+            oldCash.setRealDateGiven(realDateGiven);
 
             ExecutorService service = Executors.newCachedThreadPool();
             List<InvestorsCash> cashes = new ArrayList<>(Arrays.asList(newInvestorsCash, cash));
@@ -817,6 +819,7 @@ public class InvestorsCashController {
         } else {
             InvestorsCash updatedCash = investorsCashService.findById(investorsCash.getId());
             updatedCash.setDateClosingInvest(dateClosingInvest);
+            updatedCash.setRealDateGiven(realDateGiven);
 
             updatedCash.setTypeClosingInvest(typeClosingInvestService.findByTypeClosingInvest("Вывод"));
             investorsCashService.update(updatedCash);
@@ -842,7 +845,7 @@ public class InvestorsCashController {
         GenericResponse response = new GenericResponse();
 
         Date dateClose = searchSummary.getDateReinvest();
-
+        Date realDateGiven = searchSummary.getRealDateGiven();
         Users finalInvBuyer = invBuyer;
         cashList.forEach(c -> {
             if (!Objects.equals(finalInvBuyer, null)) {
@@ -859,6 +862,7 @@ public class InvestorsCashController {
                 cash.setCashSource(null);
                 cash.setSource(null);
                 cash.setNewCashDetails(newCashDetails);
+                cash.setRealDateGiven(realDateGiven);
 
                 cash = investorsCashService.create(cash);
 
@@ -885,6 +889,7 @@ public class InvestorsCashController {
             } else {
                 c.setDateClosingInvest(dateClose);
                 c.setTypeClosingInvest(typeClosingInvestService.findByTypeClosingInvest("Вывод"));
+                c.setRealDateGiven(realDateGiven);
                 investorsCashService.update(c);
             }
 
