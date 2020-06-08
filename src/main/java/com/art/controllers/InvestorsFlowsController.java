@@ -421,7 +421,7 @@ public class InvestorsFlowsController {
 
     @PostMapping(value = "/getInvestorsCashList")
     public @ResponseBody
-    InvestedMoney getInvestorsCash(@RequestBody SearchSummary search) {
+    InvestedMoney getInvestorsCash(@RequestBody(required = false) SearchSummary search) {
         if (getPrincipalFunc.haveAdminRole()) {
             if (search != null && search.getInvestor() != null && !search.getInvestor().isEmpty()) {
                 BigInteger invId = new BigInteger(search.getInvestor());
