@@ -528,4 +528,15 @@ public class InvestorsCash implements Serializable {
     public void setIsDivide(int isDivide) {
         this.isDivide = isDivide;
     }
+
+    @Column(name = "RealDateGiven")
+    private Date realDateGiven;
+
+    public Date getRealDateGiven() {
+        return realDateGiven;
+    }
+
+    public void setRealDateGiven(Date realDateGiven) {
+        this.realDateGiven = realDateGiven;
+    }
 }

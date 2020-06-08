@@ -98,6 +98,8 @@ public class SearchSummary implements Serializable {
 
     private List<UnderFacilities> reUnderFacilitiesList;
 
+    private Date realDateGiven;
+
     public String getFacility() {
         return facility;
     }
@@ -552,5 +554,13 @@ public class SearchSummary implements Serializable {
 
     public void setReUnderFacilitiesList(List<UnderFacilities> reUnderFacilitiesList) {
         this.reUnderFacilitiesList = reUnderFacilitiesList;
+    }
+
+    public Date getRealDateGiven() {
+        return realDateGiven;
+    }
+
+    public void setRealDateGiven(Date realDateGiven) {
+        this.realDateGiven = realDateGiven;
     }
 }
