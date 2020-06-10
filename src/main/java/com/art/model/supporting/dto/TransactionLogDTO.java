@@ -19,15 +19,12 @@ public class TransactionLogDTO {
 
     private String txDate;
 
-    private String investor;
-
     private String type;
 
     public TransactionLogDTO(TransactionLog entity) {
         this.id = entity.getId();
         this.createdBy = entity.getCreatedBy();
         this.txDate = getFormattedTxDate(entity.getTxDate());
-        this.investor = entity.getInvestor();
         this.type = entity.getType().getTitle();
     }
 

@@ -15,8 +15,6 @@ public class TxLogFilter {
 
     private String type;
 
-    private String investor;
-
     private String creator;
 
 }

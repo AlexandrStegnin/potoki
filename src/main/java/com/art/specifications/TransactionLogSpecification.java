@@ -23,7 +23,6 @@ public class TransactionLogSpecification extends BaseSpecification<TransactionLo
         return (root, query, cb) -> where(
                 txDateEqual(filter.getTxDate()))
                 .and(txTypeEqual(filter.getType()))
-                .and(investorEqual(filter.getInvestor()))
                 .and(creatorEqual(filter.getCreator()))
                 .toPredicate(root, query, cb);
     }
@@ -45,16 +44,6 @@ public class TransactionLogSpecification extends BaseSpecification<TransactionLo
             }
             TransactionType txType = TransactionType.fromTitle(type);
             return criteriaBuilder.equal(root.get(TransactionLog_.type), txType);
-        }
-        );
-    }
-
-    private static Specification<TransactionLog> investorEqual(String investor) {
-        return ((root, criteriaQuery, criteriaBuilder) -> {
-            if (null == investor || investor.isEmpty() || "Выберите инвестора".equalsIgnoreCase(investor)) {
-                return null;
-            }
-            return criteriaBuilder.equal(root.get(TransactionLog_.investor), investor);
         }
         );
     }

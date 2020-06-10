@@ -4,11 +4,13 @@ import com.art.config.SecurityUtils;
 import com.art.model.InvestorsCash;
 import com.art.model.TransactionLog;
 import com.art.model.supporting.TransactionType;
+import com.art.model.supporting.dto.InvestorCashDTO;
 import com.art.model.supporting.filters.TxLogFilter;
 import com.art.repository.TransactionLogRepository;
 import com.art.specifications.TransactionLogSpecification;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
  */
 
 @Service
+@Transactional
 public class TransactionLogService {
 
     private final TransactionLogSpecification specification;
@@ -38,6 +41,18 @@ public class TransactionLogService {
      */
     public TransactionLog forCreateCash(TransactionLog transactionLog) {
         return transactionLogRepository.save(transactionLog);
+    }
+
+    @Transactional(readOnly = true)
+    public List<InvestorCashDTO> getCashByTxId(Long txLogId) {
+        TransactionLog log = findById(txLogId);
+        List<InvestorCashDTO> cashDTOS = new ArrayList<>();
+        log.getInvestorsCashes()
+                .forEach(cash -> {
+                    InvestorCashDTO dto = new InvestorCashDTO(cash);
+                    cashDTOS.add(dto);
+                });
+        return cashDTOS;
     }
 
     /**
@@ -66,7 +81,7 @@ public class TransactionLogService {
     /**
      * Получить список операций по фильтрам
      *
-     * @param filter фильтр
+     * @param filter   фильтр
      * @param pageable для постраничного отображения
      * @return список операций
      */
@@ -82,19 +97,6 @@ public class TransactionLogService {
      */
     public String rollbackTransaction(Long transactionId) {
         return null;
-    }
-
-    public List<String> getInvestors() {
-        List<TransactionLog> logs = transactionLogRepository.findAll();
-        List<String> investors = new ArrayList<>();
-        investors.add("Выберите инвестора");
-        investors.addAll(logs
-                .stream()
-                .map(TransactionLog::getInvestor)
-                .distinct()
-                .sorted()
-                .collect(Collectors.toList()));
-        return investors;
     }
 
     public Map<Integer, String> getTypes() {
@@ -133,7 +135,6 @@ public class TransactionLogService {
     private void create(InvestorsCash cash, TransactionType type) {
         TransactionLog log = new TransactionLog();
         log.setCreatedBy(SecurityUtils.getUsername());
-        log.setInvestor(cash.getInvestor().getLogin());
         log.setInvestorsCashes(Collections.singleton(cash));
         log.setTxDate(new Date());
         log.setType(type);

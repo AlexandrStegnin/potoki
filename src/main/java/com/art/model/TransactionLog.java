@@ -32,9 +32,6 @@ public class TransactionLog {
     @Column(name = "tx_date")
     private Date txDate;
 
-    @Column(name = "client_login")
-    private String investor;
-
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "tx_log_inv_cash",
             joinColumns = {@JoinColumn(name = "tx_id", referencedColumnName = "id")},

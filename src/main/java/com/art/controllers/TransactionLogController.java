@@ -1,6 +1,7 @@
 package com.art.controllers;
 
 import com.art.model.TransactionLog;
+import com.art.model.supporting.dto.InvestorCashDTO;
 import com.art.model.supporting.dto.TransactionLogDTO;
 import com.art.model.supporting.filters.TxLogFilter;
 import com.art.service.TransactionLogService;
@@ -59,8 +60,8 @@ public class TransactionLogController {
      */
     @GetMapping(path = URL_TRANSACTIONS_TX_ID)
     @ResponseBody
-    public TransactionLogDTO findById(@PathVariable Long txId) {
-        return new TransactionLogDTO(transactionLogService.findById(txId));
+    public List<InvestorCashDTO> findById(@PathVariable Long txId) {
+        return transactionLogService.getCashByTxId(txId);
     }
 
     /**
@@ -80,11 +81,9 @@ public class TransactionLogController {
                 .stream()
                 .map(TransactionLogDTO::new)
                 .collect(Collectors.toList());
-        List<String> logins = transactionLogService.getInvestors();
         Map<Integer, String> types = transactionLogService.getTypes();
         List<String> creators = transactionLogService.getCreators();
         model.addAttribute("transactions", dtoList);
-        model.addAttribute("investors", logins);
         model.addAttribute("creators", creators);
         model.addAttribute("filter", filter);
         model.addAttribute("types", types);
