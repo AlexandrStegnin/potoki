@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="<c:url value='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' />"/>
     <link rel="stylesheet"
           href="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css' />">
+    <link href="<c:url value='/resources/core/css/ddk_loader.css' />"
+          rel="stylesheet"/>
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
 </head>
 <body>
@@ -88,6 +90,36 @@
         </tbody>
     </table>
 </div>
+<div id="cash-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document" style="text-align: center">
+        <div class="modal-content" style="text-align: center">
+            <div class="modal-header">
+                <h5 class="modal-title">Список денег</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped w-auto table-hover" id="cash-table">
+                    <thead>
+                    <tr style="text-align: center">
+                        <th>Инвестор</th>
+                        <th>Объект</th>
+                        <th>Дата передачи денег</th>
+                        <th>Переданная сумма</th>
+                    </tr>
+                    </thead>
+                    <tbody style="text-align: center">
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script type="text/javascript"
         src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' />"></script>
 <script type="text/javascript"
@@ -101,6 +133,9 @@
         src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js' />"></script>
 <script src="<c:url value='https://kit.fontawesome.com/2b84e2f58d.js' />" crossorigin="anonymous"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/progress.js' />"></script>
-<script type="text/javascript" src="<c:url value='/resources/core/js/investor-annex.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/transactions.js' />"></script>
+<script type="text/javascript"
+        src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
+<%@include file="ddk_loader.jsp" %>
 </body>
 </html>
