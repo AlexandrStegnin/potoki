@@ -12,4 +12,6 @@ public class Location {
 
     public static final String URL_TRANSACTIONS_TX_ID_ROLLBACK = URL_TRANSACTIONS_TX_ID + "/rollback";
 
+    public static final String URL_TRANSACTIONS_CASH = URL_TRANSACTIONS + "/cash";
+
 }
