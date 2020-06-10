@@ -53,7 +53,7 @@ public class TransactionLogController {
     }
 
     /**
-     * Получить транзакцию по id
+     * Получить список сумм, участвующих в операции по id транзакции
      *
      * @param txId id транзакции
      * @return найденная транзакция
@@ -62,6 +62,19 @@ public class TransactionLogController {
     @ResponseBody
     public List<InvestorCashDTO> findById(@PathVariable Long txId) {
         return transactionLogService.getCashByTxId(txId);
+    }
+
+    /**
+     * Получить список сумм, участвующих в операции по id транзакции
+     *
+     * @param logDTO DTO транзакции
+     * @return список сумм
+     */
+    @PostMapping(path = URL_TRANSACTIONS_CASH)
+    @ResponseBody
+    public List<InvestorCashDTO> getCashByTxId(@RequestBody TransactionLogDTO logDTO) throws InterruptedException {
+        Thread.sleep(2000);
+        return transactionLogService.getCashByTxId(logDTO.getId());
     }
 
     /**

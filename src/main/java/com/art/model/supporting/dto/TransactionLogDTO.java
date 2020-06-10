@@ -2,6 +2,7 @@ package com.art.model.supporting.dto;
 
 import com.art.model.TransactionLog;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.Date;
  */
 
 @Data
+@NoArgsConstructor
 public class TransactionLogDTO {
 
     private Long id;
