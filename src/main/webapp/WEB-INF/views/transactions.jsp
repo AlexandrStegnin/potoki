@@ -81,6 +81,7 @@
             <th>Дата создания</th>
             <th>Вид операции</th>
             <th>Клиент</th>
+            <th>Список сумм</th>
             <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                 <th>Действия</th>
             </sec:authorize>
@@ -93,6 +94,7 @@
                 <td>${tx.txDate}</td>
                 <td>${tx.type}</td>
                 <td>${tx.investor}</td>
+                <td><button type="button" class="btn btn-xs btn-success tx-show" data-tx-id="${tx.id}">Посмотреть</button></td>
                 <td>
                     <button type="button" class="btn btn-sm btn-danger rollback-tx" data-tx-id="${tx.id}">
                         <i class="far fa-trash-alt"></i>
