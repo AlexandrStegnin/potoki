@@ -34,21 +34,6 @@
                         </c:forEach>
                     </form:select>
                 </div>
-                <div class="row" style="margin: 20px 0 20px 0;">
-                    <form:select path="investor" id="investors" class="selectpicker" data-live-search="true"
-                                 multiple="false">
-                        <c:forEach var="inv" items="${investors}">
-                            <option
-                                    <c:forEach var="investor" items="${filter.investor}">
-                                        <c:choose>
-                                            <c:when test="${inv eq investor}">selected="selected"</c:when>
-                                        </c:choose>
-                                    </c:forEach>
-                                    value="${inv}" id="${inv}">${inv}
-                            </option>
-                        </c:forEach>
-                    </form:select>
-                </div>
                 <div class="row" style="margin: 20px 0 20px 20px;">
                     <form:select path="type" id="types" class="selectpicker" data-live-search="true"
                                  multiple="false">
@@ -80,7 +65,6 @@
             <th>Кем создана</th>
             <th>Дата создания</th>
             <th>Вид операции</th>
-            <th>Клиент</th>
             <th>Список сумм</th>
             <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                 <th>Действия</th>
@@ -93,7 +77,6 @@
                 <td>${tx.createdBy}</td>
                 <td>${tx.txDate}</td>
                 <td>${tx.type}</td>
-                <td>${tx.investor}</td>
                 <td><button type="button" class="btn btn-xs btn-success tx-show" data-tx-id="${tx.id}">Посмотреть</button></td>
                 <td>
                     <button type="button" class="btn btn-sm btn-danger rollback-tx" data-tx-id="${tx.id}">
