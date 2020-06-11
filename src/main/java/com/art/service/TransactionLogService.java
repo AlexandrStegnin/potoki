@@ -138,6 +138,7 @@ public class TransactionLogService {
         log.setInvestorsCashes(Collections.singleton(cash));
         log.setTxDate(new Date());
         log.setType(type);
+        log.setRollbackEnabled(true);
         create(log);
     }
 
@@ -147,6 +148,7 @@ public class TransactionLogService {
         log.setInvestorsCashes(new HashSet<>(cashes));
         log.setTxDate(new Date());
         log.setType(type);
+        log.setRollbackEnabled(true);
         create(log);
     }
 

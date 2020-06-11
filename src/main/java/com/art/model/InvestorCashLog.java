@@ -87,9 +87,6 @@ public class InvestorCashLog {
     @Column(name = "real_date_given")
     private Date realDateGiven;
 
-    @Column(name = "transaction_uuid")
-    private String transactionUuid;
-
     public InvestorCashLog(InvestorsCash cash) {
         this.id = cash.getId().longValue();
         this.investorId = cash.getInvestor().getId().longValue();
@@ -130,11 +127,12 @@ public class InvestorCashLog {
             this.roomId = cash.getRoom().getId().longValue();
         }
         this.reinvest = cash.getIsReinvest();
-        this.sourceId = cash.getSourceId().longValue();
+        if (null != cash.getSourceId()) {
+            this.sourceId = cash.getSourceId().longValue();
+        }
         this.source = cash.getSource();
         this.divide = cash.getIsDivide();
         this.realDateGiven = cash.getRealDateGiven();
-        this.transactionUuid = cash.getTransactionUuid();
     }
 
 }
