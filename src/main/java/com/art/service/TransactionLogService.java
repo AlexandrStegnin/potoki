@@ -39,7 +39,7 @@ public class TransactionLogService {
      * @param transactionLog - операция
      * @return - созданная запись
      */
-    public TransactionLog forCreateCash(TransactionLog transactionLog) {
+    public TransactionLog create(TransactionLog transactionLog) {
         return transactionLogRepository.save(transactionLog);
     }
 
@@ -124,7 +124,7 @@ public class TransactionLogService {
         return creators;
     }
 
-    public void forCreateCash(InvestorsCash cash) {
+    public void create(InvestorsCash cash) {
         create(cash, TransactionType.CREATE);
     }
 
@@ -132,13 +132,22 @@ public class TransactionLogService {
         create(cash, TransactionType.UPDATE);
     }
 
-    private void create(InvestorsCash cash, TransactionType type) {
+    public void create(InvestorsCash cash, TransactionType type) {
         TransactionLog log = new TransactionLog();
         log.setCreatedBy(SecurityUtils.getUsername());
         log.setInvestorsCashes(Collections.singleton(cash));
         log.setTxDate(new Date());
         log.setType(type);
-        forCreateCash(log);
+        create(log);
+    }
+
+    public void create(List<InvestorsCash> cashes, TransactionType type) {
+        TransactionLog log = new TransactionLog();
+        log.setCreatedBy(SecurityUtils.getUsername());
+        log.setInvestorsCashes(new HashSet<>(cashes));
+        log.setTxDate(new Date());
+        log.setType(type);
+        create(log);
     }
 
 }
