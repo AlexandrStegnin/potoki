@@ -5,7 +5,6 @@ import com.art.func.UploadExcelFunc;
 import com.art.model.*;
 import com.art.model.supporting.CashFlows;
 import com.art.model.supporting.GenericResponse;
-import com.art.model.supporting.InvestorsTotalSum;
 import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.investedMoney.InvestedMoney;
 import com.art.model.supporting.investedMoney.InvestedService;
@@ -13,7 +12,10 @@ import com.art.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -310,46 +312,6 @@ public class InvestorsFlowsController {
         */
         response.setMessage(result.toString());
 
-        return response;
-    }
-
-    @RequestMapping(value = "/sumdetails", method = RequestMethod.POST,
-            produces = "application/json;charset=UTF-8")
-    public @ResponseBody
-    GenericResponse investorsSumDetailsPage(@RequestBody SearchSummary searchSummary) {
-
-        Locale RU = new Locale("ru", "RU");
-        NumberFormat fmt = NumberFormat.getCurrencyInstance(RU);
-        NumberFormat fmtPerc = NumberFormat.getPercentInstance(RU);
-
-        List<InvestorsTotalSum> tempList = investorsCashService.getInvestorsCashSumsDetails(
-                getPrincipalFunc.getPrincipalId()
-        );
-
-        List<InvestorsTotalSum> investorsTotalSums = tempList.stream()
-                .filter(iSums -> iSums.getFacility().equals(searchSummary.getFacility()))
-                .collect(Collectors.toList());
-
-        StringBuilder result = new StringBuilder("<thead><tr><th style='text-align: center;'>Дата вложения</th>" +
-                "<th style='text-align: center;'>Название объекта</th><th style='text-align: center;'>Сумма вложений, руб.</th>");
-        result.append("</tr></thead><tbody>");
-
-        for (InvestorsTotalSum summs : investorsTotalSums) {
-            result
-                    .append("<tr><td>")
-                    .append(summs.getDateGivedCashToLocalDate())
-                    .append("</td>")
-                    .append("<td>")
-                    .append(summs.getFacility())
-                    .append("</td>")
-                    .append("<td>")
-                    .append(fmt.format(summs.getGivedCash()))
-                    .append("</td>")
-                    .append("</tr>");
-        }
-        result.append("</tbody>");
-        GenericResponse response = new GenericResponse();
-        response.setMessage(result.toString());
         return response;
     }
 

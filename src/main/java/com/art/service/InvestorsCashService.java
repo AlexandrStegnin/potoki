@@ -74,10 +74,6 @@ public class InvestorsCashService {
         return investorsCashRepository.getInvestorsCashSums(investorId);
     }
 
-    public List<InvestorsTotalSum> getInvestorsCashSumsDetails(BigInteger investorId) {
-        return investorsCashRepository.getInvestorsCashSumsDetails(investorId);
-    }
-
     public void saveAll(List<InvestorsCash> investorsCashes) {
         investorsCashRepository.save(investorsCashes);
         investorCashLogService.update(investorsCashes);
