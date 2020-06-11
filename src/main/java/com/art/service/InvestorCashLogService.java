@@ -2,7 +2,6 @@ package com.art.service;
 
 import com.art.model.InvestorCashLog;
 import com.art.model.InvestorsCash;
-import com.art.model.supporting.TransactionType;
 import com.art.repository.InvestorCashLogRepository;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +9,8 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 /**
+ * Сервис для работы с историей операций над деньгами
+ *
  * @author Alexandr Stegnin
  */
 
@@ -18,14 +19,16 @@ public class InvestorCashLogService {
 
     private final InvestorCashLogRepository investorCashLogRepository;
 
-    private final TransactionLogService transactionLogService;
-
-    public InvestorCashLogService(InvestorCashLogRepository investorCashLogRepository,
-                                  TransactionLogService transactionLogService) {
+    public InvestorCashLogService(InvestorCashLogRepository investorCashLogRepository) {
         this.investorCashLogRepository = investorCashLogRepository;
-        this.transactionLogService = transactionLogService;
     }
 
+    /**
+     * Найти сумму в истории по id
+     *
+     * @param id суммы
+     * @return найденная сумма
+     */
     public InvestorCashLog findById(Long id) {
         InvestorCashLog cashLog = investorCashLogRepository.findOne(id);
         if (null == cashLog) {
@@ -34,17 +37,31 @@ public class InvestorCashLogService {
         return cashLog;
     }
 
+    /**
+     * Создать сумму в истории и в логе на основании суммы инвестора
+     *
+     * @param cash сумма инвестора
+     */
     public void create(InvestorsCash cash) {
         InvestorCashLog cashLog = new InvestorCashLog(cash);
         investorCashLogRepository.save(cashLog);
-        transactionLogService.create(cash, TransactionType.CREATE);
     }
 
+    /**
+     * Создать суммы в истории и в логе на основании списка сумм
+     *
+     * @param cashes список денег
+     */
     public void update(List<InvestorsCash> cashes) {
         cashes.forEach(cash -> {
             InvestorCashLog cashLog = new InvestorCashLog(cash);
             investorCashLogRepository.save(cashLog);
         });
-        transactionLogService.create(cashes, TransactionType.UPDATE);
     }
+
+    public void delete(InvestorsCash cash) {
+        InvestorCashLog cashLog = findById(cash.getId().longValue());
+        investorCashLogRepository.delete(cashLog);
+    }
+
 }

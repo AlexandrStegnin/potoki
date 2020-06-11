@@ -8,6 +8,7 @@ import com.art.model.supporting.dto.InvestorCashDTO;
 import com.art.model.supporting.filters.TxLogFilter;
 import com.art.repository.TransactionLogRepository;
 import com.art.specifications.TransactionLogSpecification;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,10 +28,15 @@ public class TransactionLogService {
 
     private final TransactionLogRepository transactionLogRepository;
 
+    private final InvestorCashLogService investorCashLogService;
+
+    @Autowired
     public TransactionLogService(TransactionLogSpecification specification,
-                                 TransactionLogRepository transactionLogRepository) {
+                                 TransactionLogRepository transactionLogRepository,
+                                 InvestorCashLogService investorCashLogService) {
         this.specification = specification;
         this.transactionLogRepository = transactionLogRepository;
+        this.investorCashLogService = investorCashLogService;
     }
 
     /**
@@ -43,6 +49,21 @@ public class TransactionLogService {
         return transactionLogRepository.save(transactionLog);
     }
 
+    /**
+     * Создать запись об операции с деньгами
+     *
+     * @param cash деньги инвестора
+     */
+    public void create(InvestorsCash cash) {
+//        transactionLogRepository.save(transactionLog);
+    }
+
+    /**
+     * Получить список денег, затронутых в транзакции
+     *
+     * @param txLogId id транзакции
+     * @return список денег
+     */
     @Transactional(readOnly = true)
     public List<InvestorCashDTO> getCashByTxId(Long txLogId) {
         TransactionLog log = findById(txLogId);
@@ -66,7 +87,7 @@ public class TransactionLogService {
         if (null == transactionLog) {
             throw new RuntimeException("Операция с id = [" + id + "] не найдена");
         }
-        return transactionLogRepository.findOne(id);
+        return transactionLog;
     }
 
     /**
@@ -92,11 +113,32 @@ public class TransactionLogService {
     /**
      * Откат операции
      *
-     * @param transactionId id транзакции
+     * @param log транзакция
      * @return сообщение об успешном/не успешном выполнении
      */
-    public String rollbackTransaction(Long transactionId) {
-        return null;
+    public String rollbackTransaction(TransactionLog log) {
+        switch (log.getType()) {
+            case CREATE:
+                return delete(log);
+
+            case UPDATE:
+                return "Операция [UPDATE] не реализована";
+
+            case CLOSING:
+                return "Операция [CLOSING] не реализована";
+
+            case DIVIDE:
+                return "Операция [DIVIDE] не реализована";
+
+            case REINVESTMENT:
+                return "Операция [REINVESTMENT] не реализована";
+
+            case UNDEFINED:
+                return "Операция [UNDEFINED] не реализована";
+
+            default:
+                return "Что-то не то выбрали: " + log.getType().name();
+        }
     }
 
     public Map<Integer, String> getTypes() {
@@ -124,14 +166,6 @@ public class TransactionLogService {
         return creators;
     }
 
-    public void create(InvestorsCash cash) {
-        create(cash, TransactionType.CREATE);
-    }
-
-    public void forUpdateCash(InvestorsCash cash) {
-        create(cash, TransactionType.UPDATE);
-    }
-
     public void create(InvestorsCash cash, TransactionType type) {
         TransactionLog log = new TransactionLog();
         log.setCreatedBy(SecurityUtils.getUsername());
@@ -152,4 +186,19 @@ public class TransactionLogService {
         create(log);
     }
 
+    @Transactional
+    public String delete(TransactionLog log) {
+        Set<InvestorsCash> cashes = log.getInvestorsCashes();
+        try {
+            cashes.forEach(investorCashLogService::delete);
+            transactionLogRepository.delete(log);
+            return "Откат сумм прошёл успешно";
+        } catch (Exception e) {
+            return String.format("При откате операций произошла ошибка: [%s]", e.getLocalizedMessage());
+        }
+    }
+
+    public void update(List<InvestorsCash> singletonList) {
+
+    }
 }
