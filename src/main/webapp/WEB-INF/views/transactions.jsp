@@ -36,7 +36,7 @@
                         </c:forEach>
                     </form:select>
                 </div>
-                <div class="row" style="margin: 20px 0 20px 20px;">
+                <div class="row" style="margin: 20px 0 20px 0;">
                     <form:select path="type" id="types" class="selectpicker" data-live-search="true"
                                  multiple="false">
                         <c:forEach var="type" items="${types}">
@@ -75,13 +75,21 @@
         </thead>
         <tbody style="text-align: center">
         <c:forEach items="${transactions}" var="tx">
+            <c:choose>
+                <c:when test="${tx.rollbackEnabled}">
+                    <c:set var="enabled" value=""/>
+                </c:when>
+                <c:otherwise>
+                    <c:set var="enabled" value="disabled"/>
+                </c:otherwise>
+            </c:choose>
             <tr>
                 <td>${tx.createdBy}</td>
                 <td>${tx.txDate}</td>
                 <td>${tx.type}</td>
                 <td><button type="button" class="btn btn-xs btn-success tx-show" data-tx-id="${tx.id}">Посмотреть</button></td>
                 <td>
-                    <button type="button" class="btn btn-sm btn-danger rollback-tx" data-tx-id="${tx.id}">
+                    <button type="button" class="btn btn-sm btn-danger rollback-tx" data-tx-id="${tx.id}" ${enabled}>
                         <i class="far fa-trash-alt"></i>
                     </button>
                 </td>
