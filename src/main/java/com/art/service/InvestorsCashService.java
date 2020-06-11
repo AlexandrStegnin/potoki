@@ -36,20 +36,20 @@ public class InvestorsCashService {
     private final TypeClosingInvestService typeClosingInvestService;
     private final AfterCashingService afterCashingService;
     private final UnderFacilitiesService underFacilitiesService;
-    private final InvestorCashLogService investorCashLogService;
+    private final TransactionLogService transactionLogService;
 
     @Autowired
     public InvestorsCashService(InvestorsCashRepository investorsCashRepository,
                                 InvestorsCashSpecification specification,
                                 TypeClosingInvestService typeClosingInvestService,
                                 AfterCashingService afterCashingService, UnderFacilitiesService underFacilitiesService,
-                                InvestorCashLogService investorCashLogService) {
+                                TransactionLogService transactionLogService) {
         this.investorsCashRepository = investorsCashRepository;
         this.specification = specification;
         this.typeClosingInvestService = typeClosingInvestService;
         this.afterCashingService = afterCashingService;
         this.underFacilitiesService = underFacilitiesService;
-        this.investorCashLogService = investorCashLogService;
+        this.transactionLogService = transactionLogService;
     }
 
     public List<InvestorsCash> findAll() {
@@ -62,7 +62,7 @@ public class InvestorsCashService {
 
     public InvestorsCash update(InvestorsCash investorsCash) {
         investorsCash = investorsCashRepository.saveAndFlush(investorsCash);
-        investorCashLogService.update(Collections.singletonList(investorsCash));
+        transactionLogService.update(Collections.singletonList(investorsCash));
         return investorsCash;
     }
 
@@ -76,7 +76,7 @@ public class InvestorsCashService {
 
     public void saveAll(List<InvestorsCash> investorsCashes) {
         investorsCashRepository.save(investorsCashes);
-        investorCashLogService.update(investorsCashes);
+        transactionLogService.update(investorsCashes);
     }
 
     public List<InvestorsCash> findByRoomId(BigInteger roomId) {
@@ -88,7 +88,7 @@ public class InvestorsCashService {
 
     public InvestorsCash create(InvestorsCash investorsCash) {
         investorsCash = this.em.merge(investorsCash);
-        investorCashLogService.create(investorsCash);
+        transactionLogService.create(investorsCash);
         return investorsCash;
     }
 
