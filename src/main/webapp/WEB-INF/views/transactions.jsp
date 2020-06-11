@@ -146,5 +146,6 @@
 <script type="text/javascript"
         src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
 <%@include file="ddk_loader.jsp" %>
+<%@include file="popup_modal.jsp" %>
 </body>
 </html>
