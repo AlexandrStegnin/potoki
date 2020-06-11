@@ -36,17 +36,20 @@ public class InvestorsCashService {
     private final TypeClosingInvestService typeClosingInvestService;
     private final AfterCashingService afterCashingService;
     private final UnderFacilitiesService underFacilitiesService;
+    private final InvestorCashLogService investorCashLogService;
 
     @Autowired
     public InvestorsCashService(InvestorsCashRepository investorsCashRepository,
                                 InvestorsCashSpecification specification,
                                 TypeClosingInvestService typeClosingInvestService,
-                                AfterCashingService afterCashingService, UnderFacilitiesService underFacilitiesService) {
+                                AfterCashingService afterCashingService, UnderFacilitiesService underFacilitiesService,
+                                InvestorCashLogService investorCashLogService) {
         this.investorsCashRepository = investorsCashRepository;
         this.specification = specification;
         this.typeClosingInvestService = typeClosingInvestService;
         this.afterCashingService = afterCashingService;
         this.underFacilitiesService = underFacilitiesService;
+        this.investorCashLogService = investorCashLogService;
     }
 
     public List<InvestorsCash> findAll() {
@@ -58,7 +61,9 @@ public class InvestorsCashService {
     }
 
     public InvestorsCash update(InvestorsCash investorsCash) {
-        return investorsCashRepository.saveAndFlush(investorsCash);
+        investorsCash = investorsCashRepository.saveAndFlush(investorsCash);
+        investorCashLogService.update(Collections.singletonList(investorsCash));
+        return investorsCash;
     }
 
     public void deleteById(BigInteger id) {
@@ -75,6 +80,7 @@ public class InvestorsCashService {
 
     public void saveAll(List<InvestorsCash> investorsCashes) {
         investorsCashRepository.save(investorsCashes);
+        investorCashLogService.update(investorsCashes);
     }
 
     public List<InvestorsCash> findByRoomId(BigInteger roomId) {
@@ -85,7 +91,9 @@ public class InvestorsCashService {
     private EntityManager em;
 
     public InvestorsCash create(InvestorsCash investorsCash) {
-        return this.em.merge(investorsCash);
+        investorsCash = this.em.merge(investorsCash);
+        investorCashLogService.create(investorsCash);
+        return investorsCash;
     }
 
     public List<InvestorsCash> findByIdIn(List<BigInteger> idList) {
