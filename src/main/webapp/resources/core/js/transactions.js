@@ -1,4 +1,11 @@
+function enableTooltips() {
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+}
+
 jQuery(document).ready(function ($) {
+    enableTooltips()
     $('.tx-show').on('click', function (e) {
         e.preventDefault();
         getTransactionCash($(this).attr('data-tx-id'));
