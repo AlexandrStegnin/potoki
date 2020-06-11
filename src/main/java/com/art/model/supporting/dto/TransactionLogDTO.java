@@ -23,11 +23,14 @@ public class TransactionLogDTO {
 
     private String type;
 
+    private boolean rollbackEnabled;
+
     public TransactionLogDTO(TransactionLog entity) {
         this.id = entity.getId();
         this.createdBy = entity.getCreatedBy();
         this.txDate = getFormattedTxDate(entity.getTxDate());
         this.type = entity.getType().getTitle();
+        this.rollbackEnabled = entity.isRollbackEnabled();
     }
 
     private String getFormattedTxDate(Date txDate) {

@@ -42,4 +42,7 @@ public class TransactionLog {
     @Column(name = "transaction_type")
     private TransactionType type;
 
+    @Column(name = "rollback_enabled")
+    private boolean rollbackEnabled;
+
 }
