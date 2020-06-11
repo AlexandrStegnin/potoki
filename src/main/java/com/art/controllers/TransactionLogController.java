@@ -1,19 +1,23 @@
 package com.art.controllers;
 
+import com.art.model.InvestorsCash;
 import com.art.model.TransactionLog;
 import com.art.model.supporting.dto.InvestorCashDTO;
 import com.art.model.supporting.dto.TransactionLogDTO;
 import com.art.model.supporting.filters.TxLogFilter;
+import com.art.service.InvestorsCashService;
 import com.art.service.TransactionLogService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.art.config.application.Location.*;
@@ -23,14 +27,19 @@ import static com.art.config.application.Location.*;
  */
 
 @Controller
+@Transactional
 public class TransactionLogController {
 
     private final TransactionLogService transactionLogService;
 
     private final TxLogFilter filter;
 
-    public TransactionLogController(TransactionLogService transactionLogService) {
+    private final InvestorsCashService investorsCashService;
+
+    public TransactionLogController(TransactionLogService transactionLogService,
+                                    InvestorsCashService investorsCashService) {
         this.transactionLogService = transactionLogService;
+        this.investorsCashService = investorsCashService;
         this.filter = new TxLogFilter();
     }
 
@@ -80,12 +89,16 @@ public class TransactionLogController {
     /**
      * Откатить операцию
      *
-     * @param txId id транзакции
+     * @param logDTO DTO транзакции
      * @return сообщение об успешном/не успешном откате операции
      */
-    @PostMapping(path = URL_TRANSACTIONS_TX_ID_ROLLBACK)
-    public String rollback(@PathVariable Long txId) {
-        return transactionLogService.rollbackTransaction(txId);
+    @PostMapping(path = URL_TRANSACTIONS_ROLLBACK)
+    @ResponseBody
+    public String rollbackTransaction(@RequestBody TransactionLogDTO logDTO) {
+        TransactionLog log = transactionLogService.findById(logDTO.getId());
+        Set<InvestorsCash> logCashes = log.getInvestorsCashes();
+        logCashes.forEach(cash -> investorsCashService.deleteById(cash.getId()));
+        return transactionLogService.rollbackTransaction(log);
     }
 
     private void prepareModel(ModelMap model, TxLogFilter filter, Pageable pageable) {
