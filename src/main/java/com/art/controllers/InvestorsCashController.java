@@ -4,6 +4,7 @@ import com.art.model.*;
 import com.art.model.supporting.AfterCashing;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
+import com.art.model.supporting.TransactionType;
 import com.art.model.supporting.filters.CashFilter;
 import com.art.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,9 @@ public class InvestorsCashController {
 
     @Autowired
     private StatusService statusService;
+
+    @Autowired
+    private TransactionLogService transactionLogService;
 
     @Resource(name = "afterCashingService")
     private AfterCashingService afterCashingService;
@@ -88,6 +92,12 @@ public class InvestorsCashController {
 
     private final CashFilter cashFilters = new CashFilter();
 
+    /**
+     * Получить список денег инвесторов
+     *
+     * @param pageable для постраничного отображения
+     * @return список денег инвесторов
+     */
     @GetMapping(value = "/investorscash")
     public ModelAndView invCashByPageNumber(@PageableDefault(size = 100) @SortDefault Pageable pageable) {
         ModelAndView modelAndView = new ModelAndView("viewinvestorscash");
@@ -98,6 +108,12 @@ public class InvestorsCashController {
         return modelAndView;
     }
 
+    /**
+     * Получить список денег инвесторов с фильтрацией
+     *
+     * @param cashFilters фильтр
+     * @return список денег инвесторов
+     */
     @PostMapping(value = "/investorscash")
     public ModelAndView invCashPageable(@ModelAttribute(value = "cashFilters") CashFilter cashFilters) {
         Pageable pageable;
@@ -117,6 +133,64 @@ public class InvestorsCashController {
         return modelAndView;
     }
 
+    /**
+     * Создать сумму инвестора
+     *
+     * @param model модель со страницы
+     * @return страница для создания суммы
+     */
+    @GetMapping(value = {"/newinvestorscash"})
+    public String newCash(ModelMap model) {
+        String title = "Добавление денег инвестора";
+        InvestorsCash investorsCash = new InvestorsCash();
+
+        model.addAttribute("investorsCash", investorsCash);
+        model.addAttribute("newCash", true);
+        model.addAttribute("edit", false);
+        model.addAttribute("doubleCash", false);
+        model.addAttribute("closeCash", false);
+        model.addAttribute("title", title);
+        return "addinvestorscash";
+    }
+
+    /**
+     * Создать сумму инвестора
+     *
+     * @param investorsCash сумма инвестора
+     * @param result для валидации ошибок привязки
+     * @param model модель со страницы
+     * @return страница успешной операции
+     */
+    @PostMapping(value = {"/newinvestorscash"})
+    public String saveCash(@ModelAttribute("investorsCash") InvestorsCash investorsCash,
+                           BindingResult result, ModelMap model) {
+
+        if (result.hasErrors()) {
+            return "addinvestorscash";
+        }
+        String ret = "списку денег инвестора";
+        String redirectUrl = "/investorscash";
+        updateMailingGroups(investorsCash, "add");
+        investorsCashService.create(investorsCash);
+        transactionLogService.create(investorsCash, TransactionType.CREATE);
+        if (null != investorsCash.getCashSource() &&
+                !investorsCash.getCashSource().getCashSource().equalsIgnoreCase("Бронь")) {
+            marketingTreeService.updateMarketingTreeFromApp();
+        }
+        model.addAttribute("success", "Деньги инвестора " + investorsCash.getInvestor().getLogin() +
+                " успешно добавлены.");
+        model.addAttribute("redirectUrl", redirectUrl);
+        model.addAttribute("ret", ret);
+        return "registrationsuccess";
+    }
+
+    /**
+     * Обновление суммы инвестора
+     *
+     * @param id id суммы
+     * @param model модель со страницы
+     * @return страница для редактирования суммы
+     */
     @GetMapping(value = {"/edit-cash-{id}"})
     public String editCash(@PathVariable BigInteger id, ModelMap model) {
         String title = "Обновление данных по деньгам инвесторов";
@@ -129,6 +203,80 @@ public class InvestorsCashController {
         model.addAttribute("doubleCash", false);
         model.addAttribute("title", title);
         return "addinvestorscash";
+    }
+
+    /**
+     * Обновление суммы инвестора
+     *
+     * @param investorsCash сумма для обновления
+     * @param id id суммы
+     * @return переадресация на страницу отображения денег инвесторов
+     */
+    @PostMapping(value = "/edit-cash-{id}")
+    public String editCash(@ModelAttribute("investorsCash") InvestorsCash investorsCash, @PathVariable("id") int id) {
+        ModelAndView modelAndView = new ModelAndView("viewinvestorscash");
+
+        updateMailingGroups(investorsCash, "add");
+
+        investorsCashService.update(investorsCash);
+
+        SearchSummary searchSummary = new SearchSummary();
+        modelAndView.addObject("searchSummary", searchSummary);
+        modelAndView.addObject("investorsCash", investorsCashService.findAll());
+
+        return "redirect: /investorscash";
+    }
+
+    /**
+     * Обновление суммы инвестора
+     *
+     * @param searchSummary сумма для обновления
+     * @return ответ об успешном/не успешном обновлении суммы
+     */
+    @PostMapping(value = {"/saveCash"}, produces = "application/json;charset=UTF-8")
+    public @ResponseBody
+    GenericResponse saveCash(@RequestBody SearchSummary searchSummary) {
+
+        GenericResponse response = new GenericResponse();
+        InvestorsCash investorsCash = searchSummary.getInvestorsCash();
+
+        Facilities reFacility = searchSummary.getReFacility();
+        UnderFacilities reUnderFacility = searchSummary.getReUnderFacility();
+        Date reinvestDate = searchSummary.getDateReinvest();
+
+        String whatWeDoWithCash = "обновлены.";
+
+        String invLogin = investorsCash.getInvestor().getLogin();
+
+        if (null != reFacility && null != investorsCash.getId() &&
+                null != investorsCash.getNewCashDetails() &&
+                (!investorsCash.getNewCashDetails().getNewCashDetail().equalsIgnoreCase("Реинвестирование с продажи") &&
+                        !investorsCash.getNewCashDetails().getNewCashDetail().equalsIgnoreCase("Реинвестирование с аренды")) &&
+                (null != searchSummary.getWhat() && !searchSummary.getWhat().equalsIgnoreCase("edit"))) {
+            InvestorsCash newInvestorsCash = new InvestorsCash();
+            newInvestorsCash.setFacility(reFacility);
+            newInvestorsCash.setSourceFacility(investorsCash.getFacility());
+            newInvestorsCash.setUnderFacility(reUnderFacility);
+            newInvestorsCash.setInvestor(investorsCash.getInvestor());
+            newInvestorsCash.setGivedCash(investorsCash.getGivedCash());
+            newInvestorsCash.setDateGivedCash(reinvestDate);
+            newInvestorsCash.setCashSource(null);
+            newInvestorsCash.setCashType(cashTypesService.findByCashType("Старые деньги"));
+            newInvestorsCash.setNewCashDetails(newCashDetailsService.findByNewCashDetail("Реинвестирование с продажи"));
+            newInvestorsCash.setInvestorsType(investorsTypesService.findByInvestorsTypes("Старый инвестор"));
+            newInvestorsCash.setShareKind(investorsCash.getShareKind());
+            updateMailingGroups(newInvestorsCash, "add");
+            investorsCashService.create(newInvestorsCash);
+            whatWeDoWithCash = "добавлены.";
+        }
+        investorsCash = investorsCashService.update(investorsCash);
+        if (null != searchSummary.getWhat() && searchSummary.getWhat().equalsIgnoreCase("closeCash")) {
+            updateMailingGroups(investorsCash, "delete");
+        } else {
+            updateMailingGroups(investorsCash, "add");
+        }
+        response.setMessage("Деньги инвестора " + invLogin + " успешно " + whatWeDoWithCash);
+        return response;
     }
 
     @GetMapping(value = {"/close-cash-{id}"})
@@ -312,42 +460,6 @@ public class InvestorsCashController {
         return response;
     }
 
-    @GetMapping(value = {"/newinvestorscash"})
-    public String newCash(ModelMap model) {
-        String title = "Добавление денег инвестора";
-        InvestorsCash investorsCash = new InvestorsCash();
-
-        model.addAttribute("investorsCash", investorsCash);
-        model.addAttribute("newCash", true);
-        model.addAttribute("edit", false);
-        model.addAttribute("doubleCash", false);
-        model.addAttribute("closeCash", false);
-        model.addAttribute("title", title);
-        return "addinvestorscash";
-    }
-
-    @PostMapping(value = {"/newinvestorscash"})
-    public String saveCash(@ModelAttribute("investorsCash") InvestorsCash investorsCash,
-                           BindingResult result, ModelMap model) {
-
-        if (result.hasErrors()) {
-            return "addinvestorscash";
-        }
-        String ret = "списку денег инвестора";
-        String redirectUrl = "/investorscash";
-        updateMailingGroups(investorsCash, "add");
-        investorsCashService.create(investorsCash);
-        if (null != investorsCash.getCashSource() &&
-                !investorsCash.getCashSource().getCashSource().equalsIgnoreCase("Бронь")) {
-            marketingTreeService.updateMarketingTreeFromApp();
-        }
-        model.addAttribute("success", "Деньги инвестора " + investorsCash.getInvestor().getLogin() +
-                " успешно добавлены.");
-        model.addAttribute("redirectUrl", redirectUrl);
-        model.addAttribute("ret", ret);
-        return "registrationsuccess";
-    }
-
     @PostMapping(value = "/allMoneyCashing", produces = "application/json;charset=UTF-8")
     public @ResponseBody
     GenericResponse allMoneyCashing(@RequestBody SearchSummary searchSummary) {
@@ -430,67 +542,6 @@ public class InvestorsCashController {
             model.addAttribute("toBigSumForCashing", out);
             return "getInvestorsCash";
         }
-    }
-
-    @PostMapping(value = {"/saveCash"}, produces = "application/json;charset=UTF-8")
-    public @ResponseBody
-    GenericResponse saveCash(@RequestBody SearchSummary searchSummary) {
-
-        GenericResponse response = new GenericResponse();
-        InvestorsCash investorsCash = searchSummary.getInvestorsCash();
-
-        Facilities reFacility = searchSummary.getReFacility();
-        UnderFacilities reUnderFacility = searchSummary.getReUnderFacility();
-        Date reinvestDate = searchSummary.getDateReinvest();
-
-        String whatWeDoWithCash = "обновлены.";
-
-        String invLogin = investorsCash.getInvestor().getLogin();
-
-        if (!Objects.equals(reFacility, null) && !Objects.equals(investorsCash.getId(), null) &&
-                !Objects.equals(investorsCash.getNewCashDetails(), null) &&
-                (!investorsCash.getNewCashDetails().getNewCashDetail().equalsIgnoreCase("Реинвестирование с продажи") &&
-                        !investorsCash.getNewCashDetails().getNewCashDetail().equalsIgnoreCase("Реинвестирование с аренды")) &&
-                (!Objects.equals(null, searchSummary.getWhat()) && !searchSummary.getWhat().equalsIgnoreCase("edit"))) {
-            InvestorsCash newInvestorsCash = new InvestorsCash();
-            newInvestorsCash.setFacility(reFacility);
-            newInvestorsCash.setSourceFacility(investorsCash.getFacility());
-            newInvestorsCash.setUnderFacility(reUnderFacility);
-            newInvestorsCash.setInvestor(investorsCash.getInvestor());
-            newInvestorsCash.setGivedCash(investorsCash.getGivedCash());
-            newInvestorsCash.setDateGivedCash(reinvestDate);
-            newInvestorsCash.setCashSource(null);
-            newInvestorsCash.setCashType(cashTypesService.findByCashType("Старые деньги"));
-            newInvestorsCash.setNewCashDetails(newCashDetailsService.findByNewCashDetail("Реинвестирование с продажи"));
-            newInvestorsCash.setInvestorsType(investorsTypesService.findByInvestorsTypes("Старый инвестор"));
-            newInvestorsCash.setShareKind(investorsCash.getShareKind());
-            updateMailingGroups(newInvestorsCash, "add");
-            investorsCashService.create(newInvestorsCash);
-            whatWeDoWithCash = "добавлены.";
-        }
-        investorsCash = investorsCashService.update(investorsCash);
-        if (!Objects.equals(null, searchSummary.getWhat()) &&
-                searchSummary.getWhat().equalsIgnoreCase("closeCash")) {
-            updateMailingGroups(investorsCash, "delete");
-        } else {
-            updateMailingGroups(investorsCash, "add");
-        }
-        response.setMessage("Деньги инвестора " + invLogin + " успешно " + whatWeDoWithCash);
-        return response;
-    }
-
-    @PostMapping(value = "/edit-cash-{id}")
-    public String editCash(@ModelAttribute("investorsCash") InvestorsCash investorsCash, @PathVariable("id") int id) {
-        ModelAndView modelAndView = new ModelAndView("viewinvestorscash");
-
-        updateMailingGroups(investorsCash, "add");
-
-        investorsCashService.update(investorsCash);
-        SearchSummary searchSummary = new SearchSummary();
-        modelAndView.addObject("searchSummary", searchSummary);
-        modelAndView.addObject("investorsCash", investorsCashService.findAll());
-
-        return "redirect: /investorscash";
     }
 
     @PostMapping(value = "/double-cash-{id}")
