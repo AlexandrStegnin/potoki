@@ -62,7 +62,6 @@ public class InvestorsCashService {
 
     public InvestorsCash update(InvestorsCash investorsCash) {
         investorsCash = investorsCashRepository.saveAndFlush(investorsCash);
-        transactionLogService.update(Collections.singletonList(investorsCash));
         return investorsCash;
     }
 
@@ -76,7 +75,6 @@ public class InvestorsCashService {
 
     public void saveAll(List<InvestorsCash> investorsCashes) {
         investorsCashRepository.save(investorsCashes);
-        transactionLogService.update(investorsCashes);
     }
 
     public List<InvestorsCash> findByRoomId(BigInteger roomId) {
