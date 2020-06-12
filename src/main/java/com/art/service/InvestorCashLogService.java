@@ -33,6 +33,16 @@ public class InvestorCashLogService {
     }
 
     /**
+     * Найти сумму в логе по id суммы
+     *
+     * @param cashId id суммы
+     * @return найденная запись
+     */
+    public InvestorCashLog findByCashId(Long cashId) {
+        return investorCashLogRepository.findByCashId(cashId);
+    }
+
+    /**
      * Создать сумму в истории и в логе на основании суммы инвестора
      *
      * @param cash сумма инвестора
