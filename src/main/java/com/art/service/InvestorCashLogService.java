@@ -29,7 +29,7 @@ public class InvestorCashLogService {
      * @return найденная сумма
      */
     public InvestorCashLog findById(Long id) {
-        return investorCashLogRepository.findByCashId(id);
+        return investorCashLogRepository.findOne(id);
     }
 
     /**
@@ -39,7 +39,11 @@ public class InvestorCashLogService {
      * @return найденная запись
      */
     public InvestorCashLog findByCashId(Long cashId) {
-        return investorCashLogRepository.findByCashId(cashId);
+        List<InvestorCashLog> cashLogs = investorCashLogRepository.findByCashIdOrderByIdDesc(cashId);
+        if (cashLogs.size() > 0) {
+            return cashLogs.get(0);
+        }
+        return null;
     }
 
     /**
@@ -65,10 +69,14 @@ public class InvestorCashLogService {
     }
 
     public void delete(InvestorsCash cash) {
-        InvestorCashLog cashLog = findById(cash.getId().longValue());
+        InvestorCashLog cashLog = findByCashId(cash.getId().longValue());
         if (null != cashLog) {
             investorCashLogRepository.delete(cashLog);
         }
+    }
+
+    public void delete(InvestorCashLog cashLog) {
+        investorCashLogRepository.delete(cashLog);
     }
 
 }
