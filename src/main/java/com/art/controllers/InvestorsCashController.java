@@ -213,10 +213,13 @@ public class InvestorsCashController {
      * @return переадресация на страницу отображения денег инвесторов
      */
     @PostMapping(value = "/edit-cash-{id}")
-    public String editCash(@ModelAttribute("investorsCash") InvestorsCash investorsCash, @PathVariable("id") int id) {
+    public String editCash(@ModelAttribute("investorsCash") InvestorsCash investorsCash, @PathVariable("id") BigInteger id) {
         ModelAndView modelAndView = new ModelAndView("viewinvestorscash");
 
         updateMailingGroups(investorsCash, "add");
+        InvestorsCash dbCash = investorsCashService.findById(id);
+
+        transactionLogService.update(dbCash);
 
         investorsCashService.update(investorsCash);
 
