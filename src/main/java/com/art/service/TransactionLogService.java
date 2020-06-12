@@ -1,10 +1,10 @@
 package com.art.service;
 
-import com.art.config.SecurityUtils;
 import com.art.model.InvestorsCash;
 import com.art.model.TransactionLog;
 import com.art.model.supporting.TransactionType;
 import com.art.model.supporting.dto.InvestorCashDTO;
+import com.art.model.supporting.dto.TransactionLogDTO;
 import com.art.model.supporting.filters.TxLogFilter;
 import com.art.repository.TransactionLogRepository;
 import com.art.specifications.TransactionLogSpecification;
@@ -30,13 +30,17 @@ public class TransactionLogService {
 
     private final InvestorCashLogService investorCashLogService;
 
+    private final InvestorsCashService investorsCashService;
+
     @Autowired
     public TransactionLogService(TransactionLogSpecification specification,
                                  TransactionLogRepository transactionLogRepository,
-                                 InvestorCashLogService investorCashLogService) {
+                                 InvestorCashLogService investorCashLogService,
+                                 InvestorsCashService investorsCashService) {
         this.specification = specification;
         this.transactionLogRepository = transactionLogRepository;
         this.investorCashLogService = investorCashLogService;
+        this.investorsCashService = investorsCashService;
     }
 
     /**
@@ -46,6 +50,16 @@ public class TransactionLogService {
      */
     public void create(TransactionLog transactionLog) {
         transactionLogRepository.save(transactionLog);
+    }
+
+    /**
+     * Найти список транзакций, которые содержат переданные деньги инвестора
+     *
+     * @param cash деньги инвестора
+     * @return список транзакций
+     */
+    public List<TransactionLog> findByCash(InvestorsCash cash) {
+        return transactionLogRepository.findByInvestorsCashesContains(cash);
     }
 
     /**
@@ -103,16 +117,17 @@ public class TransactionLogService {
     /**
      * Откат операции
      *
-     * @param log транзакция
+     * @param logDTO DTO транзакции
      * @return сообщение об успешном/не успешном выполнении
      */
-    public String rollbackTransaction(TransactionLog log) {
+    public String rollbackTransaction(TransactionLogDTO logDTO) {
+        TransactionLog log = findById(logDTO.getId());
         switch (log.getType()) {
             case CREATE:
-                return delete(log);
+                return rollbackCreate(log);
 
             case UPDATE:
-                return "Операция [UPDATE] не реализована";
+                return rollbackUpdate(log);
 
             case CLOSING:
                 return "Операция [CLOSING] не реализована";
@@ -164,9 +179,7 @@ public class TransactionLogService {
      */
     public void create(InvestorsCash cash, TransactionType type) {
         TransactionLog log = new TransactionLog();
-        log.setCreatedBy(SecurityUtils.getUsername());
         log.setInvestorsCashes(Collections.singleton(cash));
-        log.setTxDate(new Date());
         log.setType(type);
         log.setRollbackEnabled(true);
         create(log);
@@ -174,19 +187,20 @@ public class TransactionLogService {
 
     public void create(List<InvestorsCash> cashes, TransactionType type) {
         TransactionLog log = new TransactionLog();
-        log.setCreatedBy(SecurityUtils.getUsername());
         log.setInvestorsCashes(new HashSet<>(cashes));
-        log.setTxDate(new Date());
         log.setType(type);
         log.setRollbackEnabled(true);
         create(log);
     }
 
     @Transactional
-    public String delete(TransactionLog log) {
+    public String rollbackCreate(TransactionLog log) {
         Set<InvestorsCash> cashes = log.getInvestorsCashes();
         try {
-            cashes.forEach(investorCashLogService::delete);
+            cashes.forEach(cash -> {
+                investorCashLogService.delete(cash);
+                investorsCashService.deleteById(cash.getId());
+            });
             transactionLogRepository.delete(log);
             return "Откат сумм прошёл успешно";
         } catch (Exception e) {
@@ -194,7 +208,36 @@ public class TransactionLogService {
         }
     }
 
-    public void update(List<InvestorsCash> singletonList) {
+    @Transactional
+    public String rollbackUpdate(TransactionLog log) {
+        return null;
+    }
 
+    /**
+     * Обновить запись о транзакции
+     *
+     * @param log запись
+     */
+    public void update(TransactionLog log) {
+        transactionLogRepository.save(log);
+    }
+
+    /**
+     * Создать запись в логе категории обновление
+     *
+     * @param cash деньги инвестора
+     */
+    public void update(InvestorsCash cash) {
+        TransactionLog log = new TransactionLog();
+        log.setInvestorsCashes(Collections.singleton(cash));
+        log.setType(TransactionType.UPDATE);
+        log.setRollbackEnabled(true);
+        investorCashLogService.create(cash);
+        List<TransactionLog> linkedLogs = findByCash(cash);
+        linkedLogs.forEach(linkedLog -> {
+            linkedLog.setRollbackEnabled(false);
+            update(linkedLog);
+        });
+        create(log);
     }
 }

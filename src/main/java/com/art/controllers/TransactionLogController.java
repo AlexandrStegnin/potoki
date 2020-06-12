@@ -1,6 +1,5 @@
 package com.art.controllers;
 
-import com.art.model.InvestorsCash;
 import com.art.model.TransactionLog;
 import com.art.model.supporting.dto.InvestorCashDTO;
 import com.art.model.supporting.dto.TransactionLogDTO;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.art.config.application.Location.*;
@@ -94,10 +92,7 @@ public class TransactionLogController {
     @PostMapping(path = URL_TRANSACTIONS_ROLLBACK)
     @ResponseBody
     public String rollbackTransaction(@RequestBody TransactionLogDTO logDTO) {
-        TransactionLog log = transactionLogService.findById(logDTO.getId());
-        Set<InvestorsCash> logCashes = log.getInvestorsCashes();
-        logCashes.forEach(cash -> investorsCashService.deleteById(cash.getId()));
-        return transactionLogService.rollbackTransaction(log);
+        return transactionLogService.rollbackTransaction(logDTO);
     }
 
     private void prepareModel(ModelMap model, TxLogFilter filter, Pageable pageable) {
