@@ -68,6 +68,11 @@ public class InvestorCashLogService {
         });
     }
 
+    /**
+     * Удалить запись из истории операций по id суммы
+     *
+     * @param cash сумма
+     */
     public void delete(InvestorsCash cash) {
         InvestorCashLog cashLog = findByCashId(cash.getId().longValue());
         if (null != cashLog) {
@@ -75,6 +80,11 @@ public class InvestorCashLogService {
         }
     }
 
+    /**
+     * Удалить запись из истории операций
+     *
+     * @param cashLog запись к удалению
+     */
     public void delete(InvestorCashLog cashLog) {
         investorCashLogRepository.delete(cashLog);
     }
