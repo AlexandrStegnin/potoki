@@ -84,9 +84,9 @@ public class InvestorsCashController {
     @Resource(name = "investorsFlowsSaleService")
     private InvestorsFlowsSaleService investorsFlowsSaleService;
 
-    private SearchSummary filters = new SearchSummary();
+    private final SearchSummary filters = new SearchSummary();
 
-    private CashFilter cashFilters = new CashFilter();
+    private final CashFilter cashFilters = new CashFilter();
 
     @GetMapping(value = "/investorscash")
     public ModelAndView invCashByPageNumber(@PageableDefault(size = 100) @SortDefault Pageable pageable) {
@@ -326,6 +326,28 @@ public class InvestorsCashController {
         return "addinvestorscash";
     }
 
+    @PostMapping(value = {"/newinvestorscash"})
+    public String saveCash(@ModelAttribute("investorsCash") InvestorsCash investorsCash,
+                           BindingResult result, ModelMap model) {
+
+        if (result.hasErrors()) {
+            return "addinvestorscash";
+        }
+        String ret = "списку денег инвестора";
+        String redirectUrl = "/investorscash";
+        updateMailingGroups(investorsCash, "add");
+        investorsCashService.create(investorsCash);
+        if (null != investorsCash.getCashSource() &&
+                !investorsCash.getCashSource().getCashSource().equalsIgnoreCase("Бронь")) {
+            marketingTreeService.updateMarketingTreeFromApp();
+        }
+        model.addAttribute("success", "Деньги инвестора " + investorsCash.getInvestor().getLogin() +
+                " успешно добавлены.");
+        model.addAttribute("redirectUrl", redirectUrl);
+        model.addAttribute("ret", ret);
+        return "registrationsuccess";
+    }
+
     @PostMapping(value = "/allMoneyCashing", produces = "application/json;charset=UTF-8")
     public @ResponseBody
     GenericResponse allMoneyCashing(@RequestBody SearchSummary searchSummary) {
@@ -408,28 +430,6 @@ public class InvestorsCashController {
             model.addAttribute("toBigSumForCashing", out);
             return "getInvestorsCash";
         }
-    }
-
-    @PostMapping(value = {"/newinvestorscash"})
-    public String saveCash(@ModelAttribute("investorsCash") InvestorsCash investorsCash,
-                           BindingResult result, ModelMap model) {
-
-        if (result.hasErrors()) {
-            return "addinvestorscash";
-        }
-        String ret = "списку денег инвестора";
-        String redirectUrl = "/investorscash";
-        updateMailingGroups(investorsCash, "add");
-        investorsCashService.create(investorsCash);
-        if (!Objects.equals(null, investorsCash.getCashSource()) &&
-                !investorsCash.getCashSource().getCashSource().equalsIgnoreCase("Бронь")) {
-            marketingTreeService.updateMarketingTreeFromApp();
-        }
-        model.addAttribute("success", "Деньги инвестора " + investorsCash.getInvestor().getLogin() +
-                " успешно добавлены.");
-        model.addAttribute("redirectUrl", redirectUrl);
-        model.addAttribute("ret", ret);
-        return "registrationsuccess";
     }
 
     @PostMapping(value = {"/saveCash"}, produces = "application/json;charset=UTF-8")
