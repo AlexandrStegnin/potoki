@@ -11,7 +11,8 @@ jQuery(document).ready(function ($) {
         getTransactionCash($(this).attr('data-tx-id'));
     });
     $('.rollback-tx').on('click', function () {
-        rollbackTransaction($(this).attr('data-tx-id'))
+        rollbackTransaction($(this).attr('data-tx-id'));
+        $(this).closest('tr').remove();
     })
 });
 
