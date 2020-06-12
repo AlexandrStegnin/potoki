@@ -2,6 +2,7 @@ package com.art.model;
 
 import com.art.config.SecurityUtils;
 import com.art.model.supporting.TransactionType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -45,6 +46,11 @@ public class TransactionLog {
 
     @Column(name = "rollback_enabled")
     private boolean rollbackEnabled;
+
+    @OneToOne
+    @JsonIgnore
+    @JoinColumn(name = "blocked_from")
+    private TransactionLog blockedFrom;
 
     @PrePersist
     public void prePersist() {
