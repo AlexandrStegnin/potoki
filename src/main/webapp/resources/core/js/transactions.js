@@ -41,10 +41,12 @@ function getTransactionCash(txId) {
         }
     })
         .done(function (data) {
+            closeLoader();
             createCashTable(data);
         })
         .fail(function (e) {
-            console.log(e);
+            closeLoader();
+            showMessage(e.toLocaleString());
         })
         .always(function () {
             closeLoader();
@@ -76,6 +78,7 @@ function rollbackTransaction(txId) {
         }
     })
         .done(function (data) {
+            closeLoader();
             showMessage(data);
         })
         .fail(function (e) {
