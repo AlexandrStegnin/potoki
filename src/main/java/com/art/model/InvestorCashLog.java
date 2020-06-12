@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 
 /**
@@ -28,14 +29,17 @@ public class InvestorCashLog {
     @Column(name = "cash_id")
     private Long cashId;
 
-    @Column(name = "investor_id")
-    private Long investorId;
+    @OneToOne
+    @JoinColumn(name = "investor_id")
+    private Users investor;
 
-    @Column(name = "facility_id")
-    private Long facilityId;
+    @OneToOne
+    @JoinColumn(name = "facility_id")
+    private Facilities facility;
 
-    @Column(name = "under_facility_id")
-    private Long underFacilityId;
+    @OneToOne
+    @JoinColumn(name = "under_facility_id")
+    private UnderFacilities underFacility;
 
     @Column(name = "given_cash")
     private BigDecimal givenCash;
@@ -43,47 +47,56 @@ public class InvestorCashLog {
     @Column(name = "date_given_cash")
     private Date dateGivenCash;
 
-    @Column(name = "cash_source_id")
-    private Long cashSourceId;
+    @OneToOne
+    @JoinColumn(name = "cash_source_id")
+    private CashSources cashSource;
 
-    @Column(name = "cash_type_id")
-    private Long cashTypeId;
+    @OneToOne
+    @JoinColumn(name = "cash_type_id")
+    private CashTypes cashType;
 
-    @Column(name = "new_cash_detail_id")
-    private Long newCashDetailId;
+    @OneToOne
+    @JoinColumn(name = "new_cash_detail_id")
+    private NewCashDetails newCashDetail;
 
-    @Column(name = "investor_type_id")
-    private Long investorTypeId;
+    @OneToOne
+    @JoinColumn(name = "investor_type_id")
+    private InvestorsTypes investorType;
 
     @Column(name = "date_closing_invest")
     private Date dateClosingInvest;
 
-    @Column(name = "type_closing_invest_id")
-    private Long typeClosingInvestId;
+    @OneToOne
+    @JoinColumn(name = "type_closing_invest_id")
+    private TypeClosingInvest typeClosingInvest;
 
-    @Column(name = "share_kind_id")
-    private Long shareKindId;
+    @OneToOne
+    @JoinColumn(name = "share_kind_id")
+    private ShareKind shareKind;
 
     @Column(name = "date_report")
     private Date dateReport;
 
-    @Column(name = "source_facility_id")
-    private Long sourceFacilityId;
+    @OneToOne
+    @JoinColumn(name = "source_facility_id")
+    private Facilities sourceFacility;
 
-    @Column(name = "source_under_facility_id")
-    private Long sourceUnderFacilityId;
+    @OneToOne
+    @JoinColumn(name = "source_under_facility_id")
+    private UnderFacilities sourceUnderFacility;
 
     @Column(name = "source_flows_id")
     private String sourceFlowsId;
 
-    @Column(name = "room_id")
-    private Long roomId;
+    @OneToOne
+    @JoinColumn(name = "room_id")
+    private Rooms room;
 
     @Column(name = "reinvest")
     private int reinvest;
 
     @Column(name = "source_id")
-    private Long sourceId;
+    private BigInteger sourceId;
 
     @Column(name = "source")
     private String source;
@@ -96,47 +109,25 @@ public class InvestorCashLog {
 
     public InvestorCashLog(InvestorsCash cash) {
         this.cashId = cash.getId().longValue();
-        this.investorId = cash.getInvestor().getId().longValue();
-        this.facilityId = cash.getFacility().getId().longValue();
-        if (null != cash.getUnderFacility()) {
-            this.underFacilityId = cash.getUnderFacility().getId().longValue();
-        }
+        this.investor = cash.getInvestor();
+        this.facility = cash.getFacility();
+        this.underFacility = cash.getUnderFacility();
         this.givenCash = cash.getGivedCash();
         this.dateGivenCash = cash.getDateGivedCash();
-        if (null != cash.getSourceId()) {
-            this.cashSourceId = cash.getSourceId().longValue();
-        }
-        if (null != cash.getCashType()) {
-            this.cashTypeId = cash.getCashType().getId().longValue();
-        }
-        if (null != cash.getNewCashDetails()) {
-            this.newCashDetailId = cash.getNewCashDetails().getId().longValue();
-        }
-        if (null != cash.getInvestorsType()) {
-            this.investorTypeId = cash.getInvestorsType().getId().longValue();
-        }
+        this.cashSource = cash.getCashSource();
+        this.cashType = cash.getCashType();
+        this.newCashDetail = cash.getNewCashDetails();
+        this.investorType = cash.getInvestorsType();
         this.dateClosingInvest = cash.getDateClosingInvest();
-        if (null != cash.getTypeClosingInvest()) {
-            this.typeClosingInvestId = cash.getTypeClosingInvest().getId().longValue();
-        }
-        if (null != cash.getShareKind()) {
-            this.shareKindId = cash.getShareKind().getId().longValue();
-        }
+        this.typeClosingInvest = cash.getTypeClosingInvest();
+        this.shareKind = cash.getShareKind();
         this.dateReport = cash.getDateReport();
-        if (null != cash.getSourceFacility()) {
-            this.sourceFacilityId = cash.getSourceFacility().getId().longValue();
-        }
-        if (null != cash.getSourceUnderFacility()) {
-            this.sourceUnderFacilityId = cash.getSourceUnderFacility().getId().longValue();
-        }
+        this.sourceFacility = cash.getSourceFacility();
+        this.sourceUnderFacility = cash.getSourceUnderFacility();
         this.sourceFlowsId = cash.getSourceFlowsId();
-        if (null != cash.getRoom()) {
-            this.roomId = cash.getRoom().getId().longValue();
-        }
+        this.room = cash.getRoom();
         this.reinvest = cash.getIsReinvest();
-        if (null != cash.getSourceId()) {
-            this.sourceId = cash.getSourceId().longValue();
-        }
+        this.sourceId = cash.getSourceId();
         this.source = cash.getSource();
         this.divide = cash.getIsDivide();
         this.realDateGiven = cash.getRealDateGiven();
