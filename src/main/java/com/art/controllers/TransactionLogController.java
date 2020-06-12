@@ -81,8 +81,7 @@ public class TransactionLogController {
      */
     @PostMapping(path = URL_TRANSACTIONS_CASH)
     @ResponseBody
-    public List<InvestorCashDTO> getCashByTxId(@RequestBody TransactionLogDTO logDTO) throws InterruptedException {
-        Thread.sleep(2000);
+    public List<InvestorCashDTO> getCashByTxId(@RequestBody TransactionLogDTO logDTO) {
         return transactionLogService.getCashByTxId(logDTO.getId());
     }
 

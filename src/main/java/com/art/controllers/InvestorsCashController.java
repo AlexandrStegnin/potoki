@@ -171,7 +171,7 @@ public class InvestorsCashController {
         String ret = "списку денег инвестора";
         String redirectUrl = "/investorscash";
         updateMailingGroups(investorsCash, "add");
-        investorsCashService.create(investorsCash);
+        investorsCash = investorsCashService.create(investorsCash);
         transactionLogService.create(investorsCash, TransactionType.CREATE);
         if (null != investorsCash.getCashSource() &&
                 !investorsCash.getCashSource().getCashSource().equalsIgnoreCase("Бронь")) {
