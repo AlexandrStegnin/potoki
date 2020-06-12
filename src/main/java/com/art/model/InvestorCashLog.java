@@ -18,8 +18,15 @@ import java.util.Date;
 public class InvestorCashLog {
 
     @Id
+    @TableGenerator(name = "invCashLogSeqStore", table = "SEQ_STORE",
+            pkColumnName = "SEQ_NAME", pkColumnValue = "INV.CASH.LOG.ID.PK",
+            valueColumnName = "SEQ_VALUE", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "invCashLogSeqStore")
     @Column(name = "id")
     private Long id;
+
+    @Column(name = "cash_id")
+    private Long cashId;
 
     @Column(name = "investor_id")
     private Long investorId;
@@ -88,7 +95,7 @@ public class InvestorCashLog {
     private Date realDateGiven;
 
     public InvestorCashLog(InvestorsCash cash) {
-        this.id = cash.getId().longValue();
+        this.cashId = cash.getId().longValue();
         this.investorId = cash.getInvestor().getId().longValue();
         this.facilityId = cash.getFacility().getId().longValue();
         if (null != cash.getUnderFacility()) {

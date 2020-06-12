@@ -32,7 +32,7 @@ public class TransactionLog {
     @Column(name = "tx_date")
     private Date txDate;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name = "tx_log_inv_cash",
             joinColumns = {@JoinColumn(name = "tx_id", referencedColumnName = "id")},
             inverseJoinColumns = @JoinColumn(name = "cash_id", referencedColumnName = "id"))
