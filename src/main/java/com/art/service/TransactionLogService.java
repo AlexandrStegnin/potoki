@@ -50,15 +50,6 @@ public class TransactionLogService {
     }
 
     /**
-     * Создать запись об операции с деньгами
-     *
-     * @param cash деньги инвестора
-     */
-    public void create(InvestorsCash cash) {
-//        transactionLogRepository.save(transactionLog);
-    }
-
-    /**
      * Получить список денег, затронутых в транзакции
      *
      * @param txLogId id транзакции

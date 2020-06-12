@@ -36,20 +36,17 @@ public class InvestorsCashService {
     private final TypeClosingInvestService typeClosingInvestService;
     private final AfterCashingService afterCashingService;
     private final UnderFacilitiesService underFacilitiesService;
-    private final TransactionLogService transactionLogService;
 
     @Autowired
     public InvestorsCashService(InvestorsCashRepository investorsCashRepository,
                                 InvestorsCashSpecification specification,
                                 TypeClosingInvestService typeClosingInvestService,
-                                AfterCashingService afterCashingService, UnderFacilitiesService underFacilitiesService,
-                                TransactionLogService transactionLogService) {
+                                AfterCashingService afterCashingService, UnderFacilitiesService underFacilitiesService) {
         this.investorsCashRepository = investorsCashRepository;
         this.specification = specification;
         this.typeClosingInvestService = typeClosingInvestService;
         this.afterCashingService = afterCashingService;
         this.underFacilitiesService = underFacilitiesService;
-        this.transactionLogService = transactionLogService;
     }
 
     public List<InvestorsCash> findAll() {
@@ -85,9 +82,7 @@ public class InvestorsCashService {
     private EntityManager em;
 
     public InvestorsCash create(InvestorsCash investorsCash) {
-        investorsCash = this.em.merge(investorsCash);
-        transactionLogService.create(investorsCash);
-        return investorsCash;
+        return this.em.merge(investorsCash);
     }
 
     public List<InvestorsCash> findByIdIn(List<BigInteger> idList) {
