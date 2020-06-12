@@ -219,11 +219,11 @@ public class TransactionLogService {
                 InvestorCashLog cashLog = investorCashLogService.findByCashId(cash.getId().longValue());
                 if (null != cashLog) {
                     mergeCash(cash, cashLog);
+                    investorCashLogService.delete(cashLog);
                     investorsCashService.update(cash);
-                    investorCashLogService.delete(cash);
                 }
             });
-            TransactionLog blockedLog = transactionLogRepository.findByBlockedFrom(log);
+            TransactionLog blockedLog = transactionLogRepository.findByBlockedFromId(log.getId());
             if (null != blockedLog) {
                 blockedLog.setRollbackEnabled(true);
                 blockedLog.setBlockedFrom(null);
@@ -306,9 +306,11 @@ public class TransactionLogService {
     private void blockLinkedLogs(InvestorsCash cash, TransactionLog log) {
         List<TransactionLog> linkedLogs = findByCash(cash);
         linkedLogs.forEach(linkedLog -> {
-            linkedLog.setRollbackEnabled(false);
-            linkedLog.setBlockedFrom(log);
-            update(linkedLog);
+            if (null == linkedLog.getBlockedFrom()) {
+                linkedLog.setRollbackEnabled(false);
+                linkedLog.setBlockedFrom(log);
+                update(linkedLog);
+            }
         });
     }
 }
