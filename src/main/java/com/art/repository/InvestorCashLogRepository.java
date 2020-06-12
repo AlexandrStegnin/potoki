@@ -10,4 +10,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface InvestorCashLogRepository extends JpaRepository<InvestorCashLog, Long> {
+
+    InvestorCashLog findByCashId(Long cashId);
+
 }

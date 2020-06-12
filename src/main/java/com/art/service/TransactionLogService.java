@@ -43,10 +43,9 @@ public class TransactionLogService {
      * Создать запись об операции с деньгами
      *
      * @param transactionLog - операция
-     * @return - созданная запись
      */
-    public TransactionLog create(TransactionLog transactionLog) {
-        return transactionLogRepository.save(transactionLog);
+    public void create(TransactionLog transactionLog) {
+        transactionLogRepository.save(transactionLog);
     }
 
     /**
@@ -157,6 +156,12 @@ public class TransactionLogService {
         return creators;
     }
 
+    /**
+     * Создать запись в логе по операции создания денег инвестора
+     *
+     * @param cash деньги инвестора
+     * @param type тип операции
+     */
     public void create(InvestorsCash cash, TransactionType type) {
         TransactionLog log = new TransactionLog();
         log.setCreatedBy(SecurityUtils.getUsername());
