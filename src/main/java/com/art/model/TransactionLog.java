@@ -1,5 +1,6 @@
 package com.art.model;
 
+import com.art.config.SecurityUtils;
 import com.art.model.supporting.TransactionType;
 import lombok.Data;
 
@@ -44,5 +45,11 @@ public class TransactionLog {
 
     @Column(name = "rollback_enabled")
     private boolean rollbackEnabled;
+
+    @PrePersist
+    public void prePersist() {
+        this.txDate = new Date();
+        this.createdBy = SecurityUtils.getUsername();
+    }
 
 }
