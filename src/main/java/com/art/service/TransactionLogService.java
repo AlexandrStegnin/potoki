@@ -1,5 +1,6 @@
 package com.art.service;
 
+import com.art.model.InvestorCashLog;
 import com.art.model.InvestorsCash;
 import com.art.model.TransactionLog;
 import com.art.model.supporting.TransactionType;
@@ -146,6 +147,11 @@ public class TransactionLogService {
         }
     }
 
+    /**
+     * Получить список видов операции для использования в фильтрах
+     *
+     * @return список видов операций
+     */
     public Map<Integer, String> getTypes() {
         Map<Integer, String> map = new HashMap<>();
         map.put(0, "Вид операции");
@@ -158,6 +164,11 @@ public class TransactionLogService {
         return map;
     }
 
+    /**
+     * Получить список "кем создавалась транзакция" для использования в фильтре
+     *
+     * @return список "кем создавалась транзакция"
+     */
     public List<String> getCreators() {
         List<TransactionLog> logs = transactionLogRepository.findAll();
         List<String> creators = new ArrayList<>();
@@ -185,14 +196,6 @@ public class TransactionLogService {
         create(log);
     }
 
-    public void create(List<InvestorsCash> cashes, TransactionType type) {
-        TransactionLog log = new TransactionLog();
-        log.setInvestorsCashes(new HashSet<>(cashes));
-        log.setType(type);
-        log.setRollbackEnabled(true);
-        create(log);
-    }
-
     @Transactional
     public String rollbackCreate(TransactionLog log) {
         Set<InvestorsCash> cashes = log.getInvestorsCashes();
@@ -210,7 +213,64 @@ public class TransactionLogService {
 
     @Transactional
     public String rollbackUpdate(TransactionLog log) {
-        return null;
+        Set<InvestorsCash> cashes = log.getInvestorsCashes();
+        try {
+            cashes.forEach(cash -> {
+                InvestorCashLog cashLog = investorCashLogService.findByCashId(cash.getId().longValue());
+                if (null != cashLog) {
+                    mergeCash(cash, cashLog);
+                    investorsCashService.update(cash);
+                    investorCashLogService.delete(cash);
+                }
+            });
+            TransactionLog blockedLog = transactionLogRepository.findByBlockedFrom(log);
+            if (null != blockedLog) {
+                blockedLog.setRollbackEnabled(true);
+                blockedLog.setBlockedFrom(null);
+                transactionLogRepository.save(blockedLog);
+            }
+            transactionLogRepository.delete(log);
+            return "Откат операции прошёл успешно";
+        } catch (Exception e) {
+            return String.format("При удалении транзакции произошла ошибка [%s]", e.getLocalizedMessage());
+        }
+    }
+
+    /**
+     * Изменяем значения суммы на значения суммы из лога
+     *
+     * @param cash сумма
+     * @param cashLog сумма из лога
+     */
+    @Transactional
+    public void mergeCash(InvestorsCash cash, InvestorCashLog cashLog) {
+        cash.setGivedCash(cashLog.getGivenCash());
+        if (!cash.getFacility().getId().equals(cashLog.getFacility().getId())) {
+            cash.setFacility(cashLog.getFacility());
+        }
+        if (null != cash.getUnderFacility() && !cash.getUnderFacility().getId().equals(cashLog.getUnderFacility().getId())) {
+            cash.setUnderFacility(cashLog.getUnderFacility());
+        }
+        if (cash.getInvestor().getId().equals(cashLog.getInvestor().getId())) {
+            cash.setInvestor(cashLog.getInvestor());
+        }
+        cash.setDateGivedCash(cashLog.getDateGivenCash());
+        if (null != cash.getCashSource() && !cash.getCashSource().getId().equals(cashLog.getCashSource().getId())) {
+            cash.setCashSource(cashLog.getCashSource());
+        }
+        if (null != cash.getCashType() && !cash.getCashType().getId().equals(cashLog.getCashType().getId())) {
+            cash.setCashType(cashLog.getCashType());
+        }
+        if (null != cash.getNewCashDetails() && !cash.getNewCashDetails().getId().equals(cashLog.getNewCashDetail().getId())) {
+            cash.setNewCashDetails(cashLog.getNewCashDetail());
+        }
+        if (null != cash.getInvestorsType() && !cash.getInvestorsType().getId().equals(cashLog.getInvestorType().getId())) {
+            cash.setInvestorsType(cashLog.getInvestorType());
+        }
+        if (null != cash.getShareKind() && !cash.getShareKind().getId().equals(cashLog.getShareKind().getId())) {
+            cash.setShareKind(cashLog.getShareKind());
+        }
+        cash.setRealDateGiven(cashLog.getRealDateGiven());
     }
 
     /**
@@ -223,7 +283,7 @@ public class TransactionLogService {
     }
 
     /**
-     * Создать запись в логе категории обновление
+     * Создать запись категории обновление в логе
      *
      * @param cash деньги инвестора
      */
@@ -233,11 +293,22 @@ public class TransactionLogService {
         log.setType(TransactionType.UPDATE);
         log.setRollbackEnabled(true);
         investorCashLogService.create(cash);
+        blockLinkedLogs(cash, log);
+        create(log);
+    }
+
+    /**
+     * Метод для блокирования отката операций, если в них участвовала сумма инвестора
+     *
+     * @param cash сумма инвестора
+     * @param log текущая операция логирования
+     */
+    private void blockLinkedLogs(InvestorsCash cash, TransactionLog log) {
         List<TransactionLog> linkedLogs = findByCash(cash);
         linkedLogs.forEach(linkedLog -> {
             linkedLog.setRollbackEnabled(false);
+            linkedLog.setBlockedFrom(log);
             update(linkedLog);
         });
-        create(log);
     }
 }
