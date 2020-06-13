@@ -283,7 +283,7 @@ public class TransactionLogService {
     }
 
     /**
-     * Создать запись категории обновление в логе
+     * Создать запись категории "обновление" в логе
      *
      * @param cash деньги инвестора
      */
@@ -291,6 +291,21 @@ public class TransactionLogService {
         TransactionLog log = new TransactionLog();
         log.setInvestorsCashes(Collections.singleton(cash));
         log.setType(TransactionType.UPDATE);
+        log.setRollbackEnabled(true);
+        create(log);
+        investorCashLogService.create(cash, log);
+        blockLinkedLogs(cash, log);
+    }
+
+    /**
+     * Создать запись категории "закрытие" в логе
+     *
+     * @param cash сумма инвестора
+     */
+    public void close(InvestorsCash cash) {
+        TransactionLog log = new TransactionLog();
+        log.setInvestorsCashes(Collections.singleton(cash));
+        log.setType(TransactionType.CLOSING);
         log.setRollbackEnabled(true);
         create(log);
         investorCashLogService.create(cash, log);

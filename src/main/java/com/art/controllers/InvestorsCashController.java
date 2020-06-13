@@ -312,7 +312,7 @@ public class InvestorsCashController {
             service.shutdown();
         } else {
             InvestorsCash updatedCash = investorsCashService.findById(investorsCash.getId());
-
+            transactionLogService.close(updatedCash);
             updatedCash.setDateClosingInvest(dateClosingInvest);
             updatedCash.setRealDateGiven(realDateGiven);
 
