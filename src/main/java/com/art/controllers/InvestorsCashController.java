@@ -306,10 +306,15 @@ public class InvestorsCashController {
                 updateMailingGroups(c, "add");
             }));
 
-            investorsCashService.create(cash);
-            investorsCashService.create(newInvestorsCash);
+            investorsCashService.createNew(cash);
+            investorsCashService.createNew(newInvestorsCash);
             investorsCashService.update(oldCash);
+            Set<InvestorsCash> cashSet = new HashSet<>();
+            cashSet.add(cash);
+            cashSet.add(newInvestorsCash);
+            cashSet.add(oldCash);
             service.shutdown();
+            transactionLogService.resale(cashSet);
         } else {
             InvestorsCash updatedCash = investorsCashService.findById(investorsCash.getId());
             transactionLogService.close(updatedCash);
