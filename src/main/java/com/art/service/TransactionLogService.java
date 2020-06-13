@@ -216,7 +216,7 @@ public class TransactionLogService {
         Set<InvestorsCash> cashes = log.getInvestorsCashes();
         try {
             cashes.forEach(cash -> {
-                InvestorCashLog cashLog = investorCashLogService.findByCashId(cash.getId().longValue());
+                InvestorCashLog cashLog = investorCashLogService.findByTxId(log.getId());
                 if (null != cashLog) {
                     mergeCash(cash, cashLog);
                     investorCashLogService.delete(cashLog);
@@ -292,9 +292,9 @@ public class TransactionLogService {
         log.setInvestorsCashes(Collections.singleton(cash));
         log.setType(TransactionType.UPDATE);
         log.setRollbackEnabled(true);
-        investorCashLogService.create(cash);
-        blockLinkedLogs(cash, log);
         create(log);
+        investorCashLogService.create(cash, log);
+        blockLinkedLogs(cash, log);
     }
 
     /**
@@ -307,9 +307,11 @@ public class TransactionLogService {
         List<TransactionLog> linkedLogs = findByCash(cash);
         linkedLogs.forEach(linkedLog -> {
             if (null == linkedLog.getBlockedFrom()) {
-                linkedLog.setRollbackEnabled(false);
-                linkedLog.setBlockedFrom(log);
-                update(linkedLog);
+                if (!linkedLog.getId().equals(log.getId())) {
+                    linkedLog.setRollbackEnabled(false);
+                    linkedLog.setBlockedFrom(log);
+                    update(linkedLog);
+                }
             }
         });
     }

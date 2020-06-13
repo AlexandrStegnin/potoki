@@ -107,7 +107,11 @@ public class InvestorCashLog {
     @Column(name = "real_date_given")
     private Date realDateGiven;
 
-    public InvestorCashLog(InvestorsCash cash) {
+    @OneToOne
+    @JoinColumn(name = "tx_id")
+    private TransactionLog transactionLog;
+
+    public InvestorCashLog(InvestorsCash cash, TransactionLog log) {
         this.cashId = cash.getId().longValue();
         this.investor = cash.getInvestor();
         this.facility = cash.getFacility();
@@ -131,6 +135,7 @@ public class InvestorCashLog {
         this.source = cash.getSource();
         this.divide = cash.getIsDivide();
         this.realDateGiven = cash.getRealDateGiven();
+        this.transactionLog = log;
     }
 
 }

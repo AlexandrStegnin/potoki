@@ -2,6 +2,7 @@ package com.art.service;
 
 import com.art.model.InvestorCashLog;
 import com.art.model.InvestorsCash;
+import com.art.model.TransactionLog;
 import com.art.repository.InvestorCashLogRepository;
 import org.springframework.stereotype.Service;
 
@@ -47,12 +48,23 @@ public class InvestorCashLogService {
     }
 
     /**
+     * Найти сумму в логе по id транзакции
+     *
+     * @param txId id транзакции
+     * @return найденная запись
+     */
+    public InvestorCashLog findByTxId(Long txId) {
+        return investorCashLogRepository.findByTransactionLogId(txId);
+    }
+
+    /**
      * Создать сумму в истории и в логе на основании суммы инвестора
      *
      * @param cash сумма инвестора
+     * @param log транзакция
      */
-    public void create(InvestorsCash cash) {
-        InvestorCashLog cashLog = new InvestorCashLog(cash);
+    public void create(InvestorsCash cash, TransactionLog log) {
+        InvestorCashLog cashLog = new InvestorCashLog(cash, log);
         investorCashLogRepository.save(cashLog);
     }
 
@@ -61,9 +73,9 @@ public class InvestorCashLogService {
      *
      * @param cashes список денег
      */
-    public void update(List<InvestorsCash> cashes) {
+    public void update(List<InvestorsCash> cashes, TransactionLog log) {
         cashes.forEach(cash -> {
-            InvestorCashLog cashLog = new InvestorCashLog(cash);
+            InvestorCashLog cashLog = new InvestorCashLog(cash, log);
             investorCashLogRepository.save(cashLog);
         });
     }
