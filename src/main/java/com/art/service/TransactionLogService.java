@@ -140,7 +140,7 @@ public class TransactionLogService {
                 return rollbackClosing(log);
 
             case CLOSING_RESALE:
-                return "Операция [CLOSING_RESALE] не реализована";
+                return rollbackResale(log);
 
             case DIVIDE:
                 return "Операция [DIVIDE] не реализована";
@@ -232,12 +232,35 @@ public class TransactionLogService {
                     investorsCashService.update(cash);
                 });
             });
-            TransactionLog blockedLog = transactionLogRepository.findByBlockedFromId(log.getId());
-            if (null != blockedLog) {
-                blockedLog.setRollbackEnabled(true);
-                blockedLog.setBlockedFrom(null);
-                transactionLogRepository.save(blockedLog);
-            }
+            unblockTransactions(log.getId());
+            transactionLogRepository.delete(log);
+            return "Откат операции прошёл успешно";
+        } catch (Exception e) {
+            return String.format("При удалении транзакции произошла ошибка [%s]", e.getLocalizedMessage());
+        }
+    }
+
+    @Transactional
+    public String rollbackResale(TransactionLog log) {
+        Set<InvestorsCash> cashes = log.getInvestorsCashes();
+        try {
+            Set<InvestorsCash> cashToDelete = new HashSet<>();
+            List<InvestorCashLog> cashLogs = investorCashLogService.findByTxId(log.getId());
+            cashLogs.forEach(cashLog -> {
+                cashToDelete.addAll(cashes.stream()
+                        .filter(cash -> cash.getId().longValue() != cashLog.getCashId())
+                        .collect(Collectors.toSet())
+                );
+                cashes.stream()
+                        .filter(cash -> cash.getId().longValue() == cashLog.getCashId())
+                        .forEach(cash -> {
+                            mergeCash(cash, cashLog);
+                            investorCashLogService.delete(cashLog);
+                            investorsCashService.update(cash);
+                        });
+            });
+            cashToDelete.forEach(cash -> investorsCashService.deleteById(cash.getId()));
+            unblockTransactions(log.getId());
             transactionLogRepository.delete(log);
             return "Откат операции прошёл успешно";
         } catch (Exception e) {
@@ -318,6 +341,9 @@ public class TransactionLogService {
      * @param cashes суммы инвесторов
      */
     public void resale(InvestorsCash oldCash, Set<InvestorsCash> cashes) {
+        oldCash.setDateClosingInvest(null);
+        oldCash.setTypeClosingInvest(null);
+        oldCash.setRealDateGiven(null);
         TransactionLog log = new TransactionLog();
         log.setInvestorsCashes(cashes);
         log.setType(TransactionType.CLOSING_RESALE);
@@ -344,5 +370,19 @@ public class TransactionLogService {
                 }
             }
         });
+    }
+
+    /**
+     * Разблокировать транзакции по id лога
+     *
+     * @param logId id лога
+     */
+    private void unblockTransactions(Long logId) {
+        TransactionLog blockedLog = transactionLogRepository.findByBlockedFromId(logId);
+        if (null != blockedLog) {
+            blockedLog.setRollbackEnabled(true);
+            blockedLog.setBlockedFrom(null);
+            transactionLogRepository.save(blockedLog);
+        }
     }
 }

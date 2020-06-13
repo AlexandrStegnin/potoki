@@ -302,9 +302,7 @@ public class InvestorsCashController {
             newInvestorsCash.setDateClosingInvest(dateClosingInvest);
             newInvestorsCash.setTypeClosingInvest(closingInvest);
 
-            cashes.forEach(c -> service.submit(() -> {
-                updateMailingGroups(c, "add");
-            }));
+            cashes.forEach(c -> service.submit(() -> updateMailingGroups(c, "add")));
 
             investorsCashService.createNew(cash);
             investorsCashService.createNew(newInvestorsCash);
@@ -312,6 +310,7 @@ public class InvestorsCashController {
             Set<InvestorsCash> cashSet = new HashSet<>();
             cashSet.add(cash);
             cashSet.add(newInvestorsCash);
+            cashSet.add(oldCash);
             service.shutdown();
             transactionLogService.resale(oldCash, cashSet);
         } else {
