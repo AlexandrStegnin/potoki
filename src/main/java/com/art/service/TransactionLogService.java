@@ -72,7 +72,12 @@ public class TransactionLogService {
     @Transactional(readOnly = true)
     public List<InvestorCashDTO> getCashByTxId(Long txLogId) {
         TransactionLog log = findById(txLogId);
+        InvestorCashLog cashLog = investorCashLogService.findByTxId(txLogId);
         List<InvestorCashDTO> cashDTOS = new ArrayList<>();
+        if (null != cashLog) {
+            InvestorCashDTO cashDTO = new InvestorCashDTO(cashLog);
+            cashDTOS.add(cashDTO);
+        }
         log.getInvestorsCashes()
                 .forEach(cash -> {
                     InvestorCashDTO dto = new InvestorCashDTO(cash);
