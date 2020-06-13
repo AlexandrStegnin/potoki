@@ -62,6 +62,11 @@ public class InvestorsCashService {
         return investorsCash;
     }
 
+    public InvestorsCash createNew(InvestorsCash investorsCash) {
+        investorsCash = investorsCashRepository.saveAndFlush(investorsCash);
+        return investorsCash;
+    }
+
     public void deleteById(BigInteger id) {
         investorsCashRepository.deleteById(id);
     }
