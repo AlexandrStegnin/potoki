@@ -15,6 +15,6 @@ public interface InvestorCashLogRepository extends JpaRepository<InvestorCashLog
 
     List<InvestorCashLog> findByCashIdOrderByIdDesc(Long cashId);
 
-    InvestorCashLog findByTransactionLogId(Long txId);
+    List<InvestorCashLog> findByTransactionLogId(Long txId);
 
 }

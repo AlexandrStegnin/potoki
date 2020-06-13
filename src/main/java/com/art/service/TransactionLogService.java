@@ -72,12 +72,13 @@ public class TransactionLogService {
     @Transactional(readOnly = true)
     public List<InvestorCashDTO> getCashByTxId(Long txLogId) {
         TransactionLog log = findById(txLogId);
-        InvestorCashLog cashLog = investorCashLogService.findByTxId(txLogId);
+        List<InvestorCashLog> cashLogs = investorCashLogService.findByTxId(txLogId);
         List<InvestorCashDTO> cashDTOS = new ArrayList<>();
-        if (null != cashLog) {
+        cashLogs.forEach(cashLog -> {
             InvestorCashDTO cashDTO = new InvestorCashDTO(cashLog);
             cashDTOS.add(cashDTO);
-        }
+        });
+
         log.getInvestorsCashes()
                 .forEach(cash -> {
                     InvestorCashDTO dto = new InvestorCashDTO(cash);
@@ -224,12 +225,12 @@ public class TransactionLogService {
         Set<InvestorsCash> cashes = log.getInvestorsCashes();
         try {
             cashes.forEach(cash -> {
-                InvestorCashLog cashLog = investorCashLogService.findByTxId(log.getId());
-                if (null != cashLog) {
+                List<InvestorCashLog> cashLogs = investorCashLogService.findByTxId(log.getId());
+                cashLogs.forEach(cashLog -> {
                     mergeCash(cash, cashLog);
                     investorCashLogService.delete(cashLog);
                     investorsCashService.update(cash);
-                }
+                });
             });
             TransactionLog blockedLog = transactionLogRepository.findByBlockedFromId(log.getId());
             if (null != blockedLog) {
@@ -252,7 +253,7 @@ public class TransactionLogService {
     /**
      * Изменяем значения суммы на значения суммы из лога
      *
-     * @param cash сумма
+     * @param cash    сумма
      * @param cashLog сумма из лога
      */
     @Transactional
@@ -297,7 +298,7 @@ public class TransactionLogService {
     }
 
     /**
-     * Создать запись категории "закрытие" в логе
+     * Создать запись категории "Закрытие. Вывод" в логе
      *
      * @param cash сумма инвестора
      */
@@ -312,10 +313,25 @@ public class TransactionLogService {
     }
 
     /**
+     * Создать запись категории "Закрытие. Перепродажа доли" в логе
+     *
+     * @param cashes суммы инвесторов
+     */
+    public void resale(Set<InvestorsCash> cashes) {
+        TransactionLog log = new TransactionLog();
+        log.setInvestorsCashes(cashes);
+        log.setType(TransactionType.CLOSING_RESALE);
+        log.setRollbackEnabled(true);
+        create(log);
+        investorCashLogService.create(cashes, log);
+        cashes.forEach(cash -> blockLinkedLogs(cash, log));
+    }
+
+    /**
      * Метод для блокирования отката операций, если в них участвовала сумма инвестора
      *
      * @param cash сумма инвестора
-     * @param log текущая операция логирования
+     * @param log  текущая операция логирования
      */
     private void blockLinkedLogs(InvestorsCash cash, TransactionLog log) {
         List<TransactionLog> linkedLogs = findByCash(cash);

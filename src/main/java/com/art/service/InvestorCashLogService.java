@@ -7,6 +7,7 @@ import com.art.repository.InvestorCashLogRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Сервис для работы с историей операций над деньгами
@@ -53,7 +54,7 @@ public class InvestorCashLogService {
      * @param txId id транзакции
      * @return найденная запись
      */
-    public InvestorCashLog findByTxId(Long txId) {
+    public List<InvestorCashLog> findByTxId(Long txId) {
         return investorCashLogRepository.findByTransactionLogId(txId);
     }
 
@@ -66,6 +67,16 @@ public class InvestorCashLogService {
     public void create(InvestorsCash cash, TransactionLog log) {
         InvestorCashLog cashLog = new InvestorCashLog(cash, log);
         investorCashLogRepository.save(cashLog);
+    }
+
+    /**
+     * Создать суммы в истории и в логе на основании суммы инвестора
+     *
+     * @param cashes суммы инвесторов
+     * @param log транзакция
+     */
+    public void create(Set<InvestorsCash> cashes, TransactionLog log) {
+        cashes.forEach(cash -> create(cash, log));
     }
 
     /**
