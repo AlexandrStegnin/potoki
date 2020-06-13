@@ -127,7 +127,8 @@ function createRow(cash) {
         $('<td>').text(cash.investor),
         $('<td>').text(cash.facility),
         $('<td>').text(cash.dateGivenCash),
-        $('<td>').text((cash.givenCash).toLocaleString())
+        $('<td>').text((cash.givenCash).toLocaleString()),
+        $('<td>').text(cash.cashType)
     );
 }
 

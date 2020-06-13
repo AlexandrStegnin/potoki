@@ -116,6 +116,7 @@
                         <th>Объект</th>
                         <th>Дата передачи денег</th>
                         <th>Переданная сумма</th>
+                        <th>Вид суммы</th>
                     </tr>
                     </thead>
                     <tbody style="text-align: center">

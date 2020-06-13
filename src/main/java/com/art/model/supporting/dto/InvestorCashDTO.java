@@ -1,6 +1,8 @@
 package com.art.model.supporting.dto;
 
+import com.art.model.InvestorCashLog;
 import com.art.model.InvestorsCash;
+import com.art.model.supporting.CashType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -27,12 +29,24 @@ public class InvestorCashDTO {
 
     private BigDecimal givenCash;
 
+    private String cashType;
+
     public InvestorCashDTO(InvestorsCash cash) {
         this.id = cash.getId();
         this.investor = cash.getInvestor().getLogin();
         this.facility = cash.getFacility().getFacility();
         this.dateGivenCash = convertDate(cash.getDateGivedCash());
         this.givenCash = cash.getGivedCash();
+        this.cashType = CashType.NEW.getTitle();
+    }
+
+    public InvestorCashDTO(InvestorCashLog cashLog) {
+        this.id = BigInteger.valueOf(cashLog.getId());
+        this.investor = cashLog.getInvestor().getLogin();
+        this.facility = cashLog.getFacility().getFacility();
+        this.dateGivenCash = convertDate(cashLog.getDateGivenCash());
+        this.givenCash = cashLog.getGivenCash();
+        this.cashType = CashType.OLD.getTitle();
     }
 
     private String convertDate(Date dateGivenCash) {
@@ -45,6 +59,10 @@ public class InvestorCashDTO {
             localDate = formatter.format(dateGivenCash);
         } catch (Exception ignored) {}
         return localDate;
+    }
+
+    public void setDateGivenCash(Date dateGivenCash) {
+        this.dateGivenCash = convertDate(dateGivenCash);
     }
 
     public BigDecimal getGivenCash() {
