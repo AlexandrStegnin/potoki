@@ -131,7 +131,10 @@ public class TransactionLogService {
                 return rollbackUpdate(log);
 
             case CLOSING:
-                return "Операция [CLOSING] не реализована";
+                return rollbackClosing(log);
+
+            case CLOSING_RESALE:
+                return "Операция [CLOSING_RESALE] не реализована";
 
             case DIVIDE:
                 return "Операция [DIVIDE] не реализована";
@@ -236,6 +239,11 @@ public class TransactionLogService {
         }
     }
 
+    @Transactional
+    public String rollbackClosing(TransactionLog log) {
+        return rollbackUpdate(log);
+    }
+
     /**
      * Изменяем значения суммы на значения суммы из лога
      *
@@ -245,31 +253,17 @@ public class TransactionLogService {
     @Transactional
     public void mergeCash(InvestorsCash cash, InvestorCashLog cashLog) {
         cash.setGivedCash(cashLog.getGivenCash());
-        if (!cash.getFacility().getId().equals(cashLog.getFacility().getId())) {
-            cash.setFacility(cashLog.getFacility());
-        }
-        if (null != cash.getUnderFacility() && !cash.getUnderFacility().getId().equals(cashLog.getUnderFacility().getId())) {
-            cash.setUnderFacility(cashLog.getUnderFacility());
-        }
-        if (cash.getInvestor().getId().equals(cashLog.getInvestor().getId())) {
-            cash.setInvestor(cashLog.getInvestor());
-        }
+        cash.setFacility(cashLog.getFacility());
+        cash.setUnderFacility(cashLog.getUnderFacility());
+        cash.setInvestor(cashLog.getInvestor());
         cash.setDateGivedCash(cashLog.getDateGivenCash());
-        if (null != cash.getCashSource() && !cash.getCashSource().getId().equals(cashLog.getCashSource().getId())) {
-            cash.setCashSource(cashLog.getCashSource());
-        }
-        if (null != cash.getCashType() && !cash.getCashType().getId().equals(cashLog.getCashType().getId())) {
-            cash.setCashType(cashLog.getCashType());
-        }
-        if (null != cash.getNewCashDetails() && !cash.getNewCashDetails().getId().equals(cashLog.getNewCashDetail().getId())) {
-            cash.setNewCashDetails(cashLog.getNewCashDetail());
-        }
-        if (null != cash.getInvestorsType() && !cash.getInvestorsType().getId().equals(cashLog.getInvestorType().getId())) {
-            cash.setInvestorsType(cashLog.getInvestorType());
-        }
-        if (null != cash.getShareKind() && !cash.getShareKind().getId().equals(cashLog.getShareKind().getId())) {
-            cash.setShareKind(cashLog.getShareKind());
-        }
+        cash.setCashSource(cashLog.getCashSource());
+        cash.setCashType(cashLog.getCashType());
+        cash.setNewCashDetails(cashLog.getNewCashDetail());
+        cash.setInvestorsType(cashLog.getInvestorType());
+        cash.setShareKind(cashLog.getShareKind());
+        cash.setTypeClosingInvest(cashLog.getTypeClosingInvest());
+        cash.setDateClosingInvest(cashLog.getDateClosingInvest());
         cash.setRealDateGiven(cashLog.getRealDateGiven());
     }
 
