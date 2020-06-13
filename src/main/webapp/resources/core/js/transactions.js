@@ -80,6 +80,7 @@ function rollbackTransaction(txId) {
         .done(function (data) {
             closeLoader();
             showMessage(data);
+            unblockTransaction(txId);
         })
         .fail(function (e) {
             closeLoader();
@@ -90,6 +91,20 @@ function rollbackTransaction(txId) {
         });
 }
 
+/**
+ * Разблокировать строку, которую блокировала откатываемая транзакция
+ *
+ * @param txId id транзакции
+ */
+function unblockTransaction(txId) {
+    $('#blocked-from-' + txId).find('.rollback-tx').removeAttr('disabled');
+}
+
+/**
+ * Создать таблицу во всплывающем окне со списком сумм
+ *
+ * @param cashList список сумм
+ */
 function createCashTable(cashList) {
     let cashTable = $('#cash-table');
     let tableBody = cashTable.find('tbody');
@@ -101,6 +116,12 @@ function createCashTable(cashList) {
     $('#cash-modal').modal('show');
 }
 
+/**
+ * Создать строку с суммой
+ *
+ * @param cash сумма
+ * @returns строка таблицы
+ */
 function createRow(cash) {
     return $('<tr>').append(
         $('<td>').text(cash.investor),
@@ -110,6 +131,11 @@ function createRow(cash) {
     );
 }
 
+/**
+ * Показать сообщение
+ *
+ * @param message сообщение
+ */
 function showMessage(message) {
     let modal = $('#msg-modal');
     modal.find('#msg').html(message);

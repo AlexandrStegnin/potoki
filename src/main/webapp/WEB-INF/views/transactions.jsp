@@ -61,7 +61,7 @@
     </div>
 </div>
 <div class="container-fluid">
-    <table class="table table-striped w-auto table-hover">
+    <table class="table table-striped w-auto table-hover" id="tx-table">
         <thead>
         <tr style="text-align: center">
             <th>Кем создана</th>
@@ -82,7 +82,7 @@
                     <c:set var="enabled" value="disabled"/>
                 </c:otherwise>
             </c:choose>
-            <tr>
+            <tr id="blocked-from-${tx.blockedFrom}">
                 <td>${tx.createdBy}</td>
                 <td>${tx.txDate}</td>
                 <td>${tx.type}</td>
