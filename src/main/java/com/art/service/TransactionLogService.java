@@ -317,13 +317,13 @@ public class TransactionLogService {
      *
      * @param cashes суммы инвесторов
      */
-    public void resale(Set<InvestorsCash> cashes) {
+    public void resale(InvestorsCash oldCash, Set<InvestorsCash> cashes) {
         TransactionLog log = new TransactionLog();
         log.setInvestorsCashes(cashes);
         log.setType(TransactionType.CLOSING_RESALE);
         log.setRollbackEnabled(true);
         create(log);
-        investorCashLogService.create(cashes, log);
+        investorCashLogService.create(oldCash, log);
         cashes.forEach(cash -> blockLinkedLogs(cash, log));
     }
 

@@ -312,9 +312,8 @@ public class InvestorsCashController {
             Set<InvestorsCash> cashSet = new HashSet<>();
             cashSet.add(cash);
             cashSet.add(newInvestorsCash);
-            cashSet.add(oldCash);
             service.shutdown();
-            transactionLogService.resale(cashSet);
+            transactionLogService.resale(oldCash, cashSet);
         } else {
             InvestorsCash updatedCash = investorsCashService.findById(investorsCash.getId());
             transactionLogService.close(updatedCash);
