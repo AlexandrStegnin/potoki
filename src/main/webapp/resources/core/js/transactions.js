@@ -97,7 +97,9 @@ function rollbackTransaction(txId) {
  * @param txId id транзакции
  */
 function unblockTransaction(txId) {
-    $('#blocked-from-' + txId).find('.rollback-tx').removeAttr('disabled');
+    $.each($('#blocked-from-' + txId), function () {
+        $(this).find('.rollback-tx').removeAttr('disabled');
+    })
 }
 
 /**
