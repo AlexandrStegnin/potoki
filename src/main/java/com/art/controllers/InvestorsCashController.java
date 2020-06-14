@@ -990,11 +990,13 @@ public class InvestorsCashController {
                 newCashes.add(cash);
                 newCashes.add(newInvestorsCash);
             } else {
+                InvestorsCash cashForTx = new InvestorsCash(c);
+                cashForTx.setId(c.getId());
                 c.setDateClosingInvest(dateClose);
                 c.setTypeClosingInvest(typeClosingInvestService.findByTypeClosingInvest("Вывод"));
                 c.setRealDateGiven(realDateGiven);
                 investorsCashService.update(c);
-                closeCashes.add(c);
+                closeCashes.add(cashForTx);
             }
 
             updateMailingGroups(c, "delete");
