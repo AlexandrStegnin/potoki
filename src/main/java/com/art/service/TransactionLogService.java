@@ -227,9 +227,11 @@ public class TransactionLogService {
             cashes.forEach(cash -> {
                 List<InvestorCashLog> cashLogs = investorCashLogService.findByTxId(log.getId());
                 cashLogs.forEach(cashLog -> {
-                    mergeCash(cash, cashLog);
-                    investorCashLogService.delete(cashLog);
-                    investorsCashService.update(cash);
+                    if (cash.getId().longValue() == cashLog.getCashId()) {
+                        mergeCash(cash, cashLog);
+                        investorCashLogService.delete(cashLog);
+                        investorsCashService.update(cash);
+                    }
                 });
             });
             unblockTransactions(log.getId());
