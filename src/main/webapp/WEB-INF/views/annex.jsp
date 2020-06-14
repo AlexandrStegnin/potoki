@@ -21,6 +21,8 @@
             <form:form modelAttribute="filter" method="POST" action="/investor/annexes" class="form-inline"
                        id="search-form">
                 <div class="row" style="margin: 20px;">
+                    <form:label path="" for="search-annex" cssStyle="margin: 0 10px 0 0">Название файла:</form:label>
+                    <form:input path="annexName" type="text" id="search-annex" cssStyle="margin: 0 10px 0 0"/>
                     <form:select path="investor" id="investors" class="selectpicker" data-live-search="true"
                                  multiple="false">
                         <c:forEach var="inv" items="${investors}">
