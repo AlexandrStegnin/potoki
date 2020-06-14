@@ -54,7 +54,7 @@
     </div>
 </div>
 <div class="container-fluid">
-    <table class="table table-striped w-auto table-hover">
+    <table class="table table-striped w-auto table-hover" id="annex-table">
         <thead>
         <tr style="text-align: center">
             <th>Инвестор</th>

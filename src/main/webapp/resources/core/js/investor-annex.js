@@ -1,4 +1,7 @@
 jQuery(document).ready(function ($) {
+    $('#search-annex').on('keyup', function () {
+        filterByAnnexName();
+    })
     $('.delete-annex').click(function (e) {
         e.preventDefault();
         let annexId = $(this).attr('data-annex-id');
@@ -76,4 +79,23 @@ function showPopup(message) {
     setTimeout(function () {
         $('#msg-modal').modal('hide');
     }, 3000);
+}
+
+function filterByAnnexName() {
+    let input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("search-annex");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("annex-table");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
 }
