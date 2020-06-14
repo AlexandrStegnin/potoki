@@ -21,6 +21,6 @@ public interface TransactionLogRepository extends JpaRepository<TransactionLog, 
 
     List<TransactionLog> findByInvestorsCashesContains(InvestorsCash cash);
 
-    TransactionLog findByBlockedFromId(Long blockedFromId);
+    List<TransactionLog> findByBlockedFromId(Long blockedFromId);
 
 }

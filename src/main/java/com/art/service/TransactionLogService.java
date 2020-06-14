@@ -244,22 +244,19 @@ public class TransactionLogService {
     public String rollbackResale(TransactionLog log) {
         Set<InvestorsCash> cashes = log.getInvestorsCashes();
         try {
-            Set<InvestorsCash> cashToDelete = new HashSet<>();
+            Set<InvestorsCash> cashToDelete = new HashSet<>(cashes);
             List<InvestorCashLog> cashLogs = investorCashLogService.findByTxId(log.getId());
-            cashLogs.forEach(cashLog -> {
-                cashToDelete.addAll(cashes.stream()
-                        .filter(cash -> cash.getId().longValue() != cashLog.getCashId())
-                        .collect(Collectors.toSet())
-                );
-                cashes.stream()
-                        .filter(cash -> cash.getId().longValue() == cashLog.getCashId())
-                        .forEach(cash -> {
-                            mergeCash(cash, cashLog);
-                            investorCashLogService.delete(cashLog);
-                            investorsCashService.update(cash);
-                        });
-            });
+            cashes.forEach(cash -> cashLogs.forEach(cashLog -> {
+                if (cash.getId().longValue() == cashLog.getCashId()) {
+                    cashToDelete.remove(cash);
+                    mergeCash(cash, cashLog);
+                    investorCashLogService.delete(cashLog);
+                    investorsCashService.update(cash);
+                }
+            }));
+
             cashToDelete.forEach(cash -> investorsCashService.deleteById(cash.getId()));
+
             unblockTransactions(log.getId());
             transactionLogRepository.delete(log);
             return "Откат операции прошёл успешно";
@@ -336,9 +333,25 @@ public class TransactionLogService {
     }
 
     /**
+     * Создать запись категории "Закрытие. Вывод" в логе по массовому закрытию
+     *
+     * @param cashes список сумм инвестора
+     */
+    public void close(Set<InvestorsCash> cashes) {
+        TransactionLog log = new TransactionLog();
+        log.setInvestorsCashes(cashes);
+        log.setType(TransactionType.CLOSING);
+        log.setRollbackEnabled(true);
+        create(log);
+        investorCashLogService.create(cashes, log);
+        cashes.forEach(cash -> blockLinkedLogs(cash, log));
+    }
+
+    /**
      * Создать запись категории "Закрытие. Перепродажа доли" в логе
      *
-     * @param cashes суммы инвесторов
+     * @param oldCash старые суммы
+     * @param cashes  суммы инвесторов
      */
     public void resale(InvestorsCash oldCash, Set<InvestorsCash> cashes) {
         oldCash.setDateClosingInvest(null);
@@ -350,6 +363,27 @@ public class TransactionLogService {
         log.setRollbackEnabled(true);
         create(log);
         investorCashLogService.create(oldCash, log);
+        cashes.forEach(cash -> blockLinkedLogs(cash, log));
+    }
+
+    /**
+     * Создать запись категории "Закрытие. Перепродажа доли" в логе по массовому закрытию
+     *
+     * @param cashes суммы инвесторов
+     */
+    public void resale(Set<InvestorsCash> oldCashes, Set<InvestorsCash> cashes) {
+        oldCashes.forEach(oldCash -> {
+            oldCash.setDateClosingInvest(null);
+            oldCash.setTypeClosingInvest(null);
+            oldCash.setRealDateGiven(null);
+        });
+
+        TransactionLog log = new TransactionLog();
+        log.setInvestorsCashes(cashes);
+        log.setType(TransactionType.CLOSING_RESALE);
+        log.setRollbackEnabled(true);
+        create(log);
+        investorCashLogService.create(oldCashes, log);
         cashes.forEach(cash -> blockLinkedLogs(cash, log));
     }
 
@@ -378,11 +412,11 @@ public class TransactionLogService {
      * @param logId id лога
      */
     private void unblockTransactions(Long logId) {
-        TransactionLog blockedLog = transactionLogRepository.findByBlockedFromId(logId);
-        if (null != blockedLog) {
+        List<TransactionLog> blockedLogs = transactionLogRepository.findByBlockedFromId(logId);
+        blockedLogs.forEach(blockedLog -> {
             blockedLog.setRollbackEnabled(true);
             blockedLog.setBlockedFrom(null);
             transactionLogRepository.save(blockedLog);
-        }
+        });
     }
 }
