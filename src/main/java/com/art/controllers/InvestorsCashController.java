@@ -330,10 +330,10 @@ public class InvestorsCashController {
     }
 
     /**
-     * Обновление суммы инвестора
+     * Реинвестирование (?) суммы инвестора
      *
-     * @param searchSummary сумма для обновления
-     * @return ответ об успешном/не успешном обновлении суммы
+     * @param searchSummary сумма для реинвестирования
+     * @return ответ об успешном/не успешном реинвестировании суммы
      */
     @PostMapping(value = {"/saveCash"}, produces = "application/json;charset=UTF-8")
     public @ResponseBody
@@ -680,6 +680,12 @@ public class InvestorsCashController {
         }
     }
 
+    /**
+     * Реинвестирование с продажи/аренды
+     *
+     * @param searchSummary суммы для реинвестирования
+     * @return сообщение об успешном/не успешном реинвестировании
+     */
     @PostMapping(value = {"/saveReCash"}, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     GenericResponse saveReCash(@RequestBody SearchSummary searchSummary) {
@@ -739,6 +745,12 @@ public class InvestorsCashController {
         return response;
     }
 
+    /**
+     * Реинвестирование с продажи (сохранение)
+     *
+     * @param searchSummary суммы для реинвестирования
+     * @return сообщение об успешном/не успешном реинвестировании
+     */
     @PostMapping(value = {"/saveReInvCash"}, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     GenericResponse saveReInvCash(@RequestBody SearchSummary searchSummary) {
@@ -906,11 +918,17 @@ public class InvestorsCashController {
         return response[0];
     }
 
+    /**
+     * Массовое закрытие сумм
+     *
+     * @param searchSummary список сумм для закрытия
+     * @return сообщение об успешном/не успешном массовом закрытии
+     */
     @PostMapping(value = {"/closeCash"}, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     GenericResponse closeCash(@RequestBody SearchSummary searchSummary) {
         Users invBuyer = null;
-        if (!Objects.equals(searchSummary.getUser(), null)) {
+        if (null != searchSummary.getUser()) {
             invBuyer = userService.findById(searchSummary.getUser().getId());
         }
 
@@ -922,8 +940,14 @@ public class InvestorsCashController {
         Date dateClose = searchSummary.getDateReinvest();
         Date realDateGiven = searchSummary.getRealDateGiven();
         Users finalInvBuyer = invBuyer;
+        // список сумм, которые закрываем для вывода
+        Set<InvestorsCash> closeCashes = new HashSet<>();
+        // список сумм, которые закрываем для перепродажи доли
+        Set<InvestorsCash> oldCashes = new HashSet<>();
+        // список сумм, которые получатся на выходе
+        Set<InvestorsCash> newCashes = new HashSet<>();
         cashList.forEach(c -> {
-            if (!Objects.equals(finalInvBuyer, null)) {
+            if (null != finalInvBuyer) { // Перепродажа доли
                 TypeClosingInvest closingInvest = typeClosingInvestService.findByTypeClosingInvest("Перепродажа доли");
                 NewCashDetails newCashDetails = newCashDetailsService.findByNewCashDetail("Перепокупка доли");
 
@@ -939,7 +963,7 @@ public class InvestorsCashController {
                 cash.setNewCashDetails(newCashDetails);
                 cash.setRealDateGiven(realDateGiven);
 
-                cash = investorsCashService.create(cash);
+                cash = investorsCashService.createNew(cash);
 
                 newInvestorsCash.setCashSource(null);
                 newInvestorsCash.setId(null);
@@ -956,20 +980,30 @@ public class InvestorsCashController {
                 cashes.forEach(ca -> service.submit(() -> updateMailingGroups(ca, "add")));
 
                 service.shutdown();
-                investorsCashService.create(newInvestorsCash);
+                investorsCashService.createNew(newInvestorsCash);
 
                 c.setDateClosingInvest(dateClose);
                 c.setTypeClosingInvest(closingInvest);
                 investorsCashService.update(c);
+                oldCashes.add(c);
+                newCashes.add(c);
+                newCashes.add(cash);
+                newCashes.add(newInvestorsCash);
             } else {
                 c.setDateClosingInvest(dateClose);
                 c.setTypeClosingInvest(typeClosingInvestService.findByTypeClosingInvest("Вывод"));
                 c.setRealDateGiven(realDateGiven);
                 investorsCashService.update(c);
+                closeCashes.add(c);
             }
 
             updateMailingGroups(c, "delete");
         });
+        if (closeCashes.size() > 0) {
+            transactionLogService.close(closeCashes);
+        } else {
+            transactionLogService.resale(oldCashes, newCashes);
+        }
 
         response.setMessage("Массовое закрытие прошло успешно.");
         return response;
