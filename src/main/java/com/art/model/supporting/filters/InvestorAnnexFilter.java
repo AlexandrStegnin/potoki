@@ -11,4 +11,6 @@ public class InvestorAnnexFilter {
 
     private String investor;
 
+    private String annexName;
+
 }
