@@ -2,6 +2,7 @@ package com.art.specifications;
 
 import com.art.model.supporting.filters.InvestorAnnexFilter;
 import com.art.model.supporting.view.InvestorAnnex;
+import com.art.model.supporting.view.InvestorAnnex_;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,7 @@ public class InvestorAnnexSpecification extends BaseSpecification<InvestorAnnex,
     public Specification<InvestorAnnex> getFilter(InvestorAnnexFilter filter) {
         return (root, query, cb) -> where(
                 investorEqual(filter.getInvestor()))
+                .and(annexNameContain(filter.getAnnexName()))
                 .toPredicate(root, query, cb);
     }
 
@@ -26,7 +28,17 @@ public class InvestorAnnexSpecification extends BaseSpecification<InvestorAnnex,
             return null;
         } else {
             return ((root, criteriaQuery, criteriaBuilder) ->
-                    criteriaBuilder.equal(root.get("investor"), investor)
+                    criteriaBuilder.equal(root.get(InvestorAnnex_.investor), investor)
+            );
+        }
+    }
+
+    private static Specification<InvestorAnnex> annexNameContain(String annexName) {
+        if (annexName == null || annexName.isEmpty()) {
+            return null;
+        } else {
+            return ((root, criteriaQuery, criteriaBuilder) ->
+                    criteriaBuilder.like(root.get(InvestorAnnex_.annexName), "%" + annexName + "%")
             );
         }
     }
