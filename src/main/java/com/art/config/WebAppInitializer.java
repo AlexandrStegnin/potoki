@@ -38,6 +38,7 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
         dispatcher.setLoadOnStartup(1);
         dispatcher.addMapping("/");
         dispatcher.setMultipartConfig(getMultipartConfigElement());
+        dispatcher.setAsyncSupported(true);
     }
 
     @Override
@@ -69,7 +70,7 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
     @Override
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
         registration.setMultipartConfig(getMultipartConfigElement());
-
+        registration.setAsyncSupported(true);
     }
 
     private MultipartConfigElement getMultipartConfigElement() {
