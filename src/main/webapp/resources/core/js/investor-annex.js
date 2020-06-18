@@ -1,4 +1,5 @@
 jQuery(document).ready(function ($) {
+    connect();
     $('#search-annex').on('keyup', function () {
         filterByAnnexName();
     })
@@ -23,7 +24,7 @@ function uploadAnnexes() {
     });
     $('#msg').html('Начинаем загрузку файлов...');
     $('#msg-modal').modal('show');
-    connect();
+    // connect();
     $.ajax({
         type: "POST",
         enctype: "multipart/form-data",
@@ -39,7 +40,6 @@ function uploadAnnexes() {
         },
         success: function (data) {
             showPopup(data.message);
-            disconnect();
         },
         error: function (e) {
             showPopup(e.toString());
