@@ -84,18 +84,7 @@
                              data-live-search="true" data-width="130px" title="Выберите объект..."
                              data-actions-box="true" data-select-all-text="Выбрать всё"
                              data-deselect-all-text="Очистить">
-                    <c:forEach var="f" items="${facilitiesList}">
-                        <option
-                                <c:forEach var="filterFacility" items="${cashFilters.facilities}">
-                                    <c:choose>
-                                        <c:when test="${f.facility eq filterFacility}">selected="selected"</c:when>
-                                    </c:choose>
-                                </c:forEach>
-                                value="${f.facility}" id="${f.id}"
-                                data-facility-name="${f.facility}"
-                        >${f.facility}
-                        </option>
-                    </c:forEach>
+                    <form:options items="${facilitiesList}" itemValue="id" itemLabel="facility" />
                 </form:select>
                 <label class="sr-only" for="uFacilities">Подобъект:</label>
                 <form:select path="underFacilities" id="uFacilities" multiple="true" class="selectpicker"

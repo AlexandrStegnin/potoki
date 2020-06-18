@@ -325,9 +325,10 @@ function populateFilters(pageName) {
     switch (pageName) {
         case "investorscash":
             //Search form
-            $.each(fFacilities.find('option:selected'), function (ind, el) {
-                facilitiesId.push(el.id);
+            $.each(fFacilities.find(':selected'), function (ind, el) {
+                facilitiesId.push(el.value);
             });
+            console.log(facilitiesId);
             facilityId = fFacilities.find('option:selected').attr('id');
             $.each(uFacilities.find(':selected'), function (ind, el) {
                 underFacilitiesId.push(el.id);

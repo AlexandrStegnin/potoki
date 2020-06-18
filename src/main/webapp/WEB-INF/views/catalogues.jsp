@@ -19,8 +19,10 @@
     <script type="text/javascript" src="<c:url value='/resources/core/js/AjaxLoader.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/mailingScripts.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/applic.js' />" ></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/sockjs-0.3.4.js' />" ></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/stomp.js' />" ></script>
+    <script type="text/javascript"
+            src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js' />"></script>
+    <script type="text/javascript"
+            src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js' />"></script>
 
     <script type="text/javascript" src="<c:url value='/resources/core/js/socketScripts.js' />" ></script>
 
