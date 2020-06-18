@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +21,6 @@ import java.util.Objects;
 
 @Service
 @Transactional
-@Repository
 public class InvestorsFlowsSaleService {
     @PersistenceContext(name = "persistanceUnit")
     private EntityManager em;
@@ -39,7 +37,7 @@ public class InvestorsFlowsSaleService {
 
 
     public void create(InvestorsFlowsSale sale) {
-        this.em.persist(sale);
+        saleRepository.save(sale);
     }
 
     public void update(InvestorsFlowsSale sale) {
