@@ -110,11 +110,12 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/savePassword").permitAll()
+                .antMatchers("/turn/**", "/progress/**", "/status/**").permitAll()
                 .antMatchers("/kind-on-project", "/investments", "/union-profit", "/have-unread")
                 .permitAll()
                 .antMatchers("/mark-read-annex", "/cashing-money", "/annexToContract/**")
                 .access("hasAnyRole('ADMIN', 'INVESTOR')")
-                .antMatchers("/investor/annexes", "/investor/annexes/**")
+                .antMatchers("/investor/annexes", "/investor/annexes/**", "/investor/annexes/upload")
                 .access("hasRole('ADMIN') or hasRole('DBA')")
                 .antMatchers("/", "/welcome", "/cashflows")
                 .access("hasRole('ADMIN') or hasRole('DBA') or hasRole('INVESTOR')")
