@@ -146,7 +146,7 @@ public class InvestorsCashSpecification extends BaseSpecification<InvestorsCash,
                 return null;
             }
             Facilities undefinedFacility = facilities.stream()
-                    .filter(facility -> facility.getFacility().equalsIgnoreCase("Выберите объект"))
+                    .filter(facility -> facility != null && facility.getFacility().equalsIgnoreCase("Выберите объект"))
                     .findFirst()
                     .orElse(null);
             if (null != undefinedFacility) {
