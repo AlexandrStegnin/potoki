@@ -55,14 +55,14 @@
     <div class="panel panel-default">
         <!-- Default panel contents -->
         <div class="panel-heading"><span class="lead">Выплаты инвесторам (продажа)</span></div>
-        <form:form modelAttribute="flowsSaleFilters" action="/flowsSale" method="POST" class="form-inline" id="filter-form">
-            <div class="row" style="margin: 10px;">
+        <div class="row" style="margin: 10px;">
+            <form:form modelAttribute="flowsSaleFilters" action="/flowsSale" method="POST" class="form-inline" id="filter-form">
                 <input type="hidden" id="pageNumber" name="pageNumber" value="0">
                 <input type="hidden" id="pageSize" name="pageSize" value="${flowsSaleFilters.pageSize}">
                 <input type="hidden" id="total" name="total" value="${page.content.size()}">
 
                 <label class="sr-only" for="fFacilities">Объект:</label>
-                <form:select path="facility" id="fFacilities" multiple="false">
+                <form:select path="facility" id="fFacilities" multiple="false" cssClass="selectpicker">
                     <c:forEach var="f" items="${facilities}">
                         <option
                                 <c:choose>
@@ -73,7 +73,7 @@
                     </c:forEach>
                 </form:select>
                 <label class="sr-only" for="uFacilities">Подобъект:</label>
-                <form:select path="underFacility" id="uFacilities" multiple="false">
+                <form:select path="underFacility" id="uFacilities" multiple="false" cssClass="selectpicker">
                     <c:forEach var="uf" items="${underFacilities}">
                         <option
                                 <c:choose>
@@ -110,7 +110,25 @@
                         <input type="checkbox" name="allRows" id="all"
                         <c:if test="${flowsSaleFilters.allRows == true}"> checked="checked" </c:if> >На одной странице</label>
                 </div>
-                <button data-table-id="invFlowsSale" type="button" id="unblock_operations" class="btn btn-danger btn-sm">Разблокировать операции</button>
+            </div>
+            <div class="row" style="margin: 10px;">
+                <button data-table-id="invFlowsSale" type="button" id="unblock_operations" class="btn btn-danger btn-sm">
+                    Разблокировать операции
+                </button>
+                <div class="btn btn-primary btn-sm pull-right" id="checkAll">
+                    <label class="checkbox-inline">
+                        <input type="checkbox" id="checkIt" value="">Выделить всё</label>
+                </div>
+
+                <div class="dropdown pull-right" style="margin-right: 10px">
+                    <button id="actions" type="button" data-toggle="dropdown"
+                            class="btn btn-success btn-sm dropdown-toggle pull-right">Действия <span
+                            class="glyphicon glyphicon-th-list"></span></button>
+                    <ul class="dropdown-menu" id="reinvest">
+                        <li id="reinvestAll"><a href="/#">Массовое реинвестирование</a></li>
+                        <li id="deleteAll"><a href="/#">Удалить выбранные суммы</a></li>
+                    </ul>
+                </div>
             </div>
         </form:form>
         <sec:authorize access="isFullyAuthenticated()">
@@ -128,21 +146,6 @@
                                id="loadInvFlowsSaleAjax">
                         <a href="<c:url value='/deleteFlowsSale' />" class="btn btn-danger btn-sm"
                            style="margin-left: 10px">Удалить</a>
-                        <div class="btn btn-primary btn-sm pull-right" id="checkAll">
-                            <label class="checkbox-inline">
-                                <input type="checkbox" id="checkIt" value="">Выделить всё</label>
-                        </div>
-
-                        <div class="dropdown pull-right" style="margin-right: 10px">
-                            <button id="actions" type="button" data-toggle="dropdown"
-                                    class="btn btn-success btn-sm dropdown-toggle pull-right">Действия <span
-                                    class="glyphicon glyphicon-th-list"></span></button>
-                            <ul class="dropdown-menu" id="reinvest">
-                                <li id="reinvestAll"><a href="/#">Массовое реинвестирование</a></li>
-                                <li id="deleteAll"><a href="/#">Удалить выбранные суммы</a></li>
-                            </ul>
-                        </div>
-
                     </div>
                 </form:form>
             </sec:authorize>

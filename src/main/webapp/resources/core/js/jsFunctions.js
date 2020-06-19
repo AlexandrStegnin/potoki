@@ -108,7 +108,8 @@ function getUnderFacilitiesFromLocalStorage(facilityId, uFacilitiesId) {
         .remove()
         .end()
         .append(options)
-        .prop('selected', CHOOSE_UNDER_FACILITY);
+        .prop('selected', CHOOSE_UNDER_FACILITY)
+        .selectpicker('refresh');
 }
 
 function getMultipleUFFromLS(facilitiesList, uFacilitiesId) {
