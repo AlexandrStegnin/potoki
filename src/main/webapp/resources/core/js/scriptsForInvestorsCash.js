@@ -512,6 +512,9 @@ jQuery(document).ready(function ($) {
             reUnderFacility.css("display", "none");
             $("#dateRepRow").css("display", "none");
             $('#investorBuyerRow').css('display', 'none');
+            if ($(this).find(':selected').text() === 'Выберите вид закрытия') {
+                $('#dateCloseInv').val('');
+            }
         }
     });
 
@@ -913,7 +916,8 @@ function disableFields() {
             dateRep.css("display", "none");
         }
         $('#invType').prop('disabled', false);
-        $('#dateCloseInv').prop('disabled', false);
+        $('#dateCloseInv').removeAttr('disabled');
+        $('#dateCloseInvRow').removeAttr('disabled');
         $('#typeClosing').prop('disabled', false);
         $('#reFacilities').prop('disabled', false);
         $('#reUnderFacilities').prop('disabled', false);
