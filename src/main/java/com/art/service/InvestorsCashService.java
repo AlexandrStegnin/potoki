@@ -214,6 +214,7 @@ public class InvestorsCashService {
             UnderFacilities finalUnderFacility = underFacility;
             searchSummary.getInvestorsList().forEach(user -> {
                 if (searchSummary.getInvestorsCash() != null) {
+                    List<UnderFacilities> underFacilities = searchSummary.getUnderFacilitiesList();
                     InvestorsCash invCash = searchSummary.getInvestorsCash();
                     invCash.setInvestor(user);
                     invCash.setUnderFacility(finalUnderFacility);
@@ -223,7 +224,7 @@ public class InvestorsCashService {
                         cashForGetting[0].setUnderFacility(null);
                     }
                     Date dateClosingInvest = cashForGetting[0].getDateGivedCash();
-                    List<InvestorsCash> investorsCashes = getMoneyForCashing(cashForGetting[0]);
+                    List<InvestorsCash> investorsCashes = getMoneyForCashing(cashForGetting[0], underFacilities);
                     if (investorsCashes.size() == 0) {
                         result[0] = "Нет денег для вывода";
                         return;
@@ -367,12 +368,12 @@ public class InvestorsCashService {
         to.setRoom(from.getRoom());
     }
 
-    public List<InvestorsCash> getMoneyForCashing(InvestorsCash cashForGetting) {
+    public List<InvestorsCash> getMoneyForCashing(InvestorsCash cashForGetting, List<UnderFacilities> underFacilities) {
         CashFilter filter = new CashFilter();
         filter.setInvestor(cashForGetting.getInvestor());
         filter.setFacility(cashForGetting.getFacility().getFacility());
         if (!Objects.equals(null, cashForGetting.getUnderFacility())) {
-            filter.setUnderFacility(cashForGetting.getUnderFacility().getUnderFacility());
+            filter.setUnderFacilities(underFacilities);
         }
         Pageable pageable = new PageRequest(0, Integer.MAX_VALUE);
         return investorsCashRepository.findAll(
