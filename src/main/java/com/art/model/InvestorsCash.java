@@ -540,4 +540,16 @@ public class InvestorsCash implements Serializable {
         this.realDateGiven = realDateGiven;
     }
 
+
+    private ClientType clientType;
+
+    @OneToOne
+    @JoinColumn(name = "ClientTypeId", referencedColumnName = "id")
+    public ClientType getClientType() {
+        return clientType;
+    }
+
+    public void setClientType(ClientType clientType) {
+        this.clientType = clientType;
+    }
 }

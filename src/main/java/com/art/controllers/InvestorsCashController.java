@@ -43,6 +43,9 @@ public class InvestorsCashController {
     @Autowired
     private TransactionLogService transactionLogService;
 
+    @Autowired
+    private ClientTypeService clientTypeService;
+
     @Resource(name = "afterCashingService")
     private AfterCashingService afterCashingService;
 
@@ -1207,6 +1210,11 @@ public class InvestorsCashController {
     @ModelAttribute("shareKinds")
     public List<ShareKind> initializeShareKinds() {
         return shareKindService.init();
+    }
+
+    @ModelAttribute("clientTypes")
+    public List<ClientType> initializeClientTypes() {
+        return clientTypeService.findAll();
     }
 
     @InitBinder
