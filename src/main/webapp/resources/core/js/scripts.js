@@ -466,12 +466,12 @@ function getFilters(pageName, lastFilters) {
     if (pageName === 'investorscash') {
         let facilitiesId = lastFilters[0].facilitiesId;
         $.each(facilitiesId, function (ind, el) {
-            $('#fFacilities option[id=' + el + ']').attr('selected', 'selected');
+            $('#fFacilities option[value=' + el + ']').attr('selected', 'selected').selectpicker('refresh');
         });
         getMultipleUFFromLS(facilitiesId, 'uFacilities');
         let underFacilitiesId = lastFilters[0].underFacilitiesId;
         $.each(underFacilitiesId, function (ind, el) {
-            $('#uFacilities option[id=' + el + ']').attr('selected', 'selected');
+            $('#uFacilities option[id=' + el + ']').attr('selected', 'selected').selectpicker('refresh');
         });
     } else {
         $('#fFacilities option[id=' + lastFilters[0].facilityId + ']').attr('selected', 'selected');

@@ -84,7 +84,7 @@
                              data-live-search="true" data-width="130px" title="Выберите объект..."
                              data-actions-box="true" data-select-all-text="Выбрать всё"
                              data-deselect-all-text="Очистить">
-                    <form:options items="${facilitiesList}" itemValue="id" itemLabel="facility" />
+                    <form:options items="${facilitiesList}" itemValue="id" itemLabel="facility"" />
                 </form:select>
                 <label class="sr-only" for="uFacilities">Подобъект:</label>
                 <form:select path="underFacilities" id="uFacilities" multiple="true" class="selectpicker"
