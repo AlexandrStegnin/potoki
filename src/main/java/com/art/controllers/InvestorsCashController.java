@@ -1,10 +1,7 @@
 package com.art.controllers;
 
 import com.art.model.*;
-import com.art.model.supporting.AfterCashing;
-import com.art.model.supporting.GenericResponse;
-import com.art.model.supporting.SearchSummary;
-import com.art.model.supporting.TransactionType;
+import com.art.model.supporting.*;
 import com.art.model.supporting.filters.CashFilter;
 import com.art.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -596,28 +593,40 @@ public class InvestorsCashController {
         return response;
     }
 
+    /**
+     * Вывести все деньги по инвесторам
+     *
+     * @param summary модель с деньгами для вывода
+     * @return сообщение об успешном/не успешном выполнении
+     */
     @PostMapping(value = "/allMoneyCashing", produces = "application/json;charset=UTF-8")
     public @ResponseBody
-    GenericResponse allMoneyCashing(@RequestBody SearchSummary searchSummary) {
+    GenericResponse allMoneyCashing(@RequestBody SearchSummary summary) {
 
         GenericResponse response = new GenericResponse();
 
         UnderFacilities underFacility = null;
-        if (!searchSummary.getInvestorsCash().getUnderFacility().getUnderFacility().equals("Выберите подобъект")) {
-            underFacility = underFacilitiesService.findByUnderFacility(searchSummary.getInvestorsCash().getUnderFacility().getUnderFacility());
+        if (!summary.getInvestorsCash().getUnderFacility().getUnderFacility().equals("Выберите подобъект")) {
+            underFacility = underFacilitiesService.findByUnderFacility(summary.getInvestorsCash().getUnderFacility().getUnderFacility());
         }
 
-        searchSummary.getInvestorsCash().setUnderFacility(underFacility);
-        String out = investorsCashService.cashingAllMoney(searchSummary);
+        summary.getInvestorsCash().setUnderFacility(underFacility);
+        String out = investorsCashService.cashingAllMoney(summary);
 
         if (StringUtils.isEmpty(out)) {
-            response.setMessage("Деньги инвестора " + searchSummary.getUser().getLogin() + " успешно выведены.");
+            response.setMessage("Деньги инвестора " + summary.getUser().getLogin() + " успешно выведены.");
         } else {
             response.setMessage(out);
         }
         return response;
     }
 
+    /**
+     * Страница для вывода денег инвестора
+     *
+     * @param model модель для страницы
+     * @return страница
+     */
     @GetMapping(value = {"/getInvestorsCash"})
     public String getCash(ModelMap model) {
         String title = "Вывод денег инвестора";
@@ -628,30 +637,42 @@ public class InvestorsCashController {
         return "getInvestorsCash";
     }
 
+    /**
+     * Вывести суммы по ОДНОМУ инвестору
+     *
+     * @param summary модель для вывода
+     * @return сообщение об успешном/не успешном выводе
+     */
     @PostMapping(value = "/cashing-money")
     public @ResponseBody
     String cashing(@RequestBody SearchSummary summary) {
-        if (Objects.isNull(summary.getUser().getId())) {
+        if (null == summary.getUser().getId()) {
             throw new RuntimeException("Отсутствует id пользователя");
         }
         Users investor = userService.findById(summary.getUser().getId());
-        if (Objects.isNull(investor)) {
+        if (null == investor) {
             throw new RuntimeException("Пользователь с id = [" + summary.getUser().getId() + "] не найден");
         }
         summary.setInvestorsList(Collections.singletonList(investor));
         return investorsCashService.cashingMoney(summary);
     }
 
+    /**
+     * Вывести суммы по ОДНОМУ инвестору
+     *
+     * @param summary модель для вывода
+     * @return сообщение об успешном/не успешном выводе
+     */
     @PostMapping(value = {"/getInvestorsCash"})
-    public String cashing(@ModelAttribute("searchSummary") SearchSummary searchSummary,
+    public String cashing(@ModelAttribute("searchSummary") SearchSummary summary,
                           BindingResult result, ModelMap model) {
         Users investor = null;
         if (result.hasErrors()) {
             return "getInvestorsCash";
         }
-        InvestorsCash cash = searchSummary.getInvestorsCash();
+        InvestorsCash cash = summary.getInvestorsCash();
         if (cash != null) {
-            Users inv = searchSummary.getInvestorsCash().getInvestor();
+            Users inv = summary.getInvestorsCash().getInvestor();
             if (inv != null) {
                 if (inv.getId() != null) {
                     investor = userService.findById(inv.getId());
@@ -663,10 +684,10 @@ public class InvestorsCashController {
                 investor = inv;
             }
         }
-        if (searchSummary.getInvestorsList() == null) {
-            searchSummary.setInvestorsList(Collections.singletonList(investor));
+        if (summary.getInvestorsList() == null) {
+            summary.setInvestorsList(Collections.singletonList(investor));
         }
-        String out = investorsCashService.cashingMoney(searchSummary);
+        String out = investorsCashService.cashingMoney(summary);
 
         if (StringUtils.isEmpty(out)) {
             Page<InvestorsCash> page = investorsCashService.findAll(cashFilters, new PageRequest(0, Integer.MAX_VALUE));
