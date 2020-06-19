@@ -43,14 +43,18 @@
             </div>
         </div>
 
-        <c:set var="uf" value="${underFacilities}"/>
+        <c:set var="uf" value="${underFacilitiesList}"/>
 
         <div class="row" id="underFacilitiesRow">
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="underFacilities">Подобъект:</label>
                 <div class="col-md-7">
-                    <form:select path="investorsCash.underFacility" id="underFacilities" multiple="false"
-                                 class="form-control input-sm">
+                    <form:select path="underFacilitiesList" id="underFacilities" multiple="true"
+                                 class="form-control input-sm selectpicker"
+                                 title="Выберите подобъекты..." data-live-search="true"
+                                 data-actions-box="true" data-select-all-text="Выбрать всё"
+                                 data-deselect-all-text="Очистить"
+                    >
                         <c:forEach var="uf" items="${uf}">
                             <form:option value="${uf.underFacility}" id="${uf.id}" data-parent-id="${uf.facilityId}">
 
@@ -119,7 +123,7 @@
         <div class="row">
             <div class="form-actions floatRight">
                 <input type="button" value="Вывести всё" id="allMoneyCashing" class="btn btn-danger btn-sm" style="margin-right: 10px; display: none">
-                <input type="button" value="Вывести" id="cashingSubmit" class="btn btn-primary btn-sm" style="margin-right: 10px;" disabled="true"/>
+                <input type="button" value="Вывести" id="cashingSubmit" class="btn btn-primary btn-sm" style="margin-right: 10px;" disabled="disabled"/>
                 <a href="<c:url value='/investorscash' />">Отмена</a>
             </div>
         </div>
@@ -130,8 +134,8 @@
 <%@include file="slideDiv.jsp" %>
 
 <link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/css/bootstrap-select.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
+      href="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/css/bootstrap-select.css' />">
+<script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js' />"></script>
 
 </body>
 </html>

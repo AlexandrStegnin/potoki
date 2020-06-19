@@ -468,8 +468,10 @@ jQuery(document).ready(function ($) {
     });
 
     $('#facilities').change(function () {
+        let facilities = [];
         let facility = $(this).val();
-        getUnderFacilitiesFromLocalStorage(facility, 'underFacilities');
+        facilities.push(facility);
+        getMultipleUFFromLSSelectPicker(facilities, 'underFacilities');
     });
 
     $('#fFacilities').change(function () {
@@ -566,6 +568,18 @@ User.prototype = {
     build: function (id, login) {
         this.id = id;
         this.login = login;
+    }
+}
+
+let UnderFacility = function () {
+}
+
+UnderFacility.prototype = {
+    id: 0,
+    underFacility: '',
+    build: function (id, underFacility) {
+        this.id = id;
+        this.underFacility = underFacility;
     }
 }
 
@@ -1206,6 +1220,14 @@ function cashingMoney() {
         underFacility = null;
     }
 
+    let underFacilities = $('#underFacilities');
+    let underFacilitiesList = [];
+    underFacilities.find('option:selected').each(function (ind, el) {
+        let uf = new UnderFacility();
+        uf.build(el.id, el.value);
+        underFacilitiesList.push(uf);
+    });
+
     let investor = $("#investor");
     let investors = [];
     investor.find('option:selected').each(function () {
@@ -1226,6 +1248,7 @@ function cashingMoney() {
         underFacilities: {
             underFacility: underFacility
         },
+        underFacilitiesList: underFacilitiesList,
         commission: $('#cashing').val(),
         commissionNoMore: $('#commissionNoMore').val(),
         investorsCash: {
