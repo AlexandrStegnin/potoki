@@ -10,4 +10,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ClientTypeRepository extends JpaRepository<ClientType, Long> {
+
+    ClientType findByTitle(String title);
+
 }

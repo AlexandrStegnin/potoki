@@ -51,4 +51,12 @@ public class ClientTypeService {
         clientTypeRepository.delete(id);
     }
 
+    public ClientType findByTitle(String title) {
+        ClientType clientType = clientTypeRepository.findByTitle(title);
+        if (null == clientType) {
+            throw new EntityNotFoundException("Вид клиента с названием = [" + title + "] не найден");
+        }
+        return clientType;
+    }
+
 }
