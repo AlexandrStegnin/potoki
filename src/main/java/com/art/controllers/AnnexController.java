@@ -5,6 +5,7 @@ import com.art.model.Users;
 import com.art.model.UsersAnnexToContracts;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.filters.InvestorAnnexFilter;
+import com.art.model.supporting.model.AnnexModel;
 import com.art.model.supporting.view.InvestorAnnex;
 import com.art.service.UserService;
 import com.art.service.UsersAnnexToContractsService;
@@ -82,6 +83,19 @@ public class AnnexController {
             return response;
         }
         String message = annexService.deleteAnnex(annex.getId());
+        response.setMessage(message);
+        return response;
+    }
+
+    @PostMapping(path = "/investor/annexes/delete/list")
+    public @ResponseBody
+    GenericResponse deleteAnnexesList(@RequestBody AnnexModel annex) {
+        GenericResponse response = new GenericResponse();
+        if (null == annex || annex.getAnnexIdList().size() == 0) {
+            response.setError("Список ID должен быть указан");
+            return response;
+        }
+        String message = annexService.deleteAnnexex(annex.getAnnexIdList());
         response.setMessage(message);
         return response;
     }
