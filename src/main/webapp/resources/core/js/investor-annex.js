@@ -2,16 +2,20 @@ jQuery(document).ready(function ($) {
     connect();
     $('#search-annex').on('keyup', function () {
         filterByAnnexName();
-    })
-    $('.delete-annex').click(function (e) {
-        e.preventDefault();
-        let annexId = $(this).attr('data-annex-id');
-        deleteAnnex(annexId);
-        $(this).closest('tr').remove();
     });
     $('#upload').on('click', function (e) {
         e.preventDefault();
         uploadAnnexes();
+    });
+    $('#check-all').on('click', function () {
+        $('input:checkbox').not(this).prop('checked', this.checked);
+    });
+    $('#delete-annex-list').on('click', function () {
+        let annexIdList = [];
+        $.each($('input:checkbox:checked').not('#check-all'), function (ind, el) {
+            annexIdList.push(el.id);
+        });
+        deleteAnnexList(annexIdList);
     })
 });
 
@@ -59,6 +63,33 @@ function deleteAnnex(annexId) {
         contentType: "application/json;charset=utf-8",
         url: "annexes/delete",
         data: JSON.stringify(annex),
+        dataType: 'json',
+        timeout: 0,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (data) {
+            showPopup(data.message);
+        },
+        error: function (e) {
+            showPopup('Что-то пошло не так [' + e.toString() + ']');
+        }
+    });
+}
+
+function deleteAnnexList(annexIdList) {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+
+    let  annexModel = {
+        annexIdList: annexIdList
+    }
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: "annexes/delete/list",
+        data: JSON.stringify(annexModel),
         dataType: 'json',
         timeout: 0,
         beforeSend: function (xhr) {
