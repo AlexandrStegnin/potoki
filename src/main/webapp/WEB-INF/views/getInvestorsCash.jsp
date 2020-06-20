@@ -43,18 +43,14 @@
             </div>
         </div>
 
-        <c:set var="uf" value="${underFacilitiesList}"/>
+        <c:set var="uf" value="${underFacilities}"/>
 
         <div class="row" id="underFacilitiesRow">
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="underFacilities">Подобъект:</label>
                 <div class="col-md-7">
-                    <form:select path="underFacilitiesList" id="underFacilities" multiple="true"
-                                 class="form-control input-sm selectpicker"
-                                 title="Выберите подобъекты..." data-live-search="true"
-                                 data-actions-box="true" data-select-all-text="Выбрать всё"
-                                 data-deselect-all-text="Очистить"
-                    >
+                    <form:select path="investorsCash.underFacility" id="underFacilities" multiple="false"
+                                 class="form-control input-sm">
                         <c:forEach var="uf" items="${uf}">
                             <form:option value="${uf.underFacility}" id="${uf.id}" data-parent-id="${uf.facilityId}">
 

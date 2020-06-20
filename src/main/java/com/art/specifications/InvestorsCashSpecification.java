@@ -34,7 +34,7 @@ public class InvestorsCashSpecification extends BaseSpecification<InvestorsCash,
                 .and(givenCashGreaterThan(BigDecimal.ZERO))
                 .and(notClosing())
                 .and(facilityEqual(filter.getFacility()))
-                .and(underFacilityIn(filter.getUnderFacilities()))
+                .and(underFacilityEqual(filter.getUnderFacility()))
                 .toPredicate(root, query, cb);
     }
 

@@ -224,7 +224,7 @@ public class InvestorsCashService {
                         cashForGetting[0].setUnderFacility(null);
                     }
                     Date dateClosingInvest = cashForGetting[0].getDateGivedCash();
-                    List<InvestorsCash> investorsCashes = getMoneyForCashing(cashForGetting[0], underFacilities);
+                    List<InvestorsCash> investorsCashes = getMoneyForCashing(cashForGetting[0]);
                     if (investorsCashes.size() == 0) {
                         result[0] = "Нет денег для вывода";
                         return;
@@ -368,12 +368,12 @@ public class InvestorsCashService {
         to.setRoom(from.getRoom());
     }
 
-    public List<InvestorsCash> getMoneyForCashing(InvestorsCash cashForGetting, List<UnderFacilities> underFacilities) {
+    public List<InvestorsCash> getMoneyForCashing(InvestorsCash cashForGetting) {
         CashFilter filter = new CashFilter();
         filter.setInvestor(cashForGetting.getInvestor());
         filter.setFacility(cashForGetting.getFacility().getFacility());
         if (!Objects.equals(null, cashForGetting.getUnderFacility())) {
-            filter.setUnderFacilities(underFacilities);
+            filter.setUnderFacility(cashForGetting.getUnderFacility().getUnderFacility());
         }
         Pageable pageable = new PageRequest(0, Integer.MAX_VALUE);
         return investorsCashRepository.findAll(
