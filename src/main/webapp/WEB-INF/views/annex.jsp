@@ -8,7 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <sec:csrfMetaTags/>
     <title>Приложения к договорам</title>
-    <link rel="stylesheet" href="<c:url value='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' />"/>
+    <link rel="stylesheet"
+          href="<c:url value='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' />"/>
     <link rel="stylesheet"
           href="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css' />">
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
@@ -17,7 +18,7 @@
 <%@include file="header.jsp" %>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-5">
             <form:form modelAttribute="filter" method="POST" action="/investor/annexes" class="form-inline"
                        id="search-form">
                 <div class="row" style="margin: 20px;">
@@ -40,7 +41,7 @@
                 </div>
             </form:form>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-5">
             <form:form method="POST" action="/investor/annexes/upload" modelAttribute="files"
                        enctype="multipart/form-data" class="form-horizontal">
                 <div class="input-group" style="margin: 20px 20px 20px 0">
@@ -50,6 +51,15 @@
                     <button type="button" class="btn btn-primary btn-sm" id="upload">Загрузить</button>
                 </div>
             </form:form>
+        </div>
+        <div class="col-md-2 center-block">
+            <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
+                <div class="input-group" style="margin: 20px 0 20px 0; padding: 3px 0 3px 0">
+                    <button type="button" class="btn btn-sm btn-danger" id="delete-annex-list" style="height: 100%">Удалить выбранные
+                        <i class="far fa-trash-alt"></i>
+                    </button>
+                </div>
+            </sec:authorize>
         </div>
     </div>
 </div>
@@ -62,9 +72,7 @@
             <th>Дата загрузки</th>
             <th>Кто загрузил</th>
             <th>Прочитано</th>
-            <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
-                <th>Удалить</th>
-            </sec:authorize>
+            <th><input type="checkbox" id="check-all" value=""/></th>
         </tr>
         </thead>
         <tbody style="text-align: center">
@@ -82,11 +90,7 @@
                         <td>Нет</td>
                     </c:otherwise>
                 </c:choose>
-                <td>
-                    <button type="button" class="btn btn-sm btn-danger delete-annex" data-annex-id="${annex.id}">
-                        <i class="far fa-trash-alt"></i>
-                    </button>
-                </td>
+                <td><input type="checkbox" id="${annex.id}"></td>
             </tr>
         </c:forEach>
         </tbody>
