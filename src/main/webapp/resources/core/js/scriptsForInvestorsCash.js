@@ -477,7 +477,7 @@ jQuery(document).ready(function ($) {
     $('#fFacilities').change(function () {
         let facilitiesList = [];
         $.each($(this).find(':selected'), function(ind, el) {
-            facilitiesList.push(el.id);
+            facilitiesList.push(el.value);
         });
         getMultipleUFFromLS(facilitiesList, 'uFacilities');
         $('#uFacilities').selectpicker('refresh');
