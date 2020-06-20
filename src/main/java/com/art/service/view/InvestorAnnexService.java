@@ -218,4 +218,46 @@ public class InvestorAnnexService {
         return String.format("Приложение к договору [%s] %s удалено", annex.getAnnex().getAnnexName(), success);
     }
 
+    /**
+     * Удалить приложения по списку id
+     *
+     * @param annexIdList - id приложения
+     * @return - статус операции
+     */
+    public String deleteAnnexex(List<BigInteger> annexIdList) {
+        final int[] deletedCount = {0};
+        final int[] noDeletedCount = {0};
+        StringBuilder messageBuilder = new StringBuilder();
+        annexIdList.forEach(annexId -> {
+            UsersAnnexToContracts annex = usersAnnexToContractsService.findById(annexId);
+            if (null == annex) {
+                noDeletedCount[0]++;
+                return;
+            }
+            String fileName = annex.getAnnex().getAnnexName();
+            String path = annex.getAnnex().getFilePath();
+            if (null == path) {
+                noDeletedCount[0]++;
+                return;
+            }
+            File file = new File(path + fileName);
+            usersAnnexToContractsService.deleteById(annexId);
+            if (!file.exists()) {
+                noDeletedCount[0]++;
+                return;
+            }
+            boolean deleted = file.delete();
+            if (deleted) {
+                deletedCount[0]++;
+            } else {
+                noDeletedCount[0]++;
+            }
+        });
+        messageBuilder.append(String.format("Успешно удалены [%d шт]", deletedCount[0]));
+        if (noDeletedCount[0] > 0) {
+            messageBuilder.append("\n").append(String.format("НЕ удалены [%d шт]", noDeletedCount[0]));
+        }
+        return messageBuilder.toString();
+    }
+
 }
