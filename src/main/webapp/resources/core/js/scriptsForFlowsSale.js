@@ -409,25 +409,25 @@ function findMinMaxDate(table, col, maxOrMin) {
 
 function prepareSaveInvestorsCash() {
     showLoader();
-    var err = false;
-    var cashes = [];
-    var cash;
-    var givedCash;
-    var dateGived;
-    var facility;
-    var investor;
-    var cashType = null;
-    var newCashDetails = null;
-    var investorsType;
-    var underFacility;
-    var dateReport;
-    var shareKind;
-    var sourceFacility;
-    var sourceUnderFacility;
-    var reinvestData = $('form#reInvestData');
-    var reinvestIdList = [];
-    var sourceFlowsId;
-    var room;
+    let err = false;
+    let cashes = [];
+    let cash;
+    let givedCash;
+    let dateGived;
+    let facility;
+    let investor;
+    let cashType = null;
+    let newCashDetails = null;
+    let investorsType;
+    let underFacility;
+    let dateReport;
+    let shareKind;
+    let sourceFacility;
+    let sourceUnderFacility;
+    let reinvestData = $('form#reInvestData');
+    let reinvestIdList = [];
+    let sourceFlowsId;
+    let room;
 
     dateGived = $('#dateGiv').val();
 
@@ -560,9 +560,9 @@ function prepareSaveInvestorsCash() {
 }
 
 function saveReinvestCash(cashes, reinvestIdList) {
-    var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
-    var search = ({
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+    let search = ({
         investorsCashList: cashes,
         reinvestIdList: reinvestIdList,
         what: "sale"
