@@ -2,6 +2,7 @@ package com.art.service;
 
 import com.art.model.InvestorCashLog;
 import com.art.model.InvestorsCash;
+import com.art.model.InvestorsFlowsSale;
 import com.art.model.TransactionLog;
 import com.art.model.supporting.CashType;
 import com.art.repository.InvestorCashLogRepository;
@@ -88,6 +89,24 @@ public class InvestorCashLogService {
     public void update(List<InvestorsCash> cashes, TransactionLog log) {
         cashes.forEach(cash -> {
             InvestorCashLog cashLog = new InvestorCashLog(cash, log, CashType.INVESTOR_CASH);
+            investorCashLogRepository.save(cashLog);
+        });
+    }
+
+    /**
+     * Создать суммы в истории и в логе на основании сумм с продажи
+     *
+     * @param flowsSales суммы с продажи
+     * @param investorsCashes суммы в деньгах инвесторов на основе сумм с продажи
+     * @param log лог
+     */
+    public void reinvestmentSale(List<InvestorsFlowsSale> flowsSales, Set<InvestorsCash> investorsCashes, TransactionLog log) {
+        flowsSales.forEach(flowsSale -> {
+            InvestorCashLog cashLog = new InvestorCashLog(flowsSale, log, CashType.SALE_CASH);
+            investorCashLogRepository.save(cashLog);
+        });
+        investorsCashes.forEach(cash -> {
+            InvestorCashLog cashLog = new InvestorCashLog(cash, log, CashType.SALE_CASH);
             investorCashLogRepository.save(cashLog);
         });
     }
