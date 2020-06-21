@@ -54,6 +54,15 @@ public class TransactionLogService {
     }
 
     /**
+     * Обновить запись о транзакции
+     *
+     * @param log запись
+     */
+    public void update(TransactionLog log) {
+        transactionLogRepository.save(log);
+    }
+
+    /**
      * Найти список транзакций, которые содержат переданные деньги инвестора
      *
      * @param cash деньги инвестора
@@ -99,15 +108,6 @@ public class TransactionLogService {
             throw new RuntimeException("Операция с id = [" + id + "] не найдена");
         }
         return transactionLog;
-    }
-
-    /**
-     * Найти все операции
-     *
-     * @return список операций
-     */
-    public List<TransactionLog> findAll() {
-        return transactionLogRepository.findAll();
     }
 
     /**
@@ -171,6 +171,57 @@ public class TransactionLogService {
         log.setType(type);
         log.setRollbackEnabled(true);
         create(log);
+    }
+
+    /**
+     * Создать запись категории "обновление" в логе
+     *
+     * @param cash деньги инвестора
+     */
+    public void update(InvestorsCash cash) {
+        TransactionLog log = new TransactionLog();
+        log.setInvestorsCashes(Collections.singleton(cash));
+        log.setType(TransactionType.UPDATE);
+        log.setRollbackEnabled(true);
+        create(log);
+        investorCashLogService.create(cash, log);
+        blockLinkedLogs(cash, log);
+    }
+
+    /**
+     * Создать запись категории "Закрытие. Вывод" в логе
+     *
+     * @param cashes список сумм инвестора
+     */
+    public void close(Set<InvestorsCash> cashes) {
+        TransactionLog log = new TransactionLog();
+        log.setInvestorsCashes(cashes);
+        log.setType(TransactionType.CLOSING);
+        log.setRollbackEnabled(true);
+        create(log);
+        investorCashLogService.create(cashes, log);
+        cashes.forEach(cash -> blockLinkedLogs(cash, log));
+    }
+
+    /**
+     * Создать запись категории "Закрытие. Перепродажа доли" в логе
+     *
+     * @param cashes суммы инвесторов
+     */
+    public void resale(Set<InvestorsCash> oldCashes, Set<InvestorsCash> cashes) {
+        oldCashes.forEach(oldCash -> {
+            oldCash.setDateClosingInvest(null);
+            oldCash.setTypeClosingInvest(null);
+            oldCash.setRealDateGiven(null);
+        });
+
+        TransactionLog log = new TransactionLog();
+        log.setInvestorsCashes(cashes);
+        log.setType(TransactionType.CLOSING_RESALE);
+        log.setRollbackEnabled(true);
+        create(log);
+        investorCashLogService.create(oldCashes, log);
+        cashes.forEach(cash -> blockLinkedLogs(cash, log));
     }
 
     @Transactional
@@ -261,100 +312,6 @@ public class TransactionLogService {
         cash.setTypeClosingInvest(cashLog.getTypeClosingInvest());
         cash.setDateClosingInvest(cashLog.getDateClosingInvest());
         cash.setRealDateGiven(cashLog.getRealDateGiven());
-    }
-
-    /**
-     * Обновить запись о транзакции
-     *
-     * @param log запись
-     */
-    public void update(TransactionLog log) {
-        transactionLogRepository.save(log);
-    }
-
-    /**
-     * Создать запись категории "обновление" в логе
-     *
-     * @param cash деньги инвестора
-     */
-    public void update(InvestorsCash cash) {
-        TransactionLog log = new TransactionLog();
-        log.setInvestorsCashes(Collections.singleton(cash));
-        log.setType(TransactionType.UPDATE);
-        log.setRollbackEnabled(true);
-        create(log);
-        investorCashLogService.create(cash, log);
-        blockLinkedLogs(cash, log);
-    }
-
-    /**
-     * Создать запись категории "Закрытие. Вывод" в логе
-     *
-     * @param cash сумма инвестора
-     */
-    public void close(InvestorsCash cash) {
-        TransactionLog log = new TransactionLog();
-        log.setInvestorsCashes(Collections.singleton(cash));
-        log.setType(TransactionType.CLOSING);
-        log.setRollbackEnabled(true);
-        create(log);
-        investorCashLogService.create(cash, log);
-        blockLinkedLogs(cash, log);
-    }
-
-    /**
-     * Создать запись категории "Закрытие. Вывод" в логе по массовому закрытию
-     *
-     * @param cashes список сумм инвестора
-     */
-    public void close(Set<InvestorsCash> cashes) {
-        TransactionLog log = new TransactionLog();
-        log.setInvestorsCashes(cashes);
-        log.setType(TransactionType.CLOSING);
-        log.setRollbackEnabled(true);
-        create(log);
-        investorCashLogService.create(cashes, log);
-        cashes.forEach(cash -> blockLinkedLogs(cash, log));
-    }
-
-    /**
-     * Создать запись категории "Закрытие. Перепродажа доли" в логе
-     *
-     * @param oldCash старые суммы
-     * @param cashes  суммы инвесторов
-     */
-    public void resale(InvestorsCash oldCash, Set<InvestorsCash> cashes) {
-        oldCash.setDateClosingInvest(null);
-        oldCash.setTypeClosingInvest(null);
-        oldCash.setRealDateGiven(null);
-        TransactionLog log = new TransactionLog();
-        log.setInvestorsCashes(cashes);
-        log.setType(TransactionType.CLOSING_RESALE);
-        log.setRollbackEnabled(true);
-        create(log);
-        investorCashLogService.create(oldCash, log);
-        cashes.forEach(cash -> blockLinkedLogs(cash, log));
-    }
-
-    /**
-     * Создать запись категории "Закрытие. Перепродажа доли" в логе по массовому закрытию
-     *
-     * @param cashes суммы инвесторов
-     */
-    public void resale(Set<InvestorsCash> oldCashes, Set<InvestorsCash> cashes) {
-        oldCashes.forEach(oldCash -> {
-            oldCash.setDateClosingInvest(null);
-            oldCash.setTypeClosingInvest(null);
-            oldCash.setRealDateGiven(null);
-        });
-
-        TransactionLog log = new TransactionLog();
-        log.setInvestorsCashes(cashes);
-        log.setType(TransactionType.CLOSING_RESALE);
-        log.setRollbackEnabled(true);
-        create(log);
-        investorCashLogService.create(oldCashes, log);
-        cashes.forEach(cash -> blockLinkedLogs(cash, log));
     }
 
     /**

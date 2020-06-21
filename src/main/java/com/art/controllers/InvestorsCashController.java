@@ -312,10 +312,10 @@ public class InvestorsCashController {
             cashSet.add(newInvestorsCash);
             cashSet.add(oldCash);
             service.shutdown();
-            transactionLogService.resale(oldCash, cashSet);
+            transactionLogService.resale(Collections.singleton(oldCash), cashSet);
         } else {
             InvestorsCash updatedCash = investorsCashService.findById(investorsCash.getId());
-            transactionLogService.close(updatedCash);
+            transactionLogService.close(Collections.singleton(updatedCash));
             updatedCash.setDateClosingInvest(dateClosingInvest);
             updatedCash.setRealDateGiven(realDateGiven);
 
