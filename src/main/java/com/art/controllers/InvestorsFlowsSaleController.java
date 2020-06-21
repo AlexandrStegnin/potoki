@@ -35,6 +35,7 @@ import java.util.List;
 
 @Controller
 public class InvestorsFlowsSaleController {
+
     @Resource(name = "uploadExcelFunc")
     private UploadExcelFunc uploadExcelFunc;
 
@@ -56,36 +57,28 @@ public class InvestorsFlowsSaleController {
     @Resource(name = "shareKindService")
     private ShareKindService shareKindService;
 
-    private FlowsSaleFilter filters = new FlowsSaleFilter();
+    private final FlowsSaleFilter filters = new FlowsSaleFilter();
 
+    /**
+     * Получить страницу для отображения списка денег инвесторов с продажи
+     *
+     * @param pageable для постраничного отображения
+     * @return страница
+     */
     @GetMapping(value = "/flowsSale")
     public ModelAndView flowsSale(@PageableDefault(size = 100) @SortDefault Pageable pageable) {
-        ModelAndView modelAndView = new ModelAndView("viewInvestorsFlowsSale");
-        SearchSummary searchSummary = new SearchSummary();
-        FileBucket fileModel = new FileBucket();
-        Page<InvestorsFlowsSale> page = investorsFlowsSaleService.findAll(filters, pageable);
-        modelAndView.addObject("page", page);
-        modelAndView.addObject("fileBucket", fileModel);
-        modelAndView.addObject("flowsSaleFilters", filters);
-        modelAndView.addObject("searchSummary", searchSummary);
-
-        return modelAndView;
+        return prepareModel(filters);
     }
 
+    /**
+     * Получить страницу для отображения списка денег инвесторов с продажи с фильтрами
+     *
+     * @param filters фильтры
+     * @return страница
+     */
     @PostMapping(value = "/flowsSale")
-    public ModelAndView flowsSaleWithFilter(
-            @ModelAttribute("flowsSaleFilters") FlowsSaleFilter filters) {
-        FileBucket fileModel = new FileBucket();
-        SearchSummary searchSummary = new SearchSummary();
-        ModelAndView modelAndView = new ModelAndView("viewInvestorsFlowsSale");
-        Pageable pageable = new PageRequest(filters.getPageNumber(), filters.getPageSize());
-        Page<InvestorsFlowsSale> page = investorsFlowsSaleService.findAll(filters, pageable);
-        modelAndView.addObject("page", page);
-        modelAndView.addObject("fileBucket", fileModel);
-        modelAndView.addObject("flowsSaleFilters", filters);
-        modelAndView.addObject("searchSummary", searchSummary);
-
-        return modelAndView;
+    public ModelAndView flowsSaleWithFilter(@ModelAttribute("flowsSaleFilters") FlowsSaleFilter filters) {
+        return prepareModel(filters);
     }
 
     @PostMapping(value = "/loadFlowsSaleAjax", produces = "application/json;charset=UTF-8")
@@ -142,6 +135,24 @@ public class InvestorsFlowsSaleController {
     public String deleteFlows() {
         investorsFlowsSaleService.delete();
         return "redirect:/flowsSale";
+    }
+
+    /**
+     * Подготовить модель для страницы
+     *
+     * @param filters фильтры
+     */
+    private ModelAndView prepareModel(FlowsSaleFilter filters) {
+        ModelAndView model = new ModelAndView("viewInvestorsFlowsSale");
+        FileBucket fileModel = new FileBucket();
+        SearchSummary searchSummary = new SearchSummary();
+        Pageable pageable = new PageRequest(filters.getPageNumber(), filters.getPageSize());
+        Page<InvestorsFlowsSale> page = investorsFlowsSaleService.findAll(filters, pageable);
+        model.addObject("page", page);
+        model.addObject("fileBucket", fileModel);
+        model.addObject("flowsSaleFilters", filters);
+        model.addObject("searchSummary", searchSummary);
+        return model;
     }
 
     @ModelAttribute("facilities")
