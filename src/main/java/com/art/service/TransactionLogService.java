@@ -157,41 +157,6 @@ public class TransactionLogService {
     }
 
     /**
-     * Получить список видов операции для использования в фильтрах
-     *
-     * @return список видов операций
-     */
-    public Map<Integer, String> getTypes() {
-        Map<Integer, String> map = new HashMap<>();
-        map.put(0, "Вид операции");
-        TransactionType[] types = TransactionType.values();
-        for (TransactionType type : types) {
-            if (!type.equals(TransactionType.UNDEFINED)) {
-                map.put(type.getId(), type.getTitle());
-            }
-        }
-        return map;
-    }
-
-    /**
-     * Получить список "кем создавалась транзакция" для использования в фильтре
-     *
-     * @return список "кем создавалась транзакция"
-     */
-    public List<String> getCreators() {
-        List<TransactionLog> logs = transactionLogRepository.findAll();
-        List<String> creators = new ArrayList<>();
-        creators.add("Кем создана");
-        creators.addAll(logs
-                .stream()
-                .map(TransactionLog::getCreatedBy)
-                .distinct()
-                .sorted()
-                .collect(Collectors.toList()));
-        return creators;
-    }
-
-    /**
      * Создать запись в логе по операции создания денег инвестора
      *
      * @param cash деньги инвестора
@@ -421,4 +386,40 @@ public class TransactionLogService {
             transactionLogRepository.save(blockedLog);
         });
     }
+
+    /**
+     * Получить список видов операции для использования в фильтрах
+     *
+     * @return список видов операций
+     */
+    public Map<Integer, String> getTypes() {
+        Map<Integer, String> map = new HashMap<>();
+        map.put(0, "Вид операции");
+        TransactionType[] types = TransactionType.values();
+        for (TransactionType type : types) {
+            if (!type.equals(TransactionType.UNDEFINED)) {
+                map.put(type.getId(), type.getTitle());
+            }
+        }
+        return map;
+    }
+
+    /**
+     * Получить список "кем создавалась транзакция" для использования в фильтре
+     *
+     * @return список "кем создавалась транзакция"
+     */
+    public List<String> getCreators() {
+        List<TransactionLog> logs = transactionLogRepository.findAll();
+        List<String> creators = new ArrayList<>();
+        creators.add("Кем создана");
+        creators.addAll(logs
+                .stream()
+                .map(TransactionLog::getCreatedBy)
+                .distinct()
+                .sorted()
+                .collect(Collectors.toList()));
+        return creators;
+    }
+
 }
