@@ -719,6 +719,13 @@ public class InvestorsCashController {
         CashTypes cashTypes = cashTypesService.findByCashType("Новые деньги");
         NewCashDetails newCashDetails;
 
+        // список для создания записи в логе по операции реинвестирования с продажи
+        List<InvestorsFlowsSale> flowsSaleList = new ArrayList<>();
+
+        // список для создания записи в логе по операции реинвестирования с аренды
+        List<InvestorsFlows> flowsList = new ArrayList<>();
+
+
         if ("sale".equals(searchSummary.getWhat())) {
             newCashDetails = newCashDetailsService.findByNewCashDetail("Реинвестирование с продажи (прибыль)");
             List<InvestorsFlowsSale> flowsSales = investorsFlowsSaleService.
@@ -727,17 +734,20 @@ public class InvestorsCashController {
                 f.setIsReinvest(1);
                 investorsFlowsSaleService.update(f);
             });
+            flowsSaleList = flowsSales;
         } else {
             newCashDetails = newCashDetailsService.findByNewCashDetail("Реинвестирование с аренды");
             List<InvestorsFlows> flows = investorsFlowsService.findByIdIn(searchSummary.getReinvestIdList());
             flows.forEach(f -> f.setIsReinvest(1));
             investorsFlowsService.saveList(flows);
+            flowsList = flows;
         }
 
         NewCashDetails finalNewCashDetails = newCashDetails;
 
         Map<String, InvestorsCash> map = groupInvestorsCash(investorsCashes, searchSummary.getWhat());
         try {
+            Set<InvestorsCash> cashList = new HashSet<>();
             map.forEach((key, value) -> {
                 value.setCashType(cashTypes);
                 value.setNewCashDetails(finalNewCashDetails);
@@ -745,8 +755,14 @@ public class InvestorsCashController {
                 value.setGivedCash(value.getGivedCash().setScale(2, RoundingMode.CEILING));
                 updateMailingGroups(value, "add");
                 investorsCashService.create(value);
+                cashList.add(value);
             });
 
+            if (flowsSaleList.size() > 0) {
+                transactionLogService.reinvestmentSale(flowsSaleList, cashList);
+            } else if (flowsList.size() > 0) {
+
+            }
             response.setMessage("Реинвестирование прошло успешно");
 
         } catch (Exception ex) {
