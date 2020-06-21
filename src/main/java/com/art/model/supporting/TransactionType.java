@@ -9,7 +9,8 @@ public enum TransactionType {
     CREATE(1, "Создание"),
     UPDATE(2, "Изменение"),
     DIVIDE(3, "Разделение"),
-    REINVESTMENT(4, "Реинвестирование"),
+    REINVESTMENT_SALE(4, "Реинвестирование с продажи"),
+    REINVESTMENT_RENT(7, "Реинвестирование с аренды"),
     CLOSING(5, "Закрытие. Вывод"),
     CLOSING_RESALE(6, "Закрытие. Перепродажа доли"),
     UNDEFINED(0, "Не определено");

@@ -145,8 +145,11 @@ public class TransactionLogService {
             case DIVIDE:
                 return "Операция [DIVIDE] не реализована";
 
-            case REINVESTMENT:
-                return "Операция [REINVESTMENT] не реализована";
+            case REINVESTMENT_SALE:
+                return "Операция [REINVESTMENT_SALE] не реализована";
+
+            case REINVESTMENT_RENT:
+                return "Операция [REINVESTMENT_RENT] не реализована";
 
             case UNDEFINED:
                 return "Операция [UNDEFINED] не реализована";
