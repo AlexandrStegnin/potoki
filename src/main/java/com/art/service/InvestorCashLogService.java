@@ -3,6 +3,7 @@ package com.art.service;
 import com.art.model.InvestorCashLog;
 import com.art.model.InvestorsCash;
 import com.art.model.TransactionLog;
+import com.art.model.supporting.CashType;
 import com.art.repository.InvestorCashLogRepository;
 import org.springframework.stereotype.Service;
 
@@ -65,7 +66,7 @@ public class InvestorCashLogService {
      * @param log транзакция
      */
     public void create(InvestorsCash cash, TransactionLog log) {
-        InvestorCashLog cashLog = new InvestorCashLog(cash, log);
+        InvestorCashLog cashLog = new InvestorCashLog(cash, log, CashType.INVESTOR_CASH);
         investorCashLogRepository.save(cashLog);
     }
 
@@ -86,7 +87,7 @@ public class InvestorCashLogService {
      */
     public void update(List<InvestorsCash> cashes, TransactionLog log) {
         cashes.forEach(cash -> {
-            InvestorCashLog cashLog = new InvestorCashLog(cash, log);
+            InvestorCashLog cashLog = new InvestorCashLog(cash, log, CashType.INVESTOR_CASH);
             investorCashLogRepository.save(cashLog);
         });
     }

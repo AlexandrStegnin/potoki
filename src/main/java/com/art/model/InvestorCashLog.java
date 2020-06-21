@@ -1,5 +1,6 @@
 package com.art.model;
 
+import com.art.model.supporting.CashType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -111,7 +112,11 @@ public class InvestorCashLog {
     @JoinColumn(name = "tx_id")
     private TransactionLog transactionLog;
 
-    public InvestorCashLog(InvestorsCash cash, TransactionLog log) {
+    @Enumerated
+    @Column(name = "instance_of")
+    private CashType instanceOf;
+
+    public InvestorCashLog(InvestorsCash cash, TransactionLog log, CashType instanceOf) {
         this.cashId = cash.getId().longValue();
         this.investor = cash.getInvestor();
         this.facility = cash.getFacility();
@@ -136,6 +141,7 @@ public class InvestorCashLog {
         this.divide = cash.getIsDivide();
         this.realDateGiven = cash.getRealDateGiven();
         this.transactionLog = log;
+        this.instanceOf = instanceOf;
     }
 
 }
