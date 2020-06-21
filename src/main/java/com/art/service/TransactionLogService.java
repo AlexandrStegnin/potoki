@@ -2,6 +2,7 @@ package com.art.service;
 
 import com.art.model.InvestorCashLog;
 import com.art.model.InvestorsCash;
+import com.art.model.InvestorsFlowsSale;
 import com.art.model.TransactionLog;
 import com.art.model.supporting.TransactionType;
 import com.art.model.supporting.dto.InvestorCashDTO;
@@ -222,6 +223,21 @@ public class TransactionLogService {
         create(log);
         investorCashLogService.create(oldCashes, log);
         cashes.forEach(cash -> blockLinkedLogs(cash, log));
+    }
+
+    /**
+     * Создать запись категории "Реинвестирование с продажи" в логе
+     *
+     * @param flowsSaleList список денег с продажи
+     * @param cashList список денег, основанных на деньгах с продажи
+     */
+    public void reinvestmentSale(List<InvestorsFlowsSale> flowsSaleList, Set<InvestorsCash> cashList) {
+        TransactionLog log = new TransactionLog();
+        log.setInvestorsCashes(cashList);
+        log.setType(TransactionType.REINVESTMENT_SALE);
+        log.setRollbackEnabled(true);
+        create(log);
+        investorCashLogService.reinvestmentSale(flowsSaleList, cashList, log);
     }
 
     @Transactional
