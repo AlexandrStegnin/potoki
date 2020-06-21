@@ -144,4 +144,10 @@ public class InvestorCashLog {
         this.instanceOf = instanceOf;
     }
 
+    public InvestorCashLog(InvestorsFlowsSale flowsSale, TransactionLog log, CashType instanceOf) {
+        this.cashId = flowsSale.getId().longValue();
+        this.transactionLog = log;
+        this.instanceOf = instanceOf;
+    }
+
 }
