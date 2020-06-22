@@ -34,17 +34,21 @@ public class TransactionLogService {
 
     private final InvestorsFlowsSaleService investorsFlowsSaleService;
 
+    private final InvestorsFlowsService investorsFlowsService;
+
     @Autowired
     public TransactionLogService(TransactionLogSpecification specification,
                                  TransactionLogRepository transactionLogRepository,
                                  InvestorCashLogService investorCashLogService,
                                  InvestorsCashService investorsCashService,
-                                 InvestorsFlowsSaleService investorsFlowsSaleService) {
+                                 InvestorsFlowsSaleService investorsFlowsSaleService,
+                                 InvestorsFlowsService investorsFlowsService) {
         this.specification = specification;
         this.transactionLogRepository = transactionLogRepository;
         this.investorCashLogService = investorCashLogService;
         this.investorsCashService = investorsCashService;
         this.investorsFlowsSaleService = investorsFlowsSaleService;
+        this.investorsFlowsService = investorsFlowsService;
     }
 
     /**
@@ -152,7 +156,7 @@ public class TransactionLogService {
                 return rollbackReinvestmentSale(log);
 
             case REINVESTMENT_RENT:
-                return "Операция [REINVESTMENT_RENT] не реализована";
+                return rollbackReinvestmentRent(log);
 
             case UNDEFINED:
                 return "Операция [UNDEFINED] не реализована";
@@ -338,6 +342,29 @@ public class TransactionLogService {
             flowsSales.forEach(flowSale -> {
                 flowSale.setIsReinvest(0);
                 investorsFlowsSaleService.update(flowSale);
+            });
+            cashLogs.forEach(investorCashLogService::delete);
+            transactionLogRepository.delete(log);
+            return "Откат операции прошёл успешно";
+        } catch (Exception e) {
+            return String.format("При удалении транзакции произошла ошибка [%s]", e.getLocalizedMessage());
+        }
+    }
+
+    @Transactional
+    public String rollbackReinvestmentRent(TransactionLog log) {
+        Set<InvestorsCash> cashes = log.getInvestorsCashes();
+        List<InvestorCashLog> cashLogs = investorCashLogService.findByTxId(log.getId());
+        List<BigInteger> flowsCashIdList = cashLogs
+                .stream()
+                .map(cashLog -> BigInteger.valueOf(cashLog.getCashId()))
+                .collect(Collectors.toList());
+        List<InvestorsFlows> flowsRent = investorsFlowsService.findByIdIn(flowsCashIdList);
+        try {
+            cashes.forEach(investorsCashService::delete);
+            flowsRent.forEach(flowRent -> {
+                flowRent.setIsReinvest(0);
+                investorsFlowsService.update(flowRent);
             });
             cashLogs.forEach(investorCashLogService::delete);
             transactionLogRepository.delete(log);
