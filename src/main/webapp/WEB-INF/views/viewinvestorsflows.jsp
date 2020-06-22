@@ -58,7 +58,7 @@
         <form:form modelAttribute="searchSummary" method="GET" action="/paysToInv" class="form-inline" id="filter-form">
             <div class="row" style="margin: 10px;">
                 <label class="sr-only" for="fFacilities">Объект:</label>
-                <form:select path="facility" id="fFacilities" multiple="false" class="form-control input-sm">
+                <form:select path="facility" id="fFacilities" multiple="false" class="selectpicker">
                     <c:forEach var="f" items="${facilitiesList}">
                         <option
                                 <c:choose>
@@ -70,19 +70,19 @@
                     </c:forEach>
                 </form:select>
                 <label class="sr-only" for="uFacilities">Подобъект:</label>
-                <form:select path="underFacility" id="uFacilities" multiple="false" class="form-control input-sm">
+                <form:select path="underFacility" id="uFacilities" multiple="false" class="selectpicker">
                     <c:forEach var="uf" items="${underFacilities}">
                         <option
                                 <c:choose>
                                     <c:when test="${uf.underFacility eq 'Выберите подобъект'}">selected="selected"</c:when>
                                     <c:when test="${uf.underFacility eq searchSummary.underFacility}">selected="selected"</c:when>
                                 </c:choose>
-                                value="${uf.underFacility}" id="${uf.id}"  data-parent-id="${uf.facilityId}">${uf.underFacility}
+                                value="${uf.underFacility}" id="${uf.id}" data-parent-id="${uf.facilityId}">${uf.underFacility}
                         </option>
                     </c:forEach>
                 </form:select>
                 <label class="sr-only" for="investors">Инвестор:</label>
-                <form:select path="investor" id="investors" multiple="false" class="form-control input-sm">
+                <form:select path="investor" id="investors" multiple="false" class="selectpicker">
                     <c:forEach var="inv" items="${investors}">
                         <option
                                 <c:choose>
@@ -301,5 +301,8 @@
 </div>
 <%@include file="loader.jsp" %>
 <%@include file="slideDiv.jsp" %>
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/css/bootstrap-select.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
 </body>
 </html>
