@@ -64,7 +64,7 @@ public class InvestorCashLogService {
      * Создать сумму в истории и в логе на основании суммы инвестора
      *
      * @param cash сумма инвестора
-     * @param log транзакция
+     * @param log  транзакция
      */
     public void create(InvestorsCash cash, TransactionLog log) {
         InvestorCashLog cashLog = new InvestorCashLog(cash, log, CashType.INVESTOR_CASH);
@@ -75,7 +75,7 @@ public class InvestorCashLogService {
      * Создать сумму в истории и в логе на основании списка сумм инвестора
      *
      * @param cashes список сумм инвестора
-     * @param log транзакция
+     * @param log    транзакция
      */
     public void create(Set<InvestorsCash> cashes, TransactionLog log) {
         cashes.forEach(cash -> create(cash, log));
@@ -97,16 +97,11 @@ public class InvestorCashLogService {
      * Создать суммы в истории и в логе на основании сумм с продажи
      *
      * @param flowsSales суммы с продажи
-     * @param investorsCashes суммы в деньгах инвесторов на основе сумм с продажи
-     * @param log лог
+     * @param log        лог
      */
-    public void reinvestmentSale(List<InvestorsFlowsSale> flowsSales, Set<InvestorsCash> investorsCashes, TransactionLog log) {
+    public void reinvestmentSale(List<InvestorsFlowsSale> flowsSales, TransactionLog log) {
         flowsSales.forEach(flowsSale -> {
             InvestorCashLog cashLog = new InvestorCashLog(flowsSale, log, CashType.SALE_CASH);
-            investorCashLogRepository.save(cashLog);
-        });
-        investorsCashes.forEach(cash -> {
-            InvestorCashLog cashLog = new InvestorCashLog(cash, log, CashType.SALE_CASH);
             investorCashLogRepository.save(cashLog);
         });
     }
