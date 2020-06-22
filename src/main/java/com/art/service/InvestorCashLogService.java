@@ -1,9 +1,6 @@
 package com.art.service;
 
-import com.art.model.InvestorCashLog;
-import com.art.model.InvestorsCash;
-import com.art.model.InvestorsFlowsSale;
-import com.art.model.TransactionLog;
+import com.art.model.*;
 import com.art.model.supporting.CashType;
 import com.art.repository.InvestorCashLogRepository;
 import org.springframework.stereotype.Service;
@@ -102,6 +99,19 @@ public class InvestorCashLogService {
     public void reinvestmentSale(List<InvestorsFlowsSale> flowsSales, TransactionLog log) {
         flowsSales.forEach(flowsSale -> {
             InvestorCashLog cashLog = new InvestorCashLog(flowsSale, log, CashType.SALE_CASH);
+            investorCashLogRepository.save(cashLog);
+        });
+    }
+
+    /**
+     * Создать суммы в истории и в логе на основании сумм с аренды
+     *
+     * @param flows суммы с аренды
+     * @param log   лог
+     */
+    public void reinvestmentRent(List<InvestorsFlows> flows, TransactionLog log) {
+        flows.forEach(sum -> {
+            InvestorCashLog cashLog = new InvestorCashLog(sum, log, CashType.RENT_CASH);
             investorCashLogRepository.save(cashLog);
         });
     }
