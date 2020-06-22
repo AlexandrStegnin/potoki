@@ -71,6 +71,10 @@ public class InvestorsCashService {
         investorsCashRepository.deleteById(id);
     }
 
+    public void delete(InvestorsCash cash) {
+        investorsCashRepository.delete(cash);
+    }
+
     public List<InvestorsTotalSum> getInvestorsCashSums(BigInteger investorId) {
         return investorsCashRepository.getInvestorsCashSums(investorId);
     }
