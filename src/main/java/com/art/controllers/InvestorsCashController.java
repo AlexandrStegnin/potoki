@@ -754,7 +754,7 @@ public class InvestorsCashController {
                 value.setInvestorsType(investorsType);
                 value.setGivedCash(value.getGivedCash().setScale(2, RoundingMode.CEILING));
                 updateMailingGroups(value, "add");
-                investorsCashService.create(value);
+                investorsCashService.createNew(value);
                 cashList.add(value);
             });
 
