@@ -290,7 +290,7 @@ public class UserService {
         if (user.getUserStuff().getStuff().equalsIgnoreCase("Инвестор")) {
             SendingMail mail = new SendingMail();
             mail.setSubject("Добро пожаловать в Доходный Дом Колесникъ!");
-            mail.setBody("Здравствуйте, уважаемый " + user.getUserStuff().getStuff() + "!<br/>" +
+            mail.setBody("Здравствуйте, уважаемый Инвестор!<br/>" +
                     "Вам предоставлен доступ в личный кабинет Доходного Дома &#171;Колесникъ&#187; (https://www.ddkolesnik.com)<br/>" +
                     "Наша видео инструкция поможет сориентироваться (https://youtu.be/nWtQdlP5GDU)<br/>" +
                     "Данные для входа:<br/>" +
