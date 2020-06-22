@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigInteger;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -34,15 +35,19 @@ public class TransactionLogService {
 
     private final InvestorsCashService investorsCashService;
 
+    private final InvestorsFlowsSaleService investorsFlowsSaleService;
+
     @Autowired
     public TransactionLogService(TransactionLogSpecification specification,
                                  TransactionLogRepository transactionLogRepository,
                                  InvestorCashLogService investorCashLogService,
-                                 InvestorsCashService investorsCashService) {
+                                 InvestorsCashService investorsCashService,
+                                 InvestorsFlowsSaleService investorsFlowsSaleService) {
         this.specification = specification;
         this.transactionLogRepository = transactionLogRepository;
         this.investorCashLogService = investorCashLogService;
         this.investorsCashService = investorsCashService;
+        this.investorsFlowsSaleService = investorsFlowsSaleService;
     }
 
     /**
@@ -147,7 +152,7 @@ public class TransactionLogService {
                 return "Операция [DIVIDE] не реализована";
 
             case REINVESTMENT_SALE:
-                return "Операция [REINVESTMENT_SALE] не реализована";
+                return rollbackReinvestmentSale(log);
 
             case REINVESTMENT_RENT:
                 return "Операция [REINVESTMENT_RENT] не реализована";
@@ -237,7 +242,7 @@ public class TransactionLogService {
         log.setType(TransactionType.REINVESTMENT_SALE);
         log.setRollbackEnabled(true);
         create(log);
-        investorCashLogService.reinvestmentSale(flowsSaleList, cashList, log);
+        investorCashLogService.reinvestmentSale(flowsSaleList, log);
     }
 
     @Transactional
@@ -305,6 +310,29 @@ public class TransactionLogService {
     @Transactional
     public String rollbackClosing(TransactionLog log) {
         return rollbackUpdate(log);
+    }
+
+    @Transactional
+    public String rollbackReinvestmentSale(TransactionLog log) {
+        Set<InvestorsCash> cashes = log.getInvestorsCashes();
+        List<InvestorCashLog> cashLogs = investorCashLogService.findByTxId(log.getId());
+        List<BigInteger> flowsCashIdList = cashLogs
+                .stream()
+                .map(cashLog -> BigInteger.valueOf(cashLog.getCashId()))
+                .collect(Collectors.toList());
+        List<InvestorsFlowsSale> flowsSales = investorsFlowsSaleService.findByIdIn(flowsCashIdList);
+        try {
+            cashes.forEach(investorsCashService::delete);
+            flowsSales.forEach(flowSale -> {
+                flowSale.setIsReinvest(0);
+                investorsFlowsSaleService.update(flowSale);
+            });
+            cashLogs.forEach(investorCashLogService::delete);
+            transactionLogRepository.delete(log);
+            return "Откат операции прошёл успешно";
+        } catch (Exception e) {
+            return String.format("При удалении транзакции произошла ошибка [%s]", e.getLocalizedMessage());
+        }
     }
 
     /**
