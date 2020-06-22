@@ -761,7 +761,7 @@ public class InvestorsCashController {
             if (flowsSaleList.size() > 0) {
                 transactionLogService.reinvestmentSale(flowsSaleList, cashList);
             } else if (flowsList.size() > 0) {
-
+                transactionLogService.reinvestmentRent(flowsList, cashList);
             }
             response.setMessage("Реинвестирование прошло успешно");
 
