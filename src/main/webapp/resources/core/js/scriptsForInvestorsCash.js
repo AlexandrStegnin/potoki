@@ -36,8 +36,8 @@ jQuery(document).ready(function ($) {
 
     $(document).on('click', '#bth-clear', function (e) {
         e.preventDefault();
-        $('#fFacilities').find('option:eq(0)').prop('selected', true);
-        $('#uFacilities').find('option:eq(0)').prop('selected', true);
+        $('#fFacilities').selectpicker('deselectAll');
+        $('#uFacilities').selectpicker('deselectAll');
         $('#investors').selectpicker('deselectAll'); //find('option:eq(0)').prop('selected', true);
         $('.selectpicker').selectpicker('refresh');
         $('#beginPeriod').val('');
