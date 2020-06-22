@@ -46,7 +46,7 @@ public class InvestorCashDTO {
         this.facility = cashLog.getFacility().getFacility();
         this.dateGivenCash = convertDate(cashLog.getDateGivenCash());
         this.givenCash = cashLog.getGivenCash();
-        this.cashType = CashType.OLD.getTitle();
+        this.cashType = cashLog.getInstanceOf().getTitle();
     }
 
     private String convertDate(Date dateGivenCash) {

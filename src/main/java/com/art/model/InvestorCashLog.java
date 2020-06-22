@@ -146,6 +146,10 @@ public class InvestorCashLog {
 
     public InvestorCashLog(InvestorsFlowsSale flowsSale, TransactionLog log, CashType instanceOf) {
         this.cashId = flowsSale.getId().longValue();
+        this.investor = flowsSale.getInvestor();
+        this.facility = flowsSale.getFacility();
+        this.dateGivenCash = flowsSale.getDateGived();
+        this.givenCash = flowsSale.getProfitToReInvest();
         this.transactionLog = log;
         this.instanceOf = instanceOf;
     }
