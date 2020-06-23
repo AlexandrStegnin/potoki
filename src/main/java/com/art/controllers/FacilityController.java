@@ -28,9 +28,6 @@ public class FacilityController {
     @Resource(name = "stuffService")
     private StuffService stuffService;
 
-    @Resource(name = "allowanceIpService")
-    private AllowanceIpService allowanceIpService;
-
     @Resource(name = "underFacilitiesService")
     private UnderFacilitiesService underFacilitiesService;
 
@@ -135,13 +132,11 @@ public class FacilityController {
         });
 
         MailingGroups mailingGroup = mailingGroupsService.findByGroupWithUsers(mGroup + facility.getFacility());
-        List<AllowanceIp> allowanceIpList = allowanceIpService.findByFacilityId(facility.getId());
         if (!Objects.equals(null, mailingGroup.getId())) {
             mailingGroupsService.deleteById(mailingGroup.getId());
         }
         try {
             facility.getUnderFacilities().forEach(f -> underFacilitiesService.deleteById(f.getId()));
-            allowanceIpList.forEach(l -> allowanceIpService.deleteById(l.getId()));
             facilityService.deleteById(facility.getId());
             response.setMessage("Объект " + facility
                     .getFacility() + " успешно удалён.");

@@ -31,7 +31,6 @@ public class Users implements Serializable {
     private String first_name;
     private String middle_name;
     private String email;
-    private int office_id;
     private String state;
     private List<Roles> roles;
     private Stuffs userStuff;
@@ -57,19 +56,6 @@ public class Users implements Serializable {
     public Users(String id, String login) {
         this.id = new BigInteger(id);
         this.login = login;
-    }
-
-    public Users(BigInteger id, String login, List<BigInteger> facilityId, List<String> facilityName) {
-        this.id = id;
-        this.login = login;
-        this.facilityId = facilityId;
-        this.facilityName = facilityName;
-    }
-
-    public Users(BigInteger id, String login, Set<Facilities> facilities) {
-        this.id = id;
-        this.login = login;
-        this.facilities = facilities;
     }
 
     public Users(BigInteger id, BigInteger partnerId) {
@@ -195,15 +181,6 @@ public class Users implements Serializable {
         this.email = email;
     }
 
-    @Column(name = "office_id", length = 11, insertable = false, updatable = false)
-    public int getOfficeId() {
-        return office_id;
-    }
-
-    public void setOfficeId(int office_id) {
-        this.office_id = office_id;
-    }
-
     @Column(name = "state")
     public String getState() {
         return state;
@@ -251,17 +228,6 @@ public class Users implements Serializable {
 
     @Column
     private BigInteger partnerId;
-
-//    @JsonGetter
-//    @OneToOne
-//    @JoinColumn(name = "Id", referencedColumnName = "InvestorId")
-//    public MarketingTree getSalesChanel() {
-//        return this.salesChanel;
-//    }
-//
-//    public void setSalesChanel(MarketingTree salesChanel) {
-//        this.salesChanel = salesChanel;
-//    }
 
     @ManyToMany(cascade =
             {

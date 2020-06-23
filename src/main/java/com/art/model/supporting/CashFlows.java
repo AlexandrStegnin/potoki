@@ -1,7 +1,6 @@
 package com.art.model.supporting;
 
 import com.art.model.*;
-import com.art.model.supporting.investedMoney.InvestedMoney;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -19,6 +18,5 @@ public class CashFlows implements Serializable {
     private List<Rooms> rooms;
     private String login;
     private List<SaleOfFacilities> saleOfFacilities;
-    private InvestedMoney investedMoney;
 
 }

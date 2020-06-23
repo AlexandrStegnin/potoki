@@ -47,23 +47,14 @@ public class UserController {
     @Resource(name = "personalMailService")
     private PersonalMailService personalMailService;
 
-    @Resource(name = "allowanceIpService")
-    private AllowanceIpService allowanceIpService;
-
     @Resource(name = "bonusesService")
     private BonusesService bonusesService;
-
-    @Resource(name = "cashPaymentsService")
-    private CashPaymentsService cashPaymentsService;
 
     @Resource(name = "facilitiesServiceContractsService")
     private FacilitiesServiceContractsService facilitiesServiceContractsService;
 
     @Resource(name = "facilityService")
     private FacilityService facilityService;
-
-    @Resource(name = "investorShareService")
-    private InvestorShareService investorShareService;
 
     @Resource(name = "investorsCashService")
     private InvestorsCashService investorsCashService;
@@ -219,11 +210,8 @@ public class UserController {
     GenericResponse deleteUser(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
         Users user = userService.findByIdWithStuffs(new BigInteger(searchSummary.getRentor()));
-        List<AllowanceIp> allowanceIpList;
         List<Bonuses> bonusesList;
-        List<CashPayments> cashPaymentsList;
         List<FacilitiesServiceContracts> facilitiesServiceContracts;
-        List<InvestorsShare> investorsShareList;
         List<InvestorsCash> investorsCashes;
         List<InvestorsExpenses> investorsExpenses;
         List<RentorsDetails> rentorsDetailsList;
@@ -247,8 +235,6 @@ public class UserController {
                         b.setManager(null);
                         bonusesService.update(b);
                     });
-                    cashPaymentsList = cashPaymentsService.findByManagerId(user.getId());
-                    cashPaymentsList.forEach(cp -> cashPaymentsService.deleteById(cp.getId()));
                     facilities = facilityService.findByManager(user);
                     if (facilities != null) {
                         facilities.setManager(null);
@@ -257,10 +243,6 @@ public class UserController {
 
                     break;
                 case "Инвестор":
-                    allowanceIpList = allowanceIpService.findByInvestor(user);
-                    allowanceIpList.forEach(ap -> allowanceIpService.deleteById(ap.getId()));
-                    investorsShareList = investorShareService.findByInvestor(user);
-                    investorsShareList.forEach(ish -> investorShareService.deleteById(ish.getId()));
                     investorsCashes = investorsCashService.findByInvestorId(user.getId());
                     investorsCashes.forEach(ic -> investorsCashService.deleteById(ic.getId()));
                     investorsExpenses = investorsExpensesService.findByInvestorId(user.getId());
