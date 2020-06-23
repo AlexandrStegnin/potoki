@@ -69,7 +69,7 @@ function getUnderFacilitiesFromLocalStorage(facilityId, uFacilitiesId) {
             option = document.createElement('option');
             option.setAttribute('id', item.id);
             option.setAttribute('data-parent-id', item.facilityId);
-            option.setAttribute('value', item.underFacility);
+            option.setAttribute('value', item.id);
             option.innerText = item.underFacility;
 
             return option;
@@ -83,7 +83,7 @@ function getUnderFacilitiesFromLocalStorage(facilityId, uFacilitiesId) {
             option = document.createElement('option');
             option.setAttribute('id', item.id);
             option.setAttribute('data-parent-id', item.facilityId);
-            option.setAttribute('value', item.underFacility);
+            option.setAttribute('value', item.id);
             option.innerText = item.underFacility;
 
             return option;
@@ -96,11 +96,11 @@ function getUnderFacilitiesFromLocalStorage(facilityId, uFacilitiesId) {
         option.innerText = 'Без подобъекта';
         options.unshift(option);
 
-        option = document.createElement('option');
-        option.setAttribute('id', "-1");
-        option.setAttribute('value', CHOOSE_UNDER_FACILITY);
-        option.innerText = CHOOSE_UNDER_FACILITY;
-        options.unshift(option);
+        // option = document.createElement('option');
+        // option.setAttribute('id', "-1");
+        // option.setAttribute('value', CHOOSE_UNDER_FACILITY);
+        // option.innerText = CHOOSE_UNDER_FACILITY;
+        // options.unshift(option);
     }
 
     $('#' + uFacilitiesId)
@@ -108,7 +108,7 @@ function getUnderFacilitiesFromLocalStorage(facilityId, uFacilitiesId) {
         .remove()
         .end()
         .append(options)
-        .prop('selected', CHOOSE_UNDER_FACILITY)
+        // .prop('selected', CHOOSE_UNDER_FACILITY)
         .selectpicker('refresh');
 }
 

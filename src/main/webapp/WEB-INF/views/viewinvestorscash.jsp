@@ -385,8 +385,11 @@
                             <label class="col-md-3 control-lable selectric" for="underFacilities">Подобъект:</label>
                             <div class="col-md-7">
                                 <form:select path="reUnderFacilities" id="underFacilities" items="${underFacilities}"
-                                             multiple="true"
-                                             itemValue="id" itemLabel="underFacility" class="form-control input-sm"/>
+                                             itemValue="id" itemLabel="underFacility" class="form-control input-sm"
+                                             title="Выберите подобъект..." multiple="true"
+                                             data-live-search="true" data-size="7"
+                                             data-actions-box="true" data-select-all-text="Выбрать всё"
+                                             data-deselect-all-text="Очистить"/>
                                 <div id="underFacilityErr" style="color: red; display: none">
                                     Необходимо выбрать подобъект
                                 </div>
@@ -400,8 +403,12 @@
                                 остаток:</label>
                             <div class="col-md-7">
                                 <form:select path="underFacilitiesList" id="underFacilitiesList"
-                                             items="${underFacilities}" multiple="true"
-                                             itemValue="id" itemLabel="underFacility" class="form-control input-sm"/>
+                                             items="${underFacilitiesList}"
+                                             itemValue="id" itemLabel="underFacility" class="form-control input-sm selectpicker"
+                                             title="Выберите подобъекты..." multiple="true"
+                                             data-live-search="true" data-size="7"
+                                             data-actions-box="true" data-select-all-text="Выбрать всё"
+                                             data-deselect-all-text="Очистить"/>
                                 <div id="underFacilityErr" style="color: red; display: none">Необходимо выбрать из каких
                                     подобъектов состоит остаток
                                 </div>
