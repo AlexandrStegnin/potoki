@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 @EnableWebMvc
 @Configuration
 @Import(WebConfig.class)
-public class RoleConfig extends WebMvcConfigurerAdapter {
+public class FormattersConfig extends WebMvcConfigurerAdapter {
 
     @Resource(name = "stuffService")
     private StuffService stuffService;
