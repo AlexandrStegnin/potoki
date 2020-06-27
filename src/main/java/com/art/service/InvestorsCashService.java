@@ -361,7 +361,7 @@ public class InvestorsCashService {
     private void fillCash(InvestorsCash to, InvestorsCash from) {
         to.setDateGivedCash(from.getDateGivedCash());
         to.setCashSource(from.getCashSource());
-        to.setCashType(from.getCashType());
+//        to.setCashType(from.getCashType());
         to.setNewCashDetails(from.getNewCashDetails());
 //        to.setInvestorsType(from.getInvestorsType());
         to.setShareKind(from.getShareKind());

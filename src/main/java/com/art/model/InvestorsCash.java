@@ -128,7 +128,7 @@ public class InvestorsCash implements Serializable {
     private Facilities facility;
     private Users investor;
     private CashSources cashSource;
-    private CashTypes cashType;
+//    private CashTypes cashType;
     private NewCashDetails newCashDetails;
 //    private InvestorsTypes investorsType;
     private UnderFacilities underFacility;
@@ -168,7 +168,7 @@ public class InvestorsCash implements Serializable {
         this.facility = facility;
         this.investor = investor;
         this.cashSource = cashSource;
-        this.cashType = cashType;
+//        this.cashType = cashType;
         this.newCashDetails = newCashDetails;
 //        this.investorsType = investorsType;
         this.underFacility = underFacility;
@@ -195,7 +195,7 @@ public class InvestorsCash implements Serializable {
         this.facility = cash.getFacility();
         this.investor = cash.getInvestor();
         this.cashSource = cash.getCashSource();
-        this.cashType = cash.getCashType();
+//        this.cashType = cash.getCashType();
         this.newCashDetails = cash.getNewCashDetails();
 //        this.investorsType = cash.getInvestorsType();
         this.underFacility = cash.getUnderFacility();
@@ -362,15 +362,15 @@ public class InvestorsCash implements Serializable {
 //        this.investorsType = investorsType;
 //    }
 
-    @OneToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
-    @JoinColumn(name = "CashTypeId", referencedColumnName = "id")
-    public CashTypes getCashType() {
-        return cashType;
-    }
-
-    public void setCashType(CashTypes cashType) {
-        this.cashType = cashType;
-    }
+//    @OneToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
+//    @JoinColumn(name = "CashTypeId", referencedColumnName = "id")
+//    public CashTypes getCashType() {
+//        return cashType;
+//    }
+//
+//    public void setCashType(CashTypes cashType) {
+//        this.cashType = cashType;
+//    }
 
     @OneToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "UnderFacilityId", referencedColumnName = "id")

@@ -363,7 +363,7 @@ public class InvestorsCashController {
             newInvestorsCash.setGivedCash(investorsCash.getGivedCash());
             newInvestorsCash.setDateGivedCash(reinvestDate);
             newInvestorsCash.setCashSource(null);
-            newInvestorsCash.setCashType(cashTypesService.findByCashType("Старые деньги"));
+//            newInvestorsCash.setCashType(cashTypesService.findByCashType("Старые деньги"));
             newInvestorsCash.setNewCashDetails(newCashDetailsService.findByNewCashDetail("Реинвестирование с продажи"));
 //            newInvestorsCash.setInvestorsType(investorsTypesService.findByInvestorsTypes("Старый инвестор"));
             newInvestorsCash.setShareKind(investorsCash.getShareKind());
@@ -415,7 +415,7 @@ public class InvestorsCashController {
         investorsCash.setInvestor(newInvestorsCash.getInvestor());
         investorsCash.setDateGivedCash(newInvestorsCash.getDateGivedCash());
         investorsCash.setCashSource(newInvestorsCash.getCashSource());
-        investorsCash.setCashType(newInvestorsCash.getCashType());
+//        investorsCash.setCashType(newInvestorsCash.getCashType());
         investorsCash.setNewCashDetails(newInvestorsCash.getNewCashDetails());
 //        investorsCash.setInvestorsType(newInvestorsCash.getInvestorsType());
         investorsCash.setShareKind(inMemoryCash.getShareKind());
@@ -534,7 +534,7 @@ public class InvestorsCashController {
 
                         if (deleting.getFacility().equals(parentCash.getFacility()) &&
                                 deleting.getInvestor().equals(parentCash.getInvestor()) &&
-                                deleting.getCashType().equals(parentCash.getCashType()) &&
+//                                deleting.getCashType().equals(parentCash.getCashType()) &&
 //                                deleting.getInvestorsType().equals(parentCash.getInvestorsType()) &&
                                 deleting.getShareKind().equals(parentCash.getShareKind()) &&
                                 Objects.equals(null, deleting.getTypeClosingInvest()) &&
@@ -715,8 +715,8 @@ public class InvestorsCashController {
     GenericResponse saveReCash(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
         List<InvestorsCash> investorsCashes = searchSummary.getInvestorsCashList();
-        InvestorsTypes investorsType = investorsTypesService.findByInvestorsTypes("Старый инвестор");
-        CashTypes cashTypes = cashTypesService.findByCashType("Новые деньги");
+//        InvestorsTypes investorsType = investorsTypesService.findByInvestorsTypes("Старый инвестор");
+//        CashTypes cashTypes = cashTypesService.findByCashType("Новые деньги");
         NewCashDetails newCashDetails;
 
         // список для создания записи в логе по операции реинвестирования с продажи
@@ -749,7 +749,7 @@ public class InvestorsCashController {
         try {
             Set<InvestorsCash> cashList = new HashSet<>();
             map.forEach((key, value) -> {
-                value.setCashType(cashTypes);
+//                value.setCashType(cashTypes);
                 value.setNewCashDetails(finalNewCashDetails);
 //                value.setInvestorsType(investorsType);
                 value.setGivedCash(value.getGivedCash().setScale(2, RoundingMode.CEILING));
@@ -796,7 +796,7 @@ public class InvestorsCashController {
         GenericResponse response = new GenericResponse();
         List<InvestorsCash> investorsCashes = searchSummary.getInvestorsCashList();
         final Date[] dateClose = {null};
-        final CashTypes cashTypes = cashTypesService.findByCashType("Старые деньги");
+//        final CashTypes cashTypes = cashTypesService.findByCashType("Старые деньги");
         final NewCashDetails newCashDetails = newCashDetailsService.findByNewCashDetail("Реинвестирование с продажи (сохранение)");
 //        final InvestorsTypes investorsType = investorsTypesService.findByInvestorsTypes("Старый инвестор");
         final TypeClosingInvest typeClosingInvest = typeClosingInvestService.findByTypeClosingInvest("Реинвестирование");
@@ -804,7 +804,7 @@ public class InvestorsCashController {
         final Map<String, InvestorsCash> map = groupInvestorsCash(investorsCashes, "");
 
         map.forEach((key, value) -> {
-            value.setCashType(cashTypes);
+//            value.setCashType(cashTypes);
             value.setNewCashDetails(newCashDetails);
 //            value.setInvestorsType(investorsType);
             value.setGivedCash(value.getGivedCash().setScale(2, RoundingMode.DOWN));
@@ -901,7 +901,7 @@ public class InvestorsCashController {
             cash.setFacility(f.getFacility());
             cash.setInvestor(f.getInvestor());
             cash.setCashSource(f.getCashSource());
-            cash.setCashType(f.getCashType());
+//            cash.setCashType(f.getCashType());
             cash.setNewCashDetails(f.getNewCashDetails());
 //            cash.setInvestorsType(f.getInvestorsType());
             cash.setUnderFacility(underFacility);
