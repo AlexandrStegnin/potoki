@@ -17,9 +17,8 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString(exclude = {"roles", "userStuff", "mailingGroups", "facilities", "usersAnnexToContractsList", "emails"})
-@EqualsAndHashCode(exclude = {"stuffId", "password", "lastName", "first_name", "middle_name",
-        "email", "office_id", "state", "roles", "userStuff", "mailingGroups", "facilities",
-        "usersAnnexToContractsList", "emails"})
+@EqualsAndHashCode(exclude = {"stuffId", "password", "lastName", "first_name", "middle_name", "email", "state",
+        "roles", "userStuff", "mailingGroups", "facilities", "usersAnnexToContractsList", "emails"})
 @Entity
 @Table(name = "USERS")
 public class Users implements Serializable {
