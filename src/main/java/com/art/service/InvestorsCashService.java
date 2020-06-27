@@ -363,7 +363,7 @@ public class InvestorsCashService {
         to.setCashSource(from.getCashSource());
         to.setCashType(from.getCashType());
         to.setNewCashDetails(from.getNewCashDetails());
-        to.setInvestorsType(from.getInvestorsType());
+//        to.setInvestorsType(from.getInvestorsType());
         to.setShareKind(from.getShareKind());
         to.setDateReport(from.getDateReport());
         to.setSourceFacility(from.getSourceFacility());

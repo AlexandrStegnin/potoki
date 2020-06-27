@@ -126,7 +126,7 @@ public class InvestorCashLog {
         this.cashSource = cash.getCashSource();
         this.cashType = cash.getCashType();
         this.newCashDetail = cash.getNewCashDetails();
-        this.investorType = cash.getInvestorsType();
+//        this.investorType = cash.getInvestorsType();
         this.dateClosingInvest = cash.getDateClosingInvest();
         this.typeClosingInvest = cash.getTypeClosingInvest();
         this.shareKind = cash.getShareKind();

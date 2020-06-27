@@ -365,7 +365,7 @@ public class InvestorsCashController {
             newInvestorsCash.setCashSource(null);
             newInvestorsCash.setCashType(cashTypesService.findByCashType("Старые деньги"));
             newInvestorsCash.setNewCashDetails(newCashDetailsService.findByNewCashDetail("Реинвестирование с продажи"));
-            newInvestorsCash.setInvestorsType(investorsTypesService.findByInvestorsTypes("Старый инвестор"));
+//            newInvestorsCash.setInvestorsType(investorsTypesService.findByInvestorsTypes("Старый инвестор"));
             newInvestorsCash.setShareKind(investorsCash.getShareKind());
             updateMailingGroups(newInvestorsCash, "add");
             investorsCashService.create(newInvestorsCash);
@@ -417,7 +417,7 @@ public class InvestorsCashController {
         investorsCash.setCashSource(newInvestorsCash.getCashSource());
         investorsCash.setCashType(newInvestorsCash.getCashType());
         investorsCash.setNewCashDetails(newInvestorsCash.getNewCashDetails());
-        investorsCash.setInvestorsType(newInvestorsCash.getInvestorsType());
+//        investorsCash.setInvestorsType(newInvestorsCash.getInvestorsType());
         investorsCash.setShareKind(inMemoryCash.getShareKind());
 
         BigDecimal newSum = newInvestorsCash.getGivedCash().subtract(investorsCash.getGivedCash());
@@ -535,7 +535,7 @@ public class InvestorsCashController {
                         if (deleting.getFacility().equals(parentCash.getFacility()) &&
                                 deleting.getInvestor().equals(parentCash.getInvestor()) &&
                                 deleting.getCashType().equals(parentCash.getCashType()) &&
-                                deleting.getInvestorsType().equals(parentCash.getInvestorsType()) &&
+//                                deleting.getInvestorsType().equals(parentCash.getInvestorsType()) &&
                                 deleting.getShareKind().equals(parentCash.getShareKind()) &&
                                 Objects.equals(null, deleting.getTypeClosingInvest()) &&
                                 deleting.getDateGivedCash().compareTo(parentCash.getDateGivedCash()) == 0) {
@@ -751,7 +751,7 @@ public class InvestorsCashController {
             map.forEach((key, value) -> {
                 value.setCashType(cashTypes);
                 value.setNewCashDetails(finalNewCashDetails);
-                value.setInvestorsType(investorsType);
+//                value.setInvestorsType(investorsType);
                 value.setGivedCash(value.getGivedCash().setScale(2, RoundingMode.CEILING));
                 updateMailingGroups(value, "add");
                 investorsCashService.createNew(value);
@@ -798,7 +798,7 @@ public class InvestorsCashController {
         final Date[] dateClose = {null};
         final CashTypes cashTypes = cashTypesService.findByCashType("Старые деньги");
         final NewCashDetails newCashDetails = newCashDetailsService.findByNewCashDetail("Реинвестирование с продажи (сохранение)");
-        final InvestorsTypes investorsType = investorsTypesService.findByInvestorsTypes("Старый инвестор");
+//        final InvestorsTypes investorsType = investorsTypesService.findByInvestorsTypes("Старый инвестор");
         final TypeClosingInvest typeClosingInvest = typeClosingInvestService.findByTypeClosingInvest("Реинвестирование");
 
         final Map<String, InvestorsCash> map = groupInvestorsCash(investorsCashes, "");
@@ -806,7 +806,7 @@ public class InvestorsCashController {
         map.forEach((key, value) -> {
             value.setCashType(cashTypes);
             value.setNewCashDetails(newCashDetails);
-            value.setInvestorsType(investorsType);
+//            value.setInvestorsType(investorsType);
             value.setGivedCash(value.getGivedCash().setScale(2, RoundingMode.DOWN));
             dateClose[0] = value.getDateGivedCash();
             updateMailingGroups(value, "add");
@@ -903,7 +903,7 @@ public class InvestorsCashController {
             cash.setCashSource(f.getCashSource());
             cash.setCashType(f.getCashType());
             cash.setNewCashDetails(f.getNewCashDetails());
-            cash.setInvestorsType(f.getInvestorsType());
+//            cash.setInvestorsType(f.getInvestorsType());
             cash.setUnderFacility(underFacility);
             cash.setDateClosingInvest(null);
             cash.setTypeClosingInvest(null);
@@ -1133,7 +1133,7 @@ public class InvestorsCashController {
                 cash.setFacility(ic.getFacility());
                 cash.setUnderFacility(ic.getUnderFacility());
                 cash.setInvestor(ic.getInvestor());
-                cash.setInvestorsType(ic.getInvestorsType());
+//                cash.setInvestorsType(ic.getInvestorsType());
                 cash.setShareKind(ic.getShareKind());
                 cash.setDateReport(ic.getDateReport());
                 cash.setSourceFacility(ic.getSourceFacility());

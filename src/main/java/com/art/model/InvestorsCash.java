@@ -94,7 +94,7 @@ import java.util.Date;
                                 "FROM InvestorsCash ic " +
                                 "LEFT JOIN FACILITYES f ON ic.FacilityId = f.ID " +
                                 "WHERE InvestorId = ? " +
-                                "GROUP BY InvestorId, FacilityId " +
+                                "GROUP BY InvestorId, FacilityId, Facility " +
                                 "ORDER BY Facility",
                         resultClass = InvestorsTotalSum.class,
                         resultSetMapping = "InvestorsCashSumsMapping")
@@ -130,7 +130,7 @@ public class InvestorsCash implements Serializable {
     private CashSources cashSource;
     private CashTypes cashType;
     private NewCashDetails newCashDetails;
-    private InvestorsTypes investorsType;
+//    private InvestorsTypes investorsType;
     private UnderFacilities underFacility;
     private Date dateClosingInvest;
     private TypeClosingInvest typeClosingInvest;
@@ -159,7 +159,7 @@ public class InvestorsCash implements Serializable {
 
     public InvestorsCash(BigDecimal givedCash, Date dateGivedCash, Facilities facility, Users investor,
                          CashSources cashSource, CashTypes cashType, NewCashDetails newCashDetails,
-                         InvestorsTypes investorsType, UnderFacilities underFacility, Date dateClosingInvest,
+                         /*InvestorsTypes investorsType,*/ UnderFacilities underFacility, Date dateClosingInvest,
                          TypeClosingInvest typeClosingInvest, ShareKind shareKind, Date dateReport,
                          Facilities sourceFacility, UnderFacilities sourceUnderFacility, String sourceFlowsId,
                          Rooms room, int isReinvest, BigInteger sourceId, String source, int isDivide) {
@@ -170,7 +170,7 @@ public class InvestorsCash implements Serializable {
         this.cashSource = cashSource;
         this.cashType = cashType;
         this.newCashDetails = newCashDetails;
-        this.investorsType = investorsType;
+//        this.investorsType = investorsType;
         this.underFacility = underFacility;
         this.dateClosingInvest = dateClosingInvest;
         this.typeClosingInvest = typeClosingInvest;
@@ -197,7 +197,7 @@ public class InvestorsCash implements Serializable {
         this.cashSource = cash.getCashSource();
         this.cashType = cash.getCashType();
         this.newCashDetails = cash.getNewCashDetails();
-        this.investorsType = cash.getInvestorsType();
+//        this.investorsType = cash.getInvestorsType();
         this.underFacility = cash.getUnderFacility();
         this.dateClosingInvest = cash.getDateClosingInvest();
         this.typeClosingInvest = cash.getTypeClosingInvest();
@@ -352,15 +352,15 @@ public class InvestorsCash implements Serializable {
         this.newCashDetails = newCashDetails;
     }
 
-    @OneToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
-    @JoinColumn(name = "InvestorsTypeId", referencedColumnName = "id")
-    public InvestorsTypes getInvestorsType() {
-        return investorsType;
-    }
-
-    public void setInvestorsType(InvestorsTypes investorsType) {
-        this.investorsType = investorsType;
-    }
+//    @OneToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
+//    @JoinColumn(name = "InvestorsTypeId", referencedColumnName = "id")
+//    public InvestorsTypes getInvestorsType() {
+//        return investorsType;
+//    }
+//
+//    public void setInvestorsType(InvestorsTypes investorsType) {
+//        this.investorsType = investorsType;
+//    }
 
     @OneToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "CashTypeId", referencedColumnName = "id")
