@@ -135,18 +135,18 @@
             </div>
         </div>
 
-        <div class="row" id="cashTypRow">
-            <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="cashTyp">Вид денег:</label>
-                <div class="col-md-7">
-                    <form:select path="cashType" id="cashTyp" items="${cashTypes}" multiple="false"
-                                 itemValue="id" itemLabel="cashType" class="form-control input-sm"/>
-                    <div class="has-error">
-                        <form:errors path="cashType" class="help-inline"/>
-                    </div>
-                </div>
-            </div>
-        </div>
+<%--        <div class="row" id="cashTypRow">--%>
+<%--            <div class="form-group col-md-12">--%>
+<%--                <label class="col-md-3 control-lable" for="cashTyp">Вид денег:</label>--%>
+<%--                <div class="col-md-7">--%>
+<%--                    <form:select path="cashType" id="cashTyp" items="${cashTypes}" multiple="false"--%>
+<%--                                 itemValue="id" itemLabel="cashType" class="form-control input-sm"/>--%>
+<%--                    <div class="has-error">--%>
+<%--                        <form:errors path="cashType" class="help-inline"/>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--            </div>--%>
+<%--        </div>--%>
 
         <div class="row" id="cashDetailRow">
             <div class="form-group col-md-12">
@@ -161,18 +161,18 @@
             </div>
         </div>
 
-        <div class="row" id="invTypeRow">
-            <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="invType">Вид инвестора:</label>
-                <div class="col-md-7">
-                    <form:select path="investorsType" id="invType" items="${investorsTypes}" multiple="false"
-                                 itemValue="id" itemLabel="investorsType" class="form-control input-sm"/>
-                    <div class="has-error">
-                        <form:errors path="investorsType" class="help-inline"/>
-                    </div>
-                </div>
-            </div>
-        </div>
+<%--        <div class="row" id="invTypeRow">--%>
+<%--            <div class="form-group col-md-12">--%>
+<%--                <label class="col-md-3 control-lable" for="invType">Вид инвестора:</label>--%>
+<%--                <div class="col-md-7">--%>
+<%--                    <form:select path="investorsType" id="invType" items="${investorsTypes}" multiple="false"--%>
+<%--                                 itemValue="id" itemLabel="investorsType" class="form-control input-sm"/>--%>
+<%--                    <div class="has-error">--%>
+<%--                        <form:errors path="investorsType" class="help-inline"/>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--            </div>--%>
+<%--        </div>--%>
 
         <div class="row" id="dateCloseInvRow">
             <div class="form-group col-md-12">

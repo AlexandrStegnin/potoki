@@ -185,9 +185,9 @@
                 <th>Переданная сумма</th>
                 <th>Дата передачи денег</th>
                 <th>Источник денег</th>
-                <th>Вид денег</th>
+<%--                <th>Вид денег</th>--%>
                 <th>Детали новых денег</th>
-                <th>Вид инвестора</th>
+<%--                <th>Вид инвестора</th>--%>
                 <th>Дата закрытия вложения</th>
                 <th>Вид закрытия вложения</th>
                 <th>Вид доли</th>
@@ -214,9 +214,9 @@
                     </td>
                     <td data-report-date="${cash.dateGivedCash.time}">${cash.getDateGivedCashToLocalDate()}</td>
                     <td data-cash-source-id="${cash.cashSource.id}">${cash.cashSource.cashSource}</td>
-                    <td data-cash-type-id="${cash.cashType.id}">${cash.cashType.cashType}</td>
+<%--                    <td data-cash-type-id="${cash.cashType.id}">${cash.cashType.cashType}</td>--%>
                     <td data-cash-details-id="${cash.newCashDetails.id}">${cash.newCashDetails.newCashDetail}</td>
-                    <td data-investors-type-id="${cash.investorsType.id}">${cash.investorsType.investorsType}</td>
+<%--                    <td data-investors-type-id="${cash.investorsType.id}">${cash.investorsType.investorsType}</td>--%>
                     <td data-date-closing="${cash.dateClosingInvest.time}">${cash.getDateClosingInvestToLocalDate()}</td>
                     <td data-type-closing-id="${cash.typeClosingInvest.id}">${cash.typeClosingInvest.typeClosingInvest}</td>
                     <td data-share-kind-id="${cash.shareKind.id}">${cash.shareKind.shareKind}</td>
