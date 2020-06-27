@@ -3,7 +3,7 @@ package com.art.controllers;
 import com.art.model.MarketingTree;
 import com.art.model.Users;
 import com.art.model.supporting.GenericResponse;
-import com.art.model.supporting.KinEnum;
+import com.art.model.supporting.enums.KinEnum;
 import com.art.model.supporting.filters.MarketingTreeFilter;
 import com.art.service.MarketingTreeService;
 import com.art.service.UserService;

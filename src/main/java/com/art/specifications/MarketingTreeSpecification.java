@@ -3,7 +3,7 @@ package com.art.specifications;
 import com.art.model.MarketingTree;
 import com.art.model.MarketingTree_;
 import com.art.model.Users_;
-import com.art.model.supporting.KinEnum;
+import com.art.model.supporting.enums.KinEnum;
 import com.art.model.supporting.filters.MarketingTreeFilter;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;

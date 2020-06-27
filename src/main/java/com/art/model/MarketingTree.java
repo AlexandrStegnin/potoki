@@ -1,7 +1,7 @@
 package com.art.model;
 
-import com.art.model.supporting.KinEnum;
-import com.art.model.supporting.StatusEnum;
+import com.art.model.supporting.enums.KinEnum;
+import com.art.model.supporting.enums.StatusEnum;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

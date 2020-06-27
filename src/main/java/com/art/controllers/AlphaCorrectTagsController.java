@@ -3,7 +3,7 @@ package com.art.controllers;
 import com.art.func.GetPrincipalFunc;
 import com.art.model.AlphaCorrectTags;
 import com.art.model.Facilities;
-import com.art.model.supporting.DebetCreditEnum;
+import com.art.model.supporting.enums.DebetCreditEnum;
 import com.art.service.AlphaCorrectTagsService;
 import com.art.service.FacilityService;
 import org.springframework.beans.propertyeditors.CustomDateEditor;

@@ -1,6 +1,6 @@
 package com.art.model;
 
-import com.art.model.supporting.CashType;
+import com.art.model.supporting.enums.CashType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

@@ -3,7 +3,7 @@ package com.art.controllers;
 import com.art.model.Facilities;
 import com.art.model.FacilitiesBuySales;
 import com.art.model.UnderFacilities;
-import com.art.model.supporting.BuySalesEnum;
+import com.art.model.supporting.enums.BuySalesEnum;
 import com.art.service.*;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;

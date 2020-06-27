@@ -1,6 +1,6 @@
 package com.art.model.supporting.dto;
 
-import com.art.model.supporting.KinEnum;
+import com.art.model.supporting.enums.KinEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

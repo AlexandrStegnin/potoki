@@ -1,6 +1,6 @@
 package com.art.model;
 
-import com.art.model.supporting.DebetCreditEnum;
+import com.art.model.supporting.enums.DebetCreditEnum;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;

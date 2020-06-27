@@ -4,7 +4,7 @@ import com.art.model.Facilities;
 import com.art.model.InvestorsExpenses;
 import com.art.model.TypeExpenses;
 import com.art.model.Users;
-import com.art.model.supporting.InvestorsExpEnum;
+import com.art.model.supporting.enums.InvestorsExpEnum;
 import com.art.service.*;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;

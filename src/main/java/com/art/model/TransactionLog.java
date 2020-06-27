@@ -1,7 +1,7 @@
 package com.art.model;
 
 import com.art.config.SecurityUtils;
-import com.art.model.supporting.TransactionType;
+import com.art.model.supporting.enums.TransactionType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 

@@ -1,7 +1,7 @@
 package com.art.service;
 
 import com.art.model.*;
-import com.art.model.supporting.CashType;
+import com.art.model.supporting.enums.CashType;
 import com.art.repository.InvestorCashLogRepository;
 import org.springframework.stereotype.Service;
 

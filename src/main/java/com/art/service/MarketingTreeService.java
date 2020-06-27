@@ -2,7 +2,7 @@ package com.art.service;
 
 import com.art.model.MarketingTree;
 import com.art.model.Users;
-import com.art.model.supporting.StatusEnum;
+import com.art.model.supporting.enums.StatusEnum;
 import com.art.model.supporting.dto.MarketingTreeDTO;
 import com.art.model.supporting.filters.MarketingTreeFilter;
 import com.art.repository.MarketingTreeRepository;

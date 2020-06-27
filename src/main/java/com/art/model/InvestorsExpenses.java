@@ -1,6 +1,6 @@
 package com.art.model;
 
-import com.art.model.supporting.InvestorsExpEnum;
+import com.art.model.supporting.enums.InvestorsExpEnum;
 import com.art.model.supporting.InvestorsPlanSale;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

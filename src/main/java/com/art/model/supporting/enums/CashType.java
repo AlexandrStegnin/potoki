@@ -1,4 +1,4 @@
-package com.art.model.supporting;
+package com.art.model.supporting.enums;
 
 /**
  * Вид денег для транзакций

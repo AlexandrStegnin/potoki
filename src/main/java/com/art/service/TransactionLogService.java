@@ -1,7 +1,7 @@
 package com.art.service;
 
 import com.art.model.*;
-import com.art.model.supporting.TransactionType;
+import com.art.model.supporting.enums.TransactionType;
 import com.art.model.supporting.dto.InvestorCashDTO;
 import com.art.model.supporting.dto.TransactionLogDTO;
 import com.art.model.supporting.filters.TxLogFilter;

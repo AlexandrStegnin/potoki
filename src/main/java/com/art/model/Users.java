@@ -1,7 +1,7 @@
 package com.art.model;
 
 
-import com.art.model.supporting.KinEnum;
+import com.art.model.supporting.enums.KinEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

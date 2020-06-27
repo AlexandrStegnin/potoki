@@ -2,7 +2,7 @@ package com.art.specifications;
 
 import com.art.model.TransactionLog;
 import com.art.model.TransactionLog_;
-import com.art.model.supporting.TransactionType;
+import com.art.model.supporting.enums.TransactionType;
 import com.art.model.supporting.filters.TxLogFilter;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;

@@ -2,6 +2,7 @@ package com.art.controllers;
 
 import com.art.model.*;
 import com.art.model.supporting.*;
+import com.art.model.supporting.enums.TransactionType;
 import com.art.model.supporting.filters.CashFilter;
 import com.art.service.*;
 import org.springframework.beans.factory.annotation.Autowired;

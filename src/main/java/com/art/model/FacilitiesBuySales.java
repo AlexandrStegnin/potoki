@@ -1,6 +1,6 @@
 package com.art.model;
 
-import com.art.model.supporting.BuySalesEnum;
+import com.art.model.supporting.enums.BuySalesEnum;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;

@@ -2,7 +2,7 @@ package com.art.model.supporting.dto;
 
 import com.art.model.InvestorCashLog;
 import com.art.model.InvestorsCash;
-import com.art.model.supporting.CashType;
+import com.art.model.supporting.enums.CashType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
