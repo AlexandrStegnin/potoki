@@ -4,12 +4,14 @@ import com.art.func.GetPrincipalFunc;
 import com.art.func.GetServiceStatus;
 import com.art.func.PersonalMailService;
 import com.art.model.*;
-import com.art.model.supporting.*;
+import com.art.model.supporting.FileBucket;
+import com.art.model.supporting.GenericResponse;
+import com.art.model.supporting.SearchSummary;
+import com.art.model.supporting.SendingMail;
 import com.art.model.supporting.enums.ActiveEnum;
 import com.art.model.supporting.enums.DebetCreditEnum;
 import com.art.model.supporting.enums.KinEnum;
 import com.art.service.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -17,17 +19,13 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 import java.math.BigInteger;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 public class UserController {
@@ -293,58 +291,58 @@ public class UserController {
         return modelAndView;
     }
 
-    @PostMapping(value = "/createmail", produces = "application/json;charset=UTF-8")
-    public @ResponseBody
-    GenericResponse sendMail(MultipartHttpServletRequest request) {
-        String who = "ДД Колесникъ";
-        Properties prop = userService.getProp();
-        GenericResponse response = new GenericResponse();
-
-        Iterator<String> itr = request.getFileNames();
-        List<MultipartFile> multipartFiles = new ArrayList<>(0);
-        while (itr.hasNext()) {
-            multipartFiles.add(request.getFile(itr.next()));
-        }
-        List<BigInteger> uIdList = new ArrayList<>(0);
-        List<BigInteger> mIdList = new ArrayList<>(0);
-
-        String sendingMail = request.getParameter("sendingMail");
-        ObjectMapper mapper = new ObjectMapper();
-        SendingMail mail = new SendingMail();
-        try {
-            mail = mapper.readValue(sendingMail, SendingMail.class);
-        } catch (IOException ex) {
-            response.setError(ex.getMessage());
-        }
-        mail.getMailingGroups().forEach(i -> mIdList.add(i.getId()));
-        List<MailingGroups> mailingGroupsList = new ArrayList<>(0);
-        if (mIdList.size() > 0) {
-            mailingGroupsList = mailingGroupsService.findByIdIn(mIdList);
-        }
-        mail.getUsers().forEach(l -> uIdList.add(l.getId()));
-        List<Users> usersList = new ArrayList<>(0);
-        if (uIdList.size() > 0) {
-            usersList = userService.findByIdIn(uIdList);
-        }
-
-        mail.setMailingGroups(mailingGroupsList);
-        mail.setUsers(usersList);
-
-        for (MailingGroups mailingGroups : mailingGroupsList) {
-            usersList.addAll(mailingGroups.getUsers());
-        }
-
-        usersList = usersList.stream().distinct().collect(Collectors.toList());
-
-        for (Users user : usersList) {
-
-            response = personalMailService.sendEmails(user, mail,
-                    prop.getProperty("mail.kolesnik"), prop.getProperty("mail.kolesnikpwd"), who,
-                    multipartFiles);
-        }
-
-        return response;
-    }
+//    @PostMapping(value = "/createmail", produces = "application/json;charset=UTF-8")
+//    public @ResponseBody
+//    GenericResponse sendMail(MultipartHttpServletRequest request) {
+//        String who = "ДД Колесникъ";
+//        Properties prop = userService.getProp();
+//        GenericResponse response = new GenericResponse();
+//
+//        Iterator<String> itr = request.getFileNames();
+//        List<MultipartFile> multipartFiles = new ArrayList<>(0);
+//        while (itr.hasNext()) {
+//            multipartFiles.add(request.getFile(itr.next()));
+//        }
+//        List<BigInteger> uIdList = new ArrayList<>(0);
+//        List<BigInteger> mIdList = new ArrayList<>(0);
+//
+//        String sendingMail = request.getParameter("sendingMail");
+//        ObjectMapper mapper = new ObjectMapper();
+//        SendingMail mail = new SendingMail();
+//        try {
+//            mail = mapper.readValue(sendingMail, SendingMail.class);
+//        } catch (IOException ex) {
+//            response.setError(ex.getMessage());
+//        }
+//        mail.getMailingGroups().forEach(i -> mIdList.add(i.getId()));
+//        List<MailingGroups> mailingGroupsList = new ArrayList<>(0);
+//        if (mIdList.size() > 0) {
+//            mailingGroupsList = mailingGroupsService.findByIdIn(mIdList);
+//        }
+//        mail.getUsers().forEach(l -> uIdList.add(l.getId()));
+//        List<Users> usersList = new ArrayList<>(0);
+//        if (uIdList.size() > 0) {
+//            usersList = userService.findByIdIn(uIdList);
+//        }
+//
+//        mail.setMailingGroups(mailingGroupsList);
+//        mail.setUsers(usersList);
+//
+//        for (MailingGroups mailingGroups : mailingGroupsList) {
+//            usersList.addAll(mailingGroups.getUsers());
+//        }
+//
+//        usersList = usersList.stream().distinct().collect(Collectors.toList());
+//
+//        for (Users user : usersList) {
+//
+//            response = personalMailService.sendEmails(user, mail,
+//                    prop.getProperty("mail.kolesnik"), prop.getProperty("mail.kolesnikpwd"), who,
+//                    multipartFiles);
+//        }
+//
+//        return response;
+//    }
 
     @PostMapping(value = {"/saveuser"}, produces = "application/json;charset=UTF-8")
     public @ResponseBody
@@ -357,9 +355,9 @@ public class UserController {
         String inn = "";
         String account = "";
         Users user = searchSummary.getUser();
-        if (Objects.equals(user.getMailingGroups(), null)) {
-            user.setMailingGroups(null);
-        }
+//        if (Objects.equals(user.getMailingGroups(), null)) {
+//            user.setMailingGroups(null);
+//        }
         if (StringUtils.hasText(searchSummary.getInn())) {
             inn = searchSummary.getInn();
         }

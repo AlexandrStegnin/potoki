@@ -16,9 +16,9 @@ import java.util.Set;
 
 @Getter
 @Setter
-@ToString(exclude = {"roles", "userStuff", "mailingGroups", "facilities", "usersAnnexToContractsList", "emails"})
-@EqualsAndHashCode(exclude = {"stuffId", "password", "lastName", "first_name", "middle_name", "email", "state",
-        "roles", "userStuff", "mailingGroups", "facilities", "usersAnnexToContractsList", "emails"})
+@ToString(exclude = {"roles", "userStuff", "facilities", "usersAnnexToContractsList", "emails"})
+@EqualsAndHashCode(exclude = {"stuffId", "password", "lastName", "first_name", "middle_name", "email",
+        "state", "roles", "userStuff", "facilities", "usersAnnexToContractsList", "emails"})
 @Entity
 @Table(name = "USERS")
 public class Users implements Serializable {
@@ -33,7 +33,7 @@ public class Users implements Serializable {
     private String state;
     private List<Roles> roles;
     private Stuffs userStuff;
-    private Set<MailingGroups> mailingGroups;
+//    private Set<MailingGroups> mailingGroups;
     private Set<Facilities> facilities;
 
     @Enumerated(EnumType.STRING)
@@ -78,23 +78,23 @@ public class Users implements Serializable {
         this.userStuff = userStuff;
     }
 
-    @ManyToMany(cascade =
-            {
-                    CascadeType.DETACH,
-                    CascadeType.MERGE,
-                    CascadeType.REFRESH
-            },
-            fetch = FetchType.LAZY)
-    @JoinTable(name = "UsersMailingGroups",
-            joinColumns = {@JoinColumn(name = "UserId", referencedColumnName = "id")},
-            inverseJoinColumns = @JoinColumn(name = "MailingGroupsId", referencedColumnName = "id"))
-    public Set<MailingGroups> getMailingGroups() {
-        return mailingGroups;
-    }
-
-    public void setMailingGroups(Set<MailingGroups> mailingGroups) {
-        this.mailingGroups = mailingGroups;
-    }
+//    @ManyToMany(cascade =
+//            {
+//                    CascadeType.DETACH,
+//                    CascadeType.MERGE,
+//                    CascadeType.REFRESH
+//            },
+//            fetch = FetchType.LAZY)
+//    @JoinTable(name = "UsersMailingGroups",
+//            joinColumns = {@JoinColumn(name = "UserId", referencedColumnName = "id")},
+//            inverseJoinColumns = @JoinColumn(name = "MailingGroupsId", referencedColumnName = "id"))
+//    public Set<MailingGroups> getMailingGroups() {
+//        return mailingGroups;
+//    }
+//
+//    public void setMailingGroups(Set<MailingGroups> mailingGroups) {
+//        this.mailingGroups = mailingGroups;
+//    }
 
 
     @ManyToMany(cascade =

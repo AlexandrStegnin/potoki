@@ -3,7 +3,6 @@ package com.art.service;
 import com.art.config.AppSecurityConfig;
 import com.art.func.PersonalMailService;
 import com.art.model.Facilities_;
-import com.art.model.MailingGroups;
 import com.art.model.Users;
 import com.art.model.Users_;
 import com.art.model.supporting.SendingMail;
@@ -104,9 +103,9 @@ public class UserService {
         return users;
     }
 
-    public List<Users> findByMailingGroups(MailingGroups mailingGroups) {
-        return userRepository.findByMailingGroups(mailingGroups);
-    }
+//    public List<Users> findByMailingGroups(MailingGroups mailingGroups) {
+//        return userRepository.findByMailingGroups(mailingGroups);
+//    }
 
     @Transactional
     public void confirm(BigInteger userId) {
@@ -158,7 +157,7 @@ public class UserService {
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
         usersRoot.fetch(Users_.userStuff, JoinType.LEFT);
-        usersRoot.fetch(Users_.mailingGroups, JoinType.LEFT);
+//        usersRoot.fetch(Users_.mailingGroups, JoinType.LEFT);
         usersRoot.fetch(Users_.facilities, JoinType.LEFT);
         usersCriteriaQuery.select(usersRoot).distinct(true);
         usersCriteriaQuery.where(cb.equal(usersRoot.get(Users_.id), id));
@@ -178,7 +177,7 @@ public class UserService {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
-        usersRoot.fetch(Users_.mailingGroups, JoinType.LEFT);
+//        usersRoot.fetch(Users_.mailingGroups, JoinType.LEFT);
         usersCriteriaQuery.select(usersRoot).distinct(true);
         usersCriteriaQuery.where(usersRoot.get(Users_.id).in(idList));
         return em.createQuery(usersCriteriaQuery).getResultList();
@@ -226,7 +225,7 @@ public class UserService {
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
         usersRoot.fetch(Users_.userStuff, JoinType.LEFT);
-        usersRoot.fetch(Users_.mailingGroups, JoinType.LEFT);
+//        usersRoot.fetch(Users_.mailingGroups, JoinType.LEFT);
         usersRoot.fetch(Users_.facilities, JoinType.LEFT);
         usersRoot.fetch(Users_.usersAnnexToContractsList, JoinType.LEFT);
         usersRoot.fetch(Users_.emails, JoinType.LEFT);
@@ -261,9 +260,9 @@ public class UserService {
         if (Objects.equals(null, user.getUserStuff())) {
             user.setUserStuff(updUser.getUserStuff());
         }
-        if (Objects.equals(null, user.getMailingGroups())) {
-            user.setMailingGroups(updUser.getMailingGroups());
-        }
+//        if (Objects.equals(null, user.getMailingGroups())) {
+//            user.setMailingGroups(updUser.getMailingGroups());
+//        }
         if (Objects.equals(null, user.getFacilities())) {
             user.setFacilities(updUser.getFacilities());
         }
@@ -321,7 +320,7 @@ public class UserService {
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
         usersRoot.fetch(Users_.userStuff, JoinType.LEFT);
-        usersRoot.fetch(Users_.mailingGroups, JoinType.LEFT);
+//        usersRoot.fetch(Users_.mailingGroups, JoinType.LEFT);
         usersRoot.fetch(Users_.facilities, JoinType.LEFT);
         usersRoot.fetch(Users_.usersAnnexToContractsList, JoinType.LEFT);
         usersRoot.fetch(Users_.emails, JoinType.LEFT);

@@ -40,7 +40,7 @@
     <sec:authorize access="hasRole('ADMIN') or hasRole('DBA') or hasRole('BIGDADDY')">
     <div class="well">
         <a href="<c:url value='/admin' />" class="btn btn-success btn-block">Пользователи (USERS)</a>
-        <a href="<c:url value='/mailinggroups' />" class="btn btn-success btn-block">Группы рассылок (MailingGroups)</a>
+<%--        <a href="<c:url value='/mailinggroups' />" class="btn btn-success btn-block">Группы рассылок (MailingGroups)</a>--%>
         <a href="<c:url value='/admin_facility' />" class="btn btn-success btn-block">Объекты (FACILITYES)</a>
         <a href="<c:url value='/underfacilities' />" class="btn btn-success btn-block">Подобъекы (UnderFacilities)</a>
         <a href="<c:url value='/rooms' />" class="btn btn-success btn-block">Помещения (Rooms)</a>

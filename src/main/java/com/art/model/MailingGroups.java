@@ -3,23 +3,20 @@ package com.art.model;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.List;
 
 @Getter
 @Setter
-@ToString(exclude = "users")
 @EqualsAndHashCode
 @Entity
 @Table(name = "MailingGroups")
 public class MailingGroups implements Serializable {
     private BigInteger id;
     private String mailingGroup;
-    private List<Users> users;
+//    private List<Users> users;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,15 +36,15 @@ public class MailingGroups implements Serializable {
         this.mailingGroup = mailingGroup;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "UsersMailingGroups",
-            joinColumns = {@JoinColumn(name = "MailingGroupsId", referencedColumnName = "id")},
-            inverseJoinColumns = @JoinColumn(name = "UserId", referencedColumnName = "id"))
-    public List<Users> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<Users> users) {
-        this.users = users;
-    }
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(name = "UsersMailingGroups",
+//            joinColumns = {@JoinColumn(name = "MailingGroupsId", referencedColumnName = "id")},
+//            inverseJoinColumns = @JoinColumn(name = "UserId", referencedColumnName = "id"))
+//    public List<Users> getUsers() {
+//        return users;
+//    }
+//
+//    public void setUsers(List<Users> users) {
+//        this.users = users;
+//    }
 }
