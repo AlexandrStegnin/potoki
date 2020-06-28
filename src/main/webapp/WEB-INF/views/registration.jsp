@@ -3,10 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-
-
 <html lang="en-RU">
-
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>${title}</title>
@@ -80,15 +77,15 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="state">Активность:</label>
-                <div class="col-md-7">
-                    <form:select path="state" id="state" items="${active}" multiple="false"
-                                 itemLabel="val" class="form-control input-sm" />
-                </div>
-            </div>
-        </div>
+<%--        <div class="row">--%>
+<%--            <div class="form-group col-md-12">--%>
+<%--                <label class="col-md-3 control-lable" for="state">Активность:</label>--%>
+<%--                <div class="col-md-7">--%>
+<%--                    <form:select path="state" id="state" items="${active}" multiple="false"--%>
+<%--                                 itemLabel="val" class="form-control input-sm" />--%>
+<%--                </div>--%>
+<%--            </div>--%>
+<%--        </div>--%>
 
         <div class="row">
             <div class="form-group col-md-12">
@@ -120,38 +117,38 @@
             </div>
         </div>
 
-        <div class="row" style="display: none;" id="pInn">
-            <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="inn">ИНН</label>
-                <div class="col-md-7">
-                    <form:input type="text" path="" id="inn" class="form-control input-sm" />
-                    <div class="has-error help-inline" id="innErr">
-                    </div>
-                </div>
-            </div>
-        </div>
+<%--        <div class="row" style="display: none;" id="pInn">--%>
+<%--            <div class="form-group col-md-12">--%>
+<%--                <label class="col-md-3 control-lable" for="inn">ИНН</label>--%>
+<%--                <div class="col-md-7">--%>
+<%--                    <form:input type="text" path="" id="inn" class="form-control input-sm" />--%>
+<%--                    <div class="has-error help-inline" id="innErr">--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--            </div>--%>
+<%--        </div>--%>
 
-        <div class="row" style="display: none;" id="pAccount">
-            <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="account">Счёт</label>
-                <div class="col-md-7">
-                    <form:input type="text" path="" id="account" class="form-control input-sm" />
-                    <div class="has-error help-inline" id="accountErr">
-                    </div>
-                </div>
-            </div>
-        </div>
+<%--        <div class="row" style="display: none;" id="pAccount">--%>
+<%--            <div class="form-group col-md-12">--%>
+<%--                <label class="col-md-3 control-lable" for="account">Счёт</label>--%>
+<%--                <div class="col-md-7">--%>
+<%--                    <form:input type="text" path="" id="account" class="form-control input-sm" />--%>
+<%--                    <div class="has-error help-inline" id="accountErr">--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--            </div>--%>
+<%--        </div>--%>
 
-        <div class="row" style="display: none;" id="pOrgName">
-            <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="orgname">Название организации</label>
-                <div class="col-md-7">
-                    <form:input type="text" path="" id="orgname" class="form-control input-sm" />
-                    <div class="has-error help-inline" id="orgnameErr">
-                    </div>
-                </div>
-            </div>
-        </div>
+<%--        <div class="row" style="display: none;" id="pOrgName">--%>
+<%--            <div class="form-group col-md-12">--%>
+<%--                <label class="col-md-3 control-lable" for="orgname">Название организации</label>--%>
+<%--                <div class="col-md-7">--%>
+<%--                    <form:input type="text" path="" id="orgname" class="form-control input-sm" />--%>
+<%--                    <div class="has-error help-inline" id="orgnameErr">--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--            </div>--%>
+<%--        </div>--%>
 
         <div class="row">
             <div class="form-group col-md-12">

@@ -18,7 +18,7 @@ import java.util.Set;
 @Setter
 @ToString(exclude = {"roles", "userStuff", "facilities", "usersAnnexToContractsList", "emails"})
 @EqualsAndHashCode(exclude = {"stuffId", "password", "lastName", "first_name", "middle_name", "email",
-        "state", "roles", "userStuff", "facilities", "usersAnnexToContractsList", "emails"})
+        "roles", "userStuff", "facilities", "usersAnnexToContractsList", "emails"})
 @Entity
 @Table(name = "USERS")
 public class Users implements Serializable {
@@ -30,7 +30,7 @@ public class Users implements Serializable {
     private String first_name;
     private String middle_name;
     private String email;
-    private String state;
+//    private String state;
     private List<Roles> roles;
     private Stuffs userStuff;
 //    private Set<MailingGroups> mailingGroups;
@@ -40,10 +40,10 @@ public class Users implements Serializable {
     @Column(name = "Kin")
     private KinEnum kin;
 
-    @Transient
-    private transient List<BigInteger> facilityId;
-    @Transient
-    private transient List<String> facilityName;
+//    @Transient
+//    private transient List<BigInteger> facilityId;
+//    @Transient
+//    private transient List<String> facilityName;
 
     private List<UsersAnnexToContracts> usersAnnexToContractsList;
     private Set<Emails> emails;
@@ -180,22 +180,22 @@ public class Users implements Serializable {
         this.email = email;
     }
 
-    @Column(name = "state")
-    public String getState() {
-        return state;
-    }
+//    @Column(name = "state")
+//    public String getState() {
+//        return state;
+//    }
+//
+//    public void setState(String state) {
+//        this.state = state;
+//    }
 
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    @Transient
-    public String getFullName() {
-        return first_name +
-                " " +
-                middle_name;
-    }
-
+//    @Transient
+//    public String getFullName() {
+//        return first_name +
+//                " " +
+//                middle_name;
+//    }
+//
     @Column(name = "stuffId", insertable = false, updatable = false)
     public BigInteger getStuffId() {
         return stuffId;
@@ -255,16 +255,16 @@ public class Users implements Serializable {
     public void setEmails(Set<Emails> emails) {
         this.emails = emails;
     }
+//
+//    @Transient
+//    public List<BigInteger> getFacilityId() {
+//        return facilityId;
+//    }
 
-    @Transient
-    public List<BigInteger> getFacilityId() {
-        return facilityId;
-    }
-
-    @Transient
-    public List<String> getFacilityName() {
-        return facilityName;
-    }
+//    @Transient
+//    public List<String> getFacilityName() {
+//        return facilityName;
+//    }
 
     @Column(name = "confirmed")
     private boolean confirmed;

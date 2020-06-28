@@ -251,9 +251,9 @@ public class UserService {
         if (Objects.equals(null, user.getMiddle_name())) {
             user.setMiddle_name(updUser.getMiddle_name());
         }
-        if (Objects.equals(null, user.getState())) {
-            user.setState(updUser.getState());
-        }
+//        if (Objects.equals(null, user.getState())) {
+//            user.setState(updUser.getState());
+//        }
         if (Objects.equals(null, user.getRoles())) {
             user.setRoles(updUser.getRoles());
         }

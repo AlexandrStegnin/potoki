@@ -58,12 +58,12 @@ public class FacilityController {
 
         String ret = "списку объектов.";
         String redirectUrl = "/admin_facility";
-        MailingGroups mailingGroups = mailingGroupsService.findByGroupWithUsers(newFacility.getFacility());
-        if (mailingGroups == null) {
-            mailingGroups = new MailingGroups();
-            mailingGroups.setMailingGroup(mGroup + newFacility.getFacility());
-            mailingGroupsService.create(mailingGroups);
-        }
+//        MailingGroups mailingGroups = mailingGroupsService.findByGroupWithUsers(newFacility.getFacility());
+//        if (mailingGroups == null) {
+//            mailingGroups = new MailingGroups();
+//            mailingGroups.setMailingGroup(mGroup + newFacility.getFacility());
+//            mailingGroupsService.create(mailingGroups);
+//        }
         facilityService.create(newFacility);
 
         model.addAttribute("success", "Объект " + newFacility.getFacility() + " успешно добавлен.");
