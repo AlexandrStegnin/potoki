@@ -16,9 +16,9 @@ import java.util.Set;
 
 @Getter
 @Setter
-@ToString(exclude = {"roles", "userStuff", "facilities", "usersAnnexToContractsList", "emails"})
+@ToString(exclude = {"roles", "userStuff", "facilities", "usersAnnexToContractsList"})
 @EqualsAndHashCode(exclude = {"stuffId", "password", "lastName", "first_name", "middle_name", "email",
-        "roles", "userStuff", "facilities", "usersAnnexToContractsList", "emails"})
+        "roles", "userStuff", "facilities", "usersAnnexToContractsList"})
 @Entity
 @Table(name = "USERS")
 public class Users implements Serializable {
@@ -46,7 +46,7 @@ public class Users implements Serializable {
 //    private transient List<String> facilityName;
 
     private List<UsersAnnexToContracts> usersAnnexToContractsList;
-    private Set<Emails> emails;
+//    private Set<Emails> emails;
 
     public Users() {
 
@@ -247,14 +247,14 @@ public class Users implements Serializable {
         this.usersAnnexToContractsList = usersAnnexToContractsList;
     }
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    public Set<Emails> getEmails() {
-        return emails;
-    }
-
-    public void setEmails(Set<Emails> emails) {
-        this.emails = emails;
-    }
+//    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+//    public Set<Emails> getEmails() {
+//        return emails;
+//    }
+//
+//    public void setEmails(Set<Emails> emails) {
+//        this.emails = emails;
+//    }
 //
 //    @Transient
 //    public List<BigInteger> getFacilityId() {

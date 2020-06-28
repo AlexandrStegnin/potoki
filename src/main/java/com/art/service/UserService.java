@@ -228,7 +228,7 @@ public class UserService {
 //        usersRoot.fetch(Users_.mailingGroups, JoinType.LEFT);
         usersRoot.fetch(Users_.facilities, JoinType.LEFT);
         usersRoot.fetch(Users_.usersAnnexToContractsList, JoinType.LEFT);
-        usersRoot.fetch(Users_.emails, JoinType.LEFT);
+//        usersRoot.fetch(Users_.emails, JoinType.LEFT);
         usersCriteriaQuery.select(usersRoot).distinct(true);
         usersCriteriaQuery.where(cb.equal(usersRoot.get(Users_.id), id));
         return em.createQuery(usersCriteriaQuery).getSingleResult();
@@ -269,9 +269,9 @@ public class UserService {
         if (Objects.equals(null, user.getUsersAnnexToContractsList())) {
             user.setUsersAnnexToContractsList(updUser.getUsersAnnexToContractsList());
         }
-        if (Objects.equals(null, user.getEmails())) {
-            user.setEmails(updUser.getEmails());
-        }
+//        if (Objects.equals(null, user.getEmails())) {
+//            user.setEmails(updUser.getEmails());
+//        }
         if (!user.getEmail().equalsIgnoreCase(updUser.getEmail())) {
             sendWelcomeMessage(user);
         }
@@ -323,7 +323,7 @@ public class UserService {
 //        usersRoot.fetch(Users_.mailingGroups, JoinType.LEFT);
         usersRoot.fetch(Users_.facilities, JoinType.LEFT);
         usersRoot.fetch(Users_.usersAnnexToContractsList, JoinType.LEFT);
-        usersRoot.fetch(Users_.emails, JoinType.LEFT);
+//        usersRoot.fetch(Users_.emails, JoinType.LEFT);
         usersCriteriaQuery.select(usersRoot).distinct(true);
         return em.createQuery(usersCriteriaQuery).getResultList();
     }
