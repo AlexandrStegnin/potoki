@@ -541,15 +541,15 @@ public class InvestorsCash implements Serializable {
     }
 
 
-    private ClientType clientType;
+//    private ClientType clientType;
 
-    @OneToOne
-    @JoinColumn(name = "ClientTypeId", referencedColumnName = "id")
-    public ClientType getClientType() {
-        return clientType;
-    }
-
-    public void setClientType(ClientType clientType) {
-        this.clientType = clientType;
-    }
+//    @OneToOne
+//    @JoinColumn(name = "ClientTypeId", referencedColumnName = "id")
+//    public ClientType getClientType() {
+//        return clientType;
+//    }
+//
+//    public void setClientType(ClientType clientType) {
+//        this.clientType = clientType;
+//    }
 }
