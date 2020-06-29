@@ -2,7 +2,6 @@ package com.art.controllers;
 
 import com.art.func.GetPrincipalFunc;
 import com.art.func.GetServiceStatus;
-import com.art.func.PersonalMailService;
 import com.art.model.*;
 import com.art.model.supporting.FileBucket;
 import com.art.model.supporting.GenericResponse;
@@ -15,7 +14,6 @@ import com.art.service.*;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -44,9 +42,6 @@ public class UserController {
 
     @Resource(name = "mailingGroupsService")
     private MailingGroupsService mailingGroupsService;
-
-    @Resource(name = "personalMailService")
-    private PersonalMailService personalMailService;
 
     @Resource(name = "bonusesService")
     private BonusesService bonusesService;
@@ -168,14 +163,10 @@ public class UserController {
     public String editUser(@PathVariable BigInteger id, ModelMap model) {
         String title = "Обновление данных пользователя";
         Users user = userService.findByIdWithStuffsAndMailingGroupsAndFacilities(id);
-        List<ActiveEnum> active = new ArrayList<>(
-                Arrays.asList(ActiveEnum.values()));
 
-        List<KinEnum> kins = new ArrayList<>(
-                Arrays.asList(KinEnum.values()));
+        List<KinEnum> kins = new ArrayList<>(Arrays.asList(KinEnum.values()));
         model.addAttribute("user", user);
         model.addAttribute("edit", true);
-        model.addAttribute("active", active);
         model.addAttribute("kins", kins);
         model.addAttribute("title", title);
         return "registration";
@@ -351,31 +342,31 @@ public class UserController {
         List<BigInteger> facilitiesIdList = new ArrayList<>(0);
         searchSummary.getFacilityList().forEach(f -> facilitiesIdList.add(f.getId()));
         List<Facilities> facilitiesList = facilityService.findByIdIn(facilitiesIdList);
-        String organization = "";
-        String inn = "";
-        String account = "";
+//        String organization = "";
+//        String inn = "";
+//        String account = "";
         Users user = searchSummary.getUser();
 //        if (Objects.equals(user.getMailingGroups(), null)) {
 //            user.setMailingGroups(null);
 //        }
-        if (StringUtils.hasText(searchSummary.getInn())) {
-            inn = searchSummary.getInn();
-        }
-        if (StringUtils.hasText(searchSummary.getAccount())) {
-            account = searchSummary.getAccount();
-        }
-        if (StringUtils.hasText(searchSummary.getOrganization())) {
-            organization = searchSummary.getOrganization();
-        }
+//        if (StringUtils.hasText(searchSummary.getInn())) {
+//            inn = searchSummary.getInn();
+//        }
+//        if (StringUtils.hasText(searchSummary.getAccount())) {
+//            account = searchSummary.getAccount();
+//        }
+//        if (StringUtils.hasText(searchSummary.getOrganization())) {
+//            organization = searchSummary.getOrganization();
+//        }
         if (Objects.equals(BigInteger.ZERO, user.getPartnerId())) user.setPartnerId(null);
         String[] tags = {"Свет:свет", "ЖКХ:жкх", "Аренда:аренд", "Обеспечительный:обеспеч"};
 
         List<AlphaCorrectTags> newACorTagsList = new ArrayList<>(0);
         List<RentorsDetails> newRdList = new ArrayList<>(0);
         DebetCreditEnum credit = DebetCreditEnum.CREDIT;
-        String finalInn = inn;
-        String finalAccount = account;
-        String finalOrganization = organization;
+//        String finalInn = inn;
+//        String finalAccount = account;
+//        String finalOrganization = organization;
         facilitiesList.forEach(f -> {
             Set<Users> usersList = f.getInvestors();
             usersList.add(user);
@@ -388,16 +379,16 @@ public class UserController {
                         correctTags.setDebetOrCredit(credit);
                         correctTags.setCorrectTag(tag.split(":")[0]);
                         correctTags.setDescription(tag.split(":")[1]);
-                        correctTags.setInn(finalInn);
-                        correctTags.setAccount(finalAccount);
+//                        correctTags.setInn(finalInn);
+//                        correctTags.setAccount(finalAccount);
                         newACorTagsList.add(correctTags);
                     }
                     RentorsDetails rentorsDetails = new RentorsDetails();
                     rentorsDetails.setRentor(user);
                     rentorsDetails.setFacility(f);
-                    rentorsDetails.setInn(finalInn);
-                    rentorsDetails.setAccount(finalAccount);
-                    rentorsDetails.setOrganization(finalOrganization);
+//                    rentorsDetails.setInn(finalInn);
+//                    rentorsDetails.setAccount(finalAccount);
+//                    rentorsDetails.setOrganization(finalOrganization);
                     f.setInvestors(usersList);
                     newRdList.add(rentorsDetails);
                     break;

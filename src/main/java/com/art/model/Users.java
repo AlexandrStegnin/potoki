@@ -276,4 +276,16 @@ public class Users implements Serializable {
     public void setConfirmed(boolean confirmed) {
         this.confirmed = confirmed;
     }
+
+    private Account account;
+
+    @OneToOne
+    @JoinColumn(name = "account_id")
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
 }
