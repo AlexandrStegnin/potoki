@@ -1228,10 +1228,10 @@ public class InvestorsCashController {
         return shareKindService.init();
     }
 
-    @ModelAttribute("clientTypes")
-    public List<ClientType> initializeClientTypes() {
-        return clientTypeService.findAll();
-    }
+//    @ModelAttribute("clientTypes")
+//    public List<ClientType> initializeClientTypes() {
+//        return clientTypeService.findAll();
+//    }
 
     @InitBinder
     public void initBinder(WebDataBinder webDataBinder) {

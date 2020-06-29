@@ -283,18 +283,18 @@
             </div>
         </div>
 
-        <div class="row" id="clientTypeRow">
-            <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="clientType">Вид клиента:</label>
-                <div class="col-md-7">
-                    <form:select path="clientType" id="clientType" items="${clientTypes}" multiple="false"
-                                 itemValue="id" itemLabel="title" class="form-control input-sm"/>
-                    <div class="has-error">
-                        <form:errors path="clientType" class="help-inline"/>
-                    </div>
-                </div>
-            </div>
-        </div>
+<%--        <div class="row" id="clientTypeRow">--%>
+<%--            <div class="form-group col-md-12">--%>
+<%--                <label class="col-md-3 control-lable" for="clientType">Вид клиента:</label>--%>
+<%--                <div class="col-md-7">--%>
+<%--                    <form:select path="clientType" id="clientType" items="${clientTypes}" multiple="false"--%>
+<%--                                 itemValue="id" itemLabel="title" class="form-control input-sm"/>--%>
+<%--                    <div class="has-error">--%>
+<%--                        <form:errors path="clientType" class="help-inline"/>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--            </div>--%>
+<%--        </div>--%>
 
         <div class="row">
             <div class="form-actions floatRight">
