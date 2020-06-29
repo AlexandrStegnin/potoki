@@ -699,11 +699,11 @@ function prepareCashSave(what) {
         cashSource = null;
     }
 
-    var cashTypes = $('#cashTyp');
-    var cashType = {id: cashTypes.find(':selected').val(), cashType: cashTypes.find(':selected').text()};
-    if (cashType.id === '0') {
-        cashType = null;
-    }
+    // var cashTypes = $('#cashTyp');
+    // var cashType = {id: cashTypes.find(':selected').val(), cashType: cashTypes.find(':selected').text()};
+    // if (cashType.id === '0') {
+    //     cashType = null;
+    // }
 
     var newCashDetails = $('#cashDetail');
     var newCashDetail = {
@@ -714,14 +714,14 @@ function prepareCashSave(what) {
         newCashDetail = null;
     }
 
-    var investorsTypes = $('#invType');
-    var investorsType = {
-        id: investorsTypes.find(':selected').val(),
-        investorsType: investorsTypes.find(':selected').text()
-    };
-    if (investorsType.id === '0') {
-        investorsType = null;
-    }
+    // var investorsTypes = $('#invType');
+    // var investorsType = {
+    //     id: investorsTypes.find(':selected').val(),
+    //     investorsType: investorsTypes.find(':selected').text()
+    // };
+    // if (investorsType.id === '0') {
+    //     investorsType = null;
+    // }
 
     var dateClosingInvest = new Date($('#dateCloseInv').val()).getTime();
 
@@ -772,9 +772,9 @@ function prepareCashSave(what) {
         givedCash: givedCash,
         dateGivedCash: dateGivedCash,
         cashSource: cashSource,
-        cashType: cashType,
+        // cashType: cashType,
         newCashDetails: newCashDetail,
-        investorsType: investorsType,
+        // investorsType: investorsType,
         dateClosingInvest: dateClosingInvest,
         typeClosingInvest: typeClosingInvest,
         shareKind: shareKind,
