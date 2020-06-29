@@ -2,6 +2,7 @@ package com.art.service;
 
 import com.art.config.AppSecurityConfig;
 import com.art.func.PersonalMailService;
+import com.art.model.Account;
 import com.art.model.Facilities_;
 import com.art.model.Users;
 import com.art.model.Users_;
@@ -38,8 +39,14 @@ public class UserService {
     @Resource(name = "personalMailService")
     private PersonalMailService personalMailService;
 
+    private final AccountService accountService;
+
     @PersistenceContext(name = "persistanceUnit")
     private EntityManager em;
+
+    public UserService(AccountService accountService) {
+        this.accountService = accountService;
+    }
 
     public List<Users> findAll() {
         return userRepository.findAll();
@@ -157,8 +164,8 @@ public class UserService {
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
         usersRoot.fetch(Users_.userStuff, JoinType.LEFT);
-//        usersRoot.fetch(Users_.mailingGroups, JoinType.LEFT);
         usersRoot.fetch(Users_.facilities, JoinType.LEFT);
+        usersRoot.fetch(Users_.account, JoinType.LEFT);
         usersCriteriaQuery.select(usersRoot).distinct(true);
         usersCriteriaQuery.where(cb.equal(usersRoot.get(Users_.id), id));
         return em.createQuery(usersCriteriaQuery).getSingleResult();
@@ -217,7 +224,13 @@ public class UserService {
 
     public void create(Users user) {
         sendWelcomeMessage(user);
-        this.em.merge(user);
+        if (null != user.getAccount()) {
+            if (null != user.getAccount().getAccountNumber()) {
+                Account account = accountService.create(user.getAccount());
+                user.setAccount(account);
+            }
+        }
+        em.merge(user);
     }
 
     public Users findWithAllFields(BigInteger id) {
@@ -237,51 +250,50 @@ public class UserService {
     public void update(Users user) {
         Users updUser = findWithAllFields(user.getId());
         user.setLogin(updUser.getLogin());
-        if (!Objects.equals(user.getPassword(), null) && !Objects.equals(user.getPassword(), "")) {
+        if (null != user.getPassword() && !user.getPassword().isEmpty()) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         } else {
             user.setPassword(updUser.getPassword());
         }
-        if (Objects.equals(null, user.getLastName())) {
+        if (null == user.getLastName()) {
             user.setLastName(updUser.getLastName());
         }
-        if (Objects.equals(null, user.getFirst_name())) {
+        if (null == user.getFirst_name()) {
             user.setFirst_name(updUser.getFirst_name());
         }
-        if (Objects.equals(null, user.getMiddle_name())) {
+        if (null == user.getMiddle_name()) {
             user.setMiddle_name(updUser.getMiddle_name());
         }
-//        if (Objects.equals(null, user.getState())) {
-//            user.setState(updUser.getState());
-//        }
-        if (Objects.equals(null, user.getRoles())) {
+        if (null == user.getRoles()) {
             user.setRoles(updUser.getRoles());
         }
-        if (Objects.equals(null, user.getUserStuff())) {
+        if (null == user.getUserStuff()) {
             user.setUserStuff(updUser.getUserStuff());
         }
-//        if (Objects.equals(null, user.getMailingGroups())) {
-//            user.setMailingGroups(updUser.getMailingGroups());
-//        }
-        if (Objects.equals(null, user.getFacilities())) {
+        if (null == user.getFacilities()) {
             user.setFacilities(updUser.getFacilities());
         }
-        if (Objects.equals(null, user.getUsersAnnexToContractsList())) {
+        if (null == user.getUsersAnnexToContractsList()) {
             user.setUsersAnnexToContractsList(updUser.getUsersAnnexToContractsList());
         }
-//        if (Objects.equals(null, user.getEmails())) {
-//            user.setEmails(updUser.getEmails());
-//        }
         if (!user.getEmail().equalsIgnoreCase(updUser.getEmail())) {
             sendWelcomeMessage(user);
         }
-        if (Objects.equals(null, user.getPartnerId())) {
+        if (null == user.getPartnerId()) {
             user.setPartnerId(updUser.getPartnerId());
             user.setKin(updUser.getKin());
         }
-
-        this.em.merge(user);
-
+        if (null != user.getAccount()) {
+            Account account;
+            if (null != user.getAccount().getAccountNumber()) {
+                account = accountService.findByAccountNumber(updUser.getAccount().getAccountNumber());
+                account.setAccountNumber(user.getAccount().getAccountNumber());
+            } else {
+                account = accountService.create(user.getAccount());
+            }
+            user.setAccount(account);
+        }
+        userRepository.save(user);
     }
 
     private void sendWelcomeMessage(Users user) {
@@ -301,8 +313,8 @@ public class UserService {
             Properties prop = getProp();
             personalMailService.sendEmails(user, mail, prop.getProperty("mail.kolesnik"), prop.getProperty("mail.kolesnikpwd"), who,
                     null);
-            user.setPassword(passwordEncoder.encode(uuid));
         }
+        user.setPassword(passwordEncoder.encode(uuid));
     }
 
     public Users findByLoginAndEmail(String login, String email) {
