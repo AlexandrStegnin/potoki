@@ -136,7 +136,7 @@ jQuery(document).ready(function ($) {
 });
 
 function prepareUserSave() {
-    var roles = [];
+    let roles = [];
     $('#roles').find(':selected').each(function (i, selected) {
         roles.push({
             id: $(selected).val(),
@@ -144,43 +144,48 @@ function prepareUserSave() {
         });
     });
 
-    var facilities = [];
+    let facilities = [];
     $('#facility').find(':selected').each(function (i, selected) {
         facilities.push({id: $(selected).val()});
     });
 
-    var stuffs = $('#stuffs');
-    var stuff = {id: stuffs.find(':selected').val(), stuff: stuffs.find(':selected').text()};
+    let stuffs = $('#stuffs');
+    let stuff = {id: stuffs.find(':selected').val(), stuff: stuffs.find(':selected').text()};
 
-    var inn = $('#inn').val();
-    var account = $('#account').val();
-    var orgName = $('#orgname').val();
-    var sChanel = $('#sChanel');
-    var partner = {
+    let inn = $('#inn').val();
+    let account = $('#account').val();
+    let orgName = $('#orgname').val();
+    let sChanel = $('#sChanel');
+    let partner = {
         id: sChanel.find(':selected').val(),
         login: sChanel.find(':selected').text()
     };
 
-    var kin = $('#kins').val();
+    let kin = $('#kins').val();
 
-    var salesChanel = {
+    let salesChanel = {
         "partnerId": partner.id,
         "kin": kin
     };
 
-    var user = {
-        id: $('#id').val(),
+    let userId = $('#id').val();
+
+    let user = {
+        id: userId,
         lastName: $('#last_name').val(),
         first_name: $('#first_name').val(),
         middle_name: $('#middle_name').val(),
         login: $('#login').val(),
-        password: /*$('#password').val()*/ null,
+        password: null,
         email: $('#email').val(),
         state: $('#state').val(),
         userStuff: stuff,
         roles: roles,
         kin: kin,
-        partnerId: salesChanel.partnerId
+        partnerId: salesChanel.partnerId,
+        account: {
+            accountNumber: account
+        }
     };
     saveUser(user, facilities, inn, account, orgName);
 }
@@ -206,6 +211,11 @@ function saveUser(user, facilities, inn, account, orgName) {
         success: function (data) {
 
             closeLoader();
+            showPopup();
+            closePopup();
+            if (url.indexOf('edit') >= 0) {
+                window.location.href = '/admin';
+            }
             $('#popup_modal_form').find('#message').append(data.message);
             $('#last_name').val('');
             $('#first_name').val('');
@@ -220,12 +230,6 @@ function saveUser(user, facilities, inn, account, orgName) {
             $('#facility').prop('selectedIndex', -1);
             $('#mGroups').prop('selectedIndex', 0);
             $('#roles').prop('selectedIndex', -1);
-
-            showPopup();
-            closePopup();
-            if (url.indexOf('edit') >= 0) {
-                window.location.href = '/admin';
-            }
         },
         error: function (e) {
             $('#popup_modal_form').find('#message').append(e.error);

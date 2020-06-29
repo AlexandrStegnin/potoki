@@ -77,6 +77,17 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label class="col-md-3 control-lable" for="account">Номер счёта:</label>
+                <div class="col-md-7">
+                    <form:input type="text" path="account.accountNumber" id="account" class="form-control input-sm" />
+                    <div class="has-error help-inline" id="accountErr">
+                    </div>
+                </div>
+            </div>
+        </div>
+
 <%--        <div class="row">--%>
 <%--            <div class="form-group col-md-12">--%>
 <%--                <label class="col-md-3 control-lable" for="state">Активность:</label>--%>
