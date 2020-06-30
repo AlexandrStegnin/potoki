@@ -13,7 +13,8 @@ public enum CashType {
     UNDEFINED(0, "Не определено"),
     INVESTOR_CASH(3, "Деньги инвесторов"),
     SALE_CASH(4, "Деньги с продажи"),
-    RENT_CASH(5, "Деньги с аренды");
+    RENT_CASH(5, "Деньги с аренды"),
+    CASH_1C(6, "Проводка из 1С");
 
     private final int id;
 
