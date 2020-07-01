@@ -1,6 +1,8 @@
 package com.art.model;
 
 
+import com.art.model.supporting.dto.RoleDTO;
+import com.art.model.supporting.dto.UserDTO;
 import com.art.model.supporting.enums.KinEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
@@ -13,6 +15,7 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -175,5 +178,21 @@ public class Users implements Serializable {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public Users(UserDTO userDTO) {
+        this.id = BigInteger.valueOf(userDTO.getId());
+        this.lastName = userDTO.getLastName();
+        this.first_name = userDTO.getFirstName();
+        this.middle_name = userDTO.getMiddleName();
+        this.login = userDTO.getLogin();
+        this.email = userDTO.getEmail();
+        this.roles = convertRoles(userDTO.getRoles());
+        this.kin = KinEnum.valueOf(userDTO.getKin().toUpperCase());
+        this.partnerId = BigInteger.valueOf(userDTO.getPartnerId());
+    }
+
+    private List<Roles> convertRoles(List<RoleDTO> dtoList) {
+        return dtoList.stream().map(Roles::new).collect(Collectors.toList());
     }
 }
