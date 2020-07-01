@@ -181,7 +181,7 @@ public class Users implements Serializable {
     }
 
     public Users(UserDTO userDTO) {
-        this.id = BigInteger.valueOf(userDTO.getId());
+        this.id = userDTO.getId() != null ? BigInteger.valueOf(userDTO.getId()) : null;
         this.lastName = userDTO.getLastName();
         this.first_name = userDTO.getFirstName();
         this.middle_name = userDTO.getMiddleName();
