@@ -13,7 +13,7 @@
     <link href="<c:url value='/resources/core/css/old_bootstrap.min.css' />" rel="stylesheet" />
     <link href="<c:url value='/resources/core/css/applic.css' />" rel="stylesheet" />
     <link href="<c:url value='/resources/core/css/popup.css' />" rel="stylesheet" />
-    <link href="<c:url value='/resources/core/css/ajaxLoader.css' />" rel="stylesheet" />
+    <link href="<c:url value='/resources/core/css/ddk_loader.css' />" rel="stylesheet"/>
     <script type="text/javascript" src="<c:url value='/resources/core/js/jquery-3.2.1.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min_old.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />" ></script>
@@ -39,7 +39,7 @@
                 <button type="submit" id="bth-search" class="btn btn-primary btn-sm">Фильтр</button>
                 <sec:authorize access="isFullyAuthenticated()">
                     <sec:authorize access="hasRole('ADMIN')">
-                        <a href="<c:url value='/newuser' />" class="btn btn-link btn-sm pull-right">Добавить пользователя</a>
+                        <a href="<c:url value='/users/save' />" class="btn btn-link btn-sm pull-right">Добавить пользователя</a>
                     </sec:authorize>
                 </sec:authorize>
             </div>
@@ -83,5 +83,6 @@
     </div>
 </div>
 <%@include file="popup_modal.jsp" %>
+<%@include file="ddk_loader.jsp" %>
 </body>
 </html>
