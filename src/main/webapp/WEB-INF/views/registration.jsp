@@ -16,8 +16,7 @@
     <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min_old.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/AjaxLoader.js' />" ></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/mailingScripts.js' />" ></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/scriptsForUsers.js' />" ></script>
+    <script type="text/javascript" src="<c:url value='/resources/core/js/users.js' />" ></script>
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
 </head>
 
@@ -79,27 +78,6 @@
 
         <div class="row">
             <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="account">Номер счёта:</label>
-                <div class="col-md-7">
-                    <form:input type="text" path="account.accountNumber" id="account" class="form-control input-sm" />
-                    <div class="has-error help-inline" id="accountErr">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-<%--        <div class="row">--%>
-<%--            <div class="form-group col-md-12">--%>
-<%--                <label class="col-md-3 control-lable" for="state">Активность:</label>--%>
-<%--                <div class="col-md-7">--%>
-<%--                    <form:select path="state" id="state" items="${active}" multiple="false"--%>
-<%--                                 itemLabel="val" class="form-control input-sm" />--%>
-<%--                </div>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-
-        <div class="row">
-            <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="stuffs">Статус:</label>
                 <div class="col-md-7">
                     <form:select path="userStuff" id="stuffs" items="${userStuff}" multiple="false"
@@ -127,39 +105,6 @@
                 </div>
             </div>
         </div>
-
-<%--        <div class="row" style="display: none;" id="pInn">--%>
-<%--            <div class="form-group col-md-12">--%>
-<%--                <label class="col-md-3 control-lable" for="inn">ИНН</label>--%>
-<%--                <div class="col-md-7">--%>
-<%--                    <form:input type="text" path="" id="inn" class="form-control input-sm" />--%>
-<%--                    <div class="has-error help-inline" id="innErr">--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-
-<%--        <div class="row" style="display: none;" id="pAccount">--%>
-<%--            <div class="form-group col-md-12">--%>
-<%--                <label class="col-md-3 control-lable" for="account">Счёт</label>--%>
-<%--                <div class="col-md-7">--%>
-<%--                    <form:input type="text" path="" id="account" class="form-control input-sm" />--%>
-<%--                    <div class="has-error help-inline" id="accountErr">--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-
-<%--        <div class="row" style="display: none;" id="pOrgName">--%>
-<%--            <div class="form-group col-md-12">--%>
-<%--                <label class="col-md-3 control-lable" for="orgname">Название организации</label>--%>
-<%--                <div class="col-md-7">--%>
-<%--                    <form:input type="text" path="" id="orgname" class="form-control input-sm" />--%>
-<%--                    <div class="has-error help-inline" id="orgnameErr">--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-<%--            </div>--%>
-<%--        </div>--%>
 
         <div class="row">
             <div class="form-group col-md-12">
