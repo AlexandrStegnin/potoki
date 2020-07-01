@@ -144,7 +144,7 @@ public class UserController {
         return "registrationsuccess";
     }
 
-    @RequestMapping(value = {"/edit-user-{id}"}, method = RequestMethod.GET)
+    @GetMapping(path = "/edit-user-{id}")
     public String editUser(@PathVariable BigInteger id, ModelMap model) {
         String title = "Обновление данных пользователя";
         Users user = userService.findByIdWithStuffsAndMailingGroupsAndFacilities(id);
@@ -157,16 +157,14 @@ public class UserController {
         return "registration";
     }
 
-    @RequestMapping(value = {"/edit-user-{id}"}, method = RequestMethod.POST)
+    @PostMapping(value = "/edit-user-{id}")
     public String updateUser(@ModelAttribute("user") Users user, BindingResult result, ModelMap model) {
         String ret = "списку пользователей.";
         String redirectUrl = "/admin";
         if (result.hasErrors()) {
             return "registration";
         }
-
         userService.update(user);
-
         model.addAttribute("success", "Данные пользователя " + user.getLogin() + " успешно обновлены.");
         model.addAttribute("redirectUrl", redirectUrl);
         model.addAttribute("ret", ret);
@@ -176,12 +174,6 @@ public class UserController {
     /**
      * Удаление пользователя по ID.
      */
-    @RequestMapping(value = {"/delete-user-{id}"}, method = RequestMethod.GET)
-    public String deleteUser(@PathVariable BigInteger id) {
-        userService.deleteUser(id);
-        return "redirect:/admin";
-    }
-
     @PostMapping(path = "/users/delete", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
     GenericResponse deleteUser(@RequestBody UserDTO userDTO) {
