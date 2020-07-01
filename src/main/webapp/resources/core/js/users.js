@@ -1,3 +1,34 @@
+let UserDTO = function () {}
+
+let RoleDTO = function () {}
+
+RoleDTO.prototype = {
+    id: 0,
+    name: '',
+    build: function (id, name) {
+        this.id = id;
+        this.name = name;
+    }
+}
+
+UserDTO.prototype = {
+    id: 0,
+    login: '',
+    facilities: [],
+    roles: [],
+    partnerId: 0,
+    build: function (id, login, roles, partnerId) {
+        this.id = id;
+        this.login = login;
+        this.roles = roles;
+        this.partnerId = partnerId;
+    },
+    buildPartner: function (id, login) {
+        this.id = id;
+        this.login = login;
+    }
+}
+
 jQuery(document).ready(function ($) {
     let isValid = {
         'login': function () {
@@ -70,95 +101,78 @@ jQuery(document).ready(function ($) {
 });
 
 function prepareUserSave() {
-    let roles = [];
-    $('#roles').find(':selected').each(function (i, selected) {
-        roles.push({
-            id: $(selected).val(),
-            role: $(selected).text()
-        });
-    });
-
-    let facilities = [];
-    $('#facility').find(':selected').each(function (i, selected) {
-        facilities.push({id: $(selected).val()});
-    });
-
-    let stuffs = $('#stuffs');
-    let stuff = {id: stuffs.find(':selected').val(), stuff: stuffs.find(':selected').text()};
-
-    let sChanel = $('#sChanel');
-    let partner = {
-        id: sChanel.find(':selected').val(),
-        login: sChanel.find(':selected').text()
-    };
-
+    let roles = getRoles();
+    let partner = getPartner();
     let kin = $('#kins').val();
-
-    let salesChanel = {
-        "partnerId": partner.id,
-        "kin": kin
-    };
-
     let userId = $('#id').val();
 
-    let user = {
+    let userDTO = {
         id: userId,
         lastName: $('#last_name').val(),
-        first_name: $('#first_name').val(),
-        middle_name: $('#middle_name').val(),
+        firstName: $('#first_name').val(),
+        middleName: $('#middle_name').val(),
         login: $('#login').val(),
-        password: null,
         email: $('#email').val(),
-        state: $('#state').val(),
-        userStuff: stuff,
         roles: roles,
         kin: kin,
-        partnerId: salesChanel.partnerId
+        partnerId: partner.id
     };
-    saveUser(user, facilities);
+    saveUser(userDTO);
 }
 
-function saveUser(user, facilities) {
+function getRoles() {
+    let roles = [];
+    $('#roles').find(':selected').each(function (i, selected) {
+        let roleDTO = new RoleDTO();
+        roleDTO.build($(selected).val(), $(selected).text());
+        roles.push(roleDTO);
+    });
+    return roles;
+}
+
+function getPartner() {
+    let saleChanel = $('#saleChanel');
+    let partnerDTO = new UserDTO();
+    partnerDTO.buildPartner(saleChanel.find(':selected').val(), saleChanel.find(':selected').text());
+    if (partnerDTO.partnerId === 0) {
+        partnerDTO.partnerId = null;
+    }
+    return partnerDTO;
+}
+
+function saveUser(user) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
 
-    let search = ({"user": user, "facilityList": facilities});
     let url = window.location.href;
     showLoader();
 
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: "users/save",
-        data: JSON.stringify(search),
+        url: "users/update",
+        data: JSON.stringify(user),
         dataType: 'json',
         timeout: 100000,
         beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         },
         success: function (data) {
-
             closeLoader();
-            showPopup();
-            closePopup();
             if (url.indexOf('edit') >= 0) {
                 window.location.href = '/admin';
             }
-            $('#popup_modal_form').find('#message').append(data.message);
+            showPopup(data.message);
             $('#last_name').val('');
             $('#first_name').val('');
             $('#middle_name').val('');
             $('#login').val('');
             $('#email').val('');
-            $('#stuffs').prop('selectedIndex', 0);
-            $('#facility').prop('selectedIndex', -1);
             $('#roles').prop('selectedIndex', -1);
         },
         error: function (e) {
-            $('#popup_modal_form').find('#message').append(e.error);
             closeLoader();
-            showPopup();
-            closePopup();
+            showPopup(e.error);
         }
     });
 }
@@ -197,34 +211,6 @@ function deleteUser(userId) {
     });
 }
 
-function searchUsers() {
-    let token = $("meta[name='_csrf']").attr("content");
-    let header = $("meta[name='_csrf_header']").attr("content");
-    let search = ({"searchStuff": $("#srchStuff").find("option:selected").val()});
-
-    $.ajax({
-        type: "POST",
-        contentType: "application/json;charset=utf-8",
-        url: "usersByStuff",
-        data: JSON.stringify(search),
-        dataType: 'json',
-        timeout: 100000,
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader(header, token);
-        },
-        success: function (data) {
-            display(data);
-        },
-        error: function (e) {
-            display(e);
-        },
-        done: function (e) {
-            enableSearchButton(true);
-        }
-    });
-
-}
-
 function prepareUsersFilter() {
     let stuff = $('#srchStuff').find(':selected').text();
 
@@ -233,7 +219,7 @@ function prepareUsersFilter() {
         apply_filter('#tblUsers tbody', 4, stuff);
     } else if (stuff === 'Не подтверждён') {
         filters = [];
-        apply_filter('#tblUsers tbody', 5, "Нет");
+        apply_filter('#tblUsers tbody', 4, "Нет");
     } else {
         filters = [];
         apply_filter('#tblUsers tbody', 4, 'any');
@@ -244,7 +230,10 @@ function enableSearchButton(flag) {
     $("#btn-search").prop("disabled", flag);
 }
 
-function display(data) {
-    let json = JSON.stringify(data, null, 4);
-    $('#tblUsers').html(json);
+function showPopup(message) {
+    $('#msg').html(message);
+    $('#msg-modal').modal('show');
+    setTimeout(function () {
+        $('#msg-modal').modal('hide');
+    }, 3000);
 }

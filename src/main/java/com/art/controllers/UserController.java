@@ -6,7 +6,7 @@ import com.art.model.*;
 import com.art.model.supporting.FileBucket;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
-import com.art.model.supporting.SendingMail;
+import com.art.model.supporting.dto.UserDTO;
 import com.art.model.supporting.enums.ActiveEnum;
 import com.art.model.supporting.enums.KinEnum;
 import com.art.service.*;
@@ -28,47 +28,32 @@ import java.util.*;
 @Controller
 public class UserController {
 
-    @Resource(name = "userService")
-    private UserService userService;
+    private final UserService userService;
 
-    @Resource(name = "getServiceStatus")
-    private GetServiceStatus getServiceStatus;
+    private final GetServiceStatus getServiceStatus;
 
-    @Resource(name = "roleService")
-    private RoleService roleService;
+    private final RoleService roleService;
 
-    @Resource(name = "stuffService")
-    private StuffService stuffService;
+    private final FacilityService facilityService;
 
-    @Resource(name = "mailingGroupsService")
-    private MailingGroupsService mailingGroupsService;
+    private final InvestorsCashService investorsCashService;
 
-    @Resource(name = "bonusesService")
-    private BonusesService bonusesService;
-
-    @Resource(name = "facilitiesServiceContractsService")
-    private FacilitiesServiceContractsService facilitiesServiceContractsService;
-
-    @Resource(name = "facilityService")
-    private FacilityService facilityService;
-
-    @Resource(name = "investorsCashService")
-    private InvestorsCashService investorsCashService;
-
-    @Resource(name = "investorsExpensesService")
-    private InvestorsExpensesService investorsExpensesService;
-
-    @Resource(name = "alphaCorrectTagsService")
-    private AlphaCorrectTagsService alphaCorrectTagsService;
-
-    @Resource(name = "rentorsDetailsService")
-    private RentorsDetailsService rentorsDetailsService;
-
-    @Resource(name = "usersAnnexToContractsService")
-    private UsersAnnexToContractsService usersAnnexToContractsService;
+    private final UsersAnnexToContractsService usersAnnexToContractsService;
 
     @Resource(name = "getPrincipalFunc")
     private GetPrincipalFunc getPrincipalFunc;
+
+    public UserController(UserService userService, GetServiceStatus getServiceStatus, RoleService roleService,
+                          FacilityService facilityService, InvestorsCashService investorsCashService,
+                          UsersAnnexToContractsService usersAnnexToContractsService) {
+        this.userService = userService;
+        this.getServiceStatus = getServiceStatus;
+        this.roleService = roleService;
+        this.facilityService = facilityService;
+        this.investorsCashService = investorsCashService;
+        this.usersAnnexToContractsService = usersAnnexToContractsService;
+    }
+
     /*
      * В профиль
      *
@@ -197,58 +182,20 @@ public class UserController {
         return "redirect:/admin";
     }
 
-    @PostMapping(value = "deleteuser", produces = "application/json;charset=UTF-8")
+    @PostMapping(value = "deleteuser", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
     GenericResponse deleteUser(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
         Users user = userService.findByIdWithStuffs(new BigInteger(searchSummary.getRentor()));
-        List<Bonuses> bonusesList;
-        List<FacilitiesServiceContracts> facilitiesServiceContracts;
         List<InvestorsCash> investorsCashes;
-        List<InvestorsExpenses> investorsExpenses;
-        List<RentorsDetails> rentorsDetailsList;
-        Facilities facilities;
-        if (user.getUserStuff() != null) {
-            switch (user.getUserStuff().getStuff()) {
-                case "Арендатор":
-                    bonusesList = bonusesService.findByRentor(user);
-                    bonusesList.forEach(b -> {
-                        b.setRentor(null);
-                        bonusesService.update(b);
-                    });
-                    facilitiesServiceContracts = facilitiesServiceContractsService.findByRentor(user);
-                    facilitiesServiceContracts.forEach(fsc -> facilitiesServiceContractsService.deleteById(fsc.getId()));
-                    rentorsDetailsList = rentorsDetailsService.findByRentorId(user.getId());
-                    rentorsDetailsList.forEach(rd -> rentorsDetailsService.deleteById(rd.getId()));
-                    break;
-                case "Управляющий":
-                    bonusesList = bonusesService.findByManager(user);
-                    bonusesList.forEach(b -> {
-                        b.setManager(null);
-                        bonusesService.update(b);
-                    });
-                    facilities = facilityService.findByManager(user);
-                    if (facilities != null) {
-                        facilities.setManager(null);
-                        facilityService.update(facilities);
-                    }
-
-                    break;
-                case "Инвестор":
-                    investorsCashes = investorsCashService.findByInvestorId(user.getId());
-                    investorsCashes.forEach(ic -> investorsCashService.deleteById(ic.getId()));
-                    investorsExpenses = investorsExpensesService.findByInvestorId(user.getId());
-                    investorsExpenses.forEach(ie -> investorsExpensesService.deleteById(ie.getId()));
-                    break;
-            }
-        }
+        investorsCashes = investorsCashService.findByInvestorId(user.getId());
+        investorsCashes.forEach(ic -> investorsCashService.deleteById(ic.getId()));
         try {
             userService.deleteUser(user.getId());
             response.setMessage("Пользователь <b>" + user.getLogin() + "</b> успешно удалён.");
         } catch (Exception e) {
             response.setError("При удалении пользователя <b>" + user.getLogin() + "</b> произошла ошибка.");
         }
-
         return response;
     }
 
@@ -264,104 +211,19 @@ public class UserController {
         return response;
     }
 
-    @GetMapping(value = "/createmail")
-    public ModelAndView createMailPage(ModelMap model) {
-        ModelAndView modelAndView = new ModelAndView("createmail");
-        FileBucket fileModel = new FileBucket();
-        FileBucket file = new FileBucket();
-        model.addAttribute("fileBucket", fileModel);
-        model.addAttribute("file", file);
-        String ret = "профилю.";
-        String redirectUrl = "/profile";
-        model.addAttribute("redirectUrl", redirectUrl);
-        model.addAttribute("ret", ret);
-
-        SendingMail sendingMail = new SendingMail();
-        model.addAttribute("sendingMail", sendingMail);
-
-        return modelAndView;
-    }
-
-//    @PostMapping(value = "/createmail", produces = "application/json;charset=UTF-8")
-//    public @ResponseBody
-//    GenericResponse sendMail(MultipartHttpServletRequest request) {
-//        String who = "ДД Колесникъ";
-//        Properties prop = userService.getProp();
-//        GenericResponse response = new GenericResponse();
-//
-//        Iterator<String> itr = request.getFileNames();
-//        List<MultipartFile> multipartFiles = new ArrayList<>(0);
-//        while (itr.hasNext()) {
-//            multipartFiles.add(request.getFile(itr.next()));
-//        }
-//        List<BigInteger> uIdList = new ArrayList<>(0);
-//        List<BigInteger> mIdList = new ArrayList<>(0);
-//
-//        String sendingMail = request.getParameter("sendingMail");
-//        ObjectMapper mapper = new ObjectMapper();
-//        SendingMail mail = new SendingMail();
-//        try {
-//            mail = mapper.readValue(sendingMail, SendingMail.class);
-//        } catch (IOException ex) {
-//            response.setError(ex.getMessage());
-//        }
-//        mail.getMailingGroups().forEach(i -> mIdList.add(i.getId()));
-//        List<MailingGroups> mailingGroupsList = new ArrayList<>(0);
-//        if (mIdList.size() > 0) {
-//            mailingGroupsList = mailingGroupsService.findByIdIn(mIdList);
-//        }
-//        mail.getUsers().forEach(l -> uIdList.add(l.getId()));
-//        List<Users> usersList = new ArrayList<>(0);
-//        if (uIdList.size() > 0) {
-//            usersList = userService.findByIdIn(uIdList);
-//        }
-//
-//        mail.setMailingGroups(mailingGroupsList);
-//        mail.setUsers(usersList);
-//
-//        for (MailingGroups mailingGroups : mailingGroupsList) {
-//            usersList.addAll(mailingGroups.getUsers());
-//        }
-//
-//        usersList = usersList.stream().distinct().collect(Collectors.toList());
-//
-//        for (Users user : usersList) {
-//
-//            response = personalMailService.sendEmails(user, mail,
-//                    prop.getProperty("mail.kolesnik"), prop.getProperty("mail.kolesnikpwd"), who,
-//                    multipartFiles);
-//        }
-//
-//        return response;
-//    }
-
-    @PostMapping(path = "/users/save", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "/users/update", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
-    GenericResponse saveUser(@RequestBody SearchSummary searchSummary) {
-        GenericResponse response = new GenericResponse();
-        List<BigInteger> facilitiesIdList = new ArrayList<>(0);
-        searchSummary.getFacilityList().forEach(f -> facilitiesIdList.add(f.getId()));
-        List<Facilities> facilitiesList = facilityService.findByIdIn(facilitiesIdList);
-        Users user = searchSummary.getUser();
-        if (Objects.equals(BigInteger.ZERO, user.getPartnerId())) {
-            user.setPartnerId(null);
-        }
-
-        facilitiesList.forEach(f -> {
-            Set<Users> usersList = f.getInvestors();
-            usersList.add(user);
-            f.setInvestors(usersList);
-        });
-        String whatWeDo = "добавлен.";
+    GenericResponse updateUser(@RequestBody UserDTO userDTO) {
+        Users user = new Users(userDTO);
+        String message;
         if (user.getId() == null) {
             userService.create(user);
+            message = "Пользователь <b>" + user.getLogin() + "</b> успешно создан";
         } else {
             userService.update(user);
-            whatWeDo = "обновлён.";
+            message = "Пользователь <b>" + user.getLogin() + "</b> успешно обновлён";
         }
-        facilityService.updateList(facilitiesList);
-        response.setMessage("Пользователь <b>" + user.getLogin() + "</b> успешно " + whatWeDo);
-        return response;
+        return new GenericResponse(message);
     }
 
     @PostMapping(value = {"/setReadToAnnex"}, produces = "application/json;charset=UTF-8")
@@ -390,16 +252,6 @@ public class UserController {
     @ModelAttribute("roles")
     public List<Roles> initializeRoles() {
         return roleService.findAll();
-    }
-
-    @ModelAttribute("userStuff")
-    public List<Stuffs> initializeStuffs() {
-        return stuffService.findAll();
-    }
-
-    @ModelAttribute("mailingGroups")
-    public List<MailingGroups> initializeGroups() {
-        return mailingGroupsService.findAll();
     }
 
     @ModelAttribute("investors")
