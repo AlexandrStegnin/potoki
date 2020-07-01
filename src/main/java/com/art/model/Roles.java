@@ -1,9 +1,7 @@
 package com.art.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import com.art.model.supporting.dto.RoleDTO;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,6 +10,7 @@ import java.io.Serializable;
 @Setter
 @ToString
 @EqualsAndHashCode
+@NoArgsConstructor
 @Entity
 @Table(name = "ROLES")
 public class Roles implements Serializable {
@@ -37,4 +36,8 @@ public class Roles implements Serializable {
         this.role = role;
     }
 
+    public Roles(RoleDTO dto) {
+        this.id = Math.toIntExact(dto.getId());
+        this.role = dto.getName();
+    }
 }
