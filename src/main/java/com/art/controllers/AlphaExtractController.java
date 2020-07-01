@@ -132,13 +132,13 @@ public class AlphaExtractController {
     public @ResponseBody
     GenericResponse findRentors(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
-        List<Users> rentors;
-        Facilities facility = facilityService.findByIdWithRentorInvestors(new BigInteger(searchSummary.getFacility()));
-        rentors = facility.getInvestors().stream().filter(inv -> inv.getUserStuff().getStuff().equals("Арендатор"))
-                .collect(Collectors.toList());
+//        List<Users> rentors;
+//        Facilities facility = facilityService.findByIdWithRentorInvestors(new BigInteger(searchSummary.getFacility()));
+//        rentors = facility.getInvestors().stream().filter(inv -> inv.getUserStuff().getStuff().equals("Арендатор"))
+//                .collect(Collectors.toList());
         StringBuilder stringBuilder = new StringBuilder("<option value='0'>Выберите арендатора</option>");
-        rentors.forEach(r ->
-                stringBuilder.append("<option value=").append(r.getId()).append(">").append(r.getLogin()).append("</option>"));
+//        rentors.forEach(r ->
+//                stringBuilder.append("<option value=").append(r.getId()).append(">").append(r.getLogin()).append("</option>"));
 
         response.setMessage(stringBuilder.toString());
         return response;
