@@ -145,12 +145,18 @@ function saveUser(user) {
     let header = $("meta[name='_csrf_header']").attr("content");
 
     let url = window.location.href;
+    let actionUrl;
+    if (url.indexOf('edit') >= 0) {
+        actionUrl = "users/save"
+    } else {
+        actionUrl = "save"
+    }
     showLoader();
 
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: "users/update",
+        url: actionUrl,
         data: JSON.stringify(user),
         dataType: 'json',
         timeout: 100000,
