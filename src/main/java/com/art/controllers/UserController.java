@@ -182,11 +182,11 @@ public class UserController {
         return "redirect:/admin";
     }
 
-    @PostMapping(value = "deleteuser", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "/users/delete", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
-    GenericResponse deleteUser(@RequestBody SearchSummary searchSummary) {
+    GenericResponse deleteUser(@RequestBody UserDTO userDTO) {
         GenericResponse response = new GenericResponse();
-        Users user = userService.findByIdWithStuffs(new BigInteger(searchSummary.getRentor()));
+        Users user = userService.findById(BigInteger.valueOf(userDTO.getId()));
         List<InvestorsCash> investorsCashes;
         investorsCashes = investorsCashService.findByInvestorId(user.getId());
         investorsCashes.forEach(ic -> investorsCashService.deleteById(ic.getId()));

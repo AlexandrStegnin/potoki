@@ -89,7 +89,7 @@ jQuery(document).ready(function ($) {
 
     $('a#delete').click(function (event) {
         event.preventDefault();
-        let userId = $(this).attr('name');
+        let userId = $(this).attr('data-user-id');
         deleteUser(userId);
         $('#tblUsers').find('tr#' + userId).remove();
     });
@@ -181,15 +181,17 @@ function deleteUser(userId) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
 
-    let search = ({"rentor": userId});
-
     showLoader();
+
+    let userDTO = {
+        id: userId
+    }
 
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: "deleteuser",
-        data: JSON.stringify(search),
+        url: "users/delete",
+        data: JSON.stringify(userDTO),
         dataType: 'json',
         timeout: 100000,
         beforeSend: function (xhr) {
@@ -197,16 +199,11 @@ function deleteUser(userId) {
         },
         success: function (data) {
             closeLoader();
-            $('#popup_modal_form').find('#message').append(data.message);
-            closeLoader();
-            showPopup();
-            closePopup();
+            showPopup(data.message)
         },
         error: function (e) {
-            $('#popup_modal_form').find('#message').append(e.error);
             closeLoader();
-            showPopup();
-            closePopup();
+            showPopup(e.error)
         }
     });
 }

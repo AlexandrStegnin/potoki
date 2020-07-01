@@ -19,7 +19,7 @@
     <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/applic.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/jsFunctions.js' />" ></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/AjaxLoader.js' />" ></script>
+    <script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/mailingScripts.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/users.js' />" ></script>
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
@@ -72,7 +72,7 @@
                             <td><a href="<c:url value='/edit-user-${user.id}' />" class="btn btn-success custom-width">Изменить</a></td>
                         </sec:authorize>
                         <sec:authorize access="hasRole('ADMIN')">
-                            <td><a href="<c:url value='/deleteuser' />" id="delete" name="${user.id}"
+                            <td><a href="<c:url value='/#' />" id="delete" data-user-id="${user.id}"
                                    class="btn btn-danger custom-width">Удалить</a></td>
                         </sec:authorize>
                     </sec:authorize>
@@ -81,19 +81,7 @@
             </tbody>
         </table>
     </div>
-
-
-    <sec:authorize access="isRememberMe()">
-        <p>Вы вошли с помощью функции "Запомнить меня".
-            Чтобы иметь все права на данную страницу, Вам необходимо снова
-            <a href="<c:url value='/login' />">ВОЙТИ</a> в систему используя логин/пароль.
-        </p>
-
-    </sec:authorize>
-
 </div>
-<%@include file="loader.jsp" %>
-<%@include file="popup.jsp" %>
-<%@include file="slideDiv.jsp" %>
+<%@include file="popup_modal.jsp" %>
 </body>
 </html>
