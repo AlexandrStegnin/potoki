@@ -7,14 +7,12 @@ import com.art.model.supporting.FileBucket;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.dto.UserDTO;
-import com.art.model.supporting.enums.ActiveEnum;
 import com.art.model.supporting.enums.KinEnum;
 import com.art.service.*;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,7 +21,10 @@ import javax.annotation.Resource;
 import java.math.BigInteger;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -107,43 +108,6 @@ public class UserController {
         return view;
     }
 
-    /**
-     * Создание пользователя
-     */
-    @GetMapping(value = {"/newuser"})
-    public String newUser(ModelMap model) {
-        String title = "Добавление пользователя";
-        Users user = new Users();
-        List<ActiveEnum> active = new ArrayList<>(
-                Arrays.asList(ActiveEnum.values()));
-        List<KinEnum> kins = new ArrayList<>(
-                Arrays.asList(KinEnum.values()));
-        model.addAttribute("user", user);
-        model.addAttribute("edit", false);
-        model.addAttribute("kins", kins);
-        model.addAttribute("active", active);
-        model.addAttribute("title", title);
-        return "registration";
-    }
-
-    @PostMapping(value = {"/newuser"})
-    public String saveUser(@ModelAttribute("user") Users user, BindingResult result, ModelMap model) {
-
-        if (result.hasErrors()) {
-            return "registration";
-        }
-        String ret = "списку пользователей";
-        String redirectUrl = "/admin";
-        String uuid = UUID.randomUUID().toString().substring(0, 8);
-        user.setPassword(uuid);
-        userService.create(user);
-
-        model.addAttribute("success", "Пользователь " + user.getLogin() + " успешно добавлен.");
-        model.addAttribute("redirectUrl", redirectUrl);
-        model.addAttribute("ret", ret);
-        return "registrationsuccess";
-    }
-
     @GetMapping(path = "/edit-user-{id}")
     public String editUser(@PathVariable BigInteger id, ModelMap model) {
         String title = "Обновление данных пользователя";
@@ -155,20 +119,6 @@ public class UserController {
         model.addAttribute("kins", kins);
         model.addAttribute("title", title);
         return "registration";
-    }
-
-    @PostMapping(value = "/edit-user-{id}")
-    public String updateUser(@ModelAttribute("user") Users user, BindingResult result, ModelMap model) {
-        String ret = "списку пользователей.";
-        String redirectUrl = "/admin";
-        if (result.hasErrors()) {
-            return "registration";
-        }
-        userService.update(user);
-        model.addAttribute("success", "Данные пользователя " + user.getLogin() + " успешно обновлены.");
-        model.addAttribute("redirectUrl", redirectUrl);
-        model.addAttribute("ret", ret);
-        return "registrationsuccess";
     }
 
     /**
@@ -203,7 +153,10 @@ public class UserController {
         return response;
     }
 
-    @PostMapping(path = "/users/update", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    /**
+     * Создание/обновление пользователя
+     */
+    @PostMapping(path = "/users/save", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
     GenericResponse updateUser(@RequestBody UserDTO userDTO) {
         Users user = new Users(userDTO);
