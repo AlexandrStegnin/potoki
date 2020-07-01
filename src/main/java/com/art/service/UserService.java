@@ -70,7 +70,7 @@ public class UserService {
 
     public List<Users> findRentors(BigInteger managerId) {
         List<Users> usersList = new ArrayList<>(0);
-        usersList.addAll(userRepository.findByStuffIdOrderByLastName(managerId));
+        usersList.addAll(userRepository.findAll());
         return usersList;
     }
 
@@ -96,7 +96,7 @@ public class UserService {
     }
 
     public List<Users> initializeMultipleInvestors() {
-        return userRepository.findByStuffIdOrderByLastName(stuffService.findByStuff("Инвестор").getId());
+        return userRepository.findAll();
     }
 
     public List<Users> initializePartners() {
@@ -109,7 +109,7 @@ public class UserService {
         partner.setLogin(s);
         List<Users> users = new ArrayList<>(0);
         users.add(partner);
-        users.addAll(userRepository.findByStuffIdOrderByLastName(stuffService.findByStuff("Инвестор").getId()));
+        users.addAll(userRepository.findAll());
         return users;
     }
 

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -89,7 +90,7 @@ public class AdminController {
 
     @ModelAttribute("stuffs")
     public List<Stuffs> initializeStuffs() {
-        List<Stuffs> stuffs = stuffService.initializeStuffs();
+        List<Stuffs> stuffs = new ArrayList<>();
         Stuffs confirmed = new Stuffs("-1", "Не подтверждён");
         stuffs.add(confirmed);
         return stuffs;

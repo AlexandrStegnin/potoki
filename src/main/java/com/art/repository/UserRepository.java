@@ -16,8 +16,6 @@ public interface UserRepository extends JpaRepository<Users, BigInteger> {
 
     void deleteById(BigInteger id);
 
-    List<Users> findByStuffIdOrderByLastName(BigInteger stuffId);
-
     List<Users> findByEmail(String email);
 
     List<Users> findByIdIn(List<BigInteger> idList);

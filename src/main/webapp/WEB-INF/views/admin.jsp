@@ -50,7 +50,6 @@
                 <th>ID</th>
                 <th>Имя пользователя</th>
                 <th>Email</th>
-                <th>Роль</th>
                 <th>Подтверждён</th>
                 <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                     <th style="text-align: center;" colspan="2">Действие</th>
@@ -64,7 +63,6 @@
                     <td>${user.id}</td>
                     <td>${user.login}</td>
                     <td>${user.email}</td>
-                    <td>${user.userStuff.stuff}</td>
                     <c:choose>
                         <c:when test="${user.confirmed}"><td>Да</td></c:when>
                         <c:otherwise><td>Нет</td></c:otherwise>

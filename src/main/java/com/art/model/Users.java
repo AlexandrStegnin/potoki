@@ -23,7 +23,6 @@ import java.util.Set;
 public class Users implements Serializable {
     private BigInteger id;
     private String login;
-    private BigInteger stuffId;
     private String password;
     private String lastName;
     private String first_name;
