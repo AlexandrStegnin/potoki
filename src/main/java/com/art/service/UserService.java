@@ -22,7 +22,10 @@ import javax.persistence.criteria.Root;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -153,7 +156,6 @@ public class UserService {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
-        usersRoot.fetch(Users_.userStuff, JoinType.LEFT);
         usersCriteriaQuery.select(usersRoot).distinct(true);
         usersCriteriaQuery.where(cb.equal(usersRoot.get(Users_.id), id));
         return em.createQuery(usersCriteriaQuery).getSingleResult();
@@ -163,7 +165,6 @@ public class UserService {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
-        usersRoot.fetch(Users_.userStuff, JoinType.LEFT);
         usersRoot.fetch(Users_.facilities, JoinType.LEFT);
         usersRoot.fetch(Users_.account, JoinType.LEFT);
         usersCriteriaQuery.select(usersRoot).distinct(true);
@@ -175,7 +176,6 @@ public class UserService {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
-        usersRoot.fetch(Users_.userStuff, JoinType.LEFT);
         usersCriteriaQuery.select(usersRoot).distinct(true);
         return em.createQuery(usersCriteriaQuery).getResultList();
     }
@@ -184,7 +184,6 @@ public class UserService {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
-//        usersRoot.fetch(Users_.mailingGroups, JoinType.LEFT);
         usersCriteriaQuery.select(usersRoot).distinct(true);
         usersCriteriaQuery.where(usersRoot.get(Users_.id).in(idList));
         return em.createQuery(usersCriteriaQuery).getResultList();
@@ -237,11 +236,8 @@ public class UserService {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
-        usersRoot.fetch(Users_.userStuff, JoinType.LEFT);
-//        usersRoot.fetch(Users_.mailingGroups, JoinType.LEFT);
         usersRoot.fetch(Users_.facilities, JoinType.LEFT);
         usersRoot.fetch(Users_.usersAnnexToContractsList, JoinType.LEFT);
-//        usersRoot.fetch(Users_.emails, JoinType.LEFT);
         usersCriteriaQuery.select(usersRoot).distinct(true);
         usersCriteriaQuery.where(cb.equal(usersRoot.get(Users_.id), id));
         return em.createQuery(usersCriteriaQuery).getSingleResult();
@@ -266,9 +262,6 @@ public class UserService {
         }
         if (null == user.getRoles()) {
             user.setRoles(updUser.getRoles());
-        }
-        if (null == user.getUserStuff()) {
-            user.setUserStuff(updUser.getUserStuff());
         }
         if (null == user.getFacilities()) {
             user.setFacilities(updUser.getFacilities());
@@ -298,22 +291,19 @@ public class UserService {
 
     private void sendWelcomeMessage(Users user) {
         String uuid = UUID.randomUUID().toString().substring(0, 8);
-        if (user.getUserStuff().getStuff().equalsIgnoreCase("Инвестор")) {
-            SendingMail mail = new SendingMail();
-            mail.setSubject("Добро пожаловать в Доходный Дом Колесникъ!");
-            mail.setBody("Здравствуйте, уважаемый Инвестор!<br/>" +
-                    "Вам предоставлен доступ в личный кабинет Доходного Дома &#171;Колесникъ&#187; (https://www.ddkolesnik.com)<br/>" +
-                    "Наша видео инструкция поможет сориентироваться (https://youtu.be/nWtQdlP5GDU)<br/>" +
-                    "Данные для входа:<br/>" +
-                    "login: " + user.getLogin() + "<br/>" +
-                    "Пароль: " + uuid + "<br/>" +
-                    "С уважением,<br/>" +
-                    "Сергей Колесник.");
-            String who = "ДД Колесникъ";
-            Properties prop = getProp();
-            personalMailService.sendEmails(user, mail, prop.getProperty("mail.kolesnik"), prop.getProperty("mail.kolesnikpwd"), who,
-                    null);
-        }
+        SendingMail mail = new SendingMail();
+        mail.setSubject("Добро пожаловать в Доходный Дом КолесникЪ!");
+        mail.setBody("Здравствуйте, уважаемый Инвестор!<br/>" +
+                "Вам предоставлен доступ в личный кабинет Доходного Дома &#171;Колесникъ&#187; (https://www.ddkolesnik.com)<br/>" +
+                "Наша видео инструкция поможет сориентироваться (https://youtu.be/nWtQdlP5GDU)<br/>" +
+                "Данные для входа:<br/>" +
+                "login: " + user.getLogin() + "<br/>" +
+                "Пароль: " + uuid + "<br/>" +
+                "С уважением,<br/>" +
+                "Сергей Колесник.");
+        String who = "ДД Колесникъ";
+        Properties prop = getProp();
+        personalMailService.sendEmails(user, mail, prop.getProperty("mail.kolesnik"), prop.getProperty("mail.kolesnikpwd"), who, null);
         user.setPassword(passwordEncoder.encode(uuid));
     }
 
@@ -331,11 +321,8 @@ public class UserService {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
-        usersRoot.fetch(Users_.userStuff, JoinType.LEFT);
-//        usersRoot.fetch(Users_.mailingGroups, JoinType.LEFT);
         usersRoot.fetch(Users_.facilities, JoinType.LEFT);
         usersRoot.fetch(Users_.usersAnnexToContractsList, JoinType.LEFT);
-//        usersRoot.fetch(Users_.emails, JoinType.LEFT);
         usersCriteriaQuery.select(usersRoot).distinct(true);
         return em.createQuery(usersCriteriaQuery).getResultList();
     }

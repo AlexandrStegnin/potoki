@@ -30,7 +30,6 @@ public class Users implements Serializable {
     private String middle_name;
     private String email;
     private List<Roles> roles;
-    private Stuffs userStuff;
     private Set<Facilities> facilities;
 
     @Enumerated(EnumType.STRING)
@@ -40,7 +39,6 @@ public class Users implements Serializable {
     private List<UsersAnnexToContracts> usersAnnexToContractsList;
 
     public Users() {
-
     }
 
     public Users(String id, String login) {
@@ -53,29 +51,7 @@ public class Users implements Serializable {
         this.partnerId = partnerId;
     }
 
-    @OneToOne(cascade =
-            {
-                    CascadeType.DETACH,
-                    CascadeType.MERGE,
-                    CascadeType.REFRESH
-            },
-            fetch = FetchType.LAZY)
-    @JoinColumn(name = "stuffId", referencedColumnName = "id")
-    public Stuffs getUserStuff() {
-        return userStuff;
-    }
-
-    public void setUserStuff(Stuffs userStuff) {
-        this.userStuff = userStuff;
-    }
-
-    @ManyToMany(cascade =
-            {
-                    CascadeType.DETACH,
-                    CascadeType.MERGE,
-                    CascadeType.REFRESH
-            },
-            fetch = FetchType.LAZY)
+    @ManyToMany(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.LAZY)
     @JoinTable(name = "USERS_FACILITYES",
             joinColumns = {@JoinColumn(name = "RENTOR_INVESTORS_ID", referencedColumnName = "id")},
             inverseJoinColumns = @JoinColumn(name = "FACILITY_ID", referencedColumnName = "id"))
@@ -152,27 +128,10 @@ public class Users implements Serializable {
         this.email = email;
     }
 
-    @Column(name = "stuffId", insertable = false, updatable = false)
-    public BigInteger getStuffId() {
-        return stuffId;
-    }
-
-    public void setStuffId(BigInteger stuffId) {
-        this.stuffId = stuffId;
-    }
-
-    @ManyToMany(cascade =
-            {
-                    CascadeType.DETACH,
-                    CascadeType.MERGE,
-                    CascadeType.REFRESH,
-                    CascadeType.PERSIST
-            },
-            fetch = FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST }, fetch = FetchType.EAGER)
     @JoinTable(name = "USERS_ROLES",
             joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     public List<Roles> getRoles() {
         return roles;
     }
@@ -184,17 +143,10 @@ public class Users implements Serializable {
     @Column
     private BigInteger partnerId;
 
-    @ManyToMany(cascade =
-            {
-                    CascadeType.DETACH,
-                    CascadeType.MERGE,
-                    CascadeType.REFRESH
-            },
-            fetch = FetchType.LAZY)
+    @ManyToMany(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.LAZY)
     @JoinTable(name = "UsersAnnexToContracts",
             joinColumns = {@JoinColumn(name = "UserId")},
-            inverseJoinColumns = @JoinColumn(name = "Id")
-    )
+            inverseJoinColumns = @JoinColumn(name = "Id"))
     public List<UsersAnnexToContracts> getUsersAnnexToContractsList() {
         return usersAnnexToContractsList;
     }

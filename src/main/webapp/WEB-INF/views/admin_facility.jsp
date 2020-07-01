@@ -39,7 +39,6 @@
                 <th>Адрес</th>
                 <th>Управляющий</th>
                 <th>Инвесторы</th>
-                <th>Арендаторы</th>
                 <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                     <th width="100"></th>
                 </sec:authorize>
@@ -59,19 +58,9 @@
                     <td>${facility.address}</td>
                     <td>${facility.manager.login}</td>
                     <c:forEach items="${facility.investors}" var="investors" varStatus="stat">
-                        <c:choose>
-                            <c:when test="${fn:containsIgnoreCase(investors.userStuff.stuff, 'Инвестор') &&
-                                            !fn:containsIgnoreCase(inv, investors.login.concat('; '))}">
-                                <c:set var='inv' value="${stat.first ? '' : inv} ${investors.login.concat('; ')}" />
-                            </c:when>
-                            <c:when test="${fn:containsIgnoreCase(investors.userStuff.stuff, 'Арендатор') &&
-                                            !fn:containsIgnoreCase(rent, investors.login.concat('; '))}">
-                                <c:set var='rent' value="${stat.first ? '' : rent} ${investors.login.concat('; ')}" />
-                            </c:when>
-                        </c:choose>
+                        <c:set var='inv' value="${stat.first ? '' : inv} ${investors.login.concat('; ')}" />
                     </c:forEach>
                     <td>${inv}</td>
-                    <td>${rent}</td>
                     <c:set var="rent" value="" />
                     <c:set var="inv" value="" />
                     <sec:authorize access="isFullyAuthenticated()">

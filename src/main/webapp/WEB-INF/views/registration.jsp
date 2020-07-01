@@ -78,19 +78,9 @@
 
         <div class="row">
             <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="stuffs">Статус:</label>
+                <label class="col-md-3 control-lable" for="saleChanel">Канал привлечения:</label>
                 <div class="col-md-7">
-                    <form:select path="userStuff" id="stuffs" items="${userStuff}" multiple="false"
-                                 itemValue="id" itemLabel="stuff" class="form-control input-sm" />
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="sChanel">Канал привлечения:</label>
-                <div class="col-md-7">
-                    <form:select path="partnerId" id="sChanel" items="${investors}" multiple="false"
+                    <form:select path="partnerId" id="saleChanel" items="${investors}" multiple="false"
                                  itemValue="id" itemLabel="login" class="form-control input-sm" />
                 </div>
             </div>
@@ -130,8 +120,6 @@
         </div>
     </form:form>
 </div>
-<%@include file="loader.jsp" %>
-<%@include file="popup.jsp" %>
-<%@include file="slideDiv.jsp" %>
+<%@include file="popup_modal.jsp"%>
 </body>
 </html>
