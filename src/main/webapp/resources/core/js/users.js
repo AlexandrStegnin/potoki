@@ -129,7 +129,7 @@ function saveUser(user, facilities) {
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: "saveuser",
+        url: "users/save",
         data: JSON.stringify(search),
         dataType: 'json',
         timeout: 100000,

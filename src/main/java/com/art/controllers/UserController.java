@@ -8,10 +8,10 @@ import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.SendingMail;
 import com.art.model.supporting.enums.ActiveEnum;
-import com.art.model.supporting.enums.DebetCreditEnum;
 import com.art.model.supporting.enums.KinEnum;
 import com.art.service.*;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -335,67 +335,22 @@ public class UserController {
 //        return response;
 //    }
 
-    @PostMapping(value = {"/saveuser"}, produces = "application/json;charset=UTF-8")
+    @PostMapping(path = "/users/save", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
     GenericResponse saveUser(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
         List<BigInteger> facilitiesIdList = new ArrayList<>(0);
         searchSummary.getFacilityList().forEach(f -> facilitiesIdList.add(f.getId()));
         List<Facilities> facilitiesList = facilityService.findByIdIn(facilitiesIdList);
-//        String organization = "";
-//        String inn = "";
-//        String account = "";
         Users user = searchSummary.getUser();
-//        if (Objects.equals(user.getMailingGroups(), null)) {
-//            user.setMailingGroups(null);
-//        }
-//        if (StringUtils.hasText(searchSummary.getInn())) {
-//            inn = searchSummary.getInn();
-//        }
-//        if (StringUtils.hasText(searchSummary.getAccount())) {
-//            account = searchSummary.getAccount();
-//        }
-//        if (StringUtils.hasText(searchSummary.getOrganization())) {
-//            organization = searchSummary.getOrganization();
-//        }
-        if (Objects.equals(BigInteger.ZERO, user.getPartnerId())) user.setPartnerId(null);
-        String[] tags = {"Свет:свет", "ЖКХ:жкх", "Аренда:аренд", "Обеспечительный:обеспеч"};
+        if (Objects.equals(BigInteger.ZERO, user.getPartnerId())) {
+            user.setPartnerId(null);
+        }
 
-        List<AlphaCorrectTags> newACorTagsList = new ArrayList<>(0);
-        List<RentorsDetails> newRdList = new ArrayList<>(0);
-        DebetCreditEnum credit = DebetCreditEnum.CREDIT;
-//        String finalInn = inn;
-//        String finalAccount = account;
-//        String finalOrganization = organization;
         facilitiesList.forEach(f -> {
             Set<Users> usersList = f.getInvestors();
             usersList.add(user);
-            switch (user.getUserStuff().getStuff()) {
-                case "Арендатор":
-                    for (String tag : tags) {
-                        AlphaCorrectTags correctTags = new AlphaCorrectTags();
-                        correctTags.setId(null);
-                        correctTags.setFacility(f);
-                        correctTags.setDebetOrCredit(credit);
-                        correctTags.setCorrectTag(tag.split(":")[0]);
-                        correctTags.setDescription(tag.split(":")[1]);
-//                        correctTags.setInn(finalInn);
-//                        correctTags.setAccount(finalAccount);
-                        newACorTagsList.add(correctTags);
-                    }
-                    RentorsDetails rentorsDetails = new RentorsDetails();
-                    rentorsDetails.setRentor(user);
-                    rentorsDetails.setFacility(f);
-//                    rentorsDetails.setInn(finalInn);
-//                    rentorsDetails.setAccount(finalAccount);
-//                    rentorsDetails.setOrganization(finalOrganization);
-                    f.setInvestors(usersList);
-                    newRdList.add(rentorsDetails);
-                    break;
-                case "Инвестор":
-                    f.setInvestors(usersList);
-                    break;
-            }
+            f.setInvestors(usersList);
         });
         String whatWeDo = "добавлен.";
         if (user.getId() == null) {
@@ -405,8 +360,6 @@ public class UserController {
             whatWeDo = "обновлён.";
         }
         facilityService.updateList(facilitiesList);
-        alphaCorrectTagsService.createList(newACorTagsList);
-        rentorsDetailsService.createList(newRdList);
         response.setMessage("Пользователь <b>" + user.getLogin() + "</b> успешно " + whatWeDo);
         return response;
     }

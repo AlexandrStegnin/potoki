@@ -16,9 +16,8 @@ import java.util.Set;
 
 @Getter
 @Setter
-@ToString(exclude = {"roles", "userStuff", "facilities", "usersAnnexToContractsList"})
-@EqualsAndHashCode(exclude = {"stuffId", "password", "lastName", "first_name", "middle_name", "email",
-        "roles", "userStuff", "facilities", "usersAnnexToContractsList"})
+@ToString(of = {"id", "login", "email"})
+@EqualsAndHashCode(of = {"id", "login", "email"})
 @Entity
 @Table(name = "USERS")
 public class Users implements Serializable {
@@ -30,23 +29,15 @@ public class Users implements Serializable {
     private String first_name;
     private String middle_name;
     private String email;
-//    private String state;
     private List<Roles> roles;
     private Stuffs userStuff;
-//    private Set<MailingGroups> mailingGroups;
     private Set<Facilities> facilities;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "Kin")
     private KinEnum kin;
 
-//    @Transient
-//    private transient List<BigInteger> facilityId;
-//    @Transient
-//    private transient List<String> facilityName;
-
     private List<UsersAnnexToContracts> usersAnnexToContractsList;
-//    private Set<Emails> emails;
 
     public Users() {
 
@@ -77,25 +68,6 @@ public class Users implements Serializable {
     public void setUserStuff(Stuffs userStuff) {
         this.userStuff = userStuff;
     }
-
-//    @ManyToMany(cascade =
-//            {
-//                    CascadeType.DETACH,
-//                    CascadeType.MERGE,
-//                    CascadeType.REFRESH
-//            },
-//            fetch = FetchType.LAZY)
-//    @JoinTable(name = "UsersMailingGroups",
-//            joinColumns = {@JoinColumn(name = "UserId", referencedColumnName = "id")},
-//            inverseJoinColumns = @JoinColumn(name = "MailingGroupsId", referencedColumnName = "id"))
-//    public Set<MailingGroups> getMailingGroups() {
-//        return mailingGroups;
-//    }
-//
-//    public void setMailingGroups(Set<MailingGroups> mailingGroups) {
-//        this.mailingGroups = mailingGroups;
-//    }
-
 
     @ManyToMany(cascade =
             {
@@ -180,22 +152,6 @@ public class Users implements Serializable {
         this.email = email;
     }
 
-//    @Column(name = "state")
-//    public String getState() {
-//        return state;
-//    }
-//
-//    public void setState(String state) {
-//        this.state = state;
-//    }
-
-//    @Transient
-//    public String getFullName() {
-//        return first_name +
-//                " " +
-//                middle_name;
-//    }
-//
     @Column(name = "stuffId", insertable = false, updatable = false)
     public BigInteger getStuffId() {
         return stuffId;
@@ -246,25 +202,6 @@ public class Users implements Serializable {
     public void setUsersAnnexToContractsList(List<UsersAnnexToContracts> usersAnnexToContractsList) {
         this.usersAnnexToContractsList = usersAnnexToContractsList;
     }
-
-//    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-//    public Set<Emails> getEmails() {
-//        return emails;
-//    }
-//
-//    public void setEmails(Set<Emails> emails) {
-//        this.emails = emails;
-//    }
-//
-//    @Transient
-//    public List<BigInteger> getFacilityId() {
-//        return facilityId;
-//    }
-
-//    @Transient
-//    public List<String> getFacilityName() {
-//        return facilityName;
-//    }
 
     @Column(name = "confirmed")
     private boolean confirmed;
