@@ -20,24 +20,13 @@ import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.util.*;
 import java.util.function.Predicate;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
 public class UploadExcelFunc {
 
-    private final Pattern pattern = Pattern.compile("\\s*([;+])\\s*");
-    private final Locale RU = new Locale("ru", "RU");
-
     @Resource(name = "saleOfFacilitiesService")
     private SaleOfFacilitiesService saleOfFacilitiesService;
-
-    @Resource(name = "toshlExtractService")
-    private ToshlExtractService toshlExtractService;
-
-    @Resource(name = "toshlCorrectTagsService")
-    private ToshlCorrectTagsService toshlCorrectTagsService;
 
     @Resource(name = "rentorsDetailsService")
     private RentorsDetailsService rentorsDetailsService;
@@ -78,9 +67,6 @@ public class UploadExcelFunc {
 
         Workbook workbook;
         Sheet sheet = null;
-        int rowBegin = 0;
-        boolean begin = false;
-        int rowNumber;
 
         try {
             fileInputStream = new BufferedInputStream(file.getInputStream());
@@ -93,95 +79,6 @@ public class UploadExcelFunc {
         }
 
         switch (what) {
-            case "toshl":
-                List<ToshlCorrectTags> toshlCorrectTagsList = toshlCorrectTagsService.findOrderBy();
-                List<ToshlExtract> toshlExtractList = new ArrayList<>(0);
-                Set<String> newToshlTagsList = new HashSet<>(0);
-
-
-                float amount = 0;
-                float inMainCurrency = 0;
-
-                //Iterate through each rows from first sheet
-                SimpleDateFormat formatToshl = new SimpleDateFormat("MM/dd/yy");
-                assert sheet != null;
-
-                while (!begin) {
-                    for (Row row : sheet) {
-                        try {
-                            formatToshl.parse(row.getCell(0).toString());
-                            begin = true;
-                            rowBegin = row.getRowNum();
-                            break;
-                        } catch (Exception ignored) {
-                        }
-
-                    }
-                }
-
-                for (Row row : sheet) {
-                    rowNumber = row.getRowNum();
-                    if (rowNumber >= rowBegin) {
-                        if (row.getLastCellNum() > 8) {
-                            for (int i = 0; i < row.getLastCellNum(); i++) {
-                                row.getCell(i).setCellType(CellType.STRING);
-                            }
-
-                            ToshlExtract toshlExtract = new ToshlExtract();
-                            toshlExtract.setDate(formatToshl.parse(row.getCell(0).toString()));
-                            toshlExtract.setAccount(row.getCell(1).toString());
-                            toshlExtract.setCategory(row.getCell(2).toString());
-                            toshlExtract.setTags(row.getCell(3).toString());
-
-                            try {
-                                amount = Float.parseFloat(row.getCell(4).toString());
-                            } catch (Exception ignored) {
-                            }
-
-                            toshlExtract.setCurrency(row.getCell(5).toString());
-
-                            try {
-                                inMainCurrency = Float.parseFloat(row.getCell(6).toString());
-                            } catch (Exception ignored) {
-                            }
-                            toshlExtract.setMainCurrency(row.getCell(7).toString());
-                            toshlExtract.setDescription(row.getCell(8).toString());
-
-                            toshlExtract.setAmount(amount);
-                            toshlExtract.setInMainCurrency(inMainCurrency);
-
-                            String err = addToshlTags(toshlExtract, toshlCorrectTagsList, newToshlTagsList);
-                            toshlExtractList.add(toshlExtract);
-                        }
-                    }
-                }
-                fileInputStream.close();
-                toshlExtractService.createList(toshlExtractList);
-
-                List<ToshlCorrectTags> setToshlTags = new ArrayList<>(0);
-
-                List<String> toshlTagList = newToshlTagsList.stream().distinct().
-                        collect(Collectors.toList());
-
-                toshlCorrectTagsList = toshlCorrectTagsService.findAll();
-
-                for (String tags : newToshlTagsList) {
-                    for (ToshlCorrectTags tTag : toshlCorrectTagsList) {
-                        if (tags.equals(String.join(tTag.getTags(), tTag.getCategory()))) {
-                            toshlTagList.remove(tags);
-                        }
-                    }
-                }
-                for (String tags : toshlTagList) {
-                    ToshlCorrectTags tag = new ToshlCorrectTags();
-                    String[] tagStr = tags.split("[|]");
-                    tag.setTags(tagStr[0]);
-                    tag.setCategory(tagStr[1]);
-                    setToshlTags.add(tag);
-                }
-
-                toshlCorrectTagsService.createList(setToshlTags);
-                break;
             case "manual":
                 rewriteSummaryData(Objects.requireNonNull(sheet));
                 break;
@@ -253,80 +150,6 @@ public class UploadExcelFunc {
             }
         }
         saleOfFacilitiesService.createList(saleOfFacilities);
-    }
-
-    private int checkPriority(String description) {
-
-        Pattern kom = Pattern.compile(".*?(жкх.*?|свет.*?|электроэнерг.*?).*?");
-        Matcher komMatcher = kom.matcher(description);
-
-        Pattern obesp = Pattern.compile(".*?обеспеч.*?");
-        Matcher obespMatcher = obesp.matcher(description);
-
-        Pattern arend = Pattern.compile(".*?аренд.*?");
-        Matcher arendMatcher = arend.matcher(description);
-
-        if (komMatcher.find()) {
-            return 1;
-        } else if (obespMatcher.find()) {
-            return 2;
-        } else if (arendMatcher.find()) {
-            return 3;
-        }
-        return 0;
-    }
-
-    private String addToshlTags(ToshlExtract toshlExtract,
-                                List<ToshlCorrectTags> toshlCorrectTagsList,
-                                Set<String> newTagsList) {
-        String ptrn = ".*?";
-        String ok = "";
-
-        /* Проходим по всем тэгам из справочника */
-        for (ToshlCorrectTags correctTags : toshlCorrectTagsList) {
-
-            Pattern pTags;
-            Pattern pCategory;
-
-            Matcher mTags = null;
-            Matcher mCategory = null;
-
-            if (correctTags.getTags() != null) {
-                pTags = Pattern.compile(ptrn + correctTags.getTags().trim().toLowerCase()
-                        .replaceAll("[()&$]", "") + ptrn);
-                mTags = pTags.matcher(toshlExtract.getTags().trim().toLowerCase()
-                        .replaceAll("[()&$]", ""));
-            }
-            if (correctTags.getCategory() != null) {
-                pCategory = Pattern.compile(ptrn + correctTags.getCategory().trim().toLowerCase()
-                        .replaceAll("[()&$]", "") + ptrn);
-                mCategory = pCategory.matcher(toshlExtract.getCategory().trim().toLowerCase()
-                        .replaceAll("[()&$]", ""));
-            }
-
-            if (mTags != null && mCategory != null) {
-                if (mTags.find() && mCategory.find()) {
-                    if (correctTags.getDateStTag() != null) {
-                        if ((toshlExtract.getDate().compareTo(correctTags.getDateStTag()) == 0 ||
-                                toshlExtract.getDate().compareTo(correctTags.getDateStTag()) > 0) &&
-                                (toshlExtract.getDate().compareTo(correctTags.getDateEndTag()) == 0 ||
-                                        toshlExtract.getDate().compareTo(correctTags.getDateEndTag()) < 0)) {
-                            toshlExtract.setCorrectTag(correctTags);
-                            return ok;
-                        }
-                    } else {
-                        toshlExtract.setCorrectTag(correctTags);
-                    }
-
-                }
-            }
-        }
-
-        if (toshlExtract.getCorrectTag() == null) {
-            newTagsList.add(String.join("|", toshlExtract.getTags(), toshlExtract.getCategory()));
-        }
-
-        return ok;
     }
 
     private void rewriteSummaryData(Sheet sheet) {
