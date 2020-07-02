@@ -28,9 +28,6 @@ public class UnderFacilitiesController {
     @Resource(name = "facilityService")
     private FacilityService facilityService;
 
-    @Resource(name = "facilitiesBuySalesService")
-    private FacilitiesBuySalesService facilitiesBuySalesService;
-
     @Resource(name = "roomsService")
     private RoomsService roomsService;
 
@@ -73,7 +70,6 @@ public class UnderFacilitiesController {
 
     @GetMapping(value = {"/delete-underfacility-{id}"})
     public String deleteUnderFacility(@PathVariable BigInteger id) {
-        facilitiesBuySalesService.deleteByUnderFacility(underFacilitiesService.findById(id));
         underFacilitiesService.deleteById(id);
         return "redirect:/underfacilities";
     }
