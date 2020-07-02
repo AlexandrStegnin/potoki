@@ -30,8 +30,8 @@ public class GetPrincipalFunc {
         return userName;
     }
 
-    public BigInteger getPrincipalId() {
-        BigInteger userId = new BigInteger("0");
+    public Long getPrincipalId() {
+        Long userId = Long.valueOf("0");
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (principal instanceof SecurityUser) {
@@ -40,7 +40,7 @@ public class GetPrincipalFunc {
         return userId;
     }
 
-    public List<UserFacilities> getUserFacilities(BigInteger userId) {
+    public List<UserFacilities> getUserFacilities(Long userId) {
         List<UserFacilities> userFacilities = new ArrayList<>(0);
         UserFacilities defaultFacility = new UserFacilities(new BigInteger("0"), "Выберите объект");
         userFacilities.add(defaultFacility);

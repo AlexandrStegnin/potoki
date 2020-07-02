@@ -23,7 +23,7 @@ public interface FacilityRepository extends JpaRepository<Facilities, BigInteger
     List<Facilities> findByIdIn(List<BigInteger> idList);
 
     @Query(name = "InvestorsFacilities", nativeQuery = true)
-    List<UserFacilities> getInvestorsFacility(BigInteger rentorInvestorId);
+    List<UserFacilities> getInvestorsFacility(Long rentorInvestorId);
 
     Facilities findByInvestors(Set<Users> usersSet);
 

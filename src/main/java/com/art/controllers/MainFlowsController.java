@@ -18,7 +18,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.math.BigInteger;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -611,7 +610,7 @@ public class MainFlowsController {
     }
 
     private static StringBuilder createDataForPays(FacilityService facilityService, String strFacility,
-                                                   InvestorsFlowsService investorsFlowsService, BigInteger investorId,
+                                                   InvestorsFlowsService investorsFlowsService, Long investorId,
                                                    Date dateMax, String table) {
         GenericResponse response = new GenericResponse();
         Locale RU = new Locale("ru", "RU");

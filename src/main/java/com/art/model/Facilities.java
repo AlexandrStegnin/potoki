@@ -7,6 +7,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.HashSet;
 import java.util.Set;
 
 @SqlResultSetMapping(
@@ -141,5 +142,12 @@ public class Facilities implements Serializable {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public void addInvestor(Users investor) {
+        if (null == this.investors) {
+            this.investors = new HashSet<>();
+        }
+        this.investors.add(investor);
     }
 }

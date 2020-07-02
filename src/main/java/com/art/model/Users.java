@@ -5,11 +5,12 @@ import com.art.model.supporting.dto.RoleDTO;
 import com.art.model.supporting.dto.UserDTO;
 import com.art.model.supporting.enums.KinEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -17,16 +18,16 @@ import java.util.stream.Collectors;
 @Data
 @Entity
 @Table(name = "USERS")
-@ToString(of = {"id", "login", "email"})
-@EqualsAndHashCode(of = {"id", "login", "email"})
+@ToString(of = {"id", "login"})
+@EqualsAndHashCode(of = {"id", "login"})
 public class Users implements Serializable {
-    private BigInteger id;
+    private Long id;
     private String login;
     private String password;
-    private String lastName;
-    private String first_name;
-    private String middle_name;
-    private String email;
+//    private String lastName;
+//    private String first_name;
+//    private String middle_name;
+//    private String email;
     private List<Roles> roles;
     private Set<Facilities> facilities;
 
@@ -40,11 +41,11 @@ public class Users implements Serializable {
     }
 
     public Users(String id, String login) {
-        this.id = new BigInteger(id);
+        this.id = Long.valueOf(id);
         this.login = login;
     }
 
-    public Users(BigInteger id, BigInteger partnerId) {
+    public Users(Long id, Long partnerId) {
         this.id = id;
         this.partnerId = partnerId;
     }
@@ -63,11 +64,11 @@ public class Users implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public BigInteger getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -90,41 +91,41 @@ public class Users implements Serializable {
         this.password = password;
     }
 
-    @Column(name = "last_name")
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    @Column(name = "first_name", length = 30)
-    public String getFirst_name() {
-        return first_name;
-    }
-
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
-    }
-
-    @Column(name = "middle_name", length = 30)
-    public String getMiddle_name() {
-        return middle_name;
-    }
-
-    public void setMiddle_name(String middle_name) {
-        this.middle_name = middle_name;
-    }
-
-    @Column(name = "email", length = 30)
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
+//    @Column(name = "last_name")
+//    public String getLastName() {
+//        return lastName;
+//    }
+//
+//    public void setLastName(String lastName) {
+//        this.lastName = lastName;
+//    }
+//
+//    @Column(name = "first_name", length = 30)
+//    public String getFirst_name() {
+//        return first_name;
+//    }
+//
+//    public void setFirst_name(String first_name) {
+//        this.first_name = first_name;
+//    }
+//
+//    @Column(name = "middle_name", length = 30)
+//    public String getMiddle_name() {
+//        return middle_name;
+//    }
+//
+//    public void setMiddle_name(String middle_name) {
+//        this.middle_name = middle_name;
+//    }
+//
+//    @Column(name = "email", length = 30)
+//    public String getEmail() {
+//        return email;
+//    }
+//
+//    public void setEmail(String email) {
+//        this.email = email;
+//    }
 
     @ManyToMany(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST }, fetch = FetchType.EAGER)
     @JoinTable(name = "USERS_ROLES",
@@ -139,7 +140,7 @@ public class Users implements Serializable {
     }
 
     @Column
-    private BigInteger partnerId;
+    private Long partnerId;
 
     @ManyToMany(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.LAZY)
     @JoinTable(name = "UsersAnnexToContracts",
@@ -177,18 +178,29 @@ public class Users implements Serializable {
     }
 
     public Users(UserDTO userDTO) {
-        this.id = userDTO.getId() != null ? BigInteger.valueOf(userDTO.getId()) : null;
-        this.lastName = userDTO.getLastName();
-        this.first_name = userDTO.getFirstName();
-        this.middle_name = userDTO.getMiddleName();
+        this.id = userDTO.getId() != null ? userDTO.getId() : null;
+//        this.lastName = userDTO.getLastName();
+//        this.first_name = userDTO.getFirstName();
+//        this.middle_name = userDTO.getMiddleName();
         this.login = userDTO.getLogin();
-        this.email = userDTO.getEmail();
+//        this.email = userDTO.getEmail();
         this.roles = convertRoles(userDTO.getRoles());
         this.kin = KinEnum.valueOf(userDTO.getKin().toUpperCase());
-        this.partnerId = BigInteger.valueOf(userDTO.getPartnerId());
+        this.partnerId = userDTO.getPartnerId();
     }
 
     private List<Roles> convertRoles(List<RoleDTO> dtoList) {
         return dtoList.stream().map(Roles::new).collect(Collectors.toList());
+    }
+
+    private UserProfile profile;
+
+    @OneToOne(mappedBy = "user")
+    public UserProfile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(UserProfile profile) {
+        this.profile = profile;
     }
 }

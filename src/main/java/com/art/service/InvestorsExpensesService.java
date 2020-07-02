@@ -39,11 +39,11 @@ public class InvestorsExpensesService {
         investorsExpensesRepository.delete(id);
     }
 
-    public List<InvestorsPlanSale> getInvestorsPlanSale(BigInteger investorId) {
+    public List<InvestorsPlanSale> getInvestorsPlanSale(Long investorId) {
         return investorsExpensesRepository.getInvestorsPlanSale(investorId);
     }
 
-    public List<InvestorsExpenses> findByInvestorId(BigInteger investorId) {
+    public List<InvestorsExpenses> findByInvestorId(Long investorId) {
         return investorsExpensesRepository.findByInvestor_Id(investorId);
     }
 

@@ -75,7 +75,7 @@ public class InvestorsCashService {
         investorsCashRepository.delete(cash);
     }
 
-    public List<InvestorsTotalSum> getInvestorsCashSums(BigInteger investorId) {
+    public List<InvestorsTotalSum> getInvestorsCashSums(Long investorId) {
         return investorsCashRepository.getInvestorsCashSums(investorId);
     }
 
@@ -136,7 +136,7 @@ public class InvestorsCashService {
         return em.createQuery(investorsCashCriteriaQuery).getResultList();
     }
 
-    public List<InvestorsCash> findByInvestorId(BigInteger investorId) {
+    public List<InvestorsCash> findByInvestorId(Long investorId) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<InvestorsCash> investorsCashCriteriaQuery = cb.createQuery(InvestorsCash.class);
         Root<InvestorsCash> investorsCashRoot = investorsCashCriteriaQuery.from(InvestorsCash.class);

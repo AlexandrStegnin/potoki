@@ -37,7 +37,7 @@ public class FacilityService {
         return facilityRepository.findByIdNot(id);
     }
 
-    public List<UserFacilities> getInvestorsFacility(BigInteger rentorInvestorId) {
+    public List<UserFacilities> getInvestorsFacility(Long rentorInvestorId) {
         return facilityRepository.getInvestorsFacility(rentorInvestorId);
     }
 
@@ -110,8 +110,8 @@ public class FacilityService {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Facilities> facilityesCriteriaQuery = cb.createQuery(Facilities.class);
         Root<Facilities> facilityesRoot = facilityesCriteriaQuery.from(Facilities.class);
-        facilityesRoot.fetch(Facilities_.investors, JoinType.LEFT)
-                .fetch(Users_.userStuff, JoinType.LEFT);
+//        facilityesRoot.fetch(Facilities_.investors, JoinType.LEFT)
+//                .fetch(Users_.userStuff, JoinType.LEFT);
         facilityesCriteriaQuery.select(facilityesRoot).distinct(true);
         facilityesCriteriaQuery.where(cb.equal(facilityesRoot.get(Facilities_.id), id));
         return em.createQuery(facilityesCriteriaQuery).getSingleResult();
@@ -153,10 +153,10 @@ public class FacilityService {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Facilities> facilityesCriteriaQuery = cb.createQuery(Facilities.class);
         Root<Facilities> facilityesRoot = facilityesCriteriaQuery.from(Facilities.class);
-        facilityesRoot.fetch(Facilities_.investors, JoinType.LEFT)
-                .fetch(Users_.userStuff, JoinType.LEFT);
-        facilityesRoot.fetch(Facilities_.manager, JoinType.LEFT)
-                .fetch(Users_.userStuff, JoinType.LEFT);
+//        facilityesRoot.fetch(Facilities_.investors, JoinType.LEFT)
+//                .fetch(Users_.userStuff, JoinType.LEFT);
+//        facilityesRoot.fetch(Facilities_.manager, JoinType.LEFT)
+//                .fetch(Users_.userStuff, JoinType.LEFT);
         facilityesRoot.fetch(Facilities_.underFacilities, JoinType.LEFT);
         facilityesCriteriaQuery.select(facilityesRoot).distinct(true);
         return em.createQuery(facilityesCriteriaQuery).getResultList();

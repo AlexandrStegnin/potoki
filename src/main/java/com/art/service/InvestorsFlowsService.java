@@ -63,7 +63,7 @@ public class InvestorsFlowsService {
         investorsFlowsRepository.save(investorsFlowsList);
     }
 
-    public List<InvestorsFlows> findByInvestorId(BigInteger investorId) {
+    public List<InvestorsFlows> findByInvestorId(Long investorId) {
         return investorsFlowsRepository.findByInvestorId(investorId);
     }
 

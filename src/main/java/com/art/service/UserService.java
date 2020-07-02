@@ -55,11 +55,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Users login(String email, String password) {
-        return userRepository.findByEmailAndPassword(email, password);
-    }
-
-    public void deleteUser(BigInteger id) {
+    public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
 
@@ -74,7 +70,7 @@ public class UserService {
         return usersList;
     }
 
-    public List<Users> findByIdIn(List<BigInteger> idList) {
+    public List<Users> findByIdIn(List<Long> idList) {
         return userRepository.findByIdIn(idList);
     }
 
@@ -85,10 +81,6 @@ public class UserService {
 
     public void updateList(List<Users> users) {
         userRepository.save(users);
-    }
-
-    public Users findByLastName(String lastName) {
-        return userRepository.findByLastName(lastName);
     }
 
     public List<Users> initializeInvestors() {
@@ -105,7 +97,7 @@ public class UserService {
 
     private List<Users> getUsers(String s) {
         Users partner = new Users();
-        partner.setId(new BigInteger("0"));
+        partner.setId(Long.valueOf("0"));
         partner.setLogin(s);
         List<Users> users = new ArrayList<>(0);
         users.add(partner);
@@ -118,7 +110,7 @@ public class UserService {
 //    }
 
     @Transactional
-    public void confirm(BigInteger userId) {
+    public void confirm(Long userId) {
         Users investor = findById(userId);
         if (!investor.isConfirmed()) {
             investor.setConfirmed(true);
@@ -132,7 +124,7 @@ public class UserService {
 
      */
 
-    public Users findById(BigInteger id) {
+    public Users findById(Long id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
@@ -232,7 +224,7 @@ public class UserService {
         em.merge(user);
     }
 
-    public Users findWithAllFields(BigInteger id) {
+    public Users findWithAllFields(Long id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
@@ -251,14 +243,14 @@ public class UserService {
         } else {
             user.setPassword(updUser.getPassword());
         }
-        if (null == user.getLastName()) {
-            user.setLastName(updUser.getLastName());
+        if (null == user.getProfile().getLastName()) {
+            user.getProfile().setLastName(updUser.getProfile().getLastName());
         }
-        if (null == user.getFirst_name()) {
-            user.setFirst_name(updUser.getFirst_name());
+        if (null == user.getProfile().getFirstName()) {
+            user.getProfile().setFirstName(updUser.getProfile().getFirstName());
         }
-        if (null == user.getMiddle_name()) {
-            user.setMiddle_name(updUser.getMiddle_name());
+        if (null == user.getProfile().getPatronymic()) {
+            user.getProfile().setPatronymic(updUser.getProfile().getPatronymic());
         }
         if (null == user.getRoles()) {
             user.setRoles(updUser.getRoles());
@@ -269,7 +261,7 @@ public class UserService {
         if (null == user.getUsersAnnexToContractsList()) {
             user.setUsersAnnexToContractsList(updUser.getUsersAnnexToContractsList());
         }
-        if (!user.getEmail().equalsIgnoreCase(updUser.getEmail())) {
+        if (!user.getProfile().getEmail().equalsIgnoreCase(updUser.getProfile().getEmail())) {
             sendWelcomeMessage(user);
         }
         if (null == user.getPartnerId()) {
@@ -312,8 +304,8 @@ public class UserService {
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
         usersCriteriaQuery.select(usersRoot);
-        usersCriteriaQuery.where(cb.and(cb.equal(usersRoot.get(Users_.login), login),
-                cb.equal(usersRoot.get(Users_.email), email)));
+//        usersCriteriaQuery.where(cb.and(cb.equal(usersRoot.get(Users_.login), login),
+//                cb.equal(usersRoot.get(Users_.pr), email)));
         return em.createQuery(usersCriteriaQuery).getSingleResult();
     }
 

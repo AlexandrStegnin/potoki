@@ -1,7 +1,6 @@
 package com.art.func;
 
 import com.art.model.*;
-import com.art.model.supporting.PaysToInvestors;
 import com.art.service.*;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
@@ -16,7 +15,6 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
@@ -896,45 +894,45 @@ public class UploadExcelFunc {
     }
 
     private void rewriteSummaryData(Sheet sheet) {
-        List<PaysToInvestors> paysToInvestors =
-                paysToInvestorsService.findAll();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
-        for (Row row : sheet) {
-
-            Calendar calendar = Calendar.getInstance();
-            try {
-                calendar.setTime(sdf.parse(row.getCell(1).toString()));
-            } catch (Exception ex) {
-                System.out.println(ex.getMessage());
-            }
-
-            for (int i = 0; i < row.getLastCellNum(); i++) {
-                row.getCell(i).setCellType(CellType.STRING);
-            }
-            BigInteger userId = new BigInteger("0");
-            String lastName;
-            lastName = row.getCell(2).toString();
-            Users user = userService
-                    .findByLastName(lastName);
-            if (!Objects.equals(user, null)) {
-                userId = user.getId();
-            }
-
-            BigInteger finalUserId = userId;
-            paysToInvestors.forEach(pti -> {
-                Calendar summaryCal = Calendar.getInstance();
-                summaryCal.setTime(pti.getEndDate());
-
-                if (pti.getFacility().equals(row.getCell(0).toString()) &&
-                        summaryCal.get(Calendar.MONTH) == calendar.get(Calendar.MONTH) &&
-                        pti.getInvestorId().equals(finalUserId)) {
-                    pti.setOstatokPoDole(Float.parseFloat(row.getCell(3).toString()));
-                }
-            });
-
-        }
-
-        paysToInvestorsService.saveList(paysToInvestors);
+//        List<PaysToInvestors> paysToInvestors =
+//                paysToInvestorsService.findAll();
+//        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+//        for (Row row : sheet) {
+//
+//            Calendar calendar = Calendar.getInstance();
+//            try {
+//                calendar.setTime(sdf.parse(row.getCell(1).toString()));
+//            } catch (Exception ex) {
+//                System.out.println(ex.getMessage());
+//            }
+//
+//            for (int i = 0; i < row.getLastCellNum(); i++) {
+//                row.getCell(i).setCellType(CellType.STRING);
+//            }
+//            BigInteger userId = new BigInteger("0");
+//            String lastName;
+//            lastName = row.getCell(2).toString();
+//            Users user = userService
+//                    .findByLastName(lastName);
+//            if (!Objects.equals(user, null)) {
+//                userId = user.getId();
+//            }
+//
+//            BigInteger finalUserId = userId;
+//            paysToInvestors.forEach(pti -> {
+//                Calendar summaryCal = Calendar.getInstance();
+//                summaryCal.setTime(pti.getEndDate());
+//
+//                if (pti.getFacility().equals(row.getCell(0).toString()) &&
+//                        summaryCal.get(Calendar.MONTH) == calendar.get(Calendar.MONTH) &&
+//                        pti.getInvestorId().equals(finalUserId)) {
+//                    pti.setOstatokPoDole(Float.parseFloat(row.getCell(3).toString()));
+//                }
+//            });
+//
+//        }
+//
+//        paysToInvestorsService.saveList(paysToInvestors);
 
     }
 
@@ -972,7 +970,7 @@ public class UploadExcelFunc {
 
                     String lastName;
                     lastName = row.getCell(4).getStringCellValue();
-                    Users user = users.stream().filter(u -> u.getLastName().equalsIgnoreCase(lastName))
+                    Users user = users.stream().filter(u -> u.getProfile().getLastName().equalsIgnoreCase(lastName))
                             .findFirst()
                             .orElse(null);
 
@@ -1105,7 +1103,7 @@ public class UploadExcelFunc {
 //                        throw new RuntimeException(String.format(
 //                                "Не указан инвестор! Строка %d, столбец 2", cel));
                     }
-                    Users user = users.stream().filter(u -> u.getLastName().equalsIgnoreCase(lastName))
+                    Users user = users.stream().filter(u -> u.getProfile().getLastName().equalsIgnoreCase(lastName))
                             .findFirst()
                             .orElse(null);
                     if (user == null) {

@@ -28,13 +28,13 @@ public class UsersAnnexToContracts implements Serializable {
     }
 
     @Column(name = "UserId")
-    private BigInteger userId;
+    private Long userId;
 
-    public BigInteger getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(BigInteger userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigInteger;
 import java.util.Date;
 
 /**
@@ -17,9 +16,9 @@ import java.util.Date;
 @AllArgsConstructor
 public class MarketingTreeDTO {
 
-    private BigInteger partnerId;
+    private Long partnerId;
 
-    private BigInteger investorId;
+    private Long investorId;
 
     private KinEnum kin;
 
@@ -31,9 +30,9 @@ public class MarketingTreeDTO {
 
     private int serNumber;
 
-    private BigInteger parentPartnerId;
+    private Long parentPartnerId;
 
-    public MarketingTreeDTO(BigInteger partnerId, BigInteger investorId, KinEnum kin, Date firstInvestmentDate,
+    public MarketingTreeDTO(Long partnerId, Long investorId, KinEnum kin, Date firstInvestmentDate,
                             String invStatus, int daysToDeactivate, int serNumber) {
         this.partnerId = partnerId;
         this.investorId = investorId;

@@ -14,6 +14,6 @@ import java.util.List;
 @Repository
 public interface UserAnnexToContractsRepository extends JpaRepository<UsersAnnexToContracts, BigInteger> {
 
-    List<UsersAnnexToContracts> findByUserIdAndAnnex_AnnexName(BigInteger userId, String annexName);
+    List<UsersAnnexToContracts> findByUserIdAndAnnex_AnnexName(Long userId, String annexName);
 
 }

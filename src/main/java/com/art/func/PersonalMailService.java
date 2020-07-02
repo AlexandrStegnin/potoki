@@ -68,7 +68,7 @@ public class PersonalMailService {
         final String[] attachName = {""};
         mailSender.send(mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, ENCODING);
-            messageHelper.setTo(user.getEmail());
+            messageHelper.setTo(user.getProfile().getEmail());
             messageHelper.setSubject(sendingMail.getSubject());
             messageHelper.setText(sendingMail.getBody(), true);
             messageHelper.setFrom(new InternetAddress(username, who));

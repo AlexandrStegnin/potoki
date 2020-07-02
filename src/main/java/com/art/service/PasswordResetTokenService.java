@@ -52,11 +52,11 @@ public class PasswordResetTokenService {
         return "Valid";
     }
 
-    public PasswordResetToken findById(BigInteger id) {
+    public PasswordResetToken findById(Long id) {
         return passwordResetTokenRepository.findById(id);
     }
 
-    public void deleteById(BigInteger id) {
+    public void deleteById(Long id) {
         passwordResetTokenRepository.deleteById(id);
     }
 

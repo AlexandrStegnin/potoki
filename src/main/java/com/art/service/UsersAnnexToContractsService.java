@@ -39,7 +39,7 @@ public class UsersAnnexToContractsService {
         this.userService = userService;
     }
 
-    public List<UsersAnnexToContracts> findByUserAndAnnexName(BigInteger userId, String annexName) {
+    public List<UsersAnnexToContracts> findByUserAndAnnexName(Long userId, String annexName) {
         if (!annexName.endsWith(".pdf")) {
             annexName = annexName + ".pdf";
         }
@@ -73,7 +73,7 @@ public class UsersAnnexToContractsService {
 
     }
 
-    public List<UsersAnnexToContracts> findByUserId(BigInteger userId) {
+    public List<UsersAnnexToContracts> findByUserId(Long userId) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
         CriteriaQuery<UsersAnnexToContracts> usersAnnexToContractsCriteriaQuery = cb.createQuery(UsersAnnexToContracts.class);
@@ -128,7 +128,7 @@ public class UsersAnnexToContractsService {
         return false;
     }
 
-    private boolean haveUnread(BigInteger userId) {
+    private boolean haveUnread(Long userId) {
         return annexRepository.existsByUserIdAndDateReadIsNull(userId);
     }
 }

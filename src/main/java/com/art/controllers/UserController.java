@@ -128,7 +128,7 @@ public class UserController {
     public @ResponseBody
     GenericResponse deleteUser(@RequestBody UserDTO userDTO) {
         GenericResponse response = new GenericResponse();
-        Users user = userService.findById(BigInteger.valueOf(userDTO.getId()));
+        Users user = userService.findById(userDTO.getId());
         List<InvestorsCash> investorsCashes;
         investorsCashes = investorsCashService.findByInvestorId(user.getId());
         investorsCashes.forEach(ic -> investorsCashService.deleteById(ic.getId()));

@@ -14,7 +14,7 @@ import java.util.List;
 
 @Repository
 public interface InvestorsFlowsRepository extends PagingAndSortingRepository<InvestorsFlows, BigInteger> {
-    List<InvestorsFlows> findByInvestorId(BigInteger investorId);
+    List<InvestorsFlows> findByInvestorId(Long investorId);
 
     List<InvestorsFlows> findByIdIn(List<BigInteger> idList);
 

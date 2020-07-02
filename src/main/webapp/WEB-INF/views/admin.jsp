@@ -62,7 +62,7 @@
                 <tr id="${user.id}">
                     <td>${user.id}</td>
                     <td>${user.login}</td>
-                    <td>${user.email}</td>
+                    <td>${user.profile.email}</td>
                     <c:choose>
                         <c:when test="${user.confirmed}"><td>Да</td></c:when>
                         <c:otherwise><td>Нет</td></c:otherwise>

@@ -49,7 +49,7 @@ public class MailService {
             mimeMessage.setFrom(new InternetAddress(prop.getProperty("mail.username"),
                     "Восстановление пароля"));
             mimeMessage.setRecipient(Message.RecipientType.TO,
-                    new InternetAddress(user.getEmail()));
+                    new InternetAddress(user.getProfile().getEmail()));
             mimeMessage.setText(body, "UTF-8", "HTML");
             mimeMessage.setSubject(subject);
         };

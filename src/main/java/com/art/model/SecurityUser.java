@@ -15,11 +15,6 @@ public class SecurityUser extends Users implements UserDetails {
             this.setId(user.getId());
             this.setLogin(user.getLogin());
             this.setPassword(user.getPassword());
-            this.setLastName(user.getLastName());
-            this.setFirst_name(user.getFirst_name());
-            this.setMiddle_name(user.getMiddle_name());
-            this.setEmail(user.getEmail());
-//            this.setState(user.getState());
             this.setRoles(user.getRoles());
         }
     }

@@ -43,7 +43,7 @@ public class AnnexToContracts implements Serializable {
     private Date dateLoad;
 
     @Column(name = "LoadedBy")
-    private BigInteger loadedBy;
+    private Long loadedBy;
 
     @Column(name = "DateLoad")
     public Date getDateLoad() {
@@ -54,11 +54,11 @@ public class AnnexToContracts implements Serializable {
         this.dateLoad = dateLoad;
     }
 
-    public BigInteger getLoadedBy() {
+    public Long getLoadedBy() {
         return loadedBy;
     }
 
-    public void setLoadedBy(BigInteger loadedBy) {
+    public void setLoadedBy(Long loadedBy) {
         this.loadedBy = loadedBy;
     }
 

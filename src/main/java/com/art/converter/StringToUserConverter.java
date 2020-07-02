@@ -22,7 +22,7 @@ public class StringToUserConverter implements Converter<String, Users> {
     public Users convert(String id) {
         Users user;
         try {
-            BigInteger IntId = new BigInteger(id);
+            Long IntId = Long.valueOf(id);
             user = userService.findById(IntId);
         } catch (Exception ex) {
             user = userService.findByLogin(id);

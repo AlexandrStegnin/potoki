@@ -2,8 +2,8 @@ package com.art.service;
 
 import com.art.model.MarketingTree;
 import com.art.model.Users;
-import com.art.model.supporting.enums.StatusEnum;
 import com.art.model.supporting.dto.MarketingTreeDTO;
+import com.art.model.supporting.enums.StatusEnum;
 import com.art.model.supporting.filters.MarketingTreeFilter;
 import com.art.repository.MarketingTreeRepository;
 import com.art.specifications.MarketingTreeSpecification;
@@ -16,7 +16,6 @@ import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -40,11 +39,11 @@ public class MarketingTreeService {
     private final MarketingTreeSpecification specification;
     private final MarketingTreeRepository marketingTreeRepository;
 
-    private BigInteger pantyaId;
-    private BigInteger kolesnikId;
+    private Long pantyaId;
+    private Long kolesnikId;
     private final List<Users> users;
-    private static AtomicReference<BigInteger> parentPartnerId = new AtomicReference<>(BigInteger.ZERO);
-    private static Set<BigInteger> partnerChild = new HashSet<>();
+    private static AtomicReference<Long> parentPartnerId = new AtomicReference<>(0L);
+    private static Set<Long> partnerChild = new HashSet<>();
     private List<MarketingTreeDTO> marketingTreeDTOList = new ArrayList<>();
 
     @Autowired
@@ -115,10 +114,10 @@ public class MarketingTreeService {
     }
 
     private void setSerialNumbers() {
-        final BigInteger[] firstPartnerId = {marketingTreeDTOList.get(0).getPartnerId()};
+        final Long[] firstPartnerId = {marketingTreeDTOList.get(0).getPartnerId()};
         final AtomicInteger[] serialNumber = {new AtomicInteger(1)};
         marketingTreeDTOList.forEach(marketingTreeDTO -> {
-            BigInteger currPartnerId = marketingTreeDTO.getPartnerId();
+            Long currPartnerId = marketingTreeDTO.getPartnerId();
             if (firstPartnerId[0].equals(currPartnerId)) {
                 marketingTreeDTO.setSerNumber(serialNumber[0].get());
                 serialNumber[0].getAndIncrement();
@@ -167,8 +166,8 @@ public class MarketingTreeService {
         entityManager.close();
     }
 
-    private void findParentPartner(BigInteger investorId, List<Users> users) {
-        Map<BigInteger, Set<BigInteger>> result =
+    private void findParentPartner(Long investorId, List<Users> users) {
+        Map<Long, Set<Long>> result =
                 users.stream().collect(
                         Collectors.groupingBy(Users::getPartnerId,
                                 Collectors.mapping(Users::getId, Collectors.toSet())
@@ -182,13 +181,13 @@ public class MarketingTreeService {
         });
     }
 
-    private void findPartnerChild(BigInteger partnerId, List<Users> availableUsers) {
-        Queue<BigInteger> queue = new LinkedList<>();
+    private void findPartnerChild(Long partnerId, List<Users> availableUsers) {
+        Queue<Long> queue = new LinkedList<>();
         queue.add(partnerId);
         while (!queue.isEmpty()) {
             partnerId = queue.poll();
             if (partnerId == null) break;
-            BigInteger finalPartnerId = partnerId;
+            Long finalPartnerId = partnerId;
             List<Users> users = availableUsers.stream()
                     .filter(user -> user.getPartnerId().compareTo(finalPartnerId) == 0)
                     .filter(user -> !queue.contains(user.getId()))

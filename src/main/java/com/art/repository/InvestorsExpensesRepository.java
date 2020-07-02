@@ -12,9 +12,9 @@ import java.util.List;
 @Repository
 public interface InvestorsExpensesRepository extends JpaRepository<InvestorsExpenses, BigInteger>{
 
-    List<InvestorsExpenses> findByInvestor_Id(BigInteger investorId);
+    List<InvestorsExpenses> findByInvestor_Id(Long investorId);
 
     @Query(name = "InvestorsPlanSale", nativeQuery = true)
-    List<InvestorsPlanSale> getInvestorsPlanSale(BigInteger investorId);
+    List<InvestorsPlanSale> getInvestorsPlanSale(Long investorId);
 
 }
