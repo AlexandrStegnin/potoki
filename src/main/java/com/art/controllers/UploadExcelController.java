@@ -1,10 +1,8 @@
 package com.art.controllers;
 
 import com.art.func.UploadExcelFunc;
-import com.art.model.AlphaExtract;
 import com.art.model.ToshlExtract;
 import com.art.model.supporting.FileBucket;
-import com.art.service.AlphaExtractService;
 import com.art.service.ToshlExtractService;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -27,20 +25,8 @@ public class UploadExcelController {
     @Resource(name = "uploadExcelFunc")
     private UploadExcelFunc uploadExcelFunc;
 
-    @Resource(name = "alphaExtractService")
-    private AlphaExtractService alphaExtractService;
-
     @Resource(name = "toshlExtractService")
     private ToshlExtractService toshlExtractService;
-
-    @RequestMapping(value = "/alphaextract", method = RequestMethod.GET)
-    public String viewextract(ModelMap model) {
-        FileBucket fileModel = new FileBucket();
-        model.addAttribute("fileBucket", fileModel);
-        List<AlphaExtract> alphaExtracts = alphaExtractService.findAll();
-        model.addAttribute("alphaExtracts", alphaExtracts);
-        return "viewalphaextract";
-    }
 
     @GetMapping(value = "/toshlextract")
     public String viewtoshlextract(ModelMap model) {
@@ -56,21 +42,6 @@ public class UploadExcelController {
         FileBucket fileModel = new FileBucket();
         model.addAttribute("fileBucket", fileModel);
         return "uploadexcel";
-    }
-
-    @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public String uploadExcel(ModelMap model, @ModelAttribute("fileBucket") FileBucket fileBucket, HttpServletRequest request) throws IOException, ParseException {
-        MultipartFile multipartFile = fileBucket.getFile();
-        String ret = "Альфа банка.";
-        String redirectUrl = "/alphaextract";
-        String title = "Выписка Альфа банка";
-        String err = uploadExcelFunc.ExcelParser(multipartFile, "alpha", request);
-
-        model.addAttribute("redirectUrl", redirectUrl);
-        model.addAttribute("ret", ret);
-        model.addAttribute("title", title);
-        model.addAttribute("err", err);
-        return "success";
     }
 
     @RequestMapping(value = "/uploadtoshl", method = RequestMethod.GET)
@@ -93,12 +64,6 @@ public class UploadExcelController {
         model.addAttribute("err", err);
         model.addAttribute("title", title);
         return "success";
-    }
-
-    @RequestMapping(value = "/deletedata", method = RequestMethod.GET)
-    public String deleteUpload(ModelMap model) {
-        alphaExtractService.deleteAllByPIdIsNull();
-        return "redirect:/alphaextract";
     }
 
     @RequestMapping(value = "/deletetoshldata", method = RequestMethod.GET)

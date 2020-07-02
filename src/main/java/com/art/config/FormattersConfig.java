@@ -43,9 +43,6 @@ public class FormattersConfig extends WebMvcConfigurerAdapter {
     @Resource(name = "typeExpensesService")
     private TypeExpensesService typeExpensesService;
 
-    @Resource(name = "alphaCorrectTagsService")
-    private AlphaCorrectTagsService alphaCorrectTagsService;
-
     @Resource(name = "mailingGroupsService")
     private MailingGroupsService mailingGroupsService;
 
@@ -88,7 +85,6 @@ public class FormattersConfig extends WebMvcConfigurerAdapter {
         registry.addConverter(new StringToUnderFacilitiesConverter(underFacilitiesService));
         registry.addConverter(new StringToBonusTypesConverter(bonusTypesService));
         registry.addConverter(new StringToTypeExpensesConverter(typeExpensesService));
-        registry.addConverter(new StringToCorrectTagConverter(alphaCorrectTagsService));
         registry.addConverter(new StringToMailingGroupsConverter(mailingGroupsService));
         registry.addConverter(new StringToCashSourceConverter(cashSourcesService));
         registry.addConverter(new StringToCashTypeConverter(cashTypesService));
