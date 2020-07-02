@@ -5,10 +5,7 @@ import com.art.model.supporting.dto.RoleDTO;
 import com.art.model.supporting.dto.UserDTO;
 import com.art.model.supporting.enums.KinEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,12 +14,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Getter
-@Setter
-@ToString(of = {"id", "login", "email"})
-@EqualsAndHashCode(of = {"id", "login", "email"})
+@Data
 @Entity
 @Table(name = "USERS")
+@ToString(of = {"id", "login", "email"})
+@EqualsAndHashCode(of = {"id", "login", "email"})
 public class Users implements Serializable {
     private BigInteger id;
     private String login;
