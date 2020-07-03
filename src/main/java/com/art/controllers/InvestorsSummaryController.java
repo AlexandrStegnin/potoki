@@ -7,6 +7,7 @@ import com.art.model.supporting.FileBucket;
 import com.art.model.supporting.InvestorsTotalSum;
 import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.UserFacilities;
+import com.art.model.supporting.enums.ShareType;
 import com.art.service.*;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -54,9 +56,6 @@ public class InvestorsSummaryController {
 
     @Resource(name = "underFacilitiesService")
     private UnderFacilitiesService underFacilitiesService;
-
-    @Resource(name = "shareKindService")
-    private ShareKindService shareKindService;
 
     @Resource(name = "roomsService")
     private RoomsService roomsService;
@@ -146,9 +145,9 @@ public class InvestorsSummaryController {
         return userService.initializeInvestors();
     }
 
-    @ModelAttribute("shareKinds")
-    public List<ShareKind> initializeShareKinds() {
-        return shareKindService.init();
+    @ModelAttribute("shareTypes")
+    public List<ShareType> initializeShareTypes() {
+        return Arrays.asList(ShareType.values());
     }
 
     @ModelAttribute("rooms")

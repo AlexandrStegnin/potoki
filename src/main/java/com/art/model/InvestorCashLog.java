@@ -1,6 +1,7 @@
 package com.art.model;
 
 import com.art.model.supporting.enums.CashType;
+import com.art.model.supporting.enums.ShareType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -63,9 +64,9 @@ public class InvestorCashLog {
     @JoinColumn(name = "type_closing_invest_id")
     private TypeClosingInvest typeClosingInvest;
 
-    @OneToOne
-    @JoinColumn(name = "share_kind_id")
-    private ShareKind shareKind;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "share_type")
+    private ShareType shareType;
 
     @Column(name = "date_report")
     private Date dateReport;
@@ -119,7 +120,7 @@ public class InvestorCashLog {
         this.newCashDetail = cash.getNewCashDetails();
         this.dateClosingInvest = cash.getDateClosingInvest();
         this.typeClosingInvest = cash.getTypeClosingInvest();
-        this.shareKind = cash.getShareKind();
+        this.shareType = cash.getShareType();
         this.dateReport = cash.getDateReport();
         this.sourceFacility = cash.getSourceFacility();
         this.sourceUnderFacility = cash.getSourceUnderFacility();

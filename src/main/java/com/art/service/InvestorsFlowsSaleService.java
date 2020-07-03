@@ -50,7 +50,6 @@ public class InvestorsFlowsSaleService {
         Root<InvestorsFlowsSale> saleRoot = saleCriteriaQuery.from(InvestorsFlowsSale.class);
         saleRoot.fetch(InvestorsFlowsSale_.facility, JoinType.LEFT);
         saleRoot.fetch(InvestorsFlowsSale_.investor, JoinType.LEFT);
-        saleRoot.fetch(InvestorsFlowsSale_.shareKind, JoinType.LEFT);
         saleRoot.fetch(InvestorsFlowsSale_.underFacility, JoinType.LEFT);
         saleCriteriaQuery.select(saleRoot).distinct(true);
         return em.createQuery(saleCriteriaQuery).getResultList();
@@ -62,7 +61,6 @@ public class InvestorsFlowsSaleService {
         Root<InvestorsFlowsSale> saleRoot = saleCriteriaQuery.from(InvestorsFlowsSale.class);
         saleRoot.fetch(InvestorsFlowsSale_.facility, JoinType.LEFT);
         saleRoot.fetch(InvestorsFlowsSale_.investor, JoinType.LEFT);
-        saleRoot.fetch(InvestorsFlowsSale_.shareKind, JoinType.LEFT);
         saleRoot.fetch(InvestorsFlowsSale_.underFacility, JoinType.LEFT);
         saleCriteriaQuery.select(saleRoot).distinct(true);
         saleCriteriaQuery.where(saleRoot.get(InvestorsFlowsSale_.id).in(idList));
@@ -103,7 +101,6 @@ public class InvestorsFlowsSaleService {
         Root<InvestorsFlowsSale> saleRoot = saleCriteriaQuery.from(InvestorsFlowsSale.class);
         saleRoot.fetch(InvestorsFlowsSale_.facility, JoinType.LEFT);
         saleRoot.fetch(InvestorsFlowsSale_.investor, JoinType.LEFT);
-        saleRoot.fetch(InvestorsFlowsSale_.shareKind, JoinType.LEFT);
         saleRoot.fetch(InvestorsFlowsSale_.underFacility, JoinType.LEFT);
         saleCriteriaQuery.select(saleRoot).distinct(true);
         saleCriteriaQuery.where(cb.equal(saleRoot.get(InvestorsFlowsSale_.sourceId), sourceId));

@@ -1,6 +1,7 @@
 package com.art.func;
 
 import com.art.model.*;
+import com.art.model.supporting.enums.ShareType;
 import com.art.service.*;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
@@ -39,9 +40,6 @@ public class UploadExcelFunc {
 
     @Resource(name = "investorsFlowsSaleService")
     private InvestorsFlowsSaleService investorsFlowsSaleService;
-
-    @Resource(name = "shareKindService")
-    private ShareKindService shareKindService;
 
     public String ExcelParser(MultipartFile file, String what, HttpServletRequest request) throws IOException, ParseException {
         String errString = "";
@@ -190,7 +188,7 @@ public class UploadExcelFunc {
         List<InvestorsFlowsSale> investorsFlowsSaleList = new ArrayList<>(0);
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy", Locale.ENGLISH);
         List<Users> users = userService.findAllWithFacilitiesAndUnderFacilities();
-        List<ShareKind> shareKinds = shareKindService.findAll();
+        List<ShareType> shareKinds = Arrays.asList(ShareType.values());
         checkSheet(sheet);
         for (Row row : sheet) {
             cel++;
@@ -269,9 +267,9 @@ public class UploadExcelFunc {
                     }
                     investorsFlowsSale.setFacility(facility);
                     investorsFlowsSale.setInvestor(user);
-                    ShareKind shareKind = shareKinds
+                    ShareType shareKind = shareKinds
                             .stream()
-                            .filter(sk -> sk.getShareKind().equalsIgnoreCase(row.getCell(2).getStringCellValue()))
+                            .filter(share -> share.getTitle().equalsIgnoreCase(row.getCell(2).getStringCellValue()))
                             .findFirst()
                             .orElse(null);
                     if (shareKind == null) {
@@ -282,7 +280,7 @@ public class UploadExcelFunc {
 //                                row.getCell(2).getStringCellValue(), cel
 //                        ));
                     }
-                    investorsFlowsSale.setShareKind(shareKind);
+                    investorsFlowsSale.setShareType(shareKind);
                     String strCashInFacility = row.getCell(3).getStringCellValue();
                     BigDecimal cashInFacility;
                     try {

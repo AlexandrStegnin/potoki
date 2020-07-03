@@ -4,6 +4,7 @@ import com.art.model.*;
 import com.art.model.supporting.AfterCashing;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
+import com.art.model.supporting.enums.ShareType;
 import com.art.model.supporting.enums.TransactionType;
 import com.art.model.supporting.filters.CashFilter;
 import com.art.service.*;
@@ -67,9 +68,6 @@ public class InvestorsCashController {
 
     @Resource(name = "typeClosingInvestService")
     private TypeClosingInvestService typeClosingInvestService;
-
-    @Resource(name = "shareKindService")
-    private ShareKindService shareKindService;
 
     @Resource(name = "investorsFlowsService")
     private InvestorsFlowsService investorsFlowsService;
@@ -342,7 +340,7 @@ public class InvestorsCashController {
             newInvestorsCash.setDateGivedCash(reinvestDate);
             newInvestorsCash.setCashSource(null);
             newInvestorsCash.setNewCashDetails(newCashDetailsService.findByNewCashDetail("Реинвестирование с продажи"));
-            newInvestorsCash.setShareKind(investorsCash.getShareKind());
+            newInvestorsCash.setShareType(investorsCash.getShareType());
             investorsCashService.create(newInvestorsCash);
             whatWeDoWithCash = "добавлены.";
         }
@@ -387,13 +385,13 @@ public class InvestorsCashController {
         investorsCash.setDateGivedCash(newInvestorsCash.getDateGivedCash());
         investorsCash.setCashSource(newInvestorsCash.getCashSource());
         investorsCash.setNewCashDetails(newInvestorsCash.getNewCashDetails());
-        investorsCash.setShareKind(inMemoryCash.getShareKind());
+        investorsCash.setShareType(inMemoryCash.getShareType());
 
         BigDecimal newSum = newInvestorsCash.getGivedCash().subtract(investorsCash.getGivedCash());
         newInvestorsCash.setGivedCash(investorsCash.getGivedCash());
         investorsCash.setGivedCash(newSum);
         newInvestorsCash.setCashSource(investorsCash.getCashSource());
-        newInvestorsCash.setShareKind(investorsCash.getShareKind());
+        newInvestorsCash.setShareType(investorsCash.getShareType());
         newInvestorsCash.setId(null);
         newInvestorsCash.setSource(investorsCash.getId().toString());
         newInvestorsCash.setUnderFacility(investorsCash.getUnderFacility());
@@ -496,7 +494,7 @@ public class InvestorsCashController {
 
                         if (deleting.getFacility().equals(parentCash.getFacility()) &&
                                 deleting.getInvestor().equals(parentCash.getInvestor()) &&
-                                deleting.getShareKind().equals(parentCash.getShareKind()) &&
+                                deleting.getShareType().equals(parentCash.getShareType()) &&
                                 Objects.equals(null, deleting.getTypeClosingInvest()) &&
                                 deleting.getDateGivedCash().compareTo(parentCash.getDateGivedCash()) == 0) {
                             parentCash.setGivedCash(parentCash.getGivedCash().add(deleting.getGivedCash()));
@@ -853,7 +851,7 @@ public class InvestorsCashController {
             cash.setUnderFacility(underFacility);
             cash.setDateClosingInvest(null);
             cash.setTypeClosingInvest(null);
-            cash.setShareKind(f.getShareKind());
+            cash.setShareType(f.getShareType());
             cash.setDateReport(f.getDateReport());
             cash.setSourceFacility(f.getSourceFacility());
             cash.setSourceUnderFacility(f.getSourceUnderFacility());
@@ -1016,7 +1014,7 @@ public class InvestorsCashController {
                 cash.setFacility(ic.getFacility());
                 cash.setUnderFacility(ic.getUnderFacility());
                 cash.setInvestor(ic.getInvestor());
-                cash.setShareKind(ic.getShareKind());
+                cash.setShareType(ic.getShareType());
                 cash.setDateReport(ic.getDateReport());
                 cash.setSourceFacility(ic.getSourceFacility());
                 cash.setSourceUnderFacility(ic.getSourceUnderFacility());
@@ -1094,9 +1092,9 @@ public class InvestorsCashController {
         return typeClosingInvestService.init();
     }
 
-    @ModelAttribute("shareKinds")
-    public List<ShareKind> initializeShareKinds() {
-        return shareKindService.init();
+    @ModelAttribute("shareTypes")
+    public List<ShareType> initializeShareTypes() {
+        return Arrays.asList(ShareType.values());
     }
 
     @InitBinder

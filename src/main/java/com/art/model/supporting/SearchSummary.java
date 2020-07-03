@@ -1,6 +1,7 @@
 package com.art.model.supporting;
 
 import com.art.model.*;
+import com.art.model.supporting.enums.ShareType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -99,6 +100,8 @@ public class SearchSummary implements Serializable {
     private List<UnderFacilities> reUnderFacilitiesList;
 
     private Date realDateGiven;
+
+    private ShareType shareType;
 
     public String getFacility() {
         return facility;
@@ -562,5 +565,13 @@ public class SearchSummary implements Serializable {
 
     public void setRealDateGiven(Date realDateGiven) {
         this.realDateGiven = realDateGiven;
+    }
+
+    public ShareType getShareType() {
+        return shareType;
+    }
+
+    public void setShareType(ShareType shareType) {
+        this.shareType = shareType;
     }
 }

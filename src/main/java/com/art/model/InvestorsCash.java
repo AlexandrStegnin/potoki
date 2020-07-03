@@ -1,6 +1,7 @@
 package com.art.model;
 
 import com.art.model.supporting.InvestorsTotalSum;
+import com.art.model.supporting.enums.ShareType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -128,13 +129,15 @@ public class InvestorsCash implements Serializable {
     private Facilities facility;
     private Users investor;
     private CashSources cashSource;
-//    private CashTypes cashType;
     private NewCashDetails newCashDetails;
-//    private InvestorsTypes investorsType;
     private UnderFacilities underFacility;
     private Date dateClosingInvest;
     private TypeClosingInvest typeClosingInvest;
-    private ShareKind shareKind;
+
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "ShareType")
+    private ShareType shareType;
+
     private Date dateReport;
     private Facilities sourceFacility;
     private UnderFacilities sourceUnderFacility;
@@ -160,7 +163,7 @@ public class InvestorsCash implements Serializable {
     public InvestorsCash(BigDecimal givedCash, Date dateGivedCash, Facilities facility, Users investor,
                          CashSources cashSource, NewCashDetails newCashDetails,
                          UnderFacilities underFacility, Date dateClosingInvest,
-                         TypeClosingInvest typeClosingInvest, ShareKind shareKind, Date dateReport,
+                         TypeClosingInvest typeClosingInvest, ShareType shareType, Date dateReport,
                          Facilities sourceFacility, UnderFacilities sourceUnderFacility, String sourceFlowsId,
                          Rooms room, int isReinvest, BigInteger sourceId, String source, int isDivide) {
         this.givedCash = givedCash;
@@ -172,7 +175,7 @@ public class InvestorsCash implements Serializable {
         this.underFacility = underFacility;
         this.dateClosingInvest = dateClosingInvest;
         this.typeClosingInvest = typeClosingInvest;
-        this.shareKind = shareKind;
+        this.shareType = shareType;
         this.dateReport = dateReport;
         this.sourceFacility = sourceFacility;
         this.sourceUnderFacility = sourceUnderFacility;
@@ -197,7 +200,7 @@ public class InvestorsCash implements Serializable {
         this.underFacility = cash.getUnderFacility();
         this.dateClosingInvest = cash.getDateClosingInvest();
         this.typeClosingInvest = cash.getTypeClosingInvest();
-        this.shareKind = cash.getShareKind();
+        this.shareType = cash.getShareType();
         this.dateReport = cash.getDateReport();
         this.sourceFacility = cash.getSourceFacility();
         this.sourceUnderFacility = cash.sourceUnderFacility;
@@ -348,26 +351,6 @@ public class InvestorsCash implements Serializable {
         this.newCashDetails = newCashDetails;
     }
 
-//    @OneToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
-//    @JoinColumn(name = "InvestorsTypeId", referencedColumnName = "id")
-//    public InvestorsTypes getInvestorsType() {
-//        return investorsType;
-//    }
-//
-//    public void setInvestorsType(InvestorsTypes investorsType) {
-//        this.investorsType = investorsType;
-//    }
-
-//    @OneToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
-//    @JoinColumn(name = "CashTypeId", referencedColumnName = "id")
-//    public CashTypes getCashType() {
-//        return cashType;
-//    }
-//
-//    public void setCashType(CashTypes cashType) {
-//        this.cashType = cashType;
-//    }
-
     @OneToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "UnderFacilityId", referencedColumnName = "id")
     public UnderFacilities getUnderFacility() {
@@ -398,14 +381,9 @@ public class InvestorsCash implements Serializable {
         this.typeClosingInvest = typeClosingInvest;
     }
 
-    @OneToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
-    @JoinColumn(name = "ShareKindId", referencedColumnName = "id")
-    public ShareKind getShareKind() {
-        return shareKind;
-    }
-
-    public void setShareKind(ShareKind shareKind) {
-        this.shareKind = shareKind;
+    @Transient
+    public String getShareTypeTitle() {
+        return shareType.getTitle();
     }
 
     @Column(name = "DateGivedCash")
@@ -536,16 +514,4 @@ public class InvestorsCash implements Serializable {
         this.realDateGiven = realDateGiven;
     }
 
-
-//    private ClientType clientType;
-
-//    @OneToOne
-//    @JoinColumn(name = "ClientTypeId", referencedColumnName = "id")
-//    public ClientType getClientType() {
-//        return clientType;
-//    }
-//
-//    public void setClientType(ClientType clientType) {
-//        this.clientType = clientType;
-//    }
 }

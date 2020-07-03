@@ -20,7 +20,6 @@
     <script type="text/javascript" src="<c:url value='/resources/core/js/jsFunctions.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/AjaxLoader.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/mailingScripts.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/scriptsForInvestorsCash.js' />"></script>
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
 </head>
@@ -135,19 +134,6 @@
             </div>
         </div>
 
-<%--        <div class="row" id="cashTypRow">--%>
-<%--            <div class="form-group col-md-12">--%>
-<%--                <label class="col-md-3 control-lable" for="cashTyp">Вид денег:</label>--%>
-<%--                <div class="col-md-7">--%>
-<%--                    <form:select path="cashType" id="cashTyp" items="${cashTypes}" multiple="false"--%>
-<%--                                 itemValue="id" itemLabel="cashType" class="form-control input-sm"/>--%>
-<%--                    <div class="has-error">--%>
-<%--                        <form:errors path="cashType" class="help-inline"/>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-
         <div class="row" id="cashDetailRow">
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="cashDetail">Детали новых денег:</label>
@@ -160,19 +146,6 @@
                 </div>
             </div>
         </div>
-
-<%--        <div class="row" id="invTypeRow">--%>
-<%--            <div class="form-group col-md-12">--%>
-<%--                <label class="col-md-3 control-lable" for="invType">Вид инвестора:</label>--%>
-<%--                <div class="col-md-7">--%>
-<%--                    <form:select path="investorsType" id="invType" items="${investorsTypes}" multiple="false"--%>
-<%--                                 itemValue="id" itemLabel="investorsType" class="form-control input-sm"/>--%>
-<%--                    <div class="has-error">--%>
-<%--                        <form:errors path="investorsType" class="help-inline"/>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-<%--            </div>--%>
-<%--        </div>--%>
 
         <div class="row" id="dateCloseInvRow">
             <div class="form-group col-md-12">
@@ -261,12 +234,12 @@
 
         <div class="row" id="shareKindNameRow">
             <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="shareKindName">Вид доли:</label>
+                <label class="col-md-3 control-lable" for="shareTypeName">Вид доли:</label>
                 <div class="col-md-7">
-                    <form:select path="shareKind" id="shareKindName" items="${shareKinds}" multiple="false"
-                                 itemValue="id" itemLabel="shareKind" class="form-control input-sm"/>
+                    <form:select path="shareType" id="shareTypeName" items="${shareTypes}" multiple="false"
+                                 itemValue="id" itemLabel="title" class="form-control input-sm"/>
                     <div class="has-error">
-                        <form:errors path="shareKind" class="help-inline"/>
+                        <form:errors path="shareType" class="help-inline"/>
                     </div>
                 </div>
             </div>
@@ -283,31 +256,18 @@
             </div>
         </div>
 
-<%--        <div class="row" id="clientTypeRow">--%>
-<%--            <div class="form-group col-md-12">--%>
-<%--                <label class="col-md-3 control-lable" for="clientType">Вид клиента:</label>--%>
-<%--                <div class="col-md-7">--%>
-<%--                    <form:select path="clientType" id="clientType" items="${clientTypes}" multiple="false"--%>
-<%--                                 itemValue="id" itemLabel="title" class="form-control input-sm"/>--%>
-<%--                    <div class="has-error">--%>
-<%--                        <form:errors path="clientType" class="help-inline"/>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-
         <div class="row">
             <div class="form-actions floatRight">
                 <c:choose>
-                    <c:when test="${edit}">
-                        <input type="submit" value="Обновить" class="btn btn-primary btn-sm"/> или <a
-                            href="<c:url value='/investorscash' />">Отмена</a>
+                    <c:when test="${edit == true}">
+                        <c:set var="title" value="Обновить" />
                     </c:when>
                     <c:otherwise>
-                        <input type="submit" value="Создать" class="btn btn-primary btn-sm"/> или <a
-                            href="<c:url value='/investorscash' />">Отмена</a>
+                        <c:set var="title" value="Создать" />
                     </c:otherwise>
                 </c:choose>
+                <input type="submit" value="${title}" class="btn btn-primary btn-sm"/> или <a
+                    href="<c:url value='/investorscash' />">Отмена</a>
             </div>
         </div>
     </form:form>

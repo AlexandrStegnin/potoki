@@ -21,7 +21,6 @@
     <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/AjaxLoader.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/jsFunctions.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/mailingScripts.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/scriptsForFlowsSale.js' />"></script>
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
     <style type="text/css">
@@ -190,7 +189,7 @@
                 <tr id="${flows.id}">
                     <td data-facility-id="${flows.facility.id}">${flows.facility.facility}</td>
                     <td data-investor-id="${flows.investor.id}">${flows.investor.login}</td>
-                    <td data-share-kind-id="${flows.shareKind.id}">${flows.shareKind.shareKind}</td>
+                    <td data-share-kind-id="${flows.shareType.id}">${flows.shareType.title}</td>
                     <td data-cash-facility="${flows.cashInFacility}">
                         <fmt:setLocale value="ru-RU" scope="session"/>
                         <fmt:formatNumber value="${flows.cashInFacility}" type="currency" minFractionDigits="2"/>
@@ -296,10 +295,10 @@
 
                     <div class="row" id="shareKindNameRow">
                         <div class="form-group col-md-12">
-                            <label class="col-md-3 control-lable" for="shareKindName">Вид доли:</label>
+                            <label class="col-md-3 control-lable" for="shareTypeName">Вид доли:</label>
                             <div class="col-md-7">
-                                <form:select path="shareKind" id="shareKindName" items="${shareKinds}" multiple="false"
-                                             itemValue="id" itemLabel="shareKind" class="form-control input-sm"/>
+                                <form:select path="shareType" id="shareTypeName" items="${shareTypes}" multiple="false"
+                                             itemValue="id" itemLabel="title" class="form-control input-sm"/>
                                 <div id="shareKindErr" style="color: red; display: none">Необходимо выбрать вид доли
                                 </div>
                             </div>

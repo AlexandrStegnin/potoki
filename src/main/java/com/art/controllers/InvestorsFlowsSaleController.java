@@ -5,6 +5,7 @@ import com.art.model.*;
 import com.art.model.supporting.FileBucket;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
+import com.art.model.supporting.enums.ShareType;
 import com.art.model.supporting.filters.FlowsSaleFilter;
 import com.art.service.*;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -28,10 +29,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class InvestorsFlowsSaleController {
@@ -50,9 +48,6 @@ public class InvestorsFlowsSaleController {
 
     @Resource(name = "userService")
     private UserService userService;
-
-    @Resource(name = "shareKindService")
-    private ShareKindService shareKindService;
 
     private final FlowsSaleFilter filters = new FlowsSaleFilter();
 
@@ -167,9 +162,9 @@ public class InvestorsFlowsSaleController {
         return userService.initializeInvestors();
     }
 
-    @ModelAttribute("shareKinds")
-    public List<ShareKind> initializeShareKinds() {
-        return shareKindService.init();
+    @ModelAttribute("shareTypes")
+    public List<ShareType> initializeShareTypes() {
+        return Arrays.asList(ShareType.values());
     }
 
     @InitBinder

@@ -217,7 +217,7 @@
                     <td data-cash-details-id="${cash.newCashDetails.id}">${cash.newCashDetails.newCashDetail}</td>
                     <td data-date-closing="${cash.dateClosingInvest.time}">${cash.getDateClosingInvestToLocalDate()}</td>
                     <td data-type-closing-id="${cash.typeClosingInvest.id}">${cash.typeClosingInvest.typeClosingInvest}</td>
-                    <td data-share-kind-id="${cash.shareKind.id}">${cash.shareKind.shareKind}</td>
+                    <td data-share-kind-id="${cash.shareType.id}">${cash.shareType.title}</td>
                     <td data-date-report="${cash.dateReport.time}">${cash.getDateReportToLocalDate()}</td>
                     <td data-source-facility-id="${cash.sourceFacility.id}">${cash.sourceFacility.facility}</td>
                     <td data-source-under-id="${cash.sourceUnderFacility.id}">${cash.sourceUnderFacility.underFacility}</td>
@@ -346,10 +346,10 @@
 
                     <div class="row" id="shareKindNameRow">
                         <div class="form-group col-md-12">
-                            <label class="col-md-3 control-lable" for="shareKindName">Вид доли:</label>
+                            <label class="col-md-3 control-lable" for="shareTypeName">Вид доли:</label>
                             <div class="col-md-7">
-                                <form:select path="shareKind" id="shareKindName" items="${shareKinds}" multiple="false"
-                                             itemValue="id" itemLabel="shareKind" class="form-control input-sm"/>
+                                <form:select path="shareType" id="shareTypeName" items="${shareTypes}" multiple="false"
+                                             itemValue="id" itemLabel="title" class="form-control input-sm"/>
                                 <div id="shareKindErr" style="color: red; display: none">Необходимо выбрать вид доли
                                 </div>
                             </div>

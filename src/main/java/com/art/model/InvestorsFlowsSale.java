@@ -1,5 +1,6 @@
 package com.art.model;
 
+import com.art.model.supporting.enums.ShareType;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,7 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @ToString
-@EqualsAndHashCode(exclude = {"facility", "investor", "shareKind", "underFacility"})
+@EqualsAndHashCode(exclude = {"facility", "investor", "underFacility"})
 @Getter
 @Setter
 @AllArgsConstructor
@@ -21,7 +22,11 @@ public class InvestorsFlowsSale implements Serializable {
     private BigInteger id;
     private Facilities facility;
     private Users investor;
-    private ShareKind shareKind;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "ShareType")
+    private ShareType shareType;
+
     private BigDecimal cashInFacility;
     private Date dateGived;
     private BigDecimal investorShare;
@@ -77,14 +82,13 @@ public class InvestorsFlowsSale implements Serializable {
         this.investor = investor;
     }
 
-    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinColumn(name = "shareKindId", referencedColumnName = "id")
-    public ShareKind getShareKind() {
-        return shareKind;
+    @Enumerated(EnumType.STRING)
+    public ShareType getShareType() {
+        return shareType;
     }
 
-    public void setShareKind(ShareKind shareKind) {
-        this.shareKind = shareKind;
+    public void setShareType(ShareType shareType) {
+        this.shareType = shareType;
     }
 
     @Column(name = "CashInFacility")
