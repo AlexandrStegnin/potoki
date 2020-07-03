@@ -62,9 +62,6 @@ public class InvestorsCashController {
     @Resource(name = "newCashDetailsService")
     private NewCashDetailsService newCashDetailsService;
 
-    @Resource(name = "investorsTypesService")
-    private InvestorsTypesService investorsTypesService;
-
     @Resource(name = "underFacilitiesService")
     private UnderFacilitiesService underFacilitiesService;
 
@@ -1075,11 +1072,6 @@ public class InvestorsCashController {
     @ModelAttribute("newCashDetails")
     public List<NewCashDetails> initializeNewCashDetails() {
         return newCashDetailsService.initializeNewCashDetails();
-    }
-
-    @ModelAttribute("investorsTypes")
-    public List<InvestorsTypes> initializeInvestorsTypes() {
-        return investorsTypesService.initializeInvestorsTypes();
     }
 
     @ModelAttribute("underFacilities")

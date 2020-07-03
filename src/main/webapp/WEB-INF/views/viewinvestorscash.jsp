@@ -117,7 +117,7 @@
                                             <c:when test="${inv.login eq investor}">selected="selected"</c:when>
                                         </c:choose>
                                     </c:forEach>
-                                    value="${inv.login}" id="${inv.id}" data-lastName="${inv.lastName}">${inv.login}
+                                    value="${inv.login}" id="${inv.id}" data-lastName="${inv.profile.lastName}">${inv.login}
                             </option>
                         </c:if>
                     </c:forEach>
@@ -214,9 +214,7 @@
                     </td>
                     <td data-report-date="${cash.dateGivedCash.time}">${cash.getDateGivedCashToLocalDate()}</td>
                     <td data-cash-source-id="${cash.cashSource.id}">${cash.cashSource.cashSource}</td>
-<%--                    <td data-cash-type-id="${cash.cashType.id}">${cash.cashType.cashType}</td>--%>
                     <td data-cash-details-id="${cash.newCashDetails.id}">${cash.newCashDetails.newCashDetail}</td>
-<%--                    <td data-investors-type-id="${cash.investorsType.id}">${cash.investorsType.investorsType}</td>--%>
                     <td data-date-closing="${cash.dateClosingInvest.time}">${cash.getDateClosingInvestToLocalDate()}</td>
                     <td data-type-closing-id="${cash.typeClosingInvest.id}">${cash.typeClosingInvest.typeClosingInvest}</td>
                     <td data-share-kind-id="${cash.shareKind.id}">${cash.shareKind.shareKind}</td>

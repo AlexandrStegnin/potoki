@@ -55,9 +55,6 @@ public class InvestorsSummaryController {
     @Resource(name = "underFacilitiesService")
     private UnderFacilitiesService underFacilitiesService;
 
-    @Resource(name = "investorsTypesService")
-    private InvestorsTypesService investorsTypesService;
-
     @Resource(name = "shareKindService")
     private ShareKindService shareKindService;
 
@@ -147,11 +144,6 @@ public class InvestorsSummaryController {
     @ModelAttribute("investors")
     public List<Users> initializeInvestors() {
         return userService.initializeInvestors();
-    }
-
-    @ModelAttribute("investorsTypes")
-    public List<InvestorsTypes> initializeInvestorsTypes() {
-        return investorsTypesService.initializeInvestorsTypes();
     }
 
     @ModelAttribute("shareKinds")

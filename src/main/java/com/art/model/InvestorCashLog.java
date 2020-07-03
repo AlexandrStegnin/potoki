@@ -56,10 +56,6 @@ public class InvestorCashLog {
     @JoinColumn(name = "new_cash_detail_id")
     private NewCashDetails newCashDetail;
 
-    @OneToOne
-    @JoinColumn(name = "investor_type_id")
-    private InvestorsTypes investorType;
-
     @Column(name = "date_closing_invest")
     private Date dateClosingInvest;
 
