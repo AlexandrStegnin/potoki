@@ -2,10 +2,7 @@ package com.art.service;
 
 import com.art.config.AppSecurityConfig;
 import com.art.func.PersonalMailService;
-import com.art.model.Facilities_;
-import com.art.model.UserProfile_;
-import com.art.model.Users;
-import com.art.model.Users_;
+import com.art.model.*;
 import com.art.model.supporting.SendingMail;
 import com.art.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -129,51 +126,17 @@ public class UserService {
         em.merge(user);
     }
 
-    public Users findWithAllFields(Long id) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
-        Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
-        usersRoot.fetch(Users_.facilities, JoinType.LEFT);
-        usersRoot.fetch(Users_.usersAnnexToContractsList, JoinType.LEFT);
-        usersCriteriaQuery.select(usersRoot).distinct(true);
-        usersCriteriaQuery.where(cb.equal(usersRoot.get(Users_.id), id));
-        return em.createQuery(usersCriteriaQuery).getSingleResult();
-    }
-
     public void update(Users user) {
-        Users updUser = findWithAllFields(user.getId());
-        user.setLogin(updUser.getLogin());
-        if (null != user.getPassword() && !user.getPassword().isEmpty()) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-        } else {
-            user.setPassword(updUser.getPassword());
-        }
-        if (null == user.getProfile().getLastName()) {
-            user.getProfile().setLastName(updUser.getProfile().getLastName());
-        }
-        if (null == user.getProfile().getFirstName()) {
-            user.getProfile().setFirstName(updUser.getProfile().getFirstName());
-        }
-        if (null == user.getProfile().getPatronymic()) {
-            user.getProfile().setPatronymic(updUser.getProfile().getPatronymic());
-        }
-        if (null == user.getRoles()) {
-            user.setRoles(updUser.getRoles());
-        }
-        if (null == user.getFacilities()) {
-            user.setFacilities(updUser.getFacilities());
-        }
-        if (null == user.getUsersAnnexToContractsList()) {
-            user.setUsersAnnexToContractsList(updUser.getUsersAnnexToContractsList());
-        }
-        if (!user.getProfile().getEmail().equalsIgnoreCase(updUser.getProfile().getEmail())) {
-            sendWelcomeMessage(user);
-        }
-        if (null == user.getPartnerId()) {
-            user.setPartnerId(updUser.getPartnerId());
-            user.setKin(updUser.getKin());
-        }
-        userRepository.save(user);
+        Users dbUser = findById(user.getId());
+        dbUser.setPartnerId(user.getPartnerId());
+        dbUser.setKin(user.getKin());
+        dbUser.setRoles(user.getRoles());
+        UserProfile profile = dbUser.getProfile();
+        profile.setFirstName(user.getProfile().getFirstName());
+        profile.setLastName(user.getProfile().getLastName());
+        profile.setPatronymic(user.getProfile().getPatronymic());
+        profile.setEmail(user.getProfile().getEmail());
+        userRepository.save(dbUser);
     }
 
     private void sendWelcomeMessage(Users user) {

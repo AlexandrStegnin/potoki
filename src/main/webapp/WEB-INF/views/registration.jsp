@@ -29,9 +29,9 @@
         <form:input type="hidden" path="" id="edit" value="${edit}"/>
         <div class="row">
             <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="last_name">Фамилия:</label>
+                <label class="col-md-3 control-lable" for="lastName">Фамилия:</label>
                 <div class="col-md-7">
-                    <form:input type="text" path="profile.lastName" id="last_name" class="form-control input-sm" />
+                    <form:input type="text" path="profile.lastName" id="lastName" class="form-control input-sm" />
                 </div>
             </div>
         </div>

@@ -1,6 +1,8 @@
 package com.art.model;
 
+import com.art.model.supporting.dto.UserProfileDTO;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -11,6 +13,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "user_profile")
+@NoArgsConstructor
 public class UserProfile {
 
     @Id
@@ -36,5 +39,12 @@ public class UserProfile {
     private String patronymic;
 
     private String email;
+
+    public UserProfile(UserProfileDTO profileDTO) {
+        this.lastName = profileDTO.getLastName();
+        this.firstName = profileDTO.getFirstName();
+        this.patronymic = profileDTO.getPatronymic();
+        this.email = profileDTO.getEmail();
+    }
 
 }

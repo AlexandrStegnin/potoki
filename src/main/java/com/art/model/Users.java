@@ -132,7 +132,7 @@ public class Users implements Serializable {
 
     public Users(UserDTO userDTO) {
         this.id = userDTO.getId() != null ? userDTO.getId() : null;
-        this.profile = userDTO.getProfile();
+        this.profile = new UserProfile(userDTO.getProfile());
         this.login = userDTO.getLogin();
         this.roles = convertRoles(userDTO.getRoles());
         this.kin = KinEnum.valueOf(userDTO.getKin().toUpperCase());
@@ -145,7 +145,7 @@ public class Users implements Serializable {
 
     private UserProfile profile;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     public UserProfile getProfile() {
         return profile;
     }

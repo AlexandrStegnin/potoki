@@ -2,6 +2,8 @@ let UserDTO = function () {}
 
 let RoleDTO = function () {}
 
+let UserProfileDTO = function () {}
+
 RoleDTO.prototype = {
     id: 0,
     name: '',
@@ -17,6 +19,7 @@ UserDTO.prototype = {
     facilities: [],
     roles: [],
     partnerId: 0,
+    profile: null,
     build: function (id, login, roles, partnerId) {
         this.id = id;
         this.login = login;
@@ -26,6 +29,21 @@ UserDTO.prototype = {
     buildPartner: function (id, login) {
         this.id = id;
         this.login = login;
+    }
+}
+
+UserProfileDTO.prototype = {
+    id: 0,
+    lastName: '',
+    firstName: '',
+    patronymic: '',
+    email: '',
+    build: function (id, lastName, firstName, patronymic, email) {
+        this.id = id;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.patronymic = patronymic;
+        this.email = email;
     }
 }
 
@@ -108,15 +126,16 @@ function prepareUserSave() {
 
     let userDTO = {
         id: userId,
-        lastName: $('#last_name').val(),
-        firstName: $('#first_name').val(),
-        middleName: $('#middle_name').val(),
         login: $('#login').val(),
-        email: $('#email').val(),
         roles: roles,
         kin: kin,
         partnerId: partner.id
     };
+
+    let profile = new UserProfileDTO();
+    profile.build(userId, $('#lastName').val(), $('#firstName').val(), $('#patronymic').val(), $('#email').val());
+    userDTO.profile = profile;
+
     saveUser(userDTO);
 }
 
