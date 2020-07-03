@@ -31,25 +31,25 @@
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="last_name">Фамилия:</label>
                 <div class="col-md-7">
-                    <form:input type="text" path="lastName" id="last_name" class="form-control input-sm" />
+                    <form:input type="text" path="profile.lastName" id="last_name" class="form-control input-sm" />
                 </div>
             </div>
         </div>
 
         <div class="row">
             <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="first_name">Имя:</label>
+                <label class="col-md-3 control-lable" for="firstName">Имя:</label>
                 <div class="col-md-7">
-                    <form:input type="text" path="first_name" id="first_name" class="form-control input-sm"/>
+                    <form:input type="text" path="profile.firstName" id="firstName" class="form-control input-sm"/>
                 </div>
             </div>
         </div>
 
         <div class="row">
             <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="middle_name">Отчество:</label>
+                <label class="col-md-3 control-lable" for="patronymic">Отчество:</label>
                 <div class="col-md-7">
-                    <form:input type="text" path="middle_name" id="middle_name" class="form-control input-sm" />
+                    <form:input type="text" path="profile.patronymic" id="patronymic" class="form-control input-sm" />
                 </div>
             </div>
         </div>
@@ -69,7 +69,7 @@
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="email">Email</label>
                 <div class="col-md-7">
-                    <form:input type="text" path="email" id="email" class="form-control input-sm" />
+                    <form:input type="text" path="profile.email" id="email" class="form-control input-sm" />
                     <div class="has-error help-inline" id="emailErr">
                     </div>
                 </div>

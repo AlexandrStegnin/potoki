@@ -43,7 +43,7 @@ public class AdminController {
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String adminPage(ModelMap model, HttpServletRequest httpServletRequest) {
 
-        List<Users> users = userService.findAllWithStuffs();
+        List<Users> users = userService.findAll();
         model.addAttribute("users", users);
         model.addAttribute("searchSummary", new SearchSummary());
 

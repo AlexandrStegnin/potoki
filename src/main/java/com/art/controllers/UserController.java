@@ -109,9 +109,9 @@ public class UserController {
     }
 
     @GetMapping(path = "/edit-user-{id}")
-    public String editUser(@PathVariable BigInteger id, ModelMap model) {
+    public String editUser(@PathVariable Long id, ModelMap model) {
         String title = "Обновление данных пользователя";
-        Users user = userService.findByIdWithStuffsAndMailingGroupsAndFacilities(id);
+        Users user = userService.findById(id);
 
         List<KinEnum> kins = new ArrayList<>(Arrays.asList(KinEnum.values()));
         model.addAttribute("user", user);

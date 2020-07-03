@@ -1,5 +1,6 @@
 package com.art.model.supporting.dto;
 
+import com.art.model.UserProfile;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,5 +34,7 @@ public class UserDTO {
     String kin;
 
     Long partnerId;
+
+    UserProfile profile;
 
 }

@@ -132,11 +132,8 @@ public class Users implements Serializable {
 
     public Users(UserDTO userDTO) {
         this.id = userDTO.getId() != null ? userDTO.getId() : null;
-//        this.lastName = userDTO.getLastName();
-//        this.first_name = userDTO.getFirstName();
-//        this.middle_name = userDTO.getMiddleName();
+        this.profile = userDTO.getProfile();
         this.login = userDTO.getLogin();
-//        this.email = userDTO.getEmail();
         this.roles = convertRoles(userDTO.getRoles());
         this.kin = KinEnum.valueOf(userDTO.getKin().toUpperCase());
         this.partnerId = userDTO.getPartnerId();
