@@ -21,14 +21,15 @@ import java.util.stream.Collectors;
 @ToString(of = {"id", "login"})
 @EqualsAndHashCode(of = {"id", "login"})
 public class Users implements Serializable {
+
     private Long id;
+
     private String login;
+
     private String password;
-//    private String lastName;
-//    private String first_name;
-//    private String middle_name;
-//    private String email;
+
     private List<Roles> roles;
+
     private Set<Facilities> facilities;
 
     @Enumerated(EnumType.STRING)
@@ -91,42 +92,6 @@ public class Users implements Serializable {
         this.password = password;
     }
 
-//    @Column(name = "last_name")
-//    public String getLastName() {
-//        return lastName;
-//    }
-//
-//    public void setLastName(String lastName) {
-//        this.lastName = lastName;
-//    }
-//
-//    @Column(name = "first_name", length = 30)
-//    public String getFirst_name() {
-//        return first_name;
-//    }
-//
-//    public void setFirst_name(String first_name) {
-//        this.first_name = first_name;
-//    }
-//
-//    @Column(name = "middle_name", length = 30)
-//    public String getMiddle_name() {
-//        return middle_name;
-//    }
-//
-//    public void setMiddle_name(String middle_name) {
-//        this.middle_name = middle_name;
-//    }
-//
-//    @Column(name = "email", length = 30)
-//    public String getEmail() {
-//        return email;
-//    }
-//
-//    public void setEmail(String email) {
-//        this.email = email;
-//    }
-
     @ManyToMany(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST }, fetch = FetchType.EAGER)
     @JoinTable(name = "USERS_ROLES",
             joinColumns = {@JoinColumn(name = "user_id")},
@@ -164,18 +129,6 @@ public class Users implements Serializable {
     public void setConfirmed(boolean confirmed) {
         this.confirmed = confirmed;
     }
-
-//    private Account account;
-//
-//    @OneToOne
-//    @JoinColumn(name = "account_id")
-//    public Account getAccount() {
-//        return account;
-//    }
-//
-//    public void setAccount(Account account) {
-//        this.account = account;
-//    }
 
     public Users(UserDTO userDTO) {
         this.id = userDTO.getId() != null ? userDTO.getId() : null;
