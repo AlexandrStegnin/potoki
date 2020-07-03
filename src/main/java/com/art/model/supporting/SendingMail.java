@@ -1,13 +1,12 @@
 package com.art.model.supporting;
 
-import com.art.model.MailingGroups;
 import com.art.model.Users;
 import lombok.*;
 
 import java.io.Serializable;
 import java.util.List;
 
-@ToString(exclude = {"mailingGroups", "users", "fileBucket"})
+@ToString(exclude = {"users", "fileBucket"})
 @Getter
 @Setter
 @EqualsAndHashCode
@@ -15,7 +14,6 @@ import java.util.List;
 @NoArgsConstructor
 public class SendingMail implements Serializable {
 
-    private List<MailingGroups> mailingGroups;
     private List<Users> users;
     private String subject;
     private String body;
@@ -27,14 +25,6 @@ public class SendingMail implements Serializable {
 
     public void setUsers(List<Users> users) {
         this.users = users;
-    }
-
-    public List<MailingGroups> getMailingGroups() {
-        return mailingGroups;
-    }
-
-    public void setMailingGroups(List<MailingGroups> mailingGroups) {
-        this.mailingGroups = mailingGroups;
     }
 
     public String getBody() {

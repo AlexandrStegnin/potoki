@@ -31,9 +31,6 @@ public class FacilityController {
     @Resource(name = "underFacilitiesService")
     private UnderFacilitiesService underFacilitiesService;
 
-    @Resource(name = "mailingGroupsService")
-    private MailingGroupsService mailingGroupsService;
-
     @Resource(name = "investorsCashService")
     private InvestorsCashService investorsCashService;
 
@@ -58,12 +55,6 @@ public class FacilityController {
 
         String ret = "списку объектов.";
         String redirectUrl = "/admin_facility";
-//        MailingGroups mailingGroups = mailingGroupsService.findByGroupWithUsers(newFacility.getFacility());
-//        if (mailingGroups == null) {
-//            mailingGroups = new MailingGroups();
-//            mailingGroups.setMailingGroup(mGroup + newFacility.getFacility());
-//            mailingGroupsService.create(mailingGroups);
-//        }
         facilityService.create(newFacility);
 
         model.addAttribute("success", "Объект " + newFacility.getFacility() + " успешно добавлен.");
@@ -130,11 +121,6 @@ public class FacilityController {
                 investorsCashService.deleteById(c.getId());
             }
         });
-
-        MailingGroups mailingGroup = mailingGroupsService.findByGroupWithUsers(mGroup + facility.getFacility());
-        if (!Objects.equals(null, mailingGroup.getId())) {
-            mailingGroupsService.deleteById(mailingGroup.getId());
-        }
         try {
             facility.getUnderFacilities().forEach(f -> underFacilitiesService.deleteById(f.getId()));
             facilityService.deleteById(facility.getId());

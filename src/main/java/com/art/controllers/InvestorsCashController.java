@@ -83,9 +83,6 @@ public class InvestorsCashController {
     @Resource(name = "investorsFlowsService")
     private InvestorsFlowsService investorsFlowsService;
 
-    @Resource(name = "mailingGroupsService")
-    private MailingGroupsService mailingGroupsService;
-
     @Resource(name = "investorsFlowsSaleService")
     private InvestorsFlowsSaleService investorsFlowsSaleService;
 
@@ -1227,11 +1224,6 @@ public class InvestorsCashController {
     public List<ShareKind> initializeShareKinds() {
         return shareKindService.init();
     }
-
-//    @ModelAttribute("clientTypes")
-//    public List<ClientType> initializeClientTypes() {
-//        return clientTypeService.findAll();
-//    }
 
     @InitBinder
     public void initBinder(WebDataBinder webDataBinder) {
