@@ -28,9 +28,6 @@ public class UploadExcelFunc {
     @Resource(name = "saleOfFacilitiesService")
     private SaleOfFacilitiesService saleOfFacilitiesService;
 
-    @Resource(name = "rentorsDetailsService")
-    private RentorsDetailsService rentorsDetailsService;
-
     @Resource(name = "userService")
     private UserService userService;
 
@@ -76,9 +73,6 @@ public class UploadExcelFunc {
         }
 
         switch (what) {
-            case "manual":
-                rewriteSummaryData(Objects.requireNonNull(sheet));
-                break;
             case "invFlows":
                 HttpSession session = request.getSession(true);
                 session.setMaxInactiveInterval(30 * 60);
@@ -144,49 +138,6 @@ public class UploadExcelFunc {
             }
         }
         saleOfFacilitiesService.createList(saleOfFacilities);
-    }
-
-    private void rewriteSummaryData(Sheet sheet) {
-//        List<PaysToInvestors> paysToInvestors =
-//                paysToInvestorsService.findAll();
-//        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
-//        for (Row row : sheet) {
-//
-//            Calendar calendar = Calendar.getInstance();
-//            try {
-//                calendar.setTime(sdf.parse(row.getCell(1).toString()));
-//            } catch (Exception ex) {
-//                System.out.println(ex.getMessage());
-//            }
-//
-//            for (int i = 0; i < row.getLastCellNum(); i++) {
-//                row.getCell(i).setCellType(CellType.STRING);
-//            }
-//            BigInteger userId = new BigInteger("0");
-//            String lastName;
-//            lastName = row.getCell(2).toString();
-//            Users user = userService
-//                    .findByLastName(lastName);
-//            if (!Objects.equals(user, null)) {
-//                userId = user.getId();
-//            }
-//
-//            BigInteger finalUserId = userId;
-//            paysToInvestors.forEach(pti -> {
-//                Calendar summaryCal = Calendar.getInstance();
-//                summaryCal.setTime(pti.getEndDate());
-//
-//                if (pti.getFacility().equals(row.getCell(0).toString()) &&
-//                        summaryCal.get(Calendar.MONTH) == calendar.get(Calendar.MONTH) &&
-//                        pti.getInvestorId().equals(finalUserId)) {
-//                    pti.setOstatokPoDole(Float.parseFloat(row.getCell(3).toString()));
-//                }
-//            });
-//
-//        }
-//
-//        paysToInvestorsService.saveList(paysToInvestors);
-
     }
 
     private void rewriteInvestorsFlows(Sheet sheet) {
