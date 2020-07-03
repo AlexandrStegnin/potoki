@@ -2,8 +2,8 @@ package com.art.service;
 
 import com.art.config.AppSecurityConfig;
 import com.art.func.PersonalMailService;
-import com.art.model.Account;
 import com.art.model.Facilities_;
+import com.art.model.UserProfile_;
 import com.art.model.Users;
 import com.art.model.Users_;
 import com.art.model.supporting.SendingMail;
@@ -158,7 +158,7 @@ public class UserService {
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
         usersRoot.fetch(Users_.facilities, JoinType.LEFT);
-        usersRoot.fetch(Users_.account, JoinType.LEFT);
+//        usersRoot.fetch(Users_.account, JoinType.LEFT);
         usersCriteriaQuery.select(usersRoot).distinct(true);
         usersCriteriaQuery.where(cb.equal(usersRoot.get(Users_.id), id));
         return em.createQuery(usersCriteriaQuery).getSingleResult();
@@ -215,12 +215,12 @@ public class UserService {
 
     public void create(Users user) {
         sendWelcomeMessage(user);
-        if (null != user.getAccount()) {
-            if (null != user.getAccount().getAccountNumber()) {
-                Account account = accountService.create(user.getAccount());
-                user.setAccount(account);
-            }
-        }
+//        if (null != user.getAccount()) {
+//            if (null != user.getAccount().getAccountNumber()) {
+//                Account account = accountService.create(user.getAccount());
+//                user.setAccount(account);
+//            }
+//        }
         em.merge(user);
     }
 
@@ -268,16 +268,16 @@ public class UserService {
             user.setPartnerId(updUser.getPartnerId());
             user.setKin(updUser.getKin());
         }
-        if (null != user.getAccount()) {
-            Account account;
-            if (null != user.getAccount().getAccountNumber()) {
-                account = accountService.findByAccountNumber(updUser.getAccount().getAccountNumber());
-                account.setAccountNumber(user.getAccount().getAccountNumber());
-            } else {
-                account = accountService.create(user.getAccount());
-            }
-            user.setAccount(account);
-        }
+//        if (null != user.getAccount()) {
+//            Account account;
+//            if (null != user.getAccount().getAccountNumber()) {
+//                account = accountService.findByAccountNumber(updUser.getAccount().getAccountNumber());
+//                account.setAccountNumber(user.getAccount().getAccountNumber());
+//            } else {
+//                account = accountService.create(user.getAccount());
+//            }
+//            user.setAccount(account);
+//        }
         userRepository.save(user);
     }
 
@@ -304,8 +304,8 @@ public class UserService {
         CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
         usersCriteriaQuery.select(usersRoot);
-//        usersCriteriaQuery.where(cb.and(cb.equal(usersRoot.get(Users_.login), login),
-//                cb.equal(usersRoot.get(Users_.pr), email)));
+        usersCriteriaQuery.where(cb.and(cb.equal(usersRoot.get(Users_.login), login),
+                cb.equal(usersRoot.get(Users_.profile).get(UserProfile_.email), email)));
         return em.createQuery(usersCriteriaQuery).getSingleResult();
     }
 

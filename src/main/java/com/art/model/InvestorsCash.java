@@ -158,8 +158,8 @@ public class InvestorsCash implements Serializable {
     }
 
     public InvestorsCash(BigDecimal givedCash, Date dateGivedCash, Facilities facility, Users investor,
-                         CashSources cashSource, CashTypes cashType, NewCashDetails newCashDetails,
-                         /*InvestorsTypes investorsType,*/ UnderFacilities underFacility, Date dateClosingInvest,
+                         CashSources cashSource, NewCashDetails newCashDetails,
+                         UnderFacilities underFacility, Date dateClosingInvest,
                          TypeClosingInvest typeClosingInvest, ShareKind shareKind, Date dateReport,
                          Facilities sourceFacility, UnderFacilities sourceUnderFacility, String sourceFlowsId,
                          Rooms room, int isReinvest, BigInteger sourceId, String source, int isDivide) {
@@ -168,9 +168,7 @@ public class InvestorsCash implements Serializable {
         this.facility = facility;
         this.investor = investor;
         this.cashSource = cashSource;
-//        this.cashType = cashType;
         this.newCashDetails = newCashDetails;
-//        this.investorsType = investorsType;
         this.underFacility = underFacility;
         this.dateClosingInvest = dateClosingInvest;
         this.typeClosingInvest = typeClosingInvest;
@@ -195,9 +193,7 @@ public class InvestorsCash implements Serializable {
         this.facility = cash.getFacility();
         this.investor = cash.getInvestor();
         this.cashSource = cash.getCashSource();
-//        this.cashType = cash.getCashType();
         this.newCashDetails = cash.getNewCashDetails();
-//        this.investorsType = cash.getInvestorsType();
         this.underFacility = cash.getUnderFacility();
         this.dateClosingInvest = cash.getDateClosingInvest();
         this.typeClosingInvest = cash.getTypeClosingInvest();

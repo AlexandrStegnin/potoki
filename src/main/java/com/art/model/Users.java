@@ -165,17 +165,17 @@ public class Users implements Serializable {
         this.confirmed = confirmed;
     }
 
-    private Account account;
-
-    @OneToOne
-    @JoinColumn(name = "account_id")
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
-    }
+//    private Account account;
+//
+//    @OneToOne
+//    @JoinColumn(name = "account_id")
+//    public Account getAccount() {
+//        return account;
+//    }
+//
+//    public void setAccount(Account account) {
+//        this.account = account;
+//    }
 
     public Users(UserDTO userDTO) {
         this.id = userDTO.getId() != null ? userDTO.getId() : null;
