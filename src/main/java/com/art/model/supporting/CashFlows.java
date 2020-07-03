@@ -9,7 +9,6 @@ import java.util.List;
 @Data
 public class CashFlows implements Serializable {
 
-    private List<MainFlows> mainFlowsList;
     private List<InvestorsFlows> investorsFlowsList;
     private List<InvestorsCash> investorsCashList;
     private List<UsersAnnexToContracts> annexes;

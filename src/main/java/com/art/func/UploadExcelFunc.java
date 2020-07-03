@@ -37,9 +37,6 @@ public class UploadExcelFunc {
     @Resource(name = "paysToInvestorsService")
     private PaysToInvestorsService paysToInvestorsService;
 
-    @Resource(name = "mainFlowsService")
-    private MainFlowsService mainFlowsService;
-
     @Resource(name = "underFacilitiesService")
     private UnderFacilitiesService underFacilitiesService;
 
@@ -81,9 +78,6 @@ public class UploadExcelFunc {
         switch (what) {
             case "manual":
                 rewriteSummaryData(Objects.requireNonNull(sheet));
-                break;
-            case "flows":
-                writeMainFlows(Objects.requireNonNull(sheet));
                 break;
             case "invFlows":
                 HttpSession session = request.getSession(true);
@@ -532,55 +526,6 @@ public class UploadExcelFunc {
             break;
         }
         if (colCount < 36) throw new RuntimeException("Проверьте количество колонок в файле!");
-    }
-
-    private void writeMainFlows(Sheet sheet) {
-        int numRow = 0;
-        mainFlowsService.deleteAllFlows();
-        List<UnderFacilities> underFacilitiesList = underFacilitiesService.findAll();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
-        List<MainFlows> mainFlowsList = new ArrayList<>(0);
-        for (Row row : sheet) {
-            numRow++;
-            if (numRow > 1 && !Objects.equals(row.getCell(0), null) &&
-                    !Objects.equals(row.getCell(0).toString(), "")) {
-                MainFlows flows = new MainFlows();
-                Calendar calendar = Calendar.getInstance();
-                try {
-                    calendar.setTime(sdf.parse(row.getCell(2).toString()));
-                } catch (Exception ex) {
-                    System.out.println(ex.getMessage());
-                }
-                for (int i = 0; i < row.getLastCellNum(); i++) {
-                    if (!Objects.equals(null, row.getCell(i))) {
-                        row.getCell(i).setCellType(CellType.STRING);
-                    }
-                }
-
-                UnderFacilities underFacilities = underFacilitiesList
-                        .stream()
-                        .filter(uf -> uf.getUnderFacility().equalsIgnoreCase(row.getCell(13).toString()))
-                        .findFirst()
-                        .orElse(null);
-
-                flows.setPlanFact(row.getCell(0) == null ? "" : row.getCell(0).toString());
-                flows.setFileName(row.getCell(1) == null ? "" : row.getCell(1).toString());
-                flows.setSettlementDate(calendar.getTime());
-                flows.setSumma(Float.parseFloat(row.getCell(7) == null ? "0" : row.getCell(7).toString()));
-                flows.setOrgName(row.getCell(8) == null ? "" : row.getCell(8).toString());
-                flows.setInn(row.getCell(9) == null ? "" : row.getCell(9).toString());
-                flows.setAccount(row.getCell(10) == null ? "" : row.getCell(10).toString());
-                flows.setPurposePayment(row.getCell(11) == null ? "" : row.getCell(11).toString());
-                flows.setPayment(row.getCell(12) == null ? "" : row.getCell(12).toString());
-                flows.setUnderFacilities(underFacilities);
-                flows.setLevelTwo(row.getCell(14) == null ? "" : row.getCell(14).toString());
-                flows.setLevelThree(row.getCell(15) == null ? "" : row.getCell(15).toString());
-
-                mainFlowsList.add(flows);
-
-            }
-        }
-        mainFlowsService.createList(mainFlowsList);
     }
 
     private static <R> Predicate<R> not(Predicate<R> predicate) {
