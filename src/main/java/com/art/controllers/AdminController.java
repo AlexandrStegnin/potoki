@@ -1,12 +1,11 @@
 package com.art.controllers;
 
 import com.art.func.GetPrincipalFunc;
-import com.art.model.Stuffs;
 import com.art.model.Users;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
+import com.art.model.supporting.enums.UserStatus;
 import com.art.service.InvestorsFlowsService;
-import com.art.service.StuffService;
 import com.art.service.UserService;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.RememberMeAuthenticationToken;
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -27,9 +26,6 @@ public class AdminController {
 
     @Resource(name = "userService")
     private UserService userService;
-
-    @Resource(name = "stuffService")
-    private StuffService stuffService;
 
     @Resource(name = "getPrincipalFunc")
     private GetPrincipalFunc getPrincipalFunc;
@@ -88,11 +84,8 @@ public class AdminController {
 
     }
 
-    @ModelAttribute("stuffs")
-    public List<Stuffs> initializeStuffs() {
-        List<Stuffs> stuffs = new ArrayList<>();
-        Stuffs confirmed = new Stuffs("-1", "Не подтверждён");
-        stuffs.add(confirmed);
-        return stuffs;
+    @ModelAttribute("userStatuses")
+    public List<UserStatus> initializeStatuses() {
+        return Arrays.asList(UserStatus.values());
     }
 }

@@ -215,17 +215,17 @@ function deleteUser(userId) {
 }
 
 function prepareUsersFilter() {
-    let stuff = $('#srchStuff').find(':selected').text();
+    let status = $('#userStatus').find(':selected').text();
 
-    if (stuff !== 'Все' && stuff !== 'Не подтверждён') {
-        filters = [];
-        apply_filter('#tblUsers tbody', 4, stuff);
-    } else if (stuff === 'Не подтверждён') {
-        filters = [];
-        apply_filter('#tblUsers tbody', 4, "Нет");
-    } else {
+    if (status === 'Все') {
         filters = [];
         apply_filter('#tblUsers tbody', 4, 'any');
+    } else if (status === 'Не подтверждён') {
+        filters = [];
+        apply_filter('#tblUsers tbody', 4, 'Нет');
+    } else if (status === 'Подтверждён') {
+        filters = [];
+        apply_filter('#tblUsers tbody', 4, 'Да');
     }
 }
 

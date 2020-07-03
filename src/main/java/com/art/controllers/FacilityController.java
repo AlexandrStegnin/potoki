@@ -18,15 +18,12 @@ import java.util.Set;
 
 @Controller
 public class FacilityController {
-    private String mGroup = "Инвесторы_";
+
     @Resource(name = "facilityService")
     private FacilityService facilityService;
 
     @Resource(name = "userService")
     private UserService userService;
-
-    @Resource(name = "stuffService")
-    private StuffService stuffService;
 
     @Resource(name = "underFacilitiesService")
     private UnderFacilitiesService underFacilitiesService;
@@ -137,18 +134,18 @@ public class FacilityController {
     public List<Users> initializeManagers() {
         List<Users> usersList = new ArrayList<>(0);
         usersList.add(new Users("0", "Выберите управляющего"));
-        usersList.addAll(userService.findRentors(stuffService.findByStuff("Управляющий").getId()));
+        usersList.addAll(userService.findAll());
         return usersList;
     }
 
     @ModelAttribute("rentors")
     public List<Users> initializeRentors() {
-        return userService.findRentors(stuffService.findByStuff("Арендатор").getId());
+        return userService.findAll();
     }
 
     @ModelAttribute("investors")
     public List<Users> initializeInvestors() {
-        return userService.findRentors(stuffService.findByStuff("Инвестор").getId());
+        return userService.findAll();
     }
 
 }

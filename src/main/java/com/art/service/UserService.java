@@ -36,20 +36,11 @@ public class UserService {
     @Resource(name = "passwordEncoder")
     private PasswordEncoder passwordEncoder;
 
-    @Resource(name = "stuffService")
-    private StuffService stuffService;
-
     @Resource(name = "personalMailService")
     private PersonalMailService personalMailService;
 
-    private final AccountService accountService;
-
     @PersistenceContext(name = "persistanceUnit")
     private EntityManager em;
-
-    public UserService(AccountService accountService) {
-        this.accountService = accountService;
-    }
 
     public List<Users> findAll() {
         return userRepository.findAll();
