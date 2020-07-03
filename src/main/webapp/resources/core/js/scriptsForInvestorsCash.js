@@ -305,7 +305,7 @@ jQuery(document).ready(function ($) {
                 if (!$(this).data('passed')) {
                     $(this).find(':checkbox:not(:disabled)').prop('checked', false);
                 } else {
-                    if ($(this).find('td:eq(9)').text() === '') {
+                    if ($(this).find('td:eq(8)').text() === '') {
                         $(this).find(':checkbox:not(:disabled)').prop('checked', function () {
                             if (!noDivide) {
                                 noDivide = ($(this).closest('tr').find('> td:eq(1)').text().length > 0 &&
@@ -1103,6 +1103,10 @@ function prepareSaveCash() {
         $('#underFacilityErr').css('display', 'none');
     }
 
+    if (underFacility.underFacility === 'Без подобъекта') {
+        underFacility = null;
+    }
+
     shareKind = {
         id: reinvestData.find('#shareKindName').val(),
         shareKind: $('#shareKindName').find('option:selected').text()
@@ -1159,9 +1163,9 @@ function prepareSaveCash() {
                 facility: facility,
                 investor: investor,
                 cashSource: null,
-                cashType: null,
+                // cashType: null,
                 newCashDetails: null,
-                investorsType: investorsType,
+                // investorsType: investorsType,
                 underFacility: underFacility,
                 dateClosingInvest: null,
                 typeClosingInvest: null,
