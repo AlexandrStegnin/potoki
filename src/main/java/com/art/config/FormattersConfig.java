@@ -28,12 +28,6 @@ public class FormattersConfig extends WebMvcConfigurerAdapter {
     @Resource(name = "facilityService")
     private FacilityService facilityService;
 
-    @Resource(name = "paymentsMethodService")
-    private PaymentsMethodService paymentsMethodService;
-
-    @Resource(name = "paymentsTypeService")
-    private PaymentsTypeService paymentsTypeService;
-
     @Resource(name = "underFacilitiesService")
     private UnderFacilitiesService underFacilitiesService;
 
@@ -76,9 +70,7 @@ public class FormattersConfig extends WebMvcConfigurerAdapter {
         registry.addConverter(new StringToStuffConverter(stuffService));
         registry.addConverter(new StringToUserConverter(userService));
         registry.addConverter(new StringToFacilityConverter(facilityService));
-        registry.addConverter(new StringToPaymentsMethodConverter(paymentsMethodService));
         registry.addConverter(new StringToDateConverter());
-        registry.addConverter(new StringToPaymentsTypeConverter(paymentsTypeService));
         registry.addConverter(new StringToUnderFacilitiesConverter(underFacilitiesService));
         registry.addConverter(new StringToTypeExpensesConverter(typeExpensesService));
         registry.addConverter(new StringToMailingGroupsConverter(mailingGroupsService));
