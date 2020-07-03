@@ -135,11 +135,15 @@ public class Users implements Serializable {
         this.profile = new UserProfile(userDTO.getProfile());
         this.login = userDTO.getLogin();
         this.roles = convertRoles(userDTO.getRoles());
-        this.kin = KinEnum.valueOf(userDTO.getKin().toUpperCase());
+        this.kin = userDTO.getKin() == null ? null : KinEnum.valueOf(userDTO.getKin().toUpperCase());
         this.partnerId = userDTO.getPartnerId();
+        this.password = userDTO.getPassword();
     }
 
     private List<Roles> convertRoles(List<RoleDTO> dtoList) {
+        if (null == dtoList) {
+            return null;
+        }
         return dtoList.stream().map(Roles::new).collect(Collectors.toList());
     }
 

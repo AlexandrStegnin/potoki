@@ -26,6 +26,8 @@ public class UserDTO {
 
     Long partnerId;
 
+    String password;
+
     UserProfileDTO profile;
 
 }

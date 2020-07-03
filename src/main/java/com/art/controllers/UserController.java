@@ -88,9 +88,12 @@ public class UserController {
     }
 
     @PostMapping(value = "/profile")
-    public ModelAndView profilePage(@ModelAttribute("user") Users user, Principal principal) {
-        ModelAndView modelAndView = new ModelAndView("welcome");
-        userService.update(user);
+    public ModelAndView profilePage(@ModelAttribute("user") UserDTO userDTO, Principal principal) {
+        ModelAndView modelAndView = new ModelAndView("profile");
+        Users user = new Users(userDTO);
+        userService.updateProfile(user);
+        user.setPassword(null);
+        modelAndView.addObject("user", user);
         return modelAndView;
     }
 

@@ -23,7 +23,6 @@
     <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min_old.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/AjaxLoader.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/mailingScripts.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/forLoadPdfFiles.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/datatables.min.js' />"></script>
         <script type="text/javascript" src="<c:url value='/resources/core/js/scripsForProfile.js' />"></script>
@@ -103,9 +102,9 @@
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="email">Email</label>
                 <div class="col-md-9">
-                    <form:input type="text" path="email" id="email" class="form-control input-sm"/>
+                    <form:input type="text" path="profile.email" id="email" class="form-control input-sm"/>
                     <div class="has-error">
-                        <form:errors path="email" class="help-inline"/>
+                        <form:errors path="profile.email" class="help-inline"/>
                     </div>
                 </div>
             </div>
@@ -121,14 +120,6 @@
 
                 </sec:authorize>
 
-                <sec:authorize access="isFullyAuthenticated()">
-                    <sec:authorize access="hasRole('BIGDADDY')">
-                        <div class="form-group-sm col-md-7">
-                            <a style="text-align: center;" class="btn btn-link btn-sm pull-left"
-                               href="<c:url value='/createmail' />">Написать письмо</a>
-                        </div>
-                    </sec:authorize>
-                </sec:authorize>
                 <div class="form-group-sm col-md-5 pull-right">
                     <input id="send" type="submit" value="Сохранить" ${disabledSubmit}
                            class="btn btn-primary btn-sm col-md-offset-8"/> или

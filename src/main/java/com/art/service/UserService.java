@@ -126,6 +126,17 @@ public class UserService {
         em.merge(user);
     }
 
+    public void updateProfile(Users user) {
+        Users dbUser = findById(user.getId());
+        if (null != user.getPassword()) {
+            dbUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+        if (null != user.getProfile().getEmail()) {
+            dbUser.getProfile().setEmail(user.getProfile().getEmail());
+        }
+        userRepository.save(dbUser);
+    }
+
     public void update(Users user) {
         Users dbUser = findById(user.getId());
         dbUser.setPartnerId(user.getPartnerId());
