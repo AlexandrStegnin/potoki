@@ -32,13 +32,17 @@ public class UserService {
 
     private final PersonalMailService personalMailService;
 
+    private final AccountService accountService;
+
     @PersistenceContext(name = "persistanceUnit")
     private EntityManager em;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, PersonalMailService personalMailService) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, PersonalMailService personalMailService,
+                       AccountService accountService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.personalMailService = personalMailService;
+        this.accountService = accountService;
     }
 
     public List<Users> findAll() {
@@ -122,8 +126,12 @@ public class UserService {
     }
 
     public void create(Users user) {
-        sendWelcomeMessage(user);
-        em.merge(user);
+        String password = generatePassword();
+        user.setPassword(password);
+        user.getProfile().setUser(user);
+        userRepository.save(user);
+        accountService.createAccount(user);
+        sendWelcomeMessage(user, password);
     }
 
     public void updateProfile(Users user) {
@@ -150,8 +158,7 @@ public class UserService {
         userRepository.save(dbUser);
     }
 
-    private void sendWelcomeMessage(Users user) {
-        String uuid = UUID.randomUUID().toString().substring(0, 8);
+    private void sendWelcomeMessage(Users user, String password) {
         SendingMail mail = new SendingMail();
         mail.setSubject("Добро пожаловать в Доходный Дом КолесникЪ!");
         mail.setBody("Здравствуйте, уважаемый Инвестор!<br/>" +
@@ -159,13 +166,12 @@ public class UserService {
                 "Наша видео инструкция поможет сориентироваться (https://youtu.be/nWtQdlP5GDU)<br/>" +
                 "Данные для входа:<br/>" +
                 "login: " + user.getLogin() + "<br/>" +
-                "Пароль: " + uuid + "<br/>" +
+                "Пароль: " + password + "<br/>" +
                 "С уважением,<br/>" +
                 "Сергей Колесник.");
         String who = "ДД Колесникъ";
         Properties prop = getProp();
         personalMailService.sendEmails(user, mail, prop.getProperty("mail.kolesnik"), prop.getProperty("mail.kolesnikpwd"), who, null);
-        user.setPassword(passwordEncoder.encode(uuid));
     }
 
     public Users findByLoginAndEmail(String login, String email) {
@@ -193,6 +199,10 @@ public class UserService {
 
     public List<Users> getForFindPartnerChild() {
         return userRepository.getForFindPartnerChild();
+    }
+
+    private String generatePassword() {
+        return UUID.randomUUID().toString().substring(0, 8);
     }
 
 }
