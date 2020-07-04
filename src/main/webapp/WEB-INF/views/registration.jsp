@@ -27,32 +27,6 @@
     <form:form method="POST" modelAttribute="user" class="form-horizontal" id="save">
         <form:input type="hidden" path="id" id="id"/>
         <form:input type="hidden" path="" id="edit" value="${edit}"/>
-        <div class="row">
-            <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="lastName">Фамилия:</label>
-                <div class="col-md-7">
-                    <form:input type="text" path="profile.lastName" id="lastName" class="form-control input-sm" />
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="firstName">Имя:</label>
-                <div class="col-md-7">
-                    <form:input type="text" path="profile.firstName" id="firstName" class="form-control input-sm"/>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="patronymic">Отчество:</label>
-                <div class="col-md-7">
-                    <form:input type="text" path="profile.patronymic" id="patronymic" class="form-control input-sm" />
-                </div>
-            </div>
-        </div>
 
         <div class="row">
             <div class="form-group col-md-12">
@@ -102,6 +76,33 @@
                 <div class="col-md-7">
                     <form:select path="roles" id="roles" items="${roles}" multiple="true"
                                  itemValue="id" itemLabel="role" class="form-control input-sm" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label class="col-md-3 control-lable" for="lastName">Фамилия:</label>
+                <div class="col-md-7">
+                    <form:input type="text" path="profile.lastName" id="lastName" class="form-control input-sm" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label class="col-md-3 control-lable" for="firstName">Имя:</label>
+                <div class="col-md-7">
+                    <form:input type="text" path="profile.firstName" id="firstName" class="form-control input-sm"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label class="col-md-3 control-lable" for="patronymic">Отчество:</label>
+                <div class="col-md-7">
+                    <form:input type="text" path="profile.patronymic" id="patronymic" class="form-control input-sm" />
                 </div>
             </div>
         </div>

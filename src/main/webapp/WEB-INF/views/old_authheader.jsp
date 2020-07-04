@@ -67,7 +67,7 @@
                             <li><a href="/catalogue">
                             <span style="margin-right: 5px; color: dodgerblue;"
                                   class="glyphicon glyphicon-book"></span>Справочники</a></li>
-                            <li><a href="/newuser">
+                            <li><a href="/users/create">
                             <span style="margin-right: 5px;  color: dodgerblue;"
                                   class="glyphicon glyphicon-plus"></span>Добавить пользователя</a></li>
                             <li><a href="/newfacility">

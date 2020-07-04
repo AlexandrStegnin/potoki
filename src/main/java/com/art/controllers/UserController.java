@@ -41,18 +41,21 @@ public class UserController {
 
     private final UsersAnnexToContractsService usersAnnexToContractsService;
 
+    private final AccountService accountService;
+
     @Resource(name = "getPrincipalFunc")
     private GetPrincipalFunc getPrincipalFunc;
 
     public UserController(UserService userService, GetServiceStatus getServiceStatus, RoleService roleService,
                           FacilityService facilityService, InvestorsCashService investorsCashService,
-                          UsersAnnexToContractsService usersAnnexToContractsService) {
+                          UsersAnnexToContractsService usersAnnexToContractsService, AccountService accountService) {
         this.userService = userService;
         this.getServiceStatus = getServiceStatus;
         this.roleService = roleService;
         this.facilityService = facilityService;
         this.investorsCashService = investorsCashService;
         this.usersAnnexToContractsService = usersAnnexToContractsService;
+        this.accountService = accountService;
     }
 
     /*
@@ -66,7 +69,7 @@ public class UserController {
         String title = "Личный кабинет";
         ModelAndView modelAndView = new ModelAndView("profile");
         Users user = userService.findByLoginWithAnnexes(principal.getName());
-
+        Account account = accountService.findByOwnerId(user.getId());
         List<UsersAnnexToContracts> usersAnnexToContracts = user.getUsersAnnexToContractsList();
 
         user.setPassword("");
@@ -83,6 +86,7 @@ public class UserController {
         modelAndView.addObject("user", user);
         modelAndView.addObject("title", title);
         modelAndView.addObject("search", new SearchSummary());
+        modelAndView.addObject("accountNumber", account.getAccountNumber());
         return modelAndView;
     }
 
@@ -156,11 +160,21 @@ public class UserController {
     }
 
     /**
+     * Страница создания пользователя
+     */
+    @GetMapping(path = "/users/create", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public String createUser(ModelMap model) {
+        Users user = new Users();
+        model.addAttribute("user", user);
+        return "registration";
+    }
+
+    /**
      * Создание/обновление пользователя
      */
     @PostMapping(path = "/users/save", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
-    GenericResponse updateUser(@RequestBody UserDTO userDTO) {
+    GenericResponse saveUser(@RequestBody UserDTO userDTO) {
         Users user = new Users(userDTO);
         String message;
         if (user.getId() == null) {

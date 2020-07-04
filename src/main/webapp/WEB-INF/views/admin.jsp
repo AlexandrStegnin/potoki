@@ -40,7 +40,7 @@
             <button type="button" id="bth-search" class="btn btn-primary btn-sm">Фильтр</button>
             <sec:authorize access="isFullyAuthenticated()">
                 <sec:authorize access="hasRole('ADMIN')">
-                    <a href="<c:url value='/users/save' />" class="btn btn-link btn-sm pull-right">Добавить
+                    <a href="<c:url value='/users/create' />" class="btn btn-link btn-sm pull-right">Добавить
                         пользователя</a>
                 </sec:authorize>
             </sec:authorize>

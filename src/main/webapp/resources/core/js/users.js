@@ -132,9 +132,7 @@ function prepareUserSave() {
         partnerId: partner.id
     };
 
-    let profile = new UserProfileDTO();
-    profile.build(userId, $('#lastName').val(), $('#firstName').val(), $('#patronymic').val(), $('#email').val());
-    userDTO.profile = profile;
+    userDTO.profile = createProfile(userId, $('#lastName').val(), $('#firstName').val(), $('#patronymic').val(), $('#email').val());
 
     saveUser(userDTO);
 }
@@ -157,6 +155,21 @@ function getPartner() {
         partnerDTO.partnerId = null;
     }
     return partnerDTO;
+}
+
+function createProfile(userId, lastName, firstName, patronymic, email) {
+    let profile = new UserProfileDTO();
+    if (lastName.length === 0) {
+        lastName = null;
+    }
+    if (firstName.length === 0) {
+        firstName = null;
+    }
+    if (patronymic.length === 0) {
+        patronymic = null;
+    }
+    profile.build(userId, lastName, firstName, patronymic, email);
+    return profile;
 }
 
 function saveUser(user) {

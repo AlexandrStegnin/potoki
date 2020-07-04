@@ -111,6 +111,15 @@
         </div>
 
         <div class="row">
+            <div class="form-group col-md-12">
+                <label class="col-md-3 control-lable" for="acc-number">№ счёта</label>
+                <div class="col-md-9">
+                    <input type="text" id="acc-number" class="form-control input-sm" value="${accountNumber}" readonly />
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
             <div class="form-group-sm col-md-12">
                 <sec:authorize access="isRememberMe()">
                     <p>Вы вошли с помощью функции "Запомнить меня".
