@@ -1,6 +1,8 @@
 package com.art.service;
 
 import com.art.model.Account;
+import com.art.model.Users;
+import com.art.model.supporting.enums.Region;
 import com.art.repository.AccountRepository;
 import org.springframework.stereotype.Service;
 
@@ -43,8 +45,35 @@ public class AccountService {
         accountRepository.delete(id);
     }
 
-    public Account findByAccountNumber(Long accountNumber) {
+    public Account findByAccountNumber(String accountNumber) {
         return accountRepository.findByAccountNumber(accountNumber);
+    }
+
+    public Account findByOwnerId(Long ownerId) {
+        return accountRepository.findByOwnerId(ownerId);
+    }
+
+    public void createAccount(Users user) {
+        Account account = new Account();
+        account.setAccountNumber(generateAccountNumber(user));
+        account.setOwnerId(user.getId());
+        accountRepository.save(account);
+    }
+
+    private String generateAccountNumber(Users user) {
+        /*
+        первые 5 цифр 00000 (порядковый номер клиента),
+        вторые 3 цифры (номер региона),
+        далее 4 цифры (порядковый номер объекта),
+        далее 2 цифры (порядковый номер подобъекта) - всего 14 символов поллучается
+         */
+        String clientCode = user.getLogin().substring("investor".length());
+        String regionNumber = getRegionNumber();
+        return clientCode.concat(regionNumber);
+    }
+
+    private String getRegionNumber() {
+        return Region.TMN.getNumber();
     }
 
 }
