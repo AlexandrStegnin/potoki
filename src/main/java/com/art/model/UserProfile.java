@@ -19,12 +19,7 @@ public class UserProfile {
     @Id
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "id")
-    @MapsId
-    private Account account;
-
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id")
     @MapsId
     private Users user;
