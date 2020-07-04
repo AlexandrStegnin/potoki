@@ -35,6 +35,13 @@ public class Account {
     private Set<AccountTransaction> transactions = new HashSet<>();
 
     @Column(name = "account_number")
-    private Long accountNumber;
+    private String accountNumber;
+
+    @Column(name = "owner_id")
+    private Long ownerId;
+
+//    @OneToOne
+//    @JoinColumn(name = "owner_id")
+//    private Facilities facility;
 
 }
