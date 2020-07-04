@@ -64,15 +64,14 @@ public class UserController {
     public ModelAndView toProfile(Principal principal) {
 
         String title = "Личный кабинет";
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("profile");
+        ModelAndView modelAndView = new ModelAndView("profile");
         Users user = userService.findByLoginWithAnnexes(principal.getName());
 
         List<UsersAnnexToContracts> usersAnnexToContracts = user.getUsersAnnexToContractsList();
 
         user.setPassword("");
         FileBucket fileModel = new FileBucket();
-        int annexCnt = (int) user.getUsersAnnexToContractsList().stream()
+        int annexCnt = (int) usersAnnexToContracts.stream()
                 .filter(a -> a.getAnnexRead() == 0)
                 .count();
 
