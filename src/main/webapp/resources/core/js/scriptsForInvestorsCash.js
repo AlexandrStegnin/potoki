@@ -699,12 +699,6 @@ function prepareCashSave(what) {
         cashSource = null;
     }
 
-    // var cashTypes = $('#cashTyp');
-    // var cashType = {id: cashTypes.find(':selected').val(), cashType: cashTypes.find(':selected').text()};
-    // if (cashType.id === '0') {
-    //     cashType = null;
-    // }
-
     var newCashDetails = $('#cashDetail');
     var newCashDetail = {
         id: newCashDetails.find(':selected').val(),
@@ -713,15 +707,6 @@ function prepareCashSave(what) {
     if (newCashDetail.id === '0') {
         newCashDetail = null;
     }
-
-    // var investorsTypes = $('#invType');
-    // var investorsType = {
-    //     id: investorsTypes.find(':selected').val(),
-    //     investorsType: investorsTypes.find(':selected').text()
-    // };
-    // if (investorsType.id === '0') {
-    //     investorsType = null;
-    // }
 
     var dateClosingInvest = new Date($('#dateCloseInv').val()).getTime();
 
@@ -1060,7 +1045,6 @@ function prepareSaveCash() {
     let facility;
     let underFacility;
     let investor;
-    let investorsType;
     let dateReport;
     let dateClose;
     let shareKind;
@@ -1163,9 +1147,7 @@ function prepareSaveCash() {
                 facility: facility,
                 investor: investor,
                 cashSource: null,
-                // cashType: null,
                 newCashDetails: null,
-                // investorsType: investorsType,
                 underFacility: underFacility,
                 dateClosingInvest: null,
                 typeClosingInvest: null,
@@ -1340,7 +1322,7 @@ function prepareDivideCash() {
     divideData.find('#underFacilities').find('option:selected').each(function (ind, el) {
         reUnderFacility = {
             id: el.id,
-            underFacility: el.value
+            underFacility: el.innerText
         };
         reUnderFacilitiesList.push(reUnderFacility);
     });
@@ -1450,9 +1432,7 @@ function prepareDivideCash() {
                 givedCash: givedCash,
                 dateGivedCash: dateGivedCash,
                 cashSource: cashSource,
-                // cashType: cashType,
                 newCashDetails: newCashDetails,
-                // investorsType: investorsType,
                 dateClosingInvest: dateClosingInvest,
                 typeClosingInvest: typeClosingInvest,
                 shareKind: shareKind,
