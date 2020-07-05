@@ -4,7 +4,9 @@ import com.art.func.GetPrincipalFunc;
 import com.art.model.Users;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
+import com.art.model.supporting.enums.UserRole;
 import com.art.model.supporting.enums.UserStatus;
+import com.art.model.supporting.filters.Filterable;
 import com.art.service.InvestorsFlowsService;
 import com.art.service.UserService;
 import org.springframework.security.access.annotation.Secured;
@@ -18,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -85,7 +87,14 @@ public class AdminController {
     }
 
     @ModelAttribute("userStatuses")
-    public List<UserStatus> initializeStatuses() {
-        return Arrays.asList(UserStatus.values());
+    public List<Filterable> initializeStatuses() {
+        List<Filterable> statusesAndRoles = new ArrayList<>();
+        statusesAndRoles.add(UserStatus.ALL);
+        statusesAndRoles.add(UserRole.ROLE_INVESTOR);
+        statusesAndRoles.add(UserRole.ROLE_MANAGER);
+        statusesAndRoles.add(UserRole.ROLE_ADMIN);
+        statusesAndRoles.add(UserStatus.CONFIRMED);
+        statusesAndRoles.add(UserStatus.NOT_CONFIRMED);
+        return statusesAndRoles;
     }
 }

@@ -1,10 +1,12 @@
 package com.art.model.supporting.enums;
 
+import com.art.model.supporting.filters.Filterable;
+
 /**
  * @author Alexandr Stegnin
  */
 
-public enum UserStatus {
+public enum UserStatus implements Filterable {
 
     ALL(1, "Все"),
     CONFIRMED(2, "Подтверждён"),

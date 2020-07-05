@@ -258,6 +258,9 @@ function prepareUsersFilter() {
     } else if (status === 'Подтверждён') {
         filters = [];
         apply_filter('#tblUsers tbody', 4, 'Да');
+    } else {
+        filters = [];
+        apply_filter('#tblUsers tbody', 5, status);
     }
 }
 

@@ -1,30 +1,34 @@
 package com.art.model.supporting.enums;
 
+import com.art.model.supporting.filters.Filterable;
+
 /**
  * @author Alexandr Stegnin
  */
 
-public enum UserRole {
+public enum UserRole implements Filterable {
 
     UNDEFINED(0, "Не определена"),
     ROLE_INVESTOR(1, "Инвестор"),
-    ROLE_ADMIN(2, "Админ");
+    ROLE_MANAGER(2, "Управляющий"),
+    ROLE_ADMIN(3, "Админ");
 
     private final int id;
 
-    private final String name;
+    private final String title;
 
-    UserRole(int id, String name) {
+    UserRole(int id, String title) {
         this.id = id;
-        this.name = name;
+        this.title = title;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    @Override
+    public String getTitle() {
+        return title;
     }
 
     public static UserRole fromId(int id) {
@@ -36,9 +40,9 @@ public enum UserRole {
         return UNDEFINED;
     }
 
-    public static UserRole fromName(String name) {
+    public static UserRole fromTitle(String title) {
         for (UserRole role : values()) {
-            if (role.getName().equalsIgnoreCase(name)) {
+            if (role.getTitle().equalsIgnoreCase(title)) {
                 return role;
             }
         }

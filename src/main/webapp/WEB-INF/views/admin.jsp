@@ -52,6 +52,7 @@
                 <th>Имя пользователя</th>
                 <th>Email</th>
                 <th>Подтверждён</th>
+                <th>Роль</th>
                 <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                     <th style="text-align: center;" colspan="2">Действие</th>
                 </sec:authorize>
@@ -72,6 +73,20 @@
                             <td>Нет</td>
                         </c:otherwise>
                     </c:choose>
+                    <c:forEach items="${user.roles}" var="role">
+                        <c:choose>
+                            <c:when test="${role.role == 'ROLE_ADMIN'}">
+                                <c:set var="roleName" value="Админ" />
+                            </c:when>
+                            <c:when test="${role.role == 'ROLE_INVESTOR'}">
+                                <c:set var="roleName" value="Инвестор" />
+                            </c:when>
+                            <c:when test="${role.role == 'ROLE_MANAGER'}">
+                                <c:set var="roleName" value="Управляющий" />
+                            </c:when>
+                        </c:choose>
+                    </c:forEach>
+                    <td>${roleName}</td>
                     <sec:authorize access="isFullyAuthenticated()">
                         <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                             <td><a href="<c:url value='/edit-user-${user.id}' />" class="btn btn-success custom-width">Изменить</a>
