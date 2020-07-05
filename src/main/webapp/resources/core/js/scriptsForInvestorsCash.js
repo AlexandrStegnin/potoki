@@ -1318,9 +1318,7 @@ function prepareDivideCash() {
     let givedCash;
     let dateGivedCash;
     let cashSource;
-    let cashType;
     let newCashDetails;
-    let investorsType;
     let dateClosingInvest;
     let typeClosingInvest;
     let shareKind;
@@ -1398,26 +1396,12 @@ function prepareDivideCash() {
             if (cashSource.cashSource.length === 0) {
                 cashSource = null;
             }
-            cashType = {
-                id: current.children('td:eq(6)').attr('data-cash-type-id'),
-                cashType: current.children('td:eq(6)').text()
-            };
-            if (cashType.cashType.length === 0) {
-                cashType = null;
-            }
             newCashDetails = {
                 id: current.children('td:eq(7)').attr('data-cash-details-id'),
                 newCashDetail: current.children('td:eq(7)').text()
             };
             if (newCashDetails.newCashDetail.length === 0) {
                 newCashDetails = null;
-            }
-            investorsType = {
-                id: current.children('td:eq(8)').attr('data-investors-type-id'),
-                investorsType: current.children('td:eq(8)').text()
-            };
-            if (investorsType.investorsType.length === 0) {
-                investorsType = null;
             }
 
             shareKind = {
@@ -1428,7 +1412,11 @@ function prepareDivideCash() {
                 shareKind = null;
             }
             dateReport = current.children('td:eq(12)').attr('data-date-report');
-            if (dateReport.length === 0) {
+            if (typeof dateReport !== 'undefined') {
+                if (dateReport.length === 0) {
+                    dateReport = null;
+                }
+            } else {
                 dateReport = null;
             }
 
@@ -1462,9 +1450,9 @@ function prepareDivideCash() {
                 givedCash: givedCash,
                 dateGivedCash: dateGivedCash,
                 cashSource: cashSource,
-                cashType: cashType,
+                // cashType: cashType,
                 newCashDetails: newCashDetails,
-                investorsType: investorsType,
+                // investorsType: investorsType,
                 dateClosingInvest: dateClosingInvest,
                 typeClosingInvest: typeClosingInvest,
                 shareKind: shareKind,
