@@ -1,5 +1,6 @@
 package com.art.service;
 
+import com.art.config.application.Constant;
 import com.art.model.Account;
 import com.art.model.Users;
 import com.art.model.supporting.enums.Region;
@@ -67,7 +68,7 @@ public class AccountService {
         далее 4 цифры (порядковый номер объекта),
         далее 2 цифры (порядковый номер подобъекта) - всего 14 символов поллучается
          */
-        String clientCode = user.getLogin().substring("investor".length());
+        String clientCode = user.getLogin().substring(Constant.INVESTOR_PREFIX.length());
         String regionNumber = getRegionNumber();
         return clientCode.concat(regionNumber);
     }

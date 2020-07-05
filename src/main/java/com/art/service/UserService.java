@@ -1,9 +1,11 @@
 package com.art.service;
 
 import com.art.config.AppSecurityConfig;
+import com.art.config.SecurityUtils;
 import com.art.func.PersonalMailService;
 import com.art.model.*;
 import com.art.model.supporting.SendingMail;
+import com.art.model.supporting.enums.UserRole;
 import com.art.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -130,8 +132,10 @@ public class UserService {
         user.setPassword(password);
         user.getProfile().setUser(user);
         userRepository.save(user);
-        accountService.createAccount(user);
-        sendWelcomeMessage(user, password);
+        if (SecurityUtils.isUserInRole(user, UserRole.ROLE_INVESTOR)) {
+            accountService.createAccount(user);
+            sendWelcomeMessage(user, password);
+        }
     }
 
     public void updateProfile(Users user) {
