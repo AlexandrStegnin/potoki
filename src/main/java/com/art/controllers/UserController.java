@@ -84,7 +84,7 @@ public class UserController {
                 .filter(a -> a.getAnnexRead() == 0)
                 .count();
 
-        int totalAnnex = user.getUsersAnnexToContractsList().size();
+        int totalAnnex = usersAnnexToContracts.size();
         modelAndView.addObject("usersAnnexToContractsList", usersAnnexToContracts);
         modelAndView.addObject("totalAnnex", totalAnnex);
         modelAndView.addObject("annexCnt", annexCnt);
