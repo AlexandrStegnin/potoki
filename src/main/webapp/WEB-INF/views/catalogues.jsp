@@ -49,13 +49,11 @@
         <a href="<c:url value='/viewcashsources' />" class="btn btn-success btn-block">Источники получения денег (CashSources)</a>
         <a href="<c:url value='/viewnewcashdetails' />" class="btn btn-success btn-block">Детали новых денег (NewCashDetails)</a>
         <a href="<c:url value='/viewTypesClosingInvest' />" class="btn btn-success btn-block">Виды закрытия вложений (TypeClosingInvest)</a>
-        <a href="<c:url value='/viewShareKind' />" class="btn btn-success btn-block">Виды долей (ShareKind)</a>
         <a href="<c:url value='/marketingTree' />" class="btn btn-success btn-block">Маркетинговое дерево (MarketingTree)</a>
         <a href="<c:url value='/calculateInvShare' />" class="btn btn-success btn-block">Доли инвесторов (InvestorShare/InvestorShareTmp)</a>
-        <a href="<c:url value='/tokens' />" class="btn btn-success btn-block">Токены приложений (app_tokens)</a>
         <a href="<c:url value='/investor/annexes' />" class="btn btn-success btn-block">Приложения к договорам инвесторов (UsersAnnexToContracts)</a>
         <a href="<c:url value='/transactions' />" class="btn btn-success btn-block">Лог операций (transaction_log)</a>
-<%--        <a href="<c:url value='/client/types' />" class="btn btn-success btn-block">Виды клиентов (client_type)</a>--%>
+        <a href="<c:url value='/tokens' />" class="btn btn-success btn-block">Токены приложений (app_tokens)</a>
     </sec:authorize>
     </div>
 </div>
