@@ -70,6 +70,12 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView("profile");
         Users user = userService.findByLoginWithAnnexes(principal.getName());
         Account account = accountService.findByOwnerId(user.getId());
+        String accountNumber;
+        if (null == account) {
+            accountNumber = "";
+        } else {
+            accountNumber = account.getAccountNumber();
+        }
         List<UsersAnnexToContracts> usersAnnexToContracts = user.getUsersAnnexToContractsList();
 
         user.setPassword("");
@@ -86,7 +92,7 @@ public class UserController {
         modelAndView.addObject("user", user);
         modelAndView.addObject("title", title);
         modelAndView.addObject("search", new SearchSummary());
-        modelAndView.addObject("accountNumber", account.getAccountNumber());
+        modelAndView.addObject("accountNumber", accountNumber);
         return modelAndView;
     }
 
