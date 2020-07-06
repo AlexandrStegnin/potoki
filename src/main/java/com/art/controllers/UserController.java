@@ -76,7 +76,7 @@ public class UserController {
         } else {
             accountNumber = account.getAccountNumber();
         }
-        List<UsersAnnexToContracts> usersAnnexToContracts = user.getUsersAnnexToContractsList();
+        List<UsersAnnexToContracts> usersAnnexToContracts = usersAnnexToContractsService.findByUserId(user.getId());
 
         user.setPassword("");
         FileBucket fileModel = new FileBucket();
