@@ -36,8 +36,6 @@ public class Users implements Serializable {
     @Column(name = "Kin")
     private KinEnum kin;
 
-//    private List<UsersAnnexToContracts> usersAnnexToContractsList;
-
     public Users() {
     }
 
@@ -106,18 +104,6 @@ public class Users implements Serializable {
 
     @Column
     private Long partnerId;
-
-//    @ManyToMany(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.LAZY)
-//    @JoinTable(name = "UsersAnnexToContracts",
-//            joinColumns = {@JoinColumn(name = "UserId")},
-//            inverseJoinColumns = @JoinColumn(name = "Id"))
-//    public List<UsersAnnexToContracts> getUsersAnnexToContractsList() {
-//        return usersAnnexToContractsList;
-//    }
-//
-//    public void setUsersAnnexToContractsList(List<UsersAnnexToContracts> usersAnnexToContractsList) {
-//        this.usersAnnexToContractsList = usersAnnexToContractsList;
-//    }
 
     @Column(name = "confirmed")
     private boolean confirmed;
