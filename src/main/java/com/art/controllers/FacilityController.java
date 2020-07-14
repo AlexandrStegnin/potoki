@@ -15,7 +15,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigInteger;
 import java.util.List;
 
 @Controller
@@ -45,13 +44,13 @@ public class FacilityController {
         Facility facility = new Facility();
         model.addAttribute("newFacility", facility);
         model.addAttribute("edit", false);
-        return "update-facility";
+        return "facility-add";
     }
 
     @PostMapping(path = Location.FACILITIES_CREATE)
     public String saveFacility(@ModelAttribute("newFacility") Facility newFacility, BindingResult result, ModelMap model) {
         if (result.hasErrors()) {
-            return "update-facility";
+            return "facility-add";
         }
         String ret = "списку объектов.";
         String redirectUrl = Location.FACILITIES_LIST;
@@ -67,7 +66,7 @@ public class FacilityController {
     public String adminFacility(ModelMap model) {
         List<Facility> facilities = facilityService.findAll();
         model.addAttribute("facilities", facilities);
-        return "facilities-list";
+        return "facility-list";
     }
 
     /**
@@ -78,7 +77,7 @@ public class FacilityController {
         Facility facility = facilityService.findById(id);
         model.addAttribute("newFacility", facility);
         model.addAttribute("edit", true);
-        return "update-facility";
+        return "facility-add";
     }
 
     /**
@@ -89,7 +88,7 @@ public class FacilityController {
         String ret = "списку объектов.";
         String redirectUrl = Location.FACILITIES_LIST;
         if (result.hasErrors()) {
-            return "update-facility";
+            return "facility-add";
         }
         facilityService.update(facility);
 
