@@ -61,7 +61,7 @@ public class UnderFacilitiesController {
         underFacilities.setRooms(rooms);
         underFacilitiesService.update(underFacilities);
 
-        model.addAttribute("success", "Данные по подобъекту " + underFacilities.getFacility().getName() +
+        model.addAttribute("success", "Данные по подобъекту " + underFacilities.getUnderFacility() +
                 " успешно обновлены.");
         model.addAttribute("redirectUrl", redirectUrl);
         model.addAttribute("ret", ret);
@@ -96,7 +96,7 @@ public class UnderFacilitiesController {
 
         underFacilitiesService.create(underFacilities);
 
-        model.addAttribute("success", "Подобъект " + underFacilities.getFacility().getName() +
+        model.addAttribute("success", "Подобъект " + underFacilities.getUnderFacility() +
                 " успешно добавлен.");
         model.addAttribute("redirectUrl", redirectUrl);
         model.addAttribute("ret", ret);
