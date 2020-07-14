@@ -21,16 +21,16 @@ public class UnderFacilities implements Serializable {
     private BigInteger id;
     private BigInteger facilityId;
     private String underFacility;
-    private Facilities facility;
+    private Facility facility;
     private Set<Rooms> rooms;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FacilityId", referencedColumnName = "Id")
-    public Facilities getFacility() {
+    public Facility getFacility() {
         return facility;
     }
 
-    public void setFacility(Facilities facility) {
+    public void setFacility(Facility facility) {
         this.facility = facility;
     }
 

@@ -18,7 +18,6 @@
     <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min_old.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/AjaxLoader.js' />" ></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/mailingScripts.js' />" ></script>
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
 </head>
 
@@ -33,9 +32,9 @@
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="f_name">Название:</label>
                 <div class="col-md-7">
-                    <form:input type="text" path="facility" id="f_name" class="form-control input-sm" />
+                    <form:input type="text" path="name" id="f_name" class="form-control input-sm" />
                     <div class="has-error">
-                        <form:errors path="facility" class="help-inline"/>
+                        <form:errors path="name" class="help-inline"/>
                     </div>
                 </div>
             </div>
@@ -60,57 +59,6 @@
                     <form:input type="text" path="city" id="city" class="form-control input-sm"/>
                     <div class="has-error">
                         <form:errors path="city" class="help-inline"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="address">Адрес:</label>
-                <div class="col-md-7">
-                    <form:input type="text" path="address" id="address" class="form-control input-sm" />
-                    <div class="has-error">
-                        <form:errors path="address" class="help-inline"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="stuffs">Управляющий:</label>
-                <div class="col-md-7">
-                    <form:select path="manager" id="stuffs" items="${managers}" multiple="false"
-                                 itemValue="id" itemLabel="login" class="form-control input-sm" />
-                    <div class="has-error">
-                        <form:errors path="manager" class="help-inline"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="investors">Инвесторы:</label>
-                <div class="col-md-7">
-                    <form:select path="investors" id="investors" items="${investors}" multiple="true"
-                                 itemValue="id" itemLabel="login" class="form-control input-sm" />
-                    <div class="has-error">
-                        <form:errors path="investors" class="help-inline"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="rentors">Арендаторы:</label>
-                <div class="col-md-7">
-                    <form:select path="investors" id="rentors" items="${rentors}" multiple="true"
-                                 itemValue="id" itemLabel="login" class="form-control input-sm" />
-                    <div class="has-error">
-                        <form:errors path="investors" class="help-inline"/>
                     </div>
                 </div>
             </div>

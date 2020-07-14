@@ -37,7 +37,7 @@ public class InvestorCashLog {
 
     @OneToOne
     @JoinColumn(name = "facility_id")
-    private Facilities facility;
+    private Facility facility;
 
     @OneToOne
     @JoinColumn(name = "under_facility_id")
@@ -73,7 +73,7 @@ public class InvestorCashLog {
 
     @OneToOne
     @JoinColumn(name = "source_facility_id")
-    private Facilities sourceFacility;
+    private Facility sourceFacility;
 
     @OneToOne
     @JoinColumn(name = "source_under_facility_id")

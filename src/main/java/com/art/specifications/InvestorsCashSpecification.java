@@ -56,12 +56,12 @@ public class InvestorsCashSpecification extends BaseSpecification<InvestorsCash,
         );
     }
 
-    private static Specification<InvestorsCash> facilityEqual(String facility) {
+    private static Specification<InvestorsCash> facilityEqual(String name) {
         return ((root, criteriaQuery, criteriaBuilder) -> {
-            if (Objects.equals(null, facility) || StringUtils.isEmpty(facility) || "Выберите объект".equalsIgnoreCase(facility.trim())) {
+            if (Objects.equals(null, name) || StringUtils.isEmpty(name) || "Выберите объект".equalsIgnoreCase(name.trim())) {
                 return null;
             } else {
-                return criteriaBuilder.equal(root.get(InvestorsCash_.facility).get(Facilities_.facility), facility);
+                return criteriaBuilder.equal(root.get(InvestorsCash_.facility).get(Facility_.name), name);
             }
         }
         );
@@ -92,7 +92,7 @@ public class InvestorsCashSpecification extends BaseSpecification<InvestorsCash,
 
     private static Specification<InvestorsCash> facilityIsNotNull() {
         return ((root, criteriaQuery, criteriaBuilder) ->
-                root.get(InvestorsCash_.facility).get(Facilities_.facility).isNotNull()
+                root.get(InvestorsCash_.facility).get(Facility_.name).isNotNull()
         );
     }
 
@@ -137,7 +137,7 @@ public class InvestorsCashSpecification extends BaseSpecification<InvestorsCash,
                 .toPredicate(root, query.orderBy(cb.asc(root.get(InvestorsCash_.dateGivedCash))), cb);
     }
 
-    private static Specification<InvestorsCash> facilityIn(List<Facilities> facilities) {
+    private static Specification<InvestorsCash> facilityIn(List<Facility> facilities) {
         return ((root, criteriaQuery, criteriaBuilder) -> {
             if (null == facilities) {
                 return null;
@@ -145,8 +145,8 @@ public class InvestorsCashSpecification extends BaseSpecification<InvestorsCash,
             if (facilities.size() == 0) {
                 return null;
             }
-            Facilities undefinedFacility = facilities.stream()
-                    .filter(facility -> facility != null && facility.getFacility().equalsIgnoreCase("Выберите объект"))
+            Facility undefinedFacility = facilities.stream()
+                    .filter(facility -> facility != null && facility.getName().equalsIgnoreCase("Выберите объект"))
                     .findFirst()
                     .orElse(null);
             if (null != undefinedFacility) {

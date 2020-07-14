@@ -75,7 +75,7 @@ public class InvestorsSummaryController {
         ModelAndView modelAndView = new ModelAndView("viewinvestorsflows");
         filters.setStartDate(startDate);
         filters.setEndDate(endDate);
-        filters.setFacility(facility);
+        filters.setFacilityStr(facility);
         filters.setUnderFacility(underFacility);
         filters.setInvestor(investor);
         FileBucket fileModel = new FileBucket();
@@ -131,7 +131,7 @@ public class InvestorsSummaryController {
     }
 
     @ModelAttribute("facilitiesList")
-    public List<Facilities> initializeFacilitiesList() {
+    public List<Facility> initializeFacilitiesList() {
         return facilityService.initializeFacilities();
     }
 

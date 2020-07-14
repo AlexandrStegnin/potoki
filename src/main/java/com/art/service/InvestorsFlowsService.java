@@ -128,10 +128,10 @@ public class InvestorsFlowsService {
 
         Root<InvestorsFlows> from = criteriaQuery.from(InvestorsFlows.class);
 
-        Facilities facility = searchSummary.getFacilities();
+        Facility facility = searchSummary.getFacility();
         if (!Objects.equals(null, facility)) {
             facility = facilityService.findById(facility.getId());
-            predicates.add(cb.like(from.get(InvestorsFlows_.facility).get(Facilities_.facility), facility.getFacility()));
+            predicates.add(cb.like(from.get(InvestorsFlows_.facility).get(Facility_.name), facility.getName()));
         }
 
         UnderFacilities underFacility = searchSummary.getUnderFacilities();
@@ -177,7 +177,7 @@ public class InvestorsFlowsService {
 
     public Page<InvestorsFlows> findAllFiltering(Pageable pageable, SearchSummary filters) {
         String investor = filters.getInvestor();
-        String facility = filters.getFacility();
+        String facility = filters.getFacilityStr();
         String underFacility = filters.getUnderFacility();
         LocalDate startDate = filters.getStartDate();
         LocalDate endDate = filters.getEndDate();

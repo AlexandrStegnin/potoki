@@ -28,7 +28,7 @@ public interface InvestorsFlowsRepository extends PagingAndSortingRepository<Inv
                     "JOIN fl.facility f " +
                     "JOIN fl.underFacilities uf " +
                     "WHERE (:investor IS NULL OR u.login = :investor) AND " +
-                    "(:facility IS NULL OR f.facility = :facility) AND " +
+                    "(:name IS NULL OR f.name = :name) AND " +
                     "(:underFacility IS NULL OR uf.underFacility = :underFacility) AND " +
                     "(:startDate IS NULL OR fl.reportDate >= :startDate) AND " +
                     "(:endDate IS NULL OR fl.reportDate <= :endDate) "
@@ -36,7 +36,7 @@ public interface InvestorsFlowsRepository extends PagingAndSortingRepository<Inv
     Page<InvestorsFlows> findFiltering(
             Pageable pageable,
             @Param(value = "investor") String investor,
-            @Param(value = "facility") String facility,
+            @Param(value = "name") String name,
             @Param(value = "underFacility") String underFacility,
             @Param(value = "startDate") Date startDate,
             @Param(value = "endDate") Date endDate

@@ -57,14 +57,14 @@
         <form:form modelAttribute="searchSummary" method="GET" action="/paysToInv" class="form-inline" id="filter-form">
             <div class="row" style="margin: 10px;">
                 <label class="sr-only" for="fFacilities">Объект:</label>
-                <form:select path="facility" id="fFacilities" multiple="false" class="selectpicker">
+                <form:select path="facilityStr" id="fFacilities" multiple="false" class="selectpicker">
                     <c:forEach var="f" items="${facilitiesList}">
                         <option
                                 <c:choose>
-                                    <c:when test="${f.facility eq 'Выберите объект'}">selected="selected"</c:when>
-                                    <c:when test="${f.facility eq searchSummary.facility}">selected="selected"</c:when>
+                                    <c:when test="${f.name eq 'Выберите объект'}">selected="selected"</c:when>
+                                    <c:when test="${f.name eq searchSummary.facilityStr}">selected="selected"</c:when>
                                 </c:choose>
-                                value="${f.facility}" id="${f.id}">${f.facility}
+                                value="${f.name}" id="${f.id}">${f.name}
                         </option>
                     </c:forEach>
                 </form:select>
@@ -172,7 +172,7 @@
             <c:forEach items="${investorsFlows}" var="flows">
                 <tr id="${flows.id}">
                     <td data-report-date="${flows.reportDate.time}">${flows.getReportDateToLocalDate()}</td>
-                    <td data-facility-id="${flows.facility.id}">${flows.facility.facility}</td>
+                    <td data-facility-id="${flows.facility.id}">${flows.facility.name}</td>
                     <td data-under-facility-id="${flows.underFacilities.id}">${flows.underFacilities.underFacility}</td>
                     <td data-room-id="${flows.room.id}">${flows.room.room}</td>
                     <td data-investor-id="${flows.investor.id}">${flows.investor.login}</td>

@@ -126,7 +126,7 @@ public class InvestorsCash implements Serializable {
     private BigInteger facilityId;
     private BigDecimal givedCash;
     private Date dateGivedCash;
-    private Facilities facility;
+    private Facility facility;
     private Users investor;
     private CashSources cashSource;
     private NewCashDetails newCashDetails;
@@ -139,7 +139,7 @@ public class InvestorsCash implements Serializable {
     private ShareType shareType;
 
     private Date dateReport;
-    private Facilities sourceFacility;
+    private Facility sourceFacility;
     private UnderFacilities sourceUnderFacility;
     private String sourceFlowsId;
     private Rooms room;
@@ -155,16 +155,16 @@ public class InvestorsCash implements Serializable {
 
     }
 
-    public InvestorsCash(Facilities facility, BigDecimal givedCash) {
+    public InvestorsCash(Facility facility, BigDecimal givedCash) {
         this.facility = facility;
         this.givedCash = givedCash;
     }
 
-    public InvestorsCash(BigDecimal givedCash, Date dateGivedCash, Facilities facility, Users investor,
+    public InvestorsCash(BigDecimal givedCash, Date dateGivedCash, Facility facility, Users investor,
                          CashSources cashSource, NewCashDetails newCashDetails,
                          UnderFacilities underFacility, Date dateClosingInvest,
                          TypeClosingInvest typeClosingInvest, ShareType shareType, Date dateReport,
-                         Facilities sourceFacility, UnderFacilities sourceUnderFacility, String sourceFlowsId,
+                         Facility sourceFacility, UnderFacilities sourceUnderFacility, String sourceFlowsId,
                          Rooms room, int isReinvest, BigInteger sourceId, String source, int isDivide) {
         this.givedCash = givedCash;
         this.dateGivedCash = dateGivedCash;
@@ -212,7 +212,7 @@ public class InvestorsCash implements Serializable {
         this.isDivide = cash.getIsDivide();
     }
 
-    public InvestorsCash(BigDecimal givedCash, Users investor, Facilities sourceFacility) {
+    public InvestorsCash(BigDecimal givedCash, Users investor, Facility sourceFacility) {
         this.givedCash = givedCash;
         this.investor = investor;
         this.sourceFacility = sourceFacility;
@@ -223,7 +223,7 @@ public class InvestorsCash implements Serializable {
         this.investorId = investorId;
     }
 
-    public InvestorsCash(Facilities facility, Users investor) {
+    public InvestorsCash(Facility facility, Users investor) {
         this.facility = facility;
         this.investor = investor;
     }
@@ -234,7 +234,7 @@ public class InvestorsCash implements Serializable {
         this.investorId = investorId;
     }
 
-    public InvestorsCash(BigDecimal givedCash, Facilities facility, Users investor) {
+    public InvestorsCash(BigDecimal givedCash, Facility facility, Users investor) {
         this.givedCash = givedCash;
         this.facility = facility;
         this.investor = investor;
@@ -247,7 +247,7 @@ public class InvestorsCash implements Serializable {
         this.investorId = investorId;
     }
 
-    public InvestorsCash(BigDecimal givedCash, Date dateGivedCash, Facilities facility, Users investor) {
+    public InvestorsCash(BigDecimal givedCash, Date dateGivedCash, Facility facility, Users investor) {
         this.givedCash = givedCash;
         this.dateGivedCash = dateGivedCash;
         this.facility = facility;
@@ -313,21 +313,21 @@ public class InvestorsCash implements Serializable {
 
     @OneToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "FacilityId", referencedColumnName = "id")
-    public Facilities getFacility() {
+    public Facility getFacility() {
         return facility;
     }
 
-    public void setFacility(Facilities facility) {
+    public void setFacility(Facility facility) {
         this.facility = facility;
     }
 
     @OneToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "SourceFacilityId", referencedColumnName = "id")
-    public Facilities getSourceFacility() {
+    public Facility getSourceFacility() {
         return sourceFacility;
     }
 
-    public void setSourceFacility(Facilities sourceFacility) {
+    public void setSourceFacility(Facility sourceFacility) {
         this.sourceFacility = sourceFacility;
     }
 

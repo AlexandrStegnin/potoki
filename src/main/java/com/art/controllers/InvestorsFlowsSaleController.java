@@ -148,7 +148,7 @@ public class InvestorsFlowsSaleController {
     }
 
     @ModelAttribute("facilities")
-    public List<Facilities> initializeFacilities() {
+    public List<Facility> initializeFacilities() {
         return facilityService.initializeFacilities();
     }
 

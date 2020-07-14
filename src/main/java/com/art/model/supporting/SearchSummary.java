@@ -16,8 +16,8 @@ import java.util.List;
 @Setter
 public class SearchSummary implements Serializable {
 
-    List<Users> investorsList;
-    private String facility;
+    private List<Users> investorsList;
+    private String facilityStr;
     private Date dateStart;
     private Date dateEnd;
     private String email;
@@ -29,7 +29,6 @@ public class SearchSummary implements Serializable {
     private String pay;
     private String underFacility;
 
-    private String rentor;
     private String investor;
     private Users user;
 
@@ -40,7 +39,7 @@ public class SearchSummary implements Serializable {
     private String switchSite;
     private String activateSite;
 
-    private List<Facilities> facilityList;
+    private List<Facility> facilityList;
 
     private String searchStuff;
 
@@ -73,7 +72,7 @@ public class SearchSummary implements Serializable {
     private MarketingTree salesChanel;
 
     private List<InvestorsCash> investorsCashList;
-    private Facilities reFacility;
+    private Facility reFacility;
     private UnderFacilities reUnderFacility;
     private UnderFacilities reUnderFacilities;
     private Date dateReinvest;
@@ -89,7 +88,7 @@ public class SearchSummary implements Serializable {
     private int pageNumber;
     private BigDecimal commissionNoMore;
 
-    private Facilities facilities;
+    private Facility facility;
     private UnderFacilities underFacilities;
 
     private LocalDate startDate;
@@ -103,12 +102,12 @@ public class SearchSummary implements Serializable {
 
     private ShareType shareType;
 
-    public String getFacility() {
-        return facility;
+    public String getFacilityStr() {
+        return facilityStr;
     }
 
-    public void setFacility(String facility) {
-        this.facility = facility;
+    public void setFacilityStr(String facilityStr) {
+        this.facilityStr = facilityStr;
     }
 
     public String getTableForSearch() {
@@ -151,14 +150,6 @@ public class SearchSummary implements Serializable {
         this.password = password;
     }
 
-    public String getRentor() {
-        return rentor;
-    }
-
-    public void setRentor(String rentor) {
-        this.rentor = rentor;
-    }
-
     public Users getUser() {
         return user;
     }
@@ -167,11 +158,11 @@ public class SearchSummary implements Serializable {
         this.user = user;
     }
 
-    public List<Facilities> getFacilityList() {
+    public List<Facility> getFacilityList() {
         return facilityList;
     }
 
-    public void setFacilityList(List<Facilities> facilityList) {
+    public void setFacilityList(List<Facility> facilityList) {
         this.facilityList = facilityList;
     }
 
@@ -213,14 +204,6 @@ public class SearchSummary implements Serializable {
 
     public void setActivateSite(String activateSite) {
         this.activateSite = activateSite;
-    }
-
-    public String getSearchStuff() {
-        return searchStuff;
-    }
-
-    public void setSearchStuff(String searchStuff) {
-        this.searchStuff = searchStuff;
     }
 
     public String getInvestor() {
@@ -375,11 +358,11 @@ public class SearchSummary implements Serializable {
         this.investorsCashList = investorsCashList;
     }
 
-    public Facilities getReFacility() {
+    public Facility getReFacility() {
         return reFacility;
     }
 
-    public void setReFacility(Facilities reFacility) {
+    public void setReFacility(Facility reFacility) {
         this.reFacility = reFacility;
     }
 
@@ -511,12 +494,12 @@ public class SearchSummary implements Serializable {
         this.commissionNoMore = commissionNoMore;
     }
 
-    public Facilities getFacilities() {
-        return facilities;
+    public Facility getFacility() {
+        return facility;
     }
 
-    public void setFacilities(Facilities facilities) {
-        this.facilities = facilities;
+    public void setFacility(Facility facility) {
+        this.facility = facility;
     }
 
     public UnderFacilities getUnderFacilities() {

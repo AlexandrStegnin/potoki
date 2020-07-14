@@ -18,7 +18,6 @@
     <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/AjaxLoader.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/popupScripts.js' />" ></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/mailingScripts.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/scriptsForFacilities.js' />" ></script>
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
 </head>
@@ -36,9 +35,6 @@
                 <th>Название</th>
                 <th>Название (1C)</th>
                 <th>Город</th>
-                <th>Адрес</th>
-                <th>Управляющий</th>
-                <th>Инвесторы</th>
                 <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                     <th width="100"></th>
                 </sec:authorize>
@@ -52,17 +48,9 @@
             <c:forEach items="${facilities}" var="facility">
                 <tr id="${facility.id}">
                     <td>${facility.id}</td>
-                    <td>${facility.facility}</td>
+                    <td>${facility.name}</td>
                     <td>${facility.fullName}</td>
                     <td>${facility.city}</td>
-                    <td>${facility.address}</td>
-                    <td>${facility.manager.login}</td>
-                    <c:forEach items="${facility.investors}" var="investors" varStatus="stat">
-                        <c:set var='inv' value="${stat.first ? '' : inv} ${investors.login.concat('; ')}" />
-                    </c:forEach>
-                    <td>${inv}</td>
-                    <c:set var="rent" value="" />
-                    <c:set var="inv" value="" />
                     <sec:authorize access="isFullyAuthenticated()">
                         <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                             <td><a href="<c:url value='/edit-facility-${facility.id}' />" class="btn btn-success custom-width">Изменить</a></td>

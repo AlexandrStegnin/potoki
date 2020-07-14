@@ -44,12 +44,12 @@ public class InvestorsFlowsSaleSpecification extends BaseSpecification<Investors
         );
     }
 
-    private static Specification<InvestorsFlowsSale> facilityEqual(String facility) {
+    private static Specification<InvestorsFlowsSale> facilityEqual(String name) {
         return ((root, criteriaQuery, criteriaBuilder) -> {
-            if (Objects.equals(null, facility) || StringUtils.isEmpty(facility) || "Выберите объект".equalsIgnoreCase(facility.trim())) {
+            if (Objects.equals(null, name) || StringUtils.isEmpty(name) || "Выберите объект".equalsIgnoreCase(name.trim())) {
                 return null;
             } else {
-                return criteriaBuilder.equal(root.get(InvestorsFlowsSale_.facility).get(Facilities_.facility), facility);
+                return criteriaBuilder.equal(root.get(InvestorsFlowsSale_.facility).get(Facility_.name), name);
             }
         }
         );
@@ -78,7 +78,7 @@ public class InvestorsFlowsSaleSpecification extends BaseSpecification<Investors
 
     private static Specification<InvestorsFlowsSale> facilityIsNotNull() {
         return ((root, criteriaQuery, criteriaBuilder) ->
-                root.get(InvestorsFlowsSale_.facility).get(Facilities_.facility).isNotNull()
+                root.get(InvestorsFlowsSale_.facility).get(Facility_.name).isNotNull()
         );
     }
 

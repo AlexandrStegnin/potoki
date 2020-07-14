@@ -46,7 +46,7 @@
             <c:forEach items="${underFacilities}" var="under">
                 <tr>
                     <td>${under.id}</td>
-                    <td>${under.facility.facility}</td>
+                    <td>${under.facility.name}</td>
                     <td>${under.underFacility}</td>
                     <sec:authorize access="isFullyAuthenticated()">
                         <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">

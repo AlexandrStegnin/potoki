@@ -67,7 +67,7 @@
             <c:forEach items="${rooms}" var="room">
                 <tr>
                     <td>${room.id}</td>
-                    <td>${room.underFacility.facility.facility}</td>
+                    <td>${room.underFacility.facility.name}</td>
                     <td>${room.underFacility.underFacility}</td>
                     <td>${room.room}</td>
                     <td>

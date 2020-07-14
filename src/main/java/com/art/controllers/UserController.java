@@ -227,7 +227,7 @@ public class UserController {
     }
 
     @ModelAttribute("facilities")
-    public List<Facilities> initializeFacilities() {
+    public List<Facility> initializeFacilities() {
         return facilityService.findAll();
     }
 

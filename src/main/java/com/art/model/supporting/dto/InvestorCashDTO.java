@@ -34,7 +34,7 @@ public class InvestorCashDTO {
     public InvestorCashDTO(InvestorsCash cash) {
         this.id = cash.getId();
         this.investor = cash.getInvestor().getLogin();
-        this.facility = cash.getFacility().getFacility();
+        this.facility = cash.getFacility().getName();
         this.dateGivenCash = convertDate(cash.getDateGivedCash());
         this.givenCash = cash.getGivedCash();
         this.cashType = CashType.NEW.getTitle();
@@ -43,7 +43,7 @@ public class InvestorCashDTO {
     public InvestorCashDTO(InvestorCashLog cashLog) {
         this.id = BigInteger.valueOf(cashLog.getId());
         this.investor = cashLog.getInvestor().getLogin();
-        this.facility = cashLog.getFacility().getFacility();
+        this.facility = cashLog.getFacility().getName();
         this.dateGivenCash = convertDate(cashLog.getDateGivenCash());
         this.givenCash = cashLog.getGivenCash();
         this.cashType = cashLog.getInstanceOf().getTitle();

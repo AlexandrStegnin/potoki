@@ -1,22 +1,26 @@
 package com.art.controllers;
 
-import com.art.model.*;
+import com.art.model.Facility;
+import com.art.model.InvestorsCash;
+import com.art.model.Users;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
-import com.art.service.*;
+import com.art.service.FacilityService;
+import com.art.service.InvestorsCashService;
+import com.art.service.UnderFacilitiesService;
+import com.art.service.UserService;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 
 @Controller
+@Transactional
 public class FacilityController {
 
     @Resource(name = "facilityService")
@@ -37,14 +41,14 @@ public class FacilityController {
     @RequestMapping(value = {"/newfacility"}, method = RequestMethod.GET)
     public String newFacility(ModelMap model) {
 
-        Facilities facility = new Facilities();
+        Facility facility = new Facility();
         model.addAttribute("newFacility", facility);
         model.addAttribute("edit", false);
         return "facility_edit";
     }
 
     @RequestMapping(value = {"/newfacility"}, method = RequestMethod.POST)
-    public String saveFacility(@ModelAttribute("newFacility") Facilities newFacility, BindingResult result, ModelMap model) {
+    public String saveFacility(@ModelAttribute("newFacility") Facility newFacility, BindingResult result, ModelMap model) {
 
         if (result.hasErrors()) {
             return "facility_edit";
@@ -54,7 +58,7 @@ public class FacilityController {
         String redirectUrl = "/admin_facility";
         facilityService.create(newFacility);
 
-        model.addAttribute("success", "Объект " + newFacility.getFacility() + " успешно добавлен.");
+        model.addAttribute("success", "Объект " + newFacility.getName() + " успешно добавлен.");
         model.addAttribute("redirectUrl", redirectUrl);
         model.addAttribute("ret", ret);
         return "registrationsuccess";
@@ -63,9 +67,9 @@ public class FacilityController {
     @RequestMapping(value = "/admin_facility", method = RequestMethod.GET)
     public String adminFacility(ModelMap model) {
 
-        List<Facilities> facilityes = facilityService.findAllWithUnderFacilitiesRentorsInvestorsManagers();
+        List<Facility> facilities = facilityService.findAllWithUnderFacilities();
 
-        model.addAttribute("facilities", facilityes);
+        model.addAttribute("facilities", facilities);
 
         return "admin_facility";
     }
@@ -76,7 +80,7 @@ public class FacilityController {
     @RequestMapping(value = {"/edit-facility-{id}"}, method = RequestMethod.GET)
     public String editFacility(@PathVariable BigInteger id, ModelMap model) {
 
-        Facilities facility = facilityService.findByIdWithRentorsInvestorsManagers(id);
+        Facility facility = facilityService.findById(id);
 
         model.addAttribute("newFacility", facility);
         model.addAttribute("edit", true);
@@ -87,7 +91,7 @@ public class FacilityController {
      * Обновление объекта в базе данных
      */
     @RequestMapping(value = {"/edit-facility-{id}"}, method = RequestMethod.POST)
-    public String updateFacility(@ModelAttribute("newFacility") Facilities facility, BindingResult result, ModelMap model) {
+    public String updateFacility(@ModelAttribute("newFacility") Facility facility, BindingResult result, ModelMap model) {
         String ret = "списку объектов.";
         String redirectUrl = "/admin_facility";
         if (result.hasErrors()) {
@@ -95,7 +99,7 @@ public class FacilityController {
         }
         facilityService.update(facility);
 
-        model.addAttribute("success", "Данные объекта " + facility.getFacility() + " успешно обновлены.");
+        model.addAttribute("success", "Данные объекта " + facility.getName() + " успешно обновлены.");
         model.addAttribute("redirectUrl", redirectUrl);
         model.addAttribute("ret", ret);
         return "registrationsuccess";
@@ -109,38 +113,19 @@ public class FacilityController {
     public @ResponseBody
     GenericResponse deleteFacility(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
-        Facilities facility = facilityService.findByIdWithInvestors(new BigInteger(searchSummary.getFacility()));
-        Set<Users> investors = facility.getInvestors();
-        List<InvestorsCash> cash = new ArrayList<>(0);
-        investors.forEach(i -> cash.addAll(investorsCashService.findByInvestorId(i.getId())));
-        cash.forEach(c -> {
-            if (Objects.equals(facility, c.getFacility())) {
-                investorsCashService.deleteById(c.getId());
-            }
-        });
+        Facility facility = facilityService.findById(new BigInteger(searchSummary.getFacilityStr()));
+        List<InvestorsCash> investorsCashes = investorsCashService.findByFacilityId(facility.getId());
+        investorsCashes.forEach(c -> investorsCashService.deleteById(c.getId()));
         try {
             facility.getUnderFacilities().forEach(f -> underFacilitiesService.deleteById(f.getId()));
             facilityService.deleteById(facility.getId());
             response.setMessage("Объект " + facility
-                    .getFacility() + " успешно удалён.");
+                    .getName() + " успешно удалён.");
         } catch (Exception e) {
             response.setError("При удалении объекта " + facility
-                    .getFacility() + " произошла ошибка.");
+                    .getName() + " произошла ошибка.");
         }
         return response;
-    }
-
-    @ModelAttribute("managers")
-    public List<Users> initializeManagers() {
-        List<Users> usersList = new ArrayList<>(0);
-        usersList.add(new Users("0", "Выберите управляющего"));
-        usersList.addAll(userService.findAll());
-        return usersList;
-    }
-
-    @ModelAttribute("rentors")
-    public List<Users> initializeRentors() {
-        return userService.findAll();
     }
 
     @ModelAttribute("investors")

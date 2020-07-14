@@ -118,7 +118,7 @@ public class UploadExcelFunc {
                     InvestorsFlows investorsFlows = new InvestorsFlows();
                     investorsFlows.setReportDate(Date.from(cal.atStartOfDay(ZoneId.systemDefault()).toInstant()));
                     investorsFlows.setFacility(user.getFacilities().stream()
-                            .filter(f -> f.getFacility().equalsIgnoreCase(row.getCell(1).getStringCellValue()))
+                            .filter(f -> f.getName().equalsIgnoreCase(row.getCell(1).getStringCellValue()))
                             .findFirst().orElse(null));
 
                     investorsFlows.setUnderFacilities(underFacilitiesList
@@ -148,7 +148,7 @@ public class UploadExcelFunc {
                     investorsFlows.setReInvest(row.getCell(18).getStringCellValue());
 
                     investorsFlows.setReFacility(user.getFacilities().stream()
-                            .filter(f -> f.getFacility().equals(row.getCell(19).getStringCellValue()))
+                            .filter(f -> f.getName().equals(row.getCell(19).getStringCellValue()))
                             .findFirst().orElse(null));
 
                     List<InvestorsFlows> flowsList = investorsFlowsTmp.stream()
@@ -253,9 +253,9 @@ public class UploadExcelFunc {
                     user.getFacilities().forEach(f -> underFacilitiesList.addAll(f.getUnderFacilities()));
 
                     InvestorsFlowsSale investorsFlowsSale = new InvestorsFlowsSale();
-                    Facilities facility = user.getFacilities()
+                    Facility facility = user.getFacilities()
                             .stream()
-                            .filter(f -> f.getFacility().equalsIgnoreCase(row.getCell(0).getStringCellValue()))
+                            .filter(f -> f.getName().equalsIgnoreCase(row.getCell(0).getStringCellValue()))
                             .findFirst()
                             .orElse(null);
                     if (facility == null) {

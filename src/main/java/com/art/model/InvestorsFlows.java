@@ -18,7 +18,7 @@ import java.util.Date;
 public class InvestorsFlows implements Serializable {
     private BigInteger id;
     private Date reportDate;
-    private Facilities facility;
+    private Facility facility;
     private UnderFacilities underFacilities;
     private Users investor;
     private String shareKind;
@@ -34,7 +34,7 @@ public class InvestorsFlows implements Serializable {
     private float afterDeductionEmptyFacility;
     private float afterCashing;
     private String reInvest;
-    private Facilities reFacility;
+    private Facility reFacility;
     private int isReinvest;
     private Rooms room;
 
@@ -42,22 +42,22 @@ public class InvestorsFlows implements Serializable {
 
     }
 
-    public InvestorsFlows(Facilities facility) {
+    public InvestorsFlows(Facility facility) {
         this.facility = facility;
     }
 
-    public InvestorsFlows(Facilities facility, float afterCashing) {
+    public InvestorsFlows(Facility facility, float afterCashing) {
         this.facility = facility;
         this.afterCashing = afterCashing;
     }
 
-    public InvestorsFlows(Facilities facility, UnderFacilities underFacilities, Users investor) {
+    public InvestorsFlows(Facility facility, UnderFacilities underFacilities, Users investor) {
         this.facility = facility;
         this.underFacilities = underFacilities;
         this.investor = investor;
     }
 
-    public InvestorsFlows(Facilities facility, UnderFacilities underFacilities, Users investor, float afterCashing) {
+    public InvestorsFlows(Facility facility, UnderFacilities underFacilities, Users investor, float afterCashing) {
         this.facility = facility;
         this.underFacilities = underFacilities;
         this.investor = investor;
@@ -77,11 +77,11 @@ public class InvestorsFlows implements Serializable {
 
     @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "facilityId", referencedColumnName = "id")
-    public Facilities getFacility() {
+    public Facility getFacility() {
         return facility;
     }
 
-    public void setFacility(Facilities facility) {
+    public void setFacility(Facility facility) {
         this.facility = facility;
     }
 
@@ -107,11 +107,11 @@ public class InvestorsFlows implements Serializable {
 
     @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "reFacilityId", referencedColumnName = "id")
-    public Facilities getReFacility() {
+    public Facility getReFacility() {
         return reFacility;
     }
 
-    public void setReFacility(Facilities reFacility) {
+    public void setReFacility(Facility reFacility) {
         this.reFacility = reFacility;
     }
 

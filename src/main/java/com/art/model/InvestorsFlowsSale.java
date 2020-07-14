@@ -20,7 +20,7 @@ import java.util.Date;
 @Table(name = "InvestorsFlowsSale")
 public class InvestorsFlowsSale implements Serializable {
     private BigInteger id;
-    private Facilities facility;
+    private Facility facility;
     private Users investor;
 
     @Enumerated(EnumType.STRING)
@@ -54,11 +54,11 @@ public class InvestorsFlowsSale implements Serializable {
 
     @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "facilityId", referencedColumnName = "id")
-    public Facilities getFacility() {
+    public Facility getFacility() {
         return facility;
     }
 
-    public void setFacility(Facilities facility) {
+    public void setFacility(Facility facility) {
         this.facility = facility;
     }
 

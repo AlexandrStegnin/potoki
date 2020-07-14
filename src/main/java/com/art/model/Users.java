@@ -30,7 +30,7 @@ public class Users implements Serializable {
 
     private List<Roles> roles;
 
-    private Set<Facilities> facilities;
+    private Set<Facility> facilities;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "Kin")
@@ -53,11 +53,11 @@ public class Users implements Serializable {
     @JoinTable(name = "USERS_FACILITYES",
             joinColumns = {@JoinColumn(name = "RENTOR_INVESTORS_ID", referencedColumnName = "id")},
             inverseJoinColumns = @JoinColumn(name = "FACILITY_ID", referencedColumnName = "id"))
-    public Set<Facilities> getFacilities() {
+    public Set<Facility> getFacilities() {
         return facilities;
     }
 
-    public void setFacilities(Set<Facilities> facilities) {
+    public void setFacilities(Set<Facility> facilities) {
         this.facilities = facilities;
     }
 

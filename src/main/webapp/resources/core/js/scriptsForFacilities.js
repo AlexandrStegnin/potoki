@@ -2,16 +2,16 @@ jQuery(document).ready(function ($) {
     $('a#delete').click(function (event) {
         event.preventDefault();
         enableButton(false);
-        var rowId = $(this).attr('name');
+        let rowId = $(this).attr('name');
         $('#tblFacilities').find('tr#' + rowId).remove();
         deleteFacility(rowId);
     })
 });
 
 function deleteFacility(facilityId) {
-    var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
-    var search = ({"facility" : facilityId});
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+    let search = ({"facilityStr" : facilityId});
 
     showLoader();
 

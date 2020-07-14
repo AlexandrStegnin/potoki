@@ -318,7 +318,7 @@ public class InvestorsCashController {
         GenericResponse response = new GenericResponse();
         InvestorsCash investorsCash = searchSummary.getInvestorsCash();
 
-        Facilities reFacility = searchSummary.getReFacility();
+        Facility reFacility = searchSummary.getReFacility();
         UnderFacilities reUnderFacility = searchSummary.getReUnderFacility();
         Date reinvestDate = searchSummary.getDateReinvest();
 
@@ -797,7 +797,7 @@ public class InvestorsCashController {
                 summary.getReUnderFacility().getId());
 
         // Получаем объект, в который надо разделить сумму
-        Facilities facility = facilityService.findByIdWithUnderFacilitiesAndRooms(underFacility.getFacility().getId());
+        Facility facility = facilityService.findByIdWithUnderFacilitiesAndRooms(underFacility.getFacility().getId());
 
         // Получаем список подобъектов объекта
         Set<UnderFacilities> underFacilitiesList = facility.getUnderFacilities();
@@ -993,7 +993,7 @@ public class InvestorsCashController {
                 keyMap = map.get(ic.getInvestor().getLogin() +
                         ic.getSourceUnderFacility().getUnderFacility());
             } else {
-                keyMap = map.get(ic.getInvestor().getLogin() + ic.getSourceFacility().getFacility());
+                keyMap = map.get(ic.getInvestor().getLogin() + ic.getSourceFacility().getName());
             }
 
             if (Objects.equals(null, keyMap)) {
@@ -1002,7 +1002,7 @@ public class InvestorsCashController {
                                     ic.getSourceUnderFacility().getUnderFacility(),
                             ic);
                 } else {
-                    map.put(ic.getInvestor().getLogin() + ic.getSourceFacility().getFacility(),
+                    map.put(ic.getInvestor().getLogin() + ic.getSourceFacility().getName(),
                             ic);
                 }
 
@@ -1028,7 +1028,7 @@ public class InvestorsCashController {
                     map.put(ic.getInvestor().getLogin() +
                             ic.getSourceUnderFacility().getUnderFacility(), cash);
                 } else {
-                    map.put(ic.getInvestor().getLogin() + ic.getSourceFacility().getFacility(), cash);
+                    map.put(ic.getInvestor().getLogin() + ic.getSourceFacility().getName(), cash);
                 }
 
             }
@@ -1038,17 +1038,17 @@ public class InvestorsCashController {
     }
 
     @ModelAttribute("facilities")
-    public List<Facilities> initializeFacilities() {
+    public List<Facility> initializeFacilities() {
         return facilityService.initializeFacilities();
     }
 
     @ModelAttribute("facilitiesList")
-    public List<Facilities> initializeMultipleFacilities() {
+    public List<Facility> initializeMultipleFacilities() {
         return facilityService.initializeFacilitiesForMultiple();
     }
 
     @ModelAttribute("sourceFacilities")
-    public List<Facilities> initializeReFacilities() {
+    public List<Facility> initializeReFacilities() {
         return facilityService.initializeFacilities();
     }
 

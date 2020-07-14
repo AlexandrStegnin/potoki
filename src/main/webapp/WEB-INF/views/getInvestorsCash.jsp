@@ -34,9 +34,9 @@
 
         <div class="row" id="facilitiesRow">
             <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="facilities">Объект:</label>
+                <label class="col-md-3 control-lable" for="facility">Объект:</label>
                 <div class="col-md-7">
-                    <form:select path="investorsCash.facility" id="facilities" items="${facilities}" multiple="false"
+                    <form:select path="investorsCash.facility" id="facility" items="${facility}" multiple="false"
                                  itemValue="id" itemLabel="facility" class="selectpicker form-control input-sm"
                                  data-live-search="true"/>
                 </div>

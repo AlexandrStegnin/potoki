@@ -34,7 +34,7 @@ public class RoomsService {
         roomsRoot.fetch(Rooms_.underFacility, JoinType.LEFT)
                 .fetch(UnderFacilities_.facility, JoinType.LEFT);
         roomsCriteriaQuery.select(roomsRoot);//.distinct(true);
-        roomsCriteriaQuery.orderBy(cb.asc(roomsRoot.get(Rooms_.underFacility).get(UnderFacilities_.facility).get(Facilities_.id)));
+        roomsCriteriaQuery.orderBy(cb.asc(roomsRoot.get(Rooms_.underFacility).get(UnderFacilities_.facility).get(Facility_.id)));
 
         return em.createQuery(roomsCriteriaQuery).getResultList();
     }
@@ -131,7 +131,7 @@ public class RoomsService {
         roomsRoot.fetch(Rooms_.underFacility, JoinType.LEFT)
                 .fetch(UnderFacilities_.facility, JoinType.LEFT);
         roomsCriteriaQuery.select(roomsRoot).distinct(true);
-        roomsCriteriaQuery.where(roomsRoot.get(Rooms_.underFacility).get(UnderFacilities_.facility).get(Facilities_.id).in(facilitiesId));
+        roomsCriteriaQuery.where(roomsRoot.get(Rooms_.underFacility).get(UnderFacilities_.facility).get(Facility_.id).in(facilitiesId));
         return em.createQuery(roomsCriteriaQuery).getResultList();
     }
 }

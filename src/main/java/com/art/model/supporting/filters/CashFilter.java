@@ -1,6 +1,6 @@
 package com.art.model.supporting.filters;
 
-import com.art.model.Facilities;
+import com.art.model.Facility;
 import com.art.model.UnderFacilities;
 import com.art.model.Users;
 import lombok.Data;
@@ -12,7 +12,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class CashFilter extends AbstractFilter {
     private Users investor;
-    private List<Facilities> facilities;
+    private List<Facility> facilities;
     private List<UnderFacilities> underFacilities;
     private int filtered = 0;
 }

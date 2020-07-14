@@ -80,7 +80,7 @@
                 <input type="hidden" id="total" name="total" value="${page.content.size()}">
                 <input type="hidden" id="filtered" name="filtered" value="${cashFilters.filtered}">
                 <label class="sr-only" for="fFacilities">Объект:</label>
-                <form:select path="facilities" id="fFacilities" multiple="true" class="selectpicker"
+                <form:select path="facility" id="fFacilities" multiple="true" class="selectpicker"
                              data-live-search="true" data-width="130px" title="Выберите объект..."
                              data-actions-box="true" data-select-all-text="Выбрать всё"
                              data-deselect-all-text="Очистить">
@@ -322,7 +322,7 @@
                         <div class="form-group col-md-12">
                             <label class="col-md-3 control-lable" for="srcFacilities">Объект:</label>
                             <div class="col-md-7">
-                                <form:select path="reFacility" id="srcFacilities" items="${facilities}" multiple="false"
+                                <form:select path="reFacility" id="srcFacilities" items="${facility}" multiple="false"
                                              itemValue="id" itemLabel="facility" class="selectpicker form-control input-sm"
                                              data-live-search="true"/>
                                 <div id="facilityErr" style="color: red; display: none">Необходимо выбрать объект</div>

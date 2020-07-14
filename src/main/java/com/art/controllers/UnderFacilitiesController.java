@@ -1,6 +1,6 @@
 package com.art.controllers;
 
-import com.art.model.Facilities;
+import com.art.model.Facility;
 import com.art.model.Rooms;
 import com.art.model.UnderFacilities;
 import com.art.service.*;
@@ -61,7 +61,7 @@ public class UnderFacilitiesController {
         underFacilities.setRooms(rooms);
         underFacilitiesService.update(underFacilities);
 
-        model.addAttribute("success", "Данные по подобъекту " + underFacilities.getFacility().getFacility() +
+        model.addAttribute("success", "Данные по подобъекту " + underFacilities.getFacility().getName() +
                 " успешно обновлены.");
         model.addAttribute("redirectUrl", redirectUrl);
         model.addAttribute("ret", ret);
@@ -96,7 +96,7 @@ public class UnderFacilitiesController {
 
         underFacilitiesService.create(underFacilities);
 
-        model.addAttribute("success", "Подобъект " + underFacilities.getFacility().getFacility() +
+        model.addAttribute("success", "Подобъект " + underFacilities.getFacility().getName() +
                 " успешно добавлен.");
         model.addAttribute("redirectUrl", redirectUrl);
         model.addAttribute("ret", ret);
@@ -104,7 +104,7 @@ public class UnderFacilitiesController {
     }
 
     @ModelAttribute("facilities")
-    public List<Facilities> initializeFacilities() {
+    public List<Facility> initializeFacilities() {
         return facilityService.findAll();
     }
 

@@ -32,9 +32,9 @@
 
         <div class="row">
             <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="facilities">Объект:</label>
+                <label class="col-md-3 control-lable" for="facility">Объект:</label>
                 <div class="col-md-7">
-                    <form:select path="facility" id="facilities" items="${facilities}" multiple="false"
+                    <form:select path="facility" id="facility" items="${facility}" multiple="false"
                                  itemValue="id" itemLabel="facility" class="form-control input-sm" />
                     <div class="has-error">
                         <form:errors path="facility" class="help-inline"/>

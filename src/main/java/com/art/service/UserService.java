@@ -111,7 +111,7 @@ public class UserService {
         Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
 
         usersRoot.fetch(Users_.facilities, JoinType.LEFT)
-                .fetch(Facilities_.underFacilities, JoinType.LEFT);
+                .fetch(Facility_.underFacilities, JoinType.LEFT);
         usersCriteriaQuery.select(usersRoot).distinct(true);
 
         return em.createQuery(usersCriteriaQuery).getResultList();

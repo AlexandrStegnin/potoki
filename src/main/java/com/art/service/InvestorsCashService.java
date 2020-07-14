@@ -57,6 +57,10 @@ public class InvestorsCashService {
         return investorsCashRepository.findById(id);
     }
 
+    public List<InvestorsCash> findByFacilityId(BigInteger facilityId) {
+        return investorsCashRepository.findByFacilityId(facilityId);
+    }
+
     public InvestorsCash update(InvestorsCash investorsCash) {
         investorsCash = investorsCashRepository.saveAndFlush(investorsCash);
         return investorsCash;
@@ -147,7 +151,7 @@ public class InvestorsCashService {
         return em.createQuery(investorsCashCriteriaQuery).getResultList();
     }
 
-    public Facilities getSumCash(BigInteger investorId) {
+    public Facility getSumCash(BigInteger investorId) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<InvestorsCash> investorsCashCriteriaQuery = cb.createQuery(InvestorsCash.class);
         Root<InvestorsCash> investorsCashRoot = investorsCashCriteriaQuery.from(InvestorsCash.class);
@@ -156,7 +160,7 @@ public class InvestorsCashService {
         investorsCashCriteriaQuery.where(cb.equal(investorsCashRoot.get(InvestorsCash_.investor).get(Users_.id), investorId));
         investorsCashCriteriaQuery.groupBy(investorsCashRoot.get(InvestorsCash_.facility));
         List<InvestorsCash> cash = em.createQuery(investorsCashCriteriaQuery).getResultList();
-        final Facilities[] facility = {new Facilities()};
+        final Facility[] facility = {new Facility()};
         final BigDecimal[] max = {new BigDecimal(BigInteger.ZERO)};
         cash.forEach(c -> {
             c.setGivedCash(c.getGivedCash().stripTrailingZeros());
@@ -375,7 +379,7 @@ public class InvestorsCashService {
     public List<InvestorsCash> getMoneyForCashing(InvestorsCash cashForGetting) {
         CashFilter filter = new CashFilter();
         filter.setInvestor(cashForGetting.getInvestor());
-        filter.setFacility(cashForGetting.getFacility().getFacility());
+        filter.setFacility(cashForGetting.getFacility().getName());
         if (!Objects.equals(null, cashForGetting.getUnderFacility())) {
             filter.setUnderFacility(cashForGetting.getUnderFacility().getUnderFacility());
         }

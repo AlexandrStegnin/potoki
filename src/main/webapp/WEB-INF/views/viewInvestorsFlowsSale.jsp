@@ -62,12 +62,12 @@
 
                 <label class="sr-only" for="fFacilities">Объект:</label>
                 <form:select path="facility" id="fFacilities" multiple="false" cssClass="selectpicker">
-                    <c:forEach var="f" items="${facilities}">
+                    <c:forEach var="f" items="${facility}">
                         <option
                                 <c:choose>
-                                    <c:when test="${f.facility eq flowsSaleFilters.facility}">selected="selected"</c:when>
+                                    <c:when test="${f.name eq flowsSaleFilters.facility}">selected="selected"</c:when>
                                 </c:choose>
-                                value="${f.facility}" id="${f.id}">${f.facility}
+                                value="${f.name}" id="${f.id}">${f.name}
                         </option>
                     </c:forEach>
                 </form:select>
@@ -275,7 +275,7 @@
                         <div class="form-group col-md-12">
                             <label class="col-md-3 control-lable" for="srcFacilities">Объект:</label>
                             <div class="col-md-7">
-                                <form:select path="reFacility" id="srcFacilities" items="${facilities}" multiple="false"
+                                <form:select path="reFacility" id="srcFacilities" items="${facility}" multiple="false"
                                              itemValue="id" itemLabel="facility" class="form-control input-sm"/>
                                 <div id="facilityErr" style="color: red; display: none">Необходимо выбрать объект</div>
                             </div>
