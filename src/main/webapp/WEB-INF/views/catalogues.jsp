@@ -17,7 +17,6 @@
     <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min_old.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/AjaxLoader.js' />" ></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/mailingScripts.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/applic.js' />" ></script>
     <script type="text/javascript"
             src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js' />"></script>
