@@ -1,5 +1,6 @@
 package com.art.controllers;
 
+import com.art.config.application.Location;
 import com.art.model.Facility;
 import com.art.model.InvestorsCash;
 import com.art.model.Users;
@@ -15,7 +16,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -23,39 +23,39 @@ import java.util.List;
 @Transactional
 public class FacilityController {
 
-    @Resource(name = "facilityService")
-    private FacilityService facilityService;
+    private final FacilityService facilityService;
 
-    @Resource(name = "userService")
-    private UserService userService;
+    private final UserService userService;
 
-    @Resource(name = "underFacilitiesService")
-    private UnderFacilitiesService underFacilitiesService;
+    private final UnderFacilitiesService underFacilitiesService;
 
-    @Resource(name = "investorsCashService")
-    private InvestorsCashService investorsCashService;
+    private final InvestorsCashService investorsCashService;
+
+    public FacilityController(FacilityService facilityService, UserService userService, UnderFacilitiesService underFacilitiesService, InvestorsCashService investorsCashService) {
+        this.facilityService = facilityService;
+        this.userService = userService;
+        this.underFacilitiesService = underFacilitiesService;
+        this.investorsCashService = investorsCashService;
+    }
 
     /**
      * Создание объекта
      */
-    @RequestMapping(value = {"/newfacility"}, method = RequestMethod.GET)
+    @GetMapping(path = Location.FACILITIES_CREATE)
     public String newFacility(ModelMap model) {
-
         Facility facility = new Facility();
         model.addAttribute("newFacility", facility);
         model.addAttribute("edit", false);
         return "facility_edit";
     }
 
-    @RequestMapping(value = {"/newfacility"}, method = RequestMethod.POST)
+    @PostMapping(path = Location.FACILITIES_CREATE)
     public String saveFacility(@ModelAttribute("newFacility") Facility newFacility, BindingResult result, ModelMap model) {
-
         if (result.hasErrors()) {
             return "facility_edit";
         }
-
         String ret = "списку объектов.";
-        String redirectUrl = "/admin_facility";
+        String redirectUrl = Location.FACILITIES_LIST;
         facilityService.create(newFacility);
 
         model.addAttribute("success", "Объект " + newFacility.getName() + " успешно добавлен.");
@@ -64,7 +64,7 @@ public class FacilityController {
         return "registrationsuccess";
     }
 
-    @RequestMapping(value = "/admin_facility", method = RequestMethod.GET)
+    @GetMapping(path = Location.FACILITIES_LIST)
     public String adminFacility(ModelMap model) {
 
         List<Facility> facilities = facilityService.findAllWithUnderFacilities();
@@ -77,11 +77,9 @@ public class FacilityController {
     /**
      * Создание страницы с объектом редактирования
      */
-    @RequestMapping(value = {"/edit-facility-{id}"}, method = RequestMethod.GET)
+    @GetMapping(path = Location.FACILITIES_EDIT)
     public String editFacility(@PathVariable BigInteger id, ModelMap model) {
-
         Facility facility = facilityService.findById(id);
-
         model.addAttribute("newFacility", facility);
         model.addAttribute("edit", true);
         return "facility_edit";
@@ -90,10 +88,10 @@ public class FacilityController {
     /**
      * Обновление объекта в базе данных
      */
-    @RequestMapping(value = {"/edit-facility-{id}"}, method = RequestMethod.POST)
+    @PostMapping(path = Location.FACILITIES_EDIT)
     public String updateFacility(@ModelAttribute("newFacility") Facility facility, BindingResult result, ModelMap model) {
         String ret = "списку объектов.";
-        String redirectUrl = "/admin_facility";
+        String redirectUrl = Location.FACILITIES_LIST;
         if (result.hasErrors()) {
             return "facility_edit";
         }
@@ -109,7 +107,7 @@ public class FacilityController {
      * Удаление объекта по ID.
      */
 
-    @PostMapping(value = "delete", produces = "application/json;charset=UTF-8")
+    @PostMapping(path = Location.FACILITIES_DELETE, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     GenericResponse deleteFacility(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
@@ -119,11 +117,9 @@ public class FacilityController {
         try {
             facility.getUnderFacilities().forEach(f -> underFacilitiesService.deleteById(f.getId()));
             facilityService.deleteById(facility.getId());
-            response.setMessage("Объект " + facility
-                    .getName() + " успешно удалён.");
+            response.setMessage("Объект " + facility.getName() + " успешно удалён.");
         } catch (Exception e) {
-            response.setError("При удалении объекта " + facility
-                    .getName() + " произошла ошибка.");
+            response.setError("При удалении объекта " + facility.getName() + " произошла ошибка.");
         }
         return response;
     }

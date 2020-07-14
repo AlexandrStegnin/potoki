@@ -53,10 +53,10 @@
                         <a href="<c:url value='/catalogue' />" class="dropdown-item">
                             <span style="color: #0D345D;" class="fas fa-book"></span> Справочники
                         </a>
-                        <a href="<c:url value='/newuser' />" class="dropdown-item">
+                        <a href="<c:url value='/users/create' />" class="dropdown-item">
                             <span style="color: #0D345D;" class="fas fa-plus"></span> Добавить пользователя
                         </a>
-                        <a href="<c:url value='/newfacility' />" class="dropdown-item">
+                        <a href="<c:url value='/facilities/create' />" class="dropdown-item">
                             <span style="color: #0D345D;" class="fas fa-plus"></span> Добавить объект
                         </a>
                         <a href="<c:url value='/updateInvestorDemo' />" id="updateInvestorDemo" class="dropdown-item">

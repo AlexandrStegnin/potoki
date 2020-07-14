@@ -53,10 +53,10 @@
                     <td>${facility.city}</td>
                     <sec:authorize access="isFullyAuthenticated()">
                         <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
-                            <td><a href="<c:url value='/edit-facility-${facility.id}' />" class="btn btn-success custom-width">Изменить</a></td>
+                            <td><a href="<c:url value='edit/${facility.id}' />" class="btn btn-success custom-width">Изменить</a></td>
                         </sec:authorize>
                         <sec:authorize access="hasRole('ADMIN')">
-                            <td><a href="<c:url value='/deletefacility' />" class="btn btn-danger custom-width"
+                            <td><a href="<c:url value='/#' />" class="btn btn-danger custom-width"
                                    id="delete" name="${facility.id}">Удалить</a></td>
                         </sec:authorize>
                     </sec:authorize>
@@ -78,7 +78,7 @@
     <sec:authorize access="isFullyAuthenticated()">
         <sec:authorize access="hasRole('ADMIN')">
             <div class="well">
-                <a href="<c:url value='/newfacility' />">Добавить объект</a>
+                <a href="<c:url value='/facilities/create' />">Добавить объект</a>
             </div>
         </sec:authorize>
     </sec:authorize>

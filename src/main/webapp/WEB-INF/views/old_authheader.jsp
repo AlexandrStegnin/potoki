@@ -70,7 +70,7 @@
                             <li><a href="/users/create">
                             <span style="margin-right: 5px;  color: dodgerblue;"
                                   class="glyphicon glyphicon-plus"></span>Добавить пользователя</a></li>
-                            <li><a href="/newfacility">
+                            <li><a href="/facilities/create">
                             <span style="margin-right: 5px;  color: dodgerblue;"
                                   class="glyphicon glyphicon-plus"></span>Добавить объект</a></li>
 

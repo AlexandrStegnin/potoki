@@ -68,12 +68,13 @@
             <div class="form-actions floatRight">
                 <c:choose>
                     <c:when test="${edit}">
-                        <input type="submit" value="Обновить" class="btn btn-primary btn-sm"/> или <a href="<c:url value='/admin_facility' />">Отмена</a>
+                        <c:set var="title" value="Обновить" />
                     </c:when>
                     <c:otherwise>
-                        <input type="submit" value="Создать" class="btn btn-primary btn-sm"/> или <a href="<c:url value='/admin_facility' />">Отмена</a>
+                        <c:set var="title" value="Создать" />
                     </c:otherwise>
                 </c:choose>
+                <input type="submit" value="${title}" class="btn btn-primary btn-sm"/> или <a href="<c:url value='/facilities/list' />">Отмена</a>
             </div>
         </div>
     </form:form>
