@@ -3,7 +3,6 @@ package com.art.controllers;
 import com.art.config.application.Location;
 import com.art.model.Facility;
 import com.art.model.InvestorsCash;
-import com.art.model.Users;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
 import com.art.service.FacilityService;
@@ -46,13 +45,13 @@ public class FacilityController {
         Facility facility = new Facility();
         model.addAttribute("newFacility", facility);
         model.addAttribute("edit", false);
-        return "facility_edit";
+        return "update-facility";
     }
 
     @PostMapping(path = Location.FACILITIES_CREATE)
     public String saveFacility(@ModelAttribute("newFacility") Facility newFacility, BindingResult result, ModelMap model) {
         if (result.hasErrors()) {
-            return "facility_edit";
+            return "update-facility";
         }
         String ret = "списку объектов.";
         String redirectUrl = Location.FACILITIES_LIST;
@@ -66,12 +65,9 @@ public class FacilityController {
 
     @GetMapping(path = Location.FACILITIES_LIST)
     public String adminFacility(ModelMap model) {
-
-        List<Facility> facilities = facilityService.findAllWithUnderFacilities();
-
+        List<Facility> facilities = facilityService.findAll();
         model.addAttribute("facilities", facilities);
-
-        return "admin_facility";
+        return "facilities-list";
     }
 
     /**
@@ -82,7 +78,7 @@ public class FacilityController {
         Facility facility = facilityService.findById(id);
         model.addAttribute("newFacility", facility);
         model.addAttribute("edit", true);
-        return "facility_edit";
+        return "update-facility";
     }
 
     /**
@@ -93,7 +89,7 @@ public class FacilityController {
         String ret = "списку объектов.";
         String redirectUrl = Location.FACILITIES_LIST;
         if (result.hasErrors()) {
-            return "facility_edit";
+            return "update-facility";
         }
         facilityService.update(facility);
 
@@ -122,11 +118,6 @@ public class FacilityController {
             response.setError("При удалении объекта " + facility.getName() + " произошла ошибка.");
         }
         return response;
-    }
-
-    @ModelAttribute("investors")
-    public List<Users> initializeInvestors() {
-        return userService.findAll();
     }
 
 }
