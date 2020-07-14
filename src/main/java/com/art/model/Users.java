@@ -12,7 +12,6 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Data
@@ -30,8 +29,6 @@ public class Users implements Serializable {
 
     private List<Roles> roles;
 
-    private Set<Facility> facilities;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "Kin")
     private KinEnum kin;
@@ -47,18 +44,6 @@ public class Users implements Serializable {
     public Users(Long id, Long partnerId) {
         this.id = id;
         this.partnerId = partnerId;
-    }
-
-    @ManyToMany(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.LAZY)
-    @JoinTable(name = "USERS_FACILITYES",
-            joinColumns = {@JoinColumn(name = "RENTOR_INVESTORS_ID", referencedColumnName = "id")},
-            inverseJoinColumns = @JoinColumn(name = "FACILITY_ID", referencedColumnName = "id"))
-    public Set<Facility> getFacilities() {
-        return facilities;
-    }
-
-    public void setFacilities(Set<Facility> facilities) {
-        this.facilities = facilities;
     }
 
     @Id

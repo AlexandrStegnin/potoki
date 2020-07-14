@@ -6,6 +6,7 @@ import com.art.service.*;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,6 +41,12 @@ public class UploadExcelFunc {
 
     @Resource(name = "investorsFlowsSaleService")
     private InvestorsFlowsSaleService investorsFlowsSaleService;
+
+    @Autowired
+    private FacilityService facilityService;
+
+    @Autowired
+    private UnderFacilitiesService underFacilitiesService;
 
     public String ExcelParser(MultipartFile file, String what, HttpServletRequest request) throws IOException, ParseException {
         String errString = "";
@@ -111,20 +118,29 @@ public class UploadExcelFunc {
 
                     List<UnderFacilities> underFacilitiesList = new ArrayList<>(0);
 
-                    assert user != null;
-                    user.getFacilities().forEach(f -> underFacilitiesList.addAll(f.getUnderFacilities()));
-
-
+                    String underFacilityName = row.getCell(2).getStringCellValue();
+                    if (null == underFacilityName || underFacilityName.isEmpty()) {
+                        return;
+                    }
+                    UnderFacilities underFacility = underFacilitiesService.findByUnderFacility(underFacilityName);
+                    if (null == underFacility) {
+                        return;
+                    }
+//                    assert user != null;
+//                    user.getFacilities().forEach(f -> underFacilitiesList.addAll(f.getUnderFacilities()));
+                    String facilityName = row.getCell(1).getStringCellValue();
+                    if (null == facilityName || facilityName.isEmpty()) {
+                        return;
+                    }
+                    Facility facility = facilityService.findByFacility(facilityName);
+                    if (null == facility) {
+                        return;
+                    }
                     InvestorsFlows investorsFlows = new InvestorsFlows();
                     investorsFlows.setReportDate(Date.from(cal.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-                    investorsFlows.setFacility(user.getFacilities().stream()
-                            .filter(f -> f.getName().equalsIgnoreCase(row.getCell(1).getStringCellValue()))
-                            .findFirst().orElse(null));
+                    investorsFlows.setFacility(facility);
 
-                    investorsFlows.setUnderFacilities(underFacilitiesList
-                            .stream()
-                            .filter(uf -> uf.getUnderFacility().equalsIgnoreCase(row.getCell(2).getStringCellValue()))
-                            .findFirst().orElse(null));
+                    investorsFlows.setUnderFacilities(underFacility);
 
                     investorsFlows.setRoom(rooms.stream()
                             .filter(r -> r.getRoom().equalsIgnoreCase(row.getCell(3).getStringCellValue()))
@@ -147,9 +163,16 @@ public class UploadExcelFunc {
 
                     investorsFlows.setReInvest(row.getCell(18).getStringCellValue());
 
-                    investorsFlows.setReFacility(user.getFacilities().stream()
-                            .filter(f -> f.getName().equals(row.getCell(19).getStringCellValue()))
-                            .findFirst().orElse(null));
+                    String reFacilityName = row.getCell(19).getStringCellValue();
+                    if (null == reFacilityName || reFacilityName.isEmpty()) {
+                        return;
+                    }
+                    Facility reFacility = facilityService.findByFacility(reFacilityName);
+                    if (null == reFacility) {
+                        return;
+                    }
+
+                    investorsFlows.setReFacility(reFacility);
 
                     List<InvestorsFlows> flowsList = investorsFlowsTmp.stream()
                             .filter(flows -> globalFunctions.getMonthInt(flows.getReportDate()) ==
@@ -182,6 +205,7 @@ public class UploadExcelFunc {
     }
 
     private String rewriteInvestorsFlowsSale(Sheet sheet) {
+        checkSheet(sheet);
         StringBuilder errors = new StringBuilder();
         List<InvestorsFlowsSale> investorsFlowsSales = investorsFlowsSaleService.findAll();
         int cel = 0;
@@ -189,7 +213,8 @@ public class UploadExcelFunc {
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy", Locale.ENGLISH);
         List<Users> users = userService.findAllWithFacilitiesAndUnderFacilities();
         List<ShareType> shareKinds = Arrays.asList(ShareType.values());
-        checkSheet(sheet);
+        Map<String, Facility> facilities = new HashMap<>();
+        Map<String, UnderFacilities> underFacilities = new HashMap<>();
         for (Row row : sheet) {
             cel++;
             if (cel > 1) {
@@ -198,12 +223,9 @@ public class UploadExcelFunc {
                     try {
                         calendar.setTime(sdf.parse(row.getCell(4).getDateCellValue().toString()));
                     } catch (Exception ex) {
-//                        errors.append(ex.getMessage());
                         errors.append(String.format("Не удачная попытка конвертировать строку в дату. Строка %d, столбец 5",
                                 cel));
                         return errors.toString();
-//                        throw new RuntimeException(String.format(
-//                                "Не удачная попытка конвертировать строку в дату. Строка %d, столбец 5", cel));
                     }
 
                     java.time.LocalDate cal = calendar.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -215,9 +237,6 @@ public class UploadExcelFunc {
                         errors.append(String.format("Неудачная попытка конвертировать строку в дату. Строка %d, столбец 36",
                                 cel));
                         return errors.toString();
-//                        errors.append(ex.getMessage());
-//                        throw new RuntimeException(String.format(
-//                                "Неудачная попытка конвертировать строку в дату. Строка %d, столбец 36", cel));
                     }
 
                     java.time.LocalDate calSale = dateSale.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -232,11 +251,9 @@ public class UploadExcelFunc {
 
                     String lastName;
                     lastName = row.getCell(1).getStringCellValue();
-                    if (lastName == null) {
+                    if (lastName == null || lastName.isEmpty()) {
                         errors.append(String.format("Не указан инвестор! Строка %d, столбец 2", cel));
                         return errors.toString();
-//                        throw new RuntimeException(String.format(
-//                                "Не указан инвестор! Строка %d, столбец 2", cel));
                     }
                     Users user = users.stream().filter(u -> u.getProfile().getLastName().equalsIgnoreCase(lastName))
                             .findFirst()
@@ -244,27 +261,24 @@ public class UploadExcelFunc {
                     if (user == null) {
                         errors.append(String.format("Неудачная попытка найти пользователя \"%s\". Строка %d, столбец 2", lastName, cel));
                         return errors.toString();
-//                        throw new RuntimeException(String.format(
-//                                "Неудачная попытка найти пользователя \"%s\". Строка %d, столбец 2", lastName, cel
-//                        ));
                     }
-                    List<UnderFacilities> underFacilitiesList = new ArrayList<>(0);
 
-                    user.getFacilities().forEach(f -> underFacilitiesList.addAll(f.getUnderFacilities()));
-
-                    InvestorsFlowsSale investorsFlowsSale = new InvestorsFlowsSale();
-                    Facility facility = user.getFacilities()
-                            .stream()
-                            .filter(f -> f.getName().equalsIgnoreCase(row.getCell(0).getStringCellValue()))
-                            .findFirst()
-                            .orElse(null);
-                    if (facility == null) {
-                        errors.append(String.format("Не указан или не верно указан объект \"%s\". Строка %d, столбец 1", row.getCell(0).getStringCellValue(), cel));
+                    String facilityName = row.getCell(0).getStringCellValue();
+                    if (null == facilityName || facilityName.isEmpty()) {
+                        errors.append(String.format("Не указан объект! Строка %d, столбец 1", cel));
                         return errors.toString();
-//                        throw new RuntimeException(String.format(
-//                                "Не указан или не верно указан объект \"%s\". Строка %d, столбец 1", row.getCell(0).getStringCellValue(), cel
-//                        ));
                     }
+                    InvestorsFlowsSale investorsFlowsSale = new InvestorsFlowsSale();
+                    Facility facility = facilities.get(facilityName);
+                    if (facility == null) {
+                        facility = facilityService.findByFacility(facilityName);
+                        if (facility == null) {
+                            errors.append(String.format("Не указан или не верно указан объект \"%s\". Строка %d, столбец 1", facilityName, cel));
+                            return errors.toString();
+                        }
+                    }
+                    facilities.putIfAbsent(facilityName, facility);
+
                     investorsFlowsSale.setFacility(facility);
                     investorsFlowsSale.setInvestor(user);
                     ShareType shareKind = shareKinds
@@ -275,10 +289,6 @@ public class UploadExcelFunc {
                     if (shareKind == null) {
                         errors.append(String.format("Не указана или не верно указана доля \"%s\". Строка %d, столбец 3", row.getCell(0).getStringCellValue(), cel));
                         return errors.toString();
-//                        throw new RuntimeException(String.format(
-//                                "Не указана или не верно указана доля \"%s\". Строка %d, столбец 3",
-//                                row.getCell(2).getStringCellValue(), cel
-//                        ));
                     }
                     investorsFlowsSale.setShareType(shareKind);
                     String strCashInFacility = row.getCell(3).getStringCellValue();
@@ -288,9 +298,6 @@ public class UploadExcelFunc {
                     } catch (NumberFormatException ex) {
                         errors.append(String.format("Ошибка преобразования суммы \"Вложено в объект\". Строка %d, столбец 4", cel));
                         return errors.toString();
-//                        throw new NumberFormatException(
-//                                String.format("Ошибка преобразования суммы \"Вложено в объект\". " +
-//                                        "Строка %d, столбец 4", cel));
                     }
 
                     investorsFlowsSale.setCashInFacility(cashInFacility);
@@ -302,9 +309,6 @@ public class UploadExcelFunc {
                     } catch (NumberFormatException ex) {
                         errors.append(String.format("Ошибка преобразования суммы \"Доля инвестора\". Строка %d, столбец 6", cel));
                         return errors.toString();
-//                        throw new NumberFormatException(
-//                                String.format("Ошибка преобразования суммы \"Доля инвестора\". " +
-//                                        "Строка %d, столбец 6", cel));
                     }
 
                     investorsFlowsSale.setInvestorShare(invShare);
@@ -316,9 +320,6 @@ public class UploadExcelFunc {
                     } catch (NumberFormatException ex) {
                         errors.append(String.format("Ошибка преобразования суммы \"Вложено в подобъект\". Строка %d, столбец 6", cel));
                         return errors.toString();
-//                        throw new NumberFormatException(
-//                                String.format("Ошибка преобразования суммы \"Вложено в подобъект\". " +
-//                                        "Строка %d, столбец 6", cel));
                     }
 
                     investorsFlowsSale.setCashInUnderFacility(cashInUnderFacility);
@@ -344,25 +345,25 @@ public class UploadExcelFunc {
                     } catch (NumberFormatException ex) {
                         errors.append(String.format("Ошибка преобразования суммы \"Сколько прибыли реинвест\". Строка %d, столбец 34", cel));
                         return errors.toString();
-//                        throw new NumberFormatException(
-//                                String.format("Ошибка преобразования суммы \"Сколько прибыли реинвест\". " +
-//                                        "Строка %d, столбец 34", cel));
                     }
 
                     investorsFlowsSale.setProfitToReInvest(profitToReinvest);
 
-                    UnderFacilities underFacility = underFacilitiesList
-                            .stream()
-                            .filter(uf -> uf.getUnderFacility().equalsIgnoreCase(row.getCell(34).getStringCellValue()))
-                            .findFirst().orElse(null);
-                    if (underFacility == null) {
-                        errors.append(String.format("Не указан или не верно указан подобъект \"%s\". Строка %d, столбец 35", row.getCell(34).getStringCellValue(), cel));
+                    String underFacilityName = row.getCell(34).getStringCellValue();
+                    if (null == underFacilityName || underFacilityName.isEmpty()) {
+                        errors.append(String.format("Не указан или не верно указан подобъект \"%s\". Строка %d, столбец 35", underFacilityName, cel));
                         return errors.toString();
-//                        throw new RuntimeException(String.format(
-//                                "Не указан или не верно указан подобъект \"%s\". Строка %d, столбец 35",
-//                                row.getCell(34).getStringCellValue(), cel
-//                        ));
                     }
+                    UnderFacilities underFacility = underFacilities.get(underFacilityName);
+                    if (underFacility == null) {
+                        underFacility = underFacilitiesService.findByUnderFacility(underFacilityName);
+                        if (underFacility == null) {
+                            errors.append(String.format("Не указан или не верно указан подобъект \"%s\". Строка %d, столбец 35", underFacilityName, cel));
+                            return errors.toString();
+                        }
+                    }
+                    underFacilities.putIfAbsent(underFacilityName, underFacility);
+
                     investorsFlowsSale.setUnderFacility(underFacility);
 
                     investorsFlowsSale.setDateSale(Date.from(calSale.atStartOfDay(ZoneId.systemDefault()).toInstant()));
