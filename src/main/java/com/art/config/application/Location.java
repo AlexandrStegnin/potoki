@@ -26,4 +26,14 @@ public class Location {
 
     public static final String FACILITIES_EDIT = FACILITIES + "/edit/{id}";
 
+    public static final String ROOMS = "/rooms";
+
+    public static final String ROOMS_LIST = ROOMS + "/list";
+
+    public static final String ROOMS_EDIT = ROOMS + "/edit/{id}";
+
+    public static final String ROOMS_DELETE = ROOMS + "/delete/{id}";
+
+    public static final String ROOMS_CREATE = ROOMS + "/create";
+
 }
