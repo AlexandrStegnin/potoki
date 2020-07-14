@@ -18,7 +18,6 @@
     <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min_old.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/AjaxLoader.js' />" ></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/mailingScripts.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/popupScripts.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/forNewCashDetails.js' />" ></script>
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">

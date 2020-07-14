@@ -20,7 +20,6 @@
     <script type="text/javascript" src="<c:url value='/resources/core/js/jsFunctions.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/AjaxLoader.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/mailingScripts.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/scriptsForInvestorsCash.js' />"></script>
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
 </head>
