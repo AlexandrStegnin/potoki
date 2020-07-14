@@ -109,7 +109,10 @@ public class FacilityController {
         GenericResponse response = new GenericResponse();
         Facility facility = facilityService.findById(new BigInteger(searchSummary.getFacilityStr()));
         List<InvestorsCash> investorsCashes = investorsCashService.findByFacilityId(facility.getId());
-        investorsCashes.forEach(c -> investorsCashService.deleteById(c.getId()));
+        if (investorsCashes.size() > 0) {
+            response.setMessage(String.format("В объект [%s] вложены деньги, необходимо перераспределить их", facility.getName()));
+            return response;
+        }
         try {
             facility.getUnderFacilities().forEach(f -> underFacilitiesService.deleteById(f.getId()));
             facilityService.deleteById(facility.getId());
