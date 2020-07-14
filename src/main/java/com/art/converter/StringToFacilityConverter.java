@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 
 import javax.annotation.Resource;
-import java.math.BigInteger;
 
 public class StringToFacilityConverter implements Converter<String, Facility> {
 
@@ -21,7 +20,7 @@ public class StringToFacilityConverter implements Converter<String, Facility> {
     public Facility convert(String id) {
         Facility facility;
         try {
-            BigInteger IntId = new BigInteger(id);
+            Long IntId = Long.valueOf(id);
             facility = facilityService.findById(IntId);
         } catch (Exception ex) {
             facility = facilityService.findByFacility(id);

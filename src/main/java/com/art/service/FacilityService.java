@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class FacilityService {
         return facilityRepository.findAll();
     }
 
-    public Facility findById(BigInteger id) {
+    public Facility findById(Long id) {
         return facilityRepository.findById(id);
     }
 
@@ -39,7 +38,7 @@ public class FacilityService {
     public List<Facility> initializeFacilities() {
         List<Facility> facilitiesList = new ArrayList<>(0);
         Facility facility = new Facility();
-        facility.setId(new BigInteger("0"));
+        facility.setId(Long.valueOf("0"));
         facility.setName("Выберите объект");
         facilitiesList.add(facility);
         facilitiesList.addAll(facilityRepository.findAll());
@@ -73,11 +72,11 @@ public class FacilityService {
     }
 
 
-    public void deleteById(BigInteger id) {
+    public void deleteById(Long id) {
         CriteriaBuilder cb = this.em.getCriteriaBuilder();
         CriteriaDelete<Facility> delete = cb.createCriteriaDelete(Facility.class);
-        Root<Facility> facilityesRoot = delete.from(Facility.class);
-        delete.where(cb.equal(facilityesRoot.get(Facility_.id), id));
+        Root<Facility> facilityRoot = delete.from(Facility.class);
+        delete.where(cb.equal(facilityRoot.get(Facility_.id), id));
         this.em.createQuery(delete).executeUpdate();
     }
 
@@ -96,7 +95,7 @@ public class FacilityService {
         this.em.merge(facility);
     }
 
-    public Facility findByIdWithUnderFacilitiesAndRooms(BigInteger id) {
+    public Facility findByIdWithUnderFacilitiesAndRooms(Long id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Facility> facilityesCriteriaQuery = cb.createQuery(Facility.class);
         Root<Facility> facilityesRoot = facilityesCriteriaQuery.from(Facility.class);

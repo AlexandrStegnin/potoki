@@ -25,5 +25,5 @@ public interface InvestorsCashRepository extends JpaRepository<InvestorsCash, Bi
 
     Page<InvestorsCash> findAll(Specification<InvestorsCash> specification, Pageable pageable);
 
-    List<InvestorsCash> findByFacilityId(BigInteger facilityId);
+    List<InvestorsCash> findByFacilityId(Long facilityId);
 }

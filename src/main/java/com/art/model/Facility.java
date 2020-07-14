@@ -32,7 +32,7 @@ import java.util.Set;
 @Table(name = "facility", schema = "pss_projects")
 public class Facility implements Serializable {
 
-    private BigInteger id;
+    private Long id;
 
     private String name;
 
@@ -44,7 +44,7 @@ public class Facility implements Serializable {
     }
 
     public Facility(String id, String name) {
-        this.id = new BigInteger(id);
+        this.id = Long.valueOf(id);
         this.name = name;
     }
 
@@ -68,11 +68,11 @@ public class Facility implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    public BigInteger getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

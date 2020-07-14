@@ -57,7 +57,7 @@ public class InvestorsCashService {
         return investorsCashRepository.findById(id);
     }
 
-    public List<InvestorsCash> findByFacilityId(BigInteger facilityId) {
+    public List<InvestorsCash> findByFacilityId(Long facilityId) {
         return investorsCashRepository.findByFacilityId(facilityId);
     }
 

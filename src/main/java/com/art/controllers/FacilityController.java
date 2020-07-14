@@ -74,7 +74,7 @@ public class FacilityController {
      * Создание страницы с объектом редактирования
      */
     @GetMapping(path = Location.FACILITIES_EDIT)
-    public String editFacility(@PathVariable BigInteger id, ModelMap model) {
+    public String editFacility(@PathVariable Long id, ModelMap model) {
         Facility facility = facilityService.findById(id);
         model.addAttribute("newFacility", facility);
         model.addAttribute("edit", true);
@@ -107,7 +107,7 @@ public class FacilityController {
     public @ResponseBody
     GenericResponse deleteFacility(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
-        Facility facility = facilityService.findById(new BigInteger(searchSummary.getFacilityStr()));
+        Facility facility = facilityService.findById(Long.valueOf(searchSummary.getFacilityStr()));
         List<InvestorsCash> investorsCashes = investorsCashService.findByFacilityId(facility.getId());
         if (investorsCashes.size() > 0) {
             response.setMessage(String.format("В объект [%s] вложены деньги, необходимо перераспределить их", facility.getName()));
