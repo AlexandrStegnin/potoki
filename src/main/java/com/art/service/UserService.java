@@ -130,6 +130,8 @@ public class UserService {
         String password = generatePassword();
         user.setPassword(password);
         user.getProfile().setUser(user);
+        user.getProfile().setEmail(user.getProfile().getEmail().toLowerCase());
+        user.setLogin(user.getLogin().toLowerCase());
         userRepository.save(user);
         if (SecurityUtils.isUserInRole(user, UserRole.ROLE_INVESTOR)) {
             accountService.createAccount(user);

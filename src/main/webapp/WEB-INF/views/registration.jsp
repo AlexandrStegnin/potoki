@@ -32,7 +32,7 @@
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="login">Имя пользователя:</label>
                 <div class="col-md-7">
-                    <form:input type="text" path="login" id="login" class="form-control input-sm" />
+                    <form:input type="text" path="login" id="login" class="form-control input-sm" value="investor"/>
                     <div class="has-error help-inline" id="loginErr">
                     </div>
                 </div>
