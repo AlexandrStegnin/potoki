@@ -1,7 +1,7 @@
 package com.art.controllers;
 
 import com.art.model.Facility;
-import com.art.model.Rooms;
+import com.art.model.Room;
 import com.art.model.UnderFacilities;
 import com.art.service.*;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -28,8 +28,8 @@ public class UnderFacilitiesController {
     @Resource(name = "facilityService")
     private FacilityService facilityService;
 
-    @Resource(name = "roomsService")
-    private RoomsService roomsService;
+    @Resource(name = "roomService")
+    private RoomService roomService;
 
     @GetMapping(value = "/underfacilities")
     public String underFacilityPage(ModelMap model) {
@@ -57,7 +57,7 @@ public class UnderFacilitiesController {
         if (result.hasErrors()) {
             return "addunderfacility";
         }
-        Set<Rooms> rooms = new HashSet<>(roomsService.findByUnderFacility(underFacilities));
+        Set<Room> rooms = new HashSet<>(roomService.findByUnderFacility(underFacilities));
         underFacilities.setRooms(rooms);
         underFacilitiesService.update(underFacilities);
 
@@ -109,8 +109,8 @@ public class UnderFacilitiesController {
     }
 
     @ModelAttribute("rooms")
-    public List<Rooms> initializeR() {
-        return roomsService.init();
+    public List<Room> initializeR() {
+        return roomService.init();
     }
 
     @InitBinder

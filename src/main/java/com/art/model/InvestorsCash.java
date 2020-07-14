@@ -142,7 +142,7 @@ public class InvestorsCash implements Serializable {
     private Facility sourceFacility;
     private UnderFacilities sourceUnderFacility;
     private String sourceFlowsId;
-    private Rooms room;
+    private Room room;
     private int isReinvest;
     private BigInteger sourceId;
     private String source;
@@ -165,7 +165,7 @@ public class InvestorsCash implements Serializable {
                          UnderFacilities underFacility, Date dateClosingInvest,
                          TypeClosingInvest typeClosingInvest, ShareType shareType, Date dateReport,
                          Facility sourceFacility, UnderFacilities sourceUnderFacility, String sourceFlowsId,
-                         Rooms room, int isReinvest, BigInteger sourceId, String source, int isDivide) {
+                         Room room, int isReinvest, BigInteger sourceId, String source, int isDivide) {
         this.givedCash = givedCash;
         this.dateGivedCash = dateGivedCash;
         this.facility = facility;
@@ -303,11 +303,11 @@ public class InvestorsCash implements Serializable {
 
     @OneToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "RoomId", referencedColumnName = "id")
-    public Rooms getRoom() {
+    public Room getRoom() {
         return room;
     }
 
-    public void setRoom(Rooms room) {
+    public void setRoom(Room room) {
         this.room = room;
     }
 

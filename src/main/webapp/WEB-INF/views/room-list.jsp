@@ -36,7 +36,7 @@
         <div class="panel-heading"><span class="lead">Список помещений:</span>
             <sec:authorize access="isFullyAuthenticated()">
                 <sec:authorize access="hasRole('ADMIN')">
-                    <a href="<c:url value='/newRoom' />" class="btn btn-success btn-sm pull-right">Добавить
+                    <a href="<c:url value='/rooms/create' />" class="btn btn-success btn-sm pull-right">Добавить
                         помещение</a>
                 </sec:authorize>
             </sec:authorize>
@@ -68,7 +68,7 @@
                     <td>${room.id}</td>
                     <td>${room.underFacility.facility.name}</td>
                     <td>${room.underFacility.underFacility}</td>
-                    <td>${room.room}</td>
+                    <td>${room.name}</td>
                     <td>
                         <fmt:setLocale value="ru-RU" scope="session"/>
                         <fmt:formatNumber value="${room.roomSize}" type="number" minFractionDigits="2"/>
@@ -77,7 +77,7 @@
                         <fmt:formatNumber value="${room.coast}" type="currency" minFractionDigits="2"/>
                     </td>
                     <td>
-                        <fmt:formatDate value="${room.buyDate}" pattern="dd.MM.yyyy"/>
+                        <fmt:formatDate value="${room.dateBuy}" pattern="dd.MM.yyyy"/>
                     </td>
                     <td>
                         <label class="checkbox-inline">
@@ -87,7 +87,7 @@
                         </label>
                     </td>
                     <td>
-                        <fmt:formatDate value="${room.dateOfSale}" pattern="dd.MM.yyyy"/>
+                        <fmt:formatDate value="${room.dateSale}" pattern="dd.MM.yyyy"/>
                     </td>
                     <td>
                         <fmt:formatNumber value="${room.salePrice}" type="currency" minFractionDigits="2"/>
@@ -103,9 +103,9 @@
                                             class="btn btn-primary btn-sm dropdown-toggle">Действие <span
                                             class="caret"></span></button>
                                     <ul class="dropdown-menu">
-                                        <li><a href="<c:url value='/edit-room-${room.id}' />">Изменить</a></li>
+                                        <li><a href="<c:url value='edit/${room.id}' />">Изменить</a></li>
                                         <li class="divider"></li>
-                                        <li><a href="<c:url value='/delete-room-${room.id}' />" style="color: red">Удалить</a>
+                                        <li><a href="<c:url value='delete/${room.id}' />" style="color: red">Удалить</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -117,15 +117,6 @@
             </tbody>
         </table>
     </div>
-
-
-    <sec:authorize access="isRememberMe()">
-        <p>Вы вошли с помощью функции "Запомнить меня".
-            Чтобы иметь все права на данную страницу, Вам необходимо снова
-            <a href="<c:url value='/login' />">ВОЙТИ</a> в систему используя логин/пароль.
-        </p>
-
-    </sec:authorize>
 
 </div>
 <%@include file="loader.jsp" %>

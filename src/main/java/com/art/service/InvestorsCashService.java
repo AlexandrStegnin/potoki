@@ -87,7 +87,7 @@ public class InvestorsCashService {
         investorsCashRepository.save(investorsCashes);
     }
 
-    public List<InvestorsCash> findByRoomId(BigInteger roomId) {
+    public List<InvestorsCash> findByRoomId(Long roomId) {
         return investorsCashRepository.findByRoomId(roomId);
     }
 

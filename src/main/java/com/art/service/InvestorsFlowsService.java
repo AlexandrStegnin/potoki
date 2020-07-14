@@ -51,7 +51,7 @@ public class InvestorsFlowsService {
         return investorsFlowsRepository.findAll(pageable);
     }
 
-    public List<InvestorsFlows> findByRoomId(BigInteger roomId) {
+    public List<InvestorsFlows> findByRoomId(Long roomId) {
         return investorsFlowsRepository.findByRoomId(roomId);
     }
 

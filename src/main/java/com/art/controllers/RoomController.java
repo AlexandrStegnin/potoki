@@ -1,8 +1,9 @@
 package com.art.controllers;
 
-import com.art.model.Rooms;
+import com.art.config.application.Location;
+import com.art.model.Room;
 import com.art.model.UnderFacilities;
-import com.art.service.RoomsService;
+import com.art.service.RoomService;
 import com.art.service.UnderFacilitiesService;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -11,87 +12,82 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 @Controller
-public class RoomsController {
+public class RoomController {
 
-    @Resource(name = "roomsService")
-    private RoomsService roomsService;
+    private final RoomService roomService;
 
-    @Resource(name = "underFacilitiesService")
-    private UnderFacilitiesService underFacilitiesService;
+    private final UnderFacilitiesService underFacilitiesService;
 
-    @GetMapping(value = "/rooms")
-    public String roomsPage(ModelMap model) {
-
-        List<Rooms> rooms = roomsService.findAll();
-        model.addAttribute("rooms", rooms);
-
-        return "viewRooms";
+    public RoomController(RoomService roomService, UnderFacilitiesService underFacilitiesService) {
+        this.roomService = roomService;
+        this.underFacilitiesService = underFacilitiesService;
     }
 
-    @GetMapping(value = {"/edit-room-{id}"})
+    @GetMapping(path = Location.ROOMS_LIST)
+    public String roomsPage(ModelMap model) {
+        List<Room> rooms = roomService.findAll();
+        model.addAttribute("rooms", rooms);
+        return "room-list";
+    }
+
+    @GetMapping(path = Location.ROOMS_EDIT)
     public String editRoom(@PathVariable BigInteger id, ModelMap model) {
         String title = "Обновление данных по помещению";
-        Rooms room = roomsService.findByIdWithUnderFacilities(id);
-        model.addAttribute("rooms", room);
+        Room room = roomService.findByIdWithUnderFacilities(id);
+        model.addAttribute("room", room);
         model.addAttribute("edit", true);
         model.addAttribute("title", title);
-        return "addRooms";
+        return "room-add";
     }
 
-    @PostMapping(value = {"/edit-room-{id}"})
-    public String updateRoom(@ModelAttribute("rooms") Rooms room,
+    @PostMapping(path = Location.ROOMS_EDIT)
+    public String updateRoom(@ModelAttribute("rooms") Room room,
                              BindingResult result, ModelMap model) {
         String ret = "списку помещений.";
-        String redirectUrl = "/rooms";
+        String redirectUrl = "/rooms/list";
         if (result.hasErrors()) {
-            return "addRooms";
+            return "room-add";
         }
-
-        roomsService.update(room);
-
-        model.addAttribute("success", "Данные по помещению " + room.getRoom() +
+        roomService.update(room);
+        model.addAttribute("success", "Данные по помещению " + room.getName() +
                 " успешно обновлены.");
         model.addAttribute("redirectUrl", redirectUrl);
         model.addAttribute("ret", ret);
         return "registrationsuccess";
     }
 
-    @GetMapping(value = {"/delete-room-{id}"})
-    public String deleteRoom(@PathVariable BigInteger id) {
-        roomsService.deleteById(id);
-        return "redirect:/rooms";
+    @GetMapping(path = Location.ROOMS_DELETE)
+    public String deleteRoom(@PathVariable Long id) {
+        roomService.deleteById(id);
+        return "redirect:/rooms/list";
     }
 
-    @GetMapping(value = {"/newRoom"})
+    @GetMapping(path = Location.ROOMS_CREATE)
     public String newRoom(ModelMap model) {
         String title = "Добавление помещения";
-        Rooms room = new Rooms();
-        model.addAttribute("rooms", room);
+        Room room = new Room();
+        model.addAttribute("room", room);
         model.addAttribute("edit", false);
         model.addAttribute("title", title);
-        return "addRooms";
+        return "room-add";
     }
 
-    @PostMapping(value = {"/newRoom"})
-    public String saveRoom(@ModelAttribute("rooms") Rooms room,
+    @PostMapping(path = Location.ROOMS_CREATE)
+    public String saveRoom(@ModelAttribute("room") Room room,
                            BindingResult result, ModelMap model) {
-
         if (result.hasErrors()) {
-            return "addRooms";
+            return "room-add";
         }
         String ret = "списку помещений";
-        String redirectUrl = "/rooms";
-
-        roomsService.create(room);
-
-        model.addAttribute("success", "Помещение " + room.getRoom() +
+        String redirectUrl = "/rooms/list";
+        roomService.create(room);
+        model.addAttribute("success", "Помещение " + room.getName() +
                 " успешно добавлено.");
         model.addAttribute("redirectUrl", redirectUrl);
         model.addAttribute("ret", ret);

@@ -14,7 +14,7 @@ public class CashFlows implements Serializable {
     private List<UsersAnnexToContracts> annexes;
     private List<Facility> facilities;
     private Facility facility;
-    private List<Rooms> rooms;
+    private List<Room> rooms;
     private String login;
 
 }

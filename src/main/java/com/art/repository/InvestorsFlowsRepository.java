@@ -18,7 +18,7 @@ public interface InvestorsFlowsRepository extends PagingAndSortingRepository<Inv
 
     List<InvestorsFlows> findByIdIn(List<BigInteger> idList);
 
-    List<InvestorsFlows> findByRoomId(BigInteger roomId);
+    List<InvestorsFlows> findByRoomId(Long roomId);
 
     Page<InvestorsFlows> findAll(Pageable pageable);
 

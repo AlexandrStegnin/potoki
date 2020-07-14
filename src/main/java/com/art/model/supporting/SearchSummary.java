@@ -81,7 +81,7 @@ public class SearchSummary implements Serializable {
     private UsersAnnexToContracts usersAnnexToContracts;
     private int annexesCnt;
     private AnnexToContracts annexToContracts;
-    private Rooms room;
+    private Room room;
     private String dateClose;
     private List<BigInteger> cashIdList;
     private List<UnderFacilities> underFacilitiesList;
@@ -422,11 +422,11 @@ public class SearchSummary implements Serializable {
         this.reinvestIdList = reinvestIdList;
     }
 
-    public Rooms getRoom() {
+    public Room getRoom() {
         return room;
     }
 
-    public void setRoom(Rooms room) {
+    public void setRoom(Room room) {
         this.room = room;
     }
 

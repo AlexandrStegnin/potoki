@@ -37,8 +37,8 @@ public class FormattersConfig extends WebMvcConfigurerAdapter {
     @Resource(name = "typeClosingInvestService")
     private TypeClosingInvestService typeClosingInvestService;
 
-    @Resource(name = "roomsService")
-    private RoomsService roomsService;
+    @Resource(name = "roomService")
+    private RoomService roomService;
 
     @Resource(name = "appTokenService")
     private AppTokenService appTokenService;
@@ -53,7 +53,7 @@ public class FormattersConfig extends WebMvcConfigurerAdapter {
         registry.addConverter(new StringToCashSourceConverter(cashSourcesService));
         registry.addConverter(new StringToNewCashDetailConverter(newCashDetailsService));
         registry.addConverter(new StringToTypeClosingInvestConverter(typeClosingInvestService));
-        registry.addConverter(new StringToRoomsConverter(roomsService));
+        registry.addConverter(new StringToRoomsConverter(roomService));
         registry.addConverter(new StringToTokenConverter(appTokenService));
         registry.addConverter(new ShareTypeConverter());
     }

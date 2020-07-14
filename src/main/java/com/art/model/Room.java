@@ -8,44 +8,43 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Date;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "Rooms")
+@Table(name = "room")
 @ToString(exclude = "underFacility")
 @EqualsAndHashCode(exclude = "underFacility")
-public class Rooms implements Serializable {
+public class Room implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private BigInteger id;
+    private Long id;
 
-    @Column(name = "Room")
-    private String room;
+    @Column(name = "name")
+    private String name;
 
-    @Column(name = "Coast")
+    @Column(name = "coast")
     private BigDecimal coast;
 
-    @Column(name = "RoomSize")
+    @Column(name = "room_size")
     private BigDecimal roomSize;
 
-    @Column(name = "Sold")
+    @Column(name = "sold")
     private boolean sold;
 
-    @Column(name = "DateOfSale")
-    private Date dateOfSale;
+    @Column(name = "date_sale")
+    private Date dateSale;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "UnderFacilityId", referencedColumnName = "Id")
+    @JoinColumn(name = "under_facility_id", referencedColumnName = "id")
     private UnderFacilities underFacility;
 
-    @Column(name = "BuyDate")
-    private Date buyDate;
+    @Column(name = "date_buy")
+    private Date dateBuy;
 
-    @Column(name = "SalePrice")
+    @Column(name = "sale_price")
     private BigDecimal salePrice;
 
     @Column(name = "total_year_profit")

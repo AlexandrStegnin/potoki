@@ -41,7 +41,7 @@
         <a href="<c:url value='/admin' />" class="btn btn-success btn-block">Пользователи (USERS)</a>
         <a href="<c:url value='/facilities/list' />" class="btn btn-success btn-block">Объекты (facility)</a>
         <a href="<c:url value='/underfacilities' />" class="btn btn-success btn-block">Подобъекы (UnderFacilities)</a>
-        <a href="<c:url value='/rooms' />" class="btn btn-success btn-block">Помещения (Rooms)</a>
+        <a href="<c:url value='/rooms/list' />" class="btn btn-success btn-block">Помещения (room)</a>
         <a href="<c:url value='/investorscash' />" class="btn btn-success btn-block">Деньги инвесторов (InvestorsCash)</a>
         <a href="<c:url value='/paysToInv' />" class="btn btn-success btn-block">Выплаты инвесторам (аренда) (InvestorsFlows)</a>
         <a href="<c:url value='/flowsSale' />" class="btn btn-success btn-block">Выплаты инвесторам (продажа) (InvestorsFlowsSale)</a>

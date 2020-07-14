@@ -36,7 +36,7 @@ public class InvestorsFlows implements Serializable {
     private String reInvest;
     private Facility reFacility;
     private int isReinvest;
-    private Rooms room;
+    private Room room;
 
     public InvestorsFlows() {
 
@@ -288,11 +288,11 @@ public class InvestorsFlows implements Serializable {
 
     @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "RoomId", referencedColumnName = "id")
-    public Rooms getRoom() {
+    public Room getRoom() {
         return room;
     }
 
-    public void setRoom(Rooms room) {
+    public void setRoom(Room room) {
         this.room = room;
     }
 }

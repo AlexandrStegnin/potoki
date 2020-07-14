@@ -21,7 +21,7 @@ public interface InvestorsCashRepository extends JpaRepository<InvestorsCash, Bi
     @Query(name = "InvestorsCashSums", nativeQuery = true)
     List<InvestorsTotalSum> getInvestorsCashSums(Long investorId);
 
-    List<InvestorsCash> findByRoomId(BigInteger roomId);
+    List<InvestorsCash> findByRoomId(Long roomId);
 
     Page<InvestorsCash> findAll(Specification<InvestorsCash> specification, Pageable pageable);
 

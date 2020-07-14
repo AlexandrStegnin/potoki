@@ -84,7 +84,7 @@ public class InvestorCashLog {
 
     @OneToOne
     @JoinColumn(name = "room_id")
-    private Rooms room;
+    private Room room;
 
     @Column(name = "reinvest")
     private int reinvest;

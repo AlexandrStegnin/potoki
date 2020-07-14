@@ -56,8 +56,8 @@ public class InvestorsSummaryController {
     @Resource(name = "underFacilitiesService")
     private UnderFacilitiesService underFacilitiesService;
 
-    @Resource(name = "roomsService")
-    private RoomsService roomsService;
+    @Resource(name = "roomService")
+    private RoomService roomService;
 
     private final SearchSummary filters = new SearchSummary();
 
@@ -140,8 +140,8 @@ public class InvestorsSummaryController {
     }
 
     @ModelAttribute("rooms")
-    public List<Rooms> initializeRooms() {
-        return roomsService.init();
+    public List<Room> initializeRooms() {
+        return roomService.init();
     }
 
     @ModelAttribute("searchSummary")

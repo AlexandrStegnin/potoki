@@ -802,7 +802,7 @@ public class InvestorsCashController {
         // Получаем список подобъектов объекта
         Set<UnderFacilities> underFacilitiesList = facility.getUnderFacilities();
 
-        List<Rooms> rooms = new ArrayList<>(0);
+        List<Room> rooms = new ArrayList<>(0);
 
         // Если в списке подобъектов присутствует подобъект, из которого должен состоять остаток суммы, заносим помещения
         // этого подобъекта в список
@@ -815,13 +815,13 @@ public class InvestorsCashController {
         // Вычисляем стоимость объекта, складывая стоимости помещений, из которых должен состоять остаток
         BigDecimal coastFacility = rooms
                 .stream()
-                .map(Rooms::getCoast)
+                .map(Room::getCoast)
                 .reduce(BigDecimal.ZERO, BigDecimal::add)
                 .setScale(2, BigDecimal.ROUND_CEILING);
 
         // Вычисляем стоимость подобъекта, куда надо разделить сумму
         BigDecimal coastUnderFacility = underFacility.getRooms().stream()
-                .map(Rooms::getCoast)
+                .map(Room::getCoast)
                 .reduce(BigDecimal.ZERO, BigDecimal::add).setScale(2, BigDecimal.ROUND_CEILING);
 
         // Вычисляем % для выделения доли

@@ -22,7 +22,7 @@ public class UnderFacilities implements Serializable {
     private BigInteger facilityId;
     private String underFacility;
     private Facility facility;
-    private Set<Rooms> rooms;
+    private Set<Room> rooms;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FacilityId", referencedColumnName = "Id")
@@ -74,11 +74,11 @@ public class UnderFacilities implements Serializable {
             },
             fetch = FetchType.LAZY, mappedBy = "underFacility")
 //    @JoinColumn(name = "UnderFacilityId", referencedColumnName = "Id")
-    public Set<Rooms> getRooms() {
+    public Set<Room> getRooms() {
         return rooms;
     }
 
-    public void setRooms(Set<Rooms> rooms) {
+    public void setRooms(Set<Room> rooms) {
         this.rooms = rooms;
     }
 

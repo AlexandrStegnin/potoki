@@ -36,8 +36,8 @@ public class UploadExcelFunc {
     @Resource(name = "globalFunctions")
     private GlobalFunctions globalFunctions;
 
-    @Resource(name = "roomsService")
-    private RoomsService roomsService;
+    @Resource(name = "roomService")
+    private RoomService roomService;
 
     @Resource(name = "investorsFlowsSaleService")
     private InvestorsFlowsSaleService investorsFlowsSaleService;
@@ -81,7 +81,7 @@ public class UploadExcelFunc {
     private void rewriteInvestorsFlows(Sheet sheet) {
 
         List<InvestorsFlows> investorsFlowsTmp = investorsFlowsService.findAll();
-        List<Rooms> rooms = roomsService.findAll();
+        List<Room> rooms = roomService.findAll();
         int cel = 0;
         List<InvestorsFlows> investorsFlowsList = new ArrayList<>(0);
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy", Locale.ENGLISH);
@@ -143,7 +143,7 @@ public class UploadExcelFunc {
                     investorsFlows.setUnderFacilities(underFacility);
 
                     investorsFlows.setRoom(rooms.stream()
-                            .filter(r -> r.getRoom().equalsIgnoreCase(row.getCell(3).getStringCellValue()))
+                            .filter(r -> r.getName().equalsIgnoreCase(row.getCell(3).getStringCellValue()))
                             .findFirst().orElse(null));
 
                     investorsFlows.setInvestor(user);
