@@ -4,7 +4,6 @@ import com.art.func.GetPrincipalFunc;
 import com.art.func.UploadExcelFunc;
 import com.art.model.*;
 import com.art.model.supporting.FileBucket;
-import com.art.model.supporting.InvestorsTotalSum;
 import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.UserFacilities;
 import com.art.model.supporting.enums.ShareType;
@@ -106,16 +105,6 @@ public class InvestorsSummaryController {
         model.addAttribute("title", title);
         model.addAttribute("err", err);
         return "success";
-    }
-
-    @GetMapping(value = "/investorsCash")
-    public ModelAndView iCashPage() {
-        ModelAndView modelAndView = new ModelAndView("investorsCashSums");
-        modelAndView.addObject("loggedinuser", getPrincipalFunc.getLogin());
-        List<InvestorsTotalSum> investorsCashSums = investorsCashService.getInvestorsCashSums(
-                getPrincipalFunc.getPrincipalId());
-        modelAndView.addObject("investorsCashSums", investorsCashSums);
-        return modelAndView;
     }
 
     @InitBinder

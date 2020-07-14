@@ -40,6 +40,7 @@ public class GetPrincipalFunc {
         return userId;
     }
 
+    @Deprecated
     public List<UserFacilities> getUserFacilities(Long userId) {
         List<UserFacilities> userFacilities = new ArrayList<>(0);
         UserFacilities defaultFacility = new UserFacilities(new BigInteger("0"), "Выберите объект");
