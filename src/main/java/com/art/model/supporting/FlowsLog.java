@@ -1,6 +1,6 @@
 package com.art.model.supporting;
 
-import com.art.model.Users;
+import com.art.model.AppUser;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -21,7 +21,7 @@ public class FlowsLog {
 
     @OneToOne
     @JoinColumn(name = "user_id")
-    private Users user;
+    private AppUser user;
 
     @Column(name = "page")
     private String page;

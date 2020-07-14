@@ -157,7 +157,7 @@ public class InvestorsCashService {
         Root<InvestorsCash> investorsCashRoot = investorsCashCriteriaQuery.from(InvestorsCash.class);
         investorsCashCriteriaQuery.multiselect(investorsCashRoot.get(InvestorsCash_.facility),
                 cb.sum(investorsCashRoot.get(InvestorsCash_.givedCash)));
-        investorsCashCriteriaQuery.where(cb.equal(investorsCashRoot.get(InvestorsCash_.investor).get(Users_.id), investorId));
+        investorsCashCriteriaQuery.where(cb.equal(investorsCashRoot.get(InvestorsCash_.investor).get(AppUser_.id), investorId));
         investorsCashCriteriaQuery.groupBy(investorsCashRoot.get(InvestorsCash_.facility));
         List<InvestorsCash> cash = em.createQuery(investorsCashCriteriaQuery).getResultList();
         final Facility[] facility = {new Facility()};

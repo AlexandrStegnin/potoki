@@ -85,7 +85,7 @@ public class InvestorsCashSpecification extends BaseSpecification<InvestorsCash,
             return null;
         } else {
             return ((root, criteriaQuery, criteriaBuilder) ->
-                    root.get(InvestorsCash_.investor).get(Users_.login).in(loginList)
+                    root.get(InvestorsCash_.investor).get(AppUser_.login).in(loginList)
             );
         }
     }
@@ -96,12 +96,12 @@ public class InvestorsCashSpecification extends BaseSpecification<InvestorsCash,
         );
     }
 
-    private static Specification<InvestorsCash> investorEqual(Users investor) {
+    private static Specification<InvestorsCash> investorEqual(AppUser investor) {
         if (investor == null) {
             return null;
         } else {
             return ((root, criteriaQuery, criteriaBuilder) ->
-                    criteriaBuilder.equal(root.get(InvestorsCash_.investor).get(Users_.id), investor.getId())
+                    criteriaBuilder.equal(root.get(InvestorsCash_.investor).get(AppUser_.id), investor.getId())
             );
         }
     }

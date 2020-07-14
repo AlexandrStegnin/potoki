@@ -1,7 +1,7 @@
 package com.art.func;
 
 import com.art.config.AppSecurityConfig;
-import com.art.model.Users;
+import com.art.model.AppUser;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SendingMail;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -24,7 +24,7 @@ import java.util.Properties;
 public class PersonalMailService {
     private static final String ENCODING = StandardCharsets.UTF_8.name();
 
-    public GenericResponse sendEmails(Users user, SendingMail sendingMail, String username, String pwd,
+    public GenericResponse sendEmails(AppUser user, SendingMail sendingMail, String username, String pwd,
                                       String who, List<MultipartFile> file) {
         GenericResponse response = new GenericResponse();
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();

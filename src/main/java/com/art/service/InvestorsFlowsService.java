@@ -99,7 +99,7 @@ public class InvestorsFlowsService {
         flowsRoot.fetch(InvestorsFlows_.facility, JoinType.LEFT);
         //.fetch(Facilities_.underFacilities, JoinType.LEFT);
         flowsCriteriaQuery.select(flowsRoot).distinct(true);
-        flowsCriteriaQuery.where(cb.equal(flowsRoot.get(InvestorsFlows_.investor).get(Users_.id), investorId));
+        flowsCriteriaQuery.where(cb.equal(flowsRoot.get(InvestorsFlows_.investor).get(AppUser_.id), investorId));
         return em.createQuery(flowsCriteriaQuery).getResultList();
     }
 
@@ -141,11 +141,11 @@ public class InvestorsFlowsService {
                     .get(UnderFacilities_.underFacility), underFacility.getUnderFacility()));
         }
 
-        Users investor = searchSummary.getUser();
+        AppUser investor = searchSummary.getUser();
         if (!Objects.equals(null, investor)) {
             investor = userService.findById(investor.getId());
             predicates.add(cb.like(from.get(InvestorsFlows_.investor)
-                    .get(Users_.login), investor.getLogin()));
+                    .get(AppUser_.login), investor.getLogin()));
         }
 
         Date dateFrom = searchSummary.getDateStart();

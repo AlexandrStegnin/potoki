@@ -3,7 +3,10 @@ package com.art.service;
 import com.art.config.AppSecurityConfig;
 import com.art.config.SecurityUtils;
 import com.art.func.PersonalMailService;
-import com.art.model.*;
+import com.art.model.AppUser;
+import com.art.model.AppUser_;
+import com.art.model.UserProfile;
+import com.art.model.UserProfile_;
 import com.art.model.supporting.SendingMail;
 import com.art.model.supporting.enums.UserRole;
 import com.art.repository.UserRepository;
@@ -15,7 +18,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,7 +49,7 @@ public class UserService {
         this.accountService = accountService;
     }
 
-    public List<Users> findAll() {
+    public List<AppUser> findAll() {
         return userRepository.findAll();
     }
 
@@ -55,36 +57,36 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public Users findByLogin(String login) {
+    public AppUser findByLogin(String login) {
         return userRepository.findByLogin(login);
     }
 
-    public Users findById(Long id) {
+    public AppUser findById(Long id) {
         return userRepository.findOne(id);
     }
 
-    public void changeUserPassword(Users user, String password) {
+    public void changeUserPassword(AppUser user, String password) {
         user.setPassword(passwordEncoder.encode(password));
         userRepository.saveAndFlush(user);
     }
 
-    public List<Users> initializeInvestors() {
+    public List<AppUser> initializeInvestors() {
         return getUsers("Выберите инвестора");
     }
 
-    public List<Users> initializeMultipleInvestors() {
+    public List<AppUser> initializeMultipleInvestors() {
         return userRepository.findAll();
     }
 
-    public List<Users> initializePartners() {
+    public List<AppUser> initializePartners() {
         return getUsers("Выберите партнёра");
     }
 
-    private List<Users> getUsers(String s) {
-        Users partner = new Users();
+    private List<AppUser> getUsers(String s) {
+        AppUser partner = new AppUser();
         partner.setId(Long.valueOf("0"));
         partner.setLogin(s);
-        List<Users> users = new ArrayList<>(0);
+        List<AppUser> users = new ArrayList<>(0);
         users.add(partner);
         users.addAll(userRepository.findAll());
         return users;
@@ -92,7 +94,7 @@ public class UserService {
 
     @Transactional
     public void confirm(Long userId) {
-        Users investor = findById(userId);
+        AppUser investor = findById(userId);
         if (!investor.isConfirmed()) {
             investor.setConfirmed(true);
             update(investor);
@@ -105,28 +107,16 @@ public class UserService {
 
      */
 
-    public List<Users> findAllWithFacilitiesAndUnderFacilities() {
+    public AppUser findByLoginWithAnnexes(String login) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
-        Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
-
-        usersRoot.fetch(Users_.facilities, JoinType.LEFT)
-                .fetch(Facility_.underFacilities, JoinType.LEFT);
+        CriteriaQuery<AppUser> usersCriteriaQuery = cb.createQuery(AppUser.class);
+        Root<AppUser> usersRoot = usersCriteriaQuery.from(AppUser.class);
         usersCriteriaQuery.select(usersRoot).distinct(true);
-
-        return em.createQuery(usersCriteriaQuery).getResultList();
-    }
-
-    public Users findByLoginWithAnnexes(String login) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
-        Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
-        usersCriteriaQuery.select(usersRoot).distinct(true);
-        usersCriteriaQuery.where(cb.equal(usersRoot.get(Users_.login), login));
+        usersCriteriaQuery.where(cb.equal(usersRoot.get(AppUser_.login), login));
         return em.createQuery(usersCriteriaQuery).getSingleResult();
     }
 
-    public void create(Users user) {
+    public void create(AppUser user) {
         String password = generatePassword();
         user.setPassword(password);
         user.getProfile().setUser(user);
@@ -139,8 +129,8 @@ public class UserService {
         }
     }
 
-    public void updateProfile(Users user) {
-        Users dbUser = findById(user.getId());
+    public void updateProfile(AppUser user) {
+        AppUser dbUser = findById(user.getId());
         if (null != user.getPassword()) {
             dbUser.setPassword(passwordEncoder.encode(user.getPassword()));
         }
@@ -150,8 +140,8 @@ public class UserService {
         userRepository.save(dbUser);
     }
 
-    public void update(Users user) {
-        Users dbUser = findById(user.getId());
+    public void update(AppUser user) {
+        AppUser dbUser = findById(user.getId());
         dbUser.setPartnerId(user.getPartnerId());
         dbUser.setKin(user.getKin());
         dbUser.setRoles(user.getRoles());
@@ -163,7 +153,7 @@ public class UserService {
         userRepository.save(dbUser);
     }
 
-    private void sendWelcomeMessage(Users user, String password) {
+    private void sendWelcomeMessage(AppUser user, String password) {
         SendingMail mail = new SendingMail();
         mail.setSubject("Добро пожаловать в Доходный Дом КолесникЪ!");
         mail.setBody("Здравствуйте, уважаемый Инвестор!<br/>" +
@@ -179,13 +169,13 @@ public class UserService {
         personalMailService.sendEmails(user, mail, prop.getProperty("mail.kolesnik"), prop.getProperty("mail.kolesnikpwd"), who, null);
     }
 
-    public Users findByLoginAndEmail(String login, String email) {
+    public AppUser findByLoginAndEmail(String login, String email) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Users> usersCriteriaQuery = cb.createQuery(Users.class);
-        Root<Users> usersRoot = usersCriteriaQuery.from(Users.class);
+        CriteriaQuery<AppUser> usersCriteriaQuery = cb.createQuery(AppUser.class);
+        Root<AppUser> usersRoot = usersCriteriaQuery.from(AppUser.class);
         usersCriteriaQuery.select(usersRoot);
-        usersCriteriaQuery.where(cb.and(cb.equal(usersRoot.get(Users_.login), login),
-                cb.equal(usersRoot.get(Users_.profile).get(UserProfile_.email), email)));
+        usersCriteriaQuery.where(cb.and(cb.equal(usersRoot.get(AppUser_.login), login),
+                cb.equal(usersRoot.get(AppUser_.profile).get(UserProfile_.email), email)));
         return em.createQuery(usersCriteriaQuery).getSingleResult();
     }
 
@@ -202,7 +192,7 @@ public class UserService {
         return prop;
     }
 
-    public List<Users> getForFindPartnerChild() {
+    public List<AppUser> getForFindPartnerChild() {
         return userRepository.getForFindPartnerChild();
     }
 

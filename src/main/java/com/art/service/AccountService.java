@@ -2,7 +2,7 @@ package com.art.service;
 
 import com.art.config.application.Constant;
 import com.art.model.Account;
-import com.art.model.Users;
+import com.art.model.AppUser;
 import com.art.model.supporting.enums.Region;
 import com.art.repository.AccountRepository;
 import org.springframework.stereotype.Service;
@@ -54,14 +54,14 @@ public class AccountService {
         return accountRepository.findByOwnerId(ownerId);
     }
 
-    public void createAccount(Users user) {
+    public void createAccount(AppUser user) {
         Account account = new Account();
         account.setAccountNumber(generateAccountNumber(user));
         account.setOwnerId(user.getId());
         accountRepository.save(account);
     }
 
-    private String generateAccountNumber(Users user) {
+    private String generateAccountNumber(AppUser user) {
         /*
         первые 5 цифр 00000 (порядковый номер клиента),
         вторые 3 цифры (номер региона),

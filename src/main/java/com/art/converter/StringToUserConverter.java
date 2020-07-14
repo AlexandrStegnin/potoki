@@ -1,14 +1,13 @@
 package com.art.converter;
 
-import com.art.model.Users;
+import com.art.model.AppUser;
 import com.art.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 
 import javax.annotation.Resource;
-import java.math.BigInteger;
 
-public class StringToUserConverter implements Converter<String, Users> {
+public class StringToUserConverter implements Converter<String, AppUser> {
 
     //@Autowired
     @Resource(name = "userService")
@@ -19,8 +18,8 @@ public class StringToUserConverter implements Converter<String, Users> {
         this.userService = userService;
     }
 
-    public Users convert(String id) {
-        Users user;
+    public AppUser convert(String id) {
+        AppUser user;
         try {
             Long IntId = Long.valueOf(id);
             user = userService.findById(IntId);

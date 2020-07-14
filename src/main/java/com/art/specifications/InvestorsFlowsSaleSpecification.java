@@ -71,7 +71,7 @@ public class InvestorsFlowsSaleSpecification extends BaseSpecification<Investors
             return null;
         } else {
             return ((root, criteriaQuery, criteriaBuilder) ->
-                    root.get(InvestorsFlowsSale_.investor).get(Users_.login).in(loginList)
+                    root.get(InvestorsFlowsSale_.investor).get(AppUser_.login).in(loginList)
             );
         }
     }

@@ -141,7 +141,7 @@ public class InvestorsSummaryController {
     }
 
     @ModelAttribute("investors")
-    public List<Users> initializeInvestors() {
+    public List<AppUser> initializeInvestors() {
         return userService.initializeInvestors();
     }
 

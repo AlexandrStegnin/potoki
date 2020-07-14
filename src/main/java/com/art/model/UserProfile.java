@@ -22,7 +22,7 @@ public class UserProfile {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id")
     @MapsId
-    private Users user;
+    private AppUser user;
 
     @Column(name = "last_name")
     private String lastName;

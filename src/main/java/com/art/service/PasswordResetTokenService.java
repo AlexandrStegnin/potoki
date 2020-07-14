@@ -1,7 +1,7 @@
 package com.art.service;
 
 import com.art.model.PasswordResetToken;
-import com.art.model.Users;
+import com.art.model.AppUser;
 import com.art.repository.PasswordResetTokenRepository;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -32,7 +32,7 @@ public class PasswordResetTokenService {
     public String validatePasswordResetToken(BigInteger id, String token) {
         PasswordResetToken passToken =
                 passwordResetTokenRepository.findByToken(token);
-        if ((passToken == null) || (!Objects.equals(passToken.getUsers()
+        if ((passToken == null) || (!Objects.equals(passToken.getAppUser()
                 .getId(), id))) {
             return "invalidToken";
         }
@@ -44,7 +44,7 @@ public class PasswordResetTokenService {
             return "expired";
         }
 
-        Users user = passToken.getUsers();
+        AppUser user = passToken.getAppUser();
         Authentication auth = new UsernamePasswordAuthenticationToken(
                 user, null, Arrays.asList(
                 new SimpleGrantedAuthority("CHANGE_PASSWORD_PRIVILEGE")));

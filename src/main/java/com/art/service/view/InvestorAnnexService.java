@@ -2,7 +2,7 @@ package com.art.service.view;
 
 import com.art.config.SecurityUtils;
 import com.art.model.AnnexToContracts;
-import com.art.model.Users;
+import com.art.model.AppUser;
 import com.art.model.UsersAnnexToContracts;
 import com.art.model.supporting.filters.InvestorAnnexFilter;
 import com.art.model.supporting.view.InvestorAnnex;
@@ -113,7 +113,7 @@ public class InvestorAnnexService {
 
     public String uploadFiles(List<MultipartFile> files) throws IOException, RuntimeException {
         String path = System.getProperty("catalina.home") + "/pdfFiles/";
-        Users currentUser = userService.findByLogin(SecurityUtils.getUsername());
+        AppUser currentUser = userService.findByLogin(SecurityUtils.getUsername());
         int counter = 0;
         int filesCnt = files.size();
         for (MultipartFile uploadedFile : files) {
@@ -136,7 +136,7 @@ public class InvestorAnnexService {
                 log.error(message);
                 continue;
             }
-            Users investor;
+            AppUser investor;
             try {
                 investor = getInvestor(fileName);
             } catch (RuntimeException e) {
@@ -171,7 +171,7 @@ public class InvestorAnnexService {
      * @return - пользователь
      * @throws RuntimeException - если пользователь не найден или название файла не позволило прочитать логин
      */
-    private Users getInvestor(String fileName) throws RuntimeException {
+    private AppUser getInvestor(String fileName) throws RuntimeException {
         String lastName = "";
         Pattern pattern = Pattern.compile("Инвестор\\s\\d{3,}", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(fileName);
@@ -185,7 +185,7 @@ public class InvestorAnnexService {
         } else {
             throw new RuntimeException("Ошибка получения логина инвестора из имени файла [" + fileName + "]");
         }
-        Users investor = userService.findByLogin(login);
+        AppUser investor = userService.findByLogin(login);
         if (null == investor) {
             throw new RuntimeException("Пользователь с логином [" + lastName + "] не найден");
         }

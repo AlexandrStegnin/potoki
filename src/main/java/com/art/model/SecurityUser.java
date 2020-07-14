@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class SecurityUser extends Users implements UserDetails {
+public class SecurityUser extends AppUser implements UserDetails {
 
-    public SecurityUser(Users user) {
+    public SecurityUser(AppUser user) {
         if (user != null) {
             this.setId(user.getId());
             this.setLogin(user.getLogin());

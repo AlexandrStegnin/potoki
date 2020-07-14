@@ -20,7 +20,7 @@ public class InvestorsFlows implements Serializable {
     private Date reportDate;
     private Facility facility;
     private UnderFacilities underFacilities;
-    private Users investor;
+    private AppUser investor;
     private String shareKind;
     private float givedCash;
     private float share;
@@ -51,13 +51,13 @@ public class InvestorsFlows implements Serializable {
         this.afterCashing = afterCashing;
     }
 
-    public InvestorsFlows(Facility facility, UnderFacilities underFacilities, Users investor) {
+    public InvestorsFlows(Facility facility, UnderFacilities underFacilities, AppUser investor) {
         this.facility = facility;
         this.underFacilities = underFacilities;
         this.investor = investor;
     }
 
-    public InvestorsFlows(Facility facility, UnderFacilities underFacilities, Users investor, float afterCashing) {
+    public InvestorsFlows(Facility facility, UnderFacilities underFacilities, AppUser investor, float afterCashing) {
         this.facility = facility;
         this.underFacilities = underFacilities;
         this.investor = investor;
@@ -97,11 +97,11 @@ public class InvestorsFlows implements Serializable {
 
     @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "investorId", referencedColumnName = "id")
-    public Users getInvestor() {
+    public AppUser getInvestor() {
         return investor;
     }
 
-    public void setInvestor(Users investor) {
+    public void setInvestor(AppUser investor) {
         this.investor = investor;
     }
 

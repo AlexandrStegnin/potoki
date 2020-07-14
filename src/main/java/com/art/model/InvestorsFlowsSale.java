@@ -21,7 +21,7 @@ import java.util.Date;
 public class InvestorsFlowsSale implements Serializable {
     private BigInteger id;
     private Facility facility;
-    private Users investor;
+    private AppUser investor;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "ShareType")
@@ -74,11 +74,11 @@ public class InvestorsFlowsSale implements Serializable {
 
     @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "investorId", referencedColumnName = "id")
-    public Users getInvestor() {
+    public AppUser getInvestor() {
         return investor;
     }
 
-    public void setInvestor(Users investor) {
+    public void setInvestor(AppUser investor) {
         this.investor = investor;
     }
 

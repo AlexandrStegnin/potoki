@@ -19,9 +19,9 @@ public class PasswordResetToken implements Serializable {
     public PasswordResetToken() {
     }
 
-    public PasswordResetToken(String token, Users users) {
+    public PasswordResetToken(String token, AppUser appUser) {
         this.token = token;
-        this.users = users;
+        this.appUser = appUser;
     }
 
     @Id
@@ -46,16 +46,16 @@ public class PasswordResetToken implements Serializable {
         this.token = token;
     }
 
-    @OneToOne(targetEntity = Users.class, fetch = FetchType.EAGER)
+    @OneToOne(targetEntity = AppUser.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "UserId")
-    private Users users;
+    private AppUser appUser;
 
-    public Users getUsers() {
-        return users;
+    public AppUser getAppUser() {
+        return appUser;
     }
 
-    public void setUsers(Users users) {
-        this.users = users;
+    public void setAppUser(AppUser appUser) {
+        this.appUser = appUser;
     }
 
     private Date expiryDate;

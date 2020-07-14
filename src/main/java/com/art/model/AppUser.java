@@ -16,10 +16,10 @@ import java.util.stream.Collectors;
 
 @Data
 @Entity
-@Table(name = "USERS")
+@Table(name = "app_user")
 @ToString(of = {"id", "login"})
 @EqualsAndHashCode(of = {"id", "login"})
-public class Users implements Serializable {
+public class AppUser implements Serializable {
 
     private Long id;
 
@@ -33,15 +33,15 @@ public class Users implements Serializable {
     @Column(name = "Kin")
     private KinEnum kin;
 
-    public Users() {
+    public AppUser() {
     }
 
-    public Users(String id, String login) {
+    public AppUser(String id, String login) {
         this.id = Long.valueOf(id);
         this.login = login;
     }
 
-    public Users(Long id, Long partnerId) {
+    public AppUser(Long id, Long partnerId) {
         this.id = id;
         this.partnerId = partnerId;
     }
@@ -101,7 +101,7 @@ public class Users implements Serializable {
         this.confirmed = confirmed;
     }
 
-    public Users(UserDTO userDTO) {
+    public AppUser(UserDTO userDTO) {
         this.id = userDTO.getId() != null ? userDTO.getId() : null;
         this.profile = new UserProfile(userDTO.getProfile());
         this.login = userDTO.getLogin();

@@ -1,5 +1,6 @@
 package com.art.config;
 
+import com.art.model.AppUser;
 import com.art.model.SecurityUser;
 import com.art.service.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +18,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        com.art.model.Users user = userService.findByLoginWithAnnexes(login);
+        AppUser user = userService.findByLoginWithAnnexes(login);
         if (user == null) {
             throw new UsernameNotFoundException("Username not found");
         }

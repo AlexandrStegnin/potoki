@@ -158,7 +158,7 @@ public class InvestorsFlowsSaleController {
     }
 
     @ModelAttribute("investors")
-    public List<Users> initializeInvestors() {
+    public List<AppUser> initializeInvestors() {
         return userService.initializeInvestors();
     }
 

@@ -127,7 +127,7 @@ public class InvestorsCash implements Serializable {
     private BigDecimal givedCash;
     private Date dateGivedCash;
     private Facility facility;
-    private Users investor;
+    private AppUser investor;
     private CashSources cashSource;
     private NewCashDetails newCashDetails;
     private UnderFacilities underFacility;
@@ -149,7 +149,7 @@ public class InvestorsCash implements Serializable {
     private int isDivide;
 
     @Transient
-    private transient Users investorBuyer;
+    private transient AppUser investorBuyer;
 
     public InvestorsCash() {
 
@@ -160,7 +160,7 @@ public class InvestorsCash implements Serializable {
         this.givedCash = givedCash;
     }
 
-    public InvestorsCash(BigDecimal givedCash, Date dateGivedCash, Facility facility, Users investor,
+    public InvestorsCash(BigDecimal givedCash, Date dateGivedCash, Facility facility, AppUser investor,
                          CashSources cashSource, NewCashDetails newCashDetails,
                          UnderFacilities underFacility, Date dateClosingInvest,
                          TypeClosingInvest typeClosingInvest, ShareType shareType, Date dateReport,
@@ -212,7 +212,7 @@ public class InvestorsCash implements Serializable {
         this.isDivide = cash.getIsDivide();
     }
 
-    public InvestorsCash(BigDecimal givedCash, Users investor, Facility sourceFacility) {
+    public InvestorsCash(BigDecimal givedCash, AppUser investor, Facility sourceFacility) {
         this.givedCash = givedCash;
         this.investor = investor;
         this.sourceFacility = sourceFacility;
@@ -223,7 +223,7 @@ public class InvestorsCash implements Serializable {
         this.investorId = investorId;
     }
 
-    public InvestorsCash(Facility facility, Users investor) {
+    public InvestorsCash(Facility facility, AppUser investor) {
         this.facility = facility;
         this.investor = investor;
     }
@@ -234,7 +234,7 @@ public class InvestorsCash implements Serializable {
         this.investorId = investorId;
     }
 
-    public InvestorsCash(BigDecimal givedCash, Facility facility, Users investor) {
+    public InvestorsCash(BigDecimal givedCash, Facility facility, AppUser investor) {
         this.givedCash = givedCash;
         this.facility = facility;
         this.investor = investor;
@@ -247,7 +247,7 @@ public class InvestorsCash implements Serializable {
         this.investorId = investorId;
     }
 
-    public InvestorsCash(BigDecimal givedCash, Date dateGivedCash, Facility facility, Users investor) {
+    public InvestorsCash(BigDecimal givedCash, Date dateGivedCash, Facility facility, AppUser investor) {
         this.givedCash = givedCash;
         this.dateGivedCash = dateGivedCash;
         this.facility = facility;
@@ -293,11 +293,11 @@ public class InvestorsCash implements Serializable {
 
     @OneToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "InvestorId", referencedColumnName = "id")
-    public Users getInvestor() {
+    public AppUser getInvestor() {
         return investor;
     }
 
-    public void setInvestor(Users investor) {
+    public void setInvestor(AppUser investor) {
         this.investor = investor;
     }
 
@@ -477,11 +477,11 @@ public class InvestorsCash implements Serializable {
     }
 
     @Transient
-    public Users getInvestorBuyer() {
+    public AppUser getInvestorBuyer() {
         return investorBuyer;
     }
 
-    public void setInvestorBuyer(Users investorBuyer) {
+    public void setInvestorBuyer(AppUser investorBuyer) {
         this.investorBuyer = investorBuyer;
     }
 

@@ -1,7 +1,7 @@
 package com.art.controllers;
 
 import com.art.func.GetPrincipalFunc;
-import com.art.model.Users;
+import com.art.model.AppUser;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.enums.UserRole;
@@ -45,7 +45,7 @@ public class AdminController {
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String adminPage(ModelMap model, HttpServletRequest httpServletRequest) {
 
-        List<Users> users = userService.findAll();
+        List<AppUser> users = userService.findAll();
         model.addAttribute("users", users);
         model.addAttribute("searchSummary", new SearchSummary());
 

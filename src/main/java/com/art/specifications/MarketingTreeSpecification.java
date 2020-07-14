@@ -1,8 +1,8 @@
 package com.art.specifications;
 
+import com.art.model.AppUser_;
 import com.art.model.MarketingTree;
 import com.art.model.MarketingTree_;
-import com.art.model.Users_;
 import com.art.model.supporting.enums.KinEnum;
 import com.art.model.supporting.filters.MarketingTreeFilter;
 import org.springframework.data.jpa.domain.Specification;
@@ -49,7 +49,7 @@ public class MarketingTreeSpecification extends BaseSpecification<MarketingTree,
             if (Objects.equals(null, login) || StringUtils.isEmpty(login) || "Выберите инвестора".equalsIgnoreCase(login.trim())) {
                 return null;
             } else {
-                return criteriaBuilder.equal(root.get(MarketingTree_.investor).get(Users_.login), login);
+                return criteriaBuilder.equal(root.get(MarketingTree_.investor).get(AppUser_.login), login);
             }
         }
         );
@@ -60,7 +60,7 @@ public class MarketingTreeSpecification extends BaseSpecification<MarketingTree,
             if (Objects.equals(null, login) || StringUtils.isEmpty(login) || "Выберите партнёра".equalsIgnoreCase(login.trim())) {
                 return null;
             } else {
-                return criteriaBuilder.equal(root.get(MarketingTree_.partner).get(Users_.login), login);
+                return criteriaBuilder.equal(root.get(MarketingTree_.partner).get(AppUser_.login), login);
             }
         }
         );

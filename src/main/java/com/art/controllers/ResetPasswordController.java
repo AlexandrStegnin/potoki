@@ -1,7 +1,7 @@
 package com.art.controllers;
 
+import com.art.model.AppUser;
 import com.art.model.PasswordResetToken;
-import com.art.model.Users;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.MailService;
 import com.art.model.supporting.SearchSummary;
@@ -43,17 +43,17 @@ public class ResetPasswordController {
     public @ResponseBody
     GenericResponse resetPasswordPage(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
-        Users users;
+        AppUser appUser;
         try {
-            users = userService.findByLoginAndEmail(searchSummary.getLogin(), searchSummary.getEmail());
+            appUser = userService.findByLoginAndEmail(searchSummary.getLogin(), searchSummary.getEmail());
         } catch (Exception e) {
             response.setError("<p>Пользователь с таким email и логином не найден.</p>");
             return response;
         }
 
-        PasswordResetToken oldToken = passwordResetTokenService.findById(users.getId());
+        PasswordResetToken oldToken = passwordResetTokenService.findById(appUser.getId());
         if (oldToken != null) {
-            passwordResetTokenService.deleteById(users.getId());
+            passwordResetTokenService.deleteById(appUser.getId());
         }
 
         String fileName = "mail.ru.properties";
@@ -68,15 +68,15 @@ public class ResetPasswordController {
 
         String token = UUID.randomUUID().toString();
         String url = prop.getProperty("mail.urlProm") +
-                users.getId() + "&token=" + token;
-        PasswordResetToken resetToken = new PasswordResetToken(token, users);
+                appUser.getId() + "&token=" + token;
+        PasswordResetToken resetToken = new PasswordResetToken(token, appUser);
 
         Calendar cal = new GregorianCalendar();
 
         resetToken.setExpiryDate(new java.sql.Date(cal.getTime().getTime()));
         passwordResetTokenService.create(resetToken);
 
-        String body = "Уважаемый, " + users.getLogin()
+        String body = "Уважаемый, " + appUser.getLogin()
                 + ", восстановить пароль можно пройдя по ссылке ниже."
                 + "<br>"
                 + "<a href=" + url + ">Восстановить пароль</a>"
@@ -85,7 +85,7 @@ public class ResetPasswordController {
                 + "<br>"
                 + "Сообщение создано автоматически, не отвечайте на него.";
         String subject = "Воссстановление пароля";
-        mailService.sendEmail(users, body, subject);
+        mailService.sendEmail(appUser, body, subject);
 
         response.setMessage("На Ваш почтовый ящик отправлена инструкция по восстановлению пароля.");
         return response;
@@ -106,7 +106,7 @@ public class ResetPasswordController {
     @ResponseBody
     public GenericResponse savePasswordPage(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
-        Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        AppUser user = (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         userService.changeUserPassword(user, searchSummary.getPassword());
         response.setMessage("Пароль успешно изменён.");
         return response;

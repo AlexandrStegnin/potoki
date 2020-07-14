@@ -1,7 +1,7 @@
 package com.art.controllers;
 
+import com.art.model.AppUser;
 import com.art.model.MarketingTree;
-import com.art.model.Users;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.enums.KinEnum;
 import com.art.model.supporting.filters.MarketingTreeFilter;
@@ -78,12 +78,12 @@ public class MarketingTreeController {
     }
 
     @ModelAttribute("investors")
-    public List<Users> initializeInvestors() {
+    public List<AppUser> initializeInvestors() {
         return userService.initializeInvestors();
     }
 
     @ModelAttribute("partners")
-    public List<Users> initializePartners() {
+    public List<AppUser> initializePartners() {
         return userService.initializePartners();
     }
 

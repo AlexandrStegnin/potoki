@@ -1,6 +1,6 @@
 package com.art.model.supporting;
 
-import com.art.model.Users;
+import com.art.model.AppUser;
 import lombok.*;
 
 import java.io.Serializable;
@@ -14,16 +14,16 @@ import java.util.List;
 @NoArgsConstructor
 public class SendingMail implements Serializable {
 
-    private List<Users> users;
+    private List<AppUser> users;
     private String subject;
     private String body;
     private List<FileBucket> fileBucket;
 
-    public List<Users> getUsers() {
+    public List<AppUser> getUsers() {
         return users;
     }
 
-    public void setUsers(List<Users> users) {
+    public void setUsers(List<AppUser> users) {
         this.users = users;
     }
 

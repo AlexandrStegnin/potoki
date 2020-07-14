@@ -33,7 +33,7 @@ public class InvestorCashLog {
 
     @OneToOne
     @JoinColumn(name = "investor_id")
-    private Users investor;
+    private AppUser investor;
 
     @OneToOne
     @JoinColumn(name = "facility_id")

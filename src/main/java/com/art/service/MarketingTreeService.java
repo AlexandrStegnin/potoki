@@ -1,7 +1,7 @@
 package com.art.service;
 
+import com.art.model.AppUser;
 import com.art.model.MarketingTree;
-import com.art.model.Users;
 import com.art.model.supporting.dto.MarketingTreeDTO;
 import com.art.model.supporting.enums.StatusEnum;
 import com.art.model.supporting.filters.MarketingTreeFilter;
@@ -41,7 +41,7 @@ public class MarketingTreeService {
 
     private Long pantyaId;
     private Long kolesnikId;
-    private final List<Users> users;
+    private final List<AppUser> users;
     private static AtomicReference<Long> parentPartnerId = new AtomicReference<>(0L);
     private static Set<Long> partnerChild = new HashSet<>();
     private List<MarketingTreeDTO> marketingTreeDTOList = new ArrayList<>();
@@ -166,11 +166,11 @@ public class MarketingTreeService {
         entityManager.close();
     }
 
-    private void findParentPartner(Long investorId, List<Users> users) {
+    private void findParentPartner(Long investorId, List<AppUser> users) {
         Map<Long, Set<Long>> result =
                 users.stream().collect(
-                        Collectors.groupingBy(Users::getPartnerId,
-                                Collectors.mapping(Users::getId, Collectors.toSet())
+                        Collectors.groupingBy(AppUser::getPartnerId,
+                                Collectors.mapping(AppUser::getId, Collectors.toSet())
                         )
                 );
         result.forEach((k, v) -> {
@@ -181,22 +181,22 @@ public class MarketingTreeService {
         });
     }
 
-    private void findPartnerChild(Long partnerId, List<Users> availableUsers) {
+    private void findPartnerChild(Long partnerId, List<AppUser> availableUsers) {
         Queue<Long> queue = new LinkedList<>();
         queue.add(partnerId);
         while (!queue.isEmpty()) {
             partnerId = queue.poll();
             if (partnerId == null) break;
             Long finalPartnerId = partnerId;
-            List<Users> users = availableUsers.stream()
+            List<AppUser> users = availableUsers.stream()
                     .filter(user -> user.getPartnerId().compareTo(finalPartnerId) == 0)
                     .filter(user -> !queue.contains(user.getId()))
                     .filter(user -> !partnerChild.contains(user.getId()))
                     .filter(user -> user.getPartnerId().compareTo(pantyaId) != 0)
                     .collect(Collectors.toList());
             if (users.size() > 0) {
-                queue.addAll(users.stream().map(Users::getId).collect(Collectors.toList()));
-                partnerChild.addAll(users.stream().map(Users::getId).collect(Collectors.toList()));
+                queue.addAll(users.stream().map(AppUser::getId).collect(Collectors.toList()));
+                partnerChild.addAll(users.stream().map(AppUser::getId).collect(Collectors.toList()));
             }
         }
     }

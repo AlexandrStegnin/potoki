@@ -1,7 +1,7 @@
 package com.art.controllers;
 
 import com.art.config.SecurityUtils;
-import com.art.model.Users;
+import com.art.model.AppUser;
 import com.art.model.UsersAnnexToContracts;
 import com.art.service.UsersAnnexToContractsService;
 import org.springframework.http.MediaType;
@@ -26,7 +26,7 @@ public class UserAnnexController {
     }
 
     @PostMapping(path = "/have-unread", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public boolean haveUnread(@RequestBody Users user) {
+    public boolean haveUnread(@RequestBody AppUser user) {
         String login = user.getLogin();
         if (null == login) {
             login = SecurityUtils.getUsername();
@@ -35,7 +35,7 @@ public class UserAnnexController {
     }
 
     @PostMapping(value = "/get-annexes", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public List<UsersAnnexToContracts> getAnnexes(@RequestBody Users user) {
+    public List<UsersAnnexToContracts> getAnnexes(@RequestBody AppUser user) {
         String login = user.getLogin();
         if (null == login) {
             login = SecurityUtils.getUsername();

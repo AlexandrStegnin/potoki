@@ -1,7 +1,7 @@
 package com.art.controllers;
 
 import com.art.config.SecurityUtils;
-import com.art.model.Users;
+import com.art.model.AppUser;
 import com.art.model.UsersAnnexToContracts;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.filters.InvestorAnnexFilter;
@@ -102,7 +102,7 @@ public class AnnexController {
 
     @RequestMapping("/annexToContract/{fileName}")
     void getFile(HttpServletResponse response, @PathVariable String fileName) throws IOException {
-        Users currentUser = userService.findByLogin(SecurityUtils.getUsername());
+        AppUser currentUser = userService.findByLogin(SecurityUtils.getUsername());
         if (null == currentUser) {
             throw new SecurityException("Пользователь не найден");
         }

@@ -85,7 +85,7 @@ public class UploadExcelFunc {
         int cel = 0;
         List<InvestorsFlows> investorsFlowsList = new ArrayList<>(0);
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy", Locale.ENGLISH);
-        List<Users> users = userService.findAllWithFacilitiesAndUnderFacilities();
+        List<AppUser> users = userService.findAll();
 
         for (Row row : sheet) {
             cel++;
@@ -112,7 +112,7 @@ public class UploadExcelFunc {
 
                     String lastName;
                     lastName = row.getCell(4).getStringCellValue();
-                    Users user = users.stream().filter(u -> u.getProfile().getLastName().equalsIgnoreCase(lastName))
+                    AppUser user = users.stream().filter(u -> u.getProfile().getLastName().equalsIgnoreCase(lastName))
                             .findFirst()
                             .orElse(null);
 
@@ -211,7 +211,7 @@ public class UploadExcelFunc {
         int cel = 0;
         List<InvestorsFlowsSale> investorsFlowsSaleList = new ArrayList<>(0);
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy", Locale.ENGLISH);
-        List<Users> users = userService.findAllWithFacilitiesAndUnderFacilities();
+        List<AppUser> users = userService.findAll();
         List<ShareType> shareKinds = Arrays.asList(ShareType.values());
         Map<String, Facility> facilities = new HashMap<>();
         Map<String, UnderFacilities> underFacilities = new HashMap<>();
@@ -255,7 +255,7 @@ public class UploadExcelFunc {
                         errors.append(String.format("Не указан инвестор! Строка %d, столбец 2", cel));
                         return errors.toString();
                     }
-                    Users user = users.stream().filter(u -> u.getProfile().getLastName().equalsIgnoreCase(lastName))
+                    AppUser user = users.stream().filter(u -> u.getProfile().getLastName().equalsIgnoreCase(lastName))
                             .findFirst()
                             .orElse(null);
                     if (user == null) {

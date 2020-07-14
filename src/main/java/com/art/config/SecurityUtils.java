@@ -2,7 +2,7 @@ package com.art.config;
 
 import com.art.model.Roles;
 import com.art.model.SecurityUser;
-import com.art.model.Users;
+import com.art.model.AppUser;
 import com.art.model.supporting.enums.UserRole;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -31,7 +31,7 @@ public final class SecurityUtils {
         return "investor-demo";
     }
 
-    public static boolean isUserInRole(Users user, UserRole userRole) {
+    public static boolean isUserInRole(AppUser user, UserRole userRole) {
         for (Roles role : user.getRoles()) {
             if (role.getRole().equalsIgnoreCase(userRole.name())) {
                 return true;

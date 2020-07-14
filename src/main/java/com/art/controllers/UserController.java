@@ -68,7 +68,7 @@ public class UserController {
 
         String title = "Личный кабинет";
         ModelAndView modelAndView = new ModelAndView("profile");
-        Users user = userService.findByLoginWithAnnexes(principal.getName());
+        AppUser user = userService.findByLoginWithAnnexes(principal.getName());
         Account account = accountService.findByOwnerId(user.getId());
         String accountNumber;
         if (null == account) {
@@ -99,7 +99,7 @@ public class UserController {
     @PostMapping(value = "/profile")
     public ModelAndView profilePage(@ModelAttribute("user") UserDTO userDTO, Principal principal) {
         ModelAndView modelAndView = new ModelAndView("profile");
-        Users user = new Users(userDTO);
+        AppUser user = new AppUser(userDTO);
         userService.updateProfile(user);
         user.setPassword(null);
         modelAndView.addObject("user", user);
@@ -123,7 +123,7 @@ public class UserController {
     @GetMapping(path = "/edit-user-{id}")
     public String editUser(@PathVariable Long id, ModelMap model) {
         String title = "Обновление данных пользователя";
-        Users user = userService.findById(id);
+        AppUser user = userService.findById(id);
 
         List<KinEnum> kins = new ArrayList<>(Arrays.asList(KinEnum.values()));
         model.addAttribute("user", user);
@@ -140,7 +140,7 @@ public class UserController {
     public @ResponseBody
     GenericResponse deleteUser(@RequestBody UserDTO userDTO) {
         GenericResponse response = new GenericResponse();
-        Users user = userService.findById(userDTO.getId());
+        AppUser user = userService.findById(userDTO.getId());
         List<InvestorsCash> investorsCashes;
         investorsCashes = investorsCashService.findByInvestorId(user.getId());
         investorsCashes.forEach(ic -> investorsCashService.deleteById(ic.getId()));
@@ -170,7 +170,7 @@ public class UserController {
      */
     @GetMapping(path = "/users/create", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public String createUser(ModelMap model) {
-        Users user = new Users();
+        AppUser user = new AppUser();
         model.addAttribute("user", user);
         return "registration";
     }
@@ -181,7 +181,7 @@ public class UserController {
     @PostMapping(path = "/users/save", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
     GenericResponse saveUser(@RequestBody UserDTO userDTO) {
-        Users user = new Users(userDTO);
+        AppUser user = new AppUser(userDTO);
         String message;
         if (user.getId() == null) {
             userService.create(user);
@@ -222,7 +222,7 @@ public class UserController {
     }
 
     @ModelAttribute("investors")
-    public List<Users> initializeInvestors() {
+    public List<AppUser> initializeInvestors() {
         return userService.initializeInvestors();
     }
 

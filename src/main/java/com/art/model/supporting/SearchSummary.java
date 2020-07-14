@@ -16,7 +16,7 @@ import java.util.List;
 @Setter
 public class SearchSummary implements Serializable {
 
-    private List<Users> investorsList;
+    private List<AppUser> investorsList;
     private String facilityStr;
     private Date dateStart;
     private Date dateEnd;
@@ -30,7 +30,7 @@ public class SearchSummary implements Serializable {
     private String underFacility;
 
     private String investor;
-    private Users user;
+    private AppUser user;
 
     private String inn;
     private String account;
@@ -150,11 +150,11 @@ public class SearchSummary implements Serializable {
         this.password = password;
     }
 
-    public Users getUser() {
+    public AppUser getUser() {
         return user;
     }
 
-    public void setUser(Users user) {
+    public void setUser(AppUser user) {
         this.user = user;
     }
 
@@ -526,11 +526,11 @@ public class SearchSummary implements Serializable {
         this.divideSum = divideSum;
     }
 
-    public List<Users> getInvestorsList() {
+    public List<AppUser> getInvestorsList() {
         return investorsList;
     }
 
-    public void setInvestorsList(List<Users> investorsList) {
+    public void setInvestorsList(List<AppUser> investorsList) {
         this.investorsList = investorsList;
     }
 

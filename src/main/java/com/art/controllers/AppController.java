@@ -2,7 +2,7 @@ package com.art.controllers;
 
 import com.art.config.SecurityUtils;
 import com.art.func.GetPrincipalFunc;
-import com.art.model.Users;
+import com.art.model.AppUser;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.ServiceTemporarilyUnavailableException;
@@ -153,7 +153,7 @@ public class AppController {
         if (Objects.nonNull(auth) && !(auth instanceof AnonymousAuthenticationToken)) {
             SecurityContextHolder.clearContext();
         }
-        Users demo = userService.findByLogin(SecurityUtils.getInvestorDemoLogin());
+        AppUser demo = userService.findByLogin(SecurityUtils.getInvestorDemoLogin());
         String login;
         if (Objects.isNull(demo)) {
             login = SecurityUtils.getUsername();

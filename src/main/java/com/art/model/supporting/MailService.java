@@ -1,6 +1,6 @@
 package com.art.model.supporting;
 
-import com.art.model.Users;
+import com.art.model.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -33,9 +33,9 @@ public class MailService {
             ex.printStackTrace();
         }
 
-        Users users = (Users) object;
+        AppUser appUser = (AppUser) object;
 
-        MimeMessagePreparator preparator = getMessagePreparator(users, body, subject);
+        MimeMessagePreparator preparator = getMessagePreparator(appUser, body, subject);
         try {
             mailSender.send(preparator);
         } catch (MailException ex) {
@@ -43,7 +43,7 @@ public class MailService {
         }
     }
 
-    private MimeMessagePreparator getMessagePreparator(final Users user, String body, String subject) {
+    private MimeMessagePreparator getMessagePreparator(final AppUser user, String body, String subject) {
 
         return mimeMessage -> {
             mimeMessage.setFrom(new InternetAddress(prop.getProperty("mail.username"),

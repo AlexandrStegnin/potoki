@@ -252,7 +252,7 @@ public class InvestorsCashController {
                             @RequestParam("realDateGiven") Date realDateGiven) {
         ModelAndView modelAndView = new ModelAndView("viewinvestorscash");
 
-        Users invBuyer;
+        AppUser invBuyer;
         TypeClosingInvest closingInvest = typeClosingInvestService.findByTypeClosingInvest("Перепродажа доли");
         NewCashDetails newCashDetails = newCashDetailsService.findByNewCashDetail("Перепокупка доли");
 
@@ -609,7 +609,7 @@ public class InvestorsCashController {
         if (null == summary.getUser().getId()) {
             throw new RuntimeException("Отсутствует id пользователя");
         }
-        Users investor = userService.findById(summary.getUser().getId());
+        AppUser investor = userService.findById(summary.getUser().getId());
         if (null == investor) {
             throw new RuntimeException("Пользователь с id = [" + summary.getUser().getId() + "] не найден");
         }
@@ -626,13 +626,13 @@ public class InvestorsCashController {
     @PostMapping(value = {"/getInvestorsCash"})
     public String cashing(@ModelAttribute("searchSummary") SearchSummary summary,
                           BindingResult result, ModelMap model) {
-        Users investor = null;
+        AppUser investor = null;
         if (result.hasErrors()) {
             return "getInvestorsCash";
         }
         InvestorsCash cash = summary.getInvestorsCash();
         if (cash != null) {
-            Users inv = summary.getInvestorsCash().getInvestor();
+            AppUser inv = summary.getInvestorsCash().getInvestor();
             if (inv != null) {
                 if (inv.getId() != null) {
                     investor = userService.findById(inv.getId());
@@ -908,7 +908,7 @@ public class InvestorsCashController {
     @PostMapping(value = {"/closeCash"}, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     GenericResponse closeCash(@RequestBody SearchSummary searchSummary) {
-        Users invBuyer = null;
+        AppUser invBuyer = null;
         if (null != searchSummary.getUser()) {
             invBuyer = userService.findById(searchSummary.getUser().getId());
         }
@@ -920,7 +920,7 @@ public class InvestorsCashController {
 
         Date dateClose = searchSummary.getDateReinvest();
         Date realDateGiven = searchSummary.getRealDateGiven();
-        Users finalInvBuyer = invBuyer;
+        AppUser finalInvBuyer = invBuyer;
         // список сумм, которые закрываем для вывода
         Set<InvestorsCash> closeCashes = new HashSet<>();
         // список сумм, которые закрываем для перепродажи доли
@@ -1053,12 +1053,12 @@ public class InvestorsCashController {
     }
 
     @ModelAttribute("investors")
-    public List<Users> initializeInvestors() {
+    public List<AppUser> initializeInvestors() {
         return userService.initializeInvestors();
     }
 
     @ModelAttribute("investorsMulti")
-    public List<Users> initializeInvestorsMultiple() {
+    public List<AppUser> initializeInvestorsMultiple() {
         return userService.initializeMultipleInvestors();
     }
 

@@ -29,11 +29,11 @@ public class MarketingTree implements Serializable {
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "PartnerId", referencedColumnName = "Id")
-    private Users partner;
+    private AppUser partner;
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "InvestorId", referencedColumnName = "Id")
-    private Users investor;
+    private AppUser investor;
 
     @Column
     @Enumerated(EnumType.STRING)

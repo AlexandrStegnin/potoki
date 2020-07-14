@@ -1,7 +1,7 @@
 package com.art.service;
 
 import com.art.model.AnnexToContracts;
-import com.art.model.Users;
+import com.art.model.AppUser;
 import com.art.model.UsersAnnexToContracts;
 import com.art.model.UsersAnnexToContracts_;
 import com.art.repository.UserAnnexRepository;
@@ -89,7 +89,7 @@ public class UsersAnnexToContractsService {
         if (Objects.isNull(login)) {
             throw new RuntimeException("Необходимо передать логин пользователя");
         }
-        Users user = userService.findByLogin(login);
+        AppUser user = userService.findByLogin(login);
         if (Objects.isNull(user)) {
             throw new RuntimeException("Пользователь с логином = [" + login + "] не найден");
         }
@@ -121,7 +121,7 @@ public class UsersAnnexToContractsService {
     }
 
     public boolean haveUnread(String login) {
-        Users user = userService.findByLogin(login);
+        AppUser user = userService.findByLogin(login);
         if (Objects.nonNull(user)) {
             return haveUnread(user.getId());
         }

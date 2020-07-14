@@ -18,7 +18,7 @@ import java.math.BigInteger;
 public class Emails implements Serializable {
     private BigInteger id;
     private String email;
-    private Users user;
+    private AppUser user;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -49,11 +49,11 @@ public class Emails implements Serializable {
             },
             fetch = FetchType.LAZY)
     @JoinColumn(name = "UserId", referencedColumnName = "Id")
-    public Users getUser() {
+    public AppUser getUser() {
         return user;
     }
 
-    public void setUser(Users user) {
+    public void setUser(AppUser user) {
         this.user = user;
     }
 
