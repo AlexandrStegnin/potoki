@@ -8,7 +8,6 @@ import com.art.model.supporting.SearchSummary;
 import com.art.service.FacilityService;
 import com.art.service.InvestorsCashService;
 import com.art.service.UnderFacilityService;
-import com.art.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
@@ -21,17 +20,17 @@ import java.util.List;
 @Transactional
 public class FacilityController {
 
-    private final FacilityService facilityService;
+    private static final String REDIRECT_URL = Location.FACILITIES_LIST;
 
-    private final UserService userService;
+    private final FacilityService facilityService;
 
     private final UnderFacilityService underFacilityService;
 
     private final InvestorsCashService investorsCashService;
 
-    public FacilityController(FacilityService facilityService, UserService userService, UnderFacilityService underFacilityService, InvestorsCashService investorsCashService) {
+    public FacilityController(FacilityService facilityService, UnderFacilityService underFacilityService,
+                              InvestorsCashService investorsCashService) {
         this.facilityService = facilityService;
-        this.userService = userService;
         this.underFacilityService = underFacilityService;
         this.investorsCashService = investorsCashService;
     }
@@ -53,11 +52,10 @@ public class FacilityController {
             return "facility-add";
         }
         String ret = "списку объектов.";
-        String redirectUrl = Location.FACILITIES_LIST;
         facilityService.create(newFacility);
 
         model.addAttribute("success", "Объект " + newFacility.getName() + " успешно добавлен.");
-        model.addAttribute("redirectUrl", redirectUrl);
+        model.addAttribute("redirectUrl", REDIRECT_URL);
         model.addAttribute("ret", ret);
         return "registrationsuccess";
     }
@@ -86,14 +84,13 @@ public class FacilityController {
     @PostMapping(path = Location.FACILITIES_EDIT)
     public String updateFacility(@ModelAttribute("newFacility") Facility facility, BindingResult result, ModelMap model) {
         String ret = "списку объектов.";
-        String redirectUrl = Location.FACILITIES_LIST;
         if (result.hasErrors()) {
             return "facility-add";
         }
         facilityService.update(facility);
 
         model.addAttribute("success", "Данные объекта " + facility.getName() + " успешно обновлены.");
-        model.addAttribute("redirectUrl", redirectUrl);
+        model.addAttribute("redirectUrl", REDIRECT_URL);
         model.addAttribute("ret", ret);
         return "registrationsuccess";
     }

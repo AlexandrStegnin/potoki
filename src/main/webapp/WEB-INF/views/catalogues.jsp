@@ -11,20 +11,8 @@
     <sec:csrfMetaTags />
     <link href="<c:url value='/resources/core/css/old_bootstrap.min.css' />" rel="stylesheet" />
     <link href="<c:url value='/resources/core/css/applic.css' />" rel="stylesheet" />
-    <link href="<c:url value='/resources/core/css/popup.css' />" rel="stylesheet" />
-    <link href="<c:url value='/resources/core/css/ajaxLoader.css' />" rel="stylesheet" />
     <script type="text/javascript" src="<c:url value='/resources/core/js/jquery-3.2.1.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min_old.js' />" ></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />" ></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/AjaxLoader.js' />" ></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/applic.js' />" ></script>
-    <script type="text/javascript"
-            src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js' />"></script>
-    <script type="text/javascript"
-            src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js' />"></script>
-
-    <script type="text/javascript" src="<c:url value='/resources/core/js/socketScripts.js' />" ></script>
-
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
 </head>
 
@@ -38,9 +26,9 @@
     </div>
     <sec:authorize access="hasRole('ADMIN') or hasRole('DBA') or hasRole('BIGDADDY')">
     <div class="well">
-        <a href="<c:url value='/admin' />" class="btn btn-success btn-block">Пользователи (USERS)</a>
+        <a href="<c:url value='/admin' />" class="btn btn-success btn-block">Пользователи (app_user)</a>
         <a href="<c:url value='/facilities/list' />" class="btn btn-success btn-block">Объекты (facility)</a>
-        <a href="<c:url value='/facilities/child/list' />" class="btn btn-success btn-block">Подобъекы (UnderFacilities)</a>
+        <a href="<c:url value='/facilities/child/list' />" class="btn btn-success btn-block">Подобъекы (under_facility)</a>
         <a href="<c:url value='/rooms/list' />" class="btn btn-success btn-block">Помещения (room)</a>
         <a href="<c:url value='/investorscash' />" class="btn btn-success btn-block">Деньги инвесторов (InvestorsCash)</a>
         <a href="<c:url value='/paysToInv' />" class="btn btn-success btn-block">Выплаты инвесторам (аренда) (InvestorsFlows)</a>
@@ -55,6 +43,5 @@
     </sec:authorize>
     </div>
 </div>
-<%@include file="slideDiv.jsp" %>
 </body>
 </html>

@@ -23,6 +23,8 @@ import java.util.List;
 @Transactional
 public class UnderFacilityController {
 
+    private static final String REDIRECT_URL = Location.UNDER_FACILITIES_LIST;
+
     private final UnderFacilityService underFacilityService;
 
     private final FacilityService facilityService;
@@ -57,14 +59,13 @@ public class UnderFacilityController {
     public String updateUnderFacility(@ModelAttribute("underFacility") UnderFacility underFacility,
                                       BindingResult result, ModelMap model) {
         String ret = "списку подобъектов.";
-        String redirectUrl = Location.UNDER_FACILITIES_LIST;
         if (result.hasErrors()) {
             return "under-facility-add";
         }
         underFacilityService.update(underFacility);
         model.addAttribute("success", "Данные по подобъекту " + underFacility.getName() +
                 " успешно обновлены.");
-        model.addAttribute("redirectUrl", redirectUrl);
+        model.addAttribute("redirectUrl", REDIRECT_URL);
         model.addAttribute("ret", ret);
         return "registrationsuccess";
     }
@@ -72,7 +73,7 @@ public class UnderFacilityController {
     @GetMapping(path = Location.UNDER_FACILITIES_DELETE)
     public String deleteUnderFacility(@PathVariable Long id) {
         underFacilityService.deleteById(id);
-        return "redirect:" + Location.UNDER_FACILITIES_LIST;
+        return "redirect:" + REDIRECT_URL;
     }
 
     @GetMapping(path = Location.UNDER_FACILITIES_CREATE)
@@ -92,11 +93,10 @@ public class UnderFacilityController {
             return "under-facility-add";
         }
         String ret = "списку подобъектов";
-        String redirectUrl = Location.UNDER_FACILITIES_LIST;
         underFacilityService.create(underFacility);
         model.addAttribute("success", "Подобъект " + underFacility.getName() +
                 " успешно добавлен.");
-        model.addAttribute("redirectUrl", redirectUrl);
+        model.addAttribute("redirectUrl", REDIRECT_URL);
         model.addAttribute("ret", ret);
         return "registrationsuccess";
     }

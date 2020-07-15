@@ -36,7 +36,7 @@
                 <label class="col-md-3 control-lable" for="underFacility">Подобъект:</label>
                 <div class="col-md-7">
                     <form:select path="underFacility" id="underFacility" items="${underFacilities}" multiple="false"
-                                 itemValue="id" itemLabel="underFacility" class="form-control input-sm"/>
+                                 itemValue="id" itemLabel="name" class="form-control input-sm"/>
                 </div>
             </div>
         </div>

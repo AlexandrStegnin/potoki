@@ -20,6 +20,8 @@ import java.util.List;
 @Controller
 public class RoomController {
 
+    private static final String REDIRECT_URL = Location.ROOMS_LIST;
+
     private final RoomService roomService;
 
     private final UnderFacilityService underFacilityService;
@@ -50,14 +52,13 @@ public class RoomController {
     public String updateRoom(@ModelAttribute("rooms") Room room,
                              BindingResult result, ModelMap model) {
         String ret = "списку помещений.";
-        String redirectUrl = "/rooms/list";
         if (result.hasErrors()) {
             return "room-add";
         }
         roomService.update(room);
         model.addAttribute("success", "Данные по помещению " + room.getName() +
                 " успешно обновлены.");
-        model.addAttribute("redirectUrl", redirectUrl);
+        model.addAttribute("redirectUrl", REDIRECT_URL);
         model.addAttribute("ret", ret);
         return "registrationsuccess";
     }
@@ -65,7 +66,7 @@ public class RoomController {
     @GetMapping(path = Location.ROOMS_DELETE)
     public String deleteRoom(@PathVariable Long id) {
         roomService.deleteById(id);
-        return "redirect:/rooms/list";
+        return "redirect:" + REDIRECT_URL;
     }
 
     @GetMapping(path = Location.ROOMS_CREATE)
@@ -85,11 +86,10 @@ public class RoomController {
             return "room-add";
         }
         String ret = "списку помещений";
-        String redirectUrl = "/rooms/list";
         roomService.create(room);
         model.addAttribute("success", "Помещение " + room.getName() +
                 " успешно добавлено.");
-        model.addAttribute("redirectUrl", redirectUrl);
+        model.addAttribute("redirectUrl", REDIRECT_URL);
         model.addAttribute("ret", ret);
         return "registrationsuccess";
     }

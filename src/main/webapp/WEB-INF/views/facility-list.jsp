@@ -27,21 +27,24 @@
     <%@include file="old_authheader.jsp" %>
     <div class="panel panel-default">
         <!-- Default panel contents -->
-        <div class="panel-heading"><span class="lead">Список объектов:</span></div>
-        <table class="table table-hover" id="tblFacilities">
+        <div class="panel-heading">
+            <span class="lead">Список объектов:</span>
+            <sec:authorize access="isFullyAuthenticated()">
+                <sec:authorize access="hasRole('ADMIN')">
+                    <a href="<c:url value='/facilities/create' />" class="btn btn-success btn-sm pull-right">Добавить объект</a>
+                </sec:authorize>
+            </sec:authorize>
+        </div>
+        <table class="table table-hover text-center" id="tblFacilities">
             <thead>
             <tr>
-                <th>ID</th>
-                <th>Название</th>
-                <th>Название (1C)</th>
-                <th>Город</th>
+                <th style="text-align: center">ID</th>
+                <th style="text-align: center">Название</th>
+                <th style="text-align: center">Название (1C)</th>
+                <th style="text-align: center">Город</th>
                 <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
-                    <th width="100"></th>
+                    <th style="text-align: center">Действие</th>
                 </sec:authorize>
-                <sec:authorize access="hasRole('ADMIN')">
-                    <th width="100"></th>
-                </sec:authorize>
-
             </tr>
             </thead>
             <tbody>
@@ -53,11 +56,19 @@
                     <td>${facility.city}</td>
                     <sec:authorize access="isFullyAuthenticated()">
                         <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
-                            <td><a href="<c:url value='edit/${facility.id}' />" class="btn btn-success custom-width">Изменить</a></td>
-                        </sec:authorize>
-                        <sec:authorize access="hasRole('ADMIN')">
-                            <td><a href="<c:url value='/#' />" class="btn btn-danger custom-width"
-                                   id="delete" name="${facility.id}">Удалить</a></td>
+                            <td style="text-align: center">
+                                <div class="btn-group">
+                                    <button type="button" data-toggle="dropdown"
+                                            class="btn btn-primary btn-sm dropdown-toggle">Действие <span
+                                            class="caret"></span></button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="<c:url value='edit/${facility.id}' />">Изменить</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="<c:url value='delete/${facility.id}' />" style="color: red">Удалить</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
                         </sec:authorize>
                     </sec:authorize>
                 </tr>
@@ -65,23 +76,6 @@
             </tbody>
         </table>
     </div>
-
-
-    <sec:authorize access="isRememberMe()">
-        <p>Вы вошли с помощью функции "Запомнить меня".
-            Чтобы иметь все права на данную страницу, Вам необходимо снова
-            <a href="<c:url value='/login' />">ВОЙТИ</a> в систему используя логин/пароль.
-        </p>
-
-    </sec:authorize>
-
-    <sec:authorize access="isFullyAuthenticated()">
-        <sec:authorize access="hasRole('ADMIN')">
-            <div class="well">
-                <a href="<c:url value='/facilities/create' />">Добавить объект</a>
-            </div>
-        </sec:authorize>
-    </sec:authorize>
 </div>
 
 <%@include file="loader.jsp" %>
