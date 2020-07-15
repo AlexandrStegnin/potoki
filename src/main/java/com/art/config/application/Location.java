@@ -36,4 +36,14 @@ public class Location {
 
     public static final String ROOMS_CREATE = ROOMS + "/create";
 
+    public static final String UNDER_FACILITIES = "/facilities/child";
+
+    public static final String UNDER_FACILITIES_LIST = UNDER_FACILITIES + "/list";
+
+    public static final String UNDER_FACILITIES_EDIT = UNDER_FACILITIES + "/edit/{id}";
+
+    public static final String UNDER_FACILITIES_DELETE = UNDER_FACILITIES + "/delete/{id}";
+
+    public static final String UNDER_FACILITIES_CREATE = UNDER_FACILITIES + "/create";
+
 }
