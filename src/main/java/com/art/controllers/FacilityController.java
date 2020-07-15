@@ -3,6 +3,7 @@ package com.art.controllers;
 import com.art.config.application.Location;
 import com.art.model.Facility;
 import com.art.model.InvestorsCash;
+import com.art.model.UnderFacility;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
 import com.art.service.FacilityService;
@@ -110,7 +111,8 @@ public class FacilityController {
             return response;
         }
         try {
-            facility.getUnderFacilities().forEach(f -> underFacilityService.deleteById(f.getId()));
+            List<UnderFacility> underFacilities = underFacilityService.findByFacilityId(facility.getId());
+            underFacilities.forEach(underFacility -> underFacilityService.deleteById(underFacility.getId()));
             facilityService.deleteById(facility.getId());
             response.setMessage("Объект " + facility.getName() + " успешно удалён.");
         } catch (Exception e) {

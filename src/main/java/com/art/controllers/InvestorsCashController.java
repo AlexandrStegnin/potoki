@@ -799,10 +799,10 @@ public class InvestorsCashController {
                 summary.getReUnderFacility().getId());
 
         // Получаем объект, в который надо разделить сумму
-        Facility facility = facilityService.findByIdWithUnderFacilitiesAndRooms(underFacility.getFacility().getId());
+        Facility facility = facilityService.findById(underFacility.getFacility().getId());
 
         // Получаем список подобъектов объекта
-        Set<UnderFacility> underFacilityList = facility.getUnderFacilities();
+        List<UnderFacility> underFacilityList = underFacilityService.findByFacilityId(facility.getId());
 
         List<Room> rooms = new ArrayList<>(0);
 

@@ -52,23 +52,14 @@ public class FacilityService {
     @PersistenceContext(name = "persistanceUnit")
     private EntityManager em;
 
-    public List<Facility> findAllWithUnderFacilities() {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Facility> facilityesCriteriaQuery = cb.createQuery(Facility.class);
-        Root<Facility> facilityesRoot = facilityesCriteriaQuery.from(Facility.class);
-        facilityesRoot.fetch(Facility_.underFacilities, JoinType.LEFT);
-        facilityesCriteriaQuery.select(facilityesRoot).distinct(true);
-        return em.createQuery(facilityesCriteriaQuery).getResultList();
-    }
-
     public Facility findByFacility(String facility) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Facility> facilityesCriteriaQuery = cb.createQuery(Facility.class);
-        Root<Facility> facilitiesRoot = facilityesCriteriaQuery.from(Facility.class);
-        facilityesCriteriaQuery.select(facilitiesRoot);
-        facilityesCriteriaQuery.where(cb.equal(facilitiesRoot.get(Facility_.name), facility));
+        CriteriaQuery<Facility> facilitiesCriteriaQuery = cb.createQuery(Facility.class);
+        Root<Facility> facilitiesRoot = facilitiesCriteriaQuery.from(Facility.class);
+        facilitiesCriteriaQuery.select(facilitiesRoot);
+        facilitiesCriteriaQuery.where(cb.equal(facilitiesRoot.get(Facility_.name), facility));
 
-        return this.em.createQuery(facilityesCriteriaQuery).getSingleResult();
+        return this.em.createQuery(facilitiesCriteriaQuery).getSingleResult();
     }
 
 
@@ -83,28 +74,16 @@ public class FacilityService {
     public void update(Facility facility) {
         CriteriaBuilder criteriaBuilder = this.em.getCriteriaBuilder();
         CriteriaUpdate<Facility> update = criteriaBuilder.createCriteriaUpdate(Facility.class);
-        Root<Facility> facilityesRoot = update.from(Facility.class);
+        Root<Facility> facilityRoot = update.from(Facility.class);
         update.set(Facility_.name, facility.getName());
         update.set(Facility_.city, facility.getCity());
         update.set(Facility_.fullName, facility.getFullName());
-        update.where(criteriaBuilder.equal(facilityesRoot.get(Facility_.id), facility.getId()));
+        update.where(criteriaBuilder.equal(facilityRoot.get(Facility_.id), facility.getId()));
         this.em.createQuery(update).executeUpdate();
     }
 
     public void create(Facility facility) {
         this.em.merge(facility);
-    }
-
-    public Facility findByIdWithUnderFacilitiesAndRooms(Long id) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Facility> facilityesCriteriaQuery = cb.createQuery(Facility.class);
-        Root<Facility> facilityesRoot = facilityesCriteriaQuery.from(Facility.class);
-        facilityesCriteriaQuery.select(facilityesRoot).distinct(true);
-        facilityesCriteriaQuery.where(cb.equal(facilityesRoot.get(Facility_.id), id));
-
-        Facility facility = em.createQuery(facilityesCriteriaQuery).getSingleResult();
-        facility.getUnderFacilities().forEach(uf -> uf.getRooms().size());
-        return facility;
     }
 
 }

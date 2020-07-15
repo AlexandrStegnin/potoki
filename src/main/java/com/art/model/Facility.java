@@ -1,13 +1,11 @@
 package com.art.model;
 
 import com.art.model.supporting.UserFacilities;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Set;
 
 @SqlResultSetMapping(
         name = "InvestorsFacilitiesMapping",
@@ -26,8 +24,7 @@ import java.util.Set;
                 "WHERE uf.RENTOR_INVESTORS_ID = ?",
         resultClass = UserFacilities.class,
         resultSetMapping = "InvestorsFacilitiesMapping")
-@EqualsAndHashCode(exclude = {"city", "underFacilities"})
-@ToString(exclude = {"underFacilities"})
+@Data
 @Entity
 @Table(name = "facility", schema = "pss_projects")
 public class Facility implements Serializable {
@@ -38,31 +35,12 @@ public class Facility implements Serializable {
 
     private String city;
 
-    private Set<UnderFacility> underFacilities;
-
     public Facility() {
     }
 
     public Facility(String id, String name) {
         this.id = Long.valueOf(id);
         this.name = name;
-    }
-
-    @OneToMany(cascade =
-            {
-                    CascadeType.DETACH,
-                    CascadeType.MERGE,
-                    CascadeType.REFRESH,
-                    CascadeType.PERSIST
-            },
-            fetch = FetchType.LAZY)
-    @JoinColumn(name = "facility_id", referencedColumnName = "id")
-    public Set<UnderFacility> getUnderFacilities() {
-        return underFacilities;
-    }
-
-    public void setUnderFacilities(Set<UnderFacility> underFacilities) {
-        this.underFacilities = underFacilities;
     }
 
     @Id
