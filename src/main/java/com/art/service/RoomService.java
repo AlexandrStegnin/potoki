@@ -31,9 +31,9 @@ public class RoomService {
         CriteriaQuery<Room> roomsCriteriaQuery = cb.createQuery(Room.class);
         Root<Room> roomsRoot = roomsCriteriaQuery.from(Room.class);
         roomsRoot.fetch(Room_.underFacility, JoinType.LEFT)
-                .fetch(UnderFacilities_.facility, JoinType.LEFT);
+                .fetch(UnderFacility_.facility, JoinType.LEFT);
         roomsCriteriaQuery.select(roomsRoot);//.distinct(true);
-        roomsCriteriaQuery.orderBy(cb.asc(roomsRoot.get(Room_.underFacility).get(UnderFacilities_.facility).get(Facility_.id)));
+        roomsCriteriaQuery.orderBy(cb.asc(roomsRoot.get(Room_.underFacility).get(UnderFacility_.facility).get(Facility_.id)));
 
         return em.createQuery(roomsCriteriaQuery).getResultList();
     }
@@ -104,7 +104,7 @@ public class RoomService {
         Root<Room> roomsRoot = roomsCriteriaQuery.from(Room.class);
         roomsCriteriaQuery.select(roomsRoot);
         Room room = new Room();
-        room.setId(Long.valueOf("0"));
+        room.setId(0L);
         room.setName("Выберите помещение");
         List<Room> roomList = new ArrayList<>(0);
         roomList.add(room);
@@ -112,7 +112,7 @@ public class RoomService {
         return roomList;
     }
 
-    public List<Room> findByUnderFacility(UnderFacilities underFacility) {
+    public List<Room> findByUnderFacility(UnderFacility underFacility) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Room> roomsCriteriaQuery = cb.createQuery(Room.class);
         Root<Room> roomsRoot = roomsCriteriaQuery.from(Room.class);
@@ -128,9 +128,9 @@ public class RoomService {
         CriteriaQuery<Room> roomsCriteriaQuery = cb.createQuery(Room.class);
         Root<Room> roomsRoot = roomsCriteriaQuery.from(Room.class);
         roomsRoot.fetch(Room_.underFacility, JoinType.LEFT)
-                .fetch(UnderFacilities_.facility, JoinType.LEFT);
+                .fetch(UnderFacility_.facility, JoinType.LEFT);
         roomsCriteriaQuery.select(roomsRoot).distinct(true);
-        roomsCriteriaQuery.where(roomsRoot.get(Room_.underFacility).get(UnderFacilities_.facility).get(Facility_.id).in(facilitiesId));
+        roomsCriteriaQuery.where(roomsRoot.get(Room_.underFacility).get(UnderFacility_.facility).get(Facility_.id).in(facilitiesId));
         return em.createQuery(roomsCriteriaQuery).getResultList();
     }
 }

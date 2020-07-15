@@ -55,7 +55,7 @@ public class InvestorsFlowsSaleService {
         return em.createQuery(saleCriteriaQuery).getResultList();
     }
 
-    public List<InvestorsFlowsSale> findByIdInWithAllFields(List<BigInteger> idList) {
+    public List<InvestorsFlowsSale> findByIdInWithAllFields(List<Long> idList) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<InvestorsFlowsSale> saleCriteriaQuery = cb.createQuery(InvestorsFlowsSale.class);
         Root<InvestorsFlowsSale> saleRoot = saleCriteriaQuery.from(InvestorsFlowsSale.class);
@@ -67,7 +67,7 @@ public class InvestorsFlowsSaleService {
         return em.createQuery(saleCriteriaQuery).getResultList();
     }
 
-    public List<InvestorsFlowsSale> findByIdIn(List<BigInteger> idList) {
+    public List<InvestorsFlowsSale> findByIdIn(List<Long> idList) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<InvestorsFlowsSale> saleCriteriaQuery = cb.createQuery(InvestorsFlowsSale.class);
         Root<InvestorsFlowsSale> saleRoot = saleCriteriaQuery.from(InvestorsFlowsSale.class);

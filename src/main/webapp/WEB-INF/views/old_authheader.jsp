@@ -91,5 +91,3 @@
         </div>
     </div>
 </nav>
-
-<%@include file="slideDiv.jsp" %>

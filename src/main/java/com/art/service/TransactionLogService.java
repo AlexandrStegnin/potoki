@@ -1,9 +1,9 @@
 package com.art.service;
 
 import com.art.model.*;
-import com.art.model.supporting.enums.TransactionType;
 import com.art.model.supporting.dto.InvestorCashDTO;
 import com.art.model.supporting.dto.TransactionLogDTO;
+import com.art.model.supporting.enums.TransactionType;
 import com.art.model.supporting.filters.TxLogFilter;
 import com.art.repository.TransactionLogRepository;
 import com.art.specifications.TransactionLogSpecification;
@@ -12,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigInteger;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -332,9 +331,9 @@ public class TransactionLogService {
     public String rollbackReinvestmentSale(TransactionLog log) {
         Set<InvestorsCash> cashes = log.getInvestorsCashes();
         List<InvestorCashLog> cashLogs = investorCashLogService.findByTxId(log.getId());
-        List<BigInteger> flowsCashIdList = cashLogs
+        List<Long> flowsCashIdList = cashLogs
                 .stream()
-                .map(cashLog -> BigInteger.valueOf(cashLog.getCashId()))
+                .map(InvestorCashLog::getCashId)
                 .collect(Collectors.toList());
         List<InvestorsFlowsSale> flowsSales = investorsFlowsSaleService.findByIdIn(flowsCashIdList);
         try {
@@ -355,9 +354,9 @@ public class TransactionLogService {
     public String rollbackReinvestmentRent(TransactionLog log) {
         Set<InvestorsCash> cashes = log.getInvestorsCashes();
         List<InvestorCashLog> cashLogs = investorCashLogService.findByTxId(log.getId());
-        List<BigInteger> flowsCashIdList = cashLogs
+        List<Long> flowsCashIdList = cashLogs
                 .stream()
-                .map(cashLog -> BigInteger.valueOf(cashLog.getCashId()))
+                .map(InvestorCashLog::getCashId)
                 .collect(Collectors.toList());
         List<InvestorsFlows> flowsRent = investorsFlowsService.findByIdIn(flowsCashIdList);
         try {

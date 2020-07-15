@@ -10,7 +10,6 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -121,16 +120,16 @@ import java.util.Date;
 @Entity
 @Table(name = "InvestorsCash")
 public class InvestorsCash implements Serializable {
-    private BigInteger id;
-    private BigInteger investorId;
-    private BigInteger facilityId;
+    private Long id;
+    private Long investorId;
+    private Long facilityId;
     private BigDecimal givedCash;
     private Date dateGivedCash;
     private Facility facility;
     private AppUser investor;
     private CashSources cashSource;
     private NewCashDetails newCashDetails;
-    private UnderFacilities underFacility;
+    private UnderFacility underFacility;
     private Date dateClosingInvest;
     private TypeClosingInvest typeClosingInvest;
 
@@ -140,11 +139,11 @@ public class InvestorsCash implements Serializable {
 
     private Date dateReport;
     private Facility sourceFacility;
-    private UnderFacilities sourceUnderFacility;
+    private UnderFacility sourceUnderFacility;
     private String sourceFlowsId;
     private Room room;
     private int isReinvest;
-    private BigInteger sourceId;
+    private Long sourceId;
     private String source;
     private int isDivide;
 
@@ -152,7 +151,6 @@ public class InvestorsCash implements Serializable {
     private transient AppUser investorBuyer;
 
     public InvestorsCash() {
-
     }
 
     public InvestorsCash(Facility facility, BigDecimal givedCash) {
@@ -162,10 +160,10 @@ public class InvestorsCash implements Serializable {
 
     public InvestorsCash(BigDecimal givedCash, Date dateGivedCash, Facility facility, AppUser investor,
                          CashSources cashSource, NewCashDetails newCashDetails,
-                         UnderFacilities underFacility, Date dateClosingInvest,
+                         UnderFacility underFacility, Date dateClosingInvest,
                          TypeClosingInvest typeClosingInvest, ShareType shareType, Date dateReport,
-                         Facility sourceFacility, UnderFacilities sourceUnderFacility, String sourceFlowsId,
-                         Room room, int isReinvest, BigInteger sourceId, String source, int isDivide) {
+                         Facility sourceFacility, UnderFacility sourceUnderFacility, String sourceFlowsId,
+                         Room room, int isReinvest, Long sourceId, String source, int isDivide) {
         this.givedCash = givedCash;
         this.dateGivedCash = dateGivedCash;
         this.facility = facility;
@@ -218,7 +216,7 @@ public class InvestorsCash implements Serializable {
         this.sourceFacility = sourceFacility;
     }
 
-    public InvestorsCash(BigInteger facilityId, BigInteger investorId) {
+    public InvestorsCash(Long facilityId, Long investorId) {
         this.facilityId = facilityId;
         this.investorId = investorId;
     }
@@ -228,7 +226,7 @@ public class InvestorsCash implements Serializable {
         this.investor = investor;
     }
 
-    public InvestorsCash(BigDecimal givedCash, BigInteger facilityId, BigInteger investorId) {
+    public InvestorsCash(BigDecimal givedCash, Long facilityId, Long investorId) {
         this.givedCash = givedCash;
         this.facilityId = facilityId;
         this.investorId = investorId;
@@ -240,7 +238,7 @@ public class InvestorsCash implements Serializable {
         this.investor = investor;
     }
 
-    public InvestorsCash(BigDecimal givedCash, Date dateGivedCash, BigInteger facilityId, BigInteger investorId) {
+    public InvestorsCash(BigDecimal givedCash, Date dateGivedCash, Long facilityId, Long investorId) {
         this.givedCash = givedCash;
         this.dateGivedCash = dateGivedCash;
         this.facilityId = facilityId;
@@ -256,29 +254,29 @@ public class InvestorsCash implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public BigInteger getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
     @Column(name = "InvestorId", insertable = false, updatable = false)
-    public BigInteger getInvestorId() {
+    public Long getInvestorId() {
         return investorId;
     }
 
-    public void setInvestorId(BigInteger investorId) {
+    public void setInvestorId(Long investorId) {
         this.investorId = investorId;
     }
 
     @Column(name = "FacilityId", insertable = false, updatable = false)
-    public BigInteger getFacilityId() {
+    public Long getFacilityId() {
         return facilityId;
     }
 
-    public void setFacilityId(BigInteger facilityId) {
+    public void setFacilityId(Long facilityId) {
         this.facilityId = facilityId;
     }
 
@@ -353,21 +351,21 @@ public class InvestorsCash implements Serializable {
 
     @OneToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "UnderFacilityId", referencedColumnName = "id")
-    public UnderFacilities getUnderFacility() {
+    public UnderFacility getUnderFacility() {
         return underFacility;
     }
 
-    public void setUnderFacility(UnderFacilities underFacility) {
+    public void setUnderFacility(UnderFacility underFacility) {
         this.underFacility = underFacility;
     }
 
     @OneToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "SourceUnderFacilityId", referencedColumnName = "id")
-    public UnderFacilities getSourceUnderFacility() {
+    public UnderFacility getSourceUnderFacility() {
         return sourceUnderFacility;
     }
 
-    public void setSourceUnderFacility(UnderFacilities sourceUnderFacility) {
+    public void setSourceUnderFacility(UnderFacility sourceUnderFacility) {
         this.sourceUnderFacility = sourceUnderFacility;
     }
 
@@ -423,11 +421,11 @@ public class InvestorsCash implements Serializable {
     }
 
     @Column(name = "SourceId")
-    public BigInteger getSourceId() {
+    public Long getSourceId() {
         return sourceId;
     }
 
-    public void setSourceId(BigInteger sourceId) {
+    public void setSourceId(Long sourceId) {
         this.sourceId = sourceId;
     }
 

@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -16,10 +15,10 @@ import java.util.Date;
 @Entity
 @Table(name = "InvestorsFlows")
 public class InvestorsFlows implements Serializable {
-    private BigInteger id;
+    private Long id;
     private Date reportDate;
     private Facility facility;
-    private UnderFacilities underFacilities;
+    private UnderFacility underFacility;
     private AppUser investor;
     private String shareKind;
     private float givedCash;
@@ -39,7 +38,6 @@ public class InvestorsFlows implements Serializable {
     private Room room;
 
     public InvestorsFlows() {
-
     }
 
     public InvestorsFlows(Facility facility) {
@@ -51,15 +49,15 @@ public class InvestorsFlows implements Serializable {
         this.afterCashing = afterCashing;
     }
 
-    public InvestorsFlows(Facility facility, UnderFacilities underFacilities, AppUser investor) {
+    public InvestorsFlows(Facility facility, UnderFacility underFacility, AppUser investor) {
         this.facility = facility;
-        this.underFacilities = underFacilities;
+        this.underFacility = underFacility;
         this.investor = investor;
     }
 
-    public InvestorsFlows(Facility facility, UnderFacilities underFacilities, AppUser investor, float afterCashing) {
+    public InvestorsFlows(Facility facility, UnderFacility underFacility, AppUser investor, float afterCashing) {
         this.facility = facility;
-        this.underFacilities = underFacilities;
+        this.underFacility = underFacility;
         this.investor = investor;
         this.afterCashing = afterCashing;
     }
@@ -67,11 +65,11 @@ public class InvestorsFlows implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "Id")
-    public BigInteger getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -87,12 +85,12 @@ public class InvestorsFlows implements Serializable {
 
     @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "underFacilityId", referencedColumnName = "id")
-    public UnderFacilities getUnderFacilities() {
-        return underFacilities;
+    public UnderFacility getUnderFacility() {
+        return underFacility;
     }
 
-    public void setUnderFacilities(UnderFacilities underFacilities) {
-        this.underFacilities = underFacilities;
+    public void setUnderFacility(UnderFacility underFacility) {
+        this.underFacility = underFacility;
     }
 
     @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)

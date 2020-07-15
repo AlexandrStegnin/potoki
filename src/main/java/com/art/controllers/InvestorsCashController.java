@@ -17,6 +17,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
@@ -34,6 +35,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Controller
+@Transactional
 public class InvestorsCashController {
 
     @Autowired
@@ -63,8 +65,8 @@ public class InvestorsCashController {
     @Resource(name = "newCashDetailsService")
     private NewCashDetailsService newCashDetailsService;
 
-    @Resource(name = "underFacilitiesService")
-    private UnderFacilitiesService underFacilitiesService;
+    @Resource(name = "underFacilityService")
+    private UnderFacilityService underFacilityService;
 
     @Resource(name = "typeClosingInvestService")
     private TypeClosingInvestService typeClosingInvestService;
@@ -178,7 +180,7 @@ public class InvestorsCashController {
      * @return страница для редактирования суммы
      */
     @GetMapping(value = {"/edit-cash-{id}"})
-    public String editCash(@PathVariable BigInteger id, ModelMap model) {
+    public String editCash(@PathVariable Long id, ModelMap model) {
         String title = "Обновление данных по деньгам инвесторов";
         InvestorsCash investorsCash = investorsCashService.findById(id);
 
@@ -199,7 +201,7 @@ public class InvestorsCashController {
      * @return переадресация на страницу отображения денег инвесторов
      */
     @PostMapping(value = "/edit-cash-{id}")
-    public String editCash(@ModelAttribute("investorsCash") InvestorsCash investorsCash, @PathVariable("id") BigInteger id) {
+    public String editCash(@ModelAttribute("investorsCash") InvestorsCash investorsCash, @PathVariable("id") Long id) {
         ModelAndView modelAndView = new ModelAndView("viewinvestorscash");
 
         InvestorsCash dbCash = investorsCashService.findById(id);
@@ -223,7 +225,7 @@ public class InvestorsCashController {
      * @return страница для закрытия суммы вложения
      */
     @GetMapping(value = {"/close-cash-{id}"})
-    public String closeCash(@PathVariable BigInteger id, ModelMap model) {
+    public String closeCash(@PathVariable Long id, ModelMap model) {
         String title = "Закрытие вложения";
         InvestorsCash investorsCash = investorsCashService.findById(id);
         investorsCash.setGivedCash(investorsCash.getGivedCash().setScale(2, RoundingMode.DOWN));
@@ -319,7 +321,7 @@ public class InvestorsCashController {
         InvestorsCash investorsCash = searchSummary.getInvestorsCash();
 
         Facility reFacility = searchSummary.getReFacility();
-        UnderFacilities reUnderFacility = searchSummary.getReUnderFacility();
+        UnderFacility reUnderFacility = searchSummary.getReUnderFacility();
         Date reinvestDate = searchSummary.getDateReinvest();
 
         String whatWeDoWithCash = "обновлены.";
@@ -351,21 +353,21 @@ public class InvestorsCashController {
     }
 
     @GetMapping(value = {"/double-cash-{id}"})
-    public String doubleInvCash(@PathVariable BigInteger id, ModelMap model) {
+    public String doubleInvCash(@PathVariable Long id, ModelMap model) {
         String title = "Разделение строк по деньгам инвесторов";
         InvestorsCash investorsCash = investorsCashService.findById(id);
 
-        List<UnderFacilities> underFacilitiesList = new ArrayList<>(0);
-        UnderFacilities underFacilities = new UnderFacilities();
-        underFacilities.setId(new BigInteger("0"));
-        underFacilities.setUnderFacility("Выберите подобъект");
-        underFacilitiesList.add(underFacilities);
-        underFacilitiesList.addAll(underFacilitiesService.findAllWithCriteriaApi()
+        List<UnderFacility> underFacilityList = new ArrayList<>(0);
+        UnderFacility underFacility = new UnderFacility();
+        underFacility.setId(0L);
+        underFacility.setName("Выберите подобъект");
+        underFacilityList.add(underFacility);
+        underFacilityList.addAll(underFacilityService.findAll()
                 .stream()
-                .filter(cash -> cash.getFacility().equals(investorsCash.getFacility()))
+                .filter(uf -> uf.getFacility().equals(investorsCash.getFacility()))
                 .collect(Collectors.toList()));
 
-        model.addAttribute("underFacilitiesList", underFacilitiesList);
+        model.addAttribute("underFacilitiesList", underFacilityList);
         model.addAttribute("investorsCash", investorsCash);
         model.addAttribute("newCash", false);
         model.addAttribute("edit", false);
@@ -452,10 +454,10 @@ public class InvestorsCashController {
             if (!Objects.equals(null, deleting.getSource())) {
 
                 String[] tmp = deleting.getSource().split(Pattern.quote("|"));
-                List<BigInteger> sourceIdList = new ArrayList<>(tmp.length);
+                List<Long> sourceIdList = new ArrayList<>(tmp.length);
                 if (tmp.length > 0 && !tmp[tmp.length - 1].equals("")) {
                     for (String bigInt : tmp) {
-                        sourceIdList.add(new BigInteger(bigInt));
+                        sourceIdList.add(Long.valueOf(bigInt));
                     }
                 }
                 sourceIdList.forEach(parentCashId -> {
@@ -565,9 +567,9 @@ public class InvestorsCashController {
 
         GenericResponse response = new GenericResponse();
 
-        UnderFacilities underFacility = null;
-        if (!summary.getInvestorsCash().getUnderFacility().getUnderFacility().equals("Выберите подобъект")) {
-            underFacility = underFacilitiesService.findByUnderFacility(summary.getInvestorsCash().getUnderFacility().getUnderFacility());
+        UnderFacility underFacility = null;
+        if (!summary.getInvestorsCash().getUnderFacility().getName().equals("Выберите подобъект")) {
+            underFacility = underFacilityService.findByName(summary.getInvestorsCash().getUnderFacility().getName());
         }
 
         summary.getInvestorsCash().setUnderFacility(underFacility);
@@ -785,28 +787,28 @@ public class InvestorsCashController {
     private GenericResponse divideCash(SearchSummary summary) {
         // Получаем id сумм, которые надо разделить
         GenericResponse response = new GenericResponse();
-        List<BigInteger> idsList = summary.getInvestorsCashList().stream().map(InvestorsCash::getId).collect(Collectors.toList());
+        List<Long> idsList = summary.getInvestorsCashList().stream().map(InvestorsCash::getId).collect(Collectors.toList());
 
         // Получаем список денег по идентификаторам
         List<InvestorsCash> investorsCashes = investorsCashService.findByIdIn(idsList);
 
-        List<UnderFacilities> remainingUnderFacilitiesList = summary.getUnderFacilitiesList();
+        List<UnderFacility> remainingUnderFacilityList = summary.getUnderFacilityList();
 
         // Получаем подобъект, куда надо разделить сумму
-        UnderFacilities underFacility = underFacilitiesService.findByIdWithCriteriaApi(
+        UnderFacility underFacility = underFacilityService.findById(
                 summary.getReUnderFacility().getId());
 
         // Получаем объект, в который надо разделить сумму
         Facility facility = facilityService.findByIdWithUnderFacilitiesAndRooms(underFacility.getFacility().getId());
 
         // Получаем список подобъектов объекта
-        Set<UnderFacilities> underFacilitiesList = facility.getUnderFacilities();
+        Set<UnderFacility> underFacilityList = facility.getUnderFacilities();
 
         List<Room> rooms = new ArrayList<>(0);
 
         // Если в списке подобъектов присутствует подобъект, из которого должен состоять остаток суммы, заносим помещения
         // этого подобъекта в список
-        underFacilitiesList.forEach(uf -> remainingUnderFacilitiesList.forEach(ruf -> {
+        underFacilityList.forEach(uf -> remainingUnderFacilityList.forEach(ruf -> {
             if (uf.getId().equals(ruf.getId())) {
                 rooms.addAll(uf.getRooms());
             }
@@ -881,19 +883,19 @@ public class InvestorsCashController {
         final GenericResponse[] response = {new GenericResponse()};
 
         // Получаем подобъекты, куда надо выделить долю
-        List<UnderFacilities> reUnderFacilitiesList = summary.getReUnderFacilitiesList();
+        List<UnderFacility> reUnderFacilityList = summary.getReUnderFacilityList();
 
         // Получаем подобъекты, которые будут использоваться для расчёта процентного соотношения разделения
-        List<UnderFacilities> underFacilitiesToCalculateShare = summary.getUnderFacilitiesList();
+        List<UnderFacility> underFacilityToCalculateShare = summary.getUnderFacilityList();
         final int[] counter = {0};
-        int ufCount = underFacilitiesToCalculateShare.size();
-        reUnderFacilitiesList.forEach(reUnderFacility -> {
+        int ufCount = underFacilityToCalculateShare.size();
+        reUnderFacilityList.forEach(reUnderFacility -> {
             counter[0]++;
             sendStatus(String.format("Разделяем %d из %d подобъектов", counter[0], ufCount));
             summary.setReUnderFacility(reUnderFacility);
             response[0] = divideCash(summary);
-            underFacilitiesToCalculateShare.remove(reUnderFacility);
-            summary.setReUnderFacilitiesList(underFacilitiesToCalculateShare);
+            underFacilityToCalculateShare.remove(reUnderFacility);
+            summary.setReUnderFacilityList(underFacilityToCalculateShare);
         });
         sendStatus("OK");
         return response[0];
@@ -991,7 +993,7 @@ public class InvestorsCashController {
             InvestorsCash keyMap;
             if ("sale".equals(what)) {
                 keyMap = map.get(ic.getInvestor().getLogin() +
-                        ic.getSourceUnderFacility().getUnderFacility());
+                        ic.getSourceUnderFacility().getName());
             } else {
                 keyMap = map.get(ic.getInvestor().getLogin() + ic.getSourceFacility().getName());
             }
@@ -999,7 +1001,7 @@ public class InvestorsCashController {
             if (Objects.equals(null, keyMap)) {
                 if ("sale".equals(what)) {
                     map.put(ic.getInvestor().getLogin() +
-                                    ic.getSourceUnderFacility().getUnderFacility(),
+                                    ic.getSourceUnderFacility().getName(),
                             ic);
                 } else {
                     map.put(ic.getInvestor().getLogin() + ic.getSourceFacility().getName(),
@@ -1026,7 +1028,7 @@ public class InvestorsCashController {
                 }
                 if ("sale".equals(what)) {
                     map.put(ic.getInvestor().getLogin() +
-                            ic.getSourceUnderFacility().getUnderFacility(), cash);
+                            ic.getSourceUnderFacility().getName(), cash);
                 } else {
                     map.put(ic.getInvestor().getLogin() + ic.getSourceFacility().getName(), cash);
                 }
@@ -1073,18 +1075,18 @@ public class InvestorsCashController {
     }
 
     @ModelAttribute("underFacilities")
-    public List<UnderFacilities> initializeUnderFacilities() {
-        return underFacilitiesService.initializeUnderFacilities();
+    public List<UnderFacility> initializeUnderFacilities() {
+        return underFacilityService.initializeUnderFacilities();
     }
 
     @ModelAttribute("underFacilitiesList")
-    public List<UnderFacilities> initializeUnderFacilitiesList() {
-        return underFacilitiesService.initializeUnderFacilitiesList();
+    public List<UnderFacility> initializeUnderFacilitiesList() {
+        return underFacilityService.initializeUnderFacilitiesList();
     }
 
     @ModelAttribute("sourceUnderFacilities")
-    public List<UnderFacilities> initializeReUnderFacilities() {
-        return underFacilitiesService.initializeUnderFacilities();
+    public List<UnderFacility> initializeReUnderFacilities() {
+        return underFacilityService.initializeUnderFacilities();
     }
 
     @ModelAttribute("typeClosingInvest")

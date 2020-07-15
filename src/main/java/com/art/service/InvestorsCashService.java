@@ -35,25 +35,25 @@ public class InvestorsCashService {
     private final InvestorsCashSpecification specification;
     private final TypeClosingInvestService typeClosingInvestService;
     private final AfterCashingService afterCashingService;
-    private final UnderFacilitiesService underFacilitiesService;
+    private final UnderFacilityService underFacilityService;
 
     @Autowired
     public InvestorsCashService(InvestorsCashRepository investorsCashRepository,
                                 InvestorsCashSpecification specification,
                                 TypeClosingInvestService typeClosingInvestService,
-                                AfterCashingService afterCashingService, UnderFacilitiesService underFacilitiesService) {
+                                AfterCashingService afterCashingService, UnderFacilityService underFacilityService) {
         this.investorsCashRepository = investorsCashRepository;
         this.specification = specification;
         this.typeClosingInvestService = typeClosingInvestService;
         this.afterCashingService = afterCashingService;
-        this.underFacilitiesService = underFacilitiesService;
+        this.underFacilityService = underFacilityService;
     }
 
     public List<InvestorsCash> findAll() {
         return investorsCashRepository.findAll();
     }
 
-    public InvestorsCash findById(BigInteger id) {
+    public InvestorsCash findById(Long id) {
         return investorsCashRepository.findById(id);
     }
 
@@ -71,7 +71,7 @@ public class InvestorsCashService {
         return investorsCash;
     }
 
-    public void deleteById(BigInteger id) {
+    public void deleteById(Long id) {
         investorsCashRepository.deleteById(id);
     }
 
@@ -98,7 +98,7 @@ public class InvestorsCashService {
         return this.em.merge(investorsCash);
     }
 
-    public List<InvestorsCash> findByIdIn(List<BigInteger> idList) {
+    public List<InvestorsCash> findByIdIn(List<Long> idList) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<InvestorsCash> investorsCashCriteriaQuery = cb.createQuery(InvestorsCash.class);
         Root<InvestorsCash> investorsCashRoot = investorsCashCriteriaQuery.from(InvestorsCash.class);
@@ -118,7 +118,7 @@ public class InvestorsCashService {
         return em.createQuery(investorsCashCriteriaQuery).getResultList();
     }
 
-    public List<InvestorsCash> findBySourceId(BigInteger sourceId) {
+    public List<InvestorsCash> findBySourceId(Long sourceId) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<InvestorsCash> investorsCashCriteriaQuery = cb.createQuery(InvestorsCash.class);
         Root<InvestorsCash> investorsCashRoot = investorsCashCriteriaQuery.from(InvestorsCash.class);
@@ -208,21 +208,21 @@ public class InvestorsCashService {
     }
 
     public String cashing(SearchSummary searchSummary, boolean all) {
-        UnderFacilities underFacility = null;
-        if (searchSummary.getUnderFacilities() != null) {
-            if (searchSummary.getUnderFacilities().getId() != null) {
-                underFacility = underFacilitiesService.findById(searchSummary.getUnderFacilities().getId());
-            } else if (searchSummary.getUnderFacilities().getUnderFacility() != null) {
-                underFacility = underFacilitiesService.findByUnderFacility(searchSummary.getUnderFacilities().getUnderFacility());
+        UnderFacility underFacility = null;
+        if (searchSummary.getUnderFacility() != null) {
+            if (searchSummary.getUnderFacility().getId() != null) {
+                underFacility = underFacilityService.findById(searchSummary.getUnderFacility().getId());
+            } else if (searchSummary.getUnderFacility().getName() != null) {
+                underFacility = underFacilityService.findByName(searchSummary.getUnderFacility().getName());
             }
-            searchSummary.setUnderFacilities(underFacility);
+            searchSummary.setUnderFacility(underFacility);
         }
         final String[] result = {""};
         if (searchSummary.getInvestorsList() != null) {
-            UnderFacilities finalUnderFacility = underFacility;
+            UnderFacility finalUnderFacility = underFacility;
             searchSummary.getInvestorsList().forEach(user -> {
                 if (searchSummary.getInvestorsCash() != null) {
-                    List<UnderFacilities> underFacilities = searchSummary.getUnderFacilitiesList();
+                    List<UnderFacility> underFacilities = searchSummary.getUnderFacilityList();
                     InvestorsCash invCash = searchSummary.getInvestorsCash();
                     invCash.setInvestor(user);
                     invCash.setUnderFacility(finalUnderFacility);
@@ -381,7 +381,7 @@ public class InvestorsCashService {
         filter.setInvestor(cashForGetting.getInvestor());
         filter.setFacility(cashForGetting.getFacility().getName());
         if (!Objects.equals(null, cashForGetting.getUnderFacility())) {
-            filter.setUnderFacility(cashForGetting.getUnderFacility().getUnderFacility());
+            filter.setUnderFacility(cashForGetting.getUnderFacility().getName());
         }
         Pageable pageable = new PageRequest(0, Integer.MAX_VALUE);
         return investorsCashRepository.findAll(

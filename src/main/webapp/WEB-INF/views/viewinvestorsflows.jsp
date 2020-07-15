@@ -70,7 +70,7 @@
                 </form:select>
                 <label class="sr-only" for="uFacilities">Подобъект:</label>
                 <form:select path="underFacility" id="uFacilities" multiple="false" class="selectpicker">
-                    <c:forEach var="uf" items="${underFacilities}">
+                    <c:forEach var="uf" items="${underFacility}">
                         <option
                                 <c:choose>
                                     <c:when test="${uf.underFacility eq 'Выберите подобъект'}">selected="selected"</c:when>
@@ -173,7 +173,7 @@
                 <tr id="${flows.id}">
                     <td data-report-date="${flows.reportDate.time}">${flows.getReportDateToLocalDate()}</td>
                     <td data-facility-id="${flows.facility.id}">${flows.facility.name}</td>
-                    <td data-under-facility-id="${flows.underFacilities.id}">${flows.underFacilities.underFacility}</td>
+                    <td data-under-facility-id="${flows.underFacility.id}">${flows.underFacility.underFacility}</td>
                     <td data-room-id="${flows.room.id}">${flows.room.room}</td>
                     <td data-investor-id="${flows.investor.id}">${flows.investor.login}</td>
                     <td>${flows.shareKind}</td>

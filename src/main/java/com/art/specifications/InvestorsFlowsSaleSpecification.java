@@ -60,7 +60,7 @@ public class InvestorsFlowsSaleSpecification extends BaseSpecification<Investors
             if (Objects.equals(null, underFacility) || StringUtils.isEmpty(underFacility) || "Выберите подобъект".equalsIgnoreCase(underFacility.trim())) {
                 return null;
             } else {
-                return criteriaBuilder.equal(root.get(InvestorsFlowsSale_.underFacility).get(UnderFacilities_.underFacility), underFacility);
+                return criteriaBuilder.equal(root.get(InvestorsFlowsSale_.underFacility).get(UnderFacility_.name), underFacility);
             }
         }
         );

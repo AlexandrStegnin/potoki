@@ -7,7 +7,7 @@ import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
 import com.art.service.FacilityService;
 import com.art.service.InvestorsCashService;
-import com.art.service.UnderFacilitiesService;
+import com.art.service.UnderFacilityService;
 import com.art.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,14 +25,14 @@ public class FacilityController {
 
     private final UserService userService;
 
-    private final UnderFacilitiesService underFacilitiesService;
+    private final UnderFacilityService underFacilityService;
 
     private final InvestorsCashService investorsCashService;
 
-    public FacilityController(FacilityService facilityService, UserService userService, UnderFacilitiesService underFacilitiesService, InvestorsCashService investorsCashService) {
+    public FacilityController(FacilityService facilityService, UserService userService, UnderFacilityService underFacilityService, InvestorsCashService investorsCashService) {
         this.facilityService = facilityService;
         this.userService = userService;
-        this.underFacilitiesService = underFacilitiesService;
+        this.underFacilityService = underFacilityService;
         this.investorsCashService = investorsCashService;
     }
 
@@ -113,7 +113,7 @@ public class FacilityController {
             return response;
         }
         try {
-            facility.getUnderFacilities().forEach(f -> underFacilitiesService.deleteById(f.getId()));
+            facility.getUnderFacilities().forEach(f -> underFacilityService.deleteById(f.getId()));
             facilityService.deleteById(facility.getId());
             response.setMessage("Объект " + facility.getName() + " успешно удалён.");
         } catch (Exception e) {

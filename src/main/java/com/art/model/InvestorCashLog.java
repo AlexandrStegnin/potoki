@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Date;
 
 /**
@@ -41,7 +40,7 @@ public class InvestorCashLog {
 
     @OneToOne
     @JoinColumn(name = "under_facility_id")
-    private UnderFacilities underFacility;
+    private UnderFacility underFacility;
 
     @Column(name = "given_cash")
     private BigDecimal givenCash;
@@ -77,7 +76,7 @@ public class InvestorCashLog {
 
     @OneToOne
     @JoinColumn(name = "source_under_facility_id")
-    private UnderFacilities sourceUnderFacility;
+    private UnderFacility sourceUnderFacility;
 
     @Column(name = "source_flows_id")
     private String sourceFlowsId;
@@ -90,7 +89,7 @@ public class InvestorCashLog {
     private int reinvest;
 
     @Column(name = "source_id")
-    private BigInteger sourceId;
+    private Long sourceId;
 
     @Column(name = "source")
     private String source;
@@ -110,7 +109,7 @@ public class InvestorCashLog {
     private CashType instanceOf;
 
     public InvestorCashLog(InvestorsCash cash, TransactionLog log, CashType instanceOf) {
-        this.cashId = cash.getId().longValue();
+        this.cashId = cash.getId();
         this.investor = cash.getInvestor();
         this.facility = cash.getFacility();
         this.underFacility = cash.getUnderFacility();
@@ -146,7 +145,7 @@ public class InvestorCashLog {
     }
 
     public InvestorCashLog(InvestorsFlows flows, TransactionLog log, CashType instanceOf) {
-        this.cashId = flows.getId().longValue();
+        this.cashId = flows.getId();
         this.investor = flows.getInvestor();
         this.facility = flows.getFacility();
         this.dateGivenCash = flows.getReportDate();

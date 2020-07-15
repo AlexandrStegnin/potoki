@@ -42,13 +42,13 @@
             </div>
         </div>
 
-        <c:set var="uf" value="${underFacilities}"/>
+        <c:set var="uf" value="${underFacility}"/>
 
         <div class="row" id="underFacilitiesRow">
             <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="underFacilities">Подобъект:</label>
+                <label class="col-md-3 control-lable" for="underFacility">Подобъект:</label>
                 <div class="col-md-7">
-                    <form:select path="investorsCash.underFacility" id="underFacilities" multiple="false"
+                    <form:select path="investorsCash.underFacility" id="underFacility" multiple="false"
                                  class="form-control input-sm">
                         <c:forEach var="uf" items="${uf}">
                             <form:option value="${uf.underFacility}" id="${uf.id}" data-parent-id="${uf.facilityId}">

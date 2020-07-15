@@ -50,18 +50,18 @@
 
         <c:choose>
             <c:when test="${doubleCash}">
-                <c:set var="uf" value="${underFacilitiesList}"/>
+                <c:set var="uf" value="${underFacilityList}"/>
             </c:when>
             <c:otherwise>
-                <c:set var="uf" value="${underFacilities}"/>
+                <c:set var="uf" value="${underFacility}"/>
             </c:otherwise>
         </c:choose>
 
         <div class="row" id="underFacilitiesRow">
             <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="underFacilities">Подобъект:</label>
+                <label class="col-md-3 control-lable" for="underFacility">Подобъект:</label>
                 <div class="col-md-7">
-                    <form:select path="underFacility" id="underFacilities" multiple="false"
+                    <form:select path="underFacility" id="underFacility" multiple="false"
                                  class="form-control input-sm">
                         <c:forEach var="uf" items="${uf}">
                             <form:option value="${uf.underFacility}" id="${uf.id}" data-parent-id="${uf.facilityId}">

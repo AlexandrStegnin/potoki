@@ -39,7 +39,7 @@ public class Room implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "under_facility_id", referencedColumnName = "id")
-    private UnderFacilities underFacility;
+    private UnderFacility underFacility;
 
     @Column(name = "date_buy")
     private Date dateBuy;

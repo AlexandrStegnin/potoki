@@ -2,9 +2,9 @@ package com.art.controllers;
 
 import com.art.config.application.Location;
 import com.art.model.Room;
-import com.art.model.UnderFacilities;
+import com.art.model.UnderFacility;
 import com.art.service.RoomService;
-import com.art.service.UnderFacilitiesService;
+import com.art.service.UnderFacilityService;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -22,11 +22,11 @@ public class RoomController {
 
     private final RoomService roomService;
 
-    private final UnderFacilitiesService underFacilitiesService;
+    private final UnderFacilityService underFacilityService;
 
-    public RoomController(RoomService roomService, UnderFacilitiesService underFacilitiesService) {
+    public RoomController(RoomService roomService, UnderFacilityService underFacilityService) {
         this.roomService = roomService;
-        this.underFacilitiesService = underFacilitiesService;
+        this.underFacilityService = underFacilityService;
     }
 
     @GetMapping(path = Location.ROOMS_LIST)
@@ -95,8 +95,8 @@ public class RoomController {
     }
 
     @ModelAttribute("underFacilities")
-    public List<UnderFacilities> initializeUnderFacilities() {
-        return underFacilitiesService.initializeUnderFacilities();
+    public List<UnderFacility> initializeUnderFacilities() {
+        return underFacilityService.initializeUnderFacilities();
     }
 
     @InitBinder

@@ -1,31 +1,27 @@
 package com.art.converter;
 
-import com.art.model.UnderFacilities;
-import com.art.service.UnderFacilitiesService;
+import com.art.model.UnderFacility;
+import com.art.service.UnderFacilityService;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
-import java.math.BigInteger;
-
 @Component
-public class StringToUnderFacilitiesConverter implements Converter<String, UnderFacilities> {
+public class StringToUnderFacilitiesConverter implements Converter<String, UnderFacility> {
 
-    @Resource(name = "underFacilitiesService")
-    private UnderFacilitiesService underFacilitiesService;
+    private final UnderFacilityService underFacilityService;
 
-    public StringToUnderFacilitiesConverter(UnderFacilitiesService underFacilitiesService) {
-        this.underFacilitiesService = underFacilitiesService;
+    public StringToUnderFacilitiesConverter(UnderFacilityService underFacilityService) {
+        this.underFacilityService = underFacilityService;
     }
 
-    public UnderFacilities convert(String id) {
-        UnderFacilities underFacilities;
+    public UnderFacility convert(String id) {
+        UnderFacility underFacility;
         try {
-            BigInteger IntId = new BigInteger(id);
-            underFacilities = underFacilitiesService.findById(IntId);
+            Long IntId = Long.valueOf(id);
+            underFacility = underFacilityService.findById(IntId);
         } catch (Exception ex) {
-            underFacilities = underFacilitiesService.findByUnderFacility(id);
+            underFacility = underFacilityService.findByName(id);
         }
-        return underFacilities;
+        return underFacility;
     }
 }

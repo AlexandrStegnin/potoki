@@ -29,17 +29,17 @@ public class InvestorsFlowsService {
 
     private final InvestorsFlowsRepository investorsFlowsRepository;
     private final FacilityService facilityService;
-    private final UnderFacilitiesService underFacilitiesService;
+    private final UnderFacilityService underFacilityService;
     private final UserService userService;
 
     @Autowired
     public InvestorsFlowsService(FacilityService facilityService,
                                  InvestorsFlowsRepository investorsFlowsRepository,
-                                 UnderFacilitiesService underFacilitiesService,
+                                 UnderFacilityService underFacilityService,
                                  UserService userService) {
         this.facilityService = facilityService;
         this.investorsFlowsRepository = investorsFlowsRepository;
-        this.underFacilitiesService = underFacilitiesService;
+        this.underFacilityService = underFacilityService;
         this.userService = userService;
     }
 
@@ -67,7 +67,7 @@ public class InvestorsFlowsService {
         return investorsFlowsRepository.findByInvestorId(investorId);
     }
 
-    public List<InvestorsFlows> findByIdIn(List<BigInteger> idList) {
+    public List<InvestorsFlows> findByIdIn(List<Long> idList) {
         return investorsFlowsRepository.findByIdIn(idList);
     }
 
@@ -84,7 +84,7 @@ public class InvestorsFlowsService {
         this.em.createQuery(update).executeUpdate();
     }
 
-    public void deleteByIdIn(List<BigInteger> idList) {
+    public void deleteByIdIn(List<Long> idList) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaDelete<InvestorsFlows> query = cb.createCriteriaDelete(InvestorsFlows.class);
         Root<InvestorsFlows> root = query.from(InvestorsFlows.class);
@@ -134,11 +134,11 @@ public class InvestorsFlowsService {
             predicates.add(cb.like(from.get(InvestorsFlows_.facility).get(Facility_.name), facility.getName()));
         }
 
-        UnderFacilities underFacility = searchSummary.getUnderFacilities();
+        UnderFacility underFacility = searchSummary.getUnderFacility();
         if (!Objects.equals(null, underFacility)) {
-            underFacility = underFacilitiesService.findById(underFacility.getId());
-            predicates.add(cb.like(from.get(InvestorsFlows_.underFacilities)
-                    .get(UnderFacilities_.underFacility), underFacility.getUnderFacility()));
+            underFacility = underFacilityService.findById(underFacility.getId());
+            predicates.add(cb.like(from.get(InvestorsFlows_.underFacility)
+                    .get(UnderFacility_.name), underFacility.getName()));
         }
 
         AppUser investor = searchSummary.getUser();
@@ -178,7 +178,7 @@ public class InvestorsFlowsService {
     public Page<InvestorsFlows> findAllFiltering(Pageable pageable, SearchSummary filters) {
         String investor = filters.getInvestor();
         String facility = filters.getFacilityStr();
-        String underFacility = filters.getUnderFacility();
+        String underFacility = filters.getUnderFacilityStr();
         LocalDate startDate = filters.getStartDate();
         LocalDate endDate = filters.getEndDate();
         Date start = null;

@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -19,7 +18,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class InvestorCashDTO {
 
-    private BigInteger id;
+    private Long id;
 
     private String investor;
 
@@ -41,7 +40,7 @@ public class InvestorCashDTO {
     }
 
     public InvestorCashDTO(InvestorCashLog cashLog) {
-        this.id = BigInteger.valueOf(cashLog.getId());
+        this.id = cashLog.getId();
         this.investor = cashLog.getInvestor().getLogin();
         this.facility = cashLog.getFacility().getName();
         this.dateGivenCash = convertDate(cashLog.getDateGivenCash());

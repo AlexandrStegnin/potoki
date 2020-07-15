@@ -10,13 +10,14 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.math.BigInteger;
 import java.util.List;
 
 @Repository
-public interface InvestorsCashRepository extends JpaRepository<InvestorsCash, BigInteger>, JpaSpecificationExecutor<InvestorsCash> {
-    InvestorsCash findById(BigInteger id);
-    void deleteById(BigInteger id);
+public interface InvestorsCashRepository extends JpaRepository<InvestorsCash, Long>, JpaSpecificationExecutor<InvestorsCash> {
+
+    InvestorsCash findById(Long id);
+
+    void deleteById(Long id);
 
     @Query(name = "InvestorsCashSums", nativeQuery = true)
     List<InvestorsTotalSum> getInvestorsCashSums(Long investorId);

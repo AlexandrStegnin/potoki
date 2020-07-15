@@ -27,7 +27,7 @@ public class SearchSummary implements Serializable {
     private String iYear;
     private String iMonth;
     private String pay;
-    private String underFacility;
+    private String underFacilityStr;
 
     private String investor;
     private AppUser user;
@@ -73,30 +73,29 @@ public class SearchSummary implements Serializable {
 
     private List<InvestorsCash> investorsCashList;
     private Facility reFacility;
-    private UnderFacilities reUnderFacility;
-    private UnderFacilities reUnderFacilities;
+    private UnderFacility underFacility;
+    private UnderFacility reUnderFacility;
     private Date dateReinvest;
     private InvestorsCash investorsCash;
-    private List<BigInteger> reinvestIdList;
+    private List<Long> reinvestIdList;
     private UsersAnnexToContracts usersAnnexToContracts;
     private int annexesCnt;
     private AnnexToContracts annexToContracts;
     private Room room;
     private String dateClose;
-    private List<BigInteger> cashIdList;
-    private List<UnderFacilities> underFacilitiesList;
+    private List<Long> cashIdList;
+    private List<UnderFacility> underFacilityList;
     private int pageNumber;
     private BigDecimal commissionNoMore;
 
     private Facility facility;
-    private UnderFacilities underFacilities;
 
     private LocalDate startDate;
     private LocalDate endDate;
 
     private String[] investors;
 
-    private List<UnderFacilities> reUnderFacilitiesList;
+    private List<UnderFacility> reUnderFacilityList;
 
     private Date realDateGiven;
 
@@ -238,12 +237,12 @@ public class SearchSummary implements Serializable {
         this.pay = pay;
     }
 
-    public String getUnderFacility() {
-        return underFacility;
+    public String getUnderFacilityStr() {
+        return underFacilityStr;
     }
 
-    public void setUnderFacility(String underFacility) {
-        this.underFacility = underFacility;
+    public void setUnderFacilityStr(String underFacilityStr) {
+        this.underFacilityStr = underFacilityStr;
     }
 
     public String getCashSource() {
@@ -366,11 +365,11 @@ public class SearchSummary implements Serializable {
         this.reFacility = reFacility;
     }
 
-    public UnderFacilities getReUnderFacility() {
+    public UnderFacility getReUnderFacility() {
         return reUnderFacility;
     }
 
-    public void setReUnderFacility(UnderFacilities reUnderFacility) {
+    public void setReUnderFacility(UnderFacility reUnderFacility) {
         this.reUnderFacility = reUnderFacility;
     }
 
@@ -414,11 +413,11 @@ public class SearchSummary implements Serializable {
         this.investorsCash = investorsCash;
     }
 
-    public List<BigInteger> getReinvestIdList() {
+    public List<Long> getReinvestIdList() {
         return reinvestIdList;
     }
 
-    public void setReinvestIdList(List<BigInteger> reinvestIdList) {
+    public void setReinvestIdList(List<Long> reinvestIdList) {
         this.reinvestIdList = reinvestIdList;
     }
 
@@ -438,11 +437,11 @@ public class SearchSummary implements Serializable {
         this.dateClose = dateClose;
     }
 
-    public List<BigInteger> getCashIdList() {
+    public List<Long> getCashIdList() {
         return cashIdList;
     }
 
-    public void setCashIdList(List<BigInteger> cashIdList) {
+    public void setCashIdList(List<Long> cashIdList) {
         this.cashIdList = cashIdList;
     }
 
@@ -462,12 +461,12 @@ public class SearchSummary implements Serializable {
         this.what = what;
     }
 
-    public List<UnderFacilities> getUnderFacilitiesList() {
-        return underFacilitiesList;
+    public List<UnderFacility> getUnderFacilityList() {
+        return underFacilityList;
     }
 
-    public void setUnderFacilitiesList(List<UnderFacilities> underFacilitiesList) {
-        this.underFacilitiesList = underFacilitiesList;
+    public void setUnderFacilityList(List<UnderFacility> underFacilityList) {
+        this.underFacilityList = underFacilityList;
     }
 
     public BigDecimal getCommission() {
@@ -502,20 +501,8 @@ public class SearchSummary implements Serializable {
         this.facility = facility;
     }
 
-    public UnderFacilities getUnderFacilities() {
-        return underFacilities;
-    }
-
-    public void setUnderFacilities(UnderFacilities underFacilities) {
-        this.underFacilities = underFacilities;
-    }
-
-    public UnderFacilities getReUnderFacilities() {
-        return reUnderFacilities;
-    }
-
-    public void setReUnderFacilities(UnderFacilities reUnderFacilities) {
-        this.reUnderFacilities = reUnderFacilities;
+    public UnderFacility getUnderFacility() {
+        return underFacility;
     }
 
     public BigDecimal getDivideSum() {
@@ -534,12 +521,12 @@ public class SearchSummary implements Serializable {
         this.investorsList = investorsList;
     }
 
-    public List<UnderFacilities> getReUnderFacilitiesList() {
-        return reUnderFacilitiesList;
+    public List<UnderFacility> getReUnderFacilityList() {
+        return reUnderFacilityList;
     }
 
-    public void setReUnderFacilitiesList(List<UnderFacilities> reUnderFacilitiesList) {
-        this.reUnderFacilitiesList = reUnderFacilitiesList;
+    public void setReUnderFacilityList(List<UnderFacility> reUnderFacilityList) {
+        this.reUnderFacilityList = reUnderFacilityList;
     }
 
     public Date getRealDateGiven() {

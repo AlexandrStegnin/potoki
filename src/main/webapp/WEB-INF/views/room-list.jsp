@@ -67,7 +67,7 @@
                 <tr>
                     <td>${room.id}</td>
                     <td>${room.underFacility.facility.name}</td>
-                    <td>${room.underFacility.underFacility}</td>
+                    <td>${room.underFacility.name}</td>
                     <td>${room.name}</td>
                     <td>
                         <fmt:setLocale value="ru-RU" scope="session"/>

@@ -34,7 +34,7 @@ public class InvestorsFlowsSale implements Serializable {
     private BigDecimal profitToCashingAuto;
     private BigDecimal profitToCashingMain;
     private BigDecimal profitToReInvest;
-    private UnderFacilities underFacility;
+    private UnderFacility underFacility;
     private Date dateSale;
     private int isReinvest;
 
@@ -64,11 +64,11 @@ public class InvestorsFlowsSale implements Serializable {
 
     @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "underFacilityId", referencedColumnName = "id")
-    public UnderFacilities getUnderFacility() {
+    public UnderFacility getUnderFacility() {
         return underFacility;
     }
 
-    public void setUnderFacility(UnderFacilities underFacility) {
+    public void setUnderFacility(UnderFacility underFacility) {
         this.underFacility = underFacility;
     }
 

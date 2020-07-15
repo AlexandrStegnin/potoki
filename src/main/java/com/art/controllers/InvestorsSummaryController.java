@@ -53,8 +53,8 @@ public class InvestorsSummaryController {
     @Resource(name = "investorsFlowsService")
     private InvestorsFlowsService investorsFlowsService;
 
-    @Resource(name = "underFacilitiesService")
-    private UnderFacilitiesService underFacilitiesService;
+    @Resource(name = "underFacilityService")
+    private UnderFacilityService underFacilityService;
 
     @Resource(name = "roomService")
     private RoomService roomService;
@@ -75,7 +75,7 @@ public class InvestorsSummaryController {
         filters.setStartDate(startDate);
         filters.setEndDate(endDate);
         filters.setFacilityStr(facility);
-        filters.setUnderFacility(underFacility);
+        filters.setUnderFacilityStr(underFacility);
         filters.setInvestor(investor);
         FileBucket fileModel = new FileBucket();
         Page<InvestorsFlows> flowsList = investorsFlowsService.findAllFiltering(pageable, filters);
@@ -125,8 +125,8 @@ public class InvestorsSummaryController {
     }
 
     @ModelAttribute("underFacilities")
-    public List<UnderFacilities> initializeUnderFacilities() {
-        return underFacilitiesService.initializeUnderFacilities();
+    public List<UnderFacility> initializeUnderFacilities() {
+        return underFacilityService.initializeUnderFacilities();
     }
 
     @ModelAttribute("investors")

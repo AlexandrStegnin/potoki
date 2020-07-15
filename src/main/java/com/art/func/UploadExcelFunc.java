@@ -46,7 +46,7 @@ public class UploadExcelFunc {
     private FacilityService facilityService;
 
     @Autowired
-    private UnderFacilitiesService underFacilitiesService;
+    private UnderFacilityService underFacilityService;
 
     public String ExcelParser(MultipartFile file, String what, HttpServletRequest request) throws IOException, ParseException {
         String errString = "";
@@ -116,13 +116,13 @@ public class UploadExcelFunc {
                             .findFirst()
                             .orElse(null);
 
-                    List<UnderFacilities> underFacilitiesList = new ArrayList<>(0);
+                    List<UnderFacility> underFacilityList = new ArrayList<>(0);
 
                     String underFacilityName = row.getCell(2).getStringCellValue();
                     if (null == underFacilityName || underFacilityName.isEmpty()) {
                         return;
                     }
-                    UnderFacilities underFacility = underFacilitiesService.findByUnderFacility(underFacilityName);
+                    UnderFacility underFacility = underFacilityService.findByName(underFacilityName);
                     if (null == underFacility) {
                         return;
                     }
@@ -140,7 +140,7 @@ public class UploadExcelFunc {
                     investorsFlows.setReportDate(Date.from(cal.atStartOfDay(ZoneId.systemDefault()).toInstant()));
                     investorsFlows.setFacility(facility);
 
-                    investorsFlows.setUnderFacilities(underFacility);
+                    investorsFlows.setUnderFacility(underFacility);
 
                     investorsFlows.setRoom(rooms.stream()
                             .filter(r -> r.getName().equalsIgnoreCase(row.getCell(3).getStringCellValue()))
@@ -185,8 +185,8 @@ public class UploadExcelFunc {
                             .filter(flows -> !Objects.equals(flows.getFacility(), null) &&
                                     flows.getFacility().getId().equals(investorsFlows.getFacility().getId()))
 
-                            .filter(flows -> !Objects.equals(investorsFlows.getUnderFacilities(), null) &&
-                                    flows.getUnderFacilities().getId().equals(investorsFlows.getUnderFacilities().getId()))
+                            .filter(flows -> !Objects.equals(investorsFlows.getUnderFacility(), null) &&
+                                    flows.getUnderFacility().getId().equals(investorsFlows.getUnderFacility().getId()))
 
                             .filter(flows -> flows.getInvestor().getId().equals(investorsFlows.getInvestor().getId()))
 
@@ -214,7 +214,7 @@ public class UploadExcelFunc {
         List<AppUser> users = userService.findAll();
         List<ShareType> shareKinds = Arrays.asList(ShareType.values());
         Map<String, Facility> facilities = new HashMap<>();
-        Map<String, UnderFacilities> underFacilities = new HashMap<>();
+        Map<String, UnderFacility> underFacilities = new HashMap<>();
         for (Row row : sheet) {
             cel++;
             if (cel > 1) {
@@ -354,9 +354,9 @@ public class UploadExcelFunc {
                         errors.append(String.format("Не указан или не верно указан подобъект \"%s\". Строка %d, столбец 35", underFacilityName, cel));
                         return errors.toString();
                     }
-                    UnderFacilities underFacility = underFacilities.get(underFacilityName);
+                    UnderFacility underFacility = underFacilities.get(underFacilityName);
                     if (underFacility == null) {
-                        underFacility = underFacilitiesService.findByUnderFacility(underFacilityName);
+                        underFacility = underFacilityService.findByName(underFacilityName);
                         if (underFacility == null) {
                             errors.append(String.format("Не указан или не верно указан подобъект \"%s\". Строка %d, столбец 35", underFacilityName, cel));
                             return errors.toString();

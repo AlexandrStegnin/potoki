@@ -72,9 +72,9 @@ public class InvestorsCashSpecification extends BaseSpecification<InvestorsCash,
             if (Objects.equals(null, underFacility) || StringUtils.isEmpty(underFacility) || "Выберите подобъект".equalsIgnoreCase(underFacility.trim())) {
                 return null;
             } else if ("Без подобъекта".equalsIgnoreCase(underFacility)) {
-                return criteriaBuilder.isNull(root.get(InvestorsCash_.underFacility)/*.get(UnderFacilities_.underFacility*/);
+                return criteriaBuilder.isNull(root.get(InvestorsCash_.underFacility));
             } else {
-                return criteriaBuilder.equal(root.get(InvestorsCash_.underFacility).get(UnderFacilities_.underFacility), underFacility);
+                return criteriaBuilder.equal(root.get(InvestorsCash_.underFacility).get(UnderFacility_.name), underFacility);
             }
         }
         );
@@ -157,7 +157,7 @@ public class InvestorsCashSpecification extends BaseSpecification<InvestorsCash,
         );
     }
 
-    private static Specification<InvestorsCash> underFacilityIn(List<UnderFacilities> underFacilities) {
+    private static Specification<InvestorsCash> underFacilityIn(List<UnderFacility> underFacilities) {
         return ((root, criteriaQuery, criteriaBuilder) -> {
             if (null == underFacilities) {
                 return null;
@@ -167,13 +167,13 @@ public class InvestorsCashSpecification extends BaseSpecification<InvestorsCash,
             } else if (null == underFacilities.get(0)) {
                 return null;
             }
-            UnderFacilities undefinedUnderFacility = underFacilities.stream()
-                    .filter(undefinedFacility -> undefinedFacility.getUnderFacility().equalsIgnoreCase("Выберите подобъект"))
+            UnderFacility undefinedUnderFacility = underFacilities.stream()
+                    .filter(undefinedFacility -> undefinedFacility.getName().equalsIgnoreCase("Выберите подобъект"))
                     .findFirst()
                     .orElse(null);
             if (null != undefinedUnderFacility) {
                 undefinedUnderFacility = underFacilities.stream()
-                        .filter(undefinedFacility -> undefinedFacility.getUnderFacility().equalsIgnoreCase("Без подобъекта"))
+                        .filter(undefinedFacility -> undefinedFacility.getName().equalsIgnoreCase("Без подобъекта"))
                         .findFirst()
                         .orElse(null);
                 if (null != undefinedUnderFacility) {

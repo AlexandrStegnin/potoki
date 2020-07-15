@@ -38,7 +38,7 @@ public class Facility implements Serializable {
 
     private String city;
 
-    private Set<UnderFacilities> underFacilities;
+    private Set<UnderFacility> underFacilities;
 
     public Facility() {
     }
@@ -56,12 +56,12 @@ public class Facility implements Serializable {
                     CascadeType.PERSIST
             },
             fetch = FetchType.LAZY)
-    @JoinColumn(name = "FacilityId", referencedColumnName = "id")
-    public Set<UnderFacilities> getUnderFacilities() {
+    @JoinColumn(name = "facility_id", referencedColumnName = "id")
+    public Set<UnderFacility> getUnderFacilities() {
         return underFacilities;
     }
 
-    public void setUnderFacilities(Set<UnderFacilities> underFacilities) {
+    public void setUnderFacilities(Set<UnderFacility> underFacilities) {
         this.underFacilities = underFacilities;
     }
 

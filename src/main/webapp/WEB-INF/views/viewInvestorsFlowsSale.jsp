@@ -73,7 +73,7 @@
                 </form:select>
                 <label class="sr-only" for="uFacilities">Подобъект:</label>
                 <form:select path="underFacility" id="uFacilities" multiple="false" cssClass="selectpicker">
-                    <c:forEach var="uf" items="${underFacilities}">
+                    <c:forEach var="uf" items="${underFacility}">
                         <option
                                 <c:choose>
                                     <c:when test="${uf.underFacility eq flowsSaleFilters.underFacility}">selected="selected"</c:when>
@@ -286,7 +286,7 @@
                         <div class="form-group col-md-12">
                             <label class="col-md-3 control-lable" for="srcUnderFacilities">Подобъект:</label>
                             <div class="col-md-7">
-                                <form:select path="reUnderFacility" id="srcUnderFacilities" items="${underFacilities}" multiple="false"
+                                <form:select path="reUnderFacility" id="srcUnderFacilities" items="${underFacility}" multiple="false"
                                              itemValue="id" itemLabel="underFacility" class="form-control input-sm"/>
                                 <div id="reFacilityErr" style="color: red; display: none">Необходимо выбрать подобъект</div>
                             </div>

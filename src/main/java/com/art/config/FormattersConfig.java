@@ -9,39 +9,40 @@ import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import javax.annotation.Resource;
-
 @EnableWebMvc
 @Configuration
 @Import(WebConfig.class)
 public class FormattersConfig extends WebMvcConfigurerAdapter {
 
-    @Resource(name = "roleService")
-    private RoleService roleService;
+    private final RoleService roleService;
 
-    @Resource(name = "userService")
-    private UserService userService;
+    private final UserService userService;
 
-    @Resource(name = "facilityService")
-    private FacilityService facilityService;
+    private final FacilityService facilityService;
 
-    @Resource(name = "underFacilitiesService")
-    private UnderFacilitiesService underFacilitiesService;
+    private final UnderFacilityService underFacilityService;
 
-    @Resource(name = "cashSourcesService")
-    private CashSourcesService cashSourcesService;
+    private final CashSourcesService cashSourcesService;
 
-    @Resource(name = "newCashDetailsService")
-    private NewCashDetailsService newCashDetailsService;
+    private final NewCashDetailsService newCashDetailsService;
 
-    @Resource(name = "typeClosingInvestService")
-    private TypeClosingInvestService typeClosingInvestService;
+    private final TypeClosingInvestService typeClosingInvestService;
 
-    @Resource(name = "roomService")
-    private RoomService roomService;
+    private final RoomService roomService;
 
-    @Resource(name = "appTokenService")
-    private AppTokenService appTokenService;
+    private final AppTokenService appTokenService;
+
+    public FormattersConfig(RoleService roleService, UserService userService, FacilityService facilityService, UnderFacilityService underFacilityService, CashSourcesService cashSourcesService, NewCashDetailsService newCashDetailsService, TypeClosingInvestService typeClosingInvestService, RoomService roomService, AppTokenService appTokenService) {
+        this.roleService = roleService;
+        this.userService = userService;
+        this.facilityService = facilityService;
+        this.underFacilityService = underFacilityService;
+        this.cashSourcesService = cashSourcesService;
+        this.newCashDetailsService = newCashDetailsService;
+        this.typeClosingInvestService = typeClosingInvestService;
+        this.roomService = roomService;
+        this.appTokenService = appTokenService;
+    }
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
@@ -49,7 +50,7 @@ public class FormattersConfig extends WebMvcConfigurerAdapter {
         registry.addConverter(new StringToUserConverter(userService));
         registry.addConverter(new StringToFacilityConverter(facilityService));
         registry.addConverter(new StringToDateConverter());
-        registry.addConverter(new StringToUnderFacilitiesConverter(underFacilitiesService));
+        registry.addConverter(new StringToUnderFacilitiesConverter(underFacilityService));
         registry.addConverter(new StringToCashSourceConverter(cashSourcesService));
         registry.addConverter(new StringToNewCashDetailConverter(newCashDetailsService));
         registry.addConverter(new StringToTypeClosingInvestConverter(typeClosingInvestService));

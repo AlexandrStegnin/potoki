@@ -8,15 +8,15 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface InvestorsFlowsRepository extends PagingAndSortingRepository<InvestorsFlows, BigInteger> {
+public interface InvestorsFlowsRepository extends PagingAndSortingRepository<InvestorsFlows, Long> {
+
     List<InvestorsFlows> findByInvestorId(Long investorId);
 
-    List<InvestorsFlows> findByIdIn(List<BigInteger> idList);
+    List<InvestorsFlows> findByIdIn(List<Long> idList);
 
     List<InvestorsFlows> findByRoomId(Long roomId);
 
@@ -26,10 +26,10 @@ public interface InvestorsFlowsRepository extends PagingAndSortingRepository<Inv
             "SELECT fl FROM InvestorsFlows fl " +
                     "JOIN fl.investor u " +
                     "JOIN fl.facility f " +
-                    "JOIN fl.underFacilities uf " +
+                    "JOIN fl.underFacility uf " +
                     "WHERE (:investor IS NULL OR u.login = :investor) AND " +
                     "(:name IS NULL OR f.name = :name) AND " +
-                    "(:underFacility IS NULL OR uf.underFacility = :underFacility) AND " +
+                    "(:underFacility IS NULL OR uf.name = :underFacility) AND " +
                     "(:startDate IS NULL OR fl.reportDate >= :startDate) AND " +
                     "(:endDate IS NULL OR fl.reportDate <= :endDate) "
     )

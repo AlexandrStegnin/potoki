@@ -35,7 +35,7 @@ public class AfterCashingService {
         this.em.merge(afterCashing);
     }
 
-    public void deleteById(BigInteger id){
+    public void deleteById(Long id){
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaDelete<AfterCashing> delete = cb.createCriteriaDelete(AfterCashing.class);
         Root<AfterCashing> afterCashingRoot = delete.from(AfterCashing.class);

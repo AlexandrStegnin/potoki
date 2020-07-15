@@ -25,20 +25,24 @@
     <%@include file="old_authheader.jsp" %>
     <div class="panel panel-default">
         <!-- Default panel contents -->
-        <div class="panel-heading"><span class="lead">Список подобъектов:</span></div>
-        <table class="table table-hover">
+        <div class="panel-heading">
+            <span class="lead">Список подобъектов:</span>
+            <sec:authorize access="isFullyAuthenticated()">
+                <sec:authorize access="hasRole('ADMIN')">
+                    <a href="<c:url value='/facilities/child/create' />" class="btn btn-success btn-sm pull-right">Добавить
+                        подобъект</a>
+                </sec:authorize>
+            </sec:authorize>
+        </div>
+        <table class="table table-hover text-center">
             <thead>
             <tr>
-                <th>№ п/п</th>
-                <th>Объект</th>
-                <th>Подобъект</th>
+                <th style="text-align: center">№ п/п</th>
+                <th style="text-align: center">Объект</th>
+                <th style="text-align: center">Подобъект</th>
                 <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
-                    <th width="100"></th>
+                    <th style="text-align: center">Действие</th>
                 </sec:authorize>
-                <sec:authorize access="hasRole('ADMIN')">
-                    <th width="100"></th>
-                </sec:authorize>
-
             </tr>
             </thead>
             <tbody>
@@ -46,15 +50,22 @@
                 <tr>
                     <td>${under.id}</td>
                     <td>${under.facility.name}</td>
-                    <td>${under.underFacility}</td>
+                    <td>${under.name}</td>
                     <sec:authorize access="isFullyAuthenticated()">
                         <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
-                            <td><a href="<c:url value='/edit-underfacility-${under.id}' />"
-                                   class="btn btn-success custom-width">Изменить</a></td>
-                        </sec:authorize>
-                        <sec:authorize access="hasRole('ADMIN')">
-                            <td><a href="<c:url value='/delete-underfacility-${under.id}' />"
-                                   class="btn btn-danger custom-width">Удалить</a></td>
+                            <td style="text-align: center">
+                                <div class="btn-group">
+                                    <button type="button" data-toggle="dropdown"
+                                            class="btn btn-primary btn-sm dropdown-toggle">Действие <span
+                                            class="caret"></span></button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="<c:url value='edit/${under.id}' />">Изменить</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="<c:url value='delete/${under.id}' />" style="color: red">Удалить</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
                         </sec:authorize>
                     </sec:authorize>
                 </tr>
@@ -62,24 +73,6 @@
             </tbody>
         </table>
     </div>
-
-
-    <sec:authorize access="isRememberMe()">
-        <p>Вы вошли с помощью функции "Запомнить меня".
-            Чтобы иметь все права на данную страницу, Вам необходимо снова
-            <a href="<c:url value='/login' />">ВОЙТИ</a> в систему используя логин/пароль.
-        </p>
-
-    </sec:authorize>
-
-    <sec:authorize access="isFullyAuthenticated()">
-        <sec:authorize access="hasRole('ADMIN')">
-            <div class="well">
-                <a href="<c:url value='/newunderfacility' />">Добавить подобъект</a>
-            </div>
-        </sec:authorize>
-    </sec:authorize>
 </div>
-<%@include file="slideDiv.jsp" %>
 </body>
 </html>

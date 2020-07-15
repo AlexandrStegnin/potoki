@@ -87,13 +87,13 @@
                     <form:options items="${facilitiesList}" itemValue="id" itemLabel="facility" />
                 </form:select>
                 <label class="sr-only" for="uFacilities">Подобъект:</label>
-                <form:select path="underFacilities" id="uFacilities" multiple="true" class="selectpicker"
+                <form:select path="underFacility" id="uFacilities" multiple="true" class="selectpicker"
                              data-live-search="true" data-width="160px" title="Выберите подобъект..."
                              data-actions-box="true" data-select-all-text="Выбрать всё"
                              data-deselect-all-text="Очистить">
-                    <c:forEach var="uf" items="${underFacilitiesList}">
+                    <c:forEach var="uf" items="${underFacilityList}">
                         <option
-                                <c:forEach var="filterUnderFacility" items="${cashFilters.underFacilities}">
+                                <c:forEach var="filterUnderFacility" items="${cashFilters.underFacility}">
                                     <c:choose>
                                         <c:when test="${uf.underFacility eq filterUnderFacility}">selected="selected"</c:when>
                                     </c:choose>
@@ -334,7 +334,7 @@
                         <div class="form-group col-md-12">
                             <label class="col-md-3 control-lable" for="srcUnderFacilities">Подобъект:</label>
                             <div class="col-md-7">
-                                <form:select path="reUnderFacility" id="srcUnderFacilities" items="${underFacilities}"
+                                <form:select path="reUnderFacility" id="srcUnderFacilities" items="${underFacility}"
                                              multiple="false"
                                              itemValue="id" itemLabel="underFacility" class="form-control input-sm"/>
                                 <div id="underFacilityErr" style="color: red; display: none">Необходимо выбрать
@@ -380,9 +380,9 @@
 
                     <div class="row" id="underFacilitiesRow">
                         <div class="form-group col-md-12">
-                            <label class="col-md-3 control-lable selectric" for="underFacilities">Подобъект:</label>
+                            <label class="col-md-3 control-lable selectric" for="underFacility">Подобъект:</label>
                             <div class="col-md-7">
-                                <form:select path="reUnderFacilities" id="underFacilities" items="${underFacilities}"
+                                <form:select path="reUnderFacility" id="underFacility" items="${underFacility}"
                                              itemValue="id" itemLabel="underFacility" class="form-control input-sm"
                                              title="Выберите подобъект..." multiple="true"
                                              data-live-search="true" data-size="7"
@@ -397,11 +397,11 @@
 
                     <div class="row" id="underFacilitiesListRow">
                         <div class="form-group col-md-12">
-                            <label class="col-md-3 control-lable" for="underFacilitiesList">Из каких подобъектов состоит
+                            <label class="col-md-3 control-lable" for="underFacilityList">Из каких подобъектов состоит
                                 остаток:</label>
                             <div class="col-md-7">
-                                <form:select path="underFacilitiesList" id="underFacilitiesList"
-                                             items="${underFacilitiesList}"
+                                <form:select path="underFacilityList" id="underFacilityList"
+                                             items="${underFacilityList}"
                                              itemValue="id" itemLabel="underFacility" class="form-control input-sm selectpicker"
                                              title="Выберите подобъекты..." multiple="true"
                                              data-live-search="true" data-size="7"

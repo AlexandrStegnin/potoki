@@ -43,8 +43,8 @@ public class InvestorsFlowsSaleController {
     @Resource(name = "investorsFlowsSaleService")
     private InvestorsFlowsSaleService investorsFlowsSaleService;
 
-    @Resource(name = "underFacilitiesService")
-    private UnderFacilitiesService underFacilitiesService;
+    @Resource(name = "underFacilityService")
+    private UnderFacilityService underFacilityService;
 
     @Resource(name = "userService")
     private UserService userService;
@@ -153,8 +153,8 @@ public class InvestorsFlowsSaleController {
     }
 
     @ModelAttribute("underFacilities")
-    public List<UnderFacilities> initializeUnderFacilities() {
-        return underFacilitiesService.initializeUnderFacilities();
+    public List<UnderFacility> initializeUnderFacilities() {
+        return underFacilityService.initializeUnderFacilities();
     }
 
     @ModelAttribute("investors")
