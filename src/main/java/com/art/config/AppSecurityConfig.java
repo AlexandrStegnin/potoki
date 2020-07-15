@@ -109,7 +109,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                .antMatchers("/savePassword").permitAll()
+                .antMatchers("/savePassword", "/login").permitAll()
                 .antMatchers("/turn/**", "/progress/**", "/status/**").permitAll()
                 .antMatchers("/kind-on-project", "/investments", "/union-profit", "/have-unread")
                 .permitAll()
@@ -117,22 +117,15 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .access("hasAnyRole('ADMIN', 'INVESTOR')")
                 .antMatchers("/investor/annexes", "/investor/annexes/**", "/investor/annexes/upload")
                 .access("hasRole('ADMIN') or hasRole('DBA')")
-                .antMatchers("/", "/welcome", "/cashflows")
+                .antMatchers("/", "/welcome")
                 .access("hasRole('ADMIN') or hasRole('DBA') or hasRole('INVESTOR')")
-                .antMatchers("createmail")
-                .access("hasRole('BIGDADDY') or hasRole('DBA') or hasRole('ADMIN')")
-                .antMatchers("/new**", "/delete**", "**double**", "/save**", "/show**", "/sum**")
+                .antMatchers("/new**", "/delete**", "**double**", "/save**")
                 .access("hasRole('ADMIN')")
                 .antMatchers("/getIncomes", "/getInvestorsFlows", "/getMainFlows")
                 .access("hasRole('ADMIN') or hasRole('DBA') or hasRole('INVESTOR')")
                 .antMatchers("/edit**", "/admin**", "catalogue", "uploadImage")
                 .access("hasRole('ADMIN') or hasRole('DBA')")
-                .antMatchers("/**allowance**")
-                .access("hasRole('ADMIN') or hasRole('DBA')")
-                .antMatchers("/**alpha**", "**tag**", "**rentors**", "/switch", "/uploadexcel",
-                        "**close**", "/load**")
-                .access("hasRole('ADMIN') or hasRole('DBA')")
-                .antMatchers("/**bonus**")
+                .antMatchers("/switch", "/uploadexcel", "**close**", "/load**")
                 .access("hasRole('ADMIN') or hasRole('DBA')")
                 .antMatchers("/**cashpayment**", "**cashsource**", "**source**",
                         "**facilities**", "/investors**")
@@ -165,9 +158,9 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
         return new AuthenticationTrustResolverImpl();
     }
 
-    class MyAuthenticator extends Authenticator {
-        private String user;
-        private String password;
+    static class MyAuthenticator extends Authenticator {
+        private final String user;
+        private final String password;
 
         MyAuthenticator(String user, String password) {
             this.user = user;
