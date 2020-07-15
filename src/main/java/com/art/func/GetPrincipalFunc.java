@@ -1,6 +1,6 @@
 package com.art.func;
 
-import com.art.model.Roles;
+import com.art.model.AppRole;
 import com.art.model.SecurityUser;
 import com.art.model.supporting.UserFacilities;
 import com.art.service.FacilityService;
@@ -52,9 +52,9 @@ public class GetPrincipalFunc {
     public boolean haveAdminRole() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof SecurityUser) {
-            List<Roles> roles = ((SecurityUser) principal).getRoles();
-            Roles admin = roles.stream()
-                    .filter(role -> role.getRole().equalsIgnoreCase("ROLE_ADMIN"))
+            List<AppRole> roles = ((SecurityUser) principal).getRoles();
+            AppRole admin = roles.stream()
+                    .filter(role -> role.getName().equalsIgnoreCase("ROLE_ADMIN"))
                     .findFirst()
                     .orElse(null);
             return admin != null;

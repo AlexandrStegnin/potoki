@@ -3,6 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html lang="en-RU">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -32,7 +33,7 @@
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="login">Имя пользователя:</label>
                 <div class="col-md-7">
-                    <form:input type="text" path="login" id="login" class="form-control input-sm" value="investor"/>
+                    <form:input type="text" path="login" id="login" class="form-control input-sm"/>
                     <div class="has-error help-inline" id="loginErr">
                     </div>
                 </div>
@@ -75,7 +76,7 @@
                 <label class="col-md-3 control-lable" for="roles">Роли:</label>
                 <div class="col-md-7">
                     <form:select path="roles" id="roles" items="${roles}" multiple="true"
-                                 itemValue="id" itemLabel="role" class="form-control input-sm" />
+                                 itemValue="id" itemLabel="name" class="form-control input-sm" />
                 </div>
             </div>
         </div>

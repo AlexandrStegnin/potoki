@@ -20,7 +20,7 @@ public class UserDTO {
 
     String login;
 
-    List<RoleDTO> roles;
+    List<AppRoleDTO> roles;
 
     String kin;
 

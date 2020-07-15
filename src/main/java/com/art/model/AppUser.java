@@ -1,7 +1,7 @@
 package com.art.model;
 
 
-import com.art.model.supporting.dto.RoleDTO;
+import com.art.model.supporting.dto.AppRoleDTO;
 import com.art.model.supporting.dto.UserDTO;
 import com.art.model.supporting.enums.KinEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -27,7 +27,7 @@ public class AppUser implements Serializable {
 
     private String password;
 
-    private List<Roles> roles;
+    private List<AppRole> roles;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "Kin")
@@ -79,11 +79,11 @@ public class AppUser implements Serializable {
     @JoinTable(name = "USERS_ROLES",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    public List<Roles> getRoles() {
+    public List<AppRole> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Roles> roles) {
+    public void setRoles(List<AppRole> roles) {
         this.roles = roles;
     }
 
@@ -111,11 +111,11 @@ public class AppUser implements Serializable {
         this.password = userDTO.getPassword();
     }
 
-    private List<Roles> convertRoles(List<RoleDTO> dtoList) {
+    private List<AppRole> convertRoles(List<AppRoleDTO> dtoList) {
         if (null == dtoList) {
             return null;
         }
-        return dtoList.stream().map(Roles::new).collect(Collectors.toList());
+        return dtoList.stream().map(AppRole::new).collect(Collectors.toList());
     }
 
     private UserProfile profile;

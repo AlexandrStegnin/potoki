@@ -130,7 +130,7 @@ public class UserController {
         model.addAttribute("edit", true);
         model.addAttribute("kins", kins);
         model.addAttribute("title", title);
-        return "registration";
+        return "user-add";
     }
 
     /**
@@ -172,7 +172,7 @@ public class UserController {
     public String createUser(ModelMap model) {
         AppUser user = new AppUser();
         model.addAttribute("user", user);
-        return "registration";
+        return "user-add";
     }
 
     /**
@@ -217,7 +217,7 @@ public class UserController {
      */
 
     @ModelAttribute("roles")
-    public List<Roles> initializeRoles() {
+    public List<AppRole> initializeRoles() {
         return roleService.findAll();
     }
 

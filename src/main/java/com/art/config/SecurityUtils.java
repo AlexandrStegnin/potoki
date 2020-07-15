@@ -1,6 +1,6 @@
 package com.art.config;
 
-import com.art.model.Roles;
+import com.art.model.AppRole;
 import com.art.model.SecurityUser;
 import com.art.model.AppUser;
 import com.art.model.supporting.enums.UserRole;
@@ -32,8 +32,8 @@ public final class SecurityUtils {
     }
 
     public static boolean isUserInRole(AppUser user, UserRole userRole) {
-        for (Roles role : user.getRoles()) {
-            if (role.getRole().equalsIgnoreCase(userRole.name())) {
+        for (AppRole role : user.getRoles()) {
+            if (role.getName().equalsIgnoreCase(userRole.name())) {
                 return true;
             }
         }

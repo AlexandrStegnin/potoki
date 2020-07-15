@@ -75,13 +75,13 @@
                     </c:choose>
                     <c:forEach items="${user.roles}" var="role">
                         <c:choose>
-                            <c:when test="${role.role == 'ROLE_ADMIN'}">
+                            <c:when test="${role.name == 'ROLE_ADMIN'}">
                                 <c:set var="roleName" value="Админ" />
                             </c:when>
-                            <c:when test="${role.role == 'ROLE_INVESTOR'}">
+                            <c:when test="${role.name == 'ROLE_INVESTOR'}">
                                 <c:set var="roleName" value="Инвестор" />
                             </c:when>
-                            <c:when test="${role.role == 'ROLE_MANAGER'}">
+                            <c:when test="${role.name == 'ROLE_MANAGER'}">
                                 <c:set var="roleName" value="Управляющий" />
                             </c:when>
                         </c:choose>

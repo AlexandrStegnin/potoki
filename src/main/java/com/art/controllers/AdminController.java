@@ -53,7 +53,7 @@ public class AdminController {
             setRememberMeTargetUrlToSession(httpServletRequest);
             model.addAttribute("loginUpdate", true);
         }
-        return "admin";
+        return "user-list";
     }
 
     @Secured({"ADMIN", "DBA"})

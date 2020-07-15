@@ -91,15 +91,15 @@
                              data-live-search="true" data-width="160px" title="Выберите подобъект..."
                              data-actions-box="true" data-select-all-text="Выбрать всё"
                              data-deselect-all-text="Очистить">
-                    <c:forEach var="uf" items="${underFacilityList}">
+                    <c:forEach var="uf" items="${underFacilitiesList}">
                         <option
                                 <c:forEach var="filterUnderFacility" items="${cashFilters.underFacility}">
                                     <c:choose>
-                                        <c:when test="${uf.underFacility eq filterUnderFacility}">selected="selected"</c:when>
+                                        <c:when test="${uf.name eq filterUnderFacility}">selected="selected"</c:when>
                                     </c:choose>
                                 </c:forEach>
-                                value="${uf.underFacility}" id="${uf.id}"
-                                data-parent-id="${uf.facilityId}">${uf.underFacility}
+                                value="${uf.name}" id="${uf.id}"
+                                data-parent-id="${uf.facility.id}">${uf.name}
                         </option>
                     </c:forEach>
                 </form:select>
@@ -185,9 +185,7 @@
                 <th>Переданная сумма</th>
                 <th>Дата передачи денег</th>
                 <th>Источник денег</th>
-<%--                <th>Вид денег</th>--%>
                 <th>Детали новых денег</th>
-<%--                <th>Вид инвестора</th>--%>
                 <th>Дата закрытия вложения</th>
                 <th>Вид закрытия вложения</th>
                 <th>Вид доли</th>
@@ -322,7 +320,7 @@
                         <div class="form-group col-md-12">
                             <label class="col-md-3 control-lable" for="srcFacilities">Объект:</label>
                             <div class="col-md-7">
-                                <form:select path="reFacility" id="srcFacilities" items="${facility}" multiple="false"
+                                <form:select path="reFacility" id="srcFacilities" items="${facilities}" multiple="false"
                                              itemValue="id" itemLabel="facility" class="selectpicker form-control input-sm"
                                              data-live-search="true"/>
                                 <div id="facilityErr" style="color: red; display: none">Необходимо выбрать объект</div>
@@ -334,7 +332,7 @@
                         <div class="form-group col-md-12">
                             <label class="col-md-3 control-lable" for="srcUnderFacilities">Подобъект:</label>
                             <div class="col-md-7">
-                                <form:select path="reUnderFacility" id="srcUnderFacilities" items="${underFacility}"
+                                <form:select path="reUnderFacility" id="srcUnderFacilities" items="${underFacilities}"
                                              multiple="false"
                                              itemValue="id" itemLabel="underFacility" class="form-control input-sm"/>
                                 <div id="underFacilityErr" style="color: red; display: none">Необходимо выбрать
@@ -382,7 +380,7 @@
                         <div class="form-group col-md-12">
                             <label class="col-md-3 control-lable selectric" for="underFacility">Подобъект:</label>
                             <div class="col-md-7">
-                                <form:select path="reUnderFacility" id="underFacility" items="${underFacility}"
+                                <form:select path="reUnderFacility" id="underFacility" items="${underFacilities}"
                                              itemValue="id" itemLabel="underFacility" class="form-control input-sm"
                                              title="Выберите подобъект..." multiple="true"
                                              data-live-search="true" data-size="7"
@@ -401,7 +399,7 @@
                                 остаток:</label>
                             <div class="col-md-7">
                                 <form:select path="underFacilityList" id="underFacilityList"
-                                             items="${underFacilityList}"
+                                             items="${underFacilitiesList}"
                                              itemValue="id" itemLabel="underFacility" class="form-control input-sm selectpicker"
                                              title="Выберите подобъекты..." multiple="true"
                                              data-live-search="true" data-size="7"

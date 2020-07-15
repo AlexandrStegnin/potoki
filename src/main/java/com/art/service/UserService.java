@@ -3,10 +3,7 @@ package com.art.service;
 import com.art.config.AppSecurityConfig;
 import com.art.config.SecurityUtils;
 import com.art.func.PersonalMailService;
-import com.art.model.AppUser;
-import com.art.model.AppUser_;
-import com.art.model.UserProfile;
-import com.art.model.UserProfile_;
+import com.art.model.*;
 import com.art.model.supporting.SendingMail;
 import com.art.model.supporting.enums.UserRole;
 import com.art.repository.UserRepository;
@@ -84,7 +81,7 @@ public class UserService {
 
     private List<AppUser> getUsers(String s) {
         AppUser partner = new AppUser();
-        partner.setId(Long.valueOf("0"));
+        partner.setId(0L);
         partner.setLogin(s);
         List<AppUser> users = new ArrayList<>(0);
         users.add(partner);

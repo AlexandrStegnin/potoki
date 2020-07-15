@@ -23,11 +23,11 @@ public class SecurityUser extends AppUser implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-        List<Roles> userRoles = this.getRoles();
+        List<AppRole> userRoles = this.getRoles();
 
         if (userRoles != null) {
-            for (Roles role : userRoles) {
-                SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.getRole());
+            for (AppRole role : userRoles) {
+                SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.getName());
                 authorities.add(authority);
             }
         }
