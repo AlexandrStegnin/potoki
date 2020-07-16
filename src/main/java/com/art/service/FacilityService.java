@@ -19,8 +19,11 @@ public class FacilityService {
 
     private final FacilityRepository facilityRepository;
 
-    public FacilityService(FacilityRepository facilityRepository) {
+    private final AccountService accountService;
+
+    public FacilityService(FacilityRepository facilityRepository, AccountService accountService) {
         this.facilityRepository = facilityRepository;
+        this.accountService = accountService;
     }
 
     public List<Facility> findAll() {
@@ -38,7 +41,7 @@ public class FacilityService {
     public List<Facility> initializeFacilities() {
         List<Facility> facilitiesList = new ArrayList<>(0);
         Facility facility = new Facility();
-        facility.setId(Long.valueOf("0"));
+        facility.setId(0L);
         facility.setName("Выберите объект");
         facilitiesList.add(facility);
         facilitiesList.addAll(facilityRepository.findAll());
@@ -84,6 +87,7 @@ public class FacilityService {
 
     public void create(Facility facility) {
         this.em.merge(facility);
+        accountService.createAccount(facility);
     }
 
 }

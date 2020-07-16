@@ -1,5 +1,6 @@
 package com.art.model;
 
+import com.art.model.supporting.enums.OwnerType;
 import lombok.Data;
 import lombok.ToString;
 import lombok.EqualsAndHashCode;
@@ -40,8 +41,8 @@ public class Account {
     @Column(name = "owner_id")
     private Long ownerId;
 
-//    @OneToOne
-//    @JoinColumn(name = "owner_id")
-//    private Facilities facility;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "owner_type")
+    private OwnerType ownerType;
 
 }
