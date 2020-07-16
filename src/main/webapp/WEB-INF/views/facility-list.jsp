@@ -64,7 +64,7 @@
                                     <ul class="dropdown-menu">
                                         <li><a href="<c:url value='edit/${facility.id}' />">Изменить</a></li>
                                         <li class="divider"></li>
-                                        <li><a href="<c:url value='delete/${facility.id}' />" style="color: red">Удалить</a>
+                                        <li><a id="delete" href="<c:url value='/facilities/delete' />" style="color: red">Удалить</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -80,6 +80,5 @@
 
 <%@include file="loader.jsp" %>
 <%@include file="popup.jsp" %>
-<%@include file="slideDiv.jsp" %>
 </body>
 </html>

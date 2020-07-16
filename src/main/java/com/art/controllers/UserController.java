@@ -8,6 +8,7 @@ import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.dto.UserDTO;
 import com.art.model.supporting.enums.KinEnum;
+import com.art.model.supporting.enums.OwnerType;
 import com.art.service.*;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.MediaType;
@@ -69,7 +70,7 @@ public class UserController {
         String title = "Личный кабинет";
         ModelAndView modelAndView = new ModelAndView("profile");
         AppUser user = userService.findByLoginWithAnnexes(principal.getName());
-        Account account = accountService.findByOwnerId(user.getId());
+        Account account = accountService.findByOwnerId(user.getId(), OwnerType.INVESTOR);
         String accountNumber;
         if (null == account) {
             accountNumber = "";

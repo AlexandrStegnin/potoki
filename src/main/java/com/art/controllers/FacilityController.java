@@ -1,11 +1,14 @@
 package com.art.controllers;
 
 import com.art.config.application.Location;
+import com.art.model.Account;
 import com.art.model.Facility;
 import com.art.model.InvestorsCash;
 import com.art.model.UnderFacility;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
+import com.art.model.supporting.enums.OwnerType;
+import com.art.service.AccountService;
 import com.art.service.FacilityService;
 import com.art.service.InvestorsCashService;
 import com.art.service.UnderFacilityService;
@@ -29,11 +32,14 @@ public class FacilityController {
 
     private final InvestorsCashService investorsCashService;
 
+    private final AccountService accountService;
+
     public FacilityController(FacilityService facilityService, UnderFacilityService underFacilityService,
-                              InvestorsCashService investorsCashService) {
+                              InvestorsCashService investorsCashService, AccountService accountService) {
         this.facilityService = facilityService;
         this.underFacilityService = underFacilityService;
         this.investorsCashService = investorsCashService;
+        this.accountService = accountService;
     }
 
     /**
@@ -42,7 +48,9 @@ public class FacilityController {
     @GetMapping(path = Location.FACILITIES_CREATE)
     public String newFacility(ModelMap model) {
         Facility facility = new Facility();
+        String accountNumber = "";
         model.addAttribute("newFacility", facility);
+        model.addAttribute("accountNumber", accountNumber);
         model.addAttribute("edit", false);
         return "facility-add";
     }
@@ -74,7 +82,13 @@ public class FacilityController {
     @GetMapping(path = Location.FACILITIES_EDIT)
     public String editFacility(@PathVariable Long id, ModelMap model) {
         Facility facility = facilityService.findById(id);
+        Account account = accountService.findByOwnerId(id, OwnerType.FACILITY);
+        String accountNumber = "";
+        if (account != null) {
+            accountNumber = account.getAccountNumber();
+        }
         model.addAttribute("newFacility", facility);
+        model.addAttribute("accountNumber", accountNumber);
         model.addAttribute("edit", true);
         return "facility-add";
     }

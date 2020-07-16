@@ -65,6 +65,15 @@
         </div>
 
         <div class="row">
+            <div class="form-group col-md-12">
+                <label class="col-md-3 control-lable" for="accountNumber">№ счёта:</label>
+                <div class="col-md-7">
+                    <input type="text" id="accountNumber" class="form-control input-sm" value="${accountNumber}" readonly/>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
             <div class="form-actions floatRight">
                 <c:choose>
                     <c:when test="${edit}">

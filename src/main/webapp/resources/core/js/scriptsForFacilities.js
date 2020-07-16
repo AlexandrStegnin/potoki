@@ -2,7 +2,7 @@ jQuery(document).ready(function ($) {
     $('a#delete').click(function (event) {
         event.preventDefault();
         enableButton(false);
-        let rowId = $(this).attr('name');
+        let rowId = $(this).closest('tr').attr('id');
         $('#tblFacilities').find('tr#' + rowId).remove();
         deleteFacility(rowId);
     })
