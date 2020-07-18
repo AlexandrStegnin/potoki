@@ -69,17 +69,18 @@ public class AccountService {
     public void createAccount(Facility facility) {
         if (facility.getFullName() != null && !facility.getFullName().isEmpty()) {
             String accountNumber = generateAccountNumber(facility);
+            if (accountNumber.isEmpty()) {
+                return;
+            }
             if (accountRepository.existsByAccountNumber(accountNumber)) {
                 throw new RuntimeException(
                         String.format("Номер счёта [%s] уже используется. Проверьте правильность введённых данных", accountNumber));
             }
-            if (!accountNumber.isEmpty()) {
-                Account account = new Account();
-                account.setAccountNumber(accountNumber);
-                account.setOwnerId(facility.getId());
-                account.setOwnerType(OwnerType.FACILITY);
-                accountRepository.save(account);
-            }
+            Account account = new Account();
+            account.setAccountNumber(accountNumber);
+            account.setOwnerId(facility.getId());
+            account.setOwnerType(OwnerType.FACILITY);
+            accountRepository.save(account);
         }
     }
 
@@ -109,9 +110,7 @@ public class AccountService {
         Matcher matcher = pattern.matcher(facility.getFullName());
         String partNumber = "";
         if (matcher.matches()) {
-            partNumber = matcher.group(0);
-            String regionNumber = getRegionNumber();
-            return partNumber.concat(regionNumber);
+            return matcher.group(0);
         }
         return partNumber;
     }
