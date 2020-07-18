@@ -58,6 +58,11 @@ public class AccountService {
         return accountRepository.findByOwnerIdAndOwnerType(ownerId, ownerType);
     }
 
+    /**
+     * Создать счёт для пользователя (инвестора)
+     *
+     * @param user пользователь
+     */
     public void createAccount(AppUser user) {
         Account account = new Account();
         account.setAccountNumber(generateAccountNumber(user));
@@ -66,6 +71,11 @@ public class AccountService {
         accountRepository.save(account);
     }
 
+    /**
+     * Создать счёт для объекта
+     *
+     * @param facility объект
+     */
     public void createAccount(Facility facility) {
         if (facility.getFullName() != null && !facility.getFullName().isEmpty()) {
             String accountNumber = generateAccountNumber(facility);
@@ -84,6 +94,12 @@ public class AccountService {
         }
     }
 
+    /**
+     * Сгенерировать номер счёта для пользователя
+     *
+     * @param user пользователь
+     * @return сгенерированный номер
+     */
     private String generateAccountNumber(AppUser user) {
         /*
         первые 5 цифр 00000 (порядковый номер клиента),
