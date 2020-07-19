@@ -4,9 +4,11 @@ import com.art.config.application.Constant;
 import com.art.model.Account;
 import com.art.model.AppUser;
 import com.art.model.Facility;
+import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.enums.OwnerType;
 import com.art.model.supporting.enums.Region;
 import com.art.repository.AccountRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -77,21 +79,37 @@ public class AccountService {
      * @param facility объект
      */
     public void createAccount(Facility facility) {
+        String accountNumber = generateAccountNumber(facility);
+        if (accountNumber.isEmpty()) {
+            return;
+        }
+        Account account = new Account();
+        account.setAccountNumber(accountNumber);
+        account.setOwnerId(facility.getId());
+        account.setOwnerType(OwnerType.FACILITY);
+        accountRepository.save(account);
+    }
+
+    /**
+     * Проверить номер счёта по реквизитам
+     *
+     * @param facility объект
+     * @return ответ
+     */
+    public ApiResponse checkAccountNumber(Facility facility) {
+        ApiResponse apiResponse = new ApiResponse();
         if (facility.getFullName() != null && !facility.getFullName().isEmpty()) {
             String accountNumber = generateAccountNumber(facility);
             if (accountNumber.isEmpty()) {
-                return;
+                return null;
             }
             if (accountRepository.existsByAccountNumber(accountNumber)) {
-                throw new RuntimeException(
-                        String.format("Номер счёта [%s] уже используется. Проверьте правильность введённых данных", accountNumber));
+                apiResponse.setMessage(String.format("Номер счёта [%s] уже используется. Проверьте правильность введённых данных", accountNumber));
+                apiResponse.setStatus(HttpStatus.PRECONDITION_FAILED.value());
+                return apiResponse;
             }
-            Account account = new Account();
-            account.setAccountNumber(accountNumber);
-            account.setOwnerId(facility.getId());
-            account.setOwnerType(OwnerType.FACILITY);
-            accountRepository.save(account);
         }
+        return null;
     }
 
     /**
@@ -124,11 +142,11 @@ public class AccountService {
         */
         Pattern pattern = Pattern.compile("\\d{5,}\\s*");
         Matcher matcher = pattern.matcher(facility.getFullName());
-        String partNumber = "";
+        String accountNumber = "";
         if (matcher.matches()) {
             return matcher.group(0);
         }
-        return partNumber;
+        return accountNumber;
     }
 
     private String getRegionNumber() {
