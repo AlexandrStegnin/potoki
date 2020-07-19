@@ -1,9 +1,13 @@
 package com.art.service;
 
+import com.art.model.Account;
 import com.art.model.Facility;
 import com.art.model.Facility_;
+import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.UserFacilities;
+import com.art.model.supporting.enums.OwnerType;
 import com.art.repository.FacilityRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,11 +71,11 @@ public class FacilityService {
 
 
     public void deleteById(Long id) {
-        CriteriaBuilder cb = this.em.getCriteriaBuilder();
-        CriteriaDelete<Facility> delete = cb.createCriteriaDelete(Facility.class);
-        Root<Facility> facilityRoot = delete.from(Facility.class);
-        delete.where(cb.equal(facilityRoot.get(Facility_.id), id));
-        this.em.createQuery(delete).executeUpdate();
+        facilityRepository.delete(id);
+        Account account = accountService.findByOwnerId(id, OwnerType.FACILITY);
+        if (account != null) {
+            accountService.delete(account);
+        }
     }
 
     public void update(Facility facility) {
@@ -85,9 +89,21 @@ public class FacilityService {
         this.em.createQuery(update).executeUpdate();
     }
 
-    public void create(Facility facility) {
-        this.em.merge(facility);
+    /**
+     * Создать объект и счёт к нему
+     *
+     * @param facility объект
+     * @return ответ об успешности операции
+     */
+    public ApiResponse create(Facility facility) {
+        ApiResponse apiResponse = accountService.checkAccountNumber(facility);
+        if (apiResponse != null) {
+            return apiResponse;
+        }
+        facilityRepository.saveAndFlush(facility);
         accountService.createAccount(facility);
+        apiResponse = new ApiResponse("Объект " + facility.getName() + " успешно добавлен.", HttpStatus.OK.value());
+        return apiResponse;
     }
 
 }
