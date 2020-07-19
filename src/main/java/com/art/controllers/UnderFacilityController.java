@@ -1,9 +1,12 @@
 package com.art.controllers;
 
 import com.art.config.application.Location;
+import com.art.model.Account;
 import com.art.model.Facility;
 import com.art.model.Room;
 import com.art.model.UnderFacility;
+import com.art.model.supporting.enums.OwnerType;
+import com.art.service.AccountService;
 import com.art.service.FacilityService;
 import com.art.service.RoomService;
 import com.art.service.UnderFacilityService;
@@ -31,11 +34,14 @@ public class UnderFacilityController {
 
     private final RoomService roomService;
 
+    private final AccountService accountService;
+
     public UnderFacilityController(UnderFacilityService underFacilityService, FacilityService facilityService,
-                                   RoomService roomService) {
+                                   RoomService roomService, AccountService accountService) {
         this.underFacilityService = underFacilityService;
         this.facilityService = facilityService;
         this.roomService = roomService;
+        this.accountService = accountService;
     }
 
     @GetMapping(path = Location.UNDER_FACILITIES_LIST)
@@ -49,9 +55,15 @@ public class UnderFacilityController {
     public String editUnderFacility(@PathVariable Long id, ModelMap model) {
         String title = "Обновление данных по подобъекту";
         UnderFacility underFacility = underFacilityService.findById(id);
+        Account account = accountService.findByOwnerId(id, OwnerType.UNDER_FACILITY);
+        String accountNumber = "";
+        if (account != null) {
+            accountNumber = account.getAccountNumber();
+        }
         model.addAttribute("underFacility", underFacility);
         model.addAttribute("edit", true);
         model.addAttribute("title", title);
+        model.addAttribute("accountNumber", accountNumber);
         return "under-facility-add";
     }
 
