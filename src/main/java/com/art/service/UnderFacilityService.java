@@ -42,10 +42,6 @@ public class UnderFacilityService {
         return underFacilityRepository.findByFacilityId(id);
     }
 
-    public void updateList(List<UnderFacility> underFacilityList) {
-        underFacilityRepository.save(underFacilityList);
-    }
-
     public List<UnderFacility> initializeUnderFacilities() {
         List<UnderFacility> underFacilityList = new ArrayList<>(0);
         UnderFacility underFacility = new UnderFacility();
