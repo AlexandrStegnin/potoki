@@ -153,4 +153,20 @@ public class AccountService {
         return Region.TMN.getNumber();
     }
 
+    /**
+     * Создать счёт для подобъекта
+     *
+     * @param underFacilityId id подобъекта
+     * @param parentAccountNumber номер счёта объекта родителя
+     * @param countUnderFacilities кол-во подобъектов объекта
+     */
+    public void createAccount(Long underFacilityId, String parentAccountNumber, int countUnderFacilities) {
+        String accNumberSuffix = countUnderFacilities > 9 ? "" : "0";
+        String underFacilityAccountNumber = parentAccountNumber.concat(accNumberSuffix).concat(String.valueOf(countUnderFacilities + 1));
+        Account account = new Account();
+        account.setAccountNumber(underFacilityAccountNumber);
+        account.setOwnerId(underFacilityId);
+        account.setOwnerType(OwnerType.UNDER_FACILITY);
+        accountRepository.save(account);
+    }
 }

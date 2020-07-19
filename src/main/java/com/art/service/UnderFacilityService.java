@@ -1,6 +1,9 @@
 package com.art.service;
 
+import com.art.model.Account;
+import com.art.model.Facility;
 import com.art.model.UnderFacility;
+import com.art.model.supporting.enums.OwnerType;
 import com.art.repository.UnderFacilityRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,8 +17,11 @@ public class UnderFacilityService {
 
     private final UnderFacilityRepository underFacilityRepository;
 
-    public UnderFacilityService(UnderFacilityRepository underFacilityRepository) {
+    private final AccountService accountService;
+
+    public UnderFacilityService(UnderFacilityRepository underFacilityRepository, AccountService accountService) {
         this.underFacilityRepository = underFacilityRepository;
+        this.accountService = accountService;
     }
 
     public List<UnderFacility> findAll() {
@@ -36,6 +42,10 @@ public class UnderFacilityService {
 
     public void create(UnderFacility underFacility) {
         underFacilityRepository.saveAndFlush(underFacility);
+        Facility facility = underFacility.getFacility();
+        Account account = accountService.findByOwnerId(facility.getId(), OwnerType.FACILITY);
+        int countUnderFacilities = underFacilityRepository.countByFacilityId(facility.getId());
+        accountService.createAccount(underFacility.getId(), account.getAccountNumber(), countUnderFacilities);
     }
 
     public List<UnderFacility> findByFacilityId(Long id) {
