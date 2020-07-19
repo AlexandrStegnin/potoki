@@ -1,6 +1,7 @@
 package com.art.model;
 
 import com.art.model.supporting.UserFacilities;
+import com.art.model.supporting.dto.FacilityDTO;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -81,6 +82,13 @@ public class Facility implements Serializable {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public Facility(FacilityDTO dto) {
+        this.id = dto.getId();
+        this.name = dto.getName();
+        this.fullName = dto.getFullName();
+        this.city = dto.getCity();
     }
 
 }
