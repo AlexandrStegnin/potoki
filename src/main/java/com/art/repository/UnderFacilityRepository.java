@@ -13,4 +13,6 @@ public interface UnderFacilityRepository extends JpaRepository<UnderFacility, Lo
 
     List<UnderFacility> findByFacilityId(Long facilityId);
 
+    int countByFacilityId(Long facilityId);
+
 }
