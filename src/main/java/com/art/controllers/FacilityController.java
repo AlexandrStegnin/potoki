@@ -5,8 +5,10 @@ import com.art.model.Account;
 import com.art.model.Facility;
 import com.art.model.InvestorsCash;
 import com.art.model.UnderFacility;
+import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
+import com.art.model.supporting.dto.FacilityDTO;
 import com.art.model.supporting.enums.OwnerType;
 import com.art.service.AccountService;
 import com.art.service.FacilityService;
@@ -56,17 +58,10 @@ public class FacilityController {
     }
 
     @PostMapping(path = Location.FACILITIES_CREATE)
-    public String saveFacility(@ModelAttribute("newFacility") Facility newFacility, BindingResult result, ModelMap model) {
-        if (result.hasErrors()) {
-            return "facility-add";
-        }
-        String ret = "списку объектов.";
-        facilityService.create(newFacility);
-
-        model.addAttribute("success", "Объект " + newFacility.getName() + " успешно добавлен.");
-        model.addAttribute("redirectUrl", REDIRECT_URL);
-        model.addAttribute("ret", ret);
-        return "registrationsuccess";
+    @ResponseBody
+    public ApiResponse createFacility(@RequestBody FacilityDTO facilityDTO) {
+        Facility newFacility = new Facility(facilityDTO);
+        return facilityService.create(newFacility);
     }
 
     @GetMapping(path = Location.FACILITIES_LIST)

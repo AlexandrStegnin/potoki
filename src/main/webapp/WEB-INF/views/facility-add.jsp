@@ -13,11 +13,12 @@
     <link href="<c:url value='/resources/core/css/old_bootstrap.min.css' />" rel="stylesheet" />
     <link href="<c:url value='/resources/core/css/applic.css' />" rel="stylesheet" />
     <link href="<c:url value='/resources/core/css/popup.css' />" rel="stylesheet" />
-    <link href="<c:url value='/resources/core/css/ajaxLoader.css' />" rel="stylesheet" />
+    <link href="<c:url value='/resources/core/css/ddk_loader.css' />" rel="stylesheet"/>
     <script type="text/javascript" src="<c:url value='/resources/core/js/jquery-3.2.1.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min_old.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />" ></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/AjaxLoader.js' />" ></script>
+    <script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />" ></script>
+    <script type="text/javascript" src="<c:url value='/resources/core/js/facilities.js' />" ></script>
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
 </head>
 
@@ -83,11 +84,12 @@
                         <c:set var="title" value="Создать" />
                     </c:otherwise>
                 </c:choose>
-                <input type="submit" value="${title}" class="btn btn-primary btn-sm"/> или <a href="<c:url value='/facilities/list' />">Отмена</a>
+                <input type="submit" id="create" value="${title}" class="btn btn-primary btn-sm"/> или <a href="<c:url value='/facilities/list' />">Отмена</a>
             </div>
         </div>
     </form:form>
 </div>
-<%@include file="slideDiv.jsp" %>
+<%@include file="popup_modal.jsp"%>
+<%@include file="ddk_loader.jsp"%>
 </body>
 </html>
