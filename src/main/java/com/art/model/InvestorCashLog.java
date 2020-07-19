@@ -50,7 +50,7 @@ public class InvestorCashLog {
 
     @OneToOne
     @JoinColumn(name = "cash_source_id")
-    private CashSources cashSource;
+    private CashSource cashSource;
 
     @OneToOne
     @JoinColumn(name = "new_cash_detail_id")

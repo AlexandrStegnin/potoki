@@ -84,7 +84,7 @@
                              data-live-search="true" data-width="130px" title="Выберите объект..."
                              data-actions-box="true" data-select-all-text="Выбрать всё"
                              data-deselect-all-text="Очистить">
-                    <form:options items="${facilitiesList}" itemValue="id" itemLabel="facility" />
+                    <form:options items="${facilitiesList}" itemValue="id" itemLabel="name" />
                 </form:select>
                 <label class="sr-only" for="uFacilities">Подобъект:</label>
                 <form:select path="underFacility" id="uFacilities" multiple="true" class="selectpicker"
@@ -202,8 +202,8 @@
             <tbody>
             <c:forEach items="${page.content}" var="cash">
                 <tr id="${cash.id}">
-                    <td data-facility-id="${cash.facility.id}">${cash.facility.facility}</td>
-                    <td data-under-facility-id="${cash.underFacility.id}">${cash.underFacility.underFacility}</td>
+                    <td data-facility-id="${cash.facility.id}">${cash.facility.name}</td>
+                    <td data-under-facility-id="${cash.underFacility.id}">${cash.underFacility.name}</td>
                     <td data-investor-id="${cash.investor.id}">${cash.investor.login}</td>
 
                     <td data-gived-cash="${cash.givedCash}">
@@ -211,14 +211,14 @@
                         <fmt:formatNumber value="${cash.givedCash}" type="currency" minFractionDigits="2"/>
                     </td>
                     <td data-report-date="${cash.dateGivedCash.time}">${cash.getDateGivedCashToLocalDate()}</td>
-                    <td data-cash-source-id="${cash.cashSource.id}">${cash.cashSource.cashSource}</td>
+                    <td data-cash-source-id="${cash.cashSource.id}">${cash.cashSource.name}</td>
                     <td data-cash-details-id="${cash.newCashDetails.id}">${cash.newCashDetails.newCashDetail}</td>
                     <td data-date-closing="${cash.dateClosingInvest.time}">${cash.getDateClosingInvestToLocalDate()}</td>
                     <td data-type-closing-id="${cash.typeClosingInvest.id}">${cash.typeClosingInvest.typeClosingInvest}</td>
                     <td data-share-kind-id="${cash.shareType.id}">${cash.shareType.title}</td>
                     <td data-date-report="${cash.dateReport.time}">${cash.getDateReportToLocalDate()}</td>
-                    <td data-source-facility-id="${cash.sourceFacility.id}">${cash.sourceFacility.facility}</td>
-                    <td data-source-under-id="${cash.sourceUnderFacility.id}">${cash.sourceUnderFacility.underFacility}</td>
+                    <td data-source-facility-id="${cash.sourceFacility.id}">${cash.sourceFacility.name}</td>
+                    <td data-source-under-id="${cash.sourceUnderFacility.id}">${cash.sourceUnderFacility.name}</td>
                     <td data-room-id="${cash.room.id}">${cash.room.room}</td>
                     <c:choose>
                         <c:when test="${cash.typeClosingInvest == null}">
@@ -321,7 +321,7 @@
                             <label class="col-md-3 control-lable" for="srcFacilities">Объект:</label>
                             <div class="col-md-7">
                                 <form:select path="reFacility" id="srcFacilities" items="${facilities}" multiple="false"
-                                             itemValue="id" itemLabel="facility" class="selectpicker form-control input-sm"
+                                             itemValue="id" itemLabel="name" class="selectpicker form-control input-sm"
                                              data-live-search="true"/>
                                 <div id="facilityErr" style="color: red; display: none">Необходимо выбрать объект</div>
                             </div>
@@ -334,7 +334,7 @@
                             <div class="col-md-7">
                                 <form:select path="reUnderFacility" id="srcUnderFacilities" items="${underFacilities}"
                                              multiple="false"
-                                             itemValue="id" itemLabel="underFacility" class="form-control input-sm"/>
+                                             itemValue="id" itemLabel="name" class="form-control input-sm"/>
                                 <div id="underFacilityErr" style="color: red; display: none">Необходимо выбрать
                                     подобъект
                                 </div>
@@ -381,7 +381,7 @@
                             <label class="col-md-3 control-lable selectric" for="underFacility">Подобъект:</label>
                             <div class="col-md-7">
                                 <form:select path="reUnderFacility" id="underFacility" items="${underFacilities}"
-                                             itemValue="id" itemLabel="underFacility" class="form-control input-sm"
+                                             itemValue="id" itemLabel="name" class="form-control input-sm"
                                              title="Выберите подобъект..." multiple="true"
                                              data-live-search="true" data-size="7"
                                              data-actions-box="true" data-select-all-text="Выбрать всё"
@@ -400,7 +400,7 @@
                             <div class="col-md-7">
                                 <form:select path="underFacilityList" id="underFacilityList"
                                              items="${underFacilitiesList}"
-                                             itemValue="id" itemLabel="underFacility" class="form-control input-sm selectpicker"
+                                             itemValue="id" itemLabel="name" class="form-control input-sm selectpicker"
                                              title="Выберите подобъекты..." multiple="true"
                                              data-live-search="true" data-size="7"
                                              data-actions-box="true" data-select-all-text="Выбрать всё"

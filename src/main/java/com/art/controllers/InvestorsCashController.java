@@ -59,8 +59,8 @@ public class InvestorsCashController {
     @Resource(name = "userService")
     private UserService userService;
 
-    @Resource(name = "cashSourcesService")
-    private CashSourcesService cashSourcesService;
+    @Resource(name = "cashSourceService")
+    private CashSourceService cashSourceService;
 
     @Resource(name = "newCashDetailsService")
     private NewCashDetailsService newCashDetailsService;
@@ -162,7 +162,7 @@ public class InvestorsCashController {
         investorsCash = investorsCashService.create(investorsCash);
         transactionLogService.create(investorsCash, TransactionType.CREATE);
         if (null != investorsCash.getCashSource() &&
-                !investorsCash.getCashSource().getCashSource().equalsIgnoreCase("Бронь")) {
+                !investorsCash.getCashSource().getName().equalsIgnoreCase("Бронь")) {
             marketingTreeService.updateMarketingTreeFromApp();
         }
         model.addAttribute("success", "Деньги инвестора " + investorsCash.getInvestor().getLogin() +
@@ -1065,8 +1065,8 @@ public class InvestorsCashController {
     }
 
     @ModelAttribute("cashSources")
-    public List<CashSources> initializeCashSources() {
-        return cashSourcesService.initializeCashSources();
+    public List<CashSource> initializeCashSources() {
+        return cashSourceService.initializeCashSources();
     }
 
     @ModelAttribute("newCashDetails")

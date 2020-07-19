@@ -127,7 +127,7 @@ public class InvestorsCash implements Serializable {
     private Date dateGivedCash;
     private Facility facility;
     private AppUser investor;
-    private CashSources cashSource;
+    private CashSource cashSource;
     private NewCashDetails newCashDetails;
     private UnderFacility underFacility;
     private Date dateClosingInvest;
@@ -159,7 +159,7 @@ public class InvestorsCash implements Serializable {
     }
 
     public InvestorsCash(BigDecimal givedCash, Date dateGivedCash, Facility facility, AppUser investor,
-                         CashSources cashSource, NewCashDetails newCashDetails,
+                         CashSource cashSource, NewCashDetails newCashDetails,
                          UnderFacility underFacility, Date dateClosingInvest,
                          TypeClosingInvest typeClosingInvest, ShareType shareType, Date dateReport,
                          Facility sourceFacility, UnderFacility sourceUnderFacility, String sourceFlowsId,
@@ -331,11 +331,11 @@ public class InvestorsCash implements Serializable {
 
     @OneToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "CashSourceId", referencedColumnName = "id")
-    public CashSources getCashSource() {
+    public CashSource getCashSource() {
         return cashSource;
     }
 
-    public void setCashSource(CashSources cashSource) {
+    public void setCashSource(CashSource cashSource) {
         this.cashSource = cashSource;
     }
 

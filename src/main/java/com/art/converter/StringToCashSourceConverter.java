@@ -1,26 +1,24 @@
 package com.art.converter;
 
-import com.art.model.CashSources;
-import com.art.service.CashSourcesService;
+import com.art.model.CashSource;
+import com.art.service.CashSourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 
-import javax.annotation.Resource;
-import java.math.BigInteger;
-
-public class StringToCashSourceConverter implements Converter<String, CashSources> {
-    @Resource(name = "cashSourcesService")
-    private CashSourcesService cashSourcesService;
+public class StringToCashSourceConverter implements Converter<String, CashSource> {
 
     @Autowired
-    public StringToCashSourceConverter(CashSourcesService cashSourcesService) {
-        this.cashSourcesService = cashSourcesService;
+    private final CashSourceService cashSourceService;
+
+    @Autowired
+    public StringToCashSourceConverter(CashSourceService cashSourceService) {
+        this.cashSourceService = cashSourceService;
     }
 
-    public CashSources convert(String id) {
-        BigInteger IntId = new BigInteger(id);
-        CashSources cashSources;
-        cashSources = cashSourcesService.findById(IntId);
-        return cashSources;
+    public CashSource convert(String id) {
+        Long IntId = Long.valueOf(id);
+        CashSource cashSource;
+        cashSource = cashSourceService.findById(IntId);
+        return cashSource;
     }
 }
