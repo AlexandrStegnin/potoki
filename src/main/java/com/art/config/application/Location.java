@@ -46,4 +46,14 @@ public class Location {
 
     public static final String UNDER_FACILITIES_CREATE = UNDER_FACILITIES + "/create";
 
+    public static final String CASH_SOURCES = "/cash-sources";
+
+    public static final String CASH_SOURCES_LIST = CASH_SOURCES + "/list";
+
+    public static final String CASH_SOURCES_EDIT = CASH_SOURCES + "/edit/{id}";
+
+    public static final String CASH_SOURCES_DELETE = CASH_SOURCES + "/delete";
+
+    public static final String CASH_SOURCES_CREATE = CASH_SOURCES + "/create";
+
 }
