@@ -17,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigInteger;
 import java.util.*;
 
 @Controller
@@ -93,7 +92,7 @@ public class ResetPasswordController {
 
     @Secured("CHANGE_PASSWORD_PRIVILEGE")
     @RequestMapping(value = "/changePassword", method = RequestMethod.GET)
-    public String showChangePasswordPage(Model model, @RequestParam("id") BigInteger id, @RequestParam("token") String token) {
+    public String showChangePasswordPage(Model model, @RequestParam("id") Long id, @RequestParam("token") String token) {
         String result = passwordResetTokenService.validatePasswordResetToken(id, token);
         if (Objects.equals(result, "Valid")) {
             model.addAttribute("message", "SUCCESS");

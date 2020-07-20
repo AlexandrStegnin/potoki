@@ -1,7 +1,7 @@
 package com.art.service;
 
-import com.art.model.PasswordResetToken;
 import com.art.model.AppUser;
+import com.art.model.PasswordResetToken;
 import com.art.repository.PasswordResetTokenRepository;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -12,9 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.math.BigInteger;
-import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Objects;
 
 @Service
@@ -29,7 +28,7 @@ public class PasswordResetTokenService {
         return passwordResetTokenRepository.saveAndFlush(passwordResetToken);
     }
 
-    public String validatePasswordResetToken(BigInteger id, String token) {
+    public String validatePasswordResetToken(Long id, String token) {
         PasswordResetToken passToken =
                 passwordResetTokenRepository.findByToken(token);
         if ((passToken == null) || (!Objects.equals(passToken.getAppUser()
@@ -46,7 +45,7 @@ public class PasswordResetTokenService {
 
         AppUser user = passToken.getAppUser();
         Authentication auth = new UsernamePasswordAuthenticationToken(
-                user, null, Arrays.asList(
+                user, null, Collections.singletonList(
                 new SimpleGrantedAuthority("CHANGE_PASSWORD_PRIVILEGE")));
         SecurityContextHolder.getContext().setAuthentication(auth);
         return "Valid";
