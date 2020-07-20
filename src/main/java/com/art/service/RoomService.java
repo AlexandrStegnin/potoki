@@ -1,7 +1,9 @@
 package com.art.service;
 
 import com.art.model.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.art.model.supporting.enums.OwnerType;
+import com.art.repository.RoomRepository;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,47 +21,43 @@ public class RoomService {
     @PersistenceContext(name = "persistanceUnit")
     private EntityManager em;
 
-    @Autowired
-    private InvestorsFlowsService flowsService;
+    private final InvestorsFlowsService flowsService;
 
-    @Autowired
-    private InvestorsCashService cashService;
+    private final InvestorsCashService cashService;
+
+    private final AccountService accountService;
+
+    private final RoomRepository roomRepository;
+
+    public RoomService(InvestorsFlowsService flowsService, InvestorsCashService cashService,
+                       AccountService accountService, RoomRepository roomRepository) {
+        this.flowsService = flowsService;
+        this.cashService = cashService;
+        this.accountService = accountService;
+        this.roomRepository = roomRepository;
+    }
 
     public List<Room> findAll() {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-
-        CriteriaQuery<Room> roomsCriteriaQuery = cb.createQuery(Room.class);
-        Root<Room> roomsRoot = roomsCriteriaQuery.from(Room.class);
-        roomsRoot.fetch(Room_.underFacility, JoinType.LEFT)
-                .fetch(UnderFacility_.facility, JoinType.LEFT);
-        roomsCriteriaQuery.select(roomsRoot);//.distinct(true);
-        roomsCriteriaQuery.orderBy(cb.asc(roomsRoot.get(Room_.underFacility).get(UnderFacility_.facility).get(Facility_.id)));
-
-        return em.createQuery(roomsCriteriaQuery).getResultList();
+        List<Room> rooms = roomRepository.findAll();
+        rooms.forEach(room -> {
+            Hibernate.initialize(room.getUnderFacility());
+            Hibernate.initialize(room.getUnderFacility().getFacility());
+        });
+        return rooms;
     }
 
-    public Room findById(BigInteger id) {
-        return this.em.find(Room.class, id);
+    public Room findById(Long id) {
+        return roomRepository.findOne(id);
     }
 
-    public Room findByIdWithUnderFacilities(BigInteger id) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Room> roomsCriteriaQuery = cb.createQuery(Room.class);
-        Root<Room> roomsRoot = roomsCriteriaQuery.from(Room.class);
-        roomsRoot.fetch(Room_.underFacility, JoinType.LEFT);
-        roomsCriteriaQuery.select(roomsRoot);
-        roomsCriteriaQuery.where(cb.equal(roomsRoot.get(Room_.id), id));
-        return em.createQuery(roomsCriteriaQuery).getSingleResult();
+    public Room findByIdWithUnderFacilities(Long id) {
+        Room room = roomRepository.findOne(id);
+        Hibernate.initialize(room.getUnderFacility());
+        return room;
     }
 
-    public Room findByRoom(String room) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Room> roomsCriteriaQuery = cb.createQuery(Room.class);
-        Root<Room> roomsRoot = roomsCriteriaQuery.from(Room.class);
-        roomsRoot.fetch(Room_.underFacility, JoinType.LEFT);
-        roomsCriteriaQuery.select(roomsRoot);
-        roomsCriteriaQuery.where(cb.equal(roomsRoot.get(Room_.name), room));
-        return em.createQuery(roomsCriteriaQuery).getSingleResult();
+    public Room findByRoom(String name) {
+        return roomRepository.findByName(name);
     }
 
     public void deleteById(Long id) {
@@ -75,6 +73,7 @@ public class RoomService {
         Root<Room> roomsRoot = delete.from(Room.class);
         delete.where(cb.equal(roomsRoot.get(Room_.id), id));
         this.em.createQuery(delete).executeUpdate();
+        accountService.deleteByOwnerId(id, OwnerType.UNDER_FACILITY);
     }
 
     public void update(Room room) {
@@ -95,7 +94,11 @@ public class RoomService {
     }
 
     public void create(Room room) {
-        this.em.persist(room);
+        roomRepository.saveAndFlush(room);
+        UnderFacility underFacility = room.getUnderFacility();
+        Account account = accountService.findByOwnerId(underFacility.getId(), OwnerType.UNDER_FACILITY);
+        int countRooms = roomRepository.countByUnderFacilityId(underFacility.getId());
+        accountService.createAccount(room, account, countRooms);
     }
 
     public List<Room> init() {

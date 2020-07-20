@@ -4,6 +4,7 @@ import com.art.config.application.Constant;
 import com.art.model.Account;
 import com.art.model.AppUser;
 import com.art.model.Facility;
+import com.art.model.Room;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.enums.OwnerType;
 import com.art.model.supporting.enums.Region;
@@ -164,14 +165,34 @@ public class AccountService {
      * @param countUnderFacilities кол-во подобъектов объекта
      */
     public void createAccount(Long underFacilityId, Account parentAccount, int countUnderFacilities) {
-        String parentAccountNumber = parentAccount.getAccountNumber();
-        String accNumberSuffix = countUnderFacilities > 9 ? "" : "0";
-        String underFacilityAccountNumber = parentAccountNumber.concat(accNumberSuffix).concat(String.valueOf(countUnderFacilities + 1));
+        String accountNumber = getAccountNumber(parentAccount, countUnderFacilities);
         Account account = new Account();
-        account.setAccountNumber(underFacilityAccountNumber);
+        account.setAccountNumber(accountNumber);
         account.setOwnerId(underFacilityId);
         account.setOwnerType(OwnerType.UNDER_FACILITY);
         account.setParentAccount(parentAccount);
         accountRepository.save(account);
     }
+    /**
+     * Создать счёт для помещения
+     *  @param room помещение
+     * @param parentAccount счёт подобъекта родителя
+     * @param countRooms кол-во подобъектов объекта
+     */
+    public void createAccount(Room room, Account parentAccount, int countRooms) {
+        String accountNumber = getAccountNumber(parentAccount, countRooms);
+        Account account = new Account();
+        account.setAccountNumber(accountNumber);
+        account.setOwnerId(room.getId());
+        account.setOwnerType(OwnerType.UNDER_FACILITY);
+        account.setParentAccount(parentAccount);
+        accountRepository.save(account);
+    }
+
+    private String getAccountNumber(Account parentAccount, int count) {
+        String parentAccountNumber = parentAccount.getAccountNumber();
+        String accNumberSuffix = count > 9 ? "" : "0";
+        return parentAccountNumber.concat(accNumberSuffix).concat(String.valueOf(count + 1));
+    }
+
 }
