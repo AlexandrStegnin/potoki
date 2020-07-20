@@ -1,8 +1,11 @@
 package com.art.controllers;
 
 import com.art.config.application.Location;
+import com.art.model.Account;
 import com.art.model.Room;
 import com.art.model.UnderFacility;
+import com.art.model.supporting.enums.OwnerType;
+import com.art.service.AccountService;
 import com.art.service.RoomService;
 import com.art.service.UnderFacilityService;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -12,7 +15,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -26,9 +28,13 @@ public class RoomController {
 
     private final UnderFacilityService underFacilityService;
 
-    public RoomController(RoomService roomService, UnderFacilityService underFacilityService) {
+    private final AccountService accountService;
+
+    public RoomController(RoomService roomService, UnderFacilityService underFacilityService,
+                          AccountService accountService) {
         this.roomService = roomService;
         this.underFacilityService = underFacilityService;
+        this.accountService = accountService;
     }
 
     @GetMapping(path = Location.ROOMS_LIST)
@@ -39,12 +45,18 @@ public class RoomController {
     }
 
     @GetMapping(path = Location.ROOMS_EDIT)
-    public String editRoom(@PathVariable BigInteger id, ModelMap model) {
+    public String editRoom(@PathVariable Long id, ModelMap model) {
         String title = "Обновление данных по помещению";
         Room room = roomService.findByIdWithUnderFacilities(id);
+        Account account = accountService.findByOwnerId(id, OwnerType.ROOM);
+        String accountNumber = "";
+        if (account != null) {
+            accountNumber = account.getAccountNumber();
+        }
         model.addAttribute("room", room);
         model.addAttribute("edit", true);
         model.addAttribute("title", title);
+        model.addAttribute("accountNumber", accountNumber);
         return "room-add";
     }
 

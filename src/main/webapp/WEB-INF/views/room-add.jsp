@@ -15,12 +15,12 @@
     <link href="<c:url value='/resources/core/css/old_bootstrap.min.css' />" rel="stylesheet"/>
     <link href="<c:url value='/resources/core/css/applic.css' />" rel="stylesheet"/>
     <link href="<c:url value='/resources/core/css/popup.css' />" rel="stylesheet"/>
-    <link href="<c:url value='/resources/core/css/ajaxLoader.css' />" rel="stylesheet"/>
+    <link href="<c:url value='/resources/core/css/ddk_loader.css' />" rel="stylesheet"/>
     <script type="text/javascript" src="<c:url value='/resources/core/js/jquery-3.2.1.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min_old.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/AjaxLoader.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/roomsScripts.js' />"></script>
+    <script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
+    <script type="text/javascript" src="<c:url value='/resources/core/js/rooms.js' />"></script>
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
 </head>
 
@@ -62,9 +62,9 @@
 
         <div class="row">
             <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="coast">Стоимость:</label>
+                <label class="col-md-3 control-lable" for="cost">Стоимость:</label>
                 <div class="col-md-7">
-                    <form:input type="number" path="coast" id="coast" class="form-control input-sm"
+                    <form:input type="number" path="cost" id="cost" class="form-control input-sm"
                                 min="0.0" step="0.01"/>
                 </div>
             </div>
@@ -120,6 +120,15 @@
                 <div class="col-md-7">
                     <form:input type="number" path="totalYearProfit" id="yearProfit" class="form-control input-sm"
                                 min="0.0" step="0.01"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label class="col-md-3 control-lable" for="accountNumber">№ счёта:</label>
+                <div class="col-md-7">
+                    <input type="text" id="accountNumber" class="form-control input-sm" value="${accountNumber}" readonly/>
                 </div>
             </div>
         </div>

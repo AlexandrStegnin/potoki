@@ -6,13 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
-import java.math.BigInteger;
-
 @Component
 public class StringToRoomsConverter implements Converter<String, Room> {
-    @Resource(name = "roomService")
-    private RoomService roomService;
+
+    private final RoomService roomService;
 
     @Autowired
     public StringToRoomsConverter(RoomService roomService) {
@@ -22,7 +19,7 @@ public class StringToRoomsConverter implements Converter<String, Room> {
     public Room convert(String id) {
         Room room;
         try {
-            BigInteger IntId = new BigInteger(id);
+            Long IntId = Long.valueOf(id);
             room = roomService.findById(IntId);
         } catch (Exception ex) {
             room = roomService.findByRoom(id);
