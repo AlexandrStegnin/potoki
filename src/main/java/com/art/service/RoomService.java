@@ -82,7 +82,7 @@ public class RoomService {
         CriteriaUpdate<Room> update = criteriaBuilder.createCriteriaUpdate(Room.class);
         Root<Room> roomsRoot = update.from(Room.class);
         update.set(Room_.name, room.getName());
-        update.set(Room_.coast, room.getCoast());
+        update.set(Room_.cost, room.getCost());
         update.set(Room_.roomSize, room.getRoomSize());
         update.set(Room_.underFacility, room.getUnderFacility());
         update.set(Room_.sold, room.isSold());

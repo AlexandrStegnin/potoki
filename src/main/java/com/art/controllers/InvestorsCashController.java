@@ -817,13 +817,13 @@ public class InvestorsCashController {
         // Вычисляем стоимость объекта, складывая стоимости помещений, из которых должен состоять остаток
         BigDecimal coastFacility = rooms
                 .stream()
-                .map(Room::getCoast)
+                .map(Room::getCost)
                 .reduce(BigDecimal.ZERO, BigDecimal::add)
                 .setScale(2, BigDecimal.ROUND_CEILING);
 
         // Вычисляем стоимость подобъекта, куда надо разделить сумму
         BigDecimal coastUnderFacility = underFacility.getRooms().stream()
-                .map(Room::getCoast)
+                .map(Room::getCost)
                 .reduce(BigDecimal.ZERO, BigDecimal::add).setScale(2, BigDecimal.ROUND_CEILING);
 
         // Вычисляем % для выделения доли

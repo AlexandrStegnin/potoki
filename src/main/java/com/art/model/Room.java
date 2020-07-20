@@ -25,8 +25,8 @@ public class Room implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "coast")
-    private BigDecimal coast;
+    @Column(name = "cost")
+    private BigDecimal cost;
 
     @Column(name = "room_size")
     private BigDecimal roomSize;
