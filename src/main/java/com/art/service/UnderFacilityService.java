@@ -45,7 +45,7 @@ public class UnderFacilityService {
         Facility facility = underFacility.getFacility();
         Account account = accountService.findByOwnerId(facility.getId(), OwnerType.FACILITY);
         int countUnderFacilities = underFacilityRepository.countByFacilityId(facility.getId());
-        accountService.createAccount(underFacility.getId(), account.getAccountNumber(), countUnderFacilities);
+        accountService.createAccount(underFacility.getId(), account, countUnderFacilities);
     }
 
     public List<UnderFacility> findByFacilityId(Long id) {

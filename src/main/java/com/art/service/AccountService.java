@@ -155,18 +155,19 @@ public class AccountService {
 
     /**
      * Создать счёт для подобъекта
-     *
-     * @param underFacilityId id подобъекта
-     * @param parentAccountNumber номер счёта объекта родителя
+     *  @param underFacilityId id подобъекта
+     * @param parentAccount счёт объекта родителя
      * @param countUnderFacilities кол-во подобъектов объекта
      */
-    public void createAccount(Long underFacilityId, String parentAccountNumber, int countUnderFacilities) {
+    public void createAccount(Long underFacilityId, Account parentAccount, int countUnderFacilities) {
+        String parentAccountNumber = parentAccount.getAccountNumber();
         String accNumberSuffix = countUnderFacilities > 9 ? "" : "0";
         String underFacilityAccountNumber = parentAccountNumber.concat(accNumberSuffix).concat(String.valueOf(countUnderFacilities + 1));
         Account account = new Account();
         account.setAccountNumber(underFacilityAccountNumber);
         account.setOwnerId(underFacilityId);
         account.setOwnerType(OwnerType.UNDER_FACILITY);
+        account.setParentAccount(parentAccount);
         accountRepository.save(account);
     }
 }
