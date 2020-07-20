@@ -60,6 +60,10 @@ public class AccountService {
         return accountRepository.findByOwnerIdAndOwnerType(ownerId, ownerType);
     }
 
+    public void deleteByOwnerId(Long ownerId, OwnerType ownerType) {
+        accountRepository.deleteByOwnerIdAndOwnerType(ownerId, ownerType);
+    }
+
     /**
      * Создать счёт для пользователя (инвестора)
      *
