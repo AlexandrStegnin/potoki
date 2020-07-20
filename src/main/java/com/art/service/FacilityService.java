@@ -1,6 +1,5 @@
 package com.art.service;
 
-import com.art.model.Account;
 import com.art.model.Facility;
 import com.art.model.Facility_;
 import com.art.model.supporting.ApiResponse;
@@ -13,7 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,10 +74,7 @@ public class FacilityService {
 
     public void deleteById(Long id) {
         facilityRepository.delete(id);
-        Account account = accountService.findByOwnerId(id, OwnerType.FACILITY);
-        if (account != null) {
-            accountService.delete(account);
-        }
+        accountService.deleteByOwnerId(id, OwnerType.FACILITY);
     }
 
     public void update(Facility facility) {

@@ -38,6 +38,7 @@ public class UnderFacilityService {
 
     public void deleteById(Long id) {
         underFacilityRepository.delete(id);
+        accountService.deleteByOwnerId(id, OwnerType.UNDER_FACILITY);
     }
 
     public void create(UnderFacility underFacility) {
