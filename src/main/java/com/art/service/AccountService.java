@@ -184,7 +184,7 @@ public class AccountService {
         Account account = new Account();
         account.setAccountNumber(accountNumber);
         account.setOwnerId(room.getId());
-        account.setOwnerType(OwnerType.UNDER_FACILITY);
+        account.setOwnerType(OwnerType.ROOM);
         account.setParentAccount(parentAccount);
         accountRepository.save(account);
     }
