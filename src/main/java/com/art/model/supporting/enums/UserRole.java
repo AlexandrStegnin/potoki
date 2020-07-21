@@ -8,18 +8,21 @@ import com.art.model.supporting.filters.Filterable;
 
 public enum UserRole implements Filterable {
 
-    UNDEFINED(0, "Не определена"),
-    ROLE_INVESTOR(1, "Инвестор"),
-    ROLE_MANAGER(2, "Управляющий"),
-    ROLE_ADMIN(3, "Админ");
+    UNDEFINED(0, "Не определена", "ANONYMOUS"),
+    ROLE_INVESTOR(1, "Инвестор", "ROLE_INVESTOR"),
+    ROLE_MANAGER(2, "Управляющий", "ROLE_MANAGER"),
+    ROLE_ADMIN(3, "Админ", "ROLE_ADMIN");
 
     private final int id;
 
     private final String title;
 
-    UserRole(int id, String title) {
+    private final String systemName;
+
+    UserRole(int id, String title, String systemName) {
         this.id = id;
         this.title = title;
+        this.systemName = systemName;
     }
 
     public int getId() {
@@ -49,4 +52,7 @@ public enum UserRole implements Filterable {
         return UNDEFINED;
     }
 
+    public String getSystemName() {
+        return systemName;
+    }
 }

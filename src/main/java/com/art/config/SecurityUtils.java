@@ -56,7 +56,7 @@ public final class SecurityUtils {
         if (principal instanceof SecurityUser) {
             List<AppRole> roles = ((SecurityUser) principal).getRoles();
             AppRole admin = roles.stream()
-                    .filter(role -> role.getName().equalsIgnoreCase("ROLE_ADMIN"))
+                    .filter(role -> role.getName().equalsIgnoreCase(UserRole.ROLE_ADMIN.getSystemName()))
                     .findFirst()
                     .orElse(null);
             return admin != null;
