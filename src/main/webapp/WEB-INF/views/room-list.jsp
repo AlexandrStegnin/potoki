@@ -93,7 +93,7 @@
                         <fmt:formatNumber value="${room.salePrice}" type="currency" minFractionDigits="2"/>
                     </td>
                     <td>
-                        <fmt:formatNumber value="${room.totalYearProfit}" type="currency" minFractionDigits="2"/>
+                        <fmt:formatNumber value="${room.totalYearProfit/100}" type="percent" minFractionDigits="2"/>
                     </td>
                     <sec:authorize access="isFullyAuthenticated()">
                         <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
