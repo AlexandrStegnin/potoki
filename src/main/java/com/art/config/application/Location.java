@@ -112,7 +112,9 @@ public class Location {
             UNDER_FACILITIES + WILD_CARD,
             CASH_SOURCES + WILD_CARD,
             INVESTOR_ANNEXES + WILD_CARD,
-            HOME, WELCOME, INVESTMENTS
+            HOME, WELCOME, INVESTMENTS,
+            TOKENS + WILD_CARD,
+            TOKENS_GENERATE
     };
 
     public static final String[] INVESTOR_URLS = {
