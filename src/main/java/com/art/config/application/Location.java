@@ -104,6 +104,10 @@ public class Location {
     // Битрикс
     public static final String BITRIX_MERGE = "/bitrix/merge";
 
+    // Websocket
+    public static final String[] WEBSOCKET_PATHS = {
+            "/turn" + WILD_CARD, "/progress" + WILD_CARD, "/status" + WILD_CARD
+    };
 
     public static final String[] ADMIN_URLS = {
             ADMIN,
