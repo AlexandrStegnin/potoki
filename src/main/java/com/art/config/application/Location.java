@@ -6,6 +6,12 @@ package com.art.config.application;
 
 public class Location {
 
+    public static final String ADMIN = "/admin";
+
+    public static final String CATALOGUE = "/catalogue";
+
+    public static final String UPDATE_INV_DEMO = "/update-inv-demo";
+
     public static final String URL_TRANSACTIONS = "/transactions";
 
     public static final String URL_TRANSACTIONS_TX_ID = URL_TRANSACTIONS + "/{txId}";

@@ -1,89 +1,56 @@
 package com.art.controllers;
 
-import com.art.func.GetPrincipalFunc;
+import com.art.config.application.Location;
 import com.art.model.AppUser;
-import com.art.model.supporting.GenericResponse;
-import com.art.model.supporting.SearchSummary;
+import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.enums.UserRole;
 import com.art.model.supporting.enums.UserStatus;
 import com.art.model.supporting.filters.Filterable;
 import com.art.service.InvestorsFlowsService;
 import com.art.service.UserService;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.authentication.RememberMeAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class AdminController {
 
-    @Resource(name = "userService")
-    private UserService userService;
+    private final UserService userService;
 
-    @Resource(name = "getPrincipalFunc")
-    private GetPrincipalFunc getPrincipalFunc;
+    private final InvestorsFlowsService investorsFlowsService;
 
-    @Resource(name = "investorsFlowsService")
-    private InvestorsFlowsService investorsFlowsService;
+    public AdminController(UserService userService, InvestorsFlowsService investorsFlowsService) {
+        this.userService = userService;
+        this.investorsFlowsService = investorsFlowsService;
+    }
 
-    /**
-     * This update page is for user login with password only.
-     * If user is login via remember me cookie, send login to ask for password again.
-     * To avoid stolen remember me cookie to update info
-     */
-
-    @Secured({"ROLE_ADMIN", "ROLE_DBA"})
-    @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    public String adminPage(ModelMap model, HttpServletRequest httpServletRequest) {
-
+    @Secured("ROLE_ADMIN")
+    @GetMapping(path = Location.ADMIN)
+    public String adminPage(ModelMap model) {
         List<AppUser> users = userService.findAll();
         model.addAttribute("users", users);
-        model.addAttribute("searchSummary", new SearchSummary());
-
-        if (isRememberMeAuthenticated()) {
-            setRememberMeTargetUrlToSession(httpServletRequest);
-            model.addAttribute("loginUpdate", true);
-        }
         return "user-list";
     }
 
-    @Secured({"ADMIN", "DBA"})
-    @GetMapping(value = "/catalogue")
+    @Secured("ROLE_ADMIN")
+    @GetMapping(path = Location.CATALOGUE)
     public String cataloguePage(ModelMap model) {
-        model.addAttribute("loggedinuser", getPrincipalFunc.getLogin());
-        return "/catalogues";
+        return "catalogues";
     }
 
-    @PostMapping(value = {"/updateInvestorDemo"}, produces = "application/json;charset=UTF-8")
+    @PostMapping(path = Location.UPDATE_INV_DEMO, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
-    GenericResponse updateInvestorDemo() {
-        GenericResponse response = new GenericResponse();
+    ApiResponse updateInvestorDemo() {
         investorsFlowsService.updateInvestorDemo();
-        response.setMessage("Данные инвестора демо успешно обновлены");
-        return response;
-    }
-
-    private void setRememberMeTargetUrlToSession(HttpServletRequest httpServletRequest) {
-        HttpSession session = httpServletRequest.getSession(false);
-        if (session != null) {
-            session.setAttribute("targetUrl", "/admin");
-        }
-    }
-
-    private boolean isRememberMeAuthenticated() {
-        Authentication authentication =
-                SecurityContextHolder.getContext().getAuthentication();
-        return authentication != null && RememberMeAuthenticationToken.class.isAssignableFrom(authentication.getClass());
-
+        return new ApiResponse("Данные инвестора демо успешно обновлены");
     }
 
     @ModelAttribute("userStatuses")

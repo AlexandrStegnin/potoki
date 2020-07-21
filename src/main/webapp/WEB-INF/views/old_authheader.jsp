@@ -74,7 +74,7 @@
                             <span style="margin-right: 5px;  color: dodgerblue;"
                                   class="glyphicon glyphicon-plus"></span>Добавить объект</a></li>
 
-                            <li><a href="/updateInvestorDemo" id="updateInvestorDemo">
+                            <li><a href="/update-inv-demo" id="updateInvestorDemo">
                             <span style="margin-right: 5px;  color: dodgerblue;"
                                   class="glyphicon glyphicon-refresh"></span>Обновить инвестор-демо</a></li>
 
