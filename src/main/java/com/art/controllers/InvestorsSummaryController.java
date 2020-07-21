@@ -1,11 +1,9 @@
 package com.art.controllers;
 
-import com.art.func.GetPrincipalFunc;
 import com.art.func.UploadExcelFunc;
 import com.art.model.*;
 import com.art.model.supporting.FileBucket;
 import com.art.model.supporting.SearchSummary;
-import com.art.model.supporting.UserFacilities;
 import com.art.model.supporting.enums.ShareType;
 import com.art.service.*;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -35,17 +33,11 @@ import java.util.Objects;
 @Controller
 public class InvestorsSummaryController {
 
-    @Resource(name = "getPrincipalFunc")
-    private GetPrincipalFunc getPrincipalFunc;
-
     @Resource(name = "facilityService")
     private FacilityService facilityService;
 
     @Resource(name = "uploadExcelFunc")
     private UploadExcelFunc uploadExcelFunc;
-
-    @Resource(name = "investorsCashService")
-    private InvestorsCashService investorsCashService;
 
     @Resource(name = "userService")
     private UserService userService;
@@ -112,11 +104,6 @@ public class InvestorsSummaryController {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setLenient(false);
         webDataBinder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
-    }
-
-    @ModelAttribute("facilities")
-    public List<UserFacilities> initializeFacilities() {
-        return getPrincipalFunc.getUserFacilities(getPrincipalFunc.getPrincipalId());
     }
 
     @ModelAttribute("facilitiesList")

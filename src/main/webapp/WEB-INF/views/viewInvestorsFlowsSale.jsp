@@ -62,7 +62,7 @@
 
                 <label class="sr-only" for="fFacilities">Объект:</label>
                 <form:select path="facility" id="fFacilities" multiple="false" cssClass="selectpicker">
-                    <c:forEach var="f" items="${facility}">
+                    <c:forEach var="f" items="${facilities}">
                         <option
                                 <c:choose>
                                     <c:when test="${f.name eq flowsSaleFilters.facility}">selected="selected"</c:when>
@@ -73,13 +73,13 @@
                 </form:select>
                 <label class="sr-only" for="uFacilities">Подобъект:</label>
                 <form:select path="underFacility" id="uFacilities" multiple="false" cssClass="selectpicker">
-                    <c:forEach var="uf" items="${underFacility}">
+                    <c:forEach var="uf" items="${underFacilities}">
                         <option
                                 <c:choose>
-                                    <c:when test="${uf.underFacility eq flowsSaleFilters.underFacility}">selected="selected"</c:when>
+                                    <c:when test="${uf.name eq flowsSaleFilters.underFacility}">selected="selected"</c:when>
                                 </c:choose>
-                                value="${uf.underFacility}" id="${uf.id}"
-                                data-parent-id="${uf.facilityId}">${uf.underFacility}
+                                value="${uf.name}" id="${uf.id}"
+                                data-parent-id="${uf.facility.id}">${uf.name}
                         </option>
                     </c:forEach>
                 </form:select>
@@ -187,7 +187,7 @@
             <tbody>
             <c:forEach items="${page.content}" var="flows">
                 <tr id="${flows.id}">
-                    <td data-facility-id="${flows.facility.id}">${flows.facility.facility}</td>
+                    <td data-facility-id="${flows.facility.id}">${flows.facility.name}</td>
                     <td data-investor-id="${flows.investor.id}">${flows.investor.login}</td>
                     <td data-share-kind-id="${flows.shareType.id}">${flows.shareType.title}</td>
                     <td data-cash-facility="${flows.cashInFacility}">
@@ -210,7 +210,7 @@
                     <td data-gived-cash="${flows.profitToReInvest}">
                         <fmt:formatNumber value="${flows.profitToReInvest}" type="currency" minFractionDigits="2"/>
                     </td>
-                    <td data-under-facility-id="${flows.underFacility.id}">${flows.underFacility.underFacility}</td>
+                    <td data-under-facility-id="${flows.underFacility.id}">${flows.underFacility.name}</td>
                     <td data-date-sale="${flows.dateSale.time}">${flows.dateSaleToLocalDate}</td>
                     <td>
                         <c:choose>
@@ -275,8 +275,8 @@
                         <div class="form-group col-md-12">
                             <label class="col-md-3 control-lable" for="srcFacilities">Объект:</label>
                             <div class="col-md-7">
-                                <form:select path="reFacility" id="srcFacilities" items="${facility}" multiple="false"
-                                             itemValue="id" itemLabel="facility" class="form-control input-sm"/>
+                                <form:select path="reFacility" id="srcFacilities" items="${facilities}" multiple="false"
+                                             itemValue="id" itemLabel="name" class="form-control input-sm"/>
                                 <div id="facilityErr" style="color: red; display: none">Необходимо выбрать объект</div>
                             </div>
                         </div>
@@ -286,8 +286,8 @@
                         <div class="form-group col-md-12">
                             <label class="col-md-3 control-lable" for="srcUnderFacilities">Подобъект:</label>
                             <div class="col-md-7">
-                                <form:select path="reUnderFacility" id="srcUnderFacilities" items="${underFacility}" multiple="false"
-                                             itemValue="id" itemLabel="underFacility" class="form-control input-sm"/>
+                                <form:select path="reUnderFacility" id="srcUnderFacilities" items="${underFacilities}" multiple="false"
+                                             itemValue="id" itemLabel="name" class="form-control input-sm"/>
                                 <div id="reFacilityErr" style="color: red; display: none">Необходимо выбрать подобъект</div>
                             </div>
                         </div>

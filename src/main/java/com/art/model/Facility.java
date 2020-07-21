@@ -1,30 +1,11 @@
 package com.art.model;
 
-import com.art.model.supporting.UserFacilities;
 import com.art.model.supporting.dto.FacilityDTO;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.math.BigInteger;
 
-@SqlResultSetMapping(
-        name = "InvestorsFacilitiesMapping",
-        classes = @ConstructorResult(
-                targetClass = UserFacilities.class,
-                columns = {
-                        @ColumnResult(name = "id", type = BigInteger.class),
-                        @ColumnResult(name = "facility", type = String.class)
-                }))
-@NamedNativeQuery(
-        name = "InvestorsFacilities",
-        query = "SELECT f.ID, f.FACILITY " +
-                "FROM FACILITYES f " +
-                "LEFT JOIN USERS_FACILITYES uf on f.ID = uf.FACILITY_ID " +
-                "LEFT JOIN USERS u on uf.RENTOR_INVESTORS_ID = u.ID " +
-                "WHERE uf.RENTOR_INVESTORS_ID = ?",
-        resultClass = UserFacilities.class,
-        resultSetMapping = "InvestorsFacilitiesMapping")
 @Data
 @Entity
 @Table(name = "facility", schema = "pss_projects")

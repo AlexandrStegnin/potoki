@@ -3,7 +3,6 @@ package com.art.service;
 import com.art.model.Facility;
 import com.art.model.Facility_;
 import com.art.model.supporting.ApiResponse;
-import com.art.model.supporting.UserFacilities;
 import com.art.model.supporting.enums.OwnerType;
 import com.art.repository.FacilityRepository;
 import org.springframework.http.HttpStatus;
@@ -37,11 +36,7 @@ public class FacilityService {
     }
 
     public Facility findById(Long id) {
-        return facilityRepository.findById(id);
-    }
-
-    public List<UserFacilities> getInvestorsFacility(Long rentorInvestorId) {
-        return facilityRepository.getInvestorsFacility(rentorInvestorId);
+        return facilityRepository.findOne(id);
     }
 
     public List<Facility> initializeFacilities() {

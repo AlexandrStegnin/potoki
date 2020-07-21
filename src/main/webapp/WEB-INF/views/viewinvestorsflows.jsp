@@ -70,13 +70,13 @@
                 </form:select>
                 <label class="sr-only" for="uFacilities">Подобъект:</label>
                 <form:select path="underFacility" id="uFacilities" multiple="false" class="selectpicker">
-                    <c:forEach var="uf" items="${underFacility}">
+                    <c:forEach var="uf" items="${underFacilities}">
                         <option
                                 <c:choose>
-                                    <c:when test="${uf.underFacility eq 'Выберите подобъект'}">selected="selected"</c:when>
-                                    <c:when test="${uf.underFacility eq searchSummary.underFacility}">selected="selected"</c:when>
+                                    <c:when test="${uf.name eq 'Выберите подобъект'}">selected="selected"</c:when>
+                                    <c:when test="${uf.name eq searchSummary.underFacility}">selected="selected"</c:when>
                                 </c:choose>
-                                value="${uf.underFacility}" id="${uf.id}" data-parent-id="${uf.facilityId}">${uf.underFacility}
+                                value="${uf.name}" id="${uf.id}" data-parent-id="${uf.facility.id}">${uf.name}
                         </option>
                     </c:forEach>
                 </form:select>
@@ -173,8 +173,8 @@
                 <tr id="${flows.id}">
                     <td data-report-date="${flows.reportDate.time}">${flows.getReportDateToLocalDate()}</td>
                     <td data-facility-id="${flows.facility.id}">${flows.facility.name}</td>
-                    <td data-under-facility-id="${flows.underFacility.id}">${flows.underFacility.underFacility}</td>
-                    <td data-room-id="${flows.room.id}">${flows.room.room}</td>
+                    <td data-under-facility-id="${flows.underFacility.id}">${flows.underFacility.name}</td>
+                    <td data-room-id="${flows.room.id}">${flows.room.name}</td>
                     <td data-investor-id="${flows.investor.id}">${flows.investor.login}</td>
                     <td>${flows.shareKind}</td>
                     <td data-gived-cash="${flows.givedCash}">
@@ -261,7 +261,7 @@
                             <div class="col-md-7">
                                 <form:select path="reFacility" id="srcFacilities" items="${facilitiesList}"
                                              multiple="false"
-                                             itemValue="id" itemLabel="facility" class="form-control input-sm"/>
+                                             itemValue="id" itemLabel="name" class="form-control input-sm"/>
                                 <div id="facilityErr" style="color: red; display: none">Необходимо выбрать объект</div>
                             </div>
                         </div>
@@ -271,8 +271,8 @@
                         <div class="form-group col-md-12">
                             <label class="col-md-3 control-lable" for="shareKindName">Вид доли:</label>
                             <div class="col-md-7">
-                                <form:select path="shareKind" id="shareKindName" items="${shareKinds}" multiple="false"
-                                             itemValue="id" itemLabel="shareKind" class="form-control input-sm"/>
+                                <form:select path="shareKind" id="shareKindName" items="${shareTypes}" multiple="false"
+                                             itemValue="id" itemLabel="title" class="form-control input-sm"/>
                                 <div id="shareKindErr" style="color: red; display: none">Необходимо выбрать вид доли
                                 </div>
                             </div>
