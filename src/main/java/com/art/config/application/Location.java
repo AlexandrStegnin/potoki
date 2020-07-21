@@ -101,6 +101,9 @@ public class Location {
 
     public static final String TOKENS_GENERATE = "/generate";
 
+    // Битрикс
+    public static final String BITRIX_MERGE = "/bitrix/merge";
+
 
     public static final String[] ADMIN_URLS = {
             ADMIN,
@@ -114,7 +117,8 @@ public class Location {
             INVESTOR_ANNEXES + WILD_CARD,
             HOME, WELCOME, INVESTMENTS,
             TOKENS + WILD_CARD,
-            TOKENS_GENERATE
+            TOKENS_GENERATE,
+            BITRIX_MERGE
     };
 
     public static final String[] INVESTOR_URLS = {

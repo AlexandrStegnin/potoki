@@ -1,5 +1,6 @@
 package com.art.controllers;
 
+import com.art.config.application.Location;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +22,7 @@ public class BitrixContactController {
         BITRIX_API_KEY = value;
     }
 
-    @PostMapping("/bitrix/merge")
+    @PostMapping(path = Location.BITRIX_MERGE)
     public String mergeContacts() {
         final String[] message = {""};
         RestTemplate restTemplate = new RestTemplate();
