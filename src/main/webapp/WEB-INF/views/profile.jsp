@@ -25,8 +25,8 @@
     <script type="text/javascript" src="<c:url value='/resources/core/js/AjaxLoader.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/forLoadPdfFiles.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/datatables.min.js' />"></script>
-        <script type="text/javascript" src="<c:url value='/resources/core/js/scripsForProfile.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/bitrixContacts.js' />"></script>
+        <script type="text/javascript" src="<c:url value='/resources/core/js/profiles.js' />"></script>
+    <script type="text/javascript" src="<c:url value='/resources/core/js/bitrix-contacts.js' />"></script>
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
 </head>
 
