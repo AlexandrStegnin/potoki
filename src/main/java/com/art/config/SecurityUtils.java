@@ -40,4 +40,13 @@ public final class SecurityUtils {
         return false;
     }
 
+    public static Long getUserId() {
+        Long userId = 0L;
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof SecurityUser) {
+            userId = ((SecurityUser) principal).getId();
+        }
+        return userId;
+    }
+
 }
