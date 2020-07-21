@@ -6,6 +6,22 @@ package com.art.config.application;
 
 public class Location {
 
+    public static final String LOGIN = "/login";
+
+    public static final String LOGOUT = "/logout";
+
+    public static final String DEMO = "/demo";
+
+    public static final String INVESTMENTS = "/investments";
+
+    public static final String HOME = "/";
+
+    public static final String WELCOME = "/welcome";
+
+    public static final String[] WELCOME_PATHS = {
+            HOME, WELCOME, INVESTMENTS
+    };
+
     public static final String WILD_CARD = "**";
 
     public static final String ADMIN = "/admin";
@@ -81,6 +97,11 @@ public class Location {
             ROOMS + WILD_CARD,
             UNDER_FACILITIES + WILD_CARD,
             CASH_SOURCES + WILD_CARD,
-            INVESTOR_ANNEXES + WILD_CARD
+            INVESTOR_ANNEXES + WILD_CARD,
+            String.join(",", WELCOME_PATHS)
+    };
+
+    public static final String[] INVESTOR_URLS = {
+            String.join(",", WELCOME_PATHS)
     };
 }

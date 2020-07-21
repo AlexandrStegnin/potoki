@@ -1,6 +1,7 @@
 package com.art.controllers;
 
 import com.art.config.SecurityUtils;
+import com.art.config.application.Location;
 import com.art.model.AppUser;
 import com.art.service.UserService;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -31,7 +31,7 @@ public class AppController {
         this.userService = userService;
     }
 
-    @GetMapping(value = {"/", "/investments", "/welcome"})
+    @GetMapping(path = {Location.HOME, Location.WELCOME, Location.INVESTMENTS})
     public String welcomePage(SecurityContextHolderAwareRequestWrapper request, ModelMap model) {
         boolean admin = request.isUserInRole("ROLE_ADMIN");
         userService.confirm(SecurityUtils.getUserId());
@@ -50,11 +50,10 @@ public class AppController {
         return "accessDenied";
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @GetMapping(path = Location.LOGIN)
     public ModelAndView login(@RequestParam(value = "error", required = false) String error,
                               @RequestParam(value = "logout", required = false) String logout,
                               HttpServletRequest request) {
-
         ModelAndView model = new ModelAndView();
         if (error != null) {
             model.addObject("error", "Invalid username and password!");
@@ -63,12 +62,10 @@ public class AppController {
             model.addObject("msg", "Вы вышли из системы.");
         }
         model.setViewName("login");
-
         return model;
-
     }
 
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    @GetMapping(path = Location.LOGOUT)
     public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
@@ -86,7 +83,7 @@ public class AppController {
         return "redirect:/login?logout";
     }
 
-    @GetMapping(value = "/demo")
+    @GetMapping(path = Location.DEMO)
     public String demoPage(ModelMap model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (Objects.nonNull(auth) && !(auth instanceof AnonymousAuthenticationToken)) {
