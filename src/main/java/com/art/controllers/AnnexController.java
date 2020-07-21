@@ -1,6 +1,7 @@
 package com.art.controllers;
 
 import com.art.config.SecurityUtils;
+import com.art.config.application.Location;
 import com.art.model.AppUser;
 import com.art.model.UsersAnnexToContracts;
 import com.art.model.supporting.GenericResponse;
@@ -48,20 +49,20 @@ public class AnnexController {
         this.filter = new InvestorAnnexFilter();
     }
 
-    @GetMapping(path = "/investor/annexes")
+    @GetMapping(path = Location.INVESTOR_ANNEXES)
     public String getAnnexes(@PageableDefault(size = 100) @SortDefault Pageable pageable, ModelMap model) {
         prepareModel(model, filter, pageable);
         return "annex";
     }
 
-    @PostMapping(path = "/investor/annexes")
+    @PostMapping(path = Location.INVESTOR_ANNEXES)
     public String getAnnexesFiltered(@PageableDefault(size = 100) @SortDefault Pageable pageable, ModelMap model,
                                      @ModelAttribute("filter") InvestorAnnexFilter filter) {
         prepareModel(model, filter, pageable);
         return "annex";
     }
 
-    @PostMapping(path = "/investor/annexes/upload")
+    @PostMapping(path = Location.INVESTOR_ANNEXES_UPLOAD)
     public @ResponseBody
     GenericResponse uploadAnnexes(MultipartHttpServletRequest request) {
         GenericResponse response = new GenericResponse();
@@ -74,7 +75,7 @@ public class AnnexController {
         return response;
     }
 
-    @PostMapping(path = "/investor/annexes/delete")
+    @PostMapping(path = Location.INVESTOR_ANNEXES_DELETE)
     public @ResponseBody
     GenericResponse deleteAnnexes(@RequestBody UsersAnnexToContracts annex) {
         GenericResponse response = new GenericResponse();
@@ -87,7 +88,7 @@ public class AnnexController {
         return response;
     }
 
-    @PostMapping(path = "/investor/annexes/delete/list")
+    @PostMapping(path = Location.INVESTOR_ANNEXES_DELETE_LIST)
     public @ResponseBody
     GenericResponse deleteAnnexesList(@RequestBody AnnexModel annex) {
         GenericResponse response = new GenericResponse();

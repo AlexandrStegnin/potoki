@@ -6,6 +6,8 @@ package com.art.config.application;
 
 public class Location {
 
+    public static final String WILD_CARD = "**";
+
     public static final String ADMIN = "/admin";
 
     public static final String CATALOGUE = "/catalogue";
@@ -62,4 +64,23 @@ public class Location {
 
     public static final String CASH_SOURCES_CREATE = CASH_SOURCES + "/create";
 
+    public static final String INVESTOR_ANNEXES = "/investor/annexes";
+
+    public static final String INVESTOR_ANNEXES_UPLOAD = INVESTOR_ANNEXES + "/upload";
+
+    public static final String INVESTOR_ANNEXES_DELETE = INVESTOR_ANNEXES + "/delete";
+
+    public static final String INVESTOR_ANNEXES_DELETE_LIST = INVESTOR_ANNEXES_DELETE + "/list";
+
+    public static final String[] ADMIN_URLS = {
+            ADMIN,
+            CATALOGUE,
+            UPDATE_INV_DEMO,
+            URL_TRANSACTIONS + WILD_CARD,
+            FACILITIES + WILD_CARD,
+            ROOMS + WILD_CARD,
+            UNDER_FACILITIES + WILD_CARD,
+            CASH_SOURCES + WILD_CARD,
+            INVESTOR_ANNEXES + WILD_CARD
+    };
 }
