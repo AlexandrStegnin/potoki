@@ -17,7 +17,6 @@
     <script type="text/javascript" src="<c:url value='/resources/core/js/jquery-3.2.1.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min_old.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/applic.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/jsFunctions.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/users.js' />"></script>

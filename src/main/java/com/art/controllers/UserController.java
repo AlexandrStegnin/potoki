@@ -1,7 +1,6 @@
 package com.art.controllers;
 
 import com.art.func.GetPrincipalFunc;
-import com.art.func.GetServiceStatus;
 import com.art.model.*;
 import com.art.model.supporting.FileBucket;
 import com.art.model.supporting.GenericResponse;
@@ -32,8 +31,6 @@ public class UserController {
 
     private final UserService userService;
 
-    private final GetServiceStatus getServiceStatus;
-
     private final RoleService roleService;
 
     private final FacilityService facilityService;
@@ -47,11 +44,10 @@ public class UserController {
     @Resource(name = "getPrincipalFunc")
     private GetPrincipalFunc getPrincipalFunc;
 
-    public UserController(UserService userService, GetServiceStatus getServiceStatus, RoleService roleService,
+    public UserController(UserService userService, RoleService roleService,
                           FacilityService facilityService, InvestorsCashService investorsCashService,
                           UsersAnnexToContractsService usersAnnexToContractsService, AccountService accountService) {
         this.userService = userService;
-        this.getServiceStatus = getServiceStatus;
         this.roleService = roleService;
         this.facilityService = facilityService;
         this.investorsCashService = investorsCashService;
@@ -150,18 +146,6 @@ public class UserController {
             response.setMessage("Пользователь <b>" + user.getLogin() + "</b> успешно удалён.");
         } catch (Exception e) {
             response.setError("При удалении пользователя <b>" + user.getLogin() + "</b> произошла ошибка.");
-        }
-        return response;
-    }
-
-    @PostMapping(value = "/checkservice", produces = "application/json;charset=UTF-8")
-    public @ResponseBody
-    GenericResponse checkService() {
-        GenericResponse response = new GenericResponse();
-        if (getServiceStatus.getStatus() == 1) {
-            response.setMessage("1");
-        } else {
-            response.setMessage("0");
         }
         return response;
     }

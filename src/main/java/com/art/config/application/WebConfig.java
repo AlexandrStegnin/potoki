@@ -1,6 +1,5 @@
 package com.art.config.application;
 
-import com.art.model.supporting.ServiceTemporarilyUnavailableException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
 import org.springframework.context.annotation.Bean;
@@ -67,9 +66,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         //exception to view name mapping
         Properties p = new Properties();
         p.setProperty(NullPointerException.class.getName(), "npeView");
-        p.setProperty(ServiceTemporarilyUnavailableException
-                        .class.getName(),
-                "serviceUnavailable");
         s.setExceptionMappings(p);
         //mapping status code with view response.
         s.addStatusCode("npeView", 404);
