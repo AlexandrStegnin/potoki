@@ -40,7 +40,7 @@
             <button type="button" id="bth-search" class="btn btn-primary btn-sm">Фильтр</button>
             <sec:authorize access="isFullyAuthenticated()">
                 <sec:authorize access="hasRole('ADMIN')">
-                    <a href="<c:url value='/users/create' />" class="btn btn-link btn-sm pull-right">Добавить
+                    <a href="<c:url value='/users/create' />" class="btn btn-success btn-sm pull-right">Добавить
                         пользователя</a>
                 </sec:authorize>
             </sec:authorize>
@@ -54,7 +54,7 @@
                 <th>Подтверждён</th>
                 <th>Роль</th>
                 <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
-                    <th style="text-align: center;" colspan="2">Действие</th>
+                    <th style="text-align: center">Действие</th>
                 </sec:authorize>
 
             </tr>
@@ -89,12 +89,19 @@
                     <td>${roleName}</td>
                     <sec:authorize access="isFullyAuthenticated()">
                         <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
-                            <td><a href="<c:url value='/edit-user-${user.id}' />" class="btn btn-success custom-width">Изменить</a>
+                            <td style="text-align: center">
+                                <div class="btn-group">
+                                    <button type="button" data-toggle="dropdown"
+                                            class="btn btn-primary btn-sm dropdown-toggle">Действие <span
+                                            class="caret"></span></button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="<c:url value='/edit-user-/${user.id}' />">Изменить</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="<c:url value='/#' />" id="delete" data-user-id="${user.id}" style="color: red">Удалить</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </td>
-                        </sec:authorize>
-                        <sec:authorize access="hasRole('ADMIN')">
-                            <td><a href="<c:url value='/#' />" id="delete" data-user-id="${user.id}"
-                                   class="btn btn-danger custom-width">Удалить</a></td>
                         </sec:authorize>
                     </sec:authorize>
                 </tr>
