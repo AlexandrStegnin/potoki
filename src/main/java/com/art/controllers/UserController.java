@@ -1,6 +1,6 @@
 package com.art.controllers;
 
-import com.art.func.GetPrincipalFunc;
+import com.art.config.SecurityUtils;
 import com.art.model.*;
 import com.art.model.supporting.FileBucket;
 import com.art.model.supporting.GenericResponse;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.Resource;
 import java.math.BigInteger;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
@@ -40,9 +39,6 @@ public class UserController {
     private final UsersAnnexToContractsService usersAnnexToContractsService;
 
     private final AccountService accountService;
-
-    @Resource(name = "getPrincipalFunc")
-    private GetPrincipalFunc getPrincipalFunc;
 
     public UserController(UserService userService, RoleService roleService,
                           FacilityService facilityService, InvestorsCashService investorsCashService,
@@ -106,7 +102,7 @@ public class UserController {
     @PostMapping(value = "/admin-flows")
     public ModelAndView viewFlowsAdmin(@ModelAttribute("searchSummary") SearchSummary searchSummary) {
         ModelAndView view = new ModelAndView("viewFlows");
-        if (getPrincipalFunc.haveAdminRole()) {
+        if (SecurityUtils.isAdmin()) {
             if (searchSummary.getInvestor() != null || searchSummary.getLogin() != null) {
                 BigInteger invId = new BigInteger(searchSummary.getInvestor());
                 String login = searchSummary.getLogin();

@@ -6,6 +6,8 @@ import com.art.model.AppUser;
 import com.art.model.supporting.enums.UserRole;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.util.List;
+
 /**
  * @author Alexandr Stegnin
  */
@@ -47,6 +49,19 @@ public final class SecurityUtils {
             userId = ((SecurityUser) principal).getId();
         }
         return userId;
+    }
+
+    public static boolean isAdmin() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof SecurityUser) {
+            List<AppRole> roles = ((SecurityUser) principal).getRoles();
+            AppRole admin = roles.stream()
+                    .filter(role -> role.getName().equalsIgnoreCase("ROLE_ADMIN"))
+                    .findFirst()
+                    .orElse(null);
+            return admin != null;
+        }
+        return false;
     }
 
 }
