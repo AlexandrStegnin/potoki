@@ -1,5 +1,6 @@
 package com.art.controllers;
 
+import com.art.config.application.Location;
 import com.art.func.UploadExcelFunc;
 import com.art.model.*;
 import com.art.model.supporting.FileBucket;
@@ -33,25 +34,28 @@ import java.util.Objects;
 @Controller
 public class InvestorsSummaryController {
 
-    @Resource(name = "facilityService")
-    private FacilityService facilityService;
+    private final FacilityService facilityService;
 
     @Resource(name = "uploadExcelFunc")
     private UploadExcelFunc uploadExcelFunc;
 
-    @Resource(name = "userService")
-    private UserService userService;
+    private final UserService userService;
 
-    @Resource(name = "investorsFlowsService")
-    private InvestorsFlowsService investorsFlowsService;
+    private final InvestorsFlowsService investorsFlowsService;
 
-    @Resource(name = "underFacilityService")
-    private UnderFacilityService underFacilityService;
+    private final UnderFacilityService underFacilityService;
 
-    @Resource(name = "roomService")
-    private RoomService roomService;
+    private final RoomService roomService;
 
     private final SearchSummary filters = new SearchSummary();
+
+    public InvestorsSummaryController(FacilityService facilityService, UserService userService, InvestorsFlowsService investorsFlowsService, UnderFacilityService underFacilityService, RoomService roomService) {
+        this.facilityService = facilityService;
+        this.userService = userService;
+        this.investorsFlowsService = investorsFlowsService;
+        this.underFacilityService = underFacilityService;
+        this.roomService = roomService;
+    }
 
     @GetMapping(value = "/paysToInv")
     public ModelAndView paysToInvByPageNumber(@PageableDefault(size = 100, sort = "id") Pageable pageable,
@@ -88,11 +92,9 @@ public class InvestorsSummaryController {
     public String ptiUploadExcel(ModelMap model, @ModelAttribute("fileBucket") FileBucket fileBucket, HttpServletRequest request) throws IOException, ParseException {
         MultipartFile multipartFile = fileBucket.getFile();
         String ret = "Выплатам инвесторам.";
-        String redirectUrl = "/";
         String title = "Выплаты инвесторам";
         String err = uploadExcelFunc.ExcelParser(multipartFile, "invFlows", request);
-
-        model.addAttribute("redirectUrl", redirectUrl);
+        model.addAttribute("redirectUrl", Location.HOME);
         model.addAttribute("ret", ret);
         model.addAttribute("title", title);
         model.addAttribute("err", err);
