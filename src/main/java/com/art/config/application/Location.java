@@ -6,6 +6,7 @@ package com.art.config.application;
 
 public class Location {
 
+    // Общие
     public static final String LOGIN = "/login";
 
     public static final String LOGOUT = "/logout";
@@ -18,18 +19,16 @@ public class Location {
 
     public static final String WELCOME = "/welcome";
 
-    public static final String[] WELCOME_PATHS = {
-            HOME, WELCOME, INVESTMENTS
-    };
-
     public static final String WILD_CARD = "**";
 
+    // Админ
     public static final String ADMIN = "/admin";
 
     public static final String CATALOGUE = "/catalogue";
 
     public static final String UPDATE_INV_DEMO = "/update-inv-demo";
 
+    // Транзакции
     public static final String URL_TRANSACTIONS = "/transactions";
 
     public static final String URL_TRANSACTIONS_TX_ID = URL_TRANSACTIONS + "/{txId}";
@@ -38,6 +37,7 @@ public class Location {
 
     public static final String URL_TRANSACTIONS_CASH = URL_TRANSACTIONS + "/cash";
 
+    // Объекты
     public static final String FACILITIES = "/facilities";
 
     public static final String FACILITIES_LIST = FACILITIES + "/list";
@@ -50,6 +50,7 @@ public class Location {
 
     public static final String FACILITIES_EDIT = FACILITIES + "/edit/{id}";
 
+    // Помещения
     public static final String ROOMS = "/rooms";
 
     public static final String ROOMS_LIST = ROOMS + "/list";
@@ -60,6 +61,7 @@ public class Location {
 
     public static final String ROOMS_CREATE = ROOMS + "/create";
 
+    // Подобъекты
     public static final String UNDER_FACILITIES = "/facilities/child";
 
     public static final String UNDER_FACILITIES_LIST = UNDER_FACILITIES + "/list";
@@ -70,6 +72,7 @@ public class Location {
 
     public static final String UNDER_FACILITIES_CREATE = UNDER_FACILITIES + "/create";
 
+    // Источники денег
     public static final String CASH_SOURCES = "/cash-sources";
 
     public static final String CASH_SOURCES_LIST = CASH_SOURCES + "/list";
@@ -80,6 +83,7 @@ public class Location {
 
     public static final String CASH_SOURCES_CREATE = CASH_SOURCES + "/create";
 
+    // Приложения к договорам инвесторов
     public static final String INVESTOR_ANNEXES = "/investor/annexes";
 
     public static final String INVESTOR_ANNEXES_UPLOAD = INVESTOR_ANNEXES + "/upload";
@@ -87,6 +91,16 @@ public class Location {
     public static final String INVESTOR_ANNEXES_DELETE = INVESTOR_ANNEXES + "/delete";
 
     public static final String INVESTOR_ANNEXES_DELETE_LIST = INVESTOR_ANNEXES_DELETE + "/list";
+
+    // Токены приложений
+    public static final String TOKENS = "/tokens";
+
+    public static final String TOKENS_EDIT_ID = "/edit-token-{id}";
+
+    public static final String TOKENS_DELETE_ID = "/delete-token-{id}";
+
+    public static final String TOKENS_GENERATE = "/generate";
+
 
     public static final String[] ADMIN_URLS = {
             ADMIN,
@@ -98,10 +112,10 @@ public class Location {
             UNDER_FACILITIES + WILD_CARD,
             CASH_SOURCES + WILD_CARD,
             INVESTOR_ANNEXES + WILD_CARD,
-            String.join(",", WELCOME_PATHS)
+            HOME, WELCOME, INVESTMENTS
     };
 
     public static final String[] INVESTOR_URLS = {
-            String.join(",", WELCOME_PATHS)
+            HOME, WELCOME, INVESTMENTS
     };
 }

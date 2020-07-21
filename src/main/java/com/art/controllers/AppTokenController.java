@@ -1,5 +1,6 @@
 package com.art.controllers;
 
+import com.art.config.application.Location;
 import com.art.model.AppToken;
 import com.art.service.AppTokenService;
 import org.springframework.stereotype.Controller;
@@ -25,68 +26,59 @@ public class AppTokenController {
         this.appTokenService = appTokenService;
     }
 
-    @GetMapping(path = "/tokens")
+    @GetMapping(path = Location.TOKENS)
     public String tokensPage(ModelMap model) {
         List<AppToken> tokens = appTokenService.findAll();
         model.addAttribute("tokens", tokens);
-        return "tokens";
+        return "token-list";
     }
 
-    @GetMapping(value = {"/edit-token-{id}"})
+    @GetMapping(path = Location.TOKENS_EDIT_ID)
     public String editToken(@PathVariable Long id, ModelMap model) {
         String title = "Обновление данных по токенам";
         AppToken token = appTokenService.findById(id);
         model.addAttribute("token", token);
         model.addAttribute("edit", true);
         model.addAttribute("title", title);
-        return "addToken";
+        return "token-add";
     }
 
-    @PostMapping(value = "/edit-token-{id}")
+    @PostMapping(path = Location.TOKENS_EDIT_ID)
     public String updateToken(@ModelAttribute("token") AppToken token, ModelMap model) {
         String ret = "списку токенов.";
-        String redirectUrl = "/tokens";
-
         appTokenService.update(token);
-
-        model.addAttribute("success", "Данные по токену приложения " +
-                token.getAppName() + " успешно обновлены.");
-        model.addAttribute("redirectUrl", redirectUrl);
+        model.addAttribute("success", "Данные по токену приложения " + token.getAppName() + " успешно обновлены.");
+        model.addAttribute("redirectUrl", Location.TOKENS);
         model.addAttribute("ret", ret);
         return "registrationsuccess";
     }
 
-    @GetMapping(value = {"/delete-token-{id}"})
+    @GetMapping(path = Location.TOKENS_DELETE_ID)
     public String deleteToken(@PathVariable Long id) {
         appTokenService.delete(id);
-        return "redirect:/tokens";
+        return "redirect:" + Location.TOKENS;
     }
 
-    @GetMapping(value = {"/generate"})
+    @GetMapping(path = Location.TOKENS_GENERATE)
     public String newToken(ModelMap model) {
         String title = "Добавление токена";
         AppToken token = new AppToken();
         model.addAttribute("token", token);
         model.addAttribute("edit", false);
         model.addAttribute("title", title);
-        return "addToken";
+        return "token-add";
     }
 
-    @PostMapping(value = "/generate")
+    @PostMapping(path = Location.TOKENS_GENERATE)
     public String saveToken(@ModelAttribute("token") AppToken token,
                               BindingResult result, ModelMap model) {
-
         if (result.hasErrors()) {
-            return "addToken";
+            return "token-add";
         }
         String ret = "списку токенов";
-        String redirectUrl = "/tokens";
-
         appTokenService.create(token);
-
-        model.addAttribute("success", "Токен для приложения " + token.getAppName() +
-                " успешно добавлен.");
-        model.addAttribute("redirectUrl", redirectUrl);
+        model.addAttribute("success", "Токен для приложения " + token.getAppName() + " успешно добавлен.");
+        model.addAttribute("redirectUrl", Location.TOKENS);
         model.addAttribute("ret", ret);
         return "registrationsuccess";
     }
