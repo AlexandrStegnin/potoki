@@ -52,14 +52,14 @@ public class AnnexController {
     @GetMapping(path = Location.INVESTOR_ANNEXES)
     public String getAnnexes(@PageableDefault(size = 100) @SortDefault Pageable pageable, ModelMap model) {
         prepareModel(model, filter, pageable);
-        return "annex";
+        return "annex-list";
     }
 
     @PostMapping(path = Location.INVESTOR_ANNEXES)
     public String getAnnexesFiltered(@PageableDefault(size = 100) @SortDefault Pageable pageable, ModelMap model,
                                      @ModelAttribute("filter") InvestorAnnexFilter filter) {
         prepareModel(model, filter, pageable);
-        return "annex";
+        return "annex-list";
     }
 
     @PostMapping(path = Location.INVESTOR_ANNEXES_UPLOAD)
