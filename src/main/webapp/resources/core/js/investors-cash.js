@@ -1679,56 +1679,6 @@ function showPopup(message) {
     }, 3000);
 }
 
-// function slideBox(message) {
-//     $('#slideBox').find('h4').html(message);
-//     setTimeout(function () {
-//         $('#slideBox').animate({'right': '52px'}, 500);
-//     }, 500);
-//     setTimeout(function () {
-//         $('#slideBox').animate({'right': '-300px'}, 500);
-//     }, 4000);
-// }
-
-function filteredInvestorsCash(facility, underFacility, investor, dateBegin, dateEnd, pageNumber) {
-    var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
-
-    var search = ({
-        "facility": facility,
-        "underFacility": underFacility,
-        "investor": investor,
-        "dateStart": dateBegin,
-        "dateEnd": dateEnd,
-        "pageNumber": pageNumber
-    });
-
-    showLoader();
-
-    $.ajax({
-        type: "POST",
-        contentType: "application/json;charset=utf-8",
-        url: "/investorsCash",
-        data: JSON.stringify(search),
-        dataType: 'json',
-        timeout: 100000,
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader(header, token);
-        },
-        success: function (data) {
-            closeLoader();
-            // $('#popup_modal_form').find('#message').append(data.message);
-            // showPopup();
-            // closePopup();
-        },
-        error: function (e) {
-            $('#popup_modal_form').find('#message').append(e.error);
-            closeLoader();
-            // showPopup();
-            // closePopup();
-        }
-    });
-}
-
 function linkHasClass(link) {
     if (link.hasClass('disabled')) return true;
 }

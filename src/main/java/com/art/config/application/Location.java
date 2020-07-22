@@ -109,6 +109,39 @@ public class Location {
             "/turn" + WILD_CARD, "/progress" + WILD_CARD, "/status" + WILD_CARD
     };
 
+    // Деньги инвесторов
+    public static final String INVESTOR_CASH = "/investor-cash";
+
+    public static final String INVESTOR_CASH_LIST = INVESTOR_CASH + "/list";
+
+    public static final String INVESTOR_CASH_CREATE = INVESTOR_CASH + "/create";
+
+    public static final String INVESTOR_CASH_EDIT_ID = INVESTOR_CASH + "/edit/{id}";
+
+    public static final String INVESTOR_CASH_CLOSE_ID = INVESTOR_CASH + "/close/{id}";
+
+    public static final String INVESTOR_CASH_SAVE = INVESTOR_CASH + "/save";
+
+    public static final String INVESTOR_CASH_DOUBLE_ID = INVESTOR_CASH + "/double/{id}";
+
+    public static final String INVESTOR_CASH_DELETE_LIST = INVESTOR_CASH + "/delete/list";
+
+    public static final String INVESTOR_CASH_CASHING = INVESTOR_CASH + "/cashing";
+
+    public static final String INVESTOR_CASH_CASHING_ALL = INVESTOR_CASH_CASHING + "/all";
+
+    public static final String INVESTOR_CASH_GET = INVESTOR_CASH + "/get";
+
+    public static final String INVESTOR_CASH_REINVEST_SAVE = INVESTOR_CASH + "/reinvest/save";
+
+    public static final String INVESTOR_CASH_REINVEST_CASH_SAVE = INVESTOR_CASH + "/reinvest/cash/save";
+
+    public static final String INVESTOR_CASH_DIVIDE_MULTIPLE = INVESTOR_CASH + "/divide/multiple";
+
+    public static final String INVESTOR_CASH_DIVIDE_CASH_SAVE = INVESTOR_CASH + "/divide/cash/save";
+
+    public static final String INVESTOR_CASH_CLOSE = INVESTOR_CASH + "/close";
+
     public static final String[] ADMIN_URLS = {
             ADMIN,
             CATALOGUE,
@@ -122,7 +155,8 @@ public class Location {
             HOME, WELCOME, INVESTMENTS,
             TOKENS + WILD_CARD,
             TOKENS_GENERATE,
-            BITRIX_MERGE
+            BITRIX_MERGE,
+            INVESTOR_CASH + WILD_CARD
     };
 
     public static final String[] INVESTOR_URLS = {

@@ -1,5 +1,6 @@
 package com.art.config;
 
+import com.art.config.application.Location;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -109,42 +110,24 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                .antMatchers("/savePassword", "/login").permitAll()
-                .antMatchers("/turn/**", "/progress/**", "/status/**").permitAll()
-                .antMatchers("/kind-on-project", "/investments", "/union-profit", "/have-unread")
-                .permitAll()
-                .antMatchers("/mark-read-annex", "/cashing-money", "/annexToContract/**")
-                .access("hasAnyRole('ADMIN', 'INVESTOR')")
-                .antMatchers("/investor/annexes", "/investor/annexes/**", "/investor/annexes/upload")
-                .access("hasRole('ADMIN') or hasRole('DBA')")
-                .antMatchers("/", "/welcome")
-                .access("hasRole('ADMIN') or hasRole('DBA') or hasRole('INVESTOR')")
-                .antMatchers("/new**", "/delete**", "**double**", "/save**")
-                .access("hasRole('ADMIN')")
-                .antMatchers("/getIncomes", "/getInvestorsFlows", "/getMainFlows")
-                .access("hasRole('ADMIN') or hasRole('DBA') or hasRole('INVESTOR')")
-                .antMatchers("/edit**", "/admin**", "catalogue", "uploadImage")
-                .access("hasRole('ADMIN') or hasRole('DBA')")
-                .antMatchers("/switch", "/uploadexcel", "**close**", "/load**")
-                .access("hasRole('ADMIN') or hasRole('DBA')")
-                .antMatchers("/**cashpayment**", "**cashsource**", "**source**",
-                        "**facilities**", "/investors**")
-                .access("hasRole('ADMIN') or hasRole('DBA')")
-                .antMatchers("/tokens")
-                .access("hasRole('ADMIN') or hasRole('DBA')")
-                .antMatchers("/bitrix/contacts")
-                .access("hasRole('ADMIN') or hasRole('DBA')")
-                .and().formLogin().loginPage("/login")
-                .loginProcessingUrl("/login")
+                .antMatchers("/savePassword", "/sw.js", Location.LOGIN).permitAll()
+                .antMatchers(Location.WEBSOCKET_PATHS).permitAll()
+                .anyRequest().authenticated()
+                .antMatchers("/kind-on-project", Location.INVESTMENTS, "/union-profit", "/have-unread").access("hasAnyRole('ADMIN', 'INVESTOR')")
+                .antMatchers("/mark-read-annex", "/cashing-money", "/annexToContract/**").access("hasAnyRole('ADMIN', 'INVESTOR')")
+//                .antMatchers("/getInvestorsFlows", "/getMainFlows").access("hasAnyRole('ADMIN', 'INVESTOR')")
+                .antMatchers("/switch", "/uploadexcel", "**close**", "/load**").access("hasRole('ADMIN')")
+                .antMatchers(Location.ADMIN_URLS).access("hasRole('ADMIN')")
+                .and().formLogin().loginPage(Location.LOGIN).permitAll()
+                .loginProcessingUrl(Location.LOGIN)
                 .usernameParameter("login").passwordParameter("password")
-                .defaultSuccessUrl("/investments")
+                .defaultSuccessUrl(Location.HOME)
                 .and()
                 .rememberMe().rememberMeParameter("remember-me").tokenRepository(tokenRepository)
                 .tokenValiditySeconds(86400)
                 .and().csrf()
                 .and().exceptionHandling().accessDeniedPage("/Access_Denied")
-                .and().sessionManagement().enableSessionUrlRewriting(true)
-                .and().sessionManagement().invalidSessionUrl("/login");
+                .and().sessionManagement().invalidSessionUrl(Location.LOGIN);
     }
 
     @Bean

@@ -15,12 +15,8 @@
     <link href="<c:url value='/resources/core/css/applic.css' />" rel="stylesheet"/>
     <link href="<c:url value='/resources/core/css/popup.css' />" rel="stylesheet"/>
     <link href="<c:url value='/resources/core/css/ajaxLoader.css' />" rel="stylesheet"/>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/jquery-3.2.1.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min_old.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/jsFunctions.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/AjaxLoader.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/investors-cash.js' />"></script>
+    <link rel="stylesheet"
+          href="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css' />">
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
 </head>
 
@@ -39,8 +35,8 @@
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="facility">Объект:</label>
                 <div class="col-md-7">
-                    <form:select path="facility" id="facility" items="${facility}" multiple="false"
-                                 itemValue="id" itemLabel="facility" class="form-control input-sm"/>
+                    <form:select path="facility" id="facility" items="${facilities}" multiple="false"
+                                 itemValue="id" itemLabel="name" class="form-control input-sm"/>
                     <div class="has-error">
                         <form:errors path="facility" class="help-inline"/>
                     </div>
@@ -50,10 +46,10 @@
 
         <c:choose>
             <c:when test="${doubleCash}">
-                <c:set var="uf" value="${underFacilityList}"/>
+                <c:set var="uf" value="${underFacilitiesList}"/>
             </c:when>
             <c:otherwise>
-                <c:set var="uf" value="${underFacility}"/>
+                <c:set var="uf" value="${underFacilities}"/>
             </c:otherwise>
         </c:choose>
 
@@ -64,7 +60,7 @@
                     <form:select path="underFacility" id="underFacility" multiple="false"
                                  class="form-control input-sm">
                         <c:forEach var="uf" items="${uf}">
-                            <form:option value="${uf.underFacility}" id="${uf.id}" data-parent-id="${uf.facilityId}">
+                            <form:option value="${uf.name}" id="${uf.id}" data-parent-id="${uf.facility.id}">
 
                             </form:option>
                         </c:forEach>
@@ -126,7 +122,7 @@
                 <label class="col-md-3 control-lable" for="cashSrc">Источник получения денег:</label>
                 <div class="col-md-7">
                     <form:select path="cashSource" id="cashSrc" items="${cashSources}" multiple="false"
-                                 itemValue="id" itemLabel="cashSource" class="form-control input-sm"/>
+                                 itemValue="id" itemLabel="name" class="form-control input-sm"/>
                     <div class="has-error">
                         <form:errors path="cashSource" class="help-inline"/>
                     </div>
@@ -205,7 +201,7 @@
                 <div class="col-md-7">
                     <form:select path="sourceFacility" id="sourceFacilities" items="${sourceFacilities}"
                                  multiple="false"
-                                 itemValue="id" itemLabel="facility" class="form-control input-sm"/>
+                                 itemValue="id" itemLabel="name" class="form-control input-sm"/>
                     <div class="has-error" id="sourceFacilityErr">
                     </div>
                 </div>
@@ -220,7 +216,7 @@
                     <form:select path="sourceUnderFacility" id="sourceUnderFacilities" multiple="false"
                                  class="form-control input-sm">
                         <c:forEach var="uf" items="${sourceUnderFacilities}">
-                            <form:option value="${uf.underFacility}" id="${uf.id}" data-parent-id="${uf.facilityId}">
+                            <form:option value="${uf.name}" id="${uf.id}" data-parent-id="${uf.facility.id}">
 
                             </form:option>
                         </c:forEach>
@@ -276,8 +272,17 @@
 <%@include file="popup.jsp" %>
 <%@include file="slideDiv.jsp" %>
 
-<link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/css/bootstrap-select.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
+
+<script type="text/javascript"
+        src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' />"></script>
+<script type="text/javascript"
+        src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js' />"></script>
+<script type="text/javascript"
+        src="<c:url value='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js' />"></script>
+<script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/jsFunctions.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/AjaxLoader.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/investors-cash.js' />"></script>
 </body>
 </html>
