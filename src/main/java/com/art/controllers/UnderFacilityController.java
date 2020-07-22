@@ -79,7 +79,7 @@ public class UnderFacilityController {
                 " успешно обновлены.");
         model.addAttribute("redirectUrl", REDIRECT_URL);
         model.addAttribute("ret", ret);
-        return "registrationsuccess";
+        return "registration-success";
     }
 
     @GetMapping(path = Location.UNDER_FACILITIES_DELETE)
@@ -110,7 +110,7 @@ public class UnderFacilityController {
                 " успешно добавлен.");
         model.addAttribute("redirectUrl", REDIRECT_URL);
         model.addAttribute("ret", ret);
-        return "registrationsuccess";
+        return "registration-success";
     }
 
     @ModelAttribute("facilities")

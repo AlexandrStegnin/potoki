@@ -102,7 +102,7 @@ public class FacilityController {
         model.addAttribute("success", "Данные объекта " + facility.getName() + " успешно обновлены.");
         model.addAttribute("redirectUrl", REDIRECT_URL);
         model.addAttribute("ret", ret);
-        return "registrationsuccess";
+        return "registration-success";
     }
 
     /**

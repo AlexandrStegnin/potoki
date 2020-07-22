@@ -14,7 +14,7 @@
     <link href="<c:url value='/resources/core/css/old_bootstrap.min.css' />" rel="stylesheet"/>
     <link href="<c:url value='/resources/core/css/applic.css' />" rel="stylesheet"/>
     <link href="<c:url value='/resources/core/css/popup.css' />" rel="stylesheet"/>
-    <link href="<c:url value='/resources/core/css/ajaxLoader.css' />" rel="stylesheet"/>
+    <link href="<c:url value='/resources/core/css/ddk_loader.css' />" rel="stylesheet"/>
     <link rel="stylesheet"
           href="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css' />">
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
@@ -282,7 +282,7 @@
 <script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/jsFunctions.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
-<script type="text/javascript" src="<c:url value='/resources/core/js/AjaxLoader.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/investors-cash.js' />"></script>
 </body>
 </html>

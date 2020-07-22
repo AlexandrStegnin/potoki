@@ -13,7 +13,7 @@
     <link href="<c:url value='/resources/core/css/old_bootstrap.min.css' />" rel="stylesheet"/>
     <link href="<c:url value='/resources/core/css/applic.css' />" rel="stylesheet"/>
     <link href="<c:url value='/resources/core/css/popup.css' />" rel="stylesheet"/>
-    <link href="<c:url value='/resources/core/css/ajaxLoader.css' />" rel="stylesheet"/>
+    <link href="<c:url value='/resources/core/css/ddk_loader.css' />" rel="stylesheet"/>
     <link href="<c:url value='/resources/core/css/datatables.min.css' />" rel="stylesheet"/>
     <link href="<c:url value='/resources/core/css/jquery-ui.min.css' />" rel="stylesheet"/>
     <script type="text/javascript" src="<c:url value='/resources/core/js/jquery-3.2.1.js' />"></script>
@@ -22,7 +22,7 @@
     <script type="text/javascript" src="<c:url value='/resources/core/js/jquery-ui.min.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min_old.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/AjaxLoader.js' />"></script>
+    <script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/forLoadPdfFiles.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/datatables.min.js' />"></script>
         <script type="text/javascript" src="<c:url value='/resources/core/js/profiles.js' />"></script>

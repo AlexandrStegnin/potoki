@@ -72,7 +72,7 @@ public class RoomController {
                 " успешно обновлены.");
         model.addAttribute("redirectUrl", REDIRECT_URL);
         model.addAttribute("ret", ret);
-        return "registrationsuccess";
+        return "registration-success";
     }
 
     @GetMapping(path = Location.ROOMS_DELETE)
@@ -103,7 +103,7 @@ public class RoomController {
                 " успешно добавлено.");
         model.addAttribute("redirectUrl", REDIRECT_URL);
         model.addAttribute("ret", ret);
-        return "registrationsuccess";
+        return "registration-success";
     }
 
     @ModelAttribute("underFacilities")

@@ -14,12 +14,12 @@
     <link href="<c:url value='/resources/core/css/old_bootstrap.min.css' />" rel="stylesheet"/>
     <link href="<c:url value='/resources/core/css/applic.css' />" rel="stylesheet"/>
     <link href="<c:url value='/resources/core/css/popup.css' />" rel="stylesheet"/>
-    <link href="<c:url value='/resources/core/css/ajaxLoader.css' />" rel="stylesheet"/>
+    <link href="<c:url value='/resources/core/css/ddk_loader.css' />" rel="stylesheet"/>
     <script type="text/javascript" src="<c:url value='/resources/core/js/jquery-3.2.1.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min_old.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/jsFunctions.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/AjaxLoader.js' />"></script>
+    <script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/investors-cash.js' />"></script>
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
 </head>
@@ -35,14 +35,14 @@
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="facility">Объект:</label>
                 <div class="col-md-7">
-                    <form:select path="investorsCash.facility" id="facility" items="${facility}" multiple="false"
-                                 itemValue="id" itemLabel="facility" class="selectpicker form-control input-sm"
+                    <form:select path="investorsCash.facility" id="facility" items="${facilities}" multiple="false"
+                                 itemValue="id" itemLabel="name" class="selectpicker form-control input-sm"
                                  data-live-search="true"/>
                 </div>
             </div>
         </div>
 
-        <c:set var="uf" value="${underFacility}"/>
+        <c:set var="uf" value="${underFacilities}"/>
 
         <div class="row" id="underFacilitiesRow">
             <div class="form-group col-md-12">
@@ -51,7 +51,7 @@
                     <form:select path="investorsCash.underFacility" id="underFacility" multiple="false"
                                  class="form-control input-sm">
                         <c:forEach var="uf" items="${uf}">
-                            <form:option value="${uf.underFacility}" id="${uf.id}" data-parent-id="${uf.facilityId}">
+                            <form:option value="${uf.name}" id="${uf.id}" data-parent-id="${uf.facility.id}">
 
                             </form:option>
                         </c:forEach>

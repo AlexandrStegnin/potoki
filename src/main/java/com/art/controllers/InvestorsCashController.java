@@ -169,7 +169,7 @@ public class InvestorsCashController {
                 " успешно добавлены.");
         model.addAttribute("redirectUrl", redirectUrl);
         model.addAttribute("ret", ret);
-        return "registrationsuccess";
+        return "registration-success";
     }
 
     /**

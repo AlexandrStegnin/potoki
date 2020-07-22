@@ -50,7 +50,7 @@ public class AppTokenController {
         model.addAttribute("success", "Данные по токену приложения " + token.getAppName() + " успешно обновлены.");
         model.addAttribute("redirectUrl", Location.TOKENS);
         model.addAttribute("ret", ret);
-        return "registrationsuccess";
+        return "registration-success";
     }
 
     @GetMapping(path = Location.TOKENS_DELETE_ID)
@@ -80,7 +80,7 @@ public class AppTokenController {
         model.addAttribute("success", "Токен для приложения " + token.getAppName() + " успешно добавлен.");
         model.addAttribute("redirectUrl", Location.TOKENS);
         model.addAttribute("ret", ret);
-        return "registrationsuccess";
+        return "registration-success";
     }
 
 }
