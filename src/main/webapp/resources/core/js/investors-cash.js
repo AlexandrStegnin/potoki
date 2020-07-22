@@ -1091,16 +1091,20 @@ function prepareSaveCash() {
         underFacility = null;
     }
 
-    shareKind = {
-        id: reinvestData.find('#shareKindName').val(),
-        shareKind: $('#shareKindName').find('option:selected').text()
-    };
+    shareKind = $('#shareTypeName').find('option:selected').text()
 
-    if (shareKind.shareKind.indexOf('Выберите вид доли') >= 0) {
+    if (shareKind.indexOf('Не определена') >= 0) {
         $('#shareKindErr').css('display', 'block');
         return false;
     } else {
         $('#shareKindErr').css('display', 'none');
+        switch (shareKind) {
+            case 'Основная':
+                shareKind = 'MAIN'
+                break
+            case 'Сверхдоля':
+                shareKind = 'OVER'
+        }
     }
 
     showLoader();
@@ -1151,7 +1155,7 @@ function prepareSaveCash() {
                 underFacility: underFacility,
                 dateClosingInvest: null,
                 typeClosingInvest: null,
-                shareKind: shareKind,
+                shareType: shareKind,
                 sourceId: sourceId,
                 source: sourceId.toString(),
                 dateReport: dateReport,
