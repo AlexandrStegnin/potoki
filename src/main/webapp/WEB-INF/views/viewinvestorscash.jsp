@@ -80,20 +80,20 @@
                 <input type="hidden" id="total" name="total" value="${page.content.size()}">
                 <input type="hidden" id="filtered" name="filtered" value="${cashFilters.filtered}">
                 <label class="sr-only" for="fFacilities">Объект:</label>
-                <form:select path="facility" id="fFacilities" multiple="true" class="selectpicker"
+                <form:select path="facilities" id="fFacilities" multiple="true" class="selectpicker"
                              data-live-search="true" data-width="130px" title="Выберите объект..."
                              data-actions-box="true" data-select-all-text="Выбрать всё"
                              data-deselect-all-text="Очистить">
                     <form:options items="${facilitiesList}" itemValue="id" itemLabel="name" />
                 </form:select>
                 <label class="sr-only" for="uFacilities">Подобъект:</label>
-                <form:select path="underFacility" id="uFacilities" multiple="true" class="selectpicker"
+                <form:select path="underFacilities" id="uFacilities" multiple="true" class="selectpicker"
                              data-live-search="true" data-width="160px" title="Выберите подобъект..."
                              data-actions-box="true" data-select-all-text="Выбрать всё"
                              data-deselect-all-text="Очистить">
                     <c:forEach var="uf" items="${underFacilitiesList}">
                         <option
-                                <c:forEach var="filterUnderFacility" items="${cashFilters.underFacility}">
+                                <c:forEach var="filterUnderFacility" items="${cashFilters.underFacilities}">
                                     <c:choose>
                                         <c:when test="${uf.name eq filterUnderFacility}">selected="selected"</c:when>
                                     </c:choose>

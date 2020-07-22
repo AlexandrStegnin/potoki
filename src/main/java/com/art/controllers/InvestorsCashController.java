@@ -161,10 +161,10 @@ public class InvestorsCashController {
         String redirectUrl = "/investorscash";
         investorsCash = investorsCashService.create(investorsCash);
         transactionLogService.create(investorsCash, TransactionType.CREATE);
-        if (null != investorsCash.getCashSource() &&
-                !investorsCash.getCashSource().getName().equalsIgnoreCase("Бронь")) {
-            marketingTreeService.updateMarketingTreeFromApp();
-        }
+//        if (null != investorsCash.getCashSource() &&
+//                !investorsCash.getCashSource().getName().equalsIgnoreCase("Бронь")) {
+//            marketingTreeService.updateMarketingTreeFromApp();
+//        }
         model.addAttribute("success", "Деньги инвестора " + investorsCash.getInvestor().getLogin() +
                 " успешно добавлены.");
         model.addAttribute("redirectUrl", redirectUrl);

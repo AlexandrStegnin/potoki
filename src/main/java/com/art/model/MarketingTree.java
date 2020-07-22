@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.Date;
 
 @Data
@@ -16,7 +15,7 @@ import java.util.Date;
         name = "updateMarketingTree",
         procedureName = "UpdateMarketingTree",
         parameters = {
-                @StoredProcedureParameter(mode = ParameterMode.IN, type = BigInteger.class, name = "invId")
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = Long.class, name = "invId")
         }
 )
 @NoArgsConstructor
@@ -25,7 +24,7 @@ public class MarketingTree implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
-    private BigInteger id;
+    private Long id;
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "PartnerId", referencedColumnName = "Id")
