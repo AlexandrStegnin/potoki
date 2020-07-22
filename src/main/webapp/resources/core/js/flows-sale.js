@@ -166,7 +166,7 @@ jQuery(document).ready(function ($) {
 
     $('#fFacilities').change(function () {
         let facility = $(this).find('option:selected').attr('id');
-        getUnderFacilitiesFromLocalStorage(facility, 'uFacilities');
+        getUFFromLS(facility, 'uFacilities');
     });
 
     $(document).on('change', '#srcFacilities', function () {
@@ -658,8 +658,6 @@ function deleteCash(cashIdList) {
         .done(function (data) {
             closeLoader();
             slideBox(data.message);
-            //$('#msg').html(data.message);
-            //$('#msg-modal').modal('show');
         })
         .fail(function (e) {
             console.log(e);
@@ -727,4 +725,55 @@ function blockUnblockDivide() {
             $(this).find('td:last-child').find('ul.dropdown-menu').find('#liDivide').removeClass('disabled').addClass('active');
         }
     });
+}
+
+
+function getUFFromLS(facilityId, uFacilitiesId) {
+    let underFacilities;
+    underFacilities = JSON.parse(localStorage.getItem('uf'));
+    let option;
+
+    let options;
+    if (underFacilities === null) populateStorageUnderFacilities(uFacilitiesId);
+    if (parseInt(facilityId) === 0) {
+        options = underFacilities.map(function (item) {
+
+            option = document.createElement('option');
+            option.setAttribute('id', item.id);
+            option.setAttribute('data-parent-id', item.facilityId);
+            option.setAttribute('value', item.underFacility);
+            option.innerText = item.underFacility;
+
+            return option;
+
+        });
+    } else {
+        options = underFacilities.filter(function (item) {
+            return item.facilityId === parseInt(facilityId);
+        }).map(function (item) {
+
+            option = document.createElement('option');
+            option.setAttribute('id', item.id);
+            option.setAttribute('data-parent-id', item.facilityId);
+            option.setAttribute('value', item.underFacility);
+            option.innerText = item.underFacility;
+
+            return option;
+
+        });
+
+        option = document.createElement('option');
+        option.setAttribute('id', "0");
+        option.setAttribute('value', 'Без подобъекта');
+        option.innerText = 'Без подобъекта';
+        options.unshift(option);
+
+    }
+
+    $('#' + uFacilitiesId)
+        .find('option')
+        .remove()
+        .end()
+        .append(options)
+        .selectpicker('refresh');
 }
