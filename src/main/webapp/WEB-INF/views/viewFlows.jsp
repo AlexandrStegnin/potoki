@@ -22,7 +22,7 @@
     <meta name="robots" content="noindex, nofollow">
     <script type="text/javascript" src="<c:url value='/resources/core/js/app.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/Chart.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/AjaxLoader.js' />"></script>
+    <script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
     <link href="<c:url value='/resources/core/css/bootstrap.min.css' />" rel="stylesheet"/>
     <link href="<c:url value='/resources/core/css/app.css' />" rel="stylesheet"/>
     <script type="text/javascript" src="<c:url value='/resources/core/js/jquery-3.2.1.js' />"></script>

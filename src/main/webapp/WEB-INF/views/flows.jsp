@@ -49,7 +49,7 @@
     <script type="text/javascript" src="<c:url value='/resources/core/js/annex.js' />"></script>
     <link href="<c:url value='/resources/core/css/annex.css' />" rel="stylesheet"/>
     <script type="text/javascript"
-            src="<c:url value='/resources/core/js/AjaxLoader.js' />"></script>
+            src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
 </head>
 <body>
 <%@include file="annex_popup.jsp" %>
