@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -118,22 +117,22 @@ public class InvestorsCashSpecification extends BaseSpecification<InvestorsCash,
 
     private static Specification<InvestorsCash> notClosing() {
         return ((root, criteriaQuery, criteriaBuilder) ->
-                criteriaBuilder.isNull(root.get(InvestorsCash_.typeClosingInvest))
+                criteriaBuilder.isNull(root.get(InvestorsCash_.typeClosing))
         );
     }
 
-    private static Specification<InvestorsCash> notResale(final BigInteger typeClosingInvestId) {
+    private static Specification<InvestorsCash> notResale(final Long typeClosingId) {
         return (root, criteriaQuery, criteriaBuilder) ->
                 criteriaBuilder.notEqual(root
-                        .get(InvestorsCash_.typeClosingInvest)
-                        .get(TypeClosingInvest_.id), typeClosingInvestId);
+                        .get(InvestorsCash_.typeClosing)
+                        .get(TypeClosing_.id), typeClosingId);
     }
 
-    public Specification<InvestorsCash> getInvestedMoney(final BigInteger typeClosingInvestId) {
+    public Specification<InvestorsCash> getInvestedMoney(final Long typeClosingId) {
         return (root, query, cb) -> where(
                 facilityIsNotNull())
                 .and(notClosing())
-                .or(notResale(typeClosingInvestId))
+                .or(notResale(typeClosingId))
                 .toPredicate(root, query.orderBy(cb.asc(root.get(InvestorsCash_.dateGivedCash))), cb);
     }
 

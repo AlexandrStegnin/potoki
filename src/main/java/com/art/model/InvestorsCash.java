@@ -30,7 +30,7 @@ public class InvestorsCash implements Serializable {
     private NewCashDetail newCashDetail;
     private UnderFacility underFacility;
     private Date dateClosingInvest;
-    private TypeClosingInvest typeClosingInvest;
+    private TypeClosing typeClosing;
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "ShareType")
@@ -60,7 +60,7 @@ public class InvestorsCash implements Serializable {
     public InvestorsCash(BigDecimal givedCash, Date dateGivedCash, Facility facility, AppUser investor,
                          CashSource cashSource, NewCashDetail newCashDetail,
                          UnderFacility underFacility, Date dateClosingInvest,
-                         TypeClosingInvest typeClosingInvest, ShareType shareType, Date dateReport,
+                         TypeClosing typeClosing, ShareType shareType, Date dateReport,
                          Facility sourceFacility, UnderFacility sourceUnderFacility, String sourceFlowsId,
                          Room room, int isReinvest, Long sourceId, String source, int isDivide) {
         this.givedCash = givedCash;
@@ -71,7 +71,7 @@ public class InvestorsCash implements Serializable {
         this.newCashDetail = newCashDetail;
         this.underFacility = underFacility;
         this.dateClosingInvest = dateClosingInvest;
-        this.typeClosingInvest = typeClosingInvest;
+        this.typeClosing = typeClosing;
         this.shareType = shareType;
         this.dateReport = dateReport;
         this.sourceFacility = sourceFacility;
@@ -96,7 +96,7 @@ public class InvestorsCash implements Serializable {
         this.newCashDetail = cash.getNewCashDetail();
         this.underFacility = cash.getUnderFacility();
         this.dateClosingInvest = cash.getDateClosingInvest();
-        this.typeClosingInvest = cash.getTypeClosingInvest();
+        this.typeClosing = cash.getTypeClosing();
         this.shareType = cash.getShareType();
         this.dateReport = cash.getDateReport();
         this.sourceFacility = cash.getSourceFacility();
@@ -270,12 +270,12 @@ public class InvestorsCash implements Serializable {
 
     @OneToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "TypeClosingInvestId", referencedColumnName = "id")
-    public TypeClosingInvest getTypeClosingInvest() {
-        return typeClosingInvest;
+    public TypeClosing getTypeClosing() {
+        return typeClosing;
     }
 
-    public void setTypeClosingInvest(TypeClosingInvest typeClosingInvest) {
-        this.typeClosingInvest = typeClosingInvest;
+    public void setTypeClosing(TypeClosing typeClosing) {
+        this.typeClosing = typeClosing;
     }
 
     @Transient

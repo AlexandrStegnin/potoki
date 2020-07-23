@@ -153,6 +153,17 @@ public class Location {
 
     public static final String NEW_CASH_DETAILS_CREATE = NEW_CASH_DETAILS + "/create";
 
+    // Виды закрытия
+    public static final String TYPE_CLOSING = "/type-closing";
+
+    public static final String TYPE_CLOSING_LIST = TYPE_CLOSING + "/list";
+
+    public static final String TYPE_CLOSING_EDIT = TYPE_CLOSING + "/edit/{id}";
+
+    public static final String TYPE_CLOSING_DELETE = TYPE_CLOSING + "/delete";
+
+    public static final String TYPE_CLOSING_CREATE = TYPE_CLOSING + "/create";
+
     public static final String[] ADMIN_URLS = {
             ADMIN,
             CATALOGUE,
@@ -168,7 +179,8 @@ public class Location {
             TOKENS_GENERATE,
             BITRIX_MERGE,
             INVESTOR_CASH + WILD_CARD,
-            NEW_CASH_DETAILS + WILD_CARD
+            NEW_CASH_DETAILS + WILD_CARD,
+            TYPE_CLOSING + WILD_CARD
     };
 
     public static final String[] INVESTOR_URLS = {

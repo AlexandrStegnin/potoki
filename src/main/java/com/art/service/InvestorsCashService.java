@@ -35,18 +35,18 @@ public class InvestorsCashService {
     private static final String RESALE_SHARE = "Перепродажа доли";
     private final InvestorsCashRepository investorsCashRepository;
     private final InvestorsCashSpecification specification;
-    private final TypeClosingInvestService typeClosingInvestService;
+    private final TypeClosingService typeClosingService;
     private final AfterCashingService afterCashingService;
     private final UnderFacilityService underFacilityService;
 
     @Autowired
     public InvestorsCashService(InvestorsCashRepository investorsCashRepository,
                                 InvestorsCashSpecification specification,
-                                TypeClosingInvestService typeClosingInvestService,
+                                TypeClosingService typeClosingService,
                                 AfterCashingService afterCashingService, UnderFacilityService underFacilityService) {
         this.investorsCashRepository = investorsCashRepository;
         this.specification = specification;
-        this.typeClosingInvestService = typeClosingInvestService;
+        this.typeClosingService = typeClosingService;
         this.afterCashingService = afterCashingService;
         this.underFacilityService = underFacilityService;
     }
@@ -100,7 +100,7 @@ public class InvestorsCashService {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<InvestorsCash> investorsCashCriteriaQuery = cb.createQuery(InvestorsCash.class);
         Root<InvestorsCash> investorsCashRoot = investorsCashCriteriaQuery.from(InvestorsCash.class);
-        investorsCashRoot.fetch(InvestorsCash_.typeClosingInvest, JoinType.LEFT);
+        investorsCashRoot.fetch(InvestorsCash_.typeClosing, JoinType.LEFT);
         investorsCashCriteriaQuery.select(investorsCashRoot);
         investorsCashCriteriaQuery.where(investorsCashRoot.get(InvestorsCash_.id).in(idList));
         return em.createQuery(investorsCashCriteriaQuery).getResultList();
@@ -110,7 +110,7 @@ public class InvestorsCashService {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<InvestorsCash> investorsCashCriteriaQuery = cb.createQuery(InvestorsCash.class);
         Root<InvestorsCash> investorsCashRoot = investorsCashCriteriaQuery.from(InvestorsCash.class);
-        investorsCashRoot.fetch(InvestorsCash_.typeClosingInvest, JoinType.LEFT);
+        investorsCashRoot.fetch(InvestorsCash_.typeClosing, JoinType.LEFT);
         investorsCashCriteriaQuery.select(investorsCashRoot);
         investorsCashCriteriaQuery.where(cb.equal(investorsCashRoot.get(InvestorsCash_.source), source));
         return em.createQuery(investorsCashCriteriaQuery).getResultList();
@@ -120,7 +120,7 @@ public class InvestorsCashService {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<InvestorsCash> investorsCashCriteriaQuery = cb.createQuery(InvestorsCash.class);
         Root<InvestorsCash> investorsCashRoot = investorsCashCriteriaQuery.from(InvestorsCash.class);
-        investorsCashRoot.fetch(InvestorsCash_.typeClosingInvest, JoinType.LEFT);
+        investorsCashRoot.fetch(InvestorsCash_.typeClosing, JoinType.LEFT);
         investorsCashCriteriaQuery.select(investorsCashRoot);
         investorsCashCriteriaQuery.where(cb.equal(investorsCashRoot.get(InvestorsCash_.sourceId), sourceId));
         return em.createQuery(investorsCashCriteriaQuery).getResultList();
@@ -134,7 +134,7 @@ public class InvestorsCashService {
         investorsCashCriteriaQuery.where(cb.and(cb.equal(investorsCashRoot.get(InvestorsCash_.investorId), investorId),
                 cb.equal(investorsCashRoot.get(InvestorsCash_.facilityId), facilityId),
                 cb.gt(investorsCashRoot.get(InvestorsCash_.givedCash), 0),
-                cb.isNull(investorsCashRoot.get(InvestorsCash_.typeClosingInvest))));
+                cb.isNull(investorsCashRoot.get(InvestorsCash_.typeClosing))));
         return em.createQuery(investorsCashCriteriaQuery).getResultList();
     }
 
@@ -261,13 +261,13 @@ public class InvestorsCashService {
                         return;
                     }
 
-                    final TypeClosingInvest typeClosingInvest = typeClosingInvestService.findByTypeClosingInvest("Вывод");
-                    final TypeClosingInvest typeClosingCommission = typeClosingInvestService.findByTypeClosingInvest("Вывод_комиссия");
+                    final TypeClosing typeClosing = typeClosingService.findByName("Вывод");
+                    final TypeClosing typeClosingCommission = typeClosingService.findByName("Вывод_комиссия");
 
                     final InvestorsCash[] commissionCash = {new InvestorsCash()};
                     final InvestorsCash[] cashForManipulate = {null};
                     commissionCash[0].setGivedCash(commission.negate());
-                    commissionCash[0].setTypeClosingInvest(typeClosingCommission);
+                    commissionCash[0].setTypeClosing(typeClosingCommission);
                     commissionCash[0].setInvestor(cashForGetting[0].getInvestor());
                     commissionCash[0].setFacility(cashForGetting[0].getFacility());
                     commissionCash[0].setUnderFacility(cashForGetting[0].getUnderFacility());
@@ -280,7 +280,7 @@ public class InvestorsCashService {
                     if (all) {
                         investorsCashes.forEach(ic -> {
                             cashingList.add(new AfterCashing(ic.getId(), ic.getGivedCash()));
-                            ic.setTypeClosingInvest(typeClosingInvest);
+                            ic.setTypeClosing(typeClosing);
                             ic.setDateClosingInvest(dateClosingInvest);
                             if (incr[0].get() == investorsCashes.size() - 1) {
                                 sourceCash.append(ic.getId().toString());
@@ -309,7 +309,7 @@ public class InvestorsCashService {
                                 // остаток = остаток - текущая сумма инвестора
                                 remainderSum[0] = remainderSum[0].subtract(ic.getGivedCash());
                                 ic.setDateClosingInvest(dateClosingInvest);
-                                ic.setTypeClosingInvest(typeClosingInvest);
+                                ic.setTypeClosing(typeClosing);
                                 update(ic);
                             } else {
                                 // иначе если сумма остатка, который надо вывести, меньше текущей суммы инвестора
@@ -328,7 +328,7 @@ public class InvestorsCashService {
                                 newCash[0] = new InvestorsCash(ic);
                                 newCash[0].setGivedCash(remainderSum[0]);
                                 newCash[0].setDateClosingInvest(dateClosingInvest);
-                                newCash[0].setTypeClosingInvest(typeClosingInvest);
+                                newCash[0].setTypeClosing(typeClosing);
                                 remainderSum[0] = BigDecimal.ZERO;
                                 fillCash(commissionCash[0], ic);
                                 fillCash(cashForGetting[0], ic);
@@ -339,7 +339,7 @@ public class InvestorsCashService {
 
                     cashForGetting[0].setGivedCash(cashForGetting[0].getGivedCash().negate());
                     cashForGetting[0].setDateClosingInvest(commissionCash[0].getDateClosingInvest());
-                    cashForGetting[0].setTypeClosingInvest(typeClosingInvest);
+                    cashForGetting[0].setTypeClosing(typeClosing);
 
                     cashingList.forEach(afterCashingService::create);
                     cashForGetting[0].setSource(sourceCash.toString());
@@ -388,7 +388,7 @@ public class InvestorsCashService {
     }
 
     public List<InvestorsCash> getInvestedMoney() {
-        TypeClosingInvest typeClosingInvest = typeClosingInvestService.findByTypeClosingInvest(RESALE_SHARE);
-        return investorsCashRepository.findAll(specification.getInvestedMoney(typeClosingInvest.getId()));
+        TypeClosing typeClosing = typeClosingService.findByName(RESALE_SHARE);
+        return investorsCashRepository.findAll(specification.getInvestedMoney(typeClosing.getId()));
     }
 }

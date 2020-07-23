@@ -214,14 +214,14 @@
                     <td data-cash-source-id="${cash.cashSource.id}">${cash.cashSource.name}</td>
                     <td data-cash-details-id="${cash.newCashDetail.id}">${cash.newCashDetail.name}</td>
                     <td data-date-closing="${cash.dateClosingInvest.time}">${cash.getDateClosingInvestToLocalDate()}</td>
-                    <td data-type-closing-id="${cash.typeClosingInvest.id}">${cash.typeClosingInvest.typeClosingInvest}</td>
+                    <td data-type-closing-id="${cash.typeClosing.id}">${cash.typeClosing.typeClosing}</td>
                     <td data-share-kind-id="${cash.shareType.id}">${cash.shareType.title}</td>
                     <td data-date-report="${cash.dateReport.time}">${cash.getDateReportToLocalDate()}</td>
                     <td data-source-facility-id="${cash.sourceFacility.id}">${cash.sourceFacility.name}</td>
                     <td data-source-under-id="${cash.sourceUnderFacility.id}">${cash.sourceUnderFacility.name}</td>
                     <td data-room-id="${cash.room.id}">${cash.room.room}</td>
                     <c:choose>
-                        <c:when test="${cash.typeClosingInvest == null}">
+                        <c:when test="${cash.typeClosing == null}">
                             <c:set var="isDisabledClass" value="isEnabled"/>
                         </c:when>
                         <c:otherwise>
@@ -267,7 +267,7 @@
                             </c:otherwise>
                         </c:choose>
                         <c:choose>
-                            <c:when test="${cash.typeClosingInvest.typeClosingInvest.length() > 0 &&
+                            <c:when test="${cash.typeClosing.typeClosing.length() > 0 &&
                                             (cash.givedCash > 0 || cash.givedCash < 0)}">
                                 <c:set var="enabled" value="disabled "/>
                             </c:when>
@@ -463,9 +463,9 @@
                         <div class="form-group col-md-12">
                             <label class="col-md-3 control-lable" for="typeClosing">Вид закрытия:</label>
                             <div class="col-md-7">
-                                <form:select path="typeClosingInvest" id="typeClosing" items="${typeClosingInvest}"
+                                <form:select path="typeClosing" id="typeClosing" items="${typeClosing}"
                                              multiple="false"
-                                             itemValue="id" itemLabel="typeClosingInvest"
+                                             itemValue="id" itemLabel="typeClosing"
                                              class="form-control input-sm"/>
                                 <div id="typeClosingErr" style="color: red; display: none">Необходимо выбрать вид
                                     закрытия

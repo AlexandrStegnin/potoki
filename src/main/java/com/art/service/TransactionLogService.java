@@ -217,7 +217,7 @@ public class TransactionLogService {
     public void resale(Set<InvestorsCash> oldCashes, Set<InvestorsCash> cashes) {
         oldCashes.forEach(oldCash -> {
             oldCash.setDateClosingInvest(null);
-            oldCash.setTypeClosingInvest(null);
+            oldCash.setTypeClosing(null);
             oldCash.setRealDateGiven(null);
         });
 
@@ -389,7 +389,7 @@ public class TransactionLogService {
         cash.setCashSource(cashLog.getCashSource());
         cash.setNewCashDetail(cashLog.getNewCashDetail());
         cash.setShareType(cashLog.getShareType());
-        cash.setTypeClosingInvest(cashLog.getTypeClosingInvest());
+        cash.setTypeClosing(cashLog.getTypeClosing());
         cash.setDateClosingInvest(cashLog.getDateClosingInvest());
         cash.setRealDateGiven(cashLog.getRealDateGiven());
     }

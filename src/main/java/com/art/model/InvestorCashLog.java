@@ -61,7 +61,7 @@ public class InvestorCashLog {
 
     @OneToOne
     @JoinColumn(name = "type_closing_invest_id")
-    private TypeClosingInvest typeClosingInvest;
+    private TypeClosing typeClosing;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "share_type")
@@ -118,7 +118,7 @@ public class InvestorCashLog {
         this.cashSource = cash.getCashSource();
         this.newCashDetail = cash.getNewCashDetail();
         this.dateClosingInvest = cash.getDateClosingInvest();
-        this.typeClosingInvest = cash.getTypeClosingInvest();
+        this.typeClosing = cash.getTypeClosing();
         this.shareType = cash.getShareType();
         this.dateReport = cash.getDateReport();
         this.sourceFacility = cash.getSourceFacility();

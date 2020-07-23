@@ -56,7 +56,7 @@ public class InvestorsCashController {
 
     private final UnderFacilityService underFacilityService;
 
-    private final TypeClosingInvestService typeClosingInvestService;
+    private final TypeClosingService typeClosingService;
 
     private final InvestorsFlowsService investorsFlowsService;
 
@@ -66,7 +66,7 @@ public class InvestorsCashController {
 
     private final CashFilter cashFilters = new CashFilter();
 
-    public InvestorsCashController(InvestorsCashService investorsCashService, MarketingTreeService marketingTreeService, StatusService statusService, TransactionLogService transactionLogService, AfterCashingService afterCashingService, FacilityService facilityService, InvestorsFlowsSaleService investorsFlowsSaleService, UserService userService, CashSourceService cashSourceService, NewCashDetailService newCashDetailService, UnderFacilityService underFacilityService, InvestorsFlowsService investorsFlowsService, TypeClosingInvestService typeClosingInvestService) {
+    public InvestorsCashController(InvestorsCashService investorsCashService, MarketingTreeService marketingTreeService, StatusService statusService, TransactionLogService transactionLogService, AfterCashingService afterCashingService, FacilityService facilityService, InvestorsFlowsSaleService investorsFlowsSaleService, UserService userService, CashSourceService cashSourceService, NewCashDetailService newCashDetailService, UnderFacilityService underFacilityService, InvestorsFlowsService investorsFlowsService, TypeClosingService typeClosingService) {
         this.investorsCashService = investorsCashService;
         this.marketingTreeService = marketingTreeService;
         this.statusService = statusService;
@@ -79,7 +79,7 @@ public class InvestorsCashController {
         this.newCashDetailService = newCashDetailService;
         this.underFacilityService = underFacilityService;
         this.investorsFlowsService = investorsFlowsService;
-        this.typeClosingInvestService = typeClosingInvestService;
+        this.typeClosingService = typeClosingService;
     }
 
     /**
@@ -256,7 +256,7 @@ public class InvestorsCashController {
         ModelAndView modelAndView = new ModelAndView("viewinvestorscash");
 
         AppUser invBuyer;
-        TypeClosingInvest closingInvest = typeClosingInvestService.findByTypeClosingInvest("Перепродажа доли");
+        TypeClosing closingInvest = typeClosingService.findByName("Перепродажа доли");
         NewCashDetail newCashDetail = newCashDetailService.findByName("Перепокупка доли");
 
         // Перепродажа доли
@@ -267,7 +267,7 @@ public class InvestorsCashController {
             InvestorsCash newInvestorsCash = investorsCashService.findById(investorsCash.getId());
             InvestorsCash oldCash = investorsCashService.findById(investorsCash.getId());
             oldCash.setDateClosingInvest(dateClosingInvest);
-            oldCash.setTypeClosingInvest(closingInvest);
+            oldCash.setTypeClosing(closingInvest);
             oldCash.setRealDateGiven(realDateGiven);
 
             cash.setId(null);
@@ -285,7 +285,7 @@ public class InvestorsCashController {
             newInvestorsCash.setSourceId(investorsCash.getId());
             newInvestorsCash.setDateGivedCash(dateClosingInvest);
             newInvestorsCash.setDateClosingInvest(dateClosingInvest);
-            newInvestorsCash.setTypeClosingInvest(closingInvest);
+            newInvestorsCash.setTypeClosing(closingInvest);
 
             investorsCashService.createNew(cash);
             investorsCashService.createNew(newInvestorsCash);
@@ -301,7 +301,7 @@ public class InvestorsCashController {
             updatedCash.setDateClosingInvest(dateClosingInvest);
             updatedCash.setRealDateGiven(realDateGiven);
 
-            updatedCash.setTypeClosingInvest(typeClosingInvestService.findByTypeClosingInvest("Вывод"));
+            updatedCash.setTypeClosing(typeClosingService.findByName("Вывод"));
             investorsCashService.update(updatedCash);
         }
         modelAndView.addObject("investorsCash", investorsCashService.findAll());
@@ -467,10 +467,10 @@ public class InvestorsCashController {
                         List<AfterCashing> afterCashing = afterCashingList.stream()
                                 .filter(ac -> ac.getOldId().equals(parentCashId))
                                 .collect(Collectors.toList());
-                        if ((!Objects.equals(null, deleting.getTypeClosingInvest()) &&
+                        if ((!Objects.equals(null, deleting.getTypeClosing()) &&
                                 (
-                                        deleting.getTypeClosingInvest().getTypeClosingInvest().equalsIgnoreCase("Вывод") ||
-                                                deleting.getTypeClosingInvest().getTypeClosingInvest().equalsIgnoreCase("Вывод_комиссия")
+                                        deleting.getTypeClosing().getName().equalsIgnoreCase("Вывод") ||
+                                                deleting.getTypeClosing().getName().equalsIgnoreCase("Вывод_комиссия")
                                 )
                         )) {
                             if (afterCashing.size() > 0) {
@@ -491,14 +491,14 @@ public class InvestorsCashController {
                         if (Objects.equals(null, makeDelete)) {
                             parentCash.setIsReinvest(0);
                             parentCash.setIsDivide(0);
-                            parentCash.setTypeClosingInvest(null);
+                            parentCash.setTypeClosing(null);
                             parentCash.setDateClosingInvest(null);
                         }
 
                         if (deleting.getFacility().equals(parentCash.getFacility()) &&
                                 deleting.getInvestor().equals(parentCash.getInvestor()) &&
                                 deleting.getShareType().equals(parentCash.getShareType()) &&
-                                Objects.equals(null, deleting.getTypeClosingInvest()) &&
+                                Objects.equals(null, deleting.getTypeClosing()) &&
                                 deleting.getDateGivedCash().compareTo(parentCash.getDateGivedCash()) == 0) {
                             parentCash.setGivedCash(parentCash.getGivedCash().add(deleting.getGivedCash()));
                         }
@@ -542,7 +542,7 @@ public class InvestorsCashController {
                 if (!Objects.equals(null, parentCash)) {
                     parentCash.setIsReinvest(0);
                     parentCash.setIsDivide(0);
-                    parentCash.setTypeClosingInvest(null);
+                    parentCash.setTypeClosing(null);
                     parentCash.setDateClosingInvest(null);
                     investorsCashService.update(parentCash);
                 }
@@ -752,7 +752,7 @@ public class InvestorsCashController {
         List<InvestorsCash> investorsCashes = searchSummary.getInvestorsCashList();
         final Date[] dateClose = {null};
         final NewCashDetail newCashDetail = newCashDetailService.findByName("Реинвестирование с продажи (сохранение)");
-        final TypeClosingInvest typeClosingInvest = typeClosingInvestService.findByTypeClosingInvest("Реинвестирование");
+        final TypeClosing typeClosing = typeClosingService.findByName("Реинвестирование");
 
         final Map<String, InvestorsCash> map = groupInvestorsCash(investorsCashes, "");
 
@@ -768,7 +768,7 @@ public class InvestorsCashController {
         oldCash.forEach(f -> {
             f.setIsReinvest(1);
             f.setDateClosingInvest(finalDateClose);
-            f.setTypeClosingInvest(typeClosingInvest);
+            f.setTypeClosing(typeClosing);
             investorsCashService.create(f);
         });
 
@@ -853,7 +853,7 @@ public class InvestorsCashController {
             cash.setNewCashDetail(f.getNewCashDetail());
             cash.setUnderFacility(underFacility);
             cash.setDateClosingInvest(null);
-            cash.setTypeClosingInvest(null);
+            cash.setTypeClosing(null);
             cash.setShareType(f.getShareType());
             cash.setDateReport(f.getDateReport());
             cash.setSourceFacility(f.getSourceFacility());
@@ -932,7 +932,7 @@ public class InvestorsCashController {
         Set<InvestorsCash> newCashes = new HashSet<>();
         cashList.forEach(c -> {
             if (null != finalInvBuyer) { // Перепродажа доли
-                TypeClosingInvest closingInvest = typeClosingInvestService.findByTypeClosingInvest("Перепродажа доли");
+                TypeClosing closingInvest = typeClosingService.findByName("Перепродажа доли");
                 NewCashDetail newCashDetail = newCashDetailService.findByName("Перепокупка доли");
 
                 InvestorsCash cash = investorsCashService.findById(c.getId());
@@ -956,12 +956,12 @@ public class InvestorsCashController {
                 newInvestorsCash.setSource(null);
                 newInvestorsCash.setDateGivedCash(dateClose);
                 newInvestorsCash.setDateClosingInvest(dateClose);
-                newInvestorsCash.setTypeClosingInvest(closingInvest);
+                newInvestorsCash.setTypeClosing(closingInvest);
 
                 investorsCashService.createNew(newInvestorsCash);
 
                 c.setDateClosingInvest(dateClose);
-                c.setTypeClosingInvest(closingInvest);
+                c.setTypeClosing(closingInvest);
                 investorsCashService.update(c);
                 oldCashes.add(c);
                 newCashes.add(c);
@@ -971,7 +971,7 @@ public class InvestorsCashController {
                 InvestorsCash cashForTx = new InvestorsCash(c);
                 cashForTx.setId(c.getId());
                 c.setDateClosingInvest(dateClose);
-                c.setTypeClosingInvest(typeClosingInvestService.findByTypeClosingInvest("Вывод"));
+                c.setTypeClosing(typeClosingService.findByName("Вывод"));
                 c.setRealDateGiven(realDateGiven);
                 investorsCashService.update(c);
                 closeCashes.add(cashForTx);
@@ -1091,8 +1091,8 @@ public class InvestorsCashController {
     }
 
     @ModelAttribute("typeClosingInvest")
-    public List<TypeClosingInvest> initializeTypeClosingInvest() {
-        return typeClosingInvestService.init();
+    public List<TypeClosing> initializeTypeClosingInvest() {
+        return typeClosingService.init();
     }
 
     @ModelAttribute("shareTypes")
