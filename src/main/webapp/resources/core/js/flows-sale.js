@@ -416,9 +416,7 @@ function prepareSaveInvestorsCash() {
     let dateGived;
     let facility;
     let investor;
-    let cashType = null;
     let newCashDetails = null;
-    let investorsType;
     let underFacility;
     let dateReport;
     let shareKind;
@@ -466,30 +464,22 @@ function prepareSaveInvestorsCash() {
         err = false;
     }
 
-    investorsType = {
-        id: reinvestData.find('#invType').val(),
-        investorsType: $('#invType').find('option:selected').text()
-    };
+    shareKind = $('#shareTypeName').find('option:selected').text();
 
-    if (investorsType.investorsType.indexOf('Выберите вид инвестора') >= 0) {
-        $('#invTypeErr').css('display', 'block');
-        err = true;
-    } else {
-        $('#invTypeErr').css('display', 'none');
-        err = false;
-    }
-
-    shareKind = {
-        id: reinvestData.find('#shareKindName').val(),
-        shareKind: $('#shareKindName').find('option:selected').text()
-    };
-
-    if (shareKind.shareKind.indexOf('Выберите вид доли') >= 0) {
+    if (shareKind.indexOf('Не определена') >= 0) {
         $('#shareKindErr').css('display', 'block');
         err = true;
     } else {
         $('#shareKindErr').css('display', 'none');
         err = false;
+    }
+
+    switch (shareKind) {
+        case 'Основная':
+            shareKind = 'MAIN'
+            break
+        case 'Сверхдоля':
+            shareKind = 'OVER'
     }
 
     if (err) {
@@ -535,14 +525,12 @@ function prepareSaveInvestorsCash() {
                 dateGivedCash: dateGived,
                 facility: facility,
                 investor: investor,
-                cashSource: null,
                 cashType: cashType,
-                newCashDetails: newCashDetails,
-                investorsType: investorsType,
+                newCashDetail: newCashDetails,
                 underFacility: underFacility,
                 dateClosingInvest: null,
                 typeClosingInvest: null,
-                shareKind: shareKind,
+                shareType: shareKind,
                 dateReport: dateReport,
                 sourceFacility: sourceFacility,
                 sourceUnderFacility: sourceUnderFacility,

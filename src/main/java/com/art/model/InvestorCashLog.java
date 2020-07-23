@@ -142,6 +142,7 @@ public class InvestorCashLog {
         this.givenCash = flowsSale.getProfitToReInvest();
         this.transactionLog = log;
         this.instanceOf = instanceOf;
+        this.shareType = flowsSale.getShareType();
     }
 
     public InvestorCashLog(InvestorsFlows flows, TransactionLog log, CashType instanceOf) {
