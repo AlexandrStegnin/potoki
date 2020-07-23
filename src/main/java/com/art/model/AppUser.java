@@ -76,7 +76,7 @@ public class AppUser implements Serializable {
     }
 
     @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.EAGER)
-    @JoinTable(name = "USERS_ROLES",
+    @JoinTable(name = "user_role",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     public List<AppRole> getRoles() {
