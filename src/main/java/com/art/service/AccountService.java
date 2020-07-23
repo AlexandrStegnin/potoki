@@ -7,7 +7,6 @@ import com.art.model.Facility;
 import com.art.model.Room;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.enums.OwnerType;
-import com.art.model.supporting.enums.Region;
 import com.art.repository.AccountRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -155,7 +154,8 @@ public class AccountService {
     }
 
     private String getRegionNumber() {
-        return Region.TMN.getNumber();
+//        return Region.TMN.getNumber();
+        return "";
     }
 
     /**
