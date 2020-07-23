@@ -26,7 +26,7 @@
         <div class="login-card">
             <div class="login-form">
                 <sec:csrfMetaTags/>
-                <form:form action="/login" method="post" class="form-horizontal">
+                <form:form action="login" method="post" class="form-horizontal">
                     <c:if test="${param.error != null}">
                         <div class="alert alert-danger">
                             <p>Неправильное имя пользователя или пароль.</p>
