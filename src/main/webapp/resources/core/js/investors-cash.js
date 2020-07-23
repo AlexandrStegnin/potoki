@@ -140,19 +140,19 @@ jQuery(document).ready(function ($) {
 
     // $('#msg-modal').on('shown.bs.modal', function () {
     //     // if data-timer attribute is set use that, otherwise use default (7000)
-    //     var timer = 3000;
+    //     let timer = 3000;
     //     $(this).delay(timer).fadeOut(200, function () {
     //         $(this).modal('hide');
     //     });
     // });
 
     $(document).on('change', ':checkbox', function () {
-        var id = $(this).attr('id');
-        var noDivide;
+        let id = $(this).attr('id');
+        let noDivide;
         noDivide = $(this).closest('tr').find('> td:eq(1)').text().length > 0 && $(this).prop('checked') === true &&
             ($(this).closest('tr').find('> td:eq(1)').text().indexOf('_Целиком') < 0);
         if (typeof id === 'undefined') {
-            var cnt = checkChecked();
+            let cnt = checkChecked();
             if (cnt > 0) {
                 blockUnblockDropdownMenus('unblock', noDivide);
             } else {
@@ -195,7 +195,7 @@ jQuery(document).ready(function ($) {
         });
         if (sourceIdList.indexOf('|') >= 0) {
             $.each(sourceIdList, function (ind, el) {
-                var tmp = el.split('|');
+                let tmp = el.split('|');
                 if (tmp.length > 0) {
                     $.each(tmp, function (i, elem) {
                         $('table#investorsCash').find('> tbody').find('> tr').each(function () {
@@ -225,13 +225,13 @@ jQuery(document).ready(function ($) {
         event.preventDefault();
         if (linkHasClass($(this).parent())) return false;
         // showLoader();
-        var cashIdList = [];
-        var sourceIdList = [];
+        let cashIdList = [];
+        let sourceIdList = [];
         cashIdList.push($(this).data('delete'));
         sourceIdList.push($(this).parent().parent().parent().parent().parent().find('> td:last').data('source'));
         if (sourceIdList.indexOf('|') >= 0) {
             $.each(sourceIdList, function (ind, el) {
-                var tmp = el.split('|');
+                let tmp = el.split('|');
                 if (tmp.length > 0) {
                     $.each(tmp, function (i, elem) {
                         $('table#investorsCash').find('> tbody').find('> tr').each(function () {
@@ -262,8 +262,8 @@ jQuery(document).ready(function ($) {
     $('#divideAll').on('click', function (event) {
         event.preventDefault();
         if (linkHasClass($('#divideAll'))) return false;
-        var chk = $('table#investorsCash').find('> tbody').find('> tr').find(':checkbox:checked:not(:disabled)');
-        var facilityId = chk.closest('td').parent().find('td:eq(0)').attr('data-facility-id');
+        let chk = $('table#investorsCash').find('> tbody').find('> tr').find(':checkbox:checked:not(:disabled)');
+        let facilityId = chk.closest('td').parent().find('td:eq(0)').attr('data-facility-id');
 
         getUnderFacilitiesFromLocalStorage(
             facilityId,
@@ -382,11 +382,11 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    var hasError = {
+    let hasError = {
         'saleShareFunc': function () {
-            var dateClosingInfo = $('#dateCloseErr');
-            var typeClosingInfo = $('#buyerErr');
-            var investorBuyer = $('#buyer');
+            let dateClosingInfo = $('#dateCloseErr');
+            let typeClosingInfo = $('#buyerErr');
+            let investorBuyer = $('#buyer');
             if (investorBuyer.css('display') === 'block' && investorBuyer.find(':selected').text() === 'Выберите инвестора') {
                 hasError.errors = true;
                 typeClosingInfo.html('Необходимо выбрать инвестора').show();
@@ -401,9 +401,9 @@ jQuery(document).ready(function ($) {
             }
         },
         'investorBuyerFunc': function () {
-            var dateClosingInfo = $('#reInvestDateErr');
-            var typeClosingInfo = $('#investorBuyerErr');
-            var investorBuyer = $('#investorBuyer');
+            let dateClosingInfo = $('#reInvestDateErr');
+            let typeClosingInfo = $('#investorBuyerErr');
+            let investorBuyer = $('#investorBuyer');
             if (investorBuyer.css('display') === 'block' && investorBuyer.find(':selected').text() === 'Выберите инвестора') {
                 hasError.errors = true;
                 typeClosingInfo.html('Необходимо выбрать инвестора').show();
@@ -419,8 +419,8 @@ jQuery(document).ready(function ($) {
         },
         'reFacilityFunc': function () {
 
-            var reFacilityInfo = $('#reFacilityErr');
-            var reFacility = $('#reFacility');
+            let reFacilityInfo = $('#reFacilityErr');
+            let reFacility = $('#reFacility');
             if (reFacility.css('display') === 'block' && reFacility.find(':selected').text() === 'Выберите объект') {
                 hasError.errors = true;
                 reFacilityInfo.html('Необходимо выбрать объект').show();
@@ -430,9 +430,9 @@ jQuery(document).ready(function ($) {
         },
         'reInvestDateFunc': function () {
 
-            var reInvestDateInfo = $('#reInvestDateErr');
-            var reInvestDate = $('#dateCloseInv');
-            var reInvDate = reInvestDate.text();
+            let reInvestDateInfo = $('#reInvestDateErr');
+            let reInvestDate = $('#dateCloseInv');
+            let reInvDate = reInvestDate.text();
             if (reInvDate === '' && $('#typeClosing').find(':selected').text() === 'Реинвестирование') {
                 hasError.errors = true;
                 reInvestDateInfo.html('Необходимо указать дату').show();
@@ -528,10 +528,10 @@ jQuery(document).ready(function ($) {
 
     $(document).on("change", "#cashDetail", function () {
 
-        var cashDetail = $('#cashDetailRow');
-        var dateRep = $('#dateRepRow');
-        var reFacility = $('#reFacility');
-        var reUnderFacility = $('#reUnderFacility');
+        let cashDetail = $('#cashDetailRow');
+        let dateRep = $('#dateRepRow');
+        let reFacility = $('#reFacility');
+        let reUnderFacility = $('#reUnderFacility');
 
         if ($(this).find(':selected').text() === 'Реинвестирование с аренды') {
             dateRep.insertAfter(cashDetail);
@@ -556,7 +556,7 @@ jQuery(document).ready(function ($) {
     });
 
     $("#reFacilities").change(function () {
-        var reFacility = $(this).val();
+        let reFacility = $(this).val();
         getUnderFacilitiesFromLocalStorage(reFacility, 'reUnderFacilities');
     });
 
@@ -662,8 +662,8 @@ function allMoneyCashing() {
 }
 
 function prepareCashSave(what) {
-    var invBuyer = $('#investorBuyer');
-    var investorBuyer = {
+    let invBuyer = $('#investorBuyer');
+    let investorBuyer = {
         id: invBuyer.find(':selected').val(),
         login: invBuyer.find(':selected').text()
     };
@@ -672,13 +672,13 @@ function prepareCashSave(what) {
         investorBuyer = null;
     }
 
-    var cashId = $('#id').val();
+    let cashId = $('#id').val();
 
-    var facilities = $('#facilities');
-    var facility = {id: facilities.find(':selected').val(), facility: facilities.find(':selected').text()};
+    let facilities = $('#facilities');
+    let facility = {id: facilities.find(':selected').val(), facility: facilities.find(':selected').text()};
 
-    var underFacilities = $('#underFacilities');
-    var underFacility = {
+    let underFacilities = $('#underFacilities');
+    let underFacility = {
         id: underFacilities.find(':selected').attr('id'),
         underFacility: underFacilities.find(':selected').text()
     };
@@ -686,34 +686,34 @@ function prepareCashSave(what) {
         underFacility = null;
     }
 
-    var investors = $('#investor');
-    var investor = {id: investors.find(':selected').val(), login: investors.find(':selected').text()};
+    let investors = $('#investor');
+    let investor = {id: investors.find(':selected').val(), login: investors.find(':selected').text()};
 
-    var givedCash = $('#cash').val();
+    let givedCash = $('#cash').val();
 
-    var dateGivedCash = new Date($('#dateGivedCash').val()).getTime();
+    let dateGivedCash = new Date($('#dateGivedCash').val()).getTime();
 
-    var cashSources = $('#cashSrc');
-    var cashSource = {id: cashSources.find(':selected').val(), cashSource: cashSources.find(':selected').text()};
+    let cashSources = $('#cashSrc');
+    let cashSource = {id: cashSources.find(':selected').val(), cashSource: cashSources.find(':selected').text()};
     if (cashSource.id === '0') {
         cashSource = null;
     }
 
-    var newCashDetails = $('#cashDetail');
-    var newCashDetail = {
+    let newCashDetails = $('#cashDetail');
+    let newCashDetail = {
         id: newCashDetails.find(':selected').val(),
-        newCashDetail: newCashDetails.find(':selected').text()
+        name: newCashDetails.find(':selected').text()
     };
     if (newCashDetail.id === '0') {
         newCashDetail = null;
     }
 
-    var dateClosingInvest = new Date($('#dateCloseInv').val()).getTime();
+    let dateClosingInvest = new Date($('#dateCloseInv').val()).getTime();
 
-    var dateReport = new Date($('#dateRep').val()).getTime();
+    let dateReport = new Date($('#dateRep').val()).getTime();
 
-    var typeClosingInvests = $('#typeClosing');
-    var typeClosingInvest = {
+    let typeClosingInvests = $('#typeClosing');
+    let typeClosingInvest = {
         id: typeClosingInvests.find(':selected').val(),
         typeClosingInvest: typeClosingInvests.find(':selected').text()
     };
@@ -721,14 +721,14 @@ function prepareCashSave(what) {
         typeClosingInvest = null;
     }
 
-    var reFacilities = $('#sourceFacilities');
-    var reFacility = {id: reFacilities.find(':selected').val(), facility: reFacilities.find(':selected').text()};
+    let reFacilities = $('#sourceFacilities');
+    let reFacility = {id: reFacilities.find(':selected').val(), facility: reFacilities.find(':selected').text()};
     if (reFacility.id === '0') {
         reFacility = null;
     }
 
-    var reUnderFacilities = $('#sourceUnderFacilities');
-    var reUnderFacility = {
+    let reUnderFacilities = $('#sourceUnderFacilities');
+    let reUnderFacility = {
         id: reUnderFacilities.find(':selected').attr('id'),
         underFacility: reUnderFacilities.find(':selected').text()
     };
@@ -736,20 +736,20 @@ function prepareCashSave(what) {
         reUnderFacility = null;
     }
 
-    var dateReinvest = dateClosingInvest;
+    let dateReinvest = dateClosingInvest;
 
-    var shareKinds = $('#shareKindName');
-    var shareKind = {id: shareKinds.find(':selected').val(), shareKind: shareKinds.find(':selected').text()};
+    let shareKinds = $('#shareKindName');
+    let shareKind = {id: shareKinds.find(':selected').val(), shareKind: shareKinds.find(':selected').text()};
     if (shareKind.id === '0') {
         shareKind = null;
     }
 
-    var source = $('#source').val();
+    let source = $('#source').val();
     if (source.length === 0) {
         source = null;
     }
 
-    var cash = {
+    let cash = {
         id: cashId,
         facility: facility,
         underFacility: underFacility,
@@ -758,7 +758,7 @@ function prepareCashSave(what) {
         dateGivedCash: dateGivedCash,
         cashSource: cashSource,
         // cashType: cashType,
-        newCashDetails: newCashDetail,
+        newCashDetail: newCashDetail,
         // investorsType: investorsType,
         dateClosingInvest: dateClosingInvest,
         typeClosingInvest: typeClosingInvest,
@@ -769,7 +769,7 @@ function prepareCashSave(what) {
         sourceUnderFacility: reUnderFacility
     };
 
-    var flag = true;
+    let flag = true;
     if (cashId === '') {
         flag = false;
     }
@@ -873,10 +873,10 @@ function disableFields() {
         $('#dateRep').prop('disabled', true);
         $('#shareKindName').prop('disabled', true);
     } else if ($('#edit').val() === 'true') {
-        var cashDetail = $('#cashDetail');
-        var reFacility = $('#sourceFacility');
-        var reUnderFacility = $('#sourceUnderFacility');
-        var dateRep = $('#dateRepRow');
+        let cashDetail = $('#cashDetail');
+        let reFacility = $('#sourceFacility');
+        let reUnderFacility = $('#sourceUnderFacility');
+        let dateRep = $('#dateRepRow');
 
         $('#facilities').prop('disabled', false);
         $('#underFacilities').prop('disabled', false);
@@ -1029,7 +1029,7 @@ function enableSearchButton(flag) {
 }
 
 function display(data) {
-    var json = JSON.stringify(data, null, 4);
+    let json = JSON.stringify(data, null, 4);
     $('#investorsCash').html(json);
 }
 
@@ -1108,7 +1108,7 @@ function prepareSaveCash() {
     }
 
     showLoader();
-    var current;
+    let current;
 
     $('#reInvestModal').modal('hide');
     $('#reinvestAll').prop('disabled', true);
@@ -1151,7 +1151,7 @@ function prepareSaveCash() {
                 facility: facility,
                 investor: investor,
                 cashSource: null,
-                newCashDetails: null,
+                newCashDetail: null,
                 underFacility: underFacility,
                 dateClosingInvest: null,
                 typeClosingInvest: null,
@@ -1436,7 +1436,7 @@ function prepareDivideCash() {
                 givedCash: givedCash,
                 dateGivedCash: dateGivedCash,
                 cashSource: cashSource,
-                newCashDetails: newCashDetails,
+                newCashDetail: newCashDetails,
                 dateClosingInvest: dateClosingInvest,
                 typeClosingInvest: typeClosingInvest,
                 shareKind: shareKind,
@@ -1625,7 +1625,7 @@ function closeCash(cashIdList, invBuyer, dateClosingInvest, what, realDateGiven)
 }
 
 function blockMenus() {
-    var current;
+    let current;
     $('table#investorsCash').find('> tbody').find('> tr').each(function (i) {
         current = $(this).closest('tr');
         if (current.children('td:eq(7)').text() === 'Реинвестирование с аренды') {
@@ -1636,7 +1636,7 @@ function blockMenus() {
 }
 
 function blockUnblockDropdownMenus(blockUnblock, noDivide) {
-    var reinvest = $('#reinvest');
+    let reinvest = $('#reinvest');
     switch (blockUnblock) {
         case 'block':
             reinvest.find('> li').each(function () {

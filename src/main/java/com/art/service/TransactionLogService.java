@@ -387,7 +387,7 @@ public class TransactionLogService {
         cash.setInvestor(cashLog.getInvestor());
         cash.setDateGivedCash(cashLog.getDateGivenCash());
         cash.setCashSource(cashLog.getCashSource());
-        cash.setNewCashDetails(cashLog.getNewCashDetail());
+        cash.setNewCashDetail(cashLog.getNewCashDetail());
         cash.setShareType(cashLog.getShareType());
         cash.setTypeClosingInvest(cashLog.getTypeClosingInvest());
         cash.setDateClosingInvest(cashLog.getDateClosingInvest());

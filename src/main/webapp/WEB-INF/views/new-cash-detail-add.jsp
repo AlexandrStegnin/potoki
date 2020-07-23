@@ -19,7 +19,7 @@
     <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/popupScripts.js' />" ></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/new-cash-details.js' />" ></script>
+    <script type="text/javascript" src="<c:url value='/resources/core/js/new-cash-detail.js' />" ></script>
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
 </head>
 
@@ -27,16 +27,16 @@
 <div class="generic-container">
     <%@include file="old_authheader.jsp" %>
     <div class="well lead">${title}</div>
-    <form:form method="POST" modelAttribute="newCashDetails" class="form-horizontal" id="newCashDetails">
+    <form:form method="POST" modelAttribute="newCashDetail" class="form-horizontal" id="newCashDetails">
         <form:input type="hidden" path="id" id="id"/>
         <form:input type="hidden" path="" id="edit" value="${edit}"/>
         <div class="row">
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="newDetail">Детали новых денег:</label>
                 <div class="col-md-7">
-                    <form:input type="text" path="newCashDetail" id="newDetail" class="form-control input-sm"/>
+                    <form:input type="text" path="name" id="newDetail" class="form-control input-sm"/>
                     <div class="has-error">
-                        <form:errors path="newCashDetail" class="help-inline"/>
+                        <form:errors path="name" class="help-inline"/>
                     </div>
                 </div>
             </div>
@@ -46,18 +46,17 @@
             <div class="form-actions floatRight">
                 <c:choose>
                     <c:when test="${edit}">
-                        <input type="submit" value="Обновить" class="btn btn-primary btn-sm"/> или <a href="<c:url value='/viewnewcashdetails' />">Отмена</a>
+                        <input type="submit" value="Обновить" class="btn btn-primary btn-sm"/> или <a href="<c:url value='/new-cash-details/list' />">Отмена</a>
                     </c:when>
                     <c:otherwise>
-                        <input type="submit" value="Создать" class="btn btn-primary btn-sm"/> или <a href="<c:url value='/viewnewcashdetails' />">Отмена</a>
+                        <input type="submit" value="Создать" class="btn btn-primary btn-sm"/> или <a href="<c:url value='/new-cash-details/list' />">Отмена</a>
                     </c:otherwise>
                 </c:choose>
             </div>
         </div>
     </form:form>
 </div>
-<%@include file="loader.jsp" %>
-<%@include file="popup.jsp" %>
-<%@include file="slideDiv.jsp" %>
+<%@include file="popup_modal.jsp" %>
+<%@include file="ddk_loader.jsp" %>
 </body>
 </html>

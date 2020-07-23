@@ -8,7 +8,6 @@ import com.art.model.supporting.enums.ShareType;
 import com.art.model.supporting.enums.TransactionType;
 import com.art.model.supporting.filters.CashFilter;
 import com.art.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,7 +24,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
@@ -38,48 +36,51 @@ import java.util.stream.Collectors;
 @Transactional
 public class InvestorsCashController {
 
-    @Autowired
-    private MarketingTreeService marketingTreeService;
+    private final MarketingTreeService marketingTreeService;
 
-    @Autowired
-    private StatusService statusService;
+    private final StatusService statusService;
 
-    @Autowired
-    private TransactionLogService transactionLogService;
+    private final TransactionLogService transactionLogService;
 
-    @Resource(name = "afterCashingService")
-    private AfterCashingService afterCashingService;
+    private final AfterCashingService afterCashingService;
 
-    @Resource(name = "investorsCashService")
-    private InvestorsCashService investorsCashService;
+    private final InvestorsCashService investorsCashService;
 
-    @Resource(name = "facilityService")
-    private FacilityService facilityService;
+    private final FacilityService facilityService;
 
-    @Resource(name = "userService")
-    private UserService userService;
+    private final UserService userService;
 
-    @Resource(name = "cashSourceService")
-    private CashSourceService cashSourceService;
+    private final CashSourceService cashSourceService;
 
-    @Resource(name = "newCashDetailsService")
-    private NewCashDetailsService newCashDetailsService;
+    private final NewCashDetailService newCashDetailService;
 
-    @Resource(name = "underFacilityService")
-    private UnderFacilityService underFacilityService;
+    private final UnderFacilityService underFacilityService;
 
-    @Resource(name = "typeClosingInvestService")
-    private TypeClosingInvestService typeClosingInvestService;
+    private final TypeClosingInvestService typeClosingInvestService;
 
-    @Resource(name = "investorsFlowsService")
-    private InvestorsFlowsService investorsFlowsService;
+    private final InvestorsFlowsService investorsFlowsService;
 
-    @Resource(name = "investorsFlowsSaleService")
-    private InvestorsFlowsSaleService investorsFlowsSaleService;
+    private final InvestorsFlowsSaleService investorsFlowsSaleService;
 
     private final SearchSummary filters = new SearchSummary();
 
     private final CashFilter cashFilters = new CashFilter();
+
+    public InvestorsCashController(InvestorsCashService investorsCashService, MarketingTreeService marketingTreeService, StatusService statusService, TransactionLogService transactionLogService, AfterCashingService afterCashingService, FacilityService facilityService, InvestorsFlowsSaleService investorsFlowsSaleService, UserService userService, CashSourceService cashSourceService, NewCashDetailService newCashDetailService, UnderFacilityService underFacilityService, InvestorsFlowsService investorsFlowsService, TypeClosingInvestService typeClosingInvestService) {
+        this.investorsCashService = investorsCashService;
+        this.marketingTreeService = marketingTreeService;
+        this.statusService = statusService;
+        this.transactionLogService = transactionLogService;
+        this.afterCashingService = afterCashingService;
+        this.facilityService = facilityService;
+        this.investorsFlowsSaleService = investorsFlowsSaleService;
+        this.userService = userService;
+        this.cashSourceService = cashSourceService;
+        this.newCashDetailService = newCashDetailService;
+        this.underFacilityService = underFacilityService;
+        this.investorsFlowsService = investorsFlowsService;
+        this.typeClosingInvestService = typeClosingInvestService;
+    }
 
     /**
      * Получить список денег инвесторов
@@ -256,7 +257,7 @@ public class InvestorsCashController {
 
         AppUser invBuyer;
         TypeClosingInvest closingInvest = typeClosingInvestService.findByTypeClosingInvest("Перепродажа доли");
-        NewCashDetails newCashDetails = newCashDetailsService.findByNewCashDetail("Перепокупка доли");
+        NewCashDetail newCashDetail = newCashDetailService.findByName("Перепокупка доли");
 
         // Перепродажа доли
         if (null != investorsCash.getInvestorBuyer()) {
@@ -275,7 +276,7 @@ public class InvestorsCashController {
             cash.setSourceId(investorsCash.getId());
             cash.setCashSource(null);
             cash.setSource(null);
-            cash.setNewCashDetails(newCashDetails);
+            cash.setNewCashDetail(newCashDetail);
 
             newInvestorsCash.setId(null);
             newInvestorsCash.setCashSource(null);
@@ -329,9 +330,9 @@ public class InvestorsCashController {
         String invLogin = investorsCash.getInvestor().getLogin();
 
         if (null != reFacility && null != investorsCash.getId() &&
-                null != investorsCash.getNewCashDetails() &&
-                (!investorsCash.getNewCashDetails().getNewCashDetail().equalsIgnoreCase("Реинвестирование с продажи") &&
-                        !investorsCash.getNewCashDetails().getNewCashDetail().equalsIgnoreCase("Реинвестирование с аренды")) &&
+                null != investorsCash.getNewCashDetail() &&
+                (!investorsCash.getNewCashDetail().getName().equalsIgnoreCase("Реинвестирование с продажи") &&
+                        !investorsCash.getNewCashDetail().getName().equalsIgnoreCase("Реинвестирование с аренды")) &&
                 (null != searchSummary.getWhat() && !searchSummary.getWhat().equalsIgnoreCase("edit"))) {
             InvestorsCash newInvestorsCash = new InvestorsCash();
             newInvestorsCash.setFacility(reFacility);
@@ -341,7 +342,7 @@ public class InvestorsCashController {
             newInvestorsCash.setGivedCash(investorsCash.getGivedCash());
             newInvestorsCash.setDateGivedCash(reinvestDate);
             newInvestorsCash.setCashSource(null);
-            newInvestorsCash.setNewCashDetails(newCashDetailsService.findByNewCashDetail("Реинвестирование с продажи"));
+            newInvestorsCash.setNewCashDetail(newCashDetailService.findByName("Реинвестирование с продажи"));
             newInvestorsCash.setShareType(investorsCash.getShareType());
             investorsCashService.create(newInvestorsCash);
             whatWeDoWithCash = "добавлены.";
@@ -386,7 +387,7 @@ public class InvestorsCashController {
         investorsCash.setInvestor(newInvestorsCash.getInvestor());
         investorsCash.setDateGivedCash(newInvestorsCash.getDateGivedCash());
         investorsCash.setCashSource(newInvestorsCash.getCashSource());
-        investorsCash.setNewCashDetails(newInvestorsCash.getNewCashDetails());
+        investorsCash.setNewCashDetail(newInvestorsCash.getNewCashDetail());
         investorsCash.setShareType(inMemoryCash.getShareType());
 
         BigDecimal newSum = newInvestorsCash.getGivedCash().subtract(investorsCash.getGivedCash());
@@ -674,7 +675,7 @@ public class InvestorsCashController {
     GenericResponse saveReCash(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
         List<InvestorsCash> investorsCashes = searchSummary.getInvestorsCashList();
-        NewCashDetails newCashDetails;
+        NewCashDetail newCashDetail;
 
         // список для создания записи в логе по операции реинвестирования с продажи
         List<InvestorsFlowsSale> flowsSaleList = new ArrayList<>();
@@ -684,7 +685,7 @@ public class InvestorsCashController {
 
 
         if ("sale".equals(searchSummary.getWhat())) {
-            newCashDetails = newCashDetailsService.findByNewCashDetail("Реинвестирование с продажи (прибыль)");
+            newCashDetail = newCashDetailService.findByName("Реинвестирование с продажи (прибыль)");
             List<InvestorsFlowsSale> flowsSales = investorsFlowsSaleService.
                     findByIdInWithAllFields(searchSummary.getReinvestIdList());
             flowsSales.forEach(f -> {
@@ -693,20 +694,20 @@ public class InvestorsCashController {
             });
             flowsSaleList = flowsSales;
         } else {
-            newCashDetails = newCashDetailsService.findByNewCashDetail("Реинвестирование с аренды");
+            newCashDetail = newCashDetailService.findByName("Реинвестирование с аренды");
             List<InvestorsFlows> flows = investorsFlowsService.findByIdIn(searchSummary.getReinvestIdList());
             flows.forEach(f -> f.setIsReinvest(1));
             investorsFlowsService.saveList(flows);
             flowsList = flows;
         }
 
-        NewCashDetails finalNewCashDetails = newCashDetails;
+        NewCashDetail finalNewCashDetail = newCashDetail;
 
         Map<String, InvestorsCash> map = groupInvestorsCash(investorsCashes, searchSummary.getWhat());
         try {
             Set<InvestorsCash> cashList = new HashSet<>();
             map.forEach((key, value) -> {
-                value.setNewCashDetails(finalNewCashDetails);
+                value.setNewCashDetail(finalNewCashDetail);
                 value.setGivedCash(value.getGivedCash().setScale(2, RoundingMode.CEILING));
                 investorsCashService.createNew(value);
                 cashList.add(value);
@@ -750,13 +751,13 @@ public class InvestorsCashController {
         GenericResponse response = new GenericResponse();
         List<InvestorsCash> investorsCashes = searchSummary.getInvestorsCashList();
         final Date[] dateClose = {null};
-        final NewCashDetails newCashDetails = newCashDetailsService.findByNewCashDetail("Реинвестирование с продажи (сохранение)");
+        final NewCashDetail newCashDetail = newCashDetailService.findByName("Реинвестирование с продажи (сохранение)");
         final TypeClosingInvest typeClosingInvest = typeClosingInvestService.findByTypeClosingInvest("Реинвестирование");
 
         final Map<String, InvestorsCash> map = groupInvestorsCash(investorsCashes, "");
 
         map.forEach((key, value) -> {
-            value.setNewCashDetails(newCashDetails);
+            value.setNewCashDetail(newCashDetail);
             value.setGivedCash(value.getGivedCash().setScale(2, RoundingMode.DOWN));
             dateClose[0] = value.getDateGivedCash();
             investorsCashService.create(value);
@@ -849,7 +850,7 @@ public class InvestorsCashController {
             cash.setFacility(f.getFacility());
             cash.setInvestor(f.getInvestor());
             cash.setCashSource(f.getCashSource());
-            cash.setNewCashDetails(f.getNewCashDetails());
+            cash.setNewCashDetail(f.getNewCashDetail());
             cash.setUnderFacility(underFacility);
             cash.setDateClosingInvest(null);
             cash.setTypeClosingInvest(null);
@@ -932,7 +933,7 @@ public class InvestorsCashController {
         cashList.forEach(c -> {
             if (null != finalInvBuyer) { // Перепродажа доли
                 TypeClosingInvest closingInvest = typeClosingInvestService.findByTypeClosingInvest("Перепродажа доли");
-                NewCashDetails newCashDetails = newCashDetailsService.findByNewCashDetail("Перепокупка доли");
+                NewCashDetail newCashDetail = newCashDetailService.findByName("Перепокупка доли");
 
                 InvestorsCash cash = investorsCashService.findById(c.getId());
                 InvestorsCash newInvestorsCash = investorsCashService.findById(c.getId());
@@ -943,7 +944,7 @@ public class InvestorsCashController {
                 cash.setSourceId(c.getId());
                 cash.setCashSource(null);
                 cash.setSource(null);
-                cash.setNewCashDetails(newCashDetails);
+                cash.setNewCashDetail(newCashDetail);
                 cash.setRealDateGiven(realDateGiven);
 
                 cash = investorsCashService.createNew(cash);
@@ -1070,8 +1071,8 @@ public class InvestorsCashController {
     }
 
     @ModelAttribute("newCashDetails")
-    public List<NewCashDetails> initializeNewCashDetails() {
-        return newCashDetailsService.initializeNewCashDetails();
+    public List<NewCashDetail> initializeNewCashDetails() {
+        return newCashDetailService.initializeNewCashDetails();
     }
 
     @ModelAttribute("underFacilities")

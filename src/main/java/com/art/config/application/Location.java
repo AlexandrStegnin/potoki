@@ -142,6 +142,17 @@ public class Location {
 
     public static final String INVESTOR_CASH_CLOSE = INVESTOR_CASH + "/close";
 
+    // Детали новых денег
+    public static final String NEW_CASH_DETAILS = "/new-cash-details";
+
+    public static final String NEW_CASH_DETAILS_LIST = NEW_CASH_DETAILS + "/list";
+
+    public static final String NEW_CASH_DETAILS_EDIT = NEW_CASH_DETAILS + "/edit/{id}";
+
+    public static final String NEW_CASH_DETAILS_DELETE = NEW_CASH_DETAILS + "/delete";
+
+    public static final String NEW_CASH_DETAILS_CREATE = NEW_CASH_DETAILS + "/create";
+
     public static final String[] ADMIN_URLS = {
             ADMIN,
             CATALOGUE,
@@ -156,7 +167,8 @@ public class Location {
             TOKENS + WILD_CARD,
             TOKENS_GENERATE,
             BITRIX_MERGE,
-            INVESTOR_CASH + WILD_CARD
+            INVESTOR_CASH + WILD_CARD,
+            NEW_CASH_DETAILS + WILD_CARD
     };
 
     public static final String[] INVESTOR_URLS = {

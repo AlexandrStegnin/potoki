@@ -128,7 +128,7 @@ public class InvestorsCash implements Serializable {
     private Facility facility;
     private AppUser investor;
     private CashSource cashSource;
-    private NewCashDetails newCashDetails;
+    private NewCashDetail newCashDetail;
     private UnderFacility underFacility;
     private Date dateClosingInvest;
     private TypeClosingInvest typeClosingInvest;
@@ -159,7 +159,7 @@ public class InvestorsCash implements Serializable {
     }
 
     public InvestorsCash(BigDecimal givedCash, Date dateGivedCash, Facility facility, AppUser investor,
-                         CashSource cashSource, NewCashDetails newCashDetails,
+                         CashSource cashSource, NewCashDetail newCashDetail,
                          UnderFacility underFacility, Date dateClosingInvest,
                          TypeClosingInvest typeClosingInvest, ShareType shareType, Date dateReport,
                          Facility sourceFacility, UnderFacility sourceUnderFacility, String sourceFlowsId,
@@ -169,7 +169,7 @@ public class InvestorsCash implements Serializable {
         this.facility = facility;
         this.investor = investor;
         this.cashSource = cashSource;
-        this.newCashDetails = newCashDetails;
+        this.newCashDetail = newCashDetail;
         this.underFacility = underFacility;
         this.dateClosingInvest = dateClosingInvest;
         this.typeClosingInvest = typeClosingInvest;
@@ -194,7 +194,7 @@ public class InvestorsCash implements Serializable {
         this.facility = cash.getFacility();
         this.investor = cash.getInvestor();
         this.cashSource = cash.getCashSource();
-        this.newCashDetails = cash.getNewCashDetails();
+        this.newCashDetail = cash.getNewCashDetail();
         this.underFacility = cash.getUnderFacility();
         this.dateClosingInvest = cash.getDateClosingInvest();
         this.typeClosingInvest = cash.getTypeClosingInvest();
@@ -341,12 +341,12 @@ public class InvestorsCash implements Serializable {
 
     @OneToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "NewCashDetailId", referencedColumnName = "id")
-    public NewCashDetails getNewCashDetails() {
-        return newCashDetails;
+    public NewCashDetail getNewCashDetail() {
+        return newCashDetail;
     }
 
-    public void setNewCashDetails(NewCashDetails newCashDetails) {
-        this.newCashDetails = newCashDetails;
+    public void setNewCashDetail(NewCashDetail newCashDetail) {
+        this.newCashDetail = newCashDetail;
     }
 
     @OneToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)

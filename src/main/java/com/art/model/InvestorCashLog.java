@@ -54,7 +54,7 @@ public class InvestorCashLog {
 
     @OneToOne
     @JoinColumn(name = "new_cash_detail_id")
-    private NewCashDetails newCashDetail;
+    private NewCashDetail newCashDetail;
 
     @Column(name = "date_closing_invest")
     private Date dateClosingInvest;
@@ -116,7 +116,7 @@ public class InvestorCashLog {
         this.givenCash = cash.getGivedCash();
         this.dateGivenCash = cash.getDateGivedCash();
         this.cashSource = cash.getCashSource();
-        this.newCashDetail = cash.getNewCashDetails();
+        this.newCashDetail = cash.getNewCashDetail();
         this.dateClosingInvest = cash.getDateClosingInvest();
         this.typeClosingInvest = cash.getTypeClosingInvest();
         this.shareType = cash.getShareType();

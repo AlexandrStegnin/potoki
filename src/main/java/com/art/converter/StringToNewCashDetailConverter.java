@@ -1,26 +1,23 @@
 package com.art.converter;
 
-import com.art.model.NewCashDetails;
-import com.art.service.NewCashDetailsService;
+import com.art.model.NewCashDetail;
+import com.art.service.NewCashDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 
-import javax.annotation.Resource;
-import java.math.BigInteger;
+public class StringToNewCashDetailConverter implements Converter<String, NewCashDetail> {
 
-public class StringToNewCashDetailConverter implements Converter<String, NewCashDetails> {
-    @Resource(name = "newCashDetailsService")
-    private NewCashDetailsService newCashDetailsService;
+    private final NewCashDetailService newCashDetailService;
 
     @Autowired
-    public StringToNewCashDetailConverter(NewCashDetailsService newCashDetailsService) {
-        this.newCashDetailsService = newCashDetailsService;
+    public StringToNewCashDetailConverter(NewCashDetailService newCashDetailService) {
+        this.newCashDetailService = newCashDetailService;
     }
 
-    public NewCashDetails convert(String id) {
-        BigInteger IntId = new BigInteger(id);
-        NewCashDetails newCashDetails;
-        newCashDetails = newCashDetailsService.findById(IntId);
-        return newCashDetails;
+    public NewCashDetail convert(String id) {
+        Long IntId = Long.valueOf(id);
+        NewCashDetail newCashDetail;
+        newCashDetail = newCashDetailService.findById(IntId);
+        return newCashDetail;
     }
 }

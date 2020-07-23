@@ -134,10 +134,10 @@
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="cashDetail">Детали новых денег:</label>
                 <div class="col-md-7">
-                    <form:select path="newCashDetails" id="cashDetail" items="${newCashDetails}" multiple="false"
-                                 itemValue="id" itemLabel="newCashDetail" class="form-control input-sm"/>
+                    <form:select path="newCashDetail" id="cashDetail" items="${newCashDetails}" multiple="false"
+                                 itemValue="id" itemLabel="name" class="form-control input-sm"/>
                     <div class="has-error">
-                        <form:errors path="newCashDetails" class="help-inline"/>
+                        <form:errors path="newCashDetail" class="help-inline"/>
                     </div>
                 </div>
             </div>

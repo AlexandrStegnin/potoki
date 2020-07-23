@@ -212,7 +212,7 @@
                     </td>
                     <td data-report-date="${cash.dateGivedCash.time}">${cash.getDateGivedCashToLocalDate()}</td>
                     <td data-cash-source-id="${cash.cashSource.id}">${cash.cashSource.name}</td>
-                    <td data-cash-details-id="${cash.newCashDetails.id}">${cash.newCashDetails.newCashDetail}</td>
+                    <td data-cash-details-id="${cash.newCashDetail.id}">${cash.newCashDetail.name}</td>
                     <td data-date-closing="${cash.dateClosingInvest.time}">${cash.getDateClosingInvestToLocalDate()}</td>
                     <td data-type-closing-id="${cash.typeClosingInvest.id}">${cash.typeClosingInvest.typeClosingInvest}</td>
                     <td data-share-kind-id="${cash.shareType.id}">${cash.shareType.title}</td>

@@ -24,7 +24,7 @@ public class FormattersConfig extends WebMvcConfigurerAdapter {
 
     private final CashSourceService cashSourceService;
 
-    private final NewCashDetailsService newCashDetailsService;
+    private final NewCashDetailService newCashDetailService;
 
     private final TypeClosingInvestService typeClosingInvestService;
 
@@ -32,13 +32,13 @@ public class FormattersConfig extends WebMvcConfigurerAdapter {
 
     private final AppTokenService appTokenService;
 
-    public FormattersConfig(RoleService roleService, UserService userService, FacilityService facilityService, UnderFacilityService underFacilityService, CashSourceService cashSourceService, NewCashDetailsService newCashDetailsService, TypeClosingInvestService typeClosingInvestService, RoomService roomService, AppTokenService appTokenService) {
+    public FormattersConfig(RoleService roleService, UserService userService, FacilityService facilityService, UnderFacilityService underFacilityService, CashSourceService cashSourceService, NewCashDetailService newCashDetailService, TypeClosingInvestService typeClosingInvestService, RoomService roomService, AppTokenService appTokenService) {
         this.roleService = roleService;
         this.userService = userService;
         this.facilityService = facilityService;
         this.underFacilityService = underFacilityService;
         this.cashSourceService = cashSourceService;
-        this.newCashDetailsService = newCashDetailsService;
+        this.newCashDetailService = newCashDetailService;
         this.typeClosingInvestService = typeClosingInvestService;
         this.roomService = roomService;
         this.appTokenService = appTokenService;
@@ -52,7 +52,7 @@ public class FormattersConfig extends WebMvcConfigurerAdapter {
         registry.addConverter(new StringToDateConverter());
         registry.addConverter(new StringToUnderFacilitiesConverter(underFacilityService));
         registry.addConverter(new StringToCashSourceConverter(cashSourceService));
-        registry.addConverter(new StringToNewCashDetailConverter(newCashDetailsService));
+        registry.addConverter(new StringToNewCashDetailConverter(newCashDetailService));
         registry.addConverter(new StringToTypeClosingInvestConverter(typeClosingInvestService));
         registry.addConverter(new StringToRoomsConverter(roomService));
         registry.addConverter(new StringToTokenConverter(appTokenService));
