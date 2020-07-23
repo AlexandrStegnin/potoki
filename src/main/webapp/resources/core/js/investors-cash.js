@@ -498,7 +498,7 @@ jQuery(document).ready(function ($) {
         if ($(this).find(':selected').text() === 'Реинвестирование') {
             reFacility.css("display", "block");
             $("#dateRepRow").css("display", "block");
-            $('#shareKindName').find('option:contains(Основная доля)').attr('selected', 'selected');
+            $('#shareKindName').find('option:contains(Основная)').attr('selected', 'selected');
             reFacility.insertAfter(typeClosing);
             reUnderFacility.insertAfter(reFacility);
             $('#investorBuyerRow').css('display', 'none');
@@ -540,14 +540,14 @@ jQuery(document).ready(function ($) {
             reFacility.css("display", "block");
             reUnderFacility.css("display", "block");
             dateRep.css("display", "block");
-            $('#shareKindName').find('option:contains(Основная доля)').attr('selected', 'selected');
+            $('#shareKindName').find('option:contains(Основная)').attr('selected', 'selected');
         } else if ($(this).find(':selected').text() === 'Реинвестирование с продажи') {
             reFacility.insertAfter(cashDetail);
             reUnderFacility.insertAfter(reFacility);
             reFacility.css("display", "block");
             reUnderFacility.css("display", "block");
             dateRep.css("display", "none");
-            $('#shareKindName').find('option:contains(Основная доля)').attr('selected', 'selected');
+            $('#shareKindName').find('option:contains(Основная)').attr('selected', 'selected');
         } else {
             reFacility.css("display", "none");
             reUnderFacility.css("display", "none");
@@ -739,8 +739,8 @@ function prepareCashSave(what) {
     let dateReinvest = dateClosingInvest;
 
     let shareKinds = $('#shareKindName');
-    let shareKind = {id: shareKinds.find(':selected').val(), shareKind: shareKinds.find(':selected').text()};
-    if (shareKind.id === '0') {
+    let shareKind = shareKinds.find(':selected').text();
+    if (shareKind === 'Не определена') {
         shareKind = null;
     }
 
@@ -757,12 +757,10 @@ function prepareCashSave(what) {
         givedCash: givedCash,
         dateGivedCash: dateGivedCash,
         cashSource: cashSource,
-        // cashType: cashType,
         newCashDetail: newCashDetail,
-        // investorsType: investorsType,
         dateClosingInvest: dateClosingInvest,
         typeClosingInvest: typeClosingInvest,
-        shareKind: shareKind,
+        shareType: shareKind,
         dateReport: dateReport,
         sourceFacility: reFacility,
         source: source,
@@ -1390,11 +1388,8 @@ function prepareDivideCash() {
                 newCashDetails = null;
             }
 
-            shareKind = {
-                id: current.children('td:eq(11)').attr('data-share-kind-id'),
-                shareKind: current.children('td:eq(11)').text()
-            };
-            if (shareKind.shareKind.length === 0) {
+            shareKind = current.children('td:eq(11)').text();
+            if (shareKind.length === 0) {
                 shareKind = null;
             }
             dateReport = current.children('td:eq(12)').attr('data-date-report');
@@ -1439,7 +1434,7 @@ function prepareDivideCash() {
                 newCashDetail: newCashDetails,
                 dateClosingInvest: dateClosingInvest,
                 typeClosingInvest: typeClosingInvest,
-                shareKind: shareKind,
+                shareType: shareKind,
                 dateReport: dateReport,
                 sourceFacility: sourceFacility,
                 sourceUnderFacility: sourceUnderFacility,
