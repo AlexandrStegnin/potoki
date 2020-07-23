@@ -128,4 +128,5 @@ public class AppUser implements Serializable {
     public void setProfile(UserProfile profile) {
         this.profile = profile;
     }
+
 }
