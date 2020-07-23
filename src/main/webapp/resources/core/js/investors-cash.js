@@ -138,14 +138,6 @@ jQuery(document).ready(function ($) {
 
     blockUnblockDropdownMenus('block', false);
 
-    // $('#msg-modal').on('shown.bs.modal', function () {
-    //     // if data-timer attribute is set use that, otherwise use default (7000)
-    //     let timer = 3000;
-    //     $(this).delay(timer).fadeOut(200, function () {
-    //         $(this).modal('hide');
-    //     });
-    // });
-
     $(document).on('change', ':checkbox', function () {
         let id = $(this).attr('id');
         let noDivide;
@@ -579,10 +571,10 @@ let UnderFacility = function () {
 
 UnderFacility.prototype = {
     id: 0,
-    underFacility: '',
-    build: function (id, underFacility) {
+    name: '',
+    build: function (id, name) {
         this.id = id;
-        this.underFacility = underFacility;
+        this.name = name;
     }
 }
 
@@ -621,11 +613,10 @@ function allMoneyCashing() {
         investorsCash: {
             facility: {
                 id: $("#facilities").find("option:selected").val(),
-                facility: $("#facilities").find("option:selected").text()
+                name: $("#facilities").find("option:selected").text()
             },
             underFacility: {
-                // id: $("#underFacilities").find("option:selected").val(),
-                underFacility: $("#underFacilities").find("option:selected").text()
+                name: $("#underFacilities").find("option:selected").text()
             },
             investor: {
                 id: investor.find("option:selected").val(),
@@ -675,12 +666,15 @@ function prepareCashSave(what) {
     let cashId = $('#id').val();
 
     let facilities = $('#facilities');
-    let facility = {id: facilities.find(':selected').val(), facility: facilities.find(':selected').text()};
+    let facility = {
+        id: facilities.find(':selected').val(),
+        name: facilities.find(':selected').text()
+    };
 
     let underFacilities = $('#underFacilities');
     let underFacility = {
         id: underFacilities.find(':selected').attr('id'),
-        underFacility: underFacilities.find(':selected').text()
+        name: underFacilities.find(':selected').text()
     };
     if (underFacility.id === '0') {
         underFacility = null;
@@ -722,7 +716,7 @@ function prepareCashSave(what) {
     }
 
     let reFacilities = $('#sourceFacilities');
-    let reFacility = {id: reFacilities.find(':selected').val(), facility: reFacilities.find(':selected').text()};
+    let reFacility = {id: reFacilities.find(':selected').val(), name: reFacilities.find(':selected').text()};
     if (reFacility.id === '0') {
         reFacility = null;
     }
@@ -730,7 +724,7 @@ function prepareCashSave(what) {
     let reUnderFacilities = $('#sourceUnderFacilities');
     let reUnderFacility = {
         id: reUnderFacilities.find(':selected').attr('id'),
-        underFacility: reUnderFacilities.find(':selected').text()
+        name: reUnderFacilities.find(':selected').text()
     };
     if (reUnderFacility.id === '0') {
         reUnderFacility = null;
@@ -738,7 +732,7 @@ function prepareCashSave(what) {
 
     let dateReinvest = dateClosingInvest;
 
-    let shareKinds = $('#shareKindName');
+    let shareKinds = $('#shareTypeName');
     let shareKind = shareKinds.find(':selected').text();
     if (shareKind === 'Не определена') {
         shareKind = null;
@@ -1063,29 +1057,29 @@ function prepareSaveCash() {
 
     facility = {
         id: reinvestData.find('#srcFacilities').val(),
-        facility: $('#srcFacilities').find('option:selected').text()
+        name: $('#srcFacilities').find('option:selected').text()
     };
 
     underFacility = {
         id: reinvestData.find('#srcUnderFacilities option:selected').attr('id'),
-        underFacility: $('#srcUnderFacilities').find('option:selected').text()
+        name: $('#srcUnderFacilities').find('option:selected').text()
     };
 
-    if (facility.facility.indexOf('Выберите объект') >= 0) {
+    if (facility.name.indexOf('Выберите объект') >= 0) {
         $('#facilityErr').css('display', 'block');
         return false;
     } else {
         $('#facilityErr').css('display', 'none');
     }
 
-    if (underFacility.underFacility.indexOf('Выберите подобъект') >= 0) {
+    if (underFacility.name.indexOf('Выберите подобъект') >= 0) {
         $('#underFacilityErr').css('display', 'block');
         return false;
     } else {
         $('#underFacilityErr').css('display', 'none');
     }
 
-    if (underFacility.underFacility === 'Без подобъекта') {
+    if (underFacility.name === 'Без подобъекта') {
         underFacility = null;
     }
 
@@ -1121,15 +1115,15 @@ function prepareSaveCash() {
 
             sourceFacility = {
                 id: current.children('td:eq(0)').attr('data-facility-id'),
-                facility: current.children('td:eq(0)').text()
+                name: current.children('td:eq(0)').text()
             };
 
             sourceUnderFacility = {
                 id: current.children('td:eq(1)').attr('data-under-facility-id'),
-                underFacility: current.children('td:eq(1)').text()
+                name: current.children('td:eq(1)').text()
             };
 
-            if (sourceUnderFacility.underFacility.length === 0) {
+            if (sourceUnderFacility.name.length === 0) {
                 sourceUnderFacility = null;
             }
 
@@ -1246,11 +1240,10 @@ function cashingMoney() {
         investorsCash: {
             facility: {
                 id: $("#facilities").find("option:selected").val(),
-                facility: $("#facilities").find("option:selected").text()
+                name: $("#facilities").find("option:selected").text()
             },
             underFacility: {
-                // id: $("#underFacilities").find("option:selected").val(),
-                underFacility: $("#underFacilities").find("option:selected").text()
+                name: $("#underFacilities").find("option:selected").text()
             },
             investor: {
                 id: investor.find("option:selected").val(),
@@ -1317,19 +1310,19 @@ function prepareDivideCash() {
     $('#underFacilitiesList').find('option:selected').each(function () {
         let underFacility = {
             id: $(this).attr('id'),
-            underFacility: $(this).text()
+            name: $(this).text()
         };
         excludedUnderFacilities.push(underFacility);
     });
     divideData.find('#underFacilities').find('option:selected').each(function (ind, el) {
         reUnderFacility = {
             id: el.id,
-            underFacility: el.innerText
+            name: el.innerText
         };
         reUnderFacilitiesList.push(reUnderFacility);
     });
 
-    if (reUnderFacilitiesList.length === 0 || reUnderFacilitiesList[0].underFacility.indexOf('Выберите подобъект') >= 0) {
+    if (reUnderFacilitiesList.length === 0 || reUnderFacilitiesList[0].name.indexOf('Выберите подобъект') >= 0) {
         $('#underFacilityErr').css('display', 'block');
         err = true;
     } else {
@@ -1354,14 +1347,14 @@ function prepareDivideCash() {
             id = current.attr('id');
             facility = {
                 id: current.children('td:eq(0)').attr('data-facility-id'),
-                facility: current.children('td:eq(0)').text()
+                name: current.children('td:eq(0)').text()
             };
 
             underFacility = {
                 id: current.children('td:eq(1)').attr('data-under-facility-id'),
-                underFacility: current.children('td:eq(1)').text()
+                name: current.children('td:eq(1)').text()
             };
-            if (underFacility.underFacility.length === 0) {
+            if (underFacility.name.length === 0) {
                 underFacility = null;
             }
 
@@ -1375,16 +1368,16 @@ function prepareDivideCash() {
 
             cashSource = {
                 id: current.children('td:eq(5)').attr('data-cash-source-id'),
-                cashSource: current.children('td:eq(5)').text()
+                name: current.children('td:eq(5)').text()
             };
-            if (cashSource.cashSource.length === 0) {
+            if (cashSource.name.length === 0) {
                 cashSource = null;
             }
             newCashDetails = {
                 id: current.children('td:eq(7)').attr('data-cash-details-id'),
-                newCashDetail: current.children('td:eq(7)').text()
+                name: current.children('td:eq(7)').text()
             };
-            if (newCashDetails.newCashDetail.length === 0) {
+            if (newCashDetails.name.length === 0) {
                 newCashDetails = null;
             }
 
@@ -1403,23 +1396,23 @@ function prepareDivideCash() {
 
             sourceFacility = {
                 id: current.children('td:eq(13)').attr('data-source-facility-id'),
-                facility: current.children('td:eq(13)').text()
+                name: current.children('td:eq(13)').text()
             };
-            if (sourceFacility.facility.length === 0) {
+            if (sourceFacility.name.length === 0) {
                 sourceFacility = null;
             }
             sourceUnderFacility = {
                 id: current.children('td:eq(14)').attr('data-source-under-id'),
-                underFacility: current.children('td:eq(14)').text()
+                name: current.children('td:eq(14)').text()
             };
-            if (sourceUnderFacility.underFacility.length === 0) {
+            if (sourceUnderFacility.name.length === 0) {
                 sourceUnderFacility = null;
             }
             room = {
                 id: current.children('td:eq(15)').attr('data-room-id'),
-                room: current.children('td:eq(15)').text()
+                name: current.children('td:eq(15)').text()
             };
-            if (room.room.length === 0) {
+            if (room.name.length === 0) {
                 room = null;
             }
 
