@@ -1,6 +1,5 @@
 package com.art.model;
 
-import com.art.model.supporting.InvestorsTotalSum;
 import com.art.model.supporting.enums.ShareType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -12,106 +11,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-@SqlResultSetMappings(
-        {
-                @SqlResultSetMapping(
-                        name = "InvestorsTotalSumDetailsMapping",
-                        classes = @ConstructorResult(
-                                targetClass = InvestorsTotalSum.class,
-                                columns = {
-                                        @ColumnResult(name = "dateGivedCash", type = Date.class),
-                                        @ColumnResult(name = "facility", type = String.class),
-                                        @ColumnResult(name = "givedCash", type = float.class),
-                                        @ColumnResult(name = "dolya", type = float.class),
-                                        @ColumnResult(name = "cleanDohod", type = float.class),
-                                        @ColumnResult(name = "fullDohod", type = float.class)
-                                }))
-                ,
-                @SqlResultSetMapping(
-                        name = "InvestorsTotalSumMapping",
-                        classes = @ConstructorResult(
-                                targetClass = InvestorsTotalSum.class,
-                                columns = {
-                                        @ColumnResult(name = "facility", type = String.class),
-                                        @ColumnResult(name = "givedCash", type = float.class),
-                                        @ColumnResult(name = "dolya", type = float.class),
-                                        @ColumnResult(name = "cleanDohod", type = float.class),
-                                        @ColumnResult(name = "fullDohod", type = float.class)
-                                }))
-                ,
-                @SqlResultSetMapping(
-                        name = "InvestorsCashSumsMapping",
-                        classes = @ConstructorResult(
-                                targetClass = InvestorsTotalSum.class,
-                                columns = {
-                                        @ColumnResult(name = "dateGivedCash", type = Date.class),
-                                        @ColumnResult(name = "facility", type = String.class),
-                                        @ColumnResult(name = "givedCash", type = float.class),
-                                        @ColumnResult(name = "dolya", type = float.class),
-                                        @ColumnResult(name = "cleanDohod", type = float.class),
-                                        @ColumnResult(name = "fullDohod", type = float.class)
-                                }))
-                ,
-                @SqlResultSetMapping(
-                        name = "InvestorsCashSumsDetailsMapping",
-                        classes = @ConstructorResult(
-                                targetClass = InvestorsTotalSum.class,
-                                columns = {
-                                        @ColumnResult(name = "dateGivedCash", type = Date.class),
-                                        @ColumnResult(name = "facility", type = String.class),
-                                        @ColumnResult(name = "givedCash", type = float.class),
-                                        @ColumnResult(name = "dolya", type = float.class),
-                                        @ColumnResult(name = "cleanDohod", type = float.class),
-                                        @ColumnResult(name = "fullDohod", type = float.class)
-                                }))
-        }
-)
-@NamedNativeQueries(
-        {
-                @NamedNativeQuery(
-                        name = "InvestorsTotalSumDetails",
-                        query = "SELECT DateGivedCash, Facility, GivedCash, dolya, cleanDohod, fullDohod " +
-                                "FROM InvestorsTotalSumForIDEADetails " +
-                                "WHERE InvestorId = ? " +
-                                "ORDER BY Facility, DateGivedCash",
-                        resultClass = InvestorsTotalSum.class,
-                        resultSetMapping = "InvestorsTotalSumDetailsMapping")
-                ,
-                @NamedNativeQuery(
-                        name = "InvestorsTotalSum",
-                        query = "SELECT Facility, GivedCash, dolya, cleanDohod, fullDohod " +
-                                "FROM InvestorsTotalSumForIDEA " +
-                                "WHERE InvestorId = ? " +
-                                "ORDER BY Facility",
-                        resultClass = InvestorsTotalSum.class,
-                        resultSetMapping = "InvestorsTotalSumMapping")
-                ,
-                @NamedNativeQuery(
-                        name = "InvestorsCashSums",
-                        query = "SELECT MAX(DateGivedCash) AS DateGivedCash, Facility, SUM(GivedCash) AS GivedCash, " +
-                                "0 AS dolya, 0 AS cleanDohod, 0 AS fullDohod " +
-                                "FROM InvestorsCash ic " +
-                                "LEFT JOIN FACILITYES f ON ic.FacilityId = f.ID " +
-                                "WHERE InvestorId = ? " +
-                                "GROUP BY InvestorId, FacilityId, Facility " +
-                                "ORDER BY Facility",
-                        resultClass = InvestorsTotalSum.class,
-                        resultSetMapping = "InvestorsCashSumsMapping")
-                ,
-                @NamedNativeQuery(
-                        name = "InvestorsCashSumsDetails",
-                        query = "SELECT DateGivedCash, Facility, GivedCash, " +
-                                "0 AS dolya, 0 AS cleanDohod, 0 AS fullDohod " +
-                                "FROM InvestorsCash ic " +
-                                "LEFT JOIN FACILITYES f ON ic.FacilityId = f.ID " +
-                                "WHERE InvestorId = ? " +
-                                "ORDER BY Facility",
-                        resultClass = InvestorsTotalSum.class,
-                        resultSetMapping = "InvestorsCashSumsDetailsMapping")
-        }
-)
-
 
 @Getter
 @Setter

@@ -2,7 +2,6 @@ package com.art.service;
 
 import com.art.model.*;
 import com.art.model.supporting.AfterCashing;
-import com.art.model.supporting.InvestorsTotalSum;
 import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.filters.CashFilter;
 import com.art.repository.InvestorsCashRepository;
@@ -23,7 +22,10 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
@@ -77,10 +79,6 @@ public class InvestorsCashService {
 
     public void delete(InvestorsCash cash) {
         investorsCashRepository.delete(cash);
-    }
-
-    public List<InvestorsTotalSum> getInvestorsCashSums(Long investorId) {
-        return investorsCashRepository.getInvestorsCashSums(investorId);
     }
 
     public void saveAll(List<InvestorsCash> investorsCashes) {
