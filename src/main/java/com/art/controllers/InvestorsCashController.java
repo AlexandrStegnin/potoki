@@ -251,7 +251,7 @@ public class InvestorsCashController {
      */
     @PostMapping(value = "/close-cash-{id}")
     public String closeCash(@ModelAttribute("investorsCash") InvestorsCash investorsCash,
-                            @PathVariable("id") int id, @RequestParam("dateClosingInvest") Date dateClosingInvest,
+                            @PathVariable("id") Long id, @RequestParam("dateClosingInvest") Date dateClosingInvest,
                             @RequestParam("realDateGiven") Date realDateGiven) {
         ModelAndView modelAndView = new ModelAndView("viewinvestorscash");
 
@@ -263,8 +263,8 @@ public class InvestorsCashController {
         if (null != investorsCash.getInvestorBuyer()) {
             invBuyer = userService.findById(investorsCash.getInvestorBuyer().getId());
 
-            InvestorsCash cash = investorsCashService.findById(investorsCash.getId());
-            InvestorsCash newInvestorsCash = investorsCashService.findById(investorsCash.getId());
+            InvestorsCash cash = new InvestorsCash(investorsCashService.findById(investorsCash.getId()));
+            InvestorsCash newInvestorsCash = new InvestorsCash(investorsCashService.findById(investorsCash.getId()));
             InvestorsCash oldCash = investorsCashService.findById(investorsCash.getId());
             oldCash.setDateClosingInvest(dateClosingInvest);
             oldCash.setTypeClosing(closingInvest);
@@ -936,18 +936,18 @@ public class InvestorsCashController {
                 NewCashDetail newCashDetail = newCashDetailService.findByName("Перепокупка доли");
 
                 InvestorsCash cash = investorsCashService.findById(c.getId());
+                InvestorsCash copyCash = new InvestorsCash(cash);
                 InvestorsCash newInvestorsCash = investorsCashService.findById(c.getId());
 
-                cash.setId(null);
-                cash.setInvestor(finalInvBuyer);
-                cash.setDateGivedCash(dateClose);
-                cash.setSourceId(c.getId());
-                cash.setCashSource(null);
-                cash.setSource(null);
-                cash.setNewCashDetail(newCashDetail);
-                cash.setRealDateGiven(realDateGiven);
+                copyCash.setInvestor(finalInvBuyer);
+                copyCash.setDateGivedCash(dateClose);
+                copyCash.setSourceId(c.getId());
+                copyCash.setCashSource(null);
+                copyCash.setSource(null);
+                copyCash.setNewCashDetail(newCashDetail);
+                copyCash.setRealDateGiven(realDateGiven);
 
-                cash = investorsCashService.createNew(cash);
+                copyCash = investorsCashService.createNew(cash);
 
                 newInvestorsCash.setCashSource(null);
                 newInvestorsCash.setId(null);
@@ -965,7 +965,7 @@ public class InvestorsCashController {
                 investorsCashService.update(c);
                 oldCashes.add(c);
                 newCashes.add(c);
-                newCashes.add(cash);
+                newCashes.add(copyCash);
                 newCashes.add(newInvestorsCash);
             } else {
                 InvestorsCash cashForTx = new InvestorsCash(c);

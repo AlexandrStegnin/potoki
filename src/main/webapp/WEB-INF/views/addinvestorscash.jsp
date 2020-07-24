@@ -160,9 +160,9 @@
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="typeClosing">Вид закрытия вложения:</label>
                 <div class="col-md-7">
-                    <form:select path="typeClosing" id="typeClosing" items="${typeClosing}"
+                    <form:select path="typeClosing" id="typeClosing" items="${typeClosingInvest}"
                                  multiple="false"
-                                 itemValue="id" itemLabel="typeClosing" class="form-control input-sm"
+                                 itemValue="id" itemLabel="name" class="form-control input-sm"
                                  readonly="${edit}"/>
                     <div class="has-error">
                         <form:errors path="typeClosing" class="help-inline"/>
