@@ -219,7 +219,7 @@
                     <td data-date-report="${cash.dateReport.time}">${cash.getDateReportToLocalDate()}</td>
                     <td data-source-facility-id="${cash.sourceFacility.id}">${cash.sourceFacility.name}</td>
                     <td data-source-under-id="${cash.sourceUnderFacility.id}">${cash.sourceUnderFacility.name}</td>
-                    <td data-room-id="${cash.room.id}">${cash.room.room}</td>
+                    <td data-room-id="${cash.room.id}">${cash.room.name}</td>
                     <c:choose>
                         <c:when test="${cash.typeClosing == null}">
                             <c:set var="isDisabledClass" value="isEnabled"/>
