@@ -290,11 +290,13 @@ public class InvestorsCashController {
             investorsCashService.createNew(cash);
             investorsCashService.createNew(newInvestorsCash);
             investorsCashService.update(oldCash);
+            InvestorsCash transactionOldCash = new InvestorsCash(oldCash);
+            transactionOldCash.setId(oldCash.getId());
             Set<InvestorsCash> cashSet = new HashSet<>();
             cashSet.add(cash);
             cashSet.add(newInvestorsCash);
-            cashSet.add(oldCash);
-            transactionLogService.resale(Collections.singleton(oldCash), cashSet);
+            cashSet.add(transactionOldCash);
+            transactionLogService.resale(Collections.singleton(transactionOldCash), cashSet);
         } else {
             InvestorsCash updatedCash = investorsCashService.findById(investorsCash.getId());
             transactionLogService.close(Collections.singleton(updatedCash));
