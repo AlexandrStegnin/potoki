@@ -29,11 +29,6 @@
     <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
 
-    <script type="text/javascript"
-            src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js' />"></script>
-    <script type="text/javascript"
-            src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js' />"></script>
-
     <style type="text/css">
         table, td, th {
             text-align: center;
@@ -506,9 +501,8 @@
         </div>
     </div>
 </div>
-<%@include file="slideDiv.jsp" %>
-<%@include file="loader.jsp" %>
-
+<%@include file="popup_modal.jsp" %>
+<%@include file="ddk_loader.jsp" %>
 <link rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/css/bootstrap-select.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>

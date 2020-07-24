@@ -110,13 +110,13 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                .antMatchers("/savePassword", "/sw.js", Location.LOGIN).permitAll()
+                .antMatchers(Location.PERMIT_ALL_URLS).permitAll()
                 .antMatchers(Location.WEBSOCKET_PATHS).permitAll()
                 .anyRequest().authenticated()
                 .antMatchers("/kind-on-project", Location.INVESTMENTS, "/union-profit", "/have-unread").access("hasAnyRole('ADMIN', 'INVESTOR')")
                 .antMatchers("/mark-read-annex", "/cashing-money", "/annexToContract/**").access("hasAnyRole('ADMIN', 'INVESTOR')")
 //                .antMatchers("/getInvestorsFlows", "/getMainFlows").access("hasAnyRole('ADMIN', 'INVESTOR')")
-                .antMatchers("/switch", "/uploadexcel", "**close**", "/load**").access("hasRole('ADMIN')")
+                .antMatchers("/uploadexcel", "**close**", "/load**").access("hasRole('ADMIN')")
                 .antMatchers(Location.ADMIN_URLS).access("hasRole('ADMIN')")
                 .and().formLogin().loginPage(Location.LOGIN).permitAll()
                 .loginProcessingUrl(Location.LOGIN)

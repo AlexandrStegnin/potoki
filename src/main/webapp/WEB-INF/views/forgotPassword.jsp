@@ -52,6 +52,6 @@
         </div>
     </div>
 </div>
-<%@include file="loader.jsp" %>
+<%@include file="ddk_loader.jsp" %>
 </body>
 </html>

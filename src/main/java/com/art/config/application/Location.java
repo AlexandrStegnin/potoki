@@ -164,6 +164,17 @@ public class Location {
 
     public static final String TYPE_CLOSING_CREATE = TYPE_CLOSING + "/create";
 
+    // Восстановление пароля
+    public static final String FORGOT_PASSWORD = "/forgotPassword";
+
+    public static final String SAVE_PASSWORD = "/savePassword";
+
+    public static final String SW_JS = "/sw.js";
+
+    public static final String RESET_PASSWORD = "/resetPassword";
+
+    public static final String CHANGE_PASSWORD = "/changePassword";
+
     public static final String[] ADMIN_URLS = {
             ADMIN,
             CATALOGUE,
@@ -184,6 +195,14 @@ public class Location {
     };
 
     public static final String[] INVESTOR_URLS = {
-            HOME, WELCOME, INVESTMENTS
+            HOME, WELCOME, INVESTMENTS,
+    };
+
+    public static final String[] PERMIT_ALL_URLS = {
+            FORGOT_PASSWORD,
+            SAVE_PASSWORD,
+            SW_JS, LOGIN, LOGOUT,
+            RESET_PASSWORD,
+            CHANGE_PASSWORD + WILD_CARD
     };
 }

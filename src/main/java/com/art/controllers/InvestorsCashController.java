@@ -17,6 +17,7 @@ import org.springframework.data.web.SortDefault;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
@@ -80,6 +81,12 @@ public class InvestorsCashController {
         this.underFacilityService = underFacilityService;
         this.investorsFlowsService = investorsFlowsService;
         this.typeClosingService = typeClosingService;
+    }
+
+    @GetMapping(path = "/money/create")
+    public String addMoneyPage(Model model) {
+        model.addAttribute("money", new InvestorsCash());
+        return "money-add";
     }
 
     /**
@@ -1111,6 +1118,16 @@ public class InvestorsCashController {
 
     @ModelAttribute("searchSummary")
     public SearchSummary addSearchSummary() {
+        return filters;
+    }
+
+    @ModelAttribute("summary")
+    public SearchSummary addSummary() {
+        return filters;
+    }
+
+    @ModelAttribute("search")
+    public SearchSummary addSearch() {
         return filters;
     }
 }
