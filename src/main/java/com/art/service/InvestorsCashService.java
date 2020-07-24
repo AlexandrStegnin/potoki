@@ -69,7 +69,7 @@ public class InvestorsCashService {
     }
 
     public InvestorsCash createNew(InvestorsCash investorsCash) {
-        investorsCash = investorsCashRepository.save(investorsCash);
+        investorsCash = investorsCashRepository.saveAndFlush(investorsCash);
         return investorsCash;
     }
 
