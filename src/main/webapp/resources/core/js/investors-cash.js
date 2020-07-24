@@ -709,7 +709,7 @@ function prepareCashSave(what) {
     let typeClosingInvests = $('#typeClosing');
     let typeClosingInvest = {
         id: typeClosingInvests.find(':selected').val(),
-        typeClosingInvest: typeClosingInvests.find(':selected').text()
+        name: typeClosingInvests.find(':selected').text()
     };
     if (typeClosingInvest.id === '0') {
         typeClosingInvest = null;
@@ -753,7 +753,7 @@ function prepareCashSave(what) {
         cashSource: cashSource,
         newCashDetail: newCashDetail,
         dateClosingInvest: dateClosingInvest,
-        typeClosingInvest: typeClosingInvest,
+        typeClosing: typeClosingInvest,
         shareType: shareKind,
         dateReport: dateReport,
         sourceFacility: reFacility,
@@ -1146,7 +1146,7 @@ function prepareSaveCash() {
                 newCashDetail: null,
                 underFacility: underFacility,
                 dateClosingInvest: null,
-                typeClosingInvest: null,
+                typeClosing: null,
                 shareType: shareKind,
                 sourceId: sourceId,
                 source: sourceId.toString(),
@@ -1426,7 +1426,7 @@ function prepareDivideCash() {
                 cashSource: cashSource,
                 newCashDetail: newCashDetails,
                 dateClosingInvest: dateClosingInvest,
-                typeClosingInvest: typeClosingInvest,
+                typeClosing: typeClosingInvest,
                 shareType: shareKind,
                 dateReport: dateReport,
                 sourceFacility: sourceFacility,
@@ -1561,7 +1561,7 @@ function prepareCloseCash() {
     let typeClosingInvests = $('#typeClosing');
     let typeClosingInvest = {
         id: typeClosingInvests.find(':selected').val(),
-        typeClosingInvest: typeClosingInvests.find(':selected').text()
+        name: typeClosingInvests.find(':selected').text()
     };
     if (typeClosingInvest.id === '0') {
         typeClosingInvest = null;
