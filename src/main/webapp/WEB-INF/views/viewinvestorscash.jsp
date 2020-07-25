@@ -188,6 +188,7 @@
                 <th>Объект источник</th>
                 <th>Подобъект источник</th>
                 <th>Помещение</th>
+                <th>Из 1С</th>
                 <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                     <th style="text-align: center">Действие</th>
                 </sec:authorize>
@@ -215,6 +216,11 @@
                     <td data-source-facility-id="${cash.sourceFacility.id}">${cash.sourceFacility.name}</td>
                     <td data-source-under-id="${cash.sourceUnderFacility.id}">${cash.sourceUnderFacility.name}</td>
                     <td data-room-id="${cash.room.id}">${cash.room.name}</td>
+                    <c:set var="is1C" value="Да" />
+                    <c:if test="${empty cash.transactionUUID}">
+                        <c:set var="is1C" value="Нет" />
+                    </c:if>
+                    <td>${is1C}</td>
                     <c:choose>
                         <c:when test="${cash.typeClosing == null}">
                             <c:set var="isDisabledClass" value="isEnabled"/>

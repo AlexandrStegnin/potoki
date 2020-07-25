@@ -411,4 +411,11 @@ public class InvestorsCash implements Serializable {
         this.realDateGiven = realDateGiven;
     }
 
+    private String transactionUUID;
+
+    @Column(name = "transaction_uuid")
+    public String getTransactionUUID() {
+        return transactionUUID;
+    }
+
 }
