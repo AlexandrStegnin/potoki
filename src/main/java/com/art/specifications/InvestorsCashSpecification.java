@@ -24,6 +24,7 @@ public class InvestorsCashSpecification extends BaseSpecification<InvestorsCash,
                 .and(underFacilityIn(filter.getUnderFacilities()))
                 .and(loginIn(filter.getInvestors()))
                 .and(facilityIsNotNull())
+                .and(is1C(filter.isFromApi()))
                 .toPredicate(root, query, cb);
     }
 
@@ -180,6 +181,16 @@ public class InvestorsCashSpecification extends BaseSpecification<InvestorsCash,
                 }
             }
             return root.get(InvestorsCash_.underFacility).in(underFacilities);
+        }
+        );
+    }
+
+    private static Specification<InvestorsCash> is1C(boolean is1C) {
+        return ((root, criteriaQuery, criteriaBuilder) -> {
+            if (!is1C) {
+                return null;
+            }
+            return root.get(InvestorsCash_.transactionUUID).isNotNull();
         }
         );
     }

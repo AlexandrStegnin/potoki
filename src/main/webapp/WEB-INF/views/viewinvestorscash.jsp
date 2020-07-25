@@ -12,23 +12,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Список дненег инвесторов</title>
     <sec:csrfMetaTags/>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/progress.js' />"></script>
     <link href="<c:url value='/resources/core/css/old_bootstrap.min.css' />" rel="stylesheet"/>
     <link href="<c:url value='/resources/core/css/applic.css' />" rel="stylesheet"/>
     <link href="<c:url value='/resources/core/css/popup.css' />" rel="stylesheet"/>
     <link href="<c:url value='/resources/core/css/ddk_loader.css' />" rel="stylesheet"/>
     <link href="<c:url value='/resources/core/css/jquery-ui.min.css' />" rel="stylesheet"/>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/jquery-3.2.1.js' />"></script>
-    <script type="text/javascript"
-            src="<c:url value="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.0.4/popper.js" /> "></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/jquery-ui.min.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min_old.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/jsFunctions.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/investors-cash.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
-
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/css/bootstrap-select.css">
     <style type="text/css">
         table, td, th {
             text-align: center;
@@ -121,6 +112,10 @@
                 <input id="beginPeriod" name="fromDate" type="date" class="form-control input-sm" value="">
                 <label for="endPeriod" style="margin-left:10px; margin-right:5px; font-size:14px">по:</label>
                 <input id="endPeriod" name="toDate" type="date" class="form-control input-sm" value="" style="margin-right:5px">
+                <form:select path="fromApi" class="selectpicker">
+                    <form:option value="true" label="Из 1С" />
+                    <form:option value="false" label="Остальные" />
+                </form:select>
                 <button type="submit" id="bth-search" class="btn btn-primary btn-sm">Фильтр</button>
                 <button type="submit" id="bth-clear" class="btn btn-danger btn-sm">Сбросить фильтры</button>
                 <div class="btn btn-info btn-sm" id="allRows">
@@ -325,7 +320,8 @@
                             <div class="col-md-7">
                                 <form:select path="reUnderFacility" id="srcUnderFacilities" items="${underFacilities}"
                                              multiple="false"
-                                             itemValue="id" itemLabel="name" class="form-control input-sm"/>
+                                             data-none-selected-text="Без подобъекта"
+                                             itemValue="id" itemLabel="name" class="form-control input-sm selectpicker"/>
                                 <div id="underFacilityErr" style="color: red; display: none">Необходимо выбрать
                                     подобъект
                                 </div>
@@ -499,9 +495,20 @@
 </div>
 <%@include file="popup_modal.jsp" %>
 <%@include file="ddk_loader.jsp" %>
-<link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/css/bootstrap-select.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
-
+<script type="text/javascript"
+        src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' />"></script>
+<script type="text/javascript"
+        src="<c:url value="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.0.4/popper.js" /> "></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min_old.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
+<script type="text/javascript"
+        src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js' />"></script>
+<script type="text/javascript"
+        src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/jsFunctions.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/investors-cash.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
+<script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/progress.js' />"></script>
 </body>
 </html>
