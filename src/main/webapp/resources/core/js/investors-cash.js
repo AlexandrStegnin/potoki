@@ -38,7 +38,7 @@ jQuery(document).ready(function ($) {
         e.preventDefault();
         $('#fFacilities').selectpicker('deselectAll');
         $('#uFacilities').selectpicker('deselectAll');
-        $('#investors').selectpicker('deselectAll'); //find('option:eq(0)').prop('selected', true);
+        $('#investors').selectpicker('deselectAll');
         $('.selectpicker').selectpicker('refresh');
         $('#beginPeriod').val('');
         $('#endPeriod').val('');
@@ -453,7 +453,6 @@ jQuery(document).ready(function ($) {
     };
 
     $("#search-form").submit(function () {
-        // Disable the search button
         enableSearchButton(false);
         populateFilters((window.location.pathname + '').split('/')[1]);
         enableSearchButton(true);
@@ -481,11 +480,9 @@ jQuery(document).ready(function ($) {
     });
 
     $(document).on("change", "#typeClosing", function () {
-
         let typeClosing = $('#typeClosingRow');
         let reFacility = $('#sourceFacility');
         let reUnderFacility = $('#sourceUnderFacility');
-
 
         if ($(this).find(':selected').text() === 'Реинвестирование') {
             reFacility.css("display", "block");
@@ -595,7 +592,6 @@ function allMoneyCashing() {
         investors.push(user);
     });
 
-    // return false;
     let search = ({
         investorsList: investors,
         user: {
@@ -644,7 +640,7 @@ function allMoneyCashing() {
         },
         error: function (e) {
             closeLoader();
-            showPopup('Что-то пошло не так = [' + e.toLocaleString() + "]");
+            showPopup('Что-то пошло не так = [' + e.error + "]");
         },
         done: function (e) {
             enableSearchButton(true);
@@ -1161,9 +1157,7 @@ function prepareSaveCash() {
 
         });
     });
-
     saveReCash(cashes, reinvestIdList, dateClose);
-
 }
 
 function saveReCash(cashes, reinvestIdList, dateClose) {
@@ -1531,11 +1525,10 @@ function deleteCash(cashIdList) {
         }
     })
         .done(function (data) {
-            // closeLoader();
             showPopup(data.message);
         })
         .fail(function (e) {
-            showPopup('Что-то пошло не так [' + e.toLocaleString() + ']');
+            showPopup('Что-то пошло не так [' + e.error + ']');
         })
         .always(function () {
             console.log('Закончили!');
@@ -1574,7 +1567,6 @@ function prepareCloseCash() {
             $(this).closest('tr').remove();
         })
     });
-
     closeCash(cashIdList, investorBuyer, dateClosingInvest, what, realDateGiven);
 }
 

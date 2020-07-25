@@ -277,17 +277,7 @@
             </c:forEach>
             </tbody>
         </table>
-
     </div>
-
-    <sec:authorize access="isRememberMe()">
-        <p>Вы вошли с помощью функции "Запомнить меня".
-            Чтобы иметь все права на данную страницу, Вам необходимо снова
-            <a href="<c:url value='/login' />">ВОЙТИ</a> в систему используя логин/пароль.
-        </p>
-
-    </sec:authorize>
-
 </div>
 
 <div id="reInvestModal" class="modal fade" role="dialog">
