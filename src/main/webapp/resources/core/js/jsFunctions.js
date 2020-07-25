@@ -1,5 +1,4 @@
 const CHOOSE_ROOM = 'Выберите помещение';
-const CHOOSE_UNDER_FACILITY = 'Выберите подобъект';
 
 function apply_filter(table, col, text) {
     filters[col] = text;
@@ -95,12 +94,6 @@ function getUnderFacilitiesFromLocalStorage(facilityId, uFacilitiesId) {
         option.setAttribute('value', 'Без подобъекта');
         option.innerText = 'Без подобъекта';
         options.unshift(option);
-
-        // option = document.createElement('option');
-        // option.setAttribute('id', "-1");
-        // option.setAttribute('value', CHOOSE_UNDER_FACILITY);
-        // option.innerText = CHOOSE_UNDER_FACILITY;
-        // options.unshift(option);
     }
 
     $('#' + uFacilitiesId)
@@ -108,7 +101,6 @@ function getUnderFacilitiesFromLocalStorage(facilityId, uFacilitiesId) {
         .remove()
         .end()
         .append(options)
-        // .prop('selected', CHOOSE_UNDER_FACILITY)
         .selectpicker('refresh');
 }
 
@@ -196,13 +188,11 @@ function getRoomsFromLocalStorage(underFacilityId) {
 
     if (parseInt(underFacilityId) === 0) {
         options = rooms.map(function (item) {
-
             option = document.createElement('option');
             option.setAttribute('id', item.id);
             option.setAttribute('data-parent-id', item.underFacilityId);
             option.setAttribute('value', item.id);
             option.innerText = item.room;
-
             return option;
 
         });
@@ -210,13 +200,11 @@ function getRoomsFromLocalStorage(underFacilityId) {
         options = rooms.filter(function (item) {
             return item.underFacilityId === parseInt(underFacilityId);
         }).map(function (item) {
-
             option = document.createElement('option');
             option.setAttribute('id', item.id);
             option.setAttribute('data-parent-id', item.underFacilityId);
             option.setAttribute('value', item.id);
             option.innerText = item.room;
-
             return option;
 
         });

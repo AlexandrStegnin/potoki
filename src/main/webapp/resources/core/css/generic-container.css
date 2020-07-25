@@ -1,0 +1,11 @@
+.generic-container {
+    width:97%;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 0 30px black;
+    max-height:99%;
+    overflow-x:scroll;
+    overflow-y:auto;
+}
