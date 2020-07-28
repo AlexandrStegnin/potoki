@@ -16,13 +16,15 @@
     <link rel="stylesheet"
           href="<c:url value='/resources/core/css/style.css' />"/>
     <link rel="stylesheet"
+          href="<c:url value='/resources/core/css/generic-container.css' />"/>
+    <link rel="stylesheet"
           href="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css' />">
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
 </head>
 
 <body>
 <%@include file="header.jsp" %>
-<div class="container-fluid" style="margin-top: 10%">
+<div class="container generic-container" style="margin-top: 10%">
     <sec:authorize access="hasRole('ADMIN') or hasRole('DBA') or hasRole('BIGDADDY')">
         <a href="<c:url value='/admin' />" class="btn btn-success btn-block" >Пользователи (app_user)</a>
         <a href="<c:url value='/facilities/list' />" class="btn btn-success btn-block">Объекты (facility)</a>
