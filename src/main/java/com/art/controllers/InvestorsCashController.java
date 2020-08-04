@@ -83,12 +83,6 @@ public class InvestorsCashController {
         this.typeClosingService = typeClosingService;
     }
 
-    @GetMapping(path = "/money/create")
-    public String addMoneyPage(Model model) {
-        model.addAttribute("money", new InvestorsCash());
-        return "money-add";
-    }
-
     /**
      * Получить список денег инвесторов
      *
