@@ -215,12 +215,6 @@ public class TransactionLogService {
      * @param cashes суммы инвесторов
      */
     public void resale(Set<InvestorsCash> oldCashes, Set<InvestorsCash> cashes) {
-        oldCashes.forEach(oldCash -> {
-            oldCash.setDateClosingInvest(null);
-            oldCash.setTypeClosing(null);
-            oldCash.setRealDateGiven(null);
-        });
-
         TransactionLog log = new TransactionLog();
         log.setInvestorsCashes(cashes);
         log.setType(TransactionType.CLOSING_RESALE);

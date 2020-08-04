@@ -117,8 +117,6 @@ public class InvestorCashLog {
         this.dateGivenCash = cash.getDateGivedCash();
         this.cashSource = cash.getCashSource();
         this.newCashDetail = cash.getNewCashDetail();
-        this.dateClosingInvest = cash.getDateClosingInvest();
-        this.typeClosing = cash.getTypeClosing();
         this.shareType = cash.getShareType();
         this.dateReport = cash.getDateReport();
         this.sourceFacility = cash.getSourceFacility();
@@ -129,7 +127,6 @@ public class InvestorCashLog {
         this.sourceId = cash.getSourceId();
         this.source = cash.getSource();
         this.divide = cash.getIsDivide();
-        this.realDateGiven = cash.getRealDateGiven();
         this.transactionLog = log;
         this.instanceOf = instanceOf;
     }

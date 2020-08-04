@@ -939,14 +939,13 @@ public class InvestorsCashController {
         Set<InvestorsCash> oldCashes = new HashSet<>();
         // список сумм, которые получатся на выходе
         Set<InvestorsCash> newCashes = new HashSet<>();
+        TypeClosing closingInvest = typeClosingService.findByName("Перепродажа доли");
+        NewCashDetail newCashDetail = newCashDetailService.findByName("Перепокупка доли");
+
         cashList.forEach(c -> {
             if (null != finalInvBuyer) { // Перепродажа доли
-                TypeClosing closingInvest = typeClosingService.findByName("Перепродажа доли");
-                NewCashDetail newCashDetail = newCashDetailService.findByName("Перепокупка доли");
-
-                InvestorsCash cash = investorsCashService.findById(c.getId());
-                InvestorsCash copyCash = new InvestorsCash(cash);
-                InvestorsCash newInvestorsCash = investorsCashService.findById(c.getId());
+                InvestorsCash copyCash = new InvestorsCash(c);
+                InvestorsCash newInvestorsCash = new InvestorsCash(c);
 
                 copyCash.setInvestor(finalInvBuyer);
                 copyCash.setDateGivedCash(dateClose);
@@ -956,12 +955,11 @@ public class InvestorsCashController {
                 copyCash.setNewCashDetail(newCashDetail);
                 copyCash.setRealDateGiven(realDateGiven);
 
-                copyCash = investorsCashService.createNew(cash);
+                copyCash = investorsCashService.createNew(copyCash);
 
                 newInvestorsCash.setCashSource(null);
-                newInvestorsCash.setId(null);
                 newInvestorsCash.setGivedCash(newInvestorsCash.getGivedCash().negate());
-                newInvestorsCash.setSourceId(cash.getId());
+                newInvestorsCash.setSourceId(c.getId());
                 newInvestorsCash.setSource(null);
                 newInvestorsCash.setDateGivedCash(dateClose);
                 newInvestorsCash.setDateClosingInvest(dateClose);
