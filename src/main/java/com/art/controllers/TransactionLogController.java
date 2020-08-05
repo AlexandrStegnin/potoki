@@ -47,13 +47,13 @@ public class TransactionLogController {
      * @return список транзакций
      */
     @GetMapping(path = URL_TRANSACTIONS)
-    public String findAll(@PageableDefault(size = 100) @SortDefault Pageable pageable, ModelMap model) {
+    public String findAll(@PageableDefault(size = 1000) @SortDefault Pageable pageable, ModelMap model) {
         prepareModel(model, filter, pageable);
         return "transactions";
     }
 
     @PostMapping(path = URL_TRANSACTIONS)
-    public String getTxFiltered(@PageableDefault(size = 100) @SortDefault Pageable pageable, ModelMap model,
+    public String getTxFiltered(@PageableDefault(size = 1000) @SortDefault Pageable pageable, ModelMap model,
                                 @ModelAttribute("filter") TxLogFilter filter) {
         prepareModel(model, filter, pageable);
         return "transactions";
