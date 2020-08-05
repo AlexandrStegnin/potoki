@@ -6,11 +6,11 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 @Component
-public class StringToUnderFacilityConverter implements Converter<String, UnderFacility> {
+public class UnderFacilityConverter implements Converter<String, UnderFacility> {
 
     private final UnderFacilityService underFacilityService;
 
-    public StringToUnderFacilityConverter(UnderFacilityService underFacilityService) {
+    public UnderFacilityConverter(UnderFacilityService underFacilityService) {
         this.underFacilityService = underFacilityService;
     }
 

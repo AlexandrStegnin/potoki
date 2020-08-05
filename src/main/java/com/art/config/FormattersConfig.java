@@ -50,11 +50,11 @@ public class FormattersConfig extends WebMvcConfigurerAdapter {
         registry.addConverter(new UserConverter(userService));
         registry.addConverter(new FacilityConverter(facilityService));
         registry.addConverter(new DateConverter());
-        registry.addConverter(new StringToUnderFacilityConverter(underFacilityService));
+        registry.addConverter(new UnderFacilityConverter(underFacilityService));
         registry.addConverter(new CashSourceConverter(cashSourceService));
         registry.addConverter(new NewCashDetailConverter(newCashDetailService));
         registry.addConverter(new TypeClosingConverter(typeClosingService));
-        registry.addConverter(new StringToRoomConverter(roomService));
+        registry.addConverter(new RoomConverter(roomService));
         registry.addConverter(new TokenConverter(appTokenService));
         registry.addConverter(new ShareTypeConverter());
     }

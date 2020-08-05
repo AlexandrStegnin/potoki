@@ -7,12 +7,12 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 @Component
-public class StringToRoomConverter implements Converter<String, Room> {
+public class RoomConverter implements Converter<String, Room> {
 
     private final RoomService roomService;
 
     @Autowired
-    public StringToRoomConverter(RoomService roomService) {
+    public RoomConverter(RoomService roomService) {
         this.roomService = roomService;
     }
 
