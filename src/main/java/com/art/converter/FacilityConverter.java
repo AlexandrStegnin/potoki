@@ -7,13 +7,13 @@ import org.springframework.core.convert.converter.Converter;
 
 import javax.annotation.Resource;
 
-public class StringToFacilityConverter implements Converter<String, Facility> {
+public class FacilityConverter implements Converter<String, Facility> {
 
     @Resource(name = "facilityService")
     private FacilityService facilityService;
 
     @Autowired
-    public StringToFacilityConverter(FacilityService facilityService) {
+    public FacilityConverter(FacilityService facilityService) {
         this.facilityService = facilityService;
     }
 

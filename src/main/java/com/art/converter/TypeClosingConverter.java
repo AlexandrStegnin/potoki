@@ -7,12 +7,12 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 @Component
-public class StringToTypeClosingConverter implements Converter<String, TypeClosing> {
+public class TypeClosingConverter implements Converter<String, TypeClosing> {
 
     private final TypeClosingService typeClosingService;
 
     @Autowired
-    public StringToTypeClosingConverter(TypeClosingService typeClosingService) {
+    public TypeClosingConverter(TypeClosingService typeClosingService) {
         this.typeClosingService = typeClosingService;
     }
 

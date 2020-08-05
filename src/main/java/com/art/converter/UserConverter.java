@@ -7,14 +7,14 @@ import org.springframework.core.convert.converter.Converter;
 
 import javax.annotation.Resource;
 
-public class StringToUserConverter implements Converter<String, AppUser> {
+public class UserConverter implements Converter<String, AppUser> {
 
     //@Autowired
     @Resource(name = "userService")
     private UserService userService;
 
     @Autowired
-    public StringToUserConverter(UserService userService) {
+    public UserConverter(UserService userService) {
         this.userService = userService;
     }
 

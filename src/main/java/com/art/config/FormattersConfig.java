@@ -46,16 +46,16 @@ public class FormattersConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(new RoleToUserRoleConverter(roleService));
-        registry.addConverter(new StringToUserConverter(userService));
-        registry.addConverter(new StringToFacilityConverter(facilityService));
-        registry.addConverter(new StringToDateConverter());
-        registry.addConverter(new StringToUnderFacilitiesConverter(underFacilityService));
-        registry.addConverter(new StringToCashSourceConverter(cashSourceService));
-        registry.addConverter(new StringToNewCashDetailConverter(newCashDetailService));
-        registry.addConverter(new StringToTypeClosingConverter(typeClosingService));
-        registry.addConverter(new StringToRoomsConverter(roomService));
-        registry.addConverter(new StringToTokenConverter(appTokenService));
+        registry.addConverter(new RoleConverter(roleService));
+        registry.addConverter(new UserConverter(userService));
+        registry.addConverter(new FacilityConverter(facilityService));
+        registry.addConverter(new DateConverter());
+        registry.addConverter(new StringToUnderFacilityConverter(underFacilityService));
+        registry.addConverter(new CashSourceConverter(cashSourceService));
+        registry.addConverter(new NewCashDetailConverter(newCashDetailService));
+        registry.addConverter(new TypeClosingConverter(typeClosingService));
+        registry.addConverter(new StringToRoomConverter(roomService));
+        registry.addConverter(new TokenConverter(appTokenService));
         registry.addConverter(new ShareTypeConverter());
     }
 }

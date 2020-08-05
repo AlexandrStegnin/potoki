@@ -5,13 +5,13 @@ import com.art.service.CashSourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 
-public class StringToCashSourceConverter implements Converter<String, CashSource> {
+public class CashSourceConverter implements Converter<String, CashSource> {
 
     @Autowired
     private final CashSourceService cashSourceService;
 
     @Autowired
-    public StringToCashSourceConverter(CashSourceService cashSourceService) {
+    public CashSourceConverter(CashSourceService cashSourceService) {
         this.cashSourceService = cashSourceService;
     }
 

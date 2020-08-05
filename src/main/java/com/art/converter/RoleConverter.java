@@ -10,11 +10,11 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class RoleToUserRoleConverter implements Converter<String, AppRole> {
+public class RoleConverter implements Converter<String, AppRole> {
 
     private final RoleService roleService;
 
-    public RoleToUserRoleConverter(RoleService roleService) {
+    public RoleConverter(RoleService roleService) {
         this.roleService = roleService;
     }
 

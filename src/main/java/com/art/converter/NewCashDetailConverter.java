@@ -5,12 +5,12 @@ import com.art.service.NewCashDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 
-public class StringToNewCashDetailConverter implements Converter<String, NewCashDetail> {
+public class NewCashDetailConverter implements Converter<String, NewCashDetail> {
 
     private final NewCashDetailService newCashDetailService;
 
     @Autowired
-    public StringToNewCashDetailConverter(NewCashDetailService newCashDetailService) {
+    public NewCashDetailConverter(NewCashDetailService newCashDetailService) {
         this.newCashDetailService = newCashDetailService;
     }
 

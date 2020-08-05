@@ -9,12 +9,12 @@ import org.springframework.core.convert.converter.Converter;
  * @author Alexandr Stegnin
  */
 
-public class StringToTokenConverter implements Converter<String, AppToken> {
+public class TokenConverter implements Converter<String, AppToken> {
 
     private final AppTokenService appTokenService;
 
     @Autowired
-    public StringToTokenConverter(AppTokenService appTokenService) {
+    public TokenConverter(AppTokenService appTokenService) {
         this.appTokenService = appTokenService;
     }
 
