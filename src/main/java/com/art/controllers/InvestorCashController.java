@@ -95,7 +95,7 @@ public class InvestorCashController {
      * @param pageable для постраничного отображения
      * @return список денег инвесторов
      */
-    @GetMapping(value = "/investorscash")
+    @GetMapping(path = Location.INVESTOR_CASH_LIST)
     public ModelAndView invCashByPageNumber(@PageableDefault(size = 100) @SortDefault Pageable pageable) {
         ModelAndView modelAndView = new ModelAndView("cash-list");
         Page<InvestorCash> page = investorCashService.findAll(cashFilters, pageable);
@@ -111,7 +111,7 @@ public class InvestorCashController {
      * @param cashFilters фильтр
      * @return список денег инвесторов
      */
-    @PostMapping(value = "/investorscash")
+    @PostMapping(path = Location.INVESTOR_CASH_LIST)
     public ModelAndView invCashPageable(@ModelAttribute(value = "cashFilters") CashFilter cashFilters) {
         Pageable pageable;
         if (cashFilters.getFiltered() == 0) {
@@ -136,7 +136,7 @@ public class InvestorCashController {
      * @param model модель со страницы
      * @return страница для создания суммы
      */
-    @GetMapping(value = {"/newinvestorscash"})
+    @GetMapping(path = Location.INVESTOR_CASH_CREATE)
     public String newCash(ModelMap model) {
         String title = "Добавление денег инвестора";
         InvestorCash investorCash = new InvestorCash();
@@ -158,7 +158,7 @@ public class InvestorCashController {
      * @param model модель со страницы
      * @return страница успешной операции
      */
-    @PostMapping(value = {"/newinvestorscash"})
+    @PostMapping(path = Location.INVESTOR_CASH_CREATE)
     public String saveCash(@ModelAttribute("investorsCash") InvestorCash investorCash,
                            BindingResult result, ModelMap model) {
 
@@ -166,16 +166,11 @@ public class InvestorCashController {
             return "cash-add";
         }
         String ret = "списку денег инвестора";
-        String redirectUrl = "/investorscash";
         investorCash = investorCashService.create(investorCash);
         transactionLogService.create(investorCash, TransactionType.CREATE);
-//        if (null != investorsCash.getCashSource() &&
-//                !investorsCash.getCashSource().getName().equalsIgnoreCase("Бронь")) {
-//            marketingTreeService.updateMarketingTreeFromApp();
-//        }
         model.addAttribute("success", "Деньги инвестора " + investorCash.getInvestor().getLogin() +
                 " успешно добавлены.");
-        model.addAttribute("redirectUrl", redirectUrl);
+        model.addAttribute("redirectUrl", Location.INVESTOR_CASH_LIST);
         model.addAttribute("ret", ret);
         return "registration-success";
     }
@@ -222,7 +217,7 @@ public class InvestorCashController {
         modelAndView.addObject("searchSummary", searchSummary);
         modelAndView.addObject("investorsCash", investorCashService.findAll());
 
-        return "redirect: /investorscash";
+        return "redirect:" + Location.INVESTOR_CASH_LIST;
     }
 
     /**
@@ -314,7 +309,7 @@ public class InvestorCashController {
             investorCashService.update(updatedCash);
         }
         modelAndView.addObject("investorsCash", investorCashService.findAll());
-        return "redirect: /investorscash";
+        return "redirect:" + Location.INVESTOR_CASH_LIST;
     }
 
     /**
@@ -420,7 +415,7 @@ public class InvestorCashController {
         investorCashService.update(investorCash);
 
         if (investorCash.getGivenCash().compareTo(BigDecimal.ZERO) == 0) {
-            return "redirect: /investorscash";
+            return "redirect:" + Location.INVESTOR_CASH_LIST;
         } else {
             model.addObject("investorsCash", investorCash);
             return model.getViewName();
@@ -666,7 +661,7 @@ public class InvestorCashController {
             model.addAttribute("page", page);
             model.addAttribute("cashFilters", cashFilters);
             model.addAttribute("searchSummary", filters);
-            return "redirect:/investorscash";
+            return "redirect:" + Location.INVESTOR_CASH_LIST;
         } else {
             model.addAttribute("toBigSumForCashing", out);
             return "getInvestorsCash";

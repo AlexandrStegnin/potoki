@@ -57,7 +57,7 @@
 
         </div>
 
-        <form:form modelAttribute="cashFilters" method="POST" action="/investorscash" class="form-inline"
+        <form:form modelAttribute="cashFilters" method="POST" action="/investor-cash/list" class="form-inline"
                    id="search-form">
             <div class="row" style="margin: 10px;">
                 <input type="hidden" id="pageNumber" name="pageNumber" value="0">
@@ -131,7 +131,7 @@
                                     class="btn btn-warning btn-sm dropdown-toggle pull-right">Деньги <span
                                     class="glyphicon glyphicon-th-list"></span></button>
                             <ul class="dropdown-menu" id="addGetCash">
-                                <li id="addCash"><a href="<c:url value='/newinvestorscash' />">Добавить деньги</a></li>
+                                <li id="addCash"><a href="<c:url value='/investor-cash/create' />">Добавить деньги</a></li>
                                 <li id="getCash"><a href="<c:url value='/getInvestorsCash' />">Вывести деньги</a></li>
                             </ul>
                         </div>

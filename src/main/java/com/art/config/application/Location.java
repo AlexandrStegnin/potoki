@@ -193,7 +193,8 @@ public class Location {
             NEW_CASH_DETAILS + WILD_CARD,
             TYPE_CLOSING + WILD_CARD,
             INVESTOR_CASH_DIVIDE,
-            INVESTOR_CASH_DIVIDE_MULTIPLE
+            INVESTOR_CASH_DIVIDE_MULTIPLE,
+            INVESTOR_CASH + WILD_CARD
     };
 
     public static final String[] INVESTOR_URLS = {

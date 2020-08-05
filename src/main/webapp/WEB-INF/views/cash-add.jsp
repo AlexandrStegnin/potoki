@@ -232,7 +232,7 @@
             <div class="col-sm-2 col-sm-offset-2">
             <button type="submit" class="btn btn-primary btn-sm">${title}</button>
             </div>
-            <a href="<c:url value='/investorscash' />" class="btn btn-sm btn-danger" role="button">Отмена</a>
+            <a href="<c:url value='/investor-cash/list' />" class="btn btn-sm btn-danger" role="button">Отмена</a>
         </div>
     </form:form>
 </div>

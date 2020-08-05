@@ -119,7 +119,7 @@
             <div class="form-actions floatRight">
                 <input type="button" value="Вывести всё" id="allMoneyCashing" class="btn btn-danger btn-sm" style="margin-right: 10px; display: none">
                 <input type="button" value="Вывести" id="cashingSubmit" class="btn btn-primary btn-sm" style="margin-right: 10px;" disabled="disabled"/>
-                <a href="<c:url value='/investorscash' />">Отмена</a>
+                <a href="<c:url value='/investor-cash/list' />">Отмена</a>
             </div>
         </div>
     </form:form>

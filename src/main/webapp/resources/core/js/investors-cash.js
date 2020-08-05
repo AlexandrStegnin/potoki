@@ -402,7 +402,7 @@ jQuery(document).ready(function ($) {
     }
 
     let url = window.location.href;
-    if (url.indexOf('newinvestorscash') >= 0 || url.indexOf('edit-cash') >= 0 || url.indexOf('double-cash') >= 0 || url.indexOf('close-cash') >= 0) {
+    if (url.indexOf('investor-cash/create') >= 0 || url.indexOf('edit-cash') >= 0 || url.indexOf('double-cash') >= 0 || url.indexOf('close-cash') >= 0) {
         populateStorageUnderFacilities('underFacilities');
     } else {
         populateStorageUnderFacilities('uFacilities');
@@ -687,7 +687,7 @@ function allMoneyCashing() {
         success: function (data) {
             closeLoader();
             showPopup(data.message);
-            window.location.href = '/investorscash';
+            window.location.href = '/investor-cash/list';
         },
         error: function (e) {
             closeLoader();
@@ -846,7 +846,7 @@ function saveCash(cash, reFacility, reUnderFacility, dateReinvest, flag, invBuye
             showPopup();
             closePopup();
             if (flag) {
-                window.location.href = '/investorscash';
+                window.location.href = '/investor-cash/list';
             }
 
             $('#facilities').prop('selectedIndex', 0);
@@ -1316,7 +1316,7 @@ function cashingMoney() {
             closeLoader();
             if (data === '') {
                 showPopup("Деньги успешно выведены");
-                window.location.href = '/investorscash';
+                window.location.href = '/investor-cash/list';
             } else {
                 $('#toBigSumForCashing').html(data);
             }
