@@ -63,7 +63,7 @@ public class InvestorCashLogService {
      * @param cash сумма инвестора
      * @param log  транзакция
      */
-    public void create(InvestorsCash cash, TransactionLog log) {
+    public void create(InvestorCash cash, TransactionLog log) {
         InvestorCashLog cashLog = new InvestorCashLog(cash, log, CashType.INVESTOR_CASH);
         investorCashLogRepository.save(cashLog);
     }
@@ -74,7 +74,7 @@ public class InvestorCashLogService {
      * @param cashes список сумм инвестора
      * @param log    транзакция
      */
-    public void create(Set<InvestorsCash> cashes, TransactionLog log) {
+    public void create(Set<InvestorCash> cashes, TransactionLog log) {
         cashes.forEach(cash -> create(cash, log));
     }
 
@@ -83,7 +83,7 @@ public class InvestorCashLogService {
      *
      * @param cashes список денег
      */
-    public void update(List<InvestorsCash> cashes, TransactionLog log) {
+    public void update(List<InvestorCash> cashes, TransactionLog log) {
         cashes.forEach(cash -> {
             InvestorCashLog cashLog = new InvestorCashLog(cash, log, CashType.INVESTOR_CASH);
             investorCashLogRepository.save(cashLog);
@@ -121,7 +121,7 @@ public class InvestorCashLogService {
      *
      * @param cash сумма
      */
-    public void delete(InvestorsCash cash) {
+    public void delete(InvestorCash cash) {
         InvestorCashLog cashLog = findByCashId(cash.getId().longValue());
         if (null != cashLog) {
             investorCashLogRepository.delete(cashLog);

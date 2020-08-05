@@ -34,19 +34,19 @@ public class UserController {
 
     private final FacilityService facilityService;
 
-    private final InvestorsCashService investorsCashService;
+    private final InvestorCashService investorCashService;
 
     private final UsersAnnexToContractsService usersAnnexToContractsService;
 
     private final AccountService accountService;
 
     public UserController(UserService userService, RoleService roleService,
-                          FacilityService facilityService, InvestorsCashService investorsCashService,
+                          FacilityService facilityService, InvestorCashService investorCashService,
                           UsersAnnexToContractsService usersAnnexToContractsService, AccountService accountService) {
         this.userService = userService;
         this.roleService = roleService;
         this.facilityService = facilityService;
-        this.investorsCashService = investorsCashService;
+        this.investorCashService = investorCashService;
         this.usersAnnexToContractsService = usersAnnexToContractsService;
         this.accountService = accountService;
     }
@@ -134,9 +134,9 @@ public class UserController {
     GenericResponse deleteUser(@RequestBody UserDTO userDTO) {
         GenericResponse response = new GenericResponse();
         AppUser user = userService.findById(userDTO.getId());
-        List<InvestorsCash> investorsCashes;
-        investorsCashes = investorsCashService.findByInvestorId(user.getId());
-        investorsCashes.forEach(ic -> investorsCashService.deleteById(ic.getId()));
+        List<InvestorCash> investorCashes;
+        investorCashes = investorCashService.findByInvestorId(user.getId());
+        investorCashes.forEach(ic -> investorCashService.deleteById(ic.getId()));
         try {
             userService.deleteUser(user.getId());
             response.setMessage("Пользователь <b>" + user.getLogin() + "</b> успешно удалён.");

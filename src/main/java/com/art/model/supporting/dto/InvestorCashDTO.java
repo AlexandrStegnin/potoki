@@ -1,7 +1,7 @@
 package com.art.model.supporting.dto;
 
 import com.art.model.InvestorCashLog;
-import com.art.model.InvestorsCash;
+import com.art.model.InvestorCash;
 import com.art.model.supporting.enums.CashType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,12 +30,12 @@ public class InvestorCashDTO {
 
     private String cashType;
 
-    public InvestorCashDTO(InvestorsCash cash) {
+    public InvestorCashDTO(InvestorCash cash) {
         this.id = cash.getId();
         this.investor = cash.getInvestor().getLogin();
         this.facility = cash.getFacility().getName();
-        this.dateGivenCash = convertDate(cash.getDateGivedCash());
-        this.givenCash = cash.getGivedCash();
+        this.dateGivenCash = convertDate(cash.getDateGiven());
+        this.givenCash = cash.getGivenCash();
         this.cashType = CashType.NEW.getTitle();
     }
 

@@ -4,7 +4,7 @@ import com.art.model.TransactionLog;
 import com.art.model.supporting.dto.InvestorCashDTO;
 import com.art.model.supporting.dto.TransactionLogDTO;
 import com.art.model.supporting.filters.TxLogFilter;
-import com.art.service.InvestorsCashService;
+import com.art.service.InvestorCashService;
 import com.art.service.TransactionLogService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -32,12 +32,12 @@ public class TransactionLogController {
 
     private final TxLogFilter filter;
 
-    private final InvestorsCashService investorsCashService;
+    private final InvestorCashService investorCashService;
 
     public TransactionLogController(TransactionLogService transactionLogService,
-                                    InvestorsCashService investorsCashService) {
+                                    InvestorCashService investorCashService) {
         this.transactionLogService = transactionLogService;
-        this.investorsCashService = investorsCashService;
+        this.investorCashService = investorCashService;
         this.filter = new TxLogFilter();
     }
 

@@ -29,7 +29,7 @@ public class TransactionLogService {
 
     private final InvestorCashLogService investorCashLogService;
 
-    private final InvestorsCashService investorsCashService;
+    private final InvestorCashService investorCashService;
 
     private final InvestorsFlowsSaleService investorsFlowsSaleService;
 
@@ -39,13 +39,13 @@ public class TransactionLogService {
     public TransactionLogService(TransactionLogSpecification specification,
                                  TransactionLogRepository transactionLogRepository,
                                  InvestorCashLogService investorCashLogService,
-                                 InvestorsCashService investorsCashService,
+                                 InvestorCashService investorCashService,
                                  InvestorsFlowsSaleService investorsFlowsSaleService,
                                  InvestorsFlowsService investorsFlowsService) {
         this.specification = specification;
         this.transactionLogRepository = transactionLogRepository;
         this.investorCashLogService = investorCashLogService;
-        this.investorsCashService = investorsCashService;
+        this.investorCashService = investorCashService;
         this.investorsFlowsSaleService = investorsFlowsSaleService;
         this.investorsFlowsService = investorsFlowsService;
     }
@@ -74,8 +74,8 @@ public class TransactionLogService {
      * @param cash деньги инвестора
      * @return список транзакций
      */
-    public List<TransactionLog> findByCash(InvestorsCash cash) {
-        return transactionLogRepository.findByInvestorsCashesContains(cash);
+    public List<TransactionLog> findByCash(InvestorCash cash) {
+        return transactionLogRepository.findByInvestorCashesContains(cash);
     }
 
     /**
@@ -94,7 +94,7 @@ public class TransactionLogService {
             cashDTOS.add(cashDTO);
         });
 
-        log.getInvestorsCashes()
+        log.getInvestorCashes()
                 .forEach(cash -> {
                     InvestorCashDTO dto = new InvestorCashDTO(cash);
                     cashDTOS.add(dto);
@@ -171,9 +171,9 @@ public class TransactionLogService {
      * @param cash деньги инвестора
      * @param type тип операции
      */
-    public void create(InvestorsCash cash, TransactionType type) {
+    public void create(InvestorCash cash, TransactionType type) {
         TransactionLog log = new TransactionLog();
-        log.setInvestorsCashes(Collections.singleton(cash));
+        log.setInvestorCashes(Collections.singleton(cash));
         log.setType(type);
         log.setRollbackEnabled(true);
         create(log);
@@ -184,9 +184,9 @@ public class TransactionLogService {
      *
      * @param cash деньги инвестора
      */
-    public void update(InvestorsCash cash) {
+    public void update(InvestorCash cash) {
         TransactionLog log = new TransactionLog();
-        log.setInvestorsCashes(Collections.singleton(cash));
+        log.setInvestorCashes(Collections.singleton(cash));
         log.setType(TransactionType.UPDATE);
         log.setRollbackEnabled(true);
         create(log);
@@ -199,9 +199,9 @@ public class TransactionLogService {
      *
      * @param cashes список сумм инвестора
      */
-    public void close(Set<InvestorsCash> cashes) {
+    public void close(Set<InvestorCash> cashes) {
         TransactionLog log = new TransactionLog();
-        log.setInvestorsCashes(cashes);
+        log.setInvestorCashes(cashes);
         log.setType(TransactionType.CLOSING);
         log.setRollbackEnabled(true);
         create(log);
@@ -214,9 +214,9 @@ public class TransactionLogService {
      *
      * @param cashes суммы инвесторов
      */
-    public void resale(Set<InvestorsCash> oldCashes, Set<InvestorsCash> cashes) {
+    public void resale(Set<InvestorCash> oldCashes, Set<InvestorCash> cashes) {
         TransactionLog log = new TransactionLog();
-        log.setInvestorsCashes(cashes);
+        log.setInvestorCashes(cashes);
         log.setType(TransactionType.CLOSING_RESALE);
         log.setRollbackEnabled(true);
         create(log);
@@ -230,9 +230,9 @@ public class TransactionLogService {
      * @param flowsSaleList список денег с продажи
      * @param cashList список денег, основанных на деньгах с продажи
      */
-    public void reinvestmentSale(List<InvestorsFlowsSale> flowsSaleList, Set<InvestorsCash> cashList) {
+    public void reinvestmentSale(List<InvestorsFlowsSale> flowsSaleList, Set<InvestorCash> cashList) {
         TransactionLog log = new TransactionLog();
-        log.setInvestorsCashes(cashList);
+        log.setInvestorCashes(cashList);
         log.setType(TransactionType.REINVESTMENT_SALE);
         log.setRollbackEnabled(true);
         create(log);
@@ -245,9 +245,9 @@ public class TransactionLogService {
      * @param flowsList список денег с аренды
      * @param cashList список денег, основанных на деньгах с продажи
      */
-    public void reinvestmentRent(List<InvestorsFlows> flowsList, Set<InvestorsCash> cashList) {
+    public void reinvestmentRent(List<InvestorsFlows> flowsList, Set<InvestorCash> cashList) {
         TransactionLog log = new TransactionLog();
-        log.setInvestorsCashes(cashList);
+        log.setInvestorCashes(cashList);
         log.setType(TransactionType.REINVESTMENT_RENT);
         log.setRollbackEnabled(true);
         create(log);
@@ -256,11 +256,11 @@ public class TransactionLogService {
 
     @Transactional
     public String rollbackCreate(TransactionLog log) {
-        Set<InvestorsCash> cashes = log.getInvestorsCashes();
+        Set<InvestorCash> cashes = log.getInvestorCashes();
         try {
             cashes.forEach(cash -> {
                 investorCashLogService.delete(cash);
-                investorsCashService.deleteById(cash.getId());
+                investorCashService.deleteById(cash.getId());
             });
             transactionLogRepository.delete(log);
             return "Откат сумм прошёл успешно";
@@ -271,7 +271,7 @@ public class TransactionLogService {
 
     @Transactional
     public String rollbackUpdate(TransactionLog log) {
-        Set<InvestorsCash> cashes = log.getInvestorsCashes();
+        Set<InvestorCash> cashes = log.getInvestorCashes();
         try {
             cashes.forEach(cash -> {
                 List<InvestorCashLog> cashLogs = investorCashLogService.findByTxId(log.getId());
@@ -279,7 +279,7 @@ public class TransactionLogService {
                     if (cash.getId().longValue() == cashLog.getCashId()) {
                         mergeCash(cash, cashLog);
                         investorCashLogService.delete(cashLog);
-                        investorsCashService.update(cash);
+                        investorCashService.update(cash);
                     }
                 });
             });
@@ -293,20 +293,20 @@ public class TransactionLogService {
 
     @Transactional
     public String rollbackResale(TransactionLog log) {
-        Set<InvestorsCash> cashes = log.getInvestorsCashes();
+        Set<InvestorCash> cashes = log.getInvestorCashes();
         try {
-            Set<InvestorsCash> cashToDelete = new HashSet<>(cashes);
+            Set<InvestorCash> cashToDelete = new HashSet<>(cashes);
             List<InvestorCashLog> cashLogs = investorCashLogService.findByTxId(log.getId());
             cashes.forEach(cash -> cashLogs.forEach(cashLog -> {
                 if (cash.getId().longValue() == cashLog.getCashId()) {
                     cashToDelete.remove(cash);
                     mergeCash(cash, cashLog);
                     investorCashLogService.delete(cashLog);
-                    investorsCashService.update(cash);
+                    investorCashService.update(cash);
                 }
             }));
 
-            cashToDelete.forEach(cash -> investorsCashService.deleteById(cash.getId()));
+            cashToDelete.forEach(cash -> investorCashService.deleteById(cash.getId()));
 
             unblockTransactions(log.getId());
             transactionLogRepository.delete(log);
@@ -323,7 +323,7 @@ public class TransactionLogService {
 
     @Transactional
     public String rollbackReinvestmentSale(TransactionLog log) {
-        Set<InvestorsCash> cashes = log.getInvestorsCashes();
+        Set<InvestorCash> cashes = log.getInvestorCashes();
         List<InvestorCashLog> cashLogs = investorCashLogService.findByTxId(log.getId());
         List<Long> flowsCashIdList = cashLogs
                 .stream()
@@ -331,7 +331,7 @@ public class TransactionLogService {
                 .collect(Collectors.toList());
         List<InvestorsFlowsSale> flowsSales = investorsFlowsSaleService.findByIdIn(flowsCashIdList);
         try {
-            cashes.forEach(investorsCashService::delete);
+            cashes.forEach(investorCashService::delete);
             flowsSales.forEach(flowSale -> {
                 flowSale.setIsReinvest(0);
                 investorsFlowsSaleService.update(flowSale);
@@ -346,7 +346,7 @@ public class TransactionLogService {
 
     @Transactional
     public String rollbackReinvestmentRent(TransactionLog log) {
-        Set<InvestorsCash> cashes = log.getInvestorsCashes();
+        Set<InvestorCash> cashes = log.getInvestorCashes();
         List<InvestorCashLog> cashLogs = investorCashLogService.findByTxId(log.getId());
         List<Long> flowsCashIdList = cashLogs
                 .stream()
@@ -354,7 +354,7 @@ public class TransactionLogService {
                 .collect(Collectors.toList());
         List<InvestorsFlows> flowsRent = investorsFlowsService.findByIdIn(flowsCashIdList);
         try {
-            cashes.forEach(investorsCashService::delete);
+            cashes.forEach(investorCashService::delete);
             flowsRent.forEach(flowRent -> {
                 flowRent.setIsReinvest(0);
                 investorsFlowsService.update(flowRent);
@@ -374,17 +374,17 @@ public class TransactionLogService {
      * @param cashLog сумма из лога
      */
     @Transactional
-    public void mergeCash(InvestorsCash cash, InvestorCashLog cashLog) {
-        cash.setGivedCash(cashLog.getGivenCash());
+    public void mergeCash(InvestorCash cash, InvestorCashLog cashLog) {
+        cash.setGivenCash(cashLog.getGivenCash());
         cash.setFacility(cashLog.getFacility());
         cash.setUnderFacility(cashLog.getUnderFacility());
         cash.setInvestor(cashLog.getInvestor());
-        cash.setDateGivedCash(cashLog.getDateGivenCash());
+        cash.setDateGiven(cashLog.getDateGivenCash());
         cash.setCashSource(cashLog.getCashSource());
         cash.setNewCashDetail(cashLog.getNewCashDetail());
         cash.setShareType(cashLog.getShareType());
         cash.setTypeClosing(cashLog.getTypeClosing());
-        cash.setDateClosingInvest(cashLog.getDateClosingInvest());
+        cash.setDateClosing(cashLog.getDateClosingInvest());
         cash.setRealDateGiven(cashLog.getRealDateGiven());
     }
 
@@ -394,7 +394,7 @@ public class TransactionLogService {
      * @param cash сумма инвестора
      * @param log  текущая операция логирования
      */
-    private void blockLinkedLogs(InvestorsCash cash, TransactionLog log) {
+    private void blockLinkedLogs(InvestorCash cash, TransactionLog log) {
         List<TransactionLog> linkedLogs = findByCash(cash);
         linkedLogs.forEach(linkedLog -> {
             if (null == linkedLog.getBlockedFrom()) {

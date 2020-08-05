@@ -152,6 +152,7 @@ jQuery(document).ready(function ($) {
             }
         }
     });
+
     $('table#investorsCash').find('> tbody').find('> tr').each(function () {
         $(this).data('passed', true);
     });
@@ -1078,14 +1079,14 @@ function checkChecked() {
 function prepareSaveCash() {
     let cashes = [];
     let cash;
-    let givedCash;
-    let dateGived;
+    let givenCash;
+    let dateGiven;
     let facility;
     let underFacility;
     let investor;
     let dateReport;
     let dateClose;
-    let shareKind;
+    let shareType;
     let sourceFacility;
     let sourceUnderFacility;
     let reinvestIdList = [];
@@ -1097,8 +1098,8 @@ function prepareSaveCash() {
     } else {
         $('#dateCloseErr').css('display', 'none');
     }
-    dateGived = new Date(dateClose).getTime();
-    dateClose = dateGived;
+    dateGiven = new Date(dateClose).getTime();
+    dateClose = dateGiven;
 
     let facilitiesSelect = $('#srcFacilities').find('option:selected');
 
@@ -1132,19 +1133,19 @@ function prepareSaveCash() {
         underFacility = null;
     }
 
-    shareKind = $('#shareTypeName').find('option:selected').text()
+    shareType = $('#shareTypeName').find('option:selected').text()
 
-    if (shareKind.indexOf('Не определена') >= 0) {
+    if (shareType.indexOf('Не определена') >= 0) {
         $('#shareKindErr').css('display', 'block');
         return false;
     } else {
         $('#shareKindErr').css('display', 'none');
-        switch (shareKind) {
+        switch (shareType) {
             case 'Основная':
-                shareKind = 'MAIN'
+                shareType = 'MAIN'
                 break
             case 'Сверхдоля':
-                shareKind = 'OVER'
+                shareType = 'OVER'
         }
     }
 
@@ -1183,20 +1184,20 @@ function prepareSaveCash() {
                 login: current.children('td:eq(2)').text()
             };
 
-            givedCash = current.children('td:eq(3)').attr('data-gived-cash');
+            givenCash = current.children('td:eq(3)').attr('data-gived-cash');
 
             cash = {
                 id: null,
-                givedCash: givedCash,
-                dateGivedCash: dateGived,
+                givenCash: givenCash,
+                dateGiven: dateGiven,
                 facility: facility,
                 investor: investor,
                 cashSource: null,
                 newCashDetail: null,
                 underFacility: underFacility,
-                dateClosingInvest: null,
+                dateClosing: null,
                 typeClosing: null,
-                shareType: shareKind,
+                shareType: shareType,
                 sourceId: sourceId,
                 source: sourceId.toString(),
                 dateReport: dateReport,
@@ -1332,43 +1333,19 @@ function cashingMoney() {
 
 function prepareDivideCash() {
     let err;
-    let cash;
     let cashes = [];
     let id;
-    let facility;
-    let underFacility;
-    let investor;
-    let givedCash;
-    let dateGivedCash;
-    let cashSource;
-    let newCashDetails;
-    let dateClosingInvest;
-    let typeClosingInvest;
-    let shareKind;
-    let dateReport;
-    let sourceFacility;
-    let sourceUnderFacility;
-    let room;
-    let reUnderFacility;
     let reUnderFacilitiesList = [];
     let excludedUnderFacilities = [];
 
     $('#underFacilitiesList').find('option:selected').each(function () {
-        let underFacility = {
-            id: $(this).attr('id'),
-            name: $(this).text()
-        };
-        excludedUnderFacilities.push(underFacility);
+        excludedUnderFacilities.push($(this).attr('id'));
     });
     $('#srcUnderFacilities').find('option:selected').each(function (ind, el) {
-        reUnderFacility = {
-            id: el.id,
-            name: el.innerText
-        };
-        reUnderFacilitiesList.push(reUnderFacility);
+        reUnderFacilitiesList.push(el.id);
     });
 
-    if (reUnderFacilitiesList.length === 0 || reUnderFacilitiesList[0].name.indexOf('Выберите подобъект') >= 0) {
+    if (reUnderFacilitiesList.length === 0 || reUnderFacilitiesList[0] === 0) {
         $('#underFacilityErr').css('display', 'block');
         err = true;
     } else {
@@ -1387,103 +1364,9 @@ function prepareDivideCash() {
         $(this).find(':checkbox:checked').not(':disabled').each(function () {
             $(this).closest('tr').find('input:checkbox').prop('disabled', true);
             current = $(this).closest('tr');
-
             $('#' + current.attr('id') + ' input:checkbox').prop('disabled', true);
-
             id = current.attr('id');
-            facility = {
-                id: current.children('td:eq(0)').attr('data-facility-id'),
-                name: current.children('td:eq(0)').text()
-            };
-
-            underFacility = {
-                id: current.children('td:eq(1)').attr('data-under-facility-id'),
-                name: current.children('td:eq(1)').text()
-            };
-            if (underFacility.name.length === 0) {
-                underFacility = null;
-            }
-
-            investor = {
-                id: current.children('td:eq(2)').attr('data-investor-id'),
-                login: current.children('td:eq(2)').text()
-            };
-
-            givedCash = current.children('td:eq(3)').attr('data-gived-cash');
-            dateGivedCash = current.children('td:eq(4)').attr('data-report-date');
-
-            cashSource = {
-                id: current.children('td:eq(5)').attr('data-cash-source-id'),
-                name: current.children('td:eq(5)').text()
-            };
-            if (cashSource.name.length === 0) {
-                cashSource = null;
-            }
-            newCashDetails = {
-                id: current.children('td:eq(7)').attr('data-cash-details-id'),
-                name: current.children('td:eq(7)').text()
-            };
-            if (newCashDetails.name.length === 0) {
-                newCashDetails = null;
-            }
-
-            shareKind = current.children('td:eq(11)').text();
-            if (shareKind.length === 0) {
-                shareKind = null;
-            }
-            dateReport = current.children('td:eq(12)').attr('data-date-report');
-            if (typeof dateReport !== 'undefined') {
-                if (dateReport.length === 0) {
-                    dateReport = null;
-                }
-            } else {
-                dateReport = null;
-            }
-
-            sourceFacility = {
-                id: current.children('td:eq(13)').attr('data-source-facility-id'),
-                name: current.children('td:eq(13)').text()
-            };
-            if (sourceFacility.name.length === 0) {
-                sourceFacility = null;
-            }
-            sourceUnderFacility = {
-                id: current.children('td:eq(14)').attr('data-source-under-id'),
-                name: current.children('td:eq(14)').text()
-            };
-            if (sourceUnderFacility.name.length === 0) {
-                sourceUnderFacility = null;
-            }
-            room = {
-                id: current.children('td:eq(15)').attr('data-room-id'),
-                name: current.children('td:eq(15)').text()
-            };
-            if (room.name.length === 0) {
-                room = null;
-            }
-
-            cash = {
-                id: id,
-                facility: facility,
-                underFacility: underFacility,
-                investor: investor,
-                givedCash: givedCash,
-                dateGivedCash: dateGivedCash,
-                cashSource: cashSource,
-                newCashDetail: newCashDetails,
-                dateClosingInvest: dateClosingInvest,
-                typeClosing: typeClosingInvest,
-                shareType: shareKind,
-                dateReport: dateReport,
-                sourceFacility: sourceFacility,
-                sourceUnderFacility: sourceUnderFacility,
-                sourceFlowsId: null,
-                room: room,
-                sourceId: null
-            };
-
-            cashes.push(cash);
-
+            cashes.push(id);
         });
     });
     $('#msg').html('Начинаем разделение денег...');
@@ -1499,17 +1382,22 @@ function prepareDivideCash() {
 function saveDivideCash(cashes, reUnderFacility, excludedUnderFacilities) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
-    let search = ({
-        investorsCashList: cashes,
-        reUnderFacility: reUnderFacility,
-        underFacilityList: excludedUnderFacilities
-    });
+    let divideCashDTO = {
+        investorCashList: cashes,
+        reUnderFacilityId: reUnderFacility,
+        excludedUnderFacilitiesIdList: excludedUnderFacilities
+    }
+    // let search = ({
+    //     investorsCashList: cashes,
+    //     reUnderFacility: reUnderFacility,
+    //     underFacilityList: excludedUnderFacilities
+    // });
 
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: "saveDivideCash",
-        data: JSON.stringify(search),
+        url: "divide-cash",
+        data: JSON.stringify(divideCashDTO),
         dataType: 'json',
         timeout: 0,
         beforeSend: function (xhr) {
@@ -1530,17 +1418,17 @@ function saveDivideCash(cashes, reUnderFacility, excludedUnderFacilities) {
 function divideMultiple(cashes, reUnderFacilitiesList, excludedUnderFacilities) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
-    let search = ({
-        investorsCashList: cashes,
-        reUnderFacilityList: reUnderFacilitiesList,
-        underFacilityList: excludedUnderFacilities
+    let divideCashDTO = ({
+        investorCashList: cashes,
+        reUnderFacilitiesIdList: reUnderFacilitiesList,
+        excludedUnderFacilitiesIdList: excludedUnderFacilities
     });
 
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
         url: "divide-multiple",
-        data: JSON.stringify(search),
+        data: JSON.stringify(divideCashDTO),
         dataType: 'json',
         timeout: 0,
         beforeSend: function (xhr) {
@@ -1550,7 +1438,7 @@ function divideMultiple(cashes, reUnderFacilitiesList, excludedUnderFacilities) 
             showPopup(data.message);
         },
         error: function (e) {
-            showPopup('Что-то пошло не так [' + e + ']');
+            showPopup('Что-то пошло не так [' + e.error + ']');
         },
         done: function (e) {
             enableSearchButton(true);

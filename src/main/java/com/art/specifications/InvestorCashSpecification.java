@@ -14,10 +14,10 @@ import java.util.Objects;
 import static org.springframework.data.jpa.domain.Specifications.where;
 
 @Component
-public class InvestorsCashSpecification extends BaseSpecification<InvestorsCash, CashFilter> {
+public class InvestorCashSpecification extends BaseSpecification<InvestorCash, CashFilter> {
 
     @Override
-    public Specification<InvestorsCash> getFilter(CashFilter filter) {
+    public Specification<InvestorCash> getFilter(CashFilter filter) {
         return (root, query, cb) -> where(
                 dateGivenCashBetween(filter.getFromDate(), filter.getToDate()))
                 .and(facilityIn(filter.getFacilities()))
@@ -28,7 +28,7 @@ public class InvestorsCashSpecification extends BaseSpecification<InvestorsCash,
                 .toPredicate(root, query, cb);
     }
 
-    public Specification<InvestorsCash> getFilterForCashing(CashFilter filter) {
+    public Specification<InvestorCash> getFilterForCashing(CashFilter filter) {
         return (root, query, cb) -> where(
                 investorEqual(filter.getInvestor()))
                 .and(givenCashGreaterThan(BigDecimal.ZERO))
@@ -38,17 +38,17 @@ public class InvestorsCashSpecification extends BaseSpecification<InvestorsCash,
                 .toPredicate(root, query, cb);
     }
 
-    private static Specification<InvestorsCash> dateGivenCashBetween(Date min, Date max) {
+    private static Specification<InvestorCash> dateGivenCashBetween(Date min, Date max) {
         return ((root, criteriaQuery, criteriaBuilder) -> {
             if (!Objects.equals(null, min) && !Objects.equals(null, max)) {
                 return criteriaBuilder.and(
-                        criteriaBuilder.greaterThanOrEqualTo(root.get(InvestorsCash_.dateGivedCash), min),
-                        criteriaBuilder.lessThanOrEqualTo(root.get(InvestorsCash_.dateGivedCash), max)
+                        criteriaBuilder.greaterThanOrEqualTo(root.get(InvestorCash_.dateGiven), min),
+                        criteriaBuilder.lessThanOrEqualTo(root.get(InvestorCash_.dateGiven), max)
                 );
             } else if (!Objects.equals(null, min)) {
-                return criteriaBuilder.greaterThanOrEqualTo(root.get(InvestorsCash_.dateGivedCash), min);
+                return criteriaBuilder.greaterThanOrEqualTo(root.get(InvestorCash_.dateGiven), min);
             } else if (!Objects.equals(null, max)) {
-                return criteriaBuilder.lessThanOrEqualTo(root.get(InvestorsCash_.dateGivedCash), max);
+                return criteriaBuilder.lessThanOrEqualTo(root.get(InvestorCash_.dateGiven), max);
             } else {
                 return null;
             }
@@ -56,88 +56,88 @@ public class InvestorsCashSpecification extends BaseSpecification<InvestorsCash,
         );
     }
 
-    private static Specification<InvestorsCash> facilityEqual(String name) {
+    private static Specification<InvestorCash> facilityEqual(String name) {
         return ((root, criteriaQuery, criteriaBuilder) -> {
             if (Objects.equals(null, name) || StringUtils.isEmpty(name) || "Выберите объект".equalsIgnoreCase(name.trim())) {
                 return null;
             } else {
-                return criteriaBuilder.equal(root.get(InvestorsCash_.facility).get(Facility_.name), name);
+                return criteriaBuilder.equal(root.get(InvestorCash_.facility).get(Facility_.name), name);
             }
         }
         );
     }
 
-    private static Specification<InvestorsCash> underFacilityEqual(String underFacility) {
+    private static Specification<InvestorCash> underFacilityEqual(String underFacility) {
         return ((root, criteriaQuery, criteriaBuilder) -> {
             if (Objects.equals(null, underFacility) || StringUtils.isEmpty(underFacility) || "Выберите подобъект".equalsIgnoreCase(underFacility.trim())) {
                 return null;
             } else if ("Без подобъекта".equalsIgnoreCase(underFacility)) {
-                return criteriaBuilder.isNull(root.get(InvestorsCash_.underFacility));
+                return criteriaBuilder.isNull(root.get(InvestorCash_.underFacility));
             } else {
-                return criteriaBuilder.equal(root.get(InvestorsCash_.underFacility).get(UnderFacility_.name), underFacility);
+                return criteriaBuilder.equal(root.get(InvestorCash_.underFacility).get(UnderFacility_.name), underFacility);
             }
         }
         );
     }
 
-    private static Specification<InvestorsCash> loginIn(List<String> loginList) {
+    private static Specification<InvestorCash> loginIn(List<String> loginList) {
         if (loginList == null || loginList.size() == 0 || loginList.get(0).trim().equalsIgnoreCase("Выберите инвестора")) {
             return null;
         } else {
             return ((root, criteriaQuery, criteriaBuilder) ->
-                    root.get(InvestorsCash_.investor).get(AppUser_.login).in(loginList)
+                    root.get(InvestorCash_.investor).get(AppUser_.login).in(loginList)
             );
         }
     }
 
-    private static Specification<InvestorsCash> facilityIsNotNull() {
+    private static Specification<InvestorCash> facilityIsNotNull() {
         return ((root, criteriaQuery, criteriaBuilder) ->
-                root.get(InvestorsCash_.facility).get(Facility_.name).isNotNull()
+                root.get(InvestorCash_.facility).get(Facility_.name).isNotNull()
         );
     }
 
-    private static Specification<InvestorsCash> investorEqual(AppUser investor) {
+    private static Specification<InvestorCash> investorEqual(AppUser investor) {
         if (investor == null) {
             return null;
         } else {
             return ((root, criteriaQuery, criteriaBuilder) ->
-                    criteriaBuilder.equal(root.get(InvestorsCash_.investor).get(AppUser_.id), investor.getId())
+                    criteriaBuilder.equal(root.get(InvestorCash_.investor).get(AppUser_.id), investor.getId())
             );
         }
     }
 
-    private static Specification<InvestorsCash> givenCashGreaterThan(BigDecimal limit) {
+    private static Specification<InvestorCash> givenCashGreaterThan(BigDecimal limit) {
         if (limit == null) {
             return null;
         } else {
             return ((root, criteriaQuery, criteriaBuilder) ->
-                    criteriaBuilder.gt(root.get(InvestorsCash_.givedCash), limit)
+                    criteriaBuilder.gt(root.get(InvestorCash_.givenCash), limit)
             );
         }
     }
 
-    private static Specification<InvestorsCash> notClosing() {
+    private static Specification<InvestorCash> notClosing() {
         return ((root, criteriaQuery, criteriaBuilder) ->
-                criteriaBuilder.isNull(root.get(InvestorsCash_.typeClosing))
+                criteriaBuilder.isNull(root.get(InvestorCash_.typeClosing))
         );
     }
 
-    private static Specification<InvestorsCash> notResale(final Long typeClosingId) {
+    private static Specification<InvestorCash> notResale(final Long typeClosingId) {
         return (root, criteriaQuery, criteriaBuilder) ->
                 criteriaBuilder.notEqual(root
-                        .get(InvestorsCash_.typeClosing)
+                        .get(InvestorCash_.typeClosing)
                         .get(TypeClosing_.id), typeClosingId);
     }
 
-    public Specification<InvestorsCash> getInvestedMoney(final Long typeClosingId) {
+    public Specification<InvestorCash> getInvestedMoney(final Long typeClosingId) {
         return (root, query, cb) -> where(
                 facilityIsNotNull())
                 .and(notClosing())
                 .or(notResale(typeClosingId))
-                .toPredicate(root, query.orderBy(cb.asc(root.get(InvestorsCash_.dateGivedCash))), cb);
+                .toPredicate(root, query.orderBy(cb.asc(root.get(InvestorCash_.dateGiven))), cb);
     }
 
-    private static Specification<InvestorsCash> facilityIn(List<Facility> facilities) {
+    private static Specification<InvestorCash> facilityIn(List<Facility> facilities) {
         return ((root, criteriaQuery, criteriaBuilder) -> {
             if (null == facilities) {
                 return null;
@@ -152,12 +152,12 @@ public class InvestorsCashSpecification extends BaseSpecification<InvestorsCash,
             if (null != undefinedFacility) {
                 return null;
             }
-            return root.get(InvestorsCash_.facility).in(facilities);
+            return root.get(InvestorCash_.facility).in(facilities);
         }
         );
     }
 
-    private static Specification<InvestorsCash> underFacilityIn(List<UnderFacility> underFacilities) {
+    private static Specification<InvestorCash> underFacilityIn(List<UnderFacility> underFacilities) {
         return ((root, criteriaQuery, criteriaBuilder) -> {
             if (null == underFacilities) {
                 return null;
@@ -180,17 +180,17 @@ public class InvestorsCashSpecification extends BaseSpecification<InvestorsCash,
                     return null;
                 }
             }
-            return root.get(InvestorsCash_.underFacility).in(underFacilities);
+            return root.get(InvestorCash_.underFacility).in(underFacilities);
         }
         );
     }
 
-    private static Specification<InvestorsCash> is1C(boolean is1C) {
+    private static Specification<InvestorCash> is1C(boolean is1C) {
         return ((root, criteriaQuery, criteriaBuilder) -> {
             if (!is1C) {
                 return null;
             }
-            return root.get(InvestorsCash_.transactionUUID).isNotNull();
+            return root.get(InvestorCash_.transactionUUID).isNotNull();
         }
         );
     }

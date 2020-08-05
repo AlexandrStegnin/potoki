@@ -4,8 +4,8 @@ import com.art.model.*;
 import com.art.model.supporting.AfterCashing;
 import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.filters.CashFilter;
-import com.art.repository.InvestorsCashRepository;
-import com.art.specifications.InvestorsCashSpecification;
+import com.art.repository.InvestorCashRepository;
+import com.art.specifications.InvestorCashSpecification;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,156 +30,117 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @Transactional
-public class InvestorsCashService {
+public class InvestorCashService {
 
     private static final String RESALE_SHARE = "Перепродажа доли";
-    private final InvestorsCashRepository investorsCashRepository;
-    private final InvestorsCashSpecification specification;
+    private final InvestorCashRepository investorCashRepository;
+    private final InvestorCashSpecification specification;
     private final TypeClosingService typeClosingService;
     private final AfterCashingService afterCashingService;
     private final UnderFacilityService underFacilityService;
 
     @Autowired
-    public InvestorsCashService(InvestorsCashRepository investorsCashRepository,
-                                InvestorsCashSpecification specification,
-                                TypeClosingService typeClosingService,
-                                AfterCashingService afterCashingService, UnderFacilityService underFacilityService) {
-        this.investorsCashRepository = investorsCashRepository;
+    public InvestorCashService(InvestorCashRepository investorCashRepository,
+                               InvestorCashSpecification specification,
+                               TypeClosingService typeClosingService,
+                               AfterCashingService afterCashingService, UnderFacilityService underFacilityService) {
+        this.investorCashRepository = investorCashRepository;
         this.specification = specification;
         this.typeClosingService = typeClosingService;
         this.afterCashingService = afterCashingService;
         this.underFacilityService = underFacilityService;
     }
 
-    public List<InvestorsCash> findAll() {
-        return investorsCashRepository.findAll();
+    public List<InvestorCash> findAll() {
+        return investorCashRepository.findAll();
     }
 
-    public InvestorsCash findById(Long id) {
-        return investorsCashRepository.findById(id);
+    public InvestorCash findById(Long id) {
+        return investorCashRepository.findById(id);
     }
 
-    public List<InvestorsCash> findByFacilityId(Long facilityId) {
-        return investorsCashRepository.findByFacilityId(facilityId);
+    public List<InvestorCash> findByFacilityId(Long facilityId) {
+        return investorCashRepository.findByFacilityId(facilityId);
     }
 
-    public InvestorsCash update(InvestorsCash investorsCash) {
-        investorsCash = investorsCashRepository.saveAndFlush(investorsCash);
-        return investorsCash;
+    public InvestorCash update(InvestorCash investorCash) {
+        investorCash = investorCashRepository.saveAndFlush(investorCash);
+        return investorCash;
     }
 
-    public InvestorsCash createNew(InvestorsCash investorsCash) {
-        investorsCash = investorsCashRepository.saveAndFlush(investorsCash);
-        return investorsCash;
+    public InvestorCash createNew(InvestorCash investorCash) {
+        investorCash = investorCashRepository.saveAndFlush(investorCash);
+        return investorCash;
     }
 
     public void deleteById(Long id) {
-        investorsCashRepository.deleteById(id);
+        investorCashRepository.deleteById(id);
     }
 
-    public void delete(InvestorsCash cash) {
-        investorsCashRepository.delete(cash);
+    public void delete(InvestorCash cash) {
+        investorCashRepository.delete(cash);
     }
 
-    public void saveAll(List<InvestorsCash> investorsCashes) {
-        investorsCashRepository.save(investorsCashes);
+    public void saveAll(List<InvestorCash> investorCashes) {
+        investorCashRepository.save(investorCashes);
     }
 
-    public List<InvestorsCash> findByRoomId(Long roomId) {
-        return investorsCashRepository.findByRoomId(roomId);
+    public List<InvestorCash> findByRoomId(Long roomId) {
+        return investorCashRepository.findByRoomId(roomId);
     }
 
     @PersistenceContext(name = "persistanceUnit")
     private EntityManager em;
 
-    public InvestorsCash create(InvestorsCash investorsCash) {
-        return this.em.merge(investorsCash);
+    public InvestorCash create(InvestorCash investorCash) {
+        return this.em.merge(investorCash);
     }
 
-    public List<InvestorsCash> findByIdIn(List<Long> idList) {
+    public List<InvestorCash> findByIdIn(List<Long> idList) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<InvestorsCash> investorsCashCriteriaQuery = cb.createQuery(InvestorsCash.class);
-        Root<InvestorsCash> investorsCashRoot = investorsCashCriteriaQuery.from(InvestorsCash.class);
-        investorsCashRoot.fetch(InvestorsCash_.typeClosing, JoinType.LEFT);
+        CriteriaQuery<InvestorCash> investorsCashCriteriaQuery = cb.createQuery(InvestorCash.class);
+        Root<InvestorCash> investorsCashRoot = investorsCashCriteriaQuery.from(InvestorCash.class);
+        investorsCashRoot.fetch(InvestorCash_.typeClosing, JoinType.LEFT);
         investorsCashCriteriaQuery.select(investorsCashRoot);
-        investorsCashCriteriaQuery.where(investorsCashRoot.get(InvestorsCash_.id).in(idList));
+        investorsCashCriteriaQuery.where(investorsCashRoot.get(InvestorCash_.id).in(idList));
         return em.createQuery(investorsCashCriteriaQuery).getResultList();
     }
 
-    public List<InvestorsCash> findBySource(String source) {
+    public List<InvestorCash> findBySource(String source) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<InvestorsCash> investorsCashCriteriaQuery = cb.createQuery(InvestorsCash.class);
-        Root<InvestorsCash> investorsCashRoot = investorsCashCriteriaQuery.from(InvestorsCash.class);
-        investorsCashRoot.fetch(InvestorsCash_.typeClosing, JoinType.LEFT);
+        CriteriaQuery<InvestorCash> investorsCashCriteriaQuery = cb.createQuery(InvestorCash.class);
+        Root<InvestorCash> investorsCashRoot = investorsCashCriteriaQuery.from(InvestorCash.class);
+        investorsCashRoot.fetch(InvestorCash_.typeClosing, JoinType.LEFT);
         investorsCashCriteriaQuery.select(investorsCashRoot);
-        investorsCashCriteriaQuery.where(cb.equal(investorsCashRoot.get(InvestorsCash_.source), source));
+        investorsCashCriteriaQuery.where(cb.equal(investorsCashRoot.get(InvestorCash_.source), source));
         return em.createQuery(investorsCashCriteriaQuery).getResultList();
     }
 
-    public List<InvestorsCash> findBySourceId(Long sourceId) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<InvestorsCash> investorsCashCriteriaQuery = cb.createQuery(InvestorsCash.class);
-        Root<InvestorsCash> investorsCashRoot = investorsCashCriteriaQuery.from(InvestorsCash.class);
-        investorsCashRoot.fetch(InvestorsCash_.typeClosing, JoinType.LEFT);
-        investorsCashCriteriaQuery.select(investorsCashRoot);
-        investorsCashCriteriaQuery.where(cb.equal(investorsCashRoot.get(InvestorsCash_.sourceId), sourceId));
-        return em.createQuery(investorsCashCriteriaQuery).getResultList();
+    public List<InvestorCash> findBySourceId(Long sourceId) {
+        return investorCashRepository.findBySourceId(sourceId);
     }
 
-    public List<InvestorsCash> findByInvestorAndFacility(BigInteger investorId, BigInteger facilityId) {
+    public List<InvestorCash> findByInvestorId(Long investorId) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<InvestorsCash> investorsCashCriteriaQuery = cb.createQuery(InvestorsCash.class);
-        Root<InvestorsCash> investorsCashRoot = investorsCashCriteriaQuery.from(InvestorsCash.class);
-        investorsCashCriteriaQuery.select(investorsCashRoot);
-        investorsCashCriteriaQuery.where(cb.and(cb.equal(investorsCashRoot.get(InvestorsCash_.investorId), investorId),
-                cb.equal(investorsCashRoot.get(InvestorsCash_.facilityId), facilityId),
-                cb.gt(investorsCashRoot.get(InvestorsCash_.givedCash), 0),
-                cb.isNull(investorsCashRoot.get(InvestorsCash_.typeClosing))));
-        return em.createQuery(investorsCashCriteriaQuery).getResultList();
-    }
-
-    public List<InvestorsCash> findByInvestorId(Long investorId) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<InvestorsCash> investorsCashCriteriaQuery = cb.createQuery(InvestorsCash.class);
-        Root<InvestorsCash> investorsCashRoot = investorsCashCriteriaQuery.from(InvestorsCash.class);
-        investorsCashRoot.fetch(InvestorsCash_.underFacility, JoinType.LEFT);
+        CriteriaQuery<InvestorCash> investorsCashCriteriaQuery = cb.createQuery(InvestorCash.class);
+        Root<InvestorCash> investorsCashRoot = investorsCashCriteriaQuery.from(InvestorCash.class);
+        investorsCashRoot.fetch(InvestorCash_.underFacility, JoinType.LEFT);
         investorsCashCriteriaQuery.select(investorsCashRoot).distinct(true);
-        investorsCashCriteriaQuery.where(cb.equal(investorsCashRoot.get(InvestorsCash_.investorId), investorId));
-        investorsCashCriteriaQuery.orderBy(cb.asc(investorsCashRoot.get(InvestorsCash_.dateGivedCash)));
+        investorsCashCriteriaQuery.where(cb.equal(investorsCashRoot.get(InvestorCash_.investor).get(AppUser_.id), investorId));
+        investorsCashCriteriaQuery.orderBy(cb.asc(investorsCashRoot.get(InvestorCash_.dateGiven)));
         return em.createQuery(investorsCashCriteriaQuery).getResultList();
     }
 
-    public Facility getSumCash(BigInteger investorId) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<InvestorsCash> investorsCashCriteriaQuery = cb.createQuery(InvestorsCash.class);
-        Root<InvestorsCash> investorsCashRoot = investorsCashCriteriaQuery.from(InvestorsCash.class);
-        investorsCashCriteriaQuery.multiselect(investorsCashRoot.get(InvestorsCash_.facility),
-                cb.sum(investorsCashRoot.get(InvestorsCash_.givedCash)));
-        investorsCashCriteriaQuery.where(cb.equal(investorsCashRoot.get(InvestorsCash_.investor).get(AppUser_.id), investorId));
-        investorsCashCriteriaQuery.groupBy(investorsCashRoot.get(InvestorsCash_.facility));
-        List<InvestorsCash> cash = em.createQuery(investorsCashCriteriaQuery).getResultList();
-        final Facility[] facility = {new Facility()};
-        final BigDecimal[] max = {new BigDecimal(BigInteger.ZERO)};
-        cash.forEach(c -> {
-            c.setGivedCash(c.getGivedCash().stripTrailingZeros());
-            if (c.getGivedCash().compareTo(max[0]) > 0) {
-                max[0] = c.getGivedCash();
-                facility[0] = c.getFacility();
-            }
-        });
-        return facility[0];
-    }
-
-    public List<InvestorsCash> findAllWithAllFields() {
+    public List<InvestorCash> findAllWithAllFields() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
-        CriteriaQuery<InvestorsCash> investorsCashCriteriaQuery = cb.createQuery(InvestorsCash.class);
-        Root<InvestorsCash> investorsCashRoot = investorsCashCriteriaQuery.from(InvestorsCash.class);
-        investorsCashRoot.fetch(InvestorsCash_.facility, JoinType.LEFT);
+        CriteriaQuery<InvestorCash> investorsCashCriteriaQuery = cb.createQuery(InvestorCash.class);
+        Root<InvestorCash> investorsCashRoot = investorsCashCriteriaQuery.from(InvestorCash.class);
+        investorsCashRoot.fetch(InvestorCash_.facility, JoinType.LEFT);
         investorsCashCriteriaQuery.select(investorsCashRoot).distinct(true);
-        investorsCashCriteriaQuery.where(cb.isNotNull(investorsCashRoot.get(InvestorsCash_.facility)));
-        investorsCashCriteriaQuery.orderBy(cb.asc(investorsCashRoot.get(InvestorsCash_.dateGivedCash)));
-        List<InvestorsCash> cash = em.createQuery(investorsCashCriteriaQuery).getResultList();
+        investorsCashCriteriaQuery.where(cb.isNotNull(investorsCashRoot.get(InvestorCash_.facility)));
+        investorsCashCriteriaQuery.orderBy(cb.asc(investorsCashRoot.get(InvestorCash_.dateGiven)));
+        List<InvestorCash> cash = em.createQuery(investorsCashCriteriaQuery).getResultList();
         cash.forEach(c -> {
             Hibernate.initialize(c.getInvestor());
             Hibernate.initialize(c.getFacility());
@@ -190,8 +151,8 @@ public class InvestorsCashService {
         return cash;
     }
 
-    public Page<InvestorsCash> findAll(CashFilter filters, Pageable pageable) {
-        return investorsCashRepository.findAll(
+    public Page<InvestorCash> findAll(CashFilter filters, Pageable pageable) {
+        return investorCashRepository.findAll(
                 specification.getFilter(filters),
                 pageable
         );
@@ -219,23 +180,23 @@ public class InvestorsCashService {
         if (searchSummary.getInvestorsList() != null) {
             UnderFacility finalUnderFacility = underFacility;
             searchSummary.getInvestorsList().forEach(user -> {
-                if (searchSummary.getInvestorsCash() != null) {
+                if (searchSummary.getInvestorCash() != null) {
                     List<UnderFacility> underFacilities = searchSummary.getUnderFacilityList();
-                    InvestorsCash invCash = searchSummary.getInvestorsCash();
+                    InvestorCash invCash = searchSummary.getInvestorCash();
                     invCash.setInvestor(user);
                     invCash.setUnderFacility(finalUnderFacility);
                     List<AfterCashing> cashingList = new ArrayList<>(0);
-                    final InvestorsCash[] cashForGetting = {searchSummary.getInvestorsCash()};
+                    final InvestorCash[] cashForGetting = {searchSummary.getInvestorCash()};
                     if (cashForGetting[0].getUnderFacility() != null && cashForGetting[0].getUnderFacility().getId() == null) {
                         cashForGetting[0].setUnderFacility(null);
                     }
-                    Date dateClosingInvest = cashForGetting[0].getDateGivedCash();
-                    List<InvestorsCash> investorsCashes = getMoneyForCashing(cashForGetting[0]);
-                    if (investorsCashes.size() == 0) {
+                    Date dateClosingInvest = cashForGetting[0].getDateGiven();
+                    List<InvestorCash> investorCashes = getMoneyForCashing(cashForGetting[0]);
+                    if (investorCashes.size() == 0) {
                         result[0] = "Нет денег для вывода";
                         return;
                     }
-                    final BigDecimal sumCash = investorsCashes.stream().map(InvestorsCash::getGivedCash).reduce(BigDecimal.ZERO, BigDecimal::add); // все деньги инвестора
+                    final BigDecimal sumCash = investorCashes.stream().map(InvestorCash::getGivenCash).reduce(BigDecimal.ZERO, BigDecimal::add); // все деньги инвестора
                     BigDecimal commission = searchSummary.getCommission(); // сумма комиссии
                     final BigDecimal commissionNoMore = searchSummary.getCommissionNoMore(); // комиссия не более
                     final BigDecimal[] remainderSum = new BigDecimal[1]; // сумма, которую надо вывести
@@ -247,13 +208,13 @@ public class InvestorsCashService {
                             commission = commissionNoMore;
                         }
                         remainderSum[0] = sumCash;
-                        cashForGetting[0].setGivedCash(sumCash.subtract(commission));
+                        cashForGetting[0].setGivenCash(sumCash.subtract(commission));
                     } else {
-                        commission = (cashForGetting[0].getGivedCash().multiply(commission)).divide(new BigDecimal(100), BigDecimal.ROUND_CEILING);
+                        commission = (cashForGetting[0].getGivenCash().multiply(commission)).divide(new BigDecimal(100), BigDecimal.ROUND_CEILING);
                         if (commissionNoMore != null && commission.compareTo(commissionNoMore) > 0) {
                             commission = commissionNoMore;
                         }
-                        totalSum = cashForGetting[0].getGivedCash().add(commission);
+                        totalSum = cashForGetting[0].getGivenCash().add(commission);
                         remainderSum[0] = totalSum;
                     }
                     if ((sumCash.compareTo(totalSum)) < 0) {
@@ -264,25 +225,25 @@ public class InvestorsCashService {
                     final TypeClosing typeClosing = typeClosingService.findByName("Вывод");
                     final TypeClosing typeClosingCommission = typeClosingService.findByName("Вывод_комиссия");
 
-                    final InvestorsCash[] commissionCash = {new InvestorsCash()};
-                    final InvestorsCash[] cashForManipulate = {null};
-                    commissionCash[0].setGivedCash(commission.negate());
+                    final InvestorCash[] commissionCash = {new InvestorCash()};
+                    final InvestorCash[] cashForManipulate = {null};
+                    commissionCash[0].setGivenCash(commission.negate());
                     commissionCash[0].setTypeClosing(typeClosingCommission);
                     commissionCash[0].setInvestor(cashForGetting[0].getInvestor());
                     commissionCash[0].setFacility(cashForGetting[0].getFacility());
                     commissionCash[0].setUnderFacility(cashForGetting[0].getUnderFacility());
-                    commissionCash[0].setDateClosingInvest(dateClosingInvest);
+                    commissionCash[0].setDateClosing(dateClosingInvest);
 
                     StringBuilder sourceCash = new StringBuilder();
                     final AtomicInteger[] incr = {new AtomicInteger()};
-                    final InvestorsCash[] newCash = {null};
+                    final InvestorCash[] newCash = {null};
 
                     if (all) {
-                        investorsCashes.forEach(ic -> {
-                            cashingList.add(new AfterCashing(ic.getId(), ic.getGivedCash()));
+                        investorCashes.forEach(ic -> {
+                            cashingList.add(new AfterCashing(ic.getId(), ic.getGivenCash()));
                             ic.setTypeClosing(typeClosing);
-                            ic.setDateClosingInvest(dateClosingInvest);
-                            if (incr[0].get() == investorsCashes.size() - 1) {
+                            ic.setDateClosing(dateClosingInvest);
+                            if (incr[0].get() == investorCashes.size() - 1) {
                                 sourceCash.append(ic.getId().toString());
                             } else {
                                 sourceCash.append(ic.getId().toString()).append("|");
@@ -296,38 +257,38 @@ public class InvestorsCashService {
                         });
                     } else {
 
-                        investorsCashes.forEach(ic -> {
+                        investorCashes.forEach(ic -> {
                             if (remainderSum[0].equals(BigDecimal.ZERO)) return;
-                            cashingList.add(new AfterCashing(ic.getId(), ic.getGivedCash()));
-                            if (incr[0].get() == investorsCashes.size() - 1) {
+                            cashingList.add(new AfterCashing(ic.getId(), ic.getGivenCash()));
+                            if (incr[0].get() == investorCashes.size() - 1) {
                                 sourceCash.append(ic.getId().toString());
                             } else {
                                 sourceCash.append(ic.getId().toString()).append("|");
                             }
                             // если сумма остатка, который надо вывести, больше текущей суммы инвестора
-                            if (ic.getGivedCash().subtract(remainderSum[0]).compareTo(BigDecimal.ZERO) < 0) {
+                            if (ic.getGivenCash().subtract(remainderSum[0]).compareTo(BigDecimal.ZERO) < 0) {
                                 // остаток = остаток - текущая сумма инвестора
-                                remainderSum[0] = remainderSum[0].subtract(ic.getGivedCash());
-                                ic.setDateClosingInvest(dateClosingInvest);
+                                remainderSum[0] = remainderSum[0].subtract(ic.getGivenCash());
+                                ic.setDateClosing(dateClosingInvest);
                                 ic.setTypeClosing(typeClosing);
                                 update(ic);
                             } else {
                                 // иначе если сумма остатка, который надо вывести, меньше текущей суммы инвестора
                                 // создаём проводку, с которой сможем в дальнейшем проводить какие-либо действия
                                 // на сумму (текущие деньги вычитаем сумму остатка и комиссию)
-                                cashForManipulate[0] = new InvestorsCash(ic);
-                                cashForManipulate[0].setGivedCash(ic.getGivedCash().subtract(remainderSum[0]));
+                                cashForManipulate[0] = new InvestorCash(ic);
+                                cashForManipulate[0].setGivenCash(ic.getGivenCash().subtract(remainderSum[0]));
                                 // основную сумму блокируем для операций
-                                ic.setGivedCash(BigDecimal.ZERO);
+                                ic.setGivenCash(BigDecimal.ZERO);
                                 ic.setIsReinvest(1);
                                 ic.setIsDivide(1);
                                 // сохраняем сумму
                                 update(ic);
 
                                 // создаём новую сумму на остаток + комиссия
-                                newCash[0] = new InvestorsCash(ic);
-                                newCash[0].setGivedCash(remainderSum[0]);
-                                newCash[0].setDateClosingInvest(dateClosingInvest);
+                                newCash[0] = new InvestorCash(ic);
+                                newCash[0].setGivenCash(remainderSum[0]);
+                                newCash[0].setDateClosing(dateClosingInvest);
                                 newCash[0].setTypeClosing(typeClosing);
                                 remainderSum[0] = BigDecimal.ZERO;
                                 fillCash(commissionCash[0], ic);
@@ -337,8 +298,8 @@ public class InvestorsCashService {
                         });
                     }
 
-                    cashForGetting[0].setGivedCash(cashForGetting[0].getGivedCash().negate());
-                    cashForGetting[0].setDateClosingInvest(commissionCash[0].getDateClosingInvest());
+                    cashForGetting[0].setGivenCash(cashForGetting[0].getGivenCash().negate());
+                    cashForGetting[0].setDateClosing(commissionCash[0].getDateClosing());
                     cashForGetting[0].setTypeClosing(typeClosing);
 
                     cashingList.forEach(afterCashingService::create);
@@ -360,8 +321,8 @@ public class InvestorsCashService {
         return result[0];
     }
 
-    private void fillCash(InvestorsCash to, InvestorsCash from) {
-        to.setDateGivedCash(from.getDateGivedCash());
+    private void fillCash(InvestorCash to, InvestorCash from) {
+        to.setDateGiven(from.getDateGiven());
         to.setCashSource(from.getCashSource());
 //        to.setCashType(from.getCashType());
         to.setNewCashDetail(from.getNewCashDetail());
@@ -374,7 +335,7 @@ public class InvestorsCashService {
         to.setRoom(from.getRoom());
     }
 
-    public List<InvestorsCash> getMoneyForCashing(InvestorsCash cashForGetting) {
+    public List<InvestorCash> getMoneyForCashing(InvestorCash cashForGetting) {
         CashFilter filter = new CashFilter();
         filter.setInvestor(cashForGetting.getInvestor());
         filter.setFacility(cashForGetting.getFacility().getName());
@@ -382,13 +343,13 @@ public class InvestorsCashService {
             filter.setUnderFacility(cashForGetting.getUnderFacility().getName());
         }
         Pageable pageable = new PageRequest(0, Integer.MAX_VALUE);
-        return investorsCashRepository.findAll(
+        return investorCashRepository.findAll(
                 specification.getFilterForCashing(filter), pageable).getContent();
 
     }
 
-    public List<InvestorsCash> getInvestedMoney() {
+    public List<InvestorCash> getInvestedMoney() {
         TypeClosing typeClosing = typeClosingService.findByName(RESALE_SHARE);
-        return investorsCashRepository.findAll(specification.getInvestedMoney(typeClosing.getId()));
+        return investorCashRepository.findAll(specification.getInvestedMoney(typeClosing.getId()));
     }
 }

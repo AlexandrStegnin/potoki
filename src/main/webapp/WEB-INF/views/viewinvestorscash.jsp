@@ -18,8 +18,7 @@
     <link href="<c:url value='/resources/core/css/ddk_loader.css' />" rel="stylesheet"/>
     <link href="<c:url value='/resources/core/css/jquery-ui.min.css' />" rel="stylesheet"/>
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/css/bootstrap-select.css">
+    <link rel="stylesheet" href="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/css/bootstrap-select.css' />">
     <style type="text/css">
         table, td, th {
             text-align: center;
@@ -124,7 +123,7 @@
                         <c:if test="${cashFilters.allRows == true}"> checked="checked" </c:if> >На одной странице
                     </label>
                 </div>
-                <button data-table-id="investorsCash" type="button" id="unblock_operations" class="btn btn-danger btn-sm">Разблокировать операции</button>
+                <button data-table-id="investorCash" type="button" id="unblock_operations" class="btn btn-danger btn-sm">Разблокировать операции</button>
                 <sec:authorize access="isFullyAuthenticated()">
                     <sec:authorize access="hasRole('ADMIN')">
                         <div class="dropdown pull-right" style="margin-right: 10px">
@@ -197,14 +196,14 @@
                     <td data-under-facility-id="${cash.underFacility.id}">${cash.underFacility.name}</td>
                     <td data-investor-id="${cash.investor.id}">${cash.investor.login}</td>
 
-                    <td data-gived-cash="${cash.givedCash}">
+                    <td data-gived-cash="${cash.givenCash}">
                         <fmt:setLocale value="ru-RU" scope="session"/>
-                        <fmt:formatNumber value="${cash.givedCash}" type="currency" minFractionDigits="2"/>
+                        <fmt:formatNumber value="${cash.givenCash}" type="currency" minFractionDigits="2"/>
                     </td>
-                    <td data-report-date="${cash.dateGivedCash.time}">${cash.getDateGivedCashToLocalDate()}</td>
+                    <td data-report-date="${cash.dateGiven.time}">${cash.getDateGivenToLocalDate()}</td>
                     <td data-cash-source-id="${cash.cashSource.id}">${cash.cashSource.name}</td>
                     <td data-cash-details-id="${cash.newCashDetail.id}">${cash.newCashDetail.name}</td>
-                    <td data-date-closing="${cash.dateClosingInvest.time}">${cash.getDateClosingInvestToLocalDate()}</td>
+                    <td data-date-closing="${cash.dateClosing.time}">${cash.getDateClosingToLocalDate()}</td>
                     <td data-type-closing-id="${cash.typeClosing.id}">${cash.typeClosing.name}</td>
                     <td data-share-kind-id="${cash.shareType.id}">${cash.shareType.title}</td>
                     <td data-date-report="${cash.dateReport.time}">${cash.getDateReportToLocalDate()}</td>
@@ -264,7 +263,7 @@
                         </c:choose>
                         <c:choose>
                             <c:when test="${cash.typeClosing.name.length() > 0 &&
-                                            (cash.givedCash > 0 || cash.givedCash < 0)}">
+                                            (cash.givenCash > 0 || cash.givenCash < 0)}">
                                 <c:set var="enabled" value="disabled "/>
                             </c:when>
                             <c:otherwise>
@@ -319,7 +318,7 @@
                             <label class="col-md-3 control-lable" for="srcUnderFacilities">Подобъект:</label>
                             <div class="col-md-7">
                                 <form:select path="reUnderFacility" id="srcUnderFacilities" items="${underFacilities}"
-                                             multiple="false"
+                                             multiple="true"
                                              data-none-selected-text="Без подобъекта"
                                              itemValue="id" itemLabel="name" class="form-control input-sm selectpicker"/>
                                 <div id="underFacilityErr" style="color: red; display: none">Необходимо выбрать

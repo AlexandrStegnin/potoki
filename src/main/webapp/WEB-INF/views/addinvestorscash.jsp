@@ -82,7 +82,7 @@
         <div class="form-group row" id="cashRow">
             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="cash">Переданная сумма:</label>
             <div class="col-sm-6">
-                <form:input type="number" path="givedCash" id="cash" class="form-control form-control-sm"
+                <form:input type="number" path="givenCash" id="cash" class="form-control form-control-sm"
                             min="0.0" step="any"/>
             </div>
         </div>
@@ -97,9 +97,9 @@
         <div class="form-group row" id="dateGivedCashRow">
             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="dateGivedCash">Дата передачи денег:</label>
             <div class="col-sm-6">
-                <form:input type="date" path="dateGivedCash" id="dateGivedCash" class="form-control form-control-sm"/>
+                <form:input type="date" path="dateGiven" id="dateGivedCash" class="form-control form-control-sm"/>
                 <div class="has-error">
-                    <form:errors path="dateGivedCash" class="help-inline"/>
+                    <form:errors path="dateGiven" class="help-inline"/>
                 </div>
             </div>
         </div>
@@ -129,7 +129,7 @@
         <div class="form-group row" id="dateCloseInvRow">
             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="dateCloseInv">Дата закрытия вложения:</label>
             <div class="col-sm-6">
-                <form:input type="date" path="dateClosingInvest" id="dateCloseInv"
+                <form:input type="date" path="dateClosing" id="dateCloseInv"
                             class="form-control form-control-sm"
                             readonly="${edit}"/>
                 <div class="has-error" id="reInvestDateErr">

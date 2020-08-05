@@ -71,12 +71,12 @@ public class SearchSummary implements Serializable {
     private BigInteger divideSumId;
     private MarketingTree salesChanel;
 
-    private List<InvestorsCash> investorsCashList;
+    private List<InvestorCash> investorCashList;
     private Facility reFacility;
     private UnderFacility underFacility;
     private UnderFacility reUnderFacility;
     private Date dateReinvest;
-    private InvestorsCash investorsCash;
+    private InvestorCash investorCash;
     private List<Long> reinvestIdList;
     private UsersAnnexToContracts usersAnnexToContracts;
     private int annexesCnt;
@@ -349,12 +349,12 @@ public class SearchSummary implements Serializable {
         this.shareKindId = shareKindId;
     }
 
-    public List<InvestorsCash> getInvestorsCashList() {
-        return investorsCashList;
+    public List<InvestorCash> getInvestorCashList() {
+        return investorCashList;
     }
 
-    public void setInvestorsCashList(List<InvestorsCash> investorsCashList) {
-        this.investorsCashList = investorsCashList;
+    public void setInvestorCashList(List<InvestorCash> investorCashList) {
+        this.investorCashList = investorCashList;
     }
 
     public Facility getReFacility() {
@@ -405,12 +405,12 @@ public class SearchSummary implements Serializable {
         this.annexToContracts = annexToContracts;
     }
 
-    public InvestorsCash getInvestorsCash() {
-        return investorsCash;
+    public InvestorCash getInvestorCash() {
+        return investorCash;
     }
 
-    public void setInvestorsCash(InvestorsCash investorsCash) {
-        this.investorsCash = investorsCash;
+    public void setInvestorCash(InvestorCash investorCash) {
+        this.investorCash = investorCash;
     }
 
     public List<Long> getReinvestIdList() {

@@ -38,7 +38,7 @@ public class TransactionLog {
     @JoinTable(name = "tx_log_inv_cash",
             joinColumns = {@JoinColumn(name = "tx_id", referencedColumnName = "id")},
             inverseJoinColumns = @JoinColumn(name = "cash_id", referencedColumnName = "id"))
-    private Set<InvestorsCash> investorsCashes;
+    private Set<InvestorCash> investorCashes;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "transaction_type")

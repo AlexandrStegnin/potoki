@@ -108,13 +108,13 @@ public class InvestorCashLog {
     @Column(name = "instance_of")
     private CashType instanceOf;
 
-    public InvestorCashLog(InvestorsCash cash, TransactionLog log, CashType instanceOf) {
+    public InvestorCashLog(InvestorCash cash, TransactionLog log, CashType instanceOf) {
         this.cashId = cash.getId();
         this.investor = cash.getInvestor();
         this.facility = cash.getFacility();
         this.underFacility = cash.getUnderFacility();
-        this.givenCash = cash.getGivedCash();
-        this.dateGivenCash = cash.getDateGivedCash();
+        this.givenCash = cash.getGivenCash();
+        this.dateGivenCash = cash.getDateGiven();
         this.cashSource = cash.getCashSource();
         this.newCashDetail = cash.getNewCashDetail();
         this.shareType = cash.getShareType();
