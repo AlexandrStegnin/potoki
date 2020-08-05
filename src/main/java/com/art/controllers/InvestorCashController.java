@@ -97,7 +97,7 @@ public class InvestorCashController {
      */
     @GetMapping(value = "/investorscash")
     public ModelAndView invCashByPageNumber(@PageableDefault(size = 100) @SortDefault Pageable pageable) {
-        ModelAndView modelAndView = new ModelAndView("viewinvestorscash");
+        ModelAndView modelAndView = new ModelAndView("cash-list");
         Page<InvestorCash> page = investorCashService.findAll(cashFilters, pageable);
         modelAndView.addObject("page", page);
         modelAndView.addObject("cashFilters", cashFilters);
@@ -122,7 +122,7 @@ public class InvestorCashController {
         } else {
             pageable = new PageRequest(cashFilters.getPageNumber(), cashFilters.getPageSize());
         }
-        ModelAndView modelAndView = new ModelAndView("viewinvestorscash");
+        ModelAndView modelAndView = new ModelAndView("cash-list");
         Page<InvestorCash> page = investorCashService.findAll(cashFilters, pageable);
         modelAndView.addObject("page", page);
         modelAndView.addObject("cashFilters", cashFilters);
@@ -147,7 +147,7 @@ public class InvestorCashController {
         model.addAttribute("doubleCash", false);
         model.addAttribute("closeCash", false);
         model.addAttribute("title", title);
-        return "addinvestorscash";
+        return "cash-add";
     }
 
     /**
@@ -163,7 +163,7 @@ public class InvestorCashController {
                            BindingResult result, ModelMap model) {
 
         if (result.hasErrors()) {
-            return "addinvestorscash";
+            return "cash-add";
         }
         String ret = "списку денег инвестора";
         String redirectUrl = "/investorscash";
@@ -198,7 +198,7 @@ public class InvestorCashController {
         model.addAttribute("closeCash", false);
         model.addAttribute("doubleCash", false);
         model.addAttribute("title", title);
-        return "addinvestorscash";
+        return "cash-add";
     }
 
     /**
@@ -210,7 +210,7 @@ public class InvestorCashController {
      */
     @PostMapping(value = "/edit-cash-{id}")
     public String editCash(@ModelAttribute("investorsCash") InvestorCash investorCash, @PathVariable("id") Long id) {
-        ModelAndView modelAndView = new ModelAndView("viewinvestorscash");
+        ModelAndView modelAndView = new ModelAndView("cash-list");
 
         InvestorCash dbCash = investorCashService.findById(id);
 
@@ -244,7 +244,7 @@ public class InvestorCashController {
         model.addAttribute("closeCash", true);
         model.addAttribute("doubleCash", false);
         model.addAttribute("title", title);
-        return "addinvestorscash";
+        return "cash-add";
     }
 
     /**
@@ -260,7 +260,7 @@ public class InvestorCashController {
     public String closeCash(@ModelAttribute("investorsCash") InvestorCash investorCash,
                             @PathVariable("id") Long id, @RequestParam("dateClosingInvest") Date dateClosingInvest,
                             @RequestParam("realDateGiven") Date realDateGiven) {
-        ModelAndView modelAndView = new ModelAndView("viewinvestorscash");
+        ModelAndView modelAndView = new ModelAndView("cash-list");
 
         AppUser invBuyer;
         TypeClosing closingInvest = typeClosingService.findByName("Перепродажа доли");
@@ -384,14 +384,14 @@ public class InvestorCashController {
         model.addAttribute("closeCash", false);
         model.addAttribute("doubleCash", true);
         model.addAttribute("title", title);
-        return "addinvestorscash";
+        return "cash-add";
     }
 
     @PostMapping(value = "/double-cash-{id}")
     public String doubleCash(@ModelAttribute("investorsCash") InvestorCash investorCash, @PathVariable("id") int id) {
         InvestorCash newInvestorCash = investorCashService.findById(investorCash.getId());
         InvestorCash inMemoryCash = investorCashService.findById(investorCash.getId());
-        ModelAndView model = new ModelAndView("addinvestorscash");
+        ModelAndView model = new ModelAndView("cash-add");
         investorCash.setFacility(newInvestorCash.getFacility());
         investorCash.setInvestor(newInvestorCash.getInvestor());
         investorCash.setDateGiven(newInvestorCash.getDateGiven());
