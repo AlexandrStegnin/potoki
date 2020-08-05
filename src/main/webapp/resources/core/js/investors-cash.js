@@ -156,7 +156,7 @@ jQuery(document).ready(function ($) {
         $(this).data('passed', true);
     });
 
-    $(document).on('click', '#reinvestAll', function (event) {
+    $('#reinvestAll').on('click', function (event) {
         let allModalForm = $('#all-modal');
         event.preventDefault();
         if (linkHasClass($('#reinvestAll'))) return false;
@@ -171,6 +171,8 @@ jQuery(document).ready(function ($) {
         $('#shareKindNameRow').css('display', 'block');
         $('#real-date').css('display', 'none');
         $('#typeClosingRow').css('display', 'none');
+        $('#buyerRow').css('display', 'none');
+        $('#underFacilityRow').css('display', 'block');
         $('#action').val('Реинвестировать');
     });
 
@@ -186,7 +188,8 @@ jQuery(document).ready(function ($) {
         $('#dateClosingRow').css('display', 'block');
         $('#real-date').css('display', 'block');
         $('#typeClosingRow').css('display', 'block');
-        if ($('#typeClosing').text() === 'Перепродажа доли') {
+        let typeClosing = $('#typeClosing').find('option:selected').text();
+        if (typeClosing === 'Перепродажа доли') {
             $('#buyerRow').css('display', 'block');
         } else {
             $('#buyerRow').css('display', 'none');
@@ -196,6 +199,38 @@ jQuery(document).ready(function ($) {
         $('#underFacilityRow').css('display', 'none');
         $('#underFacilitiesListRow').css('display', 'none');
         $('#action').val('Закрыть');
+    });
+
+
+    $('#divideAll').on('click', function (event) {
+        let allModalForm = $('#all-modal');
+        event.preventDefault();
+        if (linkHasClass($('#divideAll'))) return false;
+        let chk = $('table#investorsCash').find('> tbody').find('> tr').find(':checkbox:checked:not(:disabled)');
+        let facilityId = chk.closest('td').parent().find('td:eq(0)').attr('data-facility-id');
+
+        getUnderFacilitiesFromLocalStorage(
+            facilityId,
+            'srcUnderFacilities');
+        getUnderFacilitiesFromLocalStorage(
+            facilityId,
+            'underFacilitiesList');
+        let underFacilitiesList = $('#underFacilitiesList')
+        underFacilitiesList.find('option:contains(Выберите подобъект)').remove();
+        underFacilitiesList.selectpicker('refresh')
+        allModalForm.modal({
+            show: true
+        });
+        allModalForm.find('input#action').attr('data-action', 'divide')
+        allModalForm.find('input#action').val('Разделить')
+        $('#underFacilityRow').css('display', 'block');
+        $('#underFacilitiesListRow').css('display', 'block')
+        $('#dateClosingRow').css('display', 'none');
+        $('#real-date').css('display', 'none');
+        $('#typeClosingRow').css('display', 'none');
+        $('#facilitiesRow').css('display', 'none');
+        $('#shareKindNameRow').css('display', 'none');
+        $('#buyerRow').css('display', 'none');
     });
 
     $('#deleteAll').on('click', function (event) {
@@ -275,36 +310,6 @@ jQuery(document).ready(function ($) {
         $('#msg-modal').modal('show');
         connect();
         deleteCash(cashIdList);
-    });
-
-    $('#divideAll').on('click', function (event) {
-        let allModalForm = $('#all-modal');
-        event.preventDefault();
-        if (linkHasClass($('#divideAll'))) return false;
-        let chk = $('table#investorsCash').find('> tbody').find('> tr').find(':checkbox:checked:not(:disabled)');
-        let facilityId = chk.closest('td').parent().find('td:eq(0)').attr('data-facility-id');
-
-        getUnderFacilitiesFromLocalStorage(
-            facilityId,
-            'srcUnderFacilities');
-        getUnderFacilitiesFromLocalStorage(
-            facilityId,
-            'underFacilitiesList');
-        let underFacilitiesList = $('#underFacilitiesList')
-        underFacilitiesList.find('option:contains(Выберите подобъект)').remove();
-        underFacilitiesList.selectpicker('refresh')
-        allModalForm.modal({
-            show: true
-        });
-        allModalForm.find('input#action').attr('data-action', 'divide')
-        allModalForm.find('input#action').val('Разделить')
-        $('#underFacilitiesRow').css('display', 'block');
-        $('#underFacilitiesListRow').css('display', 'block')
-        $('#dateClosingRow').css('display', 'none');
-        $('#real-date').css('display', 'none');
-        $('#typeClosingRow').css('display', 'none');
-        $('#facilitiesRow').css('display', 'none');
-        $('#shareKindNameRow').css('display', 'none');
     });
 
     $(document).on('click', 'a#cancel', function (event) {
@@ -1610,7 +1615,6 @@ function prepareCloseCash() {
     $('table#investorsCash').find('> tbody').find('> tr').each(function () {
         $(this).find(':checkbox:checked').not(':disabled').each(function () {
             cashIdList.push($(this).closest('tr').attr('id'));
-            $(this).closest('tr').remove();
         })
     });
     $('#all-modal').modal('hide')
