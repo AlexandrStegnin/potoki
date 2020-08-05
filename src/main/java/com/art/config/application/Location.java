@@ -136,9 +136,9 @@ public class Location {
 
     public static final String INVESTOR_CASH_REINVEST_CASH_SAVE = INVESTOR_CASH + "/reinvest/cash/save";
 
-    public static final String INVESTOR_CASH_DIVIDE_MULTIPLE = INVESTOR_CASH + "/divide/multiple";
+    public static final String INVESTOR_CASH_DIVIDE = "/divide-cash";
 
-    public static final String INVESTOR_CASH_DIVIDE_CASH_SAVE = INVESTOR_CASH + "/divide/cash/save";
+    public static final String INVESTOR_CASH_DIVIDE_MULTIPLE = "/divide-multiple";
 
     public static final String INVESTOR_CASH_CLOSE = INVESTOR_CASH + "/close";
 
@@ -191,7 +191,9 @@ public class Location {
             BITRIX_MERGE,
             INVESTOR_CASH + WILD_CARD,
             NEW_CASH_DETAILS + WILD_CARD,
-            TYPE_CLOSING + WILD_CARD
+            TYPE_CLOSING + WILD_CARD,
+            INVESTOR_CASH_DIVIDE,
+            INVESTOR_CASH_DIVIDE_MULTIPLE
     };
 
     public static final String[] INVESTOR_URLS = {
