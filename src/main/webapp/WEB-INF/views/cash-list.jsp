@@ -6,74 +6,51 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<html lang="en-RU">
+<!DOCTYPE html>
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Список дненег инвесторов</title>
     <sec:csrfMetaTags/>
-    <link href="<c:url value='/resources/core/css/old_bootstrap.min.css' />" rel="stylesheet"/>
-    <link href="<c:url value='/resources/core/css/applic.css' />" rel="stylesheet"/>
-    <link href="<c:url value='/resources/core/css/popup.css' />" rel="stylesheet"/>
-    <link href="<c:url value='/resources/core/css/ddk_loader.css' />" rel="stylesheet"/>
-    <link href="<c:url value='/resources/core/css/jquery-ui.min.css' />" rel="stylesheet"/>
+    <link rel="stylesheet"
+          href="<c:url value='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' />"/>
+    <link rel="stylesheet"
+          href="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css' />">
+    <link href="<c:url value='https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css' />"
+          rel="stylesheet">
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
-    <link rel="stylesheet" href="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/css/bootstrap-select.css' />">
+    <link href="<c:url value='/resources/core/css/ddk_loader.css' />" rel="stylesheet"/>
     <style type="text/css">
-        table, td, th {
-            text-align: center;
+        .bootstrap-select > select {
+            margin: 10px !important;
         }
-
-        td {
-            word-wrap: break-word;
-        }
-
-        #msg-modal .modal-dialog {
-            -webkit-transform: translate(0, -50%);
-            -o-transform: translate(0, -50%);
-            transform: translate(0, -50%);
-            top: 50%;
-            margin: 0 auto;
-        }
-
-        .dropdown-menu > .active > a {
-            color: #0c0c0c !important;
-            background-color: transparent !important;
-        }
-
-        .dropdown-menu > .active > a:hover {
-            text-shadow: 1px 1px 1px gray;
-        }
-
     </style>
 </head>
 
 <body>
-<div class="generic-container">
-    <%@include file="old_authheader.jsp" %>
-    <div class="panel panel-default">
-        <!-- Default panel contents -->
-        <div class="panel-heading"><span class="lead">Список дненег инвесторов:</span>
-
-        </div>
-
-        <form:form modelAttribute="cashFilters" method="POST" action="/investor-cash/list" class="form-inline"
-                   id="search-form">
-            <div class="row" style="margin: 10px;">
-                <input type="hidden" id="pageNumber" name="pageNumber" value="0">
-                <input type="hidden" id="pageSize" name="pageSize" value="${cashFilters.pageSize}">
-                <input type="hidden" id="total" name="total" value="${page.content.size()}">
-                <input type="hidden" id="filtered" name="filtered" value="${cashFilters.filtered}">
-                <label class="sr-only" for="fFacilities">Объект:</label>
+<%@include file="header.jsp" %>
+<div class="container-fluid">
+    <div class="row" style="margin: 10px;">
+        <div class="col-md-12">
+            <form:form modelAttribute="cashFilters" method="POST" action="/investor-cash/list"
+                       class="form-inline  d-flex flex-row justify-content-center"
+                       id="search-form">
+            <input type="hidden" id="pageNumber" name="pageNumber" value="0">
+            <input type="hidden" id="pageSize" name="pageSize" value="${cashFilters.pageSize}">
+            <input type="hidden" id="total" name="total" value="${page.content.size()}">
+            <input type="hidden" id="filtered" name="filtered" value="${cashFilters.filtered}">
+            <div style="padding: 5px">
                 <form:select path="facilities" id="fFacilities" multiple="true" class="selectpicker"
-                             data-live-search="true" data-width="130px" title="Выберите объект..."
+                             data-live-search="true" title="Выберите объект..."
                              data-actions-box="true" data-select-all-text="Выбрать всё"
                              data-deselect-all-text="Очистить">
-                    <form:options items="${facilitiesList}" itemValue="id" itemLabel="name" />
+                    <form:options items="${facilitiesList}" itemValue="id" itemLabel="name"/>
                 </form:select>
-                <label class="sr-only" for="uFacilities">Подобъект:</label>
+            </div>
+            <div style="padding: 5px">
                 <form:select path="underFacilities" id="uFacilities" multiple="true" class="selectpicker"
-                             data-live-search="true" data-width="160px" title="Выберите подобъект..."
+                             data-live-search="true" title="Выберите подобъект..."
                              data-actions-box="true" data-select-all-text="Выбрать всё"
                              data-deselect-all-text="Очистить">
                     <c:forEach var="uf" items="${underFacilitiesList}">
@@ -88,7 +65,8 @@
                         </option>
                     </c:forEach>
                 </form:select>
-                <label class="sr-only" for="investors">Инвестор:</label>
+            </div>
+            <div style="padding: 5px">
                 <form:select path="investors" id="investors" class="selectpicker" data-container="body"
                              title="Выберите инвестора..." multiple="true"
                              data-live-search="true" data-size="7"
@@ -102,182 +80,202 @@
                                             <c:when test="${inv.login eq investor}">selected="selected"</c:when>
                                         </c:choose>
                                     </c:forEach>
-                                    value="${inv.login}" id="${inv.id}" data-lastName="${inv.profile.lastName}">${inv.login}
+                                    value="${inv.login}" id="${inv.id}"
+                                    data-lastName="${inv.profile.lastName}">${inv.login}
                             </option>
                         </c:if>
                     </c:forEach>
                 </form:select>
-                <label for="beginPeriod" style="margin-left:10px; margin-right:5px; font-size:14px" >Период с:</label>
-                <input id="beginPeriod" name="fromDate" type="date" class="form-control input-sm" value="">
-                <label for="endPeriod" style="margin-left:10px; margin-right:5px; font-size:14px">по:</label>
-                <input id="endPeriod" name="toDate" type="date" class="form-control input-sm" value="" style="margin-right:5px">
-                <form:select path="fromApi" class="selectpicker">
-                    <form:option value="true" label="Из 1С" />
-                    <form:option value="false" label="Остальные" />
-                </form:select>
-                <button type="submit" id="bth-search" class="btn btn-primary btn-sm">Фильтр</button>
-                <button type="submit" id="bth-clear" class="btn btn-danger btn-sm">Сбросить фильтры</button>
-                <div class="btn btn-info btn-sm" id="allRows">
-                    <label class="checkbox-inline">
-                        <input type="checkbox" name="allRows" id="all"
-                        <c:if test="${cashFilters.allRows == true}"> checked="checked" </c:if> >На одной странице
-                    </label>
-                </div>
-                <button data-table-id="investorCash" type="button" id="unblock_operations" class="btn btn-danger btn-sm">Разблокировать операции</button>
-                <sec:authorize access="isFullyAuthenticated()">
-                    <sec:authorize access="hasRole('ADMIN')">
-                        <div class="dropdown pull-right" style="margin-right: 10px">
-                            <button id="addActions" type="button" data-toggle="dropdown"
-                                    class="btn btn-warning btn-sm dropdown-toggle pull-right">Деньги <span
-                                    class="glyphicon glyphicon-th-list"></span></button>
-                            <ul class="dropdown-menu" id="addGetCash">
-                                <li id="addCash"><a href="<c:url value='/investor-cash/create' />">Добавить деньги</a></li>
-                                <li id="getCash"><a href="<c:url value='/getInvestorsCash' />">Вывести деньги</a></li>
-                            </ul>
-                        </div>
+            </div>
+            <label for="beginPeriod" style="margin-left:5px; margin-right:5px; font-size:14px">Период с:</label>
+            <input id="beginPeriod" name="fromDate" type="date" class="form-control input-sm" value="">
+            <label for="endPeriod" style="margin-left:5px; margin-right:5px; font-size:14px">по:</label>
+            <input id="endPeriod" name="toDate" type="date" class="form-control input-sm" value=""
+                   style="margin-right:5px">
+                <%--                <input type="checkbox" checked data-toggle="toggle"--%>
+                <%--                       data-on="Все" data-off="Из 1С" data-onstyle="success" data-offstyle="danger"--%>
+                <%--                       data-size="input-sm">--%>
+            <form:select path="fromApi" class="selectpicker" data-width="130px">
+                <form:option value="true" label="Из 1С"/>
+                <form:option value="false" label="Остальные"/>
+            </form:select>
+            <input id="all" name="allRows" type="checkbox"
+            <c:if test="${cashFilters.allRows == true}"> checked="checked" </c:if> data-toggle="toggle"
+                   data-on="На одной" data-off="По страницам" data-onstyle="success" data-offstyle="danger"
+                   data-size="input-sm">
 
-                        <div class="dropdown pull-right" style="margin-right: 10px">
-                            <button id="actions" type="button" data-toggle="dropdown"
-                                    class="btn btn-success btn-sm dropdown-toggle pull-right">Действия <span
-                                    class="glyphicon glyphicon-th-list"></span></button>
-                            <ul class="dropdown-menu" id="reinvest">
-                                <li id="reinvestAll"><a href="#">Массовое реинвестирование</a></li>
-                                <li id="divideAll"><a href="#">Массовое разделение сумм</a></li>
-                                <li id="deleteAll"><a href="#">Удалить выбранные суммы</a></li>
-                                <li id="closeAll"><a href="#">Закрыть выбранные суммы</a></li>
-                            </ul>
+            <button type="submit" id="bth-search" class="btn btn-primary input-sm" style="margin-left: 10px">Фильтр
+            </button>
+        </div>
+    </div>
+    <div class="d-flex flex-row justify-content-center" style="margin: 0 10px 10px 10px">
+        <div class="p-2">
+            <button type="submit" id="bth-clear" class="btn btn-danger btn-sm">Сбросить фильтры</button>
+        </div>
+        <div class="p-2">
+            <button data-table-id="investorCash" type="button" id="unblock_operations"
+                    class="btn btn-danger btn-sm">Разблокировать операции
+            </button>
+        </div>
+        <sec:authorize access="isFullyAuthenticated()">
+            <sec:authorize access="hasRole('ADMIN')">
+                <div class="p-2">
+                    <div class="dropdown pull-right" style="margin-right: 10px">
+                        <button id="addActions" type="button" data-toggle="dropdown"
+                                class="btn btn-warning btn-sm dropdown-toggle pull-right">Деньги <span
+                                class="fas fa-list"></span></button>
+                        <div class="dropdown-menu dropdown-menu-right" id="addGetCash">
+                            <a class="dropdown-item" id="addCash" href="<c:url value='/investor-cash/create' />">Добавить
+                                деньги</a>
+                            <a class="dropdown-item" id="getCash" href="<c:url value='/getInvestorsCash' />">Вывести
+                                деньги</a>
                         </div>
+                    </div>
+                </div>
+                <div class="p-2">
+                    <div class="dropdown pull-right" style="margin-right: 10px">
+                        <button id="actions" type="button" data-toggle="dropdown"
+                                class="btn btn-success btn-sm dropdown-toggle pull-right">Действия <span
+                                class="fas fa-list"></span></button>
+                        <div class="dropdown-menu" id="reinvest">
+                            <a class="dropdown-item" id="reinvestAll" href="#">Массовое реинвестирование</a>
+                            <a class="dropdown-item" id="divideAll" href="#">Массовое разделение сумм</a>
+                            <a class="dropdown-item" id="deleteAll" href="#">Удалить выбранные суммы</a>
+                            <a class="dropdown-item" id="closeAll" href="#">Закрыть выбранные суммы</a>
+                        </div>
+                    </div>
+                </div>
+            </sec:authorize>
+        </sec:authorize>
+    </div>
+    <c:if test="${cashFilters.allRows == false}">
+        <nav class="text-center" aria-label="Деньги инвесторов">
+            <ul class="pagination pagination-sm justify-content-center">
+                <c:forEach begin="1" end="${page.totalPages}" varStatus="page">
+                    <li class="page-item" data-page="${page.index}">
+                        <a id="${page.index}" name="page_${page.index}" class="page-link"
+                           href="#">${page.index}</a>
+                    </li>
+                </c:forEach>
+            </ul>
+        </nav>
+    </c:if>
+    </form:form>
+</div>
+<div class="container-fluid">
+    <table class="table table-striped w-auto table-hover" style="font-size: smaller; table-layout: fixed"
+           id="investorsCash">
+        <thead>
+        <tr>
+            <th>Объект</th>
+            <th>Подобъект</th>
+            <th>Инвестор</th>
+            <th>Переданная сумма</th>
+            <th>Дата передачи денег</th>
+            <th>Источник денег</th>
+            <th>Детали новых денег</th>
+            <th>Дата закрытия вложения</th>
+            <th>Вид закрытия вложения</th>
+            <th>Вид доли</th>
+            <th>Период расчёта</th>
+            <th>Объект источник</th>
+            <th>Подобъект источник</th>
+            <th>Помещение</th>
+            <th>Из 1С</th>
+            <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
+                <th style="text-align: center">Действие</th>
+            </sec:authorize>
+            <th><input type="checkbox" id="checkIt" value=""></th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach items="${page.content}" var="cash">
+            <tr id="${cash.id}">
+                <td data-facility-id="${cash.facility.id}">${cash.facility.name}</td>
+                <td data-under-facility-id="${cash.underFacility.id}">${cash.underFacility.name}</td>
+                <td data-investor-id="${cash.investor.id}">${cash.investor.login}</td>
+
+                <td data-gived-cash="${cash.givenCash}">
+                    <fmt:setLocale value="ru-RU" scope="session"/>
+                    <fmt:formatNumber value="${cash.givenCash}" type="currency" minFractionDigits="2"/>
+                </td>
+                <td data-report-date="${cash.dateGiven.time}">${cash.getDateGivenToLocalDate()}</td>
+                <td data-cash-source-id="${cash.cashSource.id}">${cash.cashSource.name}</td>
+                <td data-cash-details-id="${cash.newCashDetail.id}">${cash.newCashDetail.name}</td>
+                <td data-date-closing="${cash.dateClosing.time}">${cash.getDateClosingToLocalDate()}</td>
+                <td data-type-closing-id="${cash.typeClosing.id}">${cash.typeClosing.name}</td>
+                <td data-share-kind-id="${cash.shareType.id}">${cash.shareType.title}</td>
+                <td data-date-report="${cash.dateReport.time}">${cash.getDateReportToLocalDate()}</td>
+                <td data-source-facility-id="${cash.sourceFacility.id}">${cash.sourceFacility.name}</td>
+                <td data-source-under-id="${cash.sourceUnderFacility.id}">${cash.sourceUnderFacility.name}</td>
+                <td data-room-id="${cash.room.id}">${cash.room.name}</td>
+                <c:set var="is1C" value="Да"/>
+                <c:if test="${empty cash.transactionUUID}">
+                    <c:set var="is1C" value="Нет"/>
+                </c:if>
+                <td>${is1C}</td>
+                <c:choose>
+                    <c:when test="${cash.typeClosing == null}">
+                        <c:set var="isDisabledClass" value="isEnabled"/>
+                    </c:when>
+                    <c:otherwise>
+                        <c:set var="isDisabledClass" value="isDisabled"/>
+                    </c:otherwise>
+                </c:choose>
+
+                <sec:authorize access="isFullyAuthenticated()">
+                    <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
+                        <td style="text-align: center">
+                            <div class="btn-group">
+                                <button type="button" data-toggle="dropdown"
+                                        class="btn btn-primary btn-sm dropdown-toggle"><span
+                                        class="glyphicon glyphicon-cog"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li id="liEdit"><a id="aEdit" href="<c:url value='/edit-cash-${cash.id}' />"
+                                                       class="${isDisabledClass}">Изменить</a>
+                                    </li>
+                                    <li id="liDivide"><a id="aDivide"
+                                                         href="<c:url value='/double-cash-${cash.id}' />">Разделить</a>
+                                    </li>
+                                    <li id="liDouble"><a id="aDouble"
+                                                         href="<c:url value='/close-cash-${cash.id}' />">Закрыть</a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li id="liDelete"><a id="del" data-delete="${cash.id}"
+                                                         href="<c:url value='/#' />"
+                                                         style="color: #ff0000;">Удалить</a></li>
+                                </ul>
+                            </div>
+                        </td>
                     </sec:authorize>
                 </sec:authorize>
-
-            </div>
-            <c:if test="${cashFilters.allRows == false}">
-                <nav class="text-center" aria-label="Деньги инвесторов">
-                    <ul class="pagination pagination-sm justify-content-center">
-                        <c:forEach begin="1" end="${page.totalPages}" varStatus="page">
-                            <li class="page-item" data-page="${page.index}">
-                                <a id="${page.index}" name="page_${page.index}" class="page-link"
-                                   href="#">${page.index}</a>
-                            </li>
-                        </c:forEach>
-                    </ul>
-                </nav>
-            </c:if>
-        </form:form>
-
-        <table class="table table-hover" style="font-size: smaller; table-layout: fixed" id="investorsCash">
-            <thead>
-            <tr>
-                <th>Объект</th>
-                <th>Подобъект</th>
-                <th>Инвестор</th>
-                <th>Переданная сумма</th>
-                <th>Дата передачи денег</th>
-                <th>Источник денег</th>
-                <th>Детали новых денег</th>
-                <th>Дата закрытия вложения</th>
-                <th>Вид закрытия вложения</th>
-                <th>Вид доли</th>
-                <th>Период расчёта</th>
-                <th>Объект источник</th>
-                <th>Подобъект источник</th>
-                <th>Помещение</th>
-                <th>Из 1С</th>
-                <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
-                    <th style="text-align: center">Действие</th>
-                </sec:authorize>
-                <th><input type="checkbox" id="checkIt" value=""></th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach items="${page.content}" var="cash">
-                <tr id="${cash.id}">
-                    <td data-facility-id="${cash.facility.id}">${cash.facility.name}</td>
-                    <td data-under-facility-id="${cash.underFacility.id}">${cash.underFacility.name}</td>
-                    <td data-investor-id="${cash.investor.id}">${cash.investor.login}</td>
-
-                    <td data-gived-cash="${cash.givenCash}">
-                        <fmt:setLocale value="ru-RU" scope="session"/>
-                        <fmt:formatNumber value="${cash.givenCash}" type="currency" minFractionDigits="2"/>
-                    </td>
-                    <td data-report-date="${cash.dateGiven.time}">${cash.getDateGivenToLocalDate()}</td>
-                    <td data-cash-source-id="${cash.cashSource.id}">${cash.cashSource.name}</td>
-                    <td data-cash-details-id="${cash.newCashDetail.id}">${cash.newCashDetail.name}</td>
-                    <td data-date-closing="${cash.dateClosing.time}">${cash.getDateClosingToLocalDate()}</td>
-                    <td data-type-closing-id="${cash.typeClosing.id}">${cash.typeClosing.name}</td>
-                    <td data-share-kind-id="${cash.shareType.id}">${cash.shareType.title}</td>
-                    <td data-date-report="${cash.dateReport.time}">${cash.getDateReportToLocalDate()}</td>
-                    <td data-source-facility-id="${cash.sourceFacility.id}">${cash.sourceFacility.name}</td>
-                    <td data-source-under-id="${cash.sourceUnderFacility.id}">${cash.sourceUnderFacility.name}</td>
-                    <td data-room-id="${cash.room.id}">${cash.room.name}</td>
-                    <c:set var="is1C" value="Да" />
-                    <c:if test="${empty cash.transactionUUID}">
-                        <c:set var="is1C" value="Нет" />
-                    </c:if>
-                    <td>${is1C}</td>
+                <td>
                     <c:choose>
-                        <c:when test="${cash.typeClosing == null}">
-                            <c:set var="isDisabledClass" value="isEnabled"/>
+                        <c:when test="${cash.isReinvest == 1}">
+                            <c:set var="checked" value="checked "/>
+                            <c:set var="disabled" value="disabled "/>
                         </c:when>
                         <c:otherwise>
-                            <c:set var="isDisabledClass" value="isDisabled"/>
+                            <c:set var="checked" value=""/>
+                            <c:set var="disabled" value=""/>
                         </c:otherwise>
                     </c:choose>
-
-                    <sec:authorize access="isFullyAuthenticated()">
-                        <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
-                            <td style="text-align: center">
-                                <div class="btn-group">
-                                    <button type="button" data-toggle="dropdown"
-                                            class="btn btn-primary btn-sm dropdown-toggle"><span
-                                            class="glyphicon glyphicon-cog"></span></button>
-                                    <ul class="dropdown-menu">
-                                        <li id="liEdit"><a id="aEdit" href="<c:url value='/edit-cash-${cash.id}' />"
-                                                           class="${isDisabledClass}">Изменить</a>
-                                        </li>
-                                        <li id="liDivide"><a id="aDivide"
-                                                             href="<c:url value='/double-cash-${cash.id}' />">Разделить</a>
-                                        </li>
-                                        <li id="liDouble"><a id="aDouble"
-                                                             href="<c:url value='/close-cash-${cash.id}' />">Закрыть</a>
-                                        </li>
-                                        <li class="divider"></li>
-                                        <li id="liDelete"><a id="del" data-delete="${cash.id}"
-                                                             href="<c:url value='/#' />"
-                                                             style="color: #ff0000;">Удалить</a></li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </sec:authorize>
-                    </sec:authorize>
-                    <td>
-                        <c:choose>
-                            <c:when test="${cash.isReinvest == 1}">
-                                <c:set var="checked" value="checked "/>
-                                <c:set var="disabled" value="disabled "/>
-                            </c:when>
-                            <c:otherwise>
-                                <c:set var="checked" value=""/>
-                                <c:set var="disabled" value=""/>
-                            </c:otherwise>
-                        </c:choose>
-                        <c:choose>
-                            <c:when test="${cash.typeClosing.name.length() > 0 &&
+                    <c:choose>
+                        <c:when test="${cash.typeClosing.name.length() > 0 &&
                                             (cash.givenCash > 0 || cash.givenCash < 0)}">
-                                <c:set var="enabled" value="disabled "/>
-                            </c:when>
-                            <c:otherwise>
-                                <c:set var="enabled" value=""/>
-                            </c:otherwise>
-                        </c:choose>
-                        <input type="checkbox" title="Выбрать" ${checked} ${disabled} ${enabled}/>
-                    </td>
-                    <td hidden data-source="${cash.source}"></td>
-                </tr>
-            </c:forEach>
-            </tbody>
-        </table>
-    </div>
+                            <c:set var="enabled" value="disabled "/>
+                        </c:when>
+                        <c:otherwise>
+                            <c:set var="enabled" value=""/>
+                        </c:otherwise>
+                    </c:choose>
+                    <input type="checkbox" title="Выбрать" ${checked} ${disabled} ${enabled}/>
+                </td>
+                <td hidden data-source="${cash.source}"></td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
 </div>
 
 <div id="all-modal" class="modal fade" role="dialog">
@@ -320,7 +318,8 @@
                                 <form:select path="reUnderFacility" id="srcUnderFacilities" items="${underFacilities}"
                                              multiple="true"
                                              data-none-selected-text="Без подобъекта"
-                                             itemValue="id" itemLabel="name" class="form-control input-sm selectpicker"/>
+                                             itemValue="id" itemLabel="name"
+                                             class="form-control input-sm selectpicker"/>
                                 <div id="underFacilityErr" style="color: red; display: none">Необходимо выбрать
                                     подобъект
                                 </div>
@@ -360,7 +359,8 @@
                     </div>
                     <div class="row" id="real-date">
                         <div class="form-group col-md-12">
-                            <label class="col-md-3 control-lable" for="realDateGiven">Дата реальной передачи денег:</label>
+                            <label class="col-md-3 control-lable" for="realDateGiven">Дата реальной передачи
+                                денег:</label>
                             <div class="col-md-7">
                                 <form:input type="date" path="realDateGiven" id="realDateGiven"
                                             class="form-control input-sm"/>
@@ -400,7 +400,8 @@
                     </div>
                     <div class="row">
                         <div class="form-actions floatRight">
-                            <input id="action" type="submit" value="Реинвестировать" data-action="" class="btn btn-primary btn-sm"/> или <a
+                            <input id="action" type="submit" value="Реинвестировать" data-action=""
+                                   class="btn btn-primary btn-sm"/> или <a
                                 href="<c:url value='/#' />" id="cancel">Отмена</a>
                         </div>
                     </div>
@@ -627,17 +628,22 @@
 <script type="text/javascript"
         src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' />"></script>
 <script type="text/javascript"
-        src="<c:url value="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.0.4/popper.js" /> "></script>
-<script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min_old.js' />"></script>
-<script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
+        src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js' />"></script>
+<script type="text/javascript"
+        src="<c:url value='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js' />"></script>
+<script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js' />"></script>
 <script type="text/javascript"
         src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js' />"></script>
 <script type="text/javascript"
         src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js' />"></script>
+<script src="<c:url value='https://kit.fontawesome.com/2b84e2f58d.js' />" crossorigin="anonymous"></script>
+<script src="<c:url value='https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/progress.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/investor-annex.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/jsFunctions.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/investors-cash.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
-<script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/progress.js' />"></script>
 </body>
 </html>

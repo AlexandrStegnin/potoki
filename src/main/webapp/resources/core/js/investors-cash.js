@@ -98,7 +98,7 @@ jQuery(document).ready(function ($) {
         e.preventDefault();
         $('#pageNumber').val(parseInt($(this).attr('id')) - 1);
         let pageSize = 100;
-        if ($('#all').prop('checked')) pageSize = 0;
+        if ($('#all').prop('checked')) pageSize = 1;
         $('#pageSize').val(pageSize);
         $('#search-form').submit();
     });
@@ -177,7 +177,7 @@ jQuery(document).ready(function ($) {
         $('#action').val('Реинвестировать');
     });
 
-    $('#closeAll').find('> a').on('click', function (event) {
+    $('#closeAll').on('click', function (event) {
         let allModalForm = $('#all-modal');
         event.preventDefault();
         if (linkHasClass($('#closeAll'))) return false;
