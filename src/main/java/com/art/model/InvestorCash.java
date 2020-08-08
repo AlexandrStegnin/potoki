@@ -122,6 +122,8 @@ public class InvestorCash implements Serializable {
         this.sourceId = cash.getSourceId();
         this.source = cash.getId().toString();
         this.isDivide = cash.getIsDivide();
+        this.realDateGiven = null;
+        this.transactionUUID = null;
     }
 
     @Transient
