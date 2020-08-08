@@ -3,7 +3,7 @@ let filters = [];
 jQuery(document).ready(function ($) {
 
     blockActions();
-    blockDeleteLink();
+    // blockDeleteLink();
     getFiltersFromLS((window.location.pathname + '').split("/")[1]);
     $(document).on('mousedown', '#underFacilitiesList > option', function (e) {
         e.preventDefault();
@@ -276,43 +276,6 @@ jQuery(document).ready(function ($) {
                 }
             })
         }
-        $('#msg').html('Начинаем удаление денег...');
-        $('#msg-modal').modal('show');
-        connect();
-        deleteCash(cashIdList);
-    });
-
-    $('a#del').on('click', function (event) {
-        event.preventDefault();
-        if (linkHasClass($(this))) return false;
-        let cashIdList = [];
-        let sourceIdList = [];
-        cashIdList.push($(this).data('delete'));
-        sourceIdList.push($(this).parent().parent().parent().parent().parent().find('> td:last').data('source'));
-        if (sourceIdList.indexOf('|') >= 0) {
-            $.each(sourceIdList, function (ind, el) {
-                let tmp = el.split('|');
-                if (tmp.length > 0) {
-                    $.each(tmp, function (i, elem) {
-                        $('table#investorsCash').find('> tbody').find('> tr').each(function () {
-                            if ($(this).attr('id') === elem) {
-                                $(this).find(':checkbox').prop('disabled', false);
-                                $(this).find(':checkbox').prop('checked', false);
-                            }
-                        })
-                    })
-                }
-            });
-        } else {
-            $('table#investorsCash').find('> tbody').find('> tr').each(function () {
-                if ($(this).attr('id') === sourceIdList[0]) {
-                    $(this).find(':checkbox').prop('disabled', false);
-                    $(this).find(':checkbox').prop('checked', false);
-                }
-            })
-        }
-
-        $(this).closest('tr').remove();
         $('#msg').html('Начинаем удаление денег...');
         $('#msg-modal').modal('show');
         connect();
@@ -1494,22 +1457,12 @@ function blockUnblockDropdownMenus(blockUnblock, noDivide) {
     }
 }
 
-function blockDeleteLink() {
-    let current;
-    $('table#investorsCash tbody tr td:contains("Вывод")').each(function () {
-        current = $(this).closest('tr');
-        if ($(this).text() === 'Вывод') current.find('a#del').addClass('disabled').find('a#del').css('color', '').css('cursor-pointer', 'none');
-        else current.find('a#del').removeClass('disabled').addClass('active').find('a#del').css('cssText', 'color: #ff0000 !important');
-    });
-}
-
 function blockActions() {
     $('table#investorsCash').find('> tbody').find('> tr').each(function () {
         $(this).find(':checkbox:disabled').each(function () {
             $(this).closest('tr').find('#aDivide').addClass('disabled');
             $(this).closest('tr').find('#aDouble').addClass('disabled');
             $(this).closest('tr').find('#aEdit').addClass('disabled');
-            $(this).closest('tr').find('#del').addClass('disabled').find('a#del').css('color', '');
         })
     });
 }
