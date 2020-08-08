@@ -7,6 +7,7 @@ import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.dto.DividedCashDTO;
+import com.art.model.supporting.dto.ReinvestCashDTO;
 import com.art.model.supporting.enums.ShareType;
 import com.art.model.supporting.enums.TransactionType;
 import com.art.model.supporting.filters.CashFilter;
@@ -707,7 +708,7 @@ public class InvestorCashController {
 
         NewCashDetail finalNewCashDetail = newCashDetail;
 
-        Map<String, InvestorCash> map = groupInvestorsCash(investorCashes, searchSummary.getWhat());
+        Map<String, InvestorCash> map = investorCashService.groupInvestorsCash(investorCashes, searchSummary.getWhat());
         try {
             Set<InvestorCash> cashList = new HashSet<>();
             map.forEach((key, value) -> {
@@ -746,227 +747,76 @@ public class InvestorCashController {
     /**
      * Реинвестирование с продажи (сохранение)
      *
-     * @param searchSummary суммы для реинвестирования
+     * @param reinvestCashDTO DTO для реинвестирования
      * @return сообщение об успешном/не успешном реинвестировании
      */
-    @PostMapping(value = {"/saveReInvCash"}, produces = "application/json;charset=UTF-8")
+    @PostMapping(path = Location.INVESTOR_CASH_REINVEST_SAVE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
-    GenericResponse saveReInvCash(@RequestBody SearchSummary searchSummary) {
-        GenericResponse response = new GenericResponse();
-        List<InvestorCash> investorCashes = searchSummary.getInvestorCashList();
-        final Date[] dateClose = {null};
+    ApiResponse saveReInvCash(@RequestBody ReinvestCashDTO reinvestCashDTO) {
+        Long facilityToReinvestId = reinvestCashDTO.getFacilityToReinvestId();
+        Long underFacilityToReinvestId = reinvestCashDTO.getUnderFacilityToReinvestId();
+        int shareTypeId = reinvestCashDTO.getShareTypeId();
+        final Date dateClose = reinvestCashDTO.getDateClose();
+
+        List<Long> investorCashIdList = reinvestCashDTO.getInvestorCashIdList();
+        List<InvestorCash> oldCashList = investorCashService.findByIdIn(investorCashIdList);
+        List<InvestorCash> reinvestedCash = prepareReinvestedCash(oldCashList, facilityToReinvestId, underFacilityToReinvestId, shareTypeId, dateClose);
         final NewCashDetail newCashDetail = newCashDetailService.findByName("Реинвестирование с продажи (сохранение)");
         final TypeClosing typeClosing = typeClosingService.findByName("Реинвестирование");
-
-        final Map<String, InvestorCash> map = groupInvestorsCash(investorCashes, "");
+        final Map<String, InvestorCash> map = investorCashService.groupInvestorsCash(reinvestedCash, "");
 
         map.forEach((key, value) -> {
             value.setNewCashDetail(newCashDetail);
             value.setGivenCash(value.getGivenCash().setScale(2, RoundingMode.DOWN));
-            dateClose[0] = value.getDateGiven();
             investorCashService.create(value);
         });
 
-        List<InvestorCash> oldCash = investorCashService.findByIdIn(searchSummary.getReinvestIdList());
-        final Date finalDateClose = dateClose[0];
-        oldCash.forEach(f -> {
+        oldCashList.forEach(f -> {
             f.setIsReinvest(1);
-            f.setDateClosing(finalDateClose);
+            f.setDateClosing(dateClose);
             f.setTypeClosing(typeClosing);
             investorCashService.create(f);
         });
+        return new ApiResponse("Реинвестирование прошло успешно");
+    }
 
-        response.setMessage("Реинвестирование прошло успешно");
+    /**
+     * Подготовить список денег для реинвестирования
+     *
+     * @param oldCashList старый список денег
+     * @param facilityToReinvestId id объекта, куда реинвестируем
+     * @param underFacilityToReinvestId id подобъекта, куда реинвестируем
+     * @param shareTypeId id доли
+     * @param dateClose дата закрытия вложения
+     * @return новый список денег
+     */
+    private List<InvestorCash> prepareReinvestedCash(List<InvestorCash> oldCashList, Long facilityToReinvestId,
+                                                     Long underFacilityToReinvestId, int shareTypeId, Date dateClose) {
+        Facility facility = facilityService.findById(facilityToReinvestId);
+        UnderFacility underFacility = underFacilityService.findById(underFacilityToReinvestId);
+        ShareType shareType = ShareType.fromId(shareTypeId);
 
-        return response;
+        List<InvestorCash> newCashList = new ArrayList<>();
+        for (InvestorCash oldCash : oldCashList) {
+            InvestorCash newCash = new InvestorCash(oldCash);
+            newCash.setFacility(facility);
+            newCash.setUnderFacility(underFacility);
+            newCash.setShareType(shareType);
+            newCash.setSourceId(oldCash.getId());
+            newCash.setSourceFacility(oldCash.getFacility());
+            newCash.setSourceUnderFacility(oldCash.getUnderFacility());
+            newCash.setDateGiven(dateClose);
+            newCashList.add(newCash);
+        }
+        return newCashList;
     }
 
     @PostMapping(value = Location.INVESTOR_CASH_DIVIDE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
     ApiResponse saveDivideCash(@RequestBody DividedCashDTO dividedCashDTO) {
-        ApiResponse response = divideCash(dividedCashDTO);
+        ApiResponse response = investorCashService.divideCash(dividedCashDTO);
         sendStatus("OK");
         return response;
-    }
-
-    private ApiResponse divideCash(DividedCashDTO dividedCashDTO) {
-        // Получаем id сумм, которые надо разделить
-        List<Long> idsList = dividedCashDTO.getInvestorCashList();
-
-        // Получаем список денег по идентификаторам
-        List<InvestorCash> investorCashes = investorCashService.findByIdIn(idsList);
-
-        List<Long> remainingUnderFacilityList = dividedCashDTO.getExcludedUnderFacilitiesIdList();
-
-        // Получаем подобъект, куда надо разделить сумму
-        UnderFacility underFacility = underFacilityService.findById(
-                dividedCashDTO.getReUnderFacilityId());
-
-        // Получаем объект, в который надо разделить сумму
-        Facility facility = facilityService.findById(underFacility.getFacility().getId());
-
-        // Получаем список подобъектов объекта
-        List<UnderFacility> underFacilityList = underFacilityService.findByFacilityId(facility.getId());
-
-        List<Room> rooms = new ArrayList<>(0);
-
-        // Если в списке подобъектов присутствует подобъект, из которого должен состоять остаток суммы, заносим помещения
-        // этого подобъекта в список
-        underFacilityList.forEach(uf -> remainingUnderFacilityList.forEach(ruf -> {
-            if (uf.getId().equals(ruf)) {
-                rooms.addAll(uf.getRooms());
-            }
-        }));
-
-        // Вычисляем стоимость объекта, складывая стоимости помещений, из которых должен состоять остаток
-        BigDecimal coastFacility = rooms
-                .stream()
-                .map(Room::getCost)
-                .reduce(BigDecimal.ZERO, BigDecimal::add)
-                .setScale(2, BigDecimal.ROUND_CEILING);
-
-        // Вычисляем стоимость подобъекта, куда надо разделить сумму
-        BigDecimal coastUnderFacility = underFacility.getRooms().stream()
-                .map(Room::getCost)
-                .reduce(BigDecimal.ZERO, BigDecimal::add).setScale(2, BigDecimal.ROUND_CEILING);
-
-        // Вычисляем % для выделения доли
-        BigDecimal divided = coastUnderFacility.divide(coastFacility, 20, BigDecimal.ROUND_CEILING);
-        investorCashes = investorCashes
-                .stream()
-                .filter(f -> null != f.getGivenCash())
-                .collect(Collectors.toList());
-        int sumsCnt = investorCashes.size();
-        sendStatus("Начинаем разделять суммы");
-        final int[] counter = {0};
-        investorCashes.forEach(f -> {
-            counter[0]++;
-            sendStatus(String.format("Разделеляем %d из %d сумм", counter[0], sumsCnt));
-            BigDecimal invCash = f.getGivenCash();
-            BigDecimal sumInUnderFacility = divided.multiply(invCash);
-            BigDecimal sumRemainder = invCash.subtract(sumInUnderFacility);
-            f.setIsDivide(1);
-            InvestorCash cash = new InvestorCash();
-            cash.setSource(f.getId().toString());
-            cash.setGivenCash(sumInUnderFacility);
-            cash.setDateGiven(f.getDateGiven());
-            cash.setFacility(f.getFacility());
-            cash.setInvestor(f.getInvestor());
-            cash.setCashSource(f.getCashSource());
-            cash.setNewCashDetail(f.getNewCashDetail());
-            cash.setUnderFacility(underFacility);
-            cash.setDateClosing(null);
-            cash.setTypeClosing(null);
-            cash.setShareType(f.getShareType());
-            cash.setDateReport(f.getDateReport());
-            cash.setSourceFacility(f.getSourceFacility());
-            cash.setSourceUnderFacility(f.getSourceUnderFacility());
-            cash.setRoom(f.getRoom());
-            f.setGivenCash(sumRemainder);
-            if (f.getGivenCash().signum() == 0) {
-                f.setIsDivide(1);
-                f.setIsReinvest(1);
-                investorCashService.update(f);
-            } else {
-                investorCashService.create(f);
-            }
-
-            investorCashService.create(cash);
-        });
-        return new ApiResponse("Разделение сумм прошло успешно");
-    }
-
-    private GenericResponse divideCash(SearchSummary summary) {
-        // Получаем id сумм, которые надо разделить
-        GenericResponse response = new GenericResponse();
-        List<Long> idsList = summary.getInvestorCashList().stream().map(InvestorCash::getId).collect(Collectors.toList());
-
-        // Получаем список денег по идентификаторам
-        List<InvestorCash> investorCashes = investorCashService.findByIdIn(idsList);
-
-        List<UnderFacility> remainingUnderFacilityList = summary.getUnderFacilityList();
-
-        // Получаем подобъект, куда надо разделить сумму
-        UnderFacility underFacility = underFacilityService.findById(
-                summary.getReUnderFacility().getId());
-
-        // Получаем объект, в который надо разделить сумму
-        Facility facility = facilityService.findById(underFacility.getFacility().getId());
-
-        // Получаем список подобъектов объекта
-        List<UnderFacility> underFacilityList = underFacilityService.findByFacilityId(facility.getId());
-
-        List<Room> rooms = new ArrayList<>(0);
-
-        // Если в списке подобъектов присутствует подобъект, из которого должен состоять остаток суммы, заносим помещения
-        // этого подобъекта в список
-        underFacilityList.forEach(uf -> remainingUnderFacilityList.forEach(ruf -> {
-            if (uf.getId().equals(ruf.getId())) {
-                rooms.addAll(uf.getRooms());
-            }
-        }));
-
-        // Вычисляем стоимость объекта, складывая стоимости помещений, из которых должен состоять остаток
-        BigDecimal coastFacility = rooms
-                .stream()
-                .map(Room::getCost)
-                .reduce(BigDecimal.ZERO, BigDecimal::add)
-                .setScale(2, BigDecimal.ROUND_CEILING);
-
-        // Вычисляем стоимость подобъекта, куда надо разделить сумму
-        BigDecimal coastUnderFacility = underFacility.getRooms().stream()
-                .map(Room::getCost)
-                .reduce(BigDecimal.ZERO, BigDecimal::add).setScale(2, BigDecimal.ROUND_CEILING);
-
-        // Вычисляем % для выделения доли
-        BigDecimal divided = coastUnderFacility.divide(coastFacility, 20, BigDecimal.ROUND_CEILING);
-        investorCashes = investorCashes
-                .stream()
-                .filter(f -> null != f.getGivenCash())
-                .collect(Collectors.toList());
-        int sumsCnt = investorCashes.size();
-        sendStatus("Начинаем разделять суммы");
-        final int[] counter = {0};
-        investorCashes.forEach(f -> {
-            counter[0]++;
-            sendStatus(String.format("Разделеляем %d из %d сумм", counter[0], sumsCnt));
-            BigDecimal invCash = f.getGivenCash();
-            BigDecimal sumInUnderFacility = divided.multiply(invCash);
-            BigDecimal sumRemainder = invCash.subtract(sumInUnderFacility);
-            f.setIsDivide(1);
-            InvestorCash cash = new InvestorCash();
-            cash.setSource(f.getId().toString());
-            cash.setGivenCash(sumInUnderFacility);
-            cash.setDateGiven(f.getDateGiven());
-            cash.setFacility(f.getFacility());
-            cash.setInvestor(f.getInvestor());
-            cash.setCashSource(f.getCashSource());
-            cash.setNewCashDetail(f.getNewCashDetail());
-            cash.setUnderFacility(underFacility);
-            cash.setDateClosing(null);
-            cash.setTypeClosing(null);
-            cash.setShareType(f.getShareType());
-            cash.setDateReport(f.getDateReport());
-            cash.setSourceFacility(f.getSourceFacility());
-            cash.setSourceUnderFacility(f.getSourceUnderFacility());
-            cash.setRoom(f.getRoom());
-            f.setGivenCash(sumRemainder);
-            if (f.getGivenCash().signum() == 0) {
-                f.setIsDivide(1);
-                f.setIsReinvest(1);
-                investorCashService.update(f);
-            } else {
-                investorCashService.create(f);
-            }
-
-            investorCashService.create(cash);
-        });
-        response.setMessage("Разделение сумм прошло успешно");
-        return response;
-    }
-
-    private void sendStatus(String message) {
-        statusService.sendStatus(message);
     }
 
     @PostMapping(value = Location.INVESTOR_CASH_DIVIDE_MULTIPLE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -985,13 +835,18 @@ public class InvestorCashController {
             counter[0]++;
             sendStatus(String.format("Разделяем %d из %d подобъектов", counter[0], ufCount));
             dividedCashDTO.setReUnderFacilityId(reUnderFacility);
-            response[0] = divideCash(dividedCashDTO);
+            response[0] = investorCashService.divideCash(dividedCashDTO);
             underFacilityToCalculateShare.remove(reUnderFacility);
             dividedCashDTO.setReUnderFacilitiesIdList(underFacilityToCalculateShare);
         });
         sendStatus("OK");
         return response[0];
     }
+
+    private void sendStatus(String message) {
+        statusService.sendStatus(message);
+    }
+
 
     /**
      * Массовое закрытие сумм
@@ -1074,59 +929,6 @@ public class InvestorCashController {
 
         response.setMessage("Массовое закрытие прошло успешно.");
         return response;
-    }
-
-    private Map<String, InvestorCash> groupInvestorsCash(List<InvestorCash> cashList, String what) {
-        Map<String, InvestorCash> map = new HashMap<>(0);
-
-        cashList.forEach(ic -> {
-            InvestorCash keyMap;
-            if ("sale".equals(what)) {
-                keyMap = map.get(ic.getInvestor().getLogin() +
-                        ic.getSourceUnderFacility().getName());
-            } else {
-                keyMap = map.get(ic.getInvestor().getLogin() + ic.getSourceFacility().getName());
-            }
-
-            if (Objects.equals(null, keyMap)) {
-                if ("sale".equals(what)) {
-                    map.put(ic.getInvestor().getLogin() +
-                                    ic.getSourceUnderFacility().getName(),
-                            ic);
-                } else {
-                    map.put(ic.getInvestor().getLogin() + ic.getSourceFacility().getName(),
-                            ic);
-                }
-
-            } else {
-                InvestorCash cash = new InvestorCash();
-                cash.setGivenCash(ic.getGivenCash().add(keyMap.getGivenCash()));
-                cash.setSource(ic.getSource());
-                cash.setDateGiven(ic.getDateGiven());
-                cash.setFacility(ic.getFacility());
-                cash.setUnderFacility(ic.getUnderFacility());
-                cash.setInvestor(ic.getInvestor());
-                cash.setShareType(ic.getShareType());
-                cash.setDateReport(ic.getDateReport());
-                cash.setSourceFacility(ic.getSourceFacility());
-                cash.setSourceUnderFacility(ic.getSourceUnderFacility());
-                if (!Objects.equals(null, ic.getSource()) && !Objects.equals(null, keyMap.getSource())) {
-                    cash.setSource(ic.getSource() + "|" + keyMap.getSource());
-                }
-                if (!Objects.equals(null, ic.getSourceFlowsId()) && !Objects.equals(null, keyMap.getSourceFlowsId())) {
-                    cash.setSourceFlowsId(ic.getSourceFlowsId() + "|" + keyMap.getSourceFlowsId());
-                }
-                if ("sale".equals(what)) {
-                    map.put(ic.getInvestor().getLogin() +
-                            ic.getSourceUnderFacility().getName(), cash);
-                } else {
-                    map.put(ic.getInvestor().getLogin() + ic.getSourceFacility().getName(), cash);
-                }
-
-            }
-        });
-
-        return map;
     }
 
     @ModelAttribute("facilities")
