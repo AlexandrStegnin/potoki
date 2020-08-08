@@ -24,10 +24,7 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -450,6 +447,64 @@ public class InvestorCashService {
             create(cash);
         });
         return new ApiResponse("Разделение сумм прошло успешно");
+    }
+
+    /**
+     * Подготовить сгруппированный список денег, чтобы не плодить много сумм по объекту/подобъекту
+     *
+     * @param cashList список денен
+     * @param what признак реинвестирование с продажи или нет
+     * @return сгрупированный список денег
+     */
+    public Map<String, InvestorCash> groupInvestorsCash(List<InvestorCash> cashList, String what) {
+        Map<String, InvestorCash> map = new HashMap<>(0);
+        cashList.forEach(ic -> {
+            InvestorCash keyMap;
+            if ("sale".equals(what)) {
+                keyMap = map.get(ic.getInvestor().getLogin() +
+                        ic.getSourceUnderFacility().getName());
+            } else {
+                keyMap = map.get(ic.getInvestor().getLogin() + ic.getSourceFacility().getName());
+            }
+
+            if (keyMap == null) {
+                if ("sale".equals(what)) {
+                    map.put(ic.getInvestor().getLogin() +
+                                    ic.getSourceUnderFacility().getName(),
+                            ic);
+                } else {
+                    map.put(ic.getInvestor().getLogin() + ic.getSourceFacility().getName(),
+                            ic);
+                }
+
+            } else {
+                InvestorCash cash = new InvestorCash();
+                cash.setGivenCash(ic.getGivenCash().add(keyMap.getGivenCash()));
+                cash.setSource(ic.getSource());
+                cash.setDateGiven(ic.getDateGiven());
+                cash.setFacility(ic.getFacility());
+                cash.setUnderFacility(ic.getUnderFacility());
+                cash.setInvestor(ic.getInvestor());
+                cash.setShareType(ic.getShareType());
+                cash.setDateReport(ic.getDateReport());
+                cash.setSourceFacility(ic.getSourceFacility());
+                cash.setSourceUnderFacility(ic.getSourceUnderFacility());
+                if (ic.getSource() != null && keyMap.getSource() != null) {
+                    cash.setSource(ic.getSource() + "|" + keyMap.getSource());
+                }
+                if (ic.getSourceFlowsId() != null && keyMap.getSourceFlowsId() != null) {
+                    cash.setSourceFlowsId(ic.getSourceFlowsId() + "|" + keyMap.getSourceFlowsId());
+                }
+                if ("sale".equals(what)) {
+                    map.put(ic.getInvestor().getLogin() +
+                            ic.getSourceUnderFacility().getName(), cash);
+                } else {
+                    map.put(ic.getInvestor().getLogin() + ic.getSourceFacility().getName(), cash);
+                }
+
+            }
+        });
+        return map;
     }
 
     private void sendStatus(String message) {
