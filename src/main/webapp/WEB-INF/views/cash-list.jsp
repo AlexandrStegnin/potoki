@@ -110,11 +110,11 @@
     </div>
     <div class="d-flex flex-row justify-content-center" style="margin: 0 10px 10px 10px">
         <div class="p-2">
-            <button type="submit" id="bth-clear" class="btn btn-danger btn-sm">Сбросить фильтры</button>
+            <button type="submit" id="bth-clear" class="btn btn-danger input-sm">Сбросить фильтры</button>
         </div>
         <div class="p-2">
             <button data-table-id="investorCash" type="button" id="unblock_operations"
-                    class="btn btn-danger btn-sm">Разблокировать операции
+                    class="btn btn-danger input-sm">Разблокировать операции
             </button>
         </div>
         <sec:authorize access="isFullyAuthenticated()">
@@ -122,7 +122,7 @@
                 <div class="p-2">
                     <div class="dropdown pull-right" style="margin-right: 10px">
                         <button id="addActions" type="button" data-toggle="dropdown"
-                                class="btn btn-warning btn-sm dropdown-toggle pull-right">Деньги <span
+                                class="btn btn-warning input-sm dropdown-toggle pull-right">Деньги <span
                                 class="fas fa-list"></span></button>
                         <div class="dropdown-menu dropdown-menu-right" id="addGetCash">
                             <a class="dropdown-item" id="addCash" href="<c:url value='/investor-cash/create' />">Добавить
@@ -135,7 +135,7 @@
                 <div class="p-2">
                     <div class="dropdown pull-right" style="margin-right: 10px">
                         <button id="actions" type="button" data-toggle="dropdown"
-                                class="btn btn-success btn-sm dropdown-toggle pull-right">Действия <span
+                                class="btn btn-success input-sm dropdown-toggle pull-right">Действия <span
                                 class="fas fa-list"></span></button>
                         <div class="dropdown-menu" id="reinvest">
                             <a class="dropdown-item" id="reinvestAll" href="#">Массовое реинвестирование</a>
@@ -163,9 +163,9 @@
     </form:form>
 </div>
 <div class="container-fluid">
-    <table class="table table-striped w-auto table-hover" style="font-size: smaller; table-layout: fixed"
+    <table class="table table-striped w-auto table-hover table-sm" style="font-size: smaller; table-layout: fixed"
            id="investorsCash">
-        <thead>
+        <thead style="text-align: center">
         <tr>
             <th>Объект</th>
             <th>Подобъект</th>
@@ -176,19 +176,14 @@
             <th>Детали новых денег</th>
             <th>Дата закрытия вложения</th>
             <th>Вид закрытия вложения</th>
-            <th>Вид доли</th>
-            <th>Период расчёта</th>
-            <th>Объект источник</th>
-            <th>Подобъект источник</th>
-            <th>Помещение</th>
             <th>Из 1С</th>
             <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                 <th style="text-align: center">Действие</th>
             </sec:authorize>
-            <th><input type="checkbox" id="checkIt" value=""></th>
+            <th style="width: 30px"><input type="checkbox" id="checkIt" value=""></th>
         </tr>
         </thead>
-        <tbody>
+        <tbody style="text-align: center">
         <c:forEach items="${page.content}" var="cash">
             <tr id="${cash.id}">
                 <td data-facility-id="${cash.facility.id}">${cash.facility.name}</td>
@@ -204,11 +199,6 @@
                 <td data-cash-details-id="${cash.newCashDetail.id}">${cash.newCashDetail.name}</td>
                 <td data-date-closing="${cash.dateClosing.time}">${cash.getDateClosingToLocalDate()}</td>
                 <td data-type-closing-id="${cash.typeClosing.id}">${cash.typeClosing.name}</td>
-                <td data-share-kind-id="${cash.shareType.id}">${cash.shareType.title}</td>
-                <td data-date-report="${cash.dateReport.time}">${cash.getDateReportToLocalDate()}</td>
-                <td data-source-facility-id="${cash.sourceFacility.id}">${cash.sourceFacility.name}</td>
-                <td data-source-under-id="${cash.sourceUnderFacility.id}">${cash.sourceUnderFacility.name}</td>
-                <td data-room-id="${cash.room.id}">${cash.room.name}</td>
                 <c:set var="is1C" value="Да"/>
                 <c:if test="${empty cash.transactionUUID}">
                     <c:set var="is1C" value="Нет"/>
@@ -226,25 +216,17 @@
                 <sec:authorize access="isFullyAuthenticated()">
                     <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                         <td style="text-align: center">
-                            <div class="btn-group">
+                            <div class="dropdown pull-right" style="margin-right: 10px">
                                 <button type="button" data-toggle="dropdown"
-                                        class="btn btn-primary btn-sm dropdown-toggle"><span
-                                        class="glyphicon glyphicon-cog"></span></button>
-                                <ul class="dropdown-menu">
-                                    <li id="liEdit"><a id="aEdit" href="<c:url value='/edit-cash-${cash.id}' />"
-                                                       class="${isDisabledClass}">Изменить</a>
-                                    </li>
-                                    <li id="liDivide"><a id="aDivide"
-                                                         href="<c:url value='/double-cash-${cash.id}' />">Разделить</a>
-                                    </li>
-                                    <li id="liDouble"><a id="aDouble"
-                                                         href="<c:url value='/close-cash-${cash.id}' />">Закрыть</a>
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li id="liDelete"><a id="del" data-delete="${cash.id}"
-                                                         href="<c:url value='/#' />"
-                                                         style="color: #ff0000;">Удалить</a></li>
-                                </ul>
+                                        class="btn btn-success btn-sm dropdown-toggle pull-right"><span
+                                        class="fas fa-cog"></span></button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" id="aEdit" href="<c:url value='/edit-cash-${cash.id}' />">Изменить</a>
+                                    <a class="dropdown-item" id="aDivide" href="<c:url value='/double-cash-${cash.id}' />">Разделить</a>
+                                    <a class="dropdown-item" id="aDouble" href="<c:url value='/close-cash-${cash.id}' />">Закрыть</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" id="del" data-delete="${cash.id}" href="<c:url value='/#' />" style="color: #ff0000;">Удалить</a>
+                                </div>
                             </div>
                         </td>
                     </sec:authorize>
@@ -327,13 +309,13 @@
                         </div>
                     </div>
 
-                    <div class="row" id="shareKindNameRow">
+                    <div class="row" id="shareTypeNameRow">
                         <div class="form-group col-md-12">
                             <label class="col-md-3 control-lable" for="shareTypeName">Вид доли:</label>
                             <div class="col-md-7">
                                 <form:select path="shareType" id="shareTypeName" items="${shareTypes}" multiple="false"
                                              itemValue="id" itemLabel="title" class="form-control input-sm"/>
-                                <div id="shareKindErr" style="color: red; display: none">Необходимо выбрать вид доли
+                                <div id="shareTypeErr" style="color: red; display: none">Необходимо выбрать вид доли
                                 </div>
                             </div>
                         </div>
