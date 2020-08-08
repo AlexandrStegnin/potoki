@@ -760,7 +760,7 @@ public class InvestorCashController {
 
         List<Long> investorCashIdList = reinvestCashDTO.getInvestorCashIdList();
         List<InvestorCash> oldCashList = investorCashService.findByIdIn(investorCashIdList);
-        List<InvestorCash> reinvestedCash = prepareReinvestedCash(oldCashList, facilityToReinvestId, underFacilityToReinvestId, shareTypeId, dateClose);
+        List<InvestorCash> reinvestedCash = investorCashService.prepareCashToReinvest(oldCashList, facilityToReinvestId, underFacilityToReinvestId, shareTypeId, dateClose);
         final NewCashDetail newCashDetail = newCashDetailService.findByName("Реинвестирование с продажи (сохранение)");
         final TypeClosing typeClosing = typeClosingService.findByName("Реинвестирование");
         final Map<String, InvestorCash> map = investorCashService.groupInvestorsCash(reinvestedCash, "");
@@ -778,37 +778,6 @@ public class InvestorCashController {
             investorCashService.create(f);
         });
         return new ApiResponse("Реинвестирование прошло успешно");
-    }
-
-    /**
-     * Подготовить список денег для реинвестирования
-     *
-     * @param oldCashList старый список денег
-     * @param facilityToReinvestId id объекта, куда реинвестируем
-     * @param underFacilityToReinvestId id подобъекта, куда реинвестируем
-     * @param shareTypeId id доли
-     * @param dateClose дата закрытия вложения
-     * @return новый список денег
-     */
-    private List<InvestorCash> prepareReinvestedCash(List<InvestorCash> oldCashList, Long facilityToReinvestId,
-                                                     Long underFacilityToReinvestId, int shareTypeId, Date dateClose) {
-        Facility facility = facilityService.findById(facilityToReinvestId);
-        UnderFacility underFacility = underFacilityService.findById(underFacilityToReinvestId);
-        ShareType shareType = ShareType.fromId(shareTypeId);
-
-        List<InvestorCash> newCashList = new ArrayList<>();
-        for (InvestorCash oldCash : oldCashList) {
-            InvestorCash newCash = new InvestorCash(oldCash);
-            newCash.setFacility(facility);
-            newCash.setUnderFacility(underFacility);
-            newCash.setShareType(shareType);
-            newCash.setSourceId(oldCash.getId());
-            newCash.setSourceFacility(oldCash.getFacility());
-            newCash.setSourceUnderFacility(oldCash.getUnderFacility());
-            newCash.setDateGiven(dateClose);
-            newCashList.add(newCash);
-        }
-        return newCashList;
     }
 
     @PostMapping(value = Location.INVESTOR_CASH_DIVIDE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

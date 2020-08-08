@@ -5,6 +5,7 @@ import com.art.model.supporting.AfterCashing;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.dto.DividedCashDTO;
+import com.art.model.supporting.enums.ShareType;
 import com.art.model.supporting.filters.CashFilter;
 import com.art.repository.InvestorCashRepository;
 import com.art.specifications.InvestorCashSpecification;
@@ -505,6 +506,37 @@ public class InvestorCashService {
             }
         });
         return map;
+    }
+
+    /**
+     * Подготовить список денег для реинвестирования
+     *
+     * @param oldCashList старый список денег
+     * @param facilityToReinvestId id объекта, куда реинвестируем
+     * @param underFacilityToReinvestId id подобъекта, куда реинвестируем
+     * @param shareTypeId id доли
+     * @param dateClose дата закрытия вложения
+     * @return новый список денег
+     */
+    public List<InvestorCash> prepareCashToReinvest(List<InvestorCash> oldCashList, Long facilityToReinvestId,
+                                                     Long underFacilityToReinvestId, int shareTypeId, Date dateClose) {
+        Facility facility = facilityService.findById(facilityToReinvestId);
+        UnderFacility underFacility = underFacilityService.findById(underFacilityToReinvestId);
+        ShareType shareType = ShareType.fromId(shareTypeId);
+
+        List<InvestorCash> newCashList = new ArrayList<>();
+        for (InvestorCash oldCash : oldCashList) {
+            InvestorCash newCash = new InvestorCash(oldCash);
+            newCash.setFacility(facility);
+            newCash.setUnderFacility(underFacility);
+            newCash.setShareType(shareType);
+            newCash.setSourceId(oldCash.getId());
+            newCash.setSourceFacility(oldCash.getFacility());
+            newCash.setSourceUnderFacility(oldCash.getUnderFacility());
+            newCash.setDateGiven(dateClose);
+            newCashList.add(newCash);
+        }
+        return newCashList;
     }
 
     private void sendStatus(String message) {
