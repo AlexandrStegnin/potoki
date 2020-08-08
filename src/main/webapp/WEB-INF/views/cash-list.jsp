@@ -242,8 +242,7 @@
                         </c:otherwise>
                     </c:choose>
                     <c:choose>
-                        <c:when test="${cash.typeClosing.name.length() > 0 &&
-                                            (cash.givenCash > 0 || cash.givenCash < 0)}">
+                        <c:when test="${cash.typeClosing.name.length() > 0 && cash.givenCash != 0}">
                             <c:set var="enabled" value="disabled "/>
                         </c:when>
                         <c:otherwise>
