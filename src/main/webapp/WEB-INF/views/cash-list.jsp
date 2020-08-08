@@ -113,9 +113,8 @@
             <button type="submit" id="bth-clear" class="btn btn-danger input-sm">Сбросить фильтры</button>
         </div>
         <div class="p-2">
-            <button data-table-id="investorCash" type="button" id="unblock_operations"
-                    class="btn btn-danger input-sm">Разблокировать операции
-            </button>
+            <button data-table-id="investorsCash" type="button" id="unblock_operations"
+                    class="btn btn-danger input-sm">Разблокировать операции</button>
         </div>
         <sec:authorize access="isFullyAuthenticated()">
             <sec:authorize access="hasRole('ADMIN')">
