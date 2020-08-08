@@ -166,14 +166,15 @@ jQuery(document).ready(function ($) {
         });
         allModalForm.find('input#action').attr('data-action', 'reinvest');
         allModalForm.find('input#action').val('Реинвестировать')
-        $('#dateClosingRow').css('display', 'block');
-        $('#facilitiesRow').css('display', 'block');
-        $('#underFacilitiesListRow').css('display', 'none');
-        $('#shareKindNameRow').css('display', 'block');
-        $('#real-date').css('display', 'none');
-        $('#typeClosingRow').css('display', 'none');
-        $('#buyerRow').css('display', 'none');
-        $('#underFacilityRow').css('display', 'block');
+        $('#dateClosingRow').removeClass('d-none');
+        $('#facilitiesRow').removeClass('d-none');
+        $('#underFacilityRow').removeClass('d-none');
+        $('#shareTypeNameRow').removeClass('d-none');
+
+        $('#underFacilitiesListRow').addClass('d-none');
+        $('#real-date').addClass('d-none');
+        $('#typeClosingRow').addClass('d-none');
+        $('#buyerRow').addClass('d-none');
         $('#action').val('Реинвестировать');
     });
 
@@ -186,21 +187,21 @@ jQuery(document).ready(function ($) {
         });
         allModalForm.find('input#action').attr('data-action', 'close');
         allModalForm.find('input#action').val('Закрыть')
-        $('#dateClosingRow').css('display', 'block');
-        $('#real-date').css('display', 'block');
-        $('#typeClosingRow').css('display', 'block');
+        $('#dateClosingRow').removeClass('d-none');
+        $('#real-date').removeClass('d-none');
+        $('#typeClosingRow').removeClass('d-none');
         let typeClosing = $('#typeClosing').find('option:selected').text();
         if (typeClosing === 'Перепродажа доли') {
-            $('#buyerRow').css('display', 'block');
+            $('#buyerRow').removeClass('d-none');
         } else {
-            $('#buyerRow').css('display', 'none');
+            $('#buyerRow').addClass('d-none');
         }
-        $('#shareKindNameRow').css('display', 'none');
-        $('#facilitiesRow').css('display', 'none');
-        $('#underFacilityRow').css('display', 'none');
-        $('#underFacilitiesListRow').css('display', 'none');
+        $('#shareTypeNameRow').addClass('d-none');
+        $('#facilitiesRow').addClass('d-none');
+        $('#underFacilityRow').addClass('d-none');
+        $('#underFacilitiesListRow').addClass('d-none');
         $('#action').val('Закрыть');
-        allModalForm.find('#typeClosing').find('option:contains(Перепродажа доли)').remove()
+        allModalForm.find('#typeClosing').find('option:contains(Реинвестирование)').remove()
         allModalForm.find('#typeClosing').find('option:contains(Вывод_комиссия)').remove()
         $('#typeClosing').selectpicker('refresh')
     });
@@ -227,18 +228,22 @@ jQuery(document).ready(function ($) {
         });
         allModalForm.find('input#action').attr('data-action', 'divide')
         allModalForm.find('input#action').val('Разделить')
-        $('#underFacilityRow').css('display', 'block');
-        $('#underFacilitiesListRow').css('display', 'block')
-        $('#dateClosingRow').css('display', 'none');
-        $('#real-date').css('display', 'none');
-        $('#typeClosingRow').css('display', 'none');
-        $('#facilitiesRow').css('display', 'none');
-        $('#shareKindNameRow').css('display', 'none');
-        $('#buyerRow').css('display', 'none');
+        $('#underFacilityRow').removeClass('d-none');
+        $('#underFacilitiesListRow').removeClass('d-none');
+        $('#dateClosingRow').addClass('d-none');
+        $('#real-date').addClass('d-none');
+        $('#typeClosingRow').addClass('d-none');
+        $('#facilitiesRow').addClass('d-none');
+        $('#shareTypeNameRow').addClass('d-none');
+        $('#buyerRow').addClass('d-none');
     });
 
     $('#deleteAll').on('click', function (event) {
         event.preventDefault();
+        $('#confirm-delete').modal('show');
+    })
+    $('#accept-delete').on('click', function (event) {
+        $('#confirm-delete').modal('hide');
         if (linkHasClass($('#deleteAll'))) return false;
         let cashIdList = [];
         let sourceIdList = [];
@@ -312,11 +317,6 @@ jQuery(document).ready(function ($) {
         $('#msg-modal').modal('show');
         connect();
         deleteCash(cashIdList);
-    });
-
-    $(document).on('click', 'a#cancel', function (event) {
-        event.preventDefault();
-        $('#all-modal').modal("hide");
     });
 
     $(document).on('change', '#checkIt', function () {
@@ -561,11 +561,13 @@ jQuery(document).ready(function ($) {
 
     $(document).on("change", "#typeClosing", function () {
         if ($(this).find(':selected').text() === 'Перепродажа доли') {
-            $('#buyerRow').css('display', 'block');
+            $('#buyerRow').removeClass('d-none');
         } else {
-            $('#buyerRow').css('display', 'none');
+            $('#buyerRow').addClass('d-none');
         }
     });
+
+
 
     $(document).on("change", "#cashDetail", function () {
 

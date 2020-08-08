@@ -140,8 +140,8 @@
                         <div class="dropdown-menu" id="reinvest">
                             <a class="dropdown-item" id="reinvestAll" href="#">Массовое реинвестирование</a>
                             <a class="dropdown-item" id="divideAll" href="#">Массовое разделение сумм</a>
-                            <a class="dropdown-item" id="deleteAll" href="#">Удалить выбранные суммы</a>
                             <a class="dropdown-item" id="closeAll" href="#">Закрыть выбранные суммы</a>
+                            <a class="dropdown-item" id="deleteAll" href="#" style="color: red">Удалить выбранные суммы</a>
                         </div>
                     </div>
                 </div>
@@ -261,7 +261,7 @@
 </div>
 
 <div id="all-modal" class="modal fade" role="dialog">
-    <div class="modal-dialog" style="width: 90%">
+    <div class="modal-dialog modal-lg" style="width: 90%">
         <div class="modal-content" id="content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -269,34 +269,27 @@
             </div>
             <div class="modal-body">
                 <form:form method="POST" modelAttribute="searchSummary" class="form-horizontal" id="save-cash">
-                    <div class="row" id="dateClosingRow">
-                        <div class="form-group col-md-12">
-                            <label class="col-md-3 control-lable" for="dateClose">Дата закрытия:</label>
-                            <div class="col-md-7">
+                        <div class="form-group row" id="dateClosingRow">
+                            <label class="col-md-3 col-form-label" for="dateClose">Дата закрытия:</label>
+                            <div class="col-md-9">
                                 <form:input type="date" path="dateClose" id="dateClose" class="form-control input-sm"/>
                                 <div id="dateCloseErr" style="color: red; display: none">Необходимо выбрать дату
                                     вложения
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row" id="facilitiesRow">
-                        <div class="form-group col-md-12">
-                            <label class="col-md-3 control-lable" for="srcFacilities">Объект:</label>
-                            <div class="col-md-7">
+                        <div class="form-group row" id="facilitiesRow">
+                            <label class="col-md-3 col-form-label" for="srcFacilities">Объект:</label>
+                            <div class="col-md-9">
                                 <form:select path="reFacility" id="srcFacilities" items="${facilities}" multiple="false"
                                              itemValue="id" itemLabel="name" class="selectpicker form-control input-sm"
                                              data-live-search="true"/>
                                 <div id="facilityErr" style="color: red; display: none">Необходимо выбрать объект</div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row" id="underFacilityRow">
-                        <div class="form-group col-md-12">
-                            <label class="col-md-3 control-lable" for="srcUnderFacilities">Подобъект:</label>
-                            <div class="col-md-7">
+                        <div class="form-group row" id="underFacilityRow">
+                            <label class="col-md-3 col-form-label" for="srcUnderFacilities">Подобъект:</label>
+                            <div class="col-md-9">
                                 <form:select path="reUnderFacility" id="srcUnderFacilities" items="${underFacilities}"
                                              multiple="true"
                                              data-none-selected-text="Без подобъекта"
@@ -307,25 +300,19 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row" id="shareTypeNameRow">
-                        <div class="form-group col-md-12">
-                            <label class="col-md-3 control-lable" for="shareTypeName">Вид доли:</label>
-                            <div class="col-md-7">
+                        <div class="form-group row" id="shareTypeNameRow">
+                            <label class="col-md-3 col-form-label" for="shareTypeName">Вид доли:</label>
+                            <div class="col-md-9">
                                 <form:select path="shareType" id="shareTypeName" items="${shareTypes}" multiple="false"
                                              itemValue="id" itemLabel="title" class="form-control input-sm"/>
                                 <div id="shareTypeErr" style="color: red; display: none">Необходимо выбрать вид доли
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row" id="underFacilitiesListRow">
-                        <div class="form-group col-md-12">
-                            <label class="col-md-3 control-lable" for="underFacilitiesList">Из каких подобъектов состоит
+                        <div class="form-group row" id="underFacilitiesListRow">
+                            <label class="col-md-3 col-form-label" for="underFacilitiesList">Из каких подобъектов состоит
                                 остаток:</label>
-                            <div class="col-md-7">
+                            <div class="col-md-9">
                                 <form:select path="underFacilityList" id="underFacilitiesList"
                                              items="${underFacilitiesList}"
                                              itemValue="id" itemLabel="name" class="form-control input-sm selectpicker"
@@ -338,12 +325,10 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row" id="real-date">
-                        <div class="form-group col-md-12">
-                            <label class="col-md-3 control-lable" for="realDateGiven">Дата реальной передачи
+                        <div class="form-group row" id="real-date">
+                            <label class="col-md-3 col-form-label" for="realDateGiven">Дата реальной передачи
                                 денег:</label>
-                            <div class="col-md-7">
+                            <div class="col-md-9">
                                 <form:input type="date" path="realDateGiven" id="realDateGiven"
                                             class="form-control input-sm"/>
                                 <div id="dateCloseErr" style="color: red; display: none">Необходимо выбрать дату
@@ -351,12 +336,9 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row" id="typeClosingRow">
-                        <div class="form-group col-md-12">
-                            <label class="col-md-3 control-lable" for="typeClosing">Вид закрытия:</label>
-                            <div class="col-md-7">
+                        <div class="form-group row" id="typeClosingRow">
+                            <label class="col-md-3 col-form-label" for="typeClosing">Вид закрытия:</label>
+                            <div class="col-md-9">
                                 <form:select path="typeClosingInvest" id="typeClosing" items="${typeClosingInvest}"
                                              multiple="false"
                                              itemValue="id" itemLabel="name"
@@ -366,28 +348,42 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row" id="buyerRow" style="display: none">
-                        <div class="form-group col-md-12">
-                            <label class="col-md-3 control-lable" for="buyer">Инвестор покупатель:</label>
-                            <div class="col-md-7">
+                        <div class="form-group row" id="buyerRow">
+                            <label class="col-md-3 col-form-label" for="buyer">Инвестор покупатель:</label>
+                            <div class="col-md-9">
                                 <form:select path="user" id="buyer" items="${investors}" multiple="false"
-                                             itemValue="id" itemLabel="login" class="form-control input-sm"/>
+                                             itemValue="id" itemLabel="login" class="form-control input-sm selectpicker"
+                                data-live-search="true"/>
                                 <div id="buyerErr" style="color: red; display: none">Необходимо выбрать инвестора
                                     покупателя
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-actions floatRight">
-                            <input id="action" type="submit" value="Реинвестировать" data-action=""
-                                   class="btn btn-primary btn-sm"/> или <a
-                                href="<c:url value='/#' />" id="cancel">Отмена</a>
-                        </div>
-                    </div>
                 </form:form>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-primary" data-action="" id="action" />
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="confirm-delete">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Удаление сумм</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Вы действительно хотите удалить выбранные суммы?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="accept-delete">Да</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
             </div>
         </div>
     </div>
