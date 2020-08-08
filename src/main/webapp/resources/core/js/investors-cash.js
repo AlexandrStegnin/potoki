@@ -200,6 +200,9 @@ jQuery(document).ready(function ($) {
         $('#underFacilityRow').css('display', 'none');
         $('#underFacilitiesListRow').css('display', 'none');
         $('#action').val('Закрыть');
+        allModalForm.find('#typeClosing').find('option:contains(Перепродажа доли)').remove()
+        allModalForm.find('#typeClosing').find('option:contains(Вывод_комиссия)').remove()
+        $('#typeClosing').selectpicker('refresh')
     });
 
 

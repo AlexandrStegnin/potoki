@@ -360,7 +360,7 @@
                                 <form:select path="typeClosingInvest" id="typeClosing" items="${typeClosingInvest}"
                                              multiple="false"
                                              itemValue="id" itemLabel="name"
-                                             class="form-control input-sm"/>
+                                             class="form-control input-sm selectpicker"/>
                                 <div id="typeClosingErr" style="color: red; display: none">Необходимо выбрать вид
                                     закрытия
                                 </div>
