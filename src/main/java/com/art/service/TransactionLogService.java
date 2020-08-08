@@ -5,6 +5,7 @@ import com.art.model.supporting.dto.InvestorCashDTO;
 import com.art.model.supporting.dto.TransactionLogDTO;
 import com.art.model.supporting.enums.TransactionType;
 import com.art.model.supporting.filters.TxLogFilter;
+import com.art.repository.InvestorCashRepository;
 import com.art.repository.TransactionLogRepository;
 import com.art.specifications.TransactionLogSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class TransactionLogService {
 
     private final InvestorCashLogService investorCashLogService;
 
-    private final InvestorCashService investorCashService;
+    private final InvestorCashRepository investorCashRepository;
 
     private final InvestorsFlowsSaleService investorsFlowsSaleService;
 
@@ -39,13 +40,13 @@ public class TransactionLogService {
     public TransactionLogService(TransactionLogSpecification specification,
                                  TransactionLogRepository transactionLogRepository,
                                  InvestorCashLogService investorCashLogService,
-                                 InvestorCashService investorCashService,
+                                 InvestorCashRepository investorCashRepository,
                                  InvestorsFlowsSaleService investorsFlowsSaleService,
                                  InvestorsFlowsService investorsFlowsService) {
         this.specification = specification;
         this.transactionLogRepository = transactionLogRepository;
         this.investorCashLogService = investorCashLogService;
-        this.investorCashService = investorCashService;
+        this.investorCashRepository = investorCashRepository;
         this.investorsFlowsSaleService = investorsFlowsSaleService;
         this.investorsFlowsService = investorsFlowsService;
     }
@@ -260,7 +261,7 @@ public class TransactionLogService {
         try {
             cashes.forEach(cash -> {
                 investorCashLogService.delete(cash);
-                investorCashService.deleteById(cash.getId());
+                investorCashRepository.deleteById(cash.getId());
             });
             transactionLogRepository.delete(log);
             return "Откат сумм прошёл успешно";
@@ -279,7 +280,7 @@ public class TransactionLogService {
                     if (cash.getId().longValue() == cashLog.getCashId()) {
                         mergeCash(cash, cashLog);
                         investorCashLogService.delete(cashLog);
-                        investorCashService.update(cash);
+                        investorCashRepository.saveAndFlush(cash);
                     }
                 });
             });
@@ -302,11 +303,11 @@ public class TransactionLogService {
                     cashToDelete.remove(cash);
                     mergeCash(cash, cashLog);
                     investorCashLogService.delete(cashLog);
-                    investorCashService.update(cash);
+                    investorCashRepository.saveAndFlush(cash);
                 }
             }));
 
-            cashToDelete.forEach(cash -> investorCashService.deleteById(cash.getId()));
+            cashToDelete.forEach(cash -> investorCashRepository.deleteById(cash.getId()));
 
             unblockTransactions(log.getId());
             transactionLogRepository.delete(log);
@@ -331,7 +332,7 @@ public class TransactionLogService {
                 .collect(Collectors.toList());
         List<InvestorsFlowsSale> flowsSales = investorsFlowsSaleService.findByIdIn(flowsCashIdList);
         try {
-            cashes.forEach(investorCashService::delete);
+            cashes.forEach(investorCashRepository::delete);
             flowsSales.forEach(flowSale -> {
                 flowSale.setIsReinvest(0);
                 investorsFlowsSaleService.update(flowSale);
@@ -354,7 +355,7 @@ public class TransactionLogService {
                 .collect(Collectors.toList());
         List<InvestorsFlows> flowsRent = investorsFlowsService.findByIdIn(flowsCashIdList);
         try {
-            cashes.forEach(investorCashService::delete);
+            cashes.forEach(investorCashRepository::delete);
             flowsRent.forEach(flowRent -> {
                 flowRent.setIsReinvest(0);
                 investorsFlowsService.update(flowRent);
