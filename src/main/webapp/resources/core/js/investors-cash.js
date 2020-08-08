@@ -175,7 +175,6 @@ jQuery(document).ready(function ($) {
         $('#real-date').addClass('d-none');
         $('#typeClosingRow').addClass('d-none');
         $('#buyerRow').addClass('d-none');
-        $('#action').val('Реинвестировать');
     });
 
     $('#closeAll').on('click', function (event) {
@@ -200,7 +199,6 @@ jQuery(document).ready(function ($) {
         $('#facilitiesRow').addClass('d-none');
         $('#underFacilityRow').addClass('d-none');
         $('#underFacilitiesListRow').addClass('d-none');
-        $('#action').val('Закрыть');
         allModalForm.find('#typeClosing').find('option:contains(Реинвестирование)').remove()
         allModalForm.find('#typeClosing').find('option:contains(Вывод_комиссия)').remove()
         $('#typeClosing').selectpicker('refresh')
@@ -310,7 +308,7 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    $(document).on('submit', '#save-cash', function (event) {
+    $('#action').on('click', function (event) {
         event.preventDefault();
         let action = $('input#action').attr('data-action');
         switch (action) {
@@ -1373,14 +1371,6 @@ function prepareCloseCash() {
 
     let dateClosingInvest = new Date($('#dateClose').val()).getTime();
     let realDateGiven = new Date($('#realDateGiven').val()).getTime();
-    let typeClosingInvests = $('#typeClosing');
-    let typeClosingInvest = {
-        id: typeClosingInvests.find(':selected').val(),
-        name: typeClosingInvests.find(':selected').text()
-    };
-    if (typeClosingInvest.id === '0') {
-        typeClosingInvest = null;
-    }
 
     let cashIdList = [];
     $('table#investorsCash').find('> tbody').find('> tr').each(function () {
@@ -1395,11 +1385,11 @@ function prepareCloseCash() {
 function closeCash(cashIdList, invBuyer, dateClosingInvest, what, realDateGiven) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
-    let search = ({
-        "cashIdList": cashIdList,
-        "user": invBuyer,
+    let closeCashDTO = ({
+        "investorCashIdList": cashIdList,
+        "investorBuyerId": invBuyer,
         "dateReinvest": dateClosingInvest,
-        "what": what,
+        "operation": what,
         "realDateGiven": realDateGiven
     });
 
@@ -1408,15 +1398,14 @@ function closeCash(cashIdList, invBuyer, dateClosingInvest, what, realDateGiven)
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: "/closeCash",
-        data: JSON.stringify(search),
+        url: "close",
+        data: JSON.stringify(closeCashDTO),
         dataType: 'json',
         timeout: 100000,
         beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         },
         success: function (data) {
-            $('#closeModal').modal('hide');
             closeLoader();
             showPopup(data.message);
         },
