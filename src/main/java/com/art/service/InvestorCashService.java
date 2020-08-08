@@ -2,7 +2,9 @@ package com.art.service;
 
 import com.art.model.*;
 import com.art.model.supporting.AfterCashing;
+import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.SearchSummary;
+import com.art.model.supporting.dto.DividedCashDTO;
 import com.art.model.supporting.filters.CashFilter;
 import com.art.repository.InvestorCashRepository;
 import com.art.specifications.InvestorCashSpecification;
@@ -27,6 +29,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -38,17 +41,21 @@ public class InvestorCashService {
     private final TypeClosingService typeClosingService;
     private final AfterCashingService afterCashingService;
     private final UnderFacilityService underFacilityService;
+    private final FacilityService facilityService;
+    private final StatusService statusService;
 
     @Autowired
-    public InvestorCashService(InvestorCashRepository investorCashRepository,
-                               InvestorCashSpecification specification,
-                               TypeClosingService typeClosingService,
-                               AfterCashingService afterCashingService, UnderFacilityService underFacilityService) {
+    public InvestorCashService(InvestorCashRepository investorCashRepository, InvestorCashSpecification specification,
+                               TypeClosingService typeClosingService, AfterCashingService afterCashingService,
+                               UnderFacilityService underFacilityService, FacilityService facilityService,
+                               StatusService statusService) {
         this.investorCashRepository = investorCashRepository;
         this.specification = specification;
         this.typeClosingService = typeClosingService;
         this.afterCashingService = afterCashingService;
         this.underFacilityService = underFacilityService;
+        this.facilityService = facilityService;
+        this.statusService = statusService;
     }
 
     public List<InvestorCash> findAll() {
@@ -351,5 +358,101 @@ public class InvestorCashService {
     public List<InvestorCash> getInvestedMoney() {
         TypeClosing typeClosing = typeClosingService.findByName(RESALE_SHARE);
         return investorCashRepository.findAll(specification.getInvestedMoney(typeClosing.getId()));
+    }
+
+    /**
+     * Разделение денег
+     *
+     * @param dividedCashDTO DTO для деления
+     * @return ответ
+     */
+    public ApiResponse divideCash(DividedCashDTO dividedCashDTO) {
+        // Получаем id сумм, которые надо разделить
+        List<Long> idsList = dividedCashDTO.getInvestorCashList();
+
+        // Получаем список денег по идентификаторам
+        List<InvestorCash> investorCashes = findByIdIn(idsList);
+
+        List<Long> remainingUnderFacilityList = dividedCashDTO.getExcludedUnderFacilitiesIdList();
+
+        // Получаем подобъект, куда надо разделить сумму
+        UnderFacility underFacility = underFacilityService.findById(
+                dividedCashDTO.getReUnderFacilityId());
+
+        // Получаем объект, в который надо разделить сумму
+        Facility facility = facilityService.findById(underFacility.getFacility().getId());
+
+        // Получаем список подобъектов объекта
+        List<UnderFacility> underFacilityList = underFacilityService.findByFacilityId(facility.getId());
+
+        List<Room> rooms = new ArrayList<>(0);
+
+        // Если в списке подобъектов присутствует подобъект, из которого должен состоять остаток суммы, заносим помещения
+        // этого подобъекта в список
+        underFacilityList.forEach(uf -> remainingUnderFacilityList.forEach(ruf -> {
+            if (uf.getId().equals(ruf)) {
+                rooms.addAll(uf.getRooms());
+            }
+        }));
+
+        // Вычисляем стоимость объекта, складывая стоимости помещений, из которых должен состоять остаток
+        BigDecimal coastFacility = rooms
+                .stream()
+                .map(Room::getCost)
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .setScale(2, BigDecimal.ROUND_CEILING);
+
+        // Вычисляем стоимость подобъекта, куда надо разделить сумму
+        BigDecimal coastUnderFacility = underFacility.getRooms().stream()
+                .map(Room::getCost)
+                .reduce(BigDecimal.ZERO, BigDecimal::add).setScale(2, BigDecimal.ROUND_CEILING);
+
+        // Вычисляем % для выделения доли
+        BigDecimal divided = coastUnderFacility.divide(coastFacility, 20, BigDecimal.ROUND_CEILING);
+        investorCashes = investorCashes
+                .stream()
+                .filter(f -> null != f.getGivenCash())
+                .collect(Collectors.toList());
+        int sumsCnt = investorCashes.size();
+        sendStatus("Начинаем разделять суммы");
+        final int[] counter = {0};
+        investorCashes.forEach(f -> {
+            counter[0]++;
+            sendStatus(String.format("Разделеляем %d из %d сумм", counter[0], sumsCnt));
+            BigDecimal invCash = f.getGivenCash();
+            BigDecimal sumInUnderFacility = divided.multiply(invCash);
+            BigDecimal sumRemainder = invCash.subtract(sumInUnderFacility);
+            f.setIsDivide(1);
+            InvestorCash cash = new InvestorCash();
+            cash.setSource(f.getId().toString());
+            cash.setGivenCash(sumInUnderFacility);
+            cash.setDateGiven(f.getDateGiven());
+            cash.setFacility(f.getFacility());
+            cash.setInvestor(f.getInvestor());
+            cash.setCashSource(f.getCashSource());
+            cash.setNewCashDetail(f.getNewCashDetail());
+            cash.setUnderFacility(underFacility);
+            cash.setDateClosing(null);
+            cash.setTypeClosing(null);
+            cash.setShareType(f.getShareType());
+            cash.setDateReport(f.getDateReport());
+            cash.setSourceFacility(f.getSourceFacility());
+            cash.setSourceUnderFacility(f.getSourceUnderFacility());
+            cash.setRoom(f.getRoom());
+            f.setGivenCash(sumRemainder);
+            if (f.getGivenCash().signum() == 0) {
+                f.setIsDivide(1);
+                f.setIsReinvest(1);
+                update(f);
+            } else {
+                create(f);
+            }
+            create(cash);
+        });
+        return new ApiResponse("Разделение сумм прошло успешно");
+    }
+
+    private void sendStatus(String message) {
+        statusService.sendStatus(message);
     }
 }
