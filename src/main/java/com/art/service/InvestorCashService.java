@@ -4,6 +4,7 @@ import com.art.model.*;
 import com.art.model.supporting.AfterCashing;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.SearchSummary;
+import com.art.model.supporting.dto.CloseCashDTO;
 import com.art.model.supporting.dto.DividedCashDTO;
 import com.art.model.supporting.dto.ReinvestCashDTO;
 import com.art.model.supporting.enums.ShareType;
@@ -44,12 +45,15 @@ public class InvestorCashService {
     private final FacilityService facilityService;
     private final StatusService statusService;
     private final NewCashDetailService newCashDetailService;
+    private final UserService userService;
+    private final TransactionLogService transactionLogService;
 
     @Autowired
     public InvestorCashService(InvestorCashRepository investorCashRepository, InvestorCashSpecification specification,
                                TypeClosingService typeClosingService, AfterCashingService afterCashingService,
                                UnderFacilityService underFacilityService, FacilityService facilityService,
-                               StatusService statusService, NewCashDetailService newCashDetailService) {
+                               StatusService statusService, NewCashDetailService newCashDetailService, UserService userService,
+                               TransactionLogService transactionLogService) {
         this.investorCashRepository = investorCashRepository;
         this.specification = specification;
         this.typeClosingService = typeClosingService;
@@ -58,6 +62,8 @@ public class InvestorCashService {
         this.facilityService = facilityService;
         this.statusService = statusService;
         this.newCashDetailService = newCashDetailService;
+        this.userService = userService;
+        this.transactionLogService = transactionLogService;
     }
 
     public List<InvestorCash> findAll() {
@@ -575,6 +581,83 @@ public class InvestorCashService {
             create(f);
         });
         return new ApiResponse("Реинвестирование прошло успешно");
+    }
+
+    /**
+     * Закрыть суммы по инвесторам (массовое)
+     *
+     * @param closeCashDTO DTO для закрытия сумм
+     * @return сообщение
+     */
+    public ApiResponse close(CloseCashDTO closeCashDTO) {
+        AppUser invBuyer = null;
+        if (closeCashDTO.getInvestorBuyerId() != null) {
+            invBuyer = userService.findById(closeCashDTO.getInvestorBuyerId());
+        }
+
+        List<InvestorCash> cashList = new ArrayList<>(0);
+        closeCashDTO.getInvestorCashIdList().forEach(id -> cashList.add(findById(id)));
+
+        Date dateClose = closeCashDTO.getDateReinvest();
+        Date realDateGiven = closeCashDTO.getRealDateGiven();
+        // список сумм, которые закрываем для вывода
+        Set<InvestorCash> closeCashes = new HashSet<>();
+        // список сумм, которые закрываем для перепродажи доли
+        Set<InvestorCash> oldCashes = new HashSet<>();
+        // список сумм, которые получатся на выходе
+        Set<InvestorCash> newCashes = new HashSet<>();
+
+        for (InvestorCash c : cashList) {
+            if (invBuyer != null) { // Перепродажа доли
+                TypeClosing closingInvest = typeClosingService.findByName("Перепродажа доли");
+                NewCashDetail newCashDetail = newCashDetailService.findByName("Перепокупка доли");
+                InvestorCash copyCash = new InvestorCash(c);
+                InvestorCash newInvestorCash = new InvestorCash(c);
+
+                copyCash.setInvestor(invBuyer);
+                copyCash.setDateGiven(dateClose);
+                copyCash.setSourceId(c.getId());
+                copyCash.setCashSource(null);
+                copyCash.setSource(null);
+                copyCash.setNewCashDetail(newCashDetail);
+                copyCash.setRealDateGiven(realDateGiven);
+
+                copyCash = createNew(copyCash);
+
+                newInvestorCash.setCashSource(null);
+                newInvestorCash.setGivenCash(newInvestorCash.getGivenCash().negate());
+                newInvestorCash.setSourceId(c.getId());
+                newInvestorCash.setSource(null);
+                newInvestorCash.setDateGiven(dateClose);
+                newInvestorCash.setDateClosing(dateClose);
+                newInvestorCash.setTypeClosing(closingInvest);
+
+                createNew(newInvestorCash);
+
+                c.setDateClosing(dateClose);
+                c.setTypeClosing(closingInvest);
+                update(c);
+                oldCashes.add(c);
+                newCashes.add(c);
+                newCashes.add(copyCash);
+                newCashes.add(newInvestorCash);
+            } else {
+                TypeClosing cashing = typeClosingService.findByName("Вывод");
+                InvestorCash cashForTx = new InvestorCash(c);
+                cashForTx.setId(c.getId());
+                c.setDateClosing(dateClose);
+                c.setTypeClosing(cashing);
+                c.setRealDateGiven(realDateGiven);
+                update(c);
+                closeCashes.add(cashForTx);
+            }
+        }
+        if (closeCashes.size() > 0) {
+            transactionLogService.close(closeCashes);
+        } else {
+            transactionLogService.resale(oldCashes, newCashes);
+        }
+        return new ApiResponse("Массовое закрытие прошло успешно.");
     }
 
     private void sendStatus(String message) {

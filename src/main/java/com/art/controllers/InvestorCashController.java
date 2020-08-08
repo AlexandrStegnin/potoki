@@ -6,6 +6,7 @@ import com.art.model.supporting.AfterCashing;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
+import com.art.model.supporting.dto.CloseCashDTO;
 import com.art.model.supporting.dto.DividedCashDTO;
 import com.art.model.supporting.dto.ReinvestCashDTO;
 import com.art.model.supporting.enums.ShareType;
@@ -796,84 +797,13 @@ public class InvestorCashController {
     /**
      * Массовое закрытие сумм
      *
-     * @param searchSummary список сумм для закрытия
+     * @param closeCashDTO DTO для закрытия сумм
      * @return сообщение об успешном/не успешном массовом закрытии
      */
-    @PostMapping(value = {"/closeCash"}, produces = "application/json;charset=UTF-8")
+    @PostMapping(path = Location.INVESTOR_CASH_CLOSE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
-    GenericResponse closeCash(@RequestBody SearchSummary searchSummary) {
-        AppUser invBuyer = null;
-        if (null != searchSummary.getUser()) {
-            invBuyer = userService.findById(searchSummary.getUser().getId());
-        }
-
-        List<InvestorCash> cashList = new ArrayList<>(0);
-        searchSummary.getCashIdList().forEach(id -> cashList.add(investorCashService.findById(id)));
-
-        GenericResponse response = new GenericResponse();
-
-        Date dateClose = searchSummary.getDateReinvest();
-        Date realDateGiven = searchSummary.getRealDateGiven();
-        AppUser finalInvBuyer = invBuyer;
-        // список сумм, которые закрываем для вывода
-        Set<InvestorCash> closeCashes = new HashSet<>();
-        // список сумм, которые закрываем для перепродажи доли
-        Set<InvestorCash> oldCashes = new HashSet<>();
-        // список сумм, которые получатся на выходе
-        Set<InvestorCash> newCashes = new HashSet<>();
-        TypeClosing closingInvest = typeClosingService.findByName("Перепродажа доли");
-        NewCashDetail newCashDetail = newCashDetailService.findByName("Перепокупка доли");
-
-        cashList.forEach(c -> {
-            if (null != finalInvBuyer) { // Перепродажа доли
-                InvestorCash copyCash = new InvestorCash(c);
-                InvestorCash newInvestorCash = new InvestorCash(c);
-
-                copyCash.setInvestor(finalInvBuyer);
-                copyCash.setDateGiven(dateClose);
-                copyCash.setSourceId(c.getId());
-                copyCash.setCashSource(null);
-                copyCash.setSource(null);
-                copyCash.setNewCashDetail(newCashDetail);
-                copyCash.setRealDateGiven(realDateGiven);
-
-                copyCash = investorCashService.createNew(copyCash);
-
-                newInvestorCash.setCashSource(null);
-                newInvestorCash.setGivenCash(newInvestorCash.getGivenCash().negate());
-                newInvestorCash.setSourceId(c.getId());
-                newInvestorCash.setSource(null);
-                newInvestorCash.setDateGiven(dateClose);
-                newInvestorCash.setDateClosing(dateClose);
-                newInvestorCash.setTypeClosing(closingInvest);
-
-                investorCashService.createNew(newInvestorCash);
-
-                c.setDateClosing(dateClose);
-                c.setTypeClosing(closingInvest);
-                investorCashService.update(c);
-                oldCashes.add(c);
-                newCashes.add(c);
-                newCashes.add(copyCash);
-                newCashes.add(newInvestorCash);
-            } else {
-                InvestorCash cashForTx = new InvestorCash(c);
-                cashForTx.setId(c.getId());
-                c.setDateClosing(dateClose);
-                c.setTypeClosing(typeClosingService.findByName("Вывод"));
-                c.setRealDateGiven(realDateGiven);
-                investorCashService.update(c);
-                closeCashes.add(cashForTx);
-            }
-        });
-        if (closeCashes.size() > 0) {
-            transactionLogService.close(closeCashes);
-        } else {
-            transactionLogService.resale(oldCashes, newCashes);
-        }
-
-        response.setMessage("Массовое закрытие прошло успешно.");
-        return response;
+    ApiResponse closeCash(@RequestBody CloseCashDTO closeCashDTO) {
+        return investorCashService.close(closeCashDTO);
     }
 
     @ModelAttribute("facilities")
