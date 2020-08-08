@@ -753,31 +753,7 @@ public class InvestorCashController {
     @PostMapping(path = Location.INVESTOR_CASH_REINVEST_SAVE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
     ApiResponse saveReInvCash(@RequestBody ReinvestCashDTO reinvestCashDTO) {
-        Long facilityToReinvestId = reinvestCashDTO.getFacilityToReinvestId();
-        Long underFacilityToReinvestId = reinvestCashDTO.getUnderFacilityToReinvestId();
-        int shareTypeId = reinvestCashDTO.getShareTypeId();
-        final Date dateClose = reinvestCashDTO.getDateClose();
-
-        List<Long> investorCashIdList = reinvestCashDTO.getInvestorCashIdList();
-        List<InvestorCash> oldCashList = investorCashService.findByIdIn(investorCashIdList);
-        List<InvestorCash> reinvestedCash = investorCashService.prepareCashToReinvest(oldCashList, facilityToReinvestId, underFacilityToReinvestId, shareTypeId, dateClose);
-        final NewCashDetail newCashDetail = newCashDetailService.findByName("Реинвестирование с продажи (сохранение)");
-        final TypeClosing typeClosing = typeClosingService.findByName("Реинвестирование");
-        final Map<String, InvestorCash> map = investorCashService.groupInvestorsCash(reinvestedCash, "");
-
-        map.forEach((key, value) -> {
-            value.setNewCashDetail(newCashDetail);
-            value.setGivenCash(value.getGivenCash().setScale(2, RoundingMode.DOWN));
-            investorCashService.create(value);
-        });
-
-        oldCashList.forEach(f -> {
-            f.setIsReinvest(1);
-            f.setDateClosing(dateClose);
-            f.setTypeClosing(typeClosing);
-            investorCashService.create(f);
-        });
-        return new ApiResponse("Реинвестирование прошло успешно");
+        return investorCashService.reinvestCash(reinvestCashDTO);
     }
 
     @PostMapping(value = Location.INVESTOR_CASH_DIVIDE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

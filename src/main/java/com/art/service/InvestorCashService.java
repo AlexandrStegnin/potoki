@@ -5,6 +5,7 @@ import com.art.model.supporting.AfterCashing;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.dto.DividedCashDTO;
+import com.art.model.supporting.dto.ReinvestCashDTO;
 import com.art.model.supporting.enums.ShareType;
 import com.art.model.supporting.filters.CashFilter;
 import com.art.repository.InvestorCashRepository;
@@ -25,6 +26,7 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -41,12 +43,13 @@ public class InvestorCashService {
     private final UnderFacilityService underFacilityService;
     private final FacilityService facilityService;
     private final StatusService statusService;
+    private final NewCashDetailService newCashDetailService;
 
     @Autowired
     public InvestorCashService(InvestorCashRepository investorCashRepository, InvestorCashSpecification specification,
                                TypeClosingService typeClosingService, AfterCashingService afterCashingService,
                                UnderFacilityService underFacilityService, FacilityService facilityService,
-                               StatusService statusService) {
+                               StatusService statusService, NewCashDetailService newCashDetailService) {
         this.investorCashRepository = investorCashRepository;
         this.specification = specification;
         this.typeClosingService = typeClosingService;
@@ -54,6 +57,7 @@ public class InvestorCashService {
         this.underFacilityService = underFacilityService;
         this.facilityService = facilityService;
         this.statusService = statusService;
+        this.newCashDetailService = newCashDetailService;
     }
 
     public List<InvestorCash> findAll() {
@@ -537,6 +541,40 @@ public class InvestorCashService {
             newCashList.add(newCash);
         }
         return newCashList;
+    }
+
+    /**
+     * Реинвестирование денег с продажи (сохранение)
+     *
+     * @param reinvestCashDTO данные для реинвестирования
+     * @return ответ
+     */
+    public ApiResponse reinvestCash(ReinvestCashDTO reinvestCashDTO) {
+        Long facilityToReinvestId = reinvestCashDTO.getFacilityToReinvestId();
+        Long underFacilityToReinvestId = reinvestCashDTO.getUnderFacilityToReinvestId();
+        int shareTypeId = reinvestCashDTO.getShareTypeId();
+        final Date dateClose = reinvestCashDTO.getDateClose();
+
+        List<Long> investorCashIdList = reinvestCashDTO.getInvestorCashIdList();
+        List<InvestorCash> oldCashList = findByIdIn(investorCashIdList);
+        List<InvestorCash> reinvestedCash = prepareCashToReinvest(oldCashList, facilityToReinvestId, underFacilityToReinvestId, shareTypeId, dateClose);
+        final NewCashDetail newCashDetail = newCashDetailService.findByName("Реинвестирование с продажи (сохранение)");
+        final TypeClosing typeClosing = typeClosingService.findByName("Реинвестирование");
+        final Map<String, InvestorCash> map = groupInvestorsCash(reinvestedCash, "");
+
+        map.forEach((key, value) -> {
+            value.setNewCashDetail(newCashDetail);
+            value.setGivenCash(value.getGivenCash().setScale(2, RoundingMode.DOWN));
+            create(value);
+        });
+
+        oldCashList.forEach(f -> {
+            f.setIsReinvest(1);
+            f.setDateClosing(dateClose);
+            f.setTypeClosing(typeClosing);
+            create(f);
+        });
+        return new ApiResponse("Реинвестирование прошло успешно");
     }
 
     private void sendStatus(String message) {
