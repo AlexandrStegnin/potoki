@@ -2,8 +2,11 @@ package com.art.config.application;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
+import com.google.common.cache.CacheBuilder;
+import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -24,6 +27,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 @Configuration
 @EnableWebMvc
@@ -98,6 +102,17 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Bean("flowsCacheManager")
     public CacheManager cacheManager() {
-        return new ConcurrentMapCacheManager();
+        return new ConcurrentMapCacheManager() {
+            @Override
+            protected Cache createConcurrentMapCache(String name) {
+                return new ConcurrentMapCache(
+                        name,
+                        CacheBuilder.newBuilder()
+                                .expireAfterWrite(30, TimeUnit.MINUTES)
+                                .maximumSize(500)
+                                .build().asMap(),
+                        false);
+            }
+        };
     }
 }
