@@ -37,7 +37,7 @@ public class NewCashDetailService {
         return newCashDetailRepository.findOne(id);
     }
 
-    @CachePut(value = Constant.NEW_CASH_DETAILS_CACHE_KEY, key = "newCashDetail.id")
+    @CachePut(value = Constant.NEW_CASH_DETAILS_CACHE_KEY, key = "#newCashDetail.id")
     public NewCashDetail update(NewCashDetail newCashDetail) {
         return newCashDetailRepository.saveAndFlush(newCashDetail);
     }
