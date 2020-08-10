@@ -18,4 +18,7 @@ public class Constant {
 
     public static final String CASH_SOURCES_CACHE_KEY = "cashSources";
 
+    public static final String NEW_CASH_DETAILS_CACHE_KEY = "newCashDetails";
+
+
 }
