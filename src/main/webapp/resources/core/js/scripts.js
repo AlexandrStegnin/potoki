@@ -323,7 +323,7 @@ function populateFilters(pageName) {
     allRows = $('#all').prop('checked');
 
     switch (pageName) {
-        case "investorscash":
+        case "investor-cash":
             //Search form
             $.each(fFacilities.find(':selected'), function (ind, el) {
                 facilitiesId.push(el.value);
@@ -436,7 +436,7 @@ function getFiltersFromLS(pageName) {
             case "paysToInv":
                 getFilters("paysToInv", lastFilters);
                 break;
-            case "investorscash":
+            case "investor-cash":
                 getFilters("investorscash", lastFilters);
                 break;
             case "flowsSale":
