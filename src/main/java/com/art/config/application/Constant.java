@@ -16,4 +16,6 @@ public class Constant {
 
     public static final String ANNEX_CACHE_KEY = "annexes";
 
+    public static final String CASH_SOURCES_CACHE_KEY = "cashSources";
+
 }

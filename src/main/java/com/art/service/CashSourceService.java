@@ -1,7 +1,11 @@
 package com.art.service;
 
+import com.art.config.application.Constant;
 import com.art.model.CashSource;
 import com.art.repository.CashSourceRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,26 +22,27 @@ public class CashSourceService {
         this.cashSourceRepository = cashSourceRepository;
     }
 
+    @Cacheable(Constant.CASH_SOURCES_CACHE_KEY)
     public List<CashSource> findAll() {
         return cashSourceRepository.findAll();
     }
 
+    @CachePut(Constant.CASH_SOURCES_CACHE_KEY)
     public CashSource create(CashSource cashSource) {
         return cashSourceRepository.saveAndFlush(cashSource);
     }
 
-    public void delete(CashSource cashSource) {
-        cashSourceRepository.delete(cashSource);
-    }
-
+    @CacheEvict(Constant.CASH_SOURCES_CACHE_KEY)
     public void deleteById(Long id) {
         cashSourceRepository.delete(id);
     }
 
+    @CachePut(value = Constant.CASH_SOURCES_CACHE_KEY, key = "cashSource.id")
     public CashSource update(CashSource cashSource) {
         return cashSourceRepository.saveAndFlush(cashSource);
     }
 
+    @Cacheable(Constant.CASH_SOURCES_CACHE_KEY)
     public CashSource findById(Long id) {
         return cashSourceRepository.findOne(id);
     }
@@ -48,7 +53,7 @@ public class CashSourceService {
         cashSource.setId(0L);
         cashSource.setName("Выберите источник денег");
         cashSources.add(cashSource);
-        cashSources.addAll(cashSourceRepository.findAll());
+        cashSources.addAll(findAll());
         return cashSources;
     }
 }
