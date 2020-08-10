@@ -2,6 +2,9 @@ package com.art.config.application;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +30,7 @@ import java.util.Properties;
 @EnableScheduling
 @ComponentScan(basePackages = {"com.art"})
 @EnableSpringDataWebSupport
+@EnableCaching
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Bean(name = "multipartResolver")
@@ -92,4 +96,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
     }
 
+    @Bean("flowsCacheManager")
+    public CacheManager cacheManager() {
+        return new ConcurrentMapCacheManager();
+    }
 }
