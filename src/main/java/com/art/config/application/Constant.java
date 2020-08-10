@@ -30,4 +30,6 @@ public class Constant {
 
     public static final String INVESTOR_CASHES_CACHE_KEY = "investorCashes";
 
+    public static final String INVESTOR_FLOWS_CACHE_KEY = "investorFlows";
+
 }
