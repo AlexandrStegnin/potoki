@@ -62,18 +62,18 @@ public class InvestorCash implements Serializable {
     @Column(name = "date_report")
     private Date dateReport;
 
-    @OneToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @OneToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @JoinColumn(name = "source_facility_id", referencedColumnName = "id")
     private Facility sourceFacility;
 
-    @OneToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @OneToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @JoinColumn(name = "source_under_facility_id", referencedColumnName = "id")
     private UnderFacility sourceUnderFacility;
 
     @Column(name = "source_flow_id")
     private String sourceFlowsId;
 
-    @OneToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @OneToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id", referencedColumnName = "id")
     private Room room;
 

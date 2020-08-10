@@ -120,7 +120,7 @@ public class AppUser implements Serializable {
 
     private UserProfile profile;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public UserProfile getProfile() {
         return profile;
     }
