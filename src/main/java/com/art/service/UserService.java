@@ -2,8 +2,12 @@ package com.art.service;
 
 import com.art.config.AppSecurityConfig;
 import com.art.config.SecurityUtils;
+import com.art.config.application.Constant;
 import com.art.func.PersonalMailService;
-import com.art.model.*;
+import com.art.model.AppUser;
+import com.art.model.AppUser_;
+import com.art.model.UserProfile;
+import com.art.model.UserProfile_;
 import com.art.model.supporting.SendingMail;
 import com.art.model.supporting.enums.UserRole;
 import com.art.repository.UserRepository;
@@ -30,8 +34,6 @@ import java.util.UUID;
 @Transactional
 public class UserService {
 
-    private static final String CACHE_KEY = "users";
-
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
@@ -51,12 +53,12 @@ public class UserService {
         this.accountService = accountService;
     }
 
-    @Cacheable(CACHE_KEY)
+    @Cacheable(Constant.USERS_CACHE_KEY)
     public List<AppUser> findAll() {
         return userRepository.findAll();
     }
 
-    @CacheEvict(CACHE_KEY)
+    @CacheEvict(Constant.USERS_CACHE_KEY)
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
@@ -111,7 +113,7 @@ public class UserService {
 
      */
 
-    @Cacheable(CACHE_KEY)
+    @Cacheable(Constant.USERS_CACHE_KEY)
     public AppUser findByLoginWithAnnexes(String login) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<AppUser> usersCriteriaQuery = cb.createQuery(AppUser.class);
@@ -121,7 +123,7 @@ public class UserService {
         return em.createQuery(usersCriteriaQuery).getSingleResult();
     }
 
-    @CachePut(CACHE_KEY)
+    @CachePut(Constant.USERS_CACHE_KEY)
     public void create(AppUser user) {
         String password = generatePassword();
         user.setPassword(password);
@@ -135,7 +137,7 @@ public class UserService {
         }
     }
 
-    @CachePut(value = CACHE_KEY, key = "#user.id")
+    @CachePut(value = Constant.USERS_CACHE_KEY, key = "#user.id")
     public void updateProfile(AppUser user) {
         AppUser dbUser = findById(user.getId());
         if (null != user.getPassword()) {
@@ -147,7 +149,7 @@ public class UserService {
         userRepository.save(dbUser);
     }
 
-    @CachePut(value = CACHE_KEY, key = "#user.id")
+    @CachePut(value = Constant.USERS_CACHE_KEY, key = "#user.id")
     public void update(AppUser user) {
         AppUser dbUser = findById(user.getId());
         dbUser.setPartnerId(user.getPartnerId());
