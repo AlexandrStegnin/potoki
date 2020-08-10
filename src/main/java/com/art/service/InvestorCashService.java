@@ -1,5 +1,6 @@
 package com.art.service;
 
+import com.art.config.application.Constant;
 import com.art.model.*;
 import com.art.model.supporting.AfterCashing;
 import com.art.model.supporting.ApiResponse;
@@ -11,8 +12,10 @@ import com.art.model.supporting.enums.ShareType;
 import com.art.model.supporting.filters.CashFilter;
 import com.art.repository.InvestorCashRepository;
 import com.art.specifications.InvestorCashSpecification;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -66,6 +69,7 @@ public class InvestorCashService {
         this.transactionLogService = transactionLogService;
     }
 
+    @Cacheable(Constant.INVESTOR_CASHES_CACHE_KEY)
     public List<InvestorCash> findAll() {
         return investorCashRepository.findAll();
     }
@@ -78,26 +82,21 @@ public class InvestorCashService {
         return investorCashRepository.findByFacilityId(facilityId);
     }
 
+    @CachePut(value = Constant.INVESTOR_CASHES_CACHE_KEY, key = "#investorCash.id")
     public InvestorCash update(InvestorCash investorCash) {
         investorCash = investorCashRepository.saveAndFlush(investorCash);
         return investorCash;
     }
 
+    @CachePut(Constant.INVESTOR_CASHES_CACHE_KEY)
     public InvestorCash createNew(InvestorCash investorCash) {
         investorCash = investorCashRepository.saveAndFlush(investorCash);
         return investorCash;
     }
 
+    @CacheEvict(Constant.INVESTOR_CASHES_CACHE_KEY)
     public void deleteById(Long id) {
         investorCashRepository.deleteById(id);
-    }
-
-    public void delete(InvestorCash cash) {
-        investorCashRepository.delete(cash);
-    }
-
-    public void saveAll(List<InvestorCash> investorCashes) {
-        investorCashRepository.save(investorCashes);
     }
 
     public List<InvestorCash> findByRoomId(Long roomId) {
@@ -107,10 +106,12 @@ public class InvestorCashService {
     @PersistenceContext(name = "persistanceUnit")
     private EntityManager em;
 
+    @CachePut(Constant.INVESTOR_CASHES_CACHE_KEY)
     public InvestorCash create(InvestorCash investorCash) {
         return this.em.merge(investorCash);
     }
 
+    @Cacheable(Constant.INVESTOR_CASHES_CACHE_KEY)
     public List<InvestorCash> findByIdIn(List<Long> idList) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<InvestorCash> investorsCashCriteriaQuery = cb.createQuery(InvestorCash.class);
@@ -121,6 +122,7 @@ public class InvestorCashService {
         return em.createQuery(investorsCashCriteriaQuery).getResultList();
     }
 
+    @Cacheable(Constant.INVESTOR_CASHES_CACHE_KEY)
     public List<InvestorCash> findBySource(String source) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<InvestorCash> investorsCashCriteriaQuery = cb.createQuery(InvestorCash.class);
@@ -131,10 +133,12 @@ public class InvestorCashService {
         return em.createQuery(investorsCashCriteriaQuery).getResultList();
     }
 
+    @Cacheable(Constant.INVESTOR_CASHES_CACHE_KEY)
     public List<InvestorCash> findBySourceId(Long sourceId) {
         return investorCashRepository.findBySourceId(sourceId);
     }
 
+    @Cacheable(Constant.INVESTOR_CASHES_CACHE_KEY)
     public List<InvestorCash> findByInvestorId(Long investorId) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<InvestorCash> investorsCashCriteriaQuery = cb.createQuery(InvestorCash.class);
@@ -146,26 +150,7 @@ public class InvestorCashService {
         return em.createQuery(investorsCashCriteriaQuery).getResultList();
     }
 
-    public List<InvestorCash> findAllWithAllFields() {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-
-        CriteriaQuery<InvestorCash> investorsCashCriteriaQuery = cb.createQuery(InvestorCash.class);
-        Root<InvestorCash> investorsCashRoot = investorsCashCriteriaQuery.from(InvestorCash.class);
-        investorsCashRoot.fetch(InvestorCash_.facility, JoinType.LEFT);
-        investorsCashCriteriaQuery.select(investorsCashRoot).distinct(true);
-        investorsCashCriteriaQuery.where(cb.isNotNull(investorsCashRoot.get(InvestorCash_.facility)));
-        investorsCashCriteriaQuery.orderBy(cb.asc(investorsCashRoot.get(InvestorCash_.dateGiven)));
-        List<InvestorCash> cash = em.createQuery(investorsCashCriteriaQuery).getResultList();
-        cash.forEach(c -> {
-            Hibernate.initialize(c.getInvestor());
-            Hibernate.initialize(c.getFacility());
-            Hibernate.initialize(c.getUnderFacility());
-            Hibernate.initialize(c.getRoom());
-        });
-
-        return cash;
-    }
-
+    @Cacheable(Constant.INVESTOR_CASHES_CACHE_KEY)
     public Page<InvestorCash> findAll(CashFilter filters, Pageable pageable) {
         return investorCashRepository.findAll(
                 specification.getFilter(filters),
@@ -196,7 +181,6 @@ public class InvestorCashService {
             UnderFacility finalUnderFacility = underFacility;
             searchSummary.getInvestorsList().forEach(user -> {
                 if (searchSummary.getInvestorCash() != null) {
-                    List<UnderFacility> underFacilities = searchSummary.getUnderFacilityList();
                     InvestorCash invCash = searchSummary.getInvestorCash();
                     invCash.setInvestor(user);
                     invCash.setUnderFacility(finalUnderFacility);
@@ -528,7 +512,7 @@ public class InvestorCashService {
      * @param dateClose дата закрытия вложения
      * @return новый список денег
      */
-    public List<InvestorCash> prepareCashToReinvest(List<InvestorCash> oldCashList, Long facilityToReinvestId,
+    private List<InvestorCash> prepareCashToReinvest(List<InvestorCash> oldCashList, Long facilityToReinvestId,
                                                      Long underFacilityToReinvestId, int shareTypeId, Date dateClose) {
         Facility facility = facilityService.findById(facilityToReinvestId);
         UnderFacility underFacility = underFacilityService.findById(underFacilityToReinvestId);
