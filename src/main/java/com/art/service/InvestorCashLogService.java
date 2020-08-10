@@ -122,7 +122,7 @@ public class InvestorCashLogService {
      * @param cash сумма
      */
     public void delete(InvestorCash cash) {
-        InvestorCashLog cashLog = findByCashId(cash.getId().longValue());
+        InvestorCashLog cashLog = findByCashId(cash.getId());
         if (null != cashLog) {
             investorCashLogRepository.delete(cashLog);
         }
