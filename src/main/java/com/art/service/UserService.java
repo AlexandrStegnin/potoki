@@ -63,10 +63,12 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    @Cacheable(Constant.USERS_CACHE_KEY)
     public AppUser findByLogin(String login) {
         return userRepository.findByLogin(login);
     }
 
+    @Cacheable(Constant.USERS_CACHE_KEY)
     public AppUser findById(Long id) {
         return userRepository.findOne(id);
     }
