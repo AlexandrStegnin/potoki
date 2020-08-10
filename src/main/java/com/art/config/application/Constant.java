@@ -26,4 +26,6 @@ public class Constant {
 
     public static final String TYPES_CLOSING_CACHE_KEY = "typesClosing";
 
+    public static final String USERS_ANNEXES_CACHE_KEY = "usersAnnexes";
+
 }

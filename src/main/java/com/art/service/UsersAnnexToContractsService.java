@@ -1,11 +1,14 @@
 package com.art.service;
 
-import com.art.model.AnnexToContracts;
+import com.art.config.application.Constant;
 import com.art.model.AppUser;
 import com.art.model.UsersAnnexToContracts;
 import com.art.model.UsersAnnexToContracts_;
 import com.art.repository.UserAnnexRepository;
 import com.art.repository.UserAnnexToContractsRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +42,7 @@ public class UsersAnnexToContractsService {
         this.userService = userService;
     }
 
+    @Cacheable(Constant.USERS_ANNEXES_CACHE_KEY)
     public List<UsersAnnexToContracts> findByUserAndAnnexName(Long userId, String annexName) {
         if (!annexName.endsWith(".pdf")) {
             annexName = annexName + ".pdf";
@@ -46,6 +50,7 @@ public class UsersAnnexToContractsService {
         return userAnnexToContractsRepository.findByUserIdAndAnnex_AnnexName(userId, annexName);
     }
 
+    @Cacheable(Constant.USERS_ANNEXES_CACHE_KEY)
     public List<UsersAnnexToContracts> findAll() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
@@ -56,23 +61,12 @@ public class UsersAnnexToContractsService {
         return em.createQuery(usersAnnexToContractsCriteriaQuery).getResultList();
     }
 
+    @Cacheable(Constant.USERS_ANNEXES_CACHE_KEY)
     public UsersAnnexToContracts findById(BigInteger id) {
         return this.em.find(UsersAnnexToContracts.class, id);
     }
 
-    public List<UsersAnnexToContracts> findByUserIdAndAnnex(BigInteger userId, AnnexToContracts annex) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-
-        CriteriaQuery<UsersAnnexToContracts> usersAnnexToContractsCriteriaQuery = cb.createQuery(UsersAnnexToContracts.class);
-        Root<UsersAnnexToContracts> usersAnnexToContractsRoot = usersAnnexToContractsCriteriaQuery.from(UsersAnnexToContracts.class);
-        usersAnnexToContractsCriteriaQuery.select(usersAnnexToContractsRoot);
-        usersAnnexToContractsCriteriaQuery.where(cb.equal(usersAnnexToContractsRoot.get(UsersAnnexToContracts_.userId), userId),
-                cb.equal(usersAnnexToContractsRoot.get(UsersAnnexToContracts_.annex), annex));
-
-        return em.createQuery(usersAnnexToContractsCriteriaQuery).getResultList();
-
-    }
-
+    @Cacheable(Constant.USERS_ANNEXES_CACHE_KEY)
     public List<UsersAnnexToContracts> findByUserId(Long userId) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
@@ -85,6 +79,7 @@ public class UsersAnnexToContractsService {
 
     }
 
+    @Cacheable(Constant.USERS_ANNEXES_CACHE_KEY)
     public List<UsersAnnexToContracts> findByLogin(String login) {
         if (Objects.isNull(login)) {
             throw new RuntimeException("Необходимо передать логин пользователя");
@@ -96,6 +91,7 @@ public class UsersAnnexToContractsService {
         return findByUserId(user.getId());
     }
 
+    @CacheEvict(Constant.USERS_ANNEXES_CACHE_KEY)
     public void deleteById(BigInteger id) {
         CriteriaBuilder cb = this.em.getCriteriaBuilder();
         CriteriaDelete<UsersAnnexToContracts> delete = cb.createCriteriaDelete(UsersAnnexToContracts.class);
@@ -104,18 +100,12 @@ public class UsersAnnexToContractsService {
         this.em.createQuery(delete).executeUpdate();
     }
 
-    public void deleteByAnnex(AnnexToContracts annex) {
-        CriteriaBuilder cb = this.em.getCriteriaBuilder();
-        CriteriaDelete<UsersAnnexToContracts> delete = cb.createCriteriaDelete(UsersAnnexToContracts.class);
-        Root<UsersAnnexToContracts> usersAnnexToContractsRoot = delete.from(UsersAnnexToContracts.class);
-        delete.where(cb.equal(usersAnnexToContractsRoot.get(UsersAnnexToContracts_.annex), annex));
-        this.em.createQuery(delete).executeUpdate();
-    }
-
+    @CachePut(value = Constant.USERS_ANNEXES_CACHE_KEY, key = "#usersAnnexToContracts.id")
     public void update(UsersAnnexToContracts usersAnnexToContracts) {
         this.em.merge(usersAnnexToContracts);
     }
 
+    @CachePut(Constant.USERS_ANNEXES_CACHE_KEY)
     public void create(UsersAnnexToContracts usersAnnexToContracts) {
         this.em.persist(usersAnnexToContracts);
     }
