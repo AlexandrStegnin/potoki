@@ -35,6 +35,7 @@
             <div class="col-sm-6">
                 <form:select path="facility" id="facilities" items="${facilities}" multiple="false"
                              itemValue="id" itemLabel="name" class="form-control form-control-sm selectpicker"
+                             data-size="10"
                 data-live-search="true"/>
                 <div class="has-error">
                     <form:errors path="facility" class="help-inline"/>
@@ -56,7 +57,7 @@
             <div class="col-sm-6">
                 <form:select path="underFacility" id="underFacilities" multiple="false"
                              class="form-control form-control-sm selectpicker" data-none-selected-text="Без подобъекта"
-                             data-live-search="true">
+                             data-live-search="true" data-size="10">
                     <c:forEach var="uf" items="${uf}">
                         <form:option value="${uf.name}" id="${uf.id}" data-parent-id="${uf.facility.id}">
 
@@ -74,7 +75,7 @@
             <div class="col-sm-6">
                 <form:select path="investor" id="investor" items="${investors}" multiple="false"
                              itemValue="id" itemLabel="login" class="form-control form-control-sm selectpicker"
-                             data-live-search="true"/>
+                             data-live-search="true" data-size="10"/>
                 <div class="has-error">
                     <form:errors path="investor" class="help-inline"/>
                 </div>
@@ -110,7 +111,8 @@
             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="cashSrc">Источник получения денег:</label>
             <div class="col-sm-6">
                 <form:select path="cashSource" id="cashSrc" items="${cashSources}" multiple="false"
-                             itemValue="id" itemLabel="name" class="form-control form-control-sm selectpicker"/>
+                             itemValue="id" itemLabel="name" class="form-control form-control-sm selectpicker"
+                             data-size="10"/>
                 <div class="has-error">
                     <form:errors path="cashSource" class="help-inline"/>
                 </div>
@@ -156,7 +158,8 @@
             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="investorBuyer">Инвестор покупатель:</label>
             <div class="col-sm-6">
                 <form:select path="investorBuyer" id="investorBuyer" items="${investors}" multiple="false"
-                             itemValue="id" itemLabel="login" class="form-control form-control-sm selectpicker"/>
+                             itemValue="id" itemLabel="login" class="form-control form-control-sm selectpicker"
+                             data-size="10"/>
                 <div class="has-error" id="investorBuyerErr">
                 </div>
             </div>
@@ -177,7 +180,8 @@
             <div class="col-sm-6">
                 <form:select path="sourceFacility" id="sourceFacilities" items="${sourceFacilities}"
                              multiple="false"
-                             itemValue="id" itemLabel="name" class="form-control form-control-sm selectpicker"/>
+                             itemValue="id" itemLabel="name" class="form-control form-control-sm selectpicker"
+                             data-size="10"/>
                 <div class="has-error" id="sourceFacilityErr">
                 </div>
             </div>
@@ -189,7 +193,8 @@
                 реинвестирования:</label>
             <div class="col-sm-6">
                 <form:select path="sourceUnderFacility" id="sourceUnderFacilities" multiple="false"
-                             class="form-control form-control-sm selectpicker">
+                             class="form-control form-control-sm selectpicker"
+                             data-size="10">
                     <c:forEach var="uf" items="${sourceUnderFacilities}">
                         <form:option value="${uf.name}" id="${uf.id}" data-parent-id="${uf.facility.id}">
 
