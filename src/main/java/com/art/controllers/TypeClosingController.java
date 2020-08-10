@@ -26,7 +26,7 @@ public class TypeClosingController {
     public ModelAndView typeClosingInvestPage() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("type-closing-list");
-        List<TypeClosing> typeClosingInvestsList = typeClosingService.findAllWithCriteriaApi();
+        List<TypeClosing> typeClosingInvestsList = typeClosingService.findAll();
         modelAndView.addObject("typeClosingInvestsList", typeClosingInvestsList);
         return modelAndView;
     }

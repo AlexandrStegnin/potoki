@@ -24,5 +24,6 @@ public class Constant {
 
     public static final String ROOMS_CACHE_KEY = "rooms";
 
+    public static final String TYPES_CLOSING_CACHE_KEY = "typesClosing";
 
 }
