@@ -207,18 +207,9 @@ public class InvestorCashController {
      */
     @PostMapping(value = "/edit-cash-{id}")
     public String editCash(@ModelAttribute("investorsCash") InvestorCash investorCash, @PathVariable("id") Long id) {
-        ModelAndView modelAndView = new ModelAndView("cash-list");
-
         InvestorCash dbCash = investorCashService.findById(id);
-
         transactionLogService.update(dbCash);
-
         investorCashService.update(investorCash);
-
-        SearchSummary searchSummary = new SearchSummary();
-        modelAndView.addObject("searchSummary", searchSummary);
-        modelAndView.addObject("investorsCash", investorCashService.findAll());
-
         return "redirect:" + Location.INVESTOR_CASH_LIST;
     }
 
@@ -757,6 +748,12 @@ public class InvestorCashController {
         return investorCashService.reinvestCash(reinvestCashDTO);
     }
 
+    /**
+     * Разделение денег инвесторов
+     *
+     * @param dividedCashDTO DTO для разделения
+     * @return ответ об окончании операции
+     */
     @PostMapping(value = Location.INVESTOR_CASH_DIVIDE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
     ApiResponse saveDivideCash(@RequestBody DividedCashDTO dividedCashDTO) {
@@ -765,6 +762,12 @@ public class InvestorCashController {
         return response;
     }
 
+    /**
+     * Разделение денег инвесторов (массовое)
+     *
+     * @param dividedCashDTO DTO для разделения
+     * @return ответ об окончании операции
+     */
     @PostMapping(value = Location.INVESTOR_CASH_DIVIDE_MULTIPLE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
     ApiResponse divideMultipleCash(@RequestBody DividedCashDTO dividedCashDTO) {
@@ -789,11 +792,6 @@ public class InvestorCashController {
         return response[0];
     }
 
-    private void sendStatus(String message) {
-        statusService.sendStatus(message);
-    }
-
-
     /**
      * Массовое закрытие сумм
      *
@@ -806,29 +804,88 @@ public class InvestorCashController {
         return investorCashService.close(closeCashDTO);
     }
 
+    private List<AppUser> initializedUsers = new ArrayList<>();
+
+    private List<AppUser> initializedUsersList = new ArrayList<>();
+
+    private List<Facility> initializedFacilities = new ArrayList<>();
+
+    private List<Facility> initializedFacilitiesList = new ArrayList<>();
+
+    private List<UnderFacility> initializedUnderFacilities = new ArrayList<>();
+
+    private List<UnderFacility> initializedUnderFacilitiesList = new ArrayList<>();
+
+    public void initialize() {
+        clearInitData();
+        initUsers();
+        initFacilities();
+        initUnderFacilities();
+    }
+
+    private void initUsers() {
+        List<AppUser> users = userService.initializeMultipleInvestors();
+        AppUser user = new AppUser();
+        user.setId(0L);
+        user.setLogin("Выберите инвестора");
+        this.initializedUsers.add(user);
+        this.initializedUsers.addAll(users);
+        this.initializedUsersList.addAll(users);
+    }
+
+    private void initFacilities() {
+        List<Facility> facilities = facilityService.initializeFacilitiesForMultiple();
+        Facility facility = new Facility();
+        facility.setId(0L);
+        facility.setName("Выберите объект");
+        this.initializedFacilities.add(facility);
+        this.initializedFacilities.addAll(facilities);
+        this.initializedFacilitiesList.addAll(facilities);
+    }
+
+    private void initUnderFacilities() {
+        List<UnderFacility> underFacilities = underFacilityService.initializeUnderFacilitiesList();
+        UnderFacility underFacility = new UnderFacility();
+        underFacility.setId(0L);
+        underFacility.setName("Выберите подобъект");
+        this.initializedUnderFacilities.add(underFacility);
+        this.initializedUnderFacilities.addAll(underFacilities);
+        this.initializedUnderFacilitiesList.addAll(underFacilities);
+    }
+
+    private void clearInitData() {
+        initializedUsers = new ArrayList<>();
+        initializedUsersList = new ArrayList<>();
+        initializedFacilities = new ArrayList<>();
+        initializedFacilitiesList = new ArrayList<>();
+        initializedUnderFacilities = new ArrayList<>();
+        initializedUnderFacilitiesList = new ArrayList<>();
+    }
+
     @ModelAttribute("facilities")
     public List<Facility> initializeFacilities() {
-        return facilityService.initializeFacilities();
+        initialize();
+        return initializedFacilities;
     }
 
     @ModelAttribute("facilitiesList")
     public List<Facility> initializeMultipleFacilities() {
-        return facilityService.initializeFacilitiesForMultiple();
+        return initializedFacilitiesList;
     }
 
     @ModelAttribute("sourceFacilities")
     public List<Facility> initializeReFacilities() {
-        return facilityService.initializeFacilities();
+        return initializedFacilities;
     }
 
     @ModelAttribute("investors")
     public List<AppUser> initializeInvestors() {
-        return userService.initializeInvestors();
+        return initializedUsers;
     }
 
     @ModelAttribute("investorsMulti")
     public List<AppUser> initializeInvestorsMultiple() {
-        return userService.initializeMultipleInvestors();
+        return initializedUsersList;
     }
 
     @ModelAttribute("cashSources")
@@ -843,17 +900,17 @@ public class InvestorCashController {
 
     @ModelAttribute("underFacilities")
     public List<UnderFacility> initializeUnderFacilities() {
-        return underFacilityService.initializeUnderFacilities();
+        return initializedUnderFacilities;
     }
 
     @ModelAttribute("underFacilitiesList")
     public List<UnderFacility> initializeUnderFacilitiesList() {
-        return underFacilityService.initializeUnderFacilitiesList();
+        return initializedUnderFacilitiesList;
     }
 
     @ModelAttribute("sourceUnderFacilities")
     public List<UnderFacility> initializeReUnderFacilities() {
-        return underFacilityService.initializeUnderFacilities();
+        return initializedUnderFacilities;
     }
 
     @ModelAttribute("typeClosingInvest")
@@ -886,5 +943,9 @@ public class InvestorCashController {
     @ModelAttribute("search")
     public SearchSummary addSearch() {
         return filters;
+    }
+
+    private void sendStatus(String message) {
+        statusService.sendStatus(message);
     }
 }
