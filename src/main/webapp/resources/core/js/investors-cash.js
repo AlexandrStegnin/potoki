@@ -1269,11 +1269,6 @@ function saveDivideCash(cashes, reUnderFacility, excludedUnderFacilities) {
         reUnderFacilityId: reUnderFacility,
         excludedUnderFacilitiesIdList: excludedUnderFacilities
     }
-    // let search = ({
-    //     investorsCashList: cashes,
-    //     reUnderFacility: reUnderFacility,
-    //     underFacilityList: excludedUnderFacilities
-    // });
 
     $.ajax({
         type: "POST",
