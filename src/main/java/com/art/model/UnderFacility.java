@@ -40,7 +40,7 @@ public class UnderFacility implements Serializable {
         this.name = name;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "facility_id", referencedColumnName = "id")
     public Facility getFacility() {
         return facility;
