@@ -187,18 +187,17 @@
         <c:forEach items="${page.content}" var="cash">
             <tr id="${cash.id}">
                 <td data-facility-id="${cash.facility.id}">${cash.facility.name}</td>
-                <td data-under-facility-id="${cash.underFacility.id}">${cash.underFacility.name}</td>
-                <td data-investor-id="${cash.investor.id}">${cash.investor.login}</td>
-
-                <td data-gived-cash="${cash.givenCash}">
+                <td>${cash.underFacility.name}</td>
+                <td>${cash.investor.login}</td>
+                <td>
                     <fmt:setLocale value="ru-RU" scope="session"/>
                     <fmt:formatNumber value="${cash.givenCash}" type="currency" minFractionDigits="2"/>
                 </td>
-                <td data-report-date="${cash.dateGiven.time}">${cash.getDateGivenToLocalDate()}</td>
-                <td data-cash-source-id="${cash.cashSource.id}">${cash.cashSource.name}</td>
-                <td data-cash-details-id="${cash.newCashDetail.id}">${cash.newCashDetail.name}</td>
-                <td data-date-closing="${cash.dateClosing.time}">${cash.getDateClosingToLocalDate()}</td>
-                <td data-type-closing-id="${cash.typeClosing.id}">${cash.typeClosing.name}</td>
+                <td>${cash.getDateGivenToLocalDate()}</td>
+                <td>${cash.cashSource.name}</td>
+                <td>${cash.newCashDetail.name}</td>
+                <td>${cash.getDateClosingToLocalDate()}</td>
+                <td>${cash.typeClosing.name}</td>
                 <c:set var="is1C" value="Да"/>
                 <c:if test="${empty cash.transactionUUID}">
                     <c:set var="is1C" value="Нет"/>
@@ -251,7 +250,6 @@
                     </c:choose>
                     <input type="checkbox" title="Выбрать" ${checked} ${disabled} ${enabled}/>
                 </td>
-                <td hidden data-source="${cash.source}"></td>
             </tr>
         </c:forEach>
         </tbody>
