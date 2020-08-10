@@ -47,7 +47,7 @@ public class RoomController {
     @GetMapping(path = Location.ROOMS_EDIT)
     public String editRoom(@PathVariable Long id, ModelMap model) {
         String title = "Обновление данных по помещению";
-        Room room = roomService.findByIdWithUnderFacilities(id);
+        Room room = roomService.findByIdWithUnderFacility(id);
         Account account = accountService.findByOwnerId(id, OwnerType.ROOM);
         String accountNumber = "";
         if (account != null) {
