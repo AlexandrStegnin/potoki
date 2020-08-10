@@ -12,4 +12,6 @@ public class Constant {
 
     public static final String FACILITIES_CACHE_KEY = "facilities";
 
+    public static final String UNDER_FACILITIES_CACHE_KEY = "underFacilities";
+
 }

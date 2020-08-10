@@ -1,10 +1,14 @@
 package com.art.service;
 
+import com.art.config.application.Constant;
 import com.art.model.Account;
 import com.art.model.Facility;
 import com.art.model.UnderFacility;
 import com.art.model.supporting.enums.OwnerType;
 import com.art.repository.UnderFacilityRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,23 +28,28 @@ public class UnderFacilityService {
         this.accountService = accountService;
     }
 
+    @Cacheable(Constant.UNDER_FACILITIES_CACHE_KEY)
     public List<UnderFacility> findAll() {
         return underFacilityRepository.findAll();
     }
 
+    @Cacheable(Constant.UNDER_FACILITIES_CACHE_KEY)
     public UnderFacility findByName(String name) {
         return underFacilityRepository.findByName(name);
     }
 
+    @Cacheable(Constant.UNDER_FACILITIES_CACHE_KEY)
     public UnderFacility findById(Long id) {
         return underFacilityRepository.findOne(id);
     }
 
+    @CacheEvict(Constant.UNDER_FACILITIES_CACHE_KEY)
     public void deleteById(Long id) {
         underFacilityRepository.delete(id);
         accountService.deleteByOwnerId(id, OwnerType.UNDER_FACILITY);
     }
 
+    @CachePut(Constant.UNDER_FACILITIES_CACHE_KEY)
     public void create(UnderFacility underFacility) {
         underFacilityRepository.saveAndFlush(underFacility);
         Facility facility = underFacility.getFacility();
@@ -49,6 +58,7 @@ public class UnderFacilityService {
         accountService.createAccount(underFacility.getId(), account, countUnderFacilities);
     }
 
+    @Cacheable(Constant.UNDER_FACILITIES_CACHE_KEY)
     public List<UnderFacility> findByFacilityId(Long id) {
         return underFacilityRepository.findByFacilityId(id);
     }
@@ -59,14 +69,15 @@ public class UnderFacilityService {
         underFacility.setId(0L);
         underFacility.setName("Выберите подобъект");
         underFacilityList.add(underFacility);
-        underFacilityList.addAll(underFacilityRepository.findAll());
+        underFacilityList.addAll(findAll());
         return underFacilityList;
     }
 
     public List<UnderFacility> initializeUnderFacilitiesList() {
-        return underFacilityRepository.findAll();
+        return findAll();
     }
 
+    @CachePut(value = Constant.UNDER_FACILITIES_CACHE_KEY, key = "#underFacility.id")
     public void update(UnderFacility underFacility) {
         underFacilityRepository.save(underFacility);
     }
