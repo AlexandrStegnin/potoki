@@ -3,9 +3,7 @@ let filters = [];
 jQuery(document).ready(function ($) {
 
     blockActions();
-    // blockDeleteLink();
     getFiltersFromLS((window.location.pathname + '').split("/")[1]);
-    console.log((window.location.pathname + '').split("/")[1])
     $(document).on('mousedown', '#underFacilitiesList > option', function (e) {
         e.preventDefault();
         this.selected = !this.selected;
