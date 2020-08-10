@@ -22,5 +22,7 @@ public class Constant {
 
     public static final String ROLES_CACHE_KEY = "roles";
 
+    public static final String ROOMS_CACHE_KEY = "rooms";
+
 
 }

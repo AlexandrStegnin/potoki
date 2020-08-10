@@ -1,5 +1,6 @@
 package com.art.service;
 
+import com.art.config.application.Constant;
 import com.art.model.*;
 import com.art.model.supporting.enums.OwnerType;
 import com.art.repository.RoomRepository;
@@ -33,7 +34,7 @@ public class RoomService {
         this.roomRepository = roomRepository;
     }
 
-    @Cacheable("rooms")
+    @Cacheable(Constant.ROOMS_CACHE_KEY)
     public List<Room> findAll() {
         List<Room> rooms = roomRepository.findAll();
         rooms.forEach(room -> {
@@ -43,7 +44,7 @@ public class RoomService {
         return rooms;
     }
 
-    @Cacheable("rooms")
+    @Cacheable(Constant.ROOMS_CACHE_KEY)
     public Room findById(Long id) {
         return roomRepository.findOne(id);
     }
@@ -54,12 +55,12 @@ public class RoomService {
         return room;
     }
 
-    @Cacheable("rooms")
+    @Cacheable(Constant.ROOMS_CACHE_KEY)
     public Room findByRoom(String name) {
         return roomRepository.findByName(name);
     }
 
-    @CacheEvict(value = "rooms", key = "#id")
+    @CacheEvict(value = Constant.ROOMS_CACHE_KEY)
     public void deleteById(Long id) {
         List<InvestorsFlows> flows = flowsService.findByRoomId(id);
         flows.forEach(f -> f.setRoom(null));
@@ -73,12 +74,12 @@ public class RoomService {
         accountService.deleteByOwnerId(id, OwnerType.UNDER_FACILITY);
     }
 
-    @CachePut(value = "rooms", key = "#room.id")
+    @CachePut(value = Constant.ROOMS_CACHE_KEY, key = "#room.id")
     public void update(Room room) {
         roomRepository.saveAndFlush(room);
     }
 
-    @CachePut("rooms")
+    @CachePut(Constant.ROOMS_CACHE_KEY)
     public void create(Room room) {
         roomRepository.saveAndFlush(room);
         UnderFacility underFacility = room.getUnderFacility();
