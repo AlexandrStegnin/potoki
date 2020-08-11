@@ -22,7 +22,7 @@ public interface MarketingTreeRepository extends JpaRepository<MarketingTree, Bi
 
     @Query(value = "SELECT new com.art.model.supporting.dto.MarketingTreeDTO(" +
             "inv.partnerId, inv.id, inv.kin, MIN(ic.dateGiven), 'NO_ACTIVE', 0, 0) " +
-            "FROM InvestorCash ic " +
+            "FROM Money ic " +
             "JOIN ic.investor inv " +
             "WHERE inv.login <> 'investor-demo' AND inv.partnerId IS NOT NULL AND (ic.newCashDetail.id IS NULL OR ic.newCashDetail.id <> 4)" +
             "GROUP BY ic.investor " +

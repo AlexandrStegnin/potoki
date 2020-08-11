@@ -3,7 +3,7 @@ package com.art.controllers;
 import com.art.config.application.Location;
 import com.art.model.Account;
 import com.art.model.Facility;
-import com.art.model.InvestorCash;
+import com.art.model.Money;
 import com.art.model.UnderFacility;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.GenericResponse;
@@ -12,7 +12,7 @@ import com.art.model.supporting.dto.FacilityDTO;
 import com.art.model.supporting.enums.OwnerType;
 import com.art.service.AccountService;
 import com.art.service.FacilityService;
-import com.art.service.InvestorCashService;
+import com.art.service.MoneyService;
 import com.art.service.UnderFacilityService;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,15 +32,15 @@ public class FacilityController {
 
     private final UnderFacilityService underFacilityService;
 
-    private final InvestorCashService investorCashService;
+    private final MoneyService moneyService;
 
     private final AccountService accountService;
 
     public FacilityController(FacilityService facilityService, UnderFacilityService underFacilityService,
-                              InvestorCashService investorCashService, AccountService accountService) {
+                              MoneyService moneyService, AccountService accountService) {
         this.facilityService = facilityService;
         this.underFacilityService = underFacilityService;
-        this.investorCashService = investorCashService;
+        this.moneyService = moneyService;
         this.accountService = accountService;
     }
 
@@ -114,8 +114,8 @@ public class FacilityController {
     GenericResponse deleteFacility(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
         Facility facility = facilityService.findById(Long.valueOf(searchSummary.getFacilityStr()));
-        List<InvestorCash> investorCashes = investorCashService.findByFacilityId(facility.getId());
-        if (investorCashes.size() > 0) {
+        List<Money> monies = moneyService.findByFacilityId(facility.getId());
+        if (monies.size() > 0) {
             response.setMessage(String.format("В объект [%s] вложены деньги, необходимо перераспределить их", facility.getName()));
             return response;
         }

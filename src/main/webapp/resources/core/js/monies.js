@@ -152,7 +152,7 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    $('table#investorsCash').find('> tbody').find('> tr').each(function () {
+    $('table#monies').find('> tbody').find('> tr').each(function () {
         $(this).data('passed', true);
     });
 
@@ -208,7 +208,7 @@ jQuery(document).ready(function ($) {
         let allModalForm = $('#all-modal');
         event.preventDefault();
         if (linkHasClass($('#divideAll'))) return false;
-        let chk = $('table#investorsCash').find('> tbody').find('> tr').find(':checkbox:checked:not(:disabled)');
+        let chk = $('table#monies').find('> tbody').find('> tr').find(':checkbox:checked:not(:disabled)');
         let facilityId = chk.closest('td').parent().find('td:eq(0)').attr('data-facility-id');
 
         getUnderFacilitiesFromLocalStorage(
@@ -244,7 +244,7 @@ jQuery(document).ready(function ($) {
         if (linkHasClass($('#deleteAll'))) return false;
         let cashIdList = [];
         let sourceIdList = [];
-        $('table#investorsCash').find('> tbody').find('> tr').each(function () {
+        $('table#monies').find('> tbody').find('> tr').each(function () {
             $(this).find(':checkbox:checked').not(':disabled').each(function () {
                 cashIdList.push($(this).closest('tr').attr('id'));
                 sourceIdList.push($(this).closest('tr').find('> td:last').data('source'));
@@ -256,7 +256,7 @@ jQuery(document).ready(function ($) {
                 let tmp = el.split('|');
                 if (tmp.length > 0) {
                     $.each(tmp, function (i, elem) {
-                        $('table#investorsCash').find('> tbody').find('> tr').each(function () {
+                        $('table#monies').find('> tbody').find('> tr').each(function () {
                             if ($(this).attr('id') === elem) {
                                 $(this).find(':checkbox').prop('disabled', false);
                                 $(this).find(':checkbox').prop('checked', false);
@@ -266,7 +266,7 @@ jQuery(document).ready(function ($) {
                 }
             });
         } else {
-            $('table#investorsCash').find('> tbody').find('> tr').each(function () {
+            $('table#monies').find('> tbody').find('> tr').each(function () {
                 if ($(this).attr('id') === sourceIdList[0]) {
                     $(this).find(':checkbox').prop('disabled', false);
                     $(this).find(':checkbox').prop('checked', false);
@@ -284,11 +284,11 @@ jQuery(document).ready(function ($) {
         let noDivide = false;
         if (!checked) {
             blockUnblockDropdownMenus('block', noDivide);
-            $('table#investorsCash').find('> tbody').find('> tr').each(function () {
+            $('table#monies').find('> tbody').find('> tr').each(function () {
                 $(this).find(':checkbox:not(:disabled)').prop('checked', false);
             });
         } else {
-            $('table#investorsCash').find('> tbody').find('> tr').each(function () {
+            $('table#monies').find('> tbody').find('> tr').each(function () {
                 if (!$(this).data('passed')) {
                     $(this).find(':checkbox:not(:disabled)').prop('checked', false);
                 } else {
@@ -363,7 +363,7 @@ jQuery(document).ready(function ($) {
     }
 
     let url = window.location.href;
-    if (url.indexOf('investor-cash/create') >= 0 || url.indexOf('edit-cash') >= 0 || url.indexOf('double-cash') >= 0 || url.indexOf('close-cash') >= 0) {
+    if (url.indexOf('money/create') >= 0 || url.indexOf('edit-cash') >= 0 || url.indexOf('double-cash') >= 0 || url.indexOf('close-cash') >= 0) {
         populateStorageUnderFacilities('underFacilities');
     } else {
         populateStorageUnderFacilities('uFacilities');
@@ -620,7 +620,7 @@ function allMoneyCashing() {
         },
         commission: $('#cashing').val(),
         commissionNoMore: $('#commissionNoMore').val(),
-        investorsCash: {
+        monies: {
             facility: {
                 id: $("#facilities").find("option:selected").val(),
                 name: $("#facilities").find("option:selected").text()
@@ -650,7 +650,7 @@ function allMoneyCashing() {
         success: function (data) {
             closeLoader();
             showPopup(data.message);
-            window.location.href = '/investor-cash/list';
+            window.location.href = '/money/list';
         },
         error: function (e) {
             closeLoader();
@@ -783,7 +783,7 @@ function saveCash(cash, reFacility, reUnderFacility, dateReinvest, flag, invBuye
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
     let search = ({
-        "investorsCash": cash,
+        "monies": cash,
         "reFacility": reFacility,
         "reUnderFacility": reUnderFacility,
         "dateReinvest": dateReinvest,
@@ -809,7 +809,7 @@ function saveCash(cash, reFacility, reUnderFacility, dateReinvest, flag, invBuye
             showPopup();
             closePopup();
             if (flag) {
-                window.location.href = '/investor-cash/list';
+                window.location.href = '/money/list';
             }
 
             $('#facilities').prop('selectedIndex', 0);
@@ -1036,7 +1036,7 @@ function display(data) {
 }
 
 function checkChecked() {
-    return $('table#investorsCash').find('[type="checkbox"]:checked:not(:disabled)').length;
+    return $('table#monies').find('[type="checkbox"]:checked:not(:disabled)').length;
 }
 
 function prepareReinvestCash() {
@@ -1081,7 +1081,7 @@ function prepareReinvestCash() {
 
     $('#all-modal').modal('hide');
     $('#reinvestAll').prop('disabled', true);
-    $('table#investorsCash').find('> tbody').find('> tr').each(function (i) {
+    $('table#monies').find('> tbody').find('> tr').each(function (i) {
         $(this).find(':checkbox:checked').not(':disabled').each(function () {
             $(this).closest('tr').find('input:checkbox').prop('disabled', true);
             current = $(this).closest('tr');
@@ -1165,7 +1165,7 @@ function cashingMoney() {
         underFacilitiesList: underFacilitiesList,
         commission: $('#cashing').val(),
         commissionNoMore: $('#commissionNoMore').val(),
-        investorsCash: {
+        monies: {
             facility: {
                 id: $("#facilities").find("option:selected").val(),
                 name: $("#facilities").find("option:selected").text()
@@ -1196,7 +1196,7 @@ function cashingMoney() {
             closeLoader();
             if (data === '') {
                 showPopup("Деньги успешно выведены");
-                window.location.href = '/investor-cash/list';
+                window.location.href = '/money/list';
             } else {
                 $('#toBigSumForCashing').html(data);
             }
@@ -1240,7 +1240,7 @@ function prepareDivideCash() {
 
     $('#all-modal').modal('hide');
     blockUnblockDropdownMenus('block');
-    $('table#investorsCash').find('> tbody').find('> tr').each(function (i) {
+    $('table#monies').find('> tbody').find('> tr').each(function (i) {
         $(this).find(':checkbox:checked').not(':disabled').each(function () {
             $(this).closest('tr').find('input:checkbox').prop('disabled', true);
             current = $(this).closest('tr');
@@ -1367,7 +1367,7 @@ function prepareCloseCash() {
     let realDateGiven = new Date($('#realDateGiven').val()).getTime();
 
     let cashIdList = [];
-    $('table#investorsCash').find('> tbody').find('> tr').each(function () {
+    $('table#monies').find('> tbody').find('> tr').each(function () {
         $(this).find(':checkbox:checked').not(':disabled').each(function () {
             cashIdList.push($(this).closest('tr').attr('id'));
         })
@@ -1411,7 +1411,7 @@ function closeCash(cashIdList, invBuyer, dateClosingInvest, what, realDateGiven)
 
 function blockMenus() {
     let current;
-    $('table#investorsCash').find('> tbody').find('> tr').each(function (i) {
+    $('table#monies').find('> tbody').find('> tr').each(function (i) {
         current = $(this).closest('tr');
         if (current.children('td:eq(7)').text() === 'Реинвестирование с аренды') {
             current.find('#aEdit').addClass('disabled');
@@ -1441,7 +1441,7 @@ function blockUnblockDropdownMenus(blockUnblock, noDivide) {
 }
 
 function blockActions() {
-    $('table#investorsCash').find('> tbody').find('> tr').each(function () {
+    $('table#monies').find('> tbody').find('> tr').each(function () {
         $(this).find(':checkbox:disabled').each(function () {
             $(this).closest('tr').find('#aDivide').addClass('disabled');
             $(this).closest('tr').find('#aDouble').addClass('disabled');

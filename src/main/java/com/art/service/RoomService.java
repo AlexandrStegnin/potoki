@@ -20,13 +20,13 @@ public class RoomService {
 
     private final InvestorsFlowsService flowsService;
 
-    private final InvestorCashService cashService;
+    private final MoneyService cashService;
 
     private final AccountService accountService;
 
     private final RoomRepository roomRepository;
 
-    public RoomService(InvestorsFlowsService flowsService, InvestorCashService cashService,
+    public RoomService(InvestorsFlowsService flowsService, MoneyService cashService,
                        AccountService accountService, RoomRepository roomRepository) {
         this.flowsService = flowsService;
         this.cashService = cashService;
@@ -65,7 +65,7 @@ public class RoomService {
         List<InvestorsFlows> flows = flowsService.findByRoomId(id);
         flows.forEach(f -> f.setRoom(null));
         flowsService.saveList(flows);
-        List<InvestorCash> cashes = cashService.findByRoomId(id);
+        List<Money> cashes = cashService.findByRoomId(id);
         cashes.forEach(c -> {
             c.setRoom(null);
             cashService.update(c);

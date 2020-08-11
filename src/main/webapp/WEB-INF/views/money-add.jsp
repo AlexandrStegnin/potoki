@@ -23,7 +23,7 @@
 <body>
 <%@include file="header.jsp" %>
 <div class="container">
-    <form:form method="POST" modelAttribute="investorsCash" class="form-horizontal generic-container"
+    <form:form method="POST" modelAttribute="money" class="form-horizontal generic-container"
                style="margin: 10px 0 10px 0" id="iCashTable">
         <form:input type="hidden" path="id" id="id"/>
         <form:input type="hidden" path="" id="newCash" value="${newCash}"/>
@@ -239,7 +239,7 @@
             <div class="col-sm-2 col-sm-offset-2">
             <button type="submit" class="btn btn-primary btn-sm">${title}</button>
             </div>
-            <a href="<c:url value='/investor-cash/list' />" class="btn btn-sm btn-danger" role="button">Отмена</a>
+            <a href="<c:url value='/money/list' />" class="btn btn-sm btn-danger" role="button">Отмена</a>
         </div>
     </form:form>
 </div>
@@ -255,6 +255,6 @@
 <script type="text/javascript" src="<c:url value='/resources/core/js/jsFunctions.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
-<script type="text/javascript" src="<c:url value='/resources/core/js/investors-cash.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/monies.js' />"></script>
 </body>
 </html>

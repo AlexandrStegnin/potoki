@@ -110,37 +110,37 @@ public class Location {
     };
 
     // Деньги инвесторов
-    public static final String INVESTOR_CASH = "/investor-cash";
+    public static final String MONEY = "/money";
 
-    public static final String INVESTOR_CASH_LIST = INVESTOR_CASH + "/list";
+    public static final String MONEY_LIST = MONEY + "/list";
 
-    public static final String INVESTOR_CASH_CREATE = INVESTOR_CASH + "/create";
+    public static final String MONEY_CREATE = MONEY + "/create";
 
-    public static final String INVESTOR_CASH_EDIT_ID = INVESTOR_CASH + "/edit/{id}";
+    public static final String MONEY_EDIT_ID = MONEY + "/edit/{id}";
 
-    public static final String INVESTOR_CASH_CLOSE_ID = INVESTOR_CASH + "/close/{id}";
+    public static final String MONEY_CLOSE_ID = MONEY + "/close/{id}";
 
-    public static final String INVESTOR_CASH_SAVE = INVESTOR_CASH + "/save";
+    public static final String MONEY_SAVE = MONEY + "/save";
 
-    public static final String INVESTOR_CASH_DOUBLE_ID = INVESTOR_CASH + "/double/{id}";
+    public static final String MONEY_DOUBLE_ID = MONEY + "/double/{id}";
 
-    public static final String INVESTOR_CASH_DELETE_LIST = INVESTOR_CASH + "/delete/list";
+    public static final String MONEY_DELETE_LIST = MONEY + "/delete/list";
 
-    public static final String INVESTOR_CASH_CASHING = INVESTOR_CASH + "/cashing";
+    public static final String MONEY_CASHING = MONEY + "/cashing";
 
-    public static final String INVESTOR_CASH_CASHING_ALL = INVESTOR_CASH_CASHING + "/all";
+    public static final String MONEY_CASHING_ALL = MONEY_CASHING + "/all";
 
-    public static final String INVESTOR_CASH_GET = INVESTOR_CASH + "/get";
+    public static final String MONEY_GET = MONEY + "/get";
 
-    public static final String INVESTOR_CASH_REINVEST_SAVE = INVESTOR_CASH + "/reinvest/save";
+    public static final String MONEY_REINVEST_SAVE = MONEY + "/reinvest/save";
 
-    public static final String INVESTOR_CASH_REINVEST_CASH_SAVE = INVESTOR_CASH + "/reinvest/cash/save";
+    public static final String MONEY_REINVEST_CASH_SAVE = MONEY + "/reinvest/cash/save";
 
-    public static final String INVESTOR_CASH_DIVIDE = "/divide-cash";
+    public static final String MONEY_DIVIDE = "/divide-cash";
 
-    public static final String INVESTOR_CASH_DIVIDE_MULTIPLE = "/divide-multiple";
+    public static final String MONEY_DIVIDE_MULTIPLE = "/divide-multiple";
 
-    public static final String INVESTOR_CASH_CLOSE = INVESTOR_CASH + "/close";
+    public static final String MONEY_CLOSE = MONEY + "/close";
 
     // Детали новых денег
     public static final String NEW_CASH_DETAILS = "/new-cash-details";
@@ -189,12 +189,12 @@ public class Location {
             TOKENS + WILD_CARD,
             TOKENS_GENERATE,
             BITRIX_MERGE,
-            INVESTOR_CASH + WILD_CARD,
+            MONEY + WILD_CARD,
             NEW_CASH_DETAILS + WILD_CARD,
             TYPE_CLOSING + WILD_CARD,
-            INVESTOR_CASH_DIVIDE,
-            INVESTOR_CASH_DIVIDE_MULTIPLE,
-            INVESTOR_CASH + WILD_CARD
+            MONEY_DIVIDE,
+            MONEY_DIVIDE_MULTIPLE,
+            MONEY + WILD_CARD
     };
 
     public static final String[] INVESTOR_URLS = {

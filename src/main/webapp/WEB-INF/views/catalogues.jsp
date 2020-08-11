@@ -30,7 +30,7 @@
         <a href="<c:url value='/facilities/list' />" class="btn btn-success btn-block">Объекты (facility)</a>
         <a href="<c:url value='/facilities/child/list' />" class="btn btn-success btn-block">Подобъекы (under_facility)</a>
         <a href="<c:url value='/rooms/list' />" class="btn btn-success btn-block">Помещения (room)</a>
-        <a href="<c:url value='/investor-cash/list' />" class="btn btn-success btn-block">Деньги инвесторов (investor_cash)</a>
+        <a href="<c:url value='/money/list' />" class="btn btn-success btn-block">Деньги инвесторов (investor_cash)</a>
         <a href="<c:url value='/paysToInv' />" class="btn btn-success btn-block">Выплаты инвесторам (аренда) (InvestorsFlows)</a>
         <a href="<c:url value='/flowsSale' />" class="btn btn-success btn-block">Выплаты инвесторам (продажа) (InvestorsFlowsSale)</a>
         <a href="<c:url value='/cash-sources/list' />" class="btn btn-success btn-block">Источники получения денег (cash_source)</a>

@@ -1,6 +1,6 @@
 package com.art.repository;
 
-import com.art.model.InvestorCash;
+import com.art.model.Money;
 import com.art.model.TransactionLog;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +19,7 @@ public interface TransactionLogRepository extends JpaRepository<TransactionLog, 
 
     Page<TransactionLog> findAll(Specification<TransactionLog> filter, Pageable pageable);
 
-    List<TransactionLog> findByInvestorCashesContains(InvestorCash cash);
+    List<TransactionLog> findByMoniesContains(Money money);
 
     List<TransactionLog> findByBlockedFromId(Long blockedFromId);
 

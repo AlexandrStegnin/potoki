@@ -33,7 +33,7 @@
 <div class="container-fluid">
     <div class="row" style="margin: 10px;">
         <div class="col-md-12">
-            <form:form modelAttribute="cashFilters" method="POST" action="/investor-cash/list"
+            <form:form modelAttribute="cashFilters" method="POST" action="/money/list"
                        class="form-inline  d-flex flex-row justify-content-center"
                        id="search-form">
             <input type="hidden" id="pageNumber" name="pageNumber" value="0">
@@ -124,7 +124,7 @@
                                 class="btn btn-warning input-sm dropdown-toggle pull-right">Деньги <span
                                 class="fas fa-list"></span></button>
                         <div class="dropdown-menu dropdown-menu-right" id="addGetCash">
-                            <a class="dropdown-item" id="addCash" href="<c:url value='/investor-cash/create' />">Добавить
+                            <a class="dropdown-item" id="addCash" href="<c:url value='/money/create' />">Добавить
                                 деньги</a>
                             <a class="dropdown-item" id="getCash" href="<c:url value='/getInvestorsCash' />">Вывести
                                 деньги</a>
@@ -164,7 +164,7 @@
 </div>
 <div class="container-fluid">
     <table class="table table-striped w-auto table-hover table-sm" style="font-size: smaller; table-layout: fixed"
-           id="investorsCash">
+           id="monies">
         <thead style="text-align: center">
         <tr>
             <th>Объект</th>
@@ -184,27 +184,27 @@
         </tr>
         </thead>
         <tbody style="text-align: center">
-        <c:forEach items="${page.content}" var="cash">
-            <tr id="${cash.id}">
-                <td data-facility-id="${cash.facility.id}">${cash.facility.name}</td>
-                <td>${cash.underFacility.name}</td>
-                <td>${cash.investor.login}</td>
+        <c:forEach items="${page.content}" var="money">
+            <tr id="${money.id}">
+                <td data-facility-id="${money.facility.id}">${money.facility.name}</td>
+                <td>${money.underFacility.name}</td>
+                <td>${money.investor.login}</td>
                 <td>
                     <fmt:setLocale value="ru-RU" scope="session"/>
-                    <fmt:formatNumber value="${cash.givenCash}" type="currency" minFractionDigits="2"/>
+                    <fmt:formatNumber value="${money.givenCash}" type="currency" minFractionDigits="2"/>
                 </td>
-                <td>${cash.getDateGivenToLocalDate()}</td>
-                <td>${cash.cashSource.name}</td>
-                <td>${cash.newCashDetail.name}</td>
-                <td>${cash.getDateClosingToLocalDate()}</td>
-                <td>${cash.typeClosing.name}</td>
+                <td>${money.getDateGivenToLocalDate()}</td>
+                <td>${money.cashSource.name}</td>
+                <td>${money.newCashDetail.name}</td>
+                <td>${money.getDateClosingToLocalDate()}</td>
+                <td>${money.typeClosing.name}</td>
                 <c:set var="is1C" value="Да"/>
-                <c:if test="${empty cash.transactionUUID}">
+                <c:if test="${empty money.transactionUUID}">
                     <c:set var="is1C" value="Нет"/>
                 </c:if>
                 <td>${is1C}</td>
                 <c:choose>
-                    <c:when test="${cash.typeClosing == null}">
+                    <c:when test="${money.typeClosing == null}">
                         <c:set var="isDisabledClass" value="isEnabled"/>
                     </c:when>
                     <c:otherwise>
@@ -220,18 +220,18 @@
                                         class="btn btn-success btn-sm dropdown-toggle pull-right"><span
                                         class="fas fa-cog"></span></button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" id="aEdit" href="<c:url value='/edit-cash-${cash.id}' />">Изменить</a>
+                                    <a class="dropdown-item" id="aEdit" href="<c:url value='/edit-cash-${money.id}' />">Изменить</a>
                                     <a class="dropdown-item" id="aDivide"
-                                       href="<c:url value='/double-cash-${cash.id}' />">Разделить</a>
+                                       href="<c:url value='/double-cash-${money.id}' />">Разделить</a>
                                     <a class="dropdown-item" id="aDouble"
-                                       href="<c:url value='/close-cash-${cash.id}' />">Закрыть</a></div>
+                                       href="<c:url value='/close-cash-${money.id}' />">Закрыть</a></div>
                             </div>
                         </td>
                     </sec:authorize>
                 </sec:authorize>
                 <td>
                     <c:choose>
-                        <c:when test="${cash.isReinvest == 1}">
+                        <c:when test="${money.isReinvest == 1}">
                             <c:set var="checked" value="checked "/>
                             <c:set var="disabled" value="disabled "/>
                         </c:when>
@@ -241,7 +241,7 @@
                         </c:otherwise>
                     </c:choose>
                     <c:choose>
-                        <c:when test="${cash.typeClosing.name.length() > 0 && cash.givenCash != 0}">
+                        <c:when test="${money.typeClosing.name.length() > 0 && money.givenCash != 0}">
                             <c:set var="enabled" value="disabled "/>
                         </c:when>
                         <c:otherwise>
@@ -616,7 +616,7 @@
 <script type="text/javascript" src="<c:url value='/resources/core/js/investor-annex.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/jsFunctions.js' />"></script>
-<script type="text/javascript" src="<c:url value='/resources/core/js/investors-cash.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/monies.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/progress.js' />"></script>
 </body>

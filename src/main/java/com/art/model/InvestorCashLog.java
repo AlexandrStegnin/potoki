@@ -108,7 +108,7 @@ public class InvestorCashLog {
     @Column(name = "instance_of")
     private CashType instanceOf;
 
-    public InvestorCashLog(InvestorCash cash, TransactionLog log, CashType instanceOf) {
+    public InvestorCashLog(Money cash, TransactionLog log, CashType instanceOf) {
         this.cashId = cash.getId();
         this.investor = cash.getInvestor();
         this.facility = cash.getFacility();

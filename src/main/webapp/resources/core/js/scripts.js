@@ -323,7 +323,7 @@ function populateFilters(pageName) {
     allRows = $('#all').prop('checked');
 
     switch (pageName) {
-        case "investor-cash":
+        case "money":
             //Search form
             $.each(fFacilities.find(':selected'), function (ind, el) {
                 facilitiesId.push(el.value);
@@ -435,8 +435,8 @@ function getFiltersFromLS(pageName) {
             case "paysToInv":
                 getFilters("paysToInv", lastFilters);
                 break;
-            case "investor-cash":
-                getFilters("investorscash", lastFilters);
+            case "money":
+                getFilters("money", lastFilters);
                 break;
             case "flowsSale":
                 $('#fFacilities option[value="' + lastFilters[0].facilityId + '"]').attr('selected', 'selected');
@@ -462,7 +462,7 @@ function getFilters(pageName, lastFilters) {
     let beginPeriod = $('#beginPeriod');
     let endPeriod = $('#endPeriod');
     let investors;
-    if (pageName === 'investorscash') {
+    if (pageName === 'money') {
         let facilitiesId = lastFilters[0].facilitiesId;
         $.each(facilitiesId, function (ind, el) {
             $('#fFacilities option[value=' + el + ']').attr('selected', 'selected').selectpicker('refresh');
@@ -488,7 +488,7 @@ function getFilters(pageName, lastFilters) {
     $('#srcFacilities').val(lastFilters[1].srcFacility);
     $('#srcUnderFacilities').val(lastFilters[1].srcUnderFacility);
     $('#shareKindName').val(lastFilters[1].shareKindName);
-    if (pageName !== 'investorscash') {
+    if (pageName !== 'money') {
         if (lastFilters[0].facilityId !== 0) {
             getUnderFacilitiesFromLocalStorage(lastFilters[0].facilityId, 'uFacilities');
         }

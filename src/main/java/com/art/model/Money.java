@@ -15,8 +15,8 @@ import java.util.Date;
 @ToString(exclude = {"investor", "facility"})
 @EqualsAndHashCode
 @Entity
-@Table(name = "investor_cash")
-public class InvestorCash implements Serializable {
+@Table(name = "money")
+public class Money implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -98,10 +98,10 @@ public class InvestorCash implements Serializable {
     @Transient
     private transient AppUser investorBuyer;
 
-    public InvestorCash() {
+    public Money() {
     }
 
-    public InvestorCash(InvestorCash cash) {
+    public Money(Money cash) {
         this.id = null;
         this.givenCash = cash.getGivenCash();
         this.dateGiven = cash.getDateGiven();

@@ -28,10 +28,10 @@ public class Constant {
 
     public static final String USERS_ANNEXES_CACHE_KEY = "usersAnnexes";
 
-    public static final String INVESTOR_CASHES_CACHE_KEY = "investorCashes";
+    public static final String MONEY_CACHE_KEY = "monies";
 
     public static final String INVESTOR_FLOWS_CACHE_KEY = "investorFlows";
 
-    public static final String INVESTOR_FLOWS_SALE_CACHE_KEY = "investorFlowsЫфду";
+    public static final String INVESTOR_FLOWS_SALE_CACHE_KEY = "investorFlowsSale";
 
 }

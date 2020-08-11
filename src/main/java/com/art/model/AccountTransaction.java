@@ -40,6 +40,6 @@ public class AccountTransaction {
 
     @OneToOne
     @JoinColumn(name = "cash_id")
-    private InvestorCash cash;
+    private Money cash;
 
 }

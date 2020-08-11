@@ -1,7 +1,7 @@
 package com.art.model.supporting.dto;
 
 import com.art.model.InvestorCashLog;
-import com.art.model.InvestorCash;
+import com.art.model.Money;
 import com.art.model.supporting.enums.CashType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,7 +30,7 @@ public class InvestorCashDTO {
 
     private String cashType;
 
-    public InvestorCashDTO(InvestorCash cash) {
+    public InvestorCashDTO(Money cash) {
         this.id = cash.getId();
         this.investor = cash.getInvestor().getLogin();
         this.facility = cash.getFacility().getName();

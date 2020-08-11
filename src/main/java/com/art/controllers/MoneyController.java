@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
 
 @Controller
 @Transactional
-public class InvestorCashController {
+public class MoneyController {
 
     private final StatusService statusService;
 
@@ -47,7 +47,7 @@ public class InvestorCashController {
 
     private final AfterCashingService afterCashingService;
 
-    private final InvestorCashService investorCashService;
+    private final MoneyService moneyService;
 
     private final FacilityService facilityService;
 
@@ -69,15 +69,15 @@ public class InvestorCashController {
 
     private final CashFilter cashFilters = new CashFilter();
 
-    public InvestorCashController(InvestorCashService investorCashService,
-                                  StatusService statusService, TransactionLogService transactionLogService,
-                                  AfterCashingService afterCashingService, FacilityService facilityService,
-                                  InvestorsFlowsSaleService investorsFlowsSaleService, UserService userService,
-                                  CashSourceService cashSourceService, NewCashDetailService newCashDetailService,
-                                  UnderFacilityService underFacilityService,
-                                  InvestorsFlowsService investorsFlowsService,
-                                  TypeClosingService typeClosingService) {
-        this.investorCashService = investorCashService;
+    public MoneyController(MoneyService moneyService,
+                           StatusService statusService, TransactionLogService transactionLogService,
+                           AfterCashingService afterCashingService, FacilityService facilityService,
+                           InvestorsFlowsSaleService investorsFlowsSaleService, UserService userService,
+                           CashSourceService cashSourceService, NewCashDetailService newCashDetailService,
+                           UnderFacilityService underFacilityService,
+                           InvestorsFlowsService investorsFlowsService,
+                           TypeClosingService typeClosingService) {
+        this.moneyService = moneyService;
         this.statusService = statusService;
         this.transactionLogService = transactionLogService;
         this.afterCashingService = afterCashingService;
@@ -97,10 +97,10 @@ public class InvestorCashController {
      * @param pageable для постраничного отображения
      * @return список денег инвесторов
      */
-    @GetMapping(path = Location.INVESTOR_CASH_LIST)
-    public ModelAndView invCashByPageNumber(@PageableDefault(size = 100) @SortDefault Pageable pageable) {
-        ModelAndView modelAndView = new ModelAndView("cash-list");
-        Page<InvestorCash> page = investorCashService.findAll(cashFilters, pageable);
+    @GetMapping(path = Location.MONEY_LIST)
+    public ModelAndView moneyByPageNumber(@PageableDefault(size = 100) @SortDefault Pageable pageable) {
+        ModelAndView modelAndView = new ModelAndView("money-list");
+        Page<Money> page = moneyService.findAll(cashFilters, pageable);
         modelAndView.addObject("page", page);
         modelAndView.addObject("cashFilters", cashFilters);
         modelAndView.addObject("searchSummary", filters);
@@ -113,8 +113,8 @@ public class InvestorCashController {
      * @param cashFilters фильтр
      * @return список денег инвесторов
      */
-    @PostMapping(path = Location.INVESTOR_CASH_LIST)
-    public ModelAndView invCashPageable(@ModelAttribute(value = "cashFilters") CashFilter cashFilters) {
+    @PostMapping(path = Location.MONEY_LIST)
+    public ModelAndView moneyPageable(@ModelAttribute(value = "cashFilters") CashFilter cashFilters) {
         Pageable pageable;
         if (cashFilters.getFiltered() == 0) {
             cashFilters.setFiltered(1);
@@ -124,8 +124,8 @@ public class InvestorCashController {
         } else {
             pageable = new PageRequest(cashFilters.getPageNumber(), cashFilters.getPageSize());
         }
-        ModelAndView modelAndView = new ModelAndView("cash-list");
-        Page<InvestorCash> page = investorCashService.findAll(cashFilters, pageable);
+        ModelAndView modelAndView = new ModelAndView("money-list");
+        Page<Money> page = moneyService.findAll(cashFilters, pageable);
         modelAndView.addObject("page", page);
         modelAndView.addObject("cashFilters", cashFilters);
         modelAndView.addObject("searchSummary", filters);
@@ -138,41 +138,39 @@ public class InvestorCashController {
      * @param model модель со страницы
      * @return страница для создания суммы
      */
-    @GetMapping(path = Location.INVESTOR_CASH_CREATE)
-    public String newCash(ModelMap model) {
+    @GetMapping(path = Location.MONEY_CREATE)
+    public String newMoney(ModelMap model) {
         String title = "Добавление денег инвестора";
-        InvestorCash investorCash = new InvestorCash();
-
-        model.addAttribute("investorsCash", investorCash);
+        model.addAttribute("money", new Money());
         model.addAttribute("newCash", true);
         model.addAttribute("edit", false);
         model.addAttribute("doubleCash", false);
         model.addAttribute("closeCash", false);
         model.addAttribute("title", title);
-        return "cash-add";
+        return "money-add";
     }
 
     /**
      * Создать сумму инвестора
      *
-     * @param investorCash сумма инвестора
+     * @param money сумма инвестора
      * @param result для валидации ошибок привязки
      * @param model модель со страницы
      * @return страница успешной операции
      */
-    @PostMapping(path = Location.INVESTOR_CASH_CREATE)
-    public String saveCash(@ModelAttribute("investorsCash") InvestorCash investorCash,
+    @PostMapping(path = Location.MONEY_CREATE)
+    public String saveCash(@ModelAttribute("money") Money money,
                            BindingResult result, ModelMap model) {
 
         if (result.hasErrors()) {
-            return "cash-add";
+            return "money-add";
         }
         String ret = "списку денег инвестора";
-        investorCash = investorCashService.create(investorCash);
-        transactionLogService.create(investorCash, TransactionType.CREATE);
-        model.addAttribute("success", "Деньги инвестора " + investorCash.getInvestor().getLogin() +
+        money = moneyService.create(money);
+        transactionLogService.create(money, TransactionType.CREATE);
+        model.addAttribute("success", "Деньги инвестора " + money.getInvestor().getLogin() +
                 " успешно добавлены.");
-        model.addAttribute("redirectUrl", Location.INVESTOR_CASH_LIST);
+        model.addAttribute("redirectUrl", Location.MONEY_LIST);
         model.addAttribute("ret", ret);
         return "registration-success";
     }
@@ -187,30 +185,30 @@ public class InvestorCashController {
     @GetMapping(value = {"/edit-cash-{id}"})
     public String editCash(@PathVariable Long id, ModelMap model) {
         String title = "Обновление данных по деньгам инвесторов";
-        InvestorCash investorCash = investorCashService.findById(id);
+        Money money = moneyService.findById(id);
 
-        model.addAttribute("investorsCash", investorCash);
+        model.addAttribute("investorsCash", money);
         model.addAttribute("newCash", false);
         model.addAttribute("edit", true);
         model.addAttribute("closeCash", false);
         model.addAttribute("doubleCash", false);
         model.addAttribute("title", title);
-        return "cash-add";
+        return "money-add";
     }
 
     /**
      * Обновление суммы инвестора
      *
-     * @param investorCash сумма для обновления
+     * @param money сумма для обновления
      * @param id id суммы
      * @return переадресация на страницу отображения денег инвесторов
      */
     @PostMapping(value = "/edit-cash-{id}")
-    public String editCash(@ModelAttribute("investorsCash") InvestorCash investorCash, @PathVariable("id") Long id) {
-        InvestorCash dbCash = investorCashService.findById(id);
+    public String editCash(@ModelAttribute("investorsCash") Money money, @PathVariable("id") Long id) {
+        Money dbCash = moneyService.findById(id);
         transactionLogService.update(dbCash);
-        investorCashService.update(investorCash);
-        return "redirect:" + Location.INVESTOR_CASH_LIST;
+        moneyService.update(money);
+        return "redirect:" + Location.MONEY_LIST;
     }
 
     /**
@@ -223,44 +221,44 @@ public class InvestorCashController {
     @GetMapping(value = {"/close-cash-{id}"})
     public String closeCash(@PathVariable Long id, ModelMap model) {
         String title = "Закрытие вложения";
-        InvestorCash investorCash = investorCashService.findById(id);
-        investorCash.setGivenCash(investorCash.getGivenCash().setScale(2, RoundingMode.DOWN));
-        model.addAttribute("investorsCash", investorCash);
+        Money money = moneyService.findById(id);
+        money.setGivenCash(money.getGivenCash().setScale(2, RoundingMode.DOWN));
+        model.addAttribute("investorsCash", money);
 
         model.addAttribute("newCash", false);
         model.addAttribute("edit", false);
         model.addAttribute("closeCash", true);
         model.addAttribute("doubleCash", false);
         model.addAttribute("title", title);
-        return "cash-add";
+        return "money-add";
     }
 
     /**
      * Закрытие суммы вложения
      *
-     * @param investorCash сумма для закрытия
+     * @param money сумма для закрытия
      * @param id id суммы
      * @param dateClosingInvest дата закрытия
      * @param realDateGiven реальная дата передачи денег
      * @return переадресация на страницу денег инвесторов
      */
     @PostMapping(value = "/close-cash-{id}")
-    public String closeCash(@ModelAttribute("investorsCash") InvestorCash investorCash,
+    public String closeCash(@ModelAttribute("investorsCash") Money money,
                             @PathVariable("id") Long id, @RequestParam("dateClosingInvest") Date dateClosingInvest,
                             @RequestParam("realDateGiven") Date realDateGiven) {
-        ModelAndView modelAndView = new ModelAndView("cash-list");
+        ModelAndView modelAndView = new ModelAndView("money-list");
 
         AppUser invBuyer;
         TypeClosing closingInvest = typeClosingService.findByName("Перепродажа доли");
         NewCashDetail newCashDetail = newCashDetailService.findByName("Перепокупка доли");
 
         // Перепродажа доли
-        if (null != investorCash.getInvestorBuyer()) {
-            invBuyer = userService.findById(investorCash.getInvestorBuyer().getId());
+        if (null != money.getInvestorBuyer()) {
+            invBuyer = userService.findById(money.getInvestorBuyer().getId());
 
-            InvestorCash cash = new InvestorCash(investorCashService.findById(investorCash.getId()));
-            InvestorCash newInvestorCash = new InvestorCash(investorCashService.findById(investorCash.getId()));
-            InvestorCash oldCash = investorCashService.findById(investorCash.getId());
+            Money cash = new Money(moneyService.findById(money.getId()));
+            Money newMoney = new Money(moneyService.findById(money.getId()));
+            Money oldCash = moneyService.findById(money.getId());
             oldCash.setDateClosing(dateClosingInvest);
             oldCash.setTypeClosing(closingInvest);
             oldCash.setRealDateGiven(realDateGiven);
@@ -268,41 +266,41 @@ public class InvestorCashController {
             cash.setId(null);
             cash.setInvestor(invBuyer);
             cash.setDateGiven(dateClosingInvest);
-            cash.setSourceId(investorCash.getId());
+            cash.setSourceId(money.getId());
             cash.setCashSource(null);
             cash.setSource(null);
             cash.setNewCashDetail(newCashDetail);
 
-            newInvestorCash.setId(null);
-            newInvestorCash.setCashSource(null);
-            newInvestorCash.setSource(null);
-            newInvestorCash.setGivenCash(newInvestorCash.getGivenCash().negate());
-            newInvestorCash.setSourceId(investorCash.getId());
-            newInvestorCash.setDateGiven(dateClosingInvest);
-            newInvestorCash.setDateClosing(dateClosingInvest);
-            newInvestorCash.setTypeClosing(closingInvest);
+            newMoney.setId(null);
+            newMoney.setCashSource(null);
+            newMoney.setSource(null);
+            newMoney.setGivenCash(newMoney.getGivenCash().negate());
+            newMoney.setSourceId(money.getId());
+            newMoney.setDateGiven(dateClosingInvest);
+            newMoney.setDateClosing(dateClosingInvest);
+            newMoney.setTypeClosing(closingInvest);
 
-            investorCashService.createNew(cash);
-            investorCashService.createNew(newInvestorCash);
-            investorCashService.update(oldCash);
-            InvestorCash transactionOldCash = new InvestorCash(oldCash);
+            moneyService.createNew(cash);
+            moneyService.createNew(newMoney);
+            moneyService.update(oldCash);
+            Money transactionOldCash = new Money(oldCash);
             transactionOldCash.setId(oldCash.getId());
-            Set<InvestorCash> cashSet = new HashSet<>();
+            Set<Money> cashSet = new HashSet<>();
             cashSet.add(cash);
-            cashSet.add(newInvestorCash);
+            cashSet.add(newMoney);
             cashSet.add(transactionOldCash);
             transactionLogService.resale(Collections.singleton(transactionOldCash), cashSet);
         } else {
-            InvestorCash updatedCash = investorCashService.findById(investorCash.getId());
+            Money updatedCash = moneyService.findById(money.getId());
             transactionLogService.close(Collections.singleton(updatedCash));
             updatedCash.setDateClosing(dateClosingInvest);
             updatedCash.setRealDateGiven(realDateGiven);
 
             updatedCash.setTypeClosing(typeClosingService.findByName("Вывод"));
-            investorCashService.update(updatedCash);
+            moneyService.update(updatedCash);
         }
-        modelAndView.addObject("investorsCash", investorCashService.findAll());
-        return "redirect:" + Location.INVESTOR_CASH_LIST;
+        modelAndView.addObject("investorsCash", moneyService.findAll());
+        return "redirect:" + Location.MONEY_LIST;
     }
 
     /**
@@ -316,7 +314,7 @@ public class InvestorCashController {
     GenericResponse saveCash(@RequestBody SearchSummary searchSummary) {
 
         GenericResponse response = new GenericResponse();
-        InvestorCash investorCash = searchSummary.getInvestorCash();
+        Money money = searchSummary.getMoney();
 
         Facility reFacility = searchSummary.getReFacility();
         UnderFacility reUnderFacility = searchSummary.getReUnderFacility();
@@ -324,27 +322,27 @@ public class InvestorCashController {
 
         String whatWeDoWithCash = "обновлены.";
 
-        String invLogin = investorCash.getInvestor().getLogin();
+        String invLogin = money.getInvestor().getLogin();
 
-        if (null != reFacility && null != investorCash.getId() &&
-                null != investorCash.getNewCashDetail() &&
-                (!investorCash.getNewCashDetail().getName().equalsIgnoreCase("Реинвестирование с продажи") &&
-                        !investorCash.getNewCashDetail().getName().equalsIgnoreCase("Реинвестирование с аренды")) &&
+        if (null != reFacility && null != money.getId() &&
+                null != money.getNewCashDetail() &&
+                (!money.getNewCashDetail().getName().equalsIgnoreCase("Реинвестирование с продажи") &&
+                        !money.getNewCashDetail().getName().equalsIgnoreCase("Реинвестирование с аренды")) &&
                 (null != searchSummary.getWhat() && !searchSummary.getWhat().equalsIgnoreCase("edit"))) {
-            InvestorCash newInvestorCash = new InvestorCash();
-            newInvestorCash.setFacility(reFacility);
-            newInvestorCash.setSourceFacility(investorCash.getFacility());
-            newInvestorCash.setUnderFacility(reUnderFacility);
-            newInvestorCash.setInvestor(investorCash.getInvestor());
-            newInvestorCash.setGivenCash(investorCash.getGivenCash());
-            newInvestorCash.setDateGiven(reinvestDate);
-            newInvestorCash.setCashSource(null);
-            newInvestorCash.setNewCashDetail(newCashDetailService.findByName("Реинвестирование с продажи"));
-            newInvestorCash.setShareType(investorCash.getShareType());
-            investorCashService.create(newInvestorCash);
+            Money newMoney = new Money();
+            newMoney.setFacility(reFacility);
+            newMoney.setSourceFacility(money.getFacility());
+            newMoney.setUnderFacility(reUnderFacility);
+            newMoney.setInvestor(money.getInvestor());
+            newMoney.setGivenCash(money.getGivenCash());
+            newMoney.setDateGiven(reinvestDate);
+            newMoney.setCashSource(null);
+            newMoney.setNewCashDetail(newCashDetailService.findByName("Реинвестирование с продажи"));
+            newMoney.setShareType(money.getShareType());
+            moneyService.create(newMoney);
             whatWeDoWithCash = "добавлены.";
         }
-        investorCashService.update(investorCash);
+        moneyService.update(money);
 
         response.setMessage("Деньги инвестора " + invLogin + " успешно " + whatWeDoWithCash);
         return response;
@@ -353,7 +351,7 @@ public class InvestorCashController {
     @GetMapping(value = {"/double-cash-{id}"})
     public String doubleInvCash(@PathVariable Long id, ModelMap model) {
         String title = "Разделение строк по деньгам инвесторов";
-        InvestorCash investorCash = investorCashService.findById(id);
+        Money money = moneyService.findById(id);
 
         List<UnderFacility> underFacilityList = new ArrayList<>(0);
         UnderFacility underFacility = new UnderFacility();
@@ -362,55 +360,55 @@ public class InvestorCashController {
         underFacilityList.add(underFacility);
         underFacilityList.addAll(underFacilityService.findAll()
                 .stream()
-                .filter(uf -> uf.getFacility().equals(investorCash.getFacility()))
+                .filter(uf -> uf.getFacility().equals(money.getFacility()))
                 .collect(Collectors.toList()));
 
         model.addAttribute("underFacilitiesList", underFacilityList);
-        model.addAttribute("investorsCash", investorCash);
+        model.addAttribute("investorsCash", money);
         model.addAttribute("newCash", false);
         model.addAttribute("edit", false);
         model.addAttribute("closeCash", false);
         model.addAttribute("doubleCash", true);
         model.addAttribute("title", title);
-        return "cash-add";
+        return "money-add";
     }
 
     @PostMapping(value = "/double-cash-{id}")
-    public String doubleCash(@ModelAttribute("investorsCash") InvestorCash investorCash, @PathVariable("id") int id) {
-        InvestorCash newInvestorCash = investorCashService.findById(investorCash.getId());
-        InvestorCash inMemoryCash = investorCashService.findById(investorCash.getId());
-        ModelAndView model = new ModelAndView("cash-add");
-        investorCash.setFacility(newInvestorCash.getFacility());
-        investorCash.setInvestor(newInvestorCash.getInvestor());
-        investorCash.setDateGiven(newInvestorCash.getDateGiven());
-        investorCash.setCashSource(newInvestorCash.getCashSource());
-        investorCash.setNewCashDetail(newInvestorCash.getNewCashDetail());
-        investorCash.setShareType(inMemoryCash.getShareType());
+    public String doubleCash(@ModelAttribute("investorsCash") Money money, @PathVariable("id") int id) {
+        Money newMoney = moneyService.findById(money.getId());
+        Money inMemoryCash = moneyService.findById(money.getId());
+        ModelAndView model = new ModelAndView("money-add");
+        money.setFacility(newMoney.getFacility());
+        money.setInvestor(newMoney.getInvestor());
+        money.setDateGiven(newMoney.getDateGiven());
+        money.setCashSource(newMoney.getCashSource());
+        money.setNewCashDetail(newMoney.getNewCashDetail());
+        money.setShareType(inMemoryCash.getShareType());
 
-        BigDecimal newSum = newInvestorCash.getGivenCash().subtract(investorCash.getGivenCash());
-        newInvestorCash.setGivenCash(investorCash.getGivenCash());
-        investorCash.setGivenCash(newSum);
-        newInvestorCash.setCashSource(investorCash.getCashSource());
-        newInvestorCash.setShareType(investorCash.getShareType());
-        newInvestorCash.setId(null);
-        newInvestorCash.setSource(investorCash.getId().toString());
-        newInvestorCash.setUnderFacility(investorCash.getUnderFacility());
-        newInvestorCash.setSourceFacility(investorCash.getSourceFacility());
-        newInvestorCash.setDateReport(null);
-        investorCash.setUnderFacility(inMemoryCash.getUnderFacility());
-        investorCash.setIsDivide(1);
+        BigDecimal newSum = newMoney.getGivenCash().subtract(money.getGivenCash());
+        newMoney.setGivenCash(money.getGivenCash());
+        money.setGivenCash(newSum);
+        newMoney.setCashSource(money.getCashSource());
+        newMoney.setShareType(money.getShareType());
+        newMoney.setId(null);
+        newMoney.setSource(money.getId().toString());
+        newMoney.setUnderFacility(money.getUnderFacility());
+        newMoney.setSourceFacility(money.getSourceFacility());
+        newMoney.setDateReport(null);
+        money.setUnderFacility(inMemoryCash.getUnderFacility());
+        money.setIsDivide(1);
 
-        if (investorCash.getGivenCash().compareTo(BigDecimal.ZERO) == 0) {
-            investorCash.setIsReinvest(1);
-            investorCash.setIsDivide(1);
+        if (money.getGivenCash().compareTo(BigDecimal.ZERO) == 0) {
+            money.setIsReinvest(1);
+            money.setIsDivide(1);
         }
-        investorCashService.update(newInvestorCash);
-        investorCashService.update(investorCash);
+        moneyService.update(newMoney);
+        moneyService.update(money);
 
-        if (investorCash.getGivenCash().compareTo(BigDecimal.ZERO) == 0) {
-            return "redirect:" + Location.INVESTOR_CASH_LIST;
+        if (money.getGivenCash().compareTo(BigDecimal.ZERO) == 0) {
+            return "redirect:" + Location.MONEY_LIST;
         } else {
-            model.addObject("investorsCash", investorCash);
+            model.addObject("investorsCash", money);
             return model.getViewName();
         }
     }
@@ -419,7 +417,7 @@ public class InvestorCashController {
     public @ResponseBody
     GenericResponse deleteCashList(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
-        List<InvestorCash> listToDelete = investorCashService.findByIdIn(searchSummary.getCashIdList());
+        List<Money> listToDelete = moneyService.findByIdIn(searchSummary.getCashIdList());
         List<AfterCashing> afterCashingList = afterCashingService.findAll();
         Comparator<AfterCashing> comparator = Comparator.comparing(AfterCashing::getId);
 
@@ -459,7 +457,7 @@ public class InvestorCashController {
                     }
                 }
                 sourceIdList.forEach(parentCashId -> {
-                    InvestorCash parentCash = investorCashService.findById(parentCashId);
+                    Money parentCash = moneyService.findById(parentCashId);
                     if (!Objects.equals(null, parentCash)) {
                         List<AfterCashing> afterCashing = afterCashingList.stream()
                                 .filter(ac -> ac.getOldId().equals(parentCashId))
@@ -471,17 +469,17 @@ public class InvestorCashController {
                                 )
                         )) {
                             if (afterCashing.size() > 0) {
-                                List<InvestorCash> childCash = investorCashService.findBySource(deleting.getSource());
+                                List<Money> childCash = moneyService.findBySource(deleting.getSource());
                                 AfterCashing cashToDel = afterCashing.stream()
                                         .filter(ac -> ac.getOldId().equals(parentCashId))
                                         .findFirst().orElse(afterCashing.get(0));
                                 parentCash.setGivenCash(cashToDel.getOldValue());
-                                childCash.forEach(cbs -> investorCashService.deleteById(cbs.getId()));
+                                childCash.forEach(cbs -> moneyService.deleteById(cbs.getId()));
                                 afterCashingService.deleteById(cashToDel.getId());
                             }
                         }
-                        InvestorCash makeDelete =
-                                investorCashService.findBySource(parentCash.getId().toString())
+                        Money makeDelete =
+                                moneyService.findBySource(parentCash.getId().toString())
                                         .stream()
                                         .filter(m -> !m.getId().equals(deleting.getId()))
                                         .findFirst().orElse(null);
@@ -500,52 +498,52 @@ public class InvestorCashController {
                             parentCash.setGivenCash(parentCash.getGivenCash().add(deleting.getGivenCash()));
                         }
 
-                        List<InvestorCash> oldInvCash = investorCashService.findBySourceId(parentCashId);
+                        List<Money> oldInvCash = moneyService.findBySourceId(parentCashId);
                         oldInvCash = oldInvCash.stream().filter(oc -> !deleting.getId().equals(oc.getId())).collect(Collectors.toList());
                         if (oldInvCash.size() > 0) {
                             oldInvCash.forEach(oCash -> {
                                 parentCash.setGivenCash(parentCash.getGivenCash().add(oCash.getGivenCash()));
-                                investorCashService.deleteById(oCash.getId());
+                                moneyService.deleteById(oCash.getId());
                             });
                         }
-                        investorCashService.update(parentCash);
+                        moneyService.update(parentCash);
                     }
 
                 });
             }
 
-            List<InvestorCash> cash = investorCashService.findBySourceId(deleting.getId());
+            List<Money> cash = moneyService.findBySourceId(deleting.getId());
             if (cash.size() > 0) {
                 cash.forEach(ca -> {
                     if (ca.getGivenCash().signum() == -1) {
-                        investorCashService.deleteById(ca.getId());
+                        moneyService.deleteById(ca.getId());
                     } else {
                         ca.setSourceId(null);
-                        investorCashService.update(ca);
+                        moneyService.update(ca);
                     }
                 });
             }
 
             if (!Objects.equals(null, deleting.getSourceId())) {
-                List<InvestorCash> investorCashes = investorCashService.findBySourceId(deleting.getSourceId())
+                List<Money> monies = moneyService.findBySourceId(deleting.getSourceId())
                         .stream()
                         .filter(ic -> !Objects.equals(deleting, ic))
                         .collect(Collectors.toList());
-                if (!Objects.equals(0, investorCashes.size())) {
-                    investorCashes.forEach(investorsCash -> investorCashService.deleteById(investorsCash.getId()));
+                if (!Objects.equals(0, monies.size())) {
+                    monies.forEach(investorsCash -> moneyService.deleteById(investorsCash.getId()));
                 }
 
-                InvestorCash parentCash = investorCashService.findById(deleting.getSourceId());
+                Money parentCash = moneyService.findById(deleting.getSourceId());
                 if (!Objects.equals(null, parentCash)) {
                     parentCash.setIsReinvest(0);
                     parentCash.setIsDivide(0);
                     parentCash.setTypeClosing(null);
                     parentCash.setDateClosing(null);
-                    investorCashService.update(parentCash);
+                    moneyService.update(parentCash);
                 }
             }
 
-            investorCashService.deleteById(deleting.getId());
+            moneyService.deleteById(deleting.getId());
             response.setMessage("Данные успешно удалены");
 
         });
@@ -566,12 +564,12 @@ public class InvestorCashController {
         GenericResponse response = new GenericResponse();
 
         UnderFacility underFacility = null;
-        if (!summary.getInvestorCash().getUnderFacility().getName().equals("Выберите подобъект")) {
-            underFacility = underFacilityService.findByName(summary.getInvestorCash().getUnderFacility().getName());
+        if (!summary.getMoney().getUnderFacility().getName().equals("Выберите подобъект")) {
+            underFacility = underFacilityService.findByName(summary.getMoney().getUnderFacility().getName());
         }
 
-        summary.getInvestorCash().setUnderFacility(underFacility);
-        String out = investorCashService.cashingAllMoney(summary);
+        summary.getMoney().setUnderFacility(underFacility);
+        String out = moneyService.cashingAllMoney(summary);
 
         if (StringUtils.isEmpty(out)) {
             response.setMessage("Деньги инвестора " + summary.getUser().getLogin() + " успешно выведены.");
@@ -614,7 +612,7 @@ public class InvestorCashController {
             throw new RuntimeException("Пользователь с id = [" + summary.getUser().getId() + "] не найден");
         }
         summary.setInvestorsList(Collections.singletonList(investor));
-        return investorCashService.cashingMoney(summary);
+        return moneyService.cashingMoney(summary);
     }
 
     /**
@@ -630,9 +628,9 @@ public class InvestorCashController {
         if (result.hasErrors()) {
             return "getInvestorsCash";
         }
-        InvestorCash cash = summary.getInvestorCash();
+        Money cash = summary.getMoney();
         if (cash != null) {
-            AppUser inv = summary.getInvestorCash().getInvestor();
+            AppUser inv = summary.getMoney().getInvestor();
             if (inv != null) {
                 if (inv.getId() != null) {
                     investor = userService.findById(inv.getId());
@@ -647,14 +645,14 @@ public class InvestorCashController {
         if (summary.getInvestorsList() == null) {
             summary.setInvestorsList(Collections.singletonList(investor));
         }
-        String out = investorCashService.cashingMoney(summary);
+        String out = moneyService.cashingMoney(summary);
 
         if (StringUtils.isEmpty(out)) {
-            Page<InvestorCash> page = investorCashService.findAll(cashFilters, new PageRequest(0, Integer.MAX_VALUE));
+            Page<Money> page = moneyService.findAll(cashFilters, new PageRequest(0, Integer.MAX_VALUE));
             model.addAttribute("page", page);
             model.addAttribute("cashFilters", cashFilters);
             model.addAttribute("searchSummary", filters);
-            return "redirect:" + Location.INVESTOR_CASH_LIST;
+            return "redirect:" + Location.MONEY_LIST;
         } else {
             model.addAttribute("toBigSumForCashing", out);
             return "getInvestorsCash";
@@ -671,7 +669,7 @@ public class InvestorCashController {
     public @ResponseBody
     GenericResponse saveReCash(@RequestBody SearchSummary searchSummary) {
         GenericResponse response = new GenericResponse();
-        List<InvestorCash> investorCashes = searchSummary.getInvestorCashList();
+        List<Money> monies = searchSummary.getMoneyList();
         NewCashDetail newCashDetail;
 
         // список для создания записи в логе по операции реинвестирования с продажи
@@ -700,13 +698,13 @@ public class InvestorCashController {
 
         NewCashDetail finalNewCashDetail = newCashDetail;
 
-        Map<String, InvestorCash> map = investorCashService.groupInvestorsCash(investorCashes, searchSummary.getWhat());
+        Map<String, Money> map = moneyService.groupInvestorsCash(monies, searchSummary.getWhat());
         try {
-            Set<InvestorCash> cashList = new HashSet<>();
+            Set<Money> cashList = new HashSet<>();
             map.forEach((key, value) -> {
                 value.setNewCashDetail(finalNewCashDetail);
                 value.setGivenCash(value.getGivenCash().setScale(2, RoundingMode.CEILING));
-                investorCashService.createNew(value);
+                moneyService.createNew(value);
                 cashList.add(value);
             });
 
@@ -742,10 +740,10 @@ public class InvestorCashController {
      * @param reinvestCashDTO DTO для реинвестирования
      * @return сообщение об успешном/не успешном реинвестировании
      */
-    @PostMapping(path = Location.INVESTOR_CASH_REINVEST_SAVE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = Location.MONEY_REINVEST_SAVE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
     ApiResponse saveReInvCash(@RequestBody ReinvestCashDTO reinvestCashDTO) {
-        return investorCashService.reinvestCash(reinvestCashDTO);
+        return moneyService.reinvestCash(reinvestCashDTO);
     }
 
     /**
@@ -754,10 +752,10 @@ public class InvestorCashController {
      * @param dividedCashDTO DTO для разделения
      * @return ответ об окончании операции
      */
-    @PostMapping(value = Location.INVESTOR_CASH_DIVIDE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = Location.MONEY_DIVIDE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
     ApiResponse saveDivideCash(@RequestBody DividedCashDTO dividedCashDTO) {
-        ApiResponse response = investorCashService.divideCash(dividedCashDTO);
+        ApiResponse response = moneyService.divideCash(dividedCashDTO);
         sendStatus("OK");
         return response;
     }
@@ -768,7 +766,7 @@ public class InvestorCashController {
      * @param dividedCashDTO DTO для разделения
      * @return ответ об окончании операции
      */
-    @PostMapping(value = Location.INVESTOR_CASH_DIVIDE_MULTIPLE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = Location.MONEY_DIVIDE_MULTIPLE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
     ApiResponse divideMultipleCash(@RequestBody DividedCashDTO dividedCashDTO) {
         final ApiResponse[] response = {new ApiResponse()};
@@ -784,7 +782,7 @@ public class InvestorCashController {
             counter[0]++;
             sendStatus(String.format("Разделяем %d из %d подобъектов", counter[0], ufCount));
             dividedCashDTO.setReUnderFacilityId(reUnderFacility);
-            response[0] = investorCashService.divideCash(dividedCashDTO);
+            response[0] = moneyService.divideCash(dividedCashDTO);
             underFacilityToCalculateShare.remove(reUnderFacility);
             dividedCashDTO.setReUnderFacilitiesIdList(underFacilityToCalculateShare);
         });
@@ -798,94 +796,35 @@ public class InvestorCashController {
      * @param closeCashDTO DTO для закрытия сумм
      * @return сообщение об успешном/не успешном массовом закрытии
      */
-    @PostMapping(path = Location.INVESTOR_CASH_CLOSE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = Location.MONEY_CLOSE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
     ApiResponse closeCash(@RequestBody CloseCashDTO closeCashDTO) {
-        return investorCashService.close(closeCashDTO);
-    }
-
-    private List<AppUser> initializedUsers = new ArrayList<>();
-
-    private List<AppUser> initializedUsersList = new ArrayList<>();
-
-    private List<Facility> initializedFacilities = new ArrayList<>();
-
-    private List<Facility> initializedFacilitiesList = new ArrayList<>();
-
-    private List<UnderFacility> initializedUnderFacilities = new ArrayList<>();
-
-    private List<UnderFacility> initializedUnderFacilitiesList = new ArrayList<>();
-
-    public void initialize() {
-        clearInitData();
-        initUsers();
-        initFacilities();
-        initUnderFacilities();
-    }
-
-    private void initUsers() {
-        List<AppUser> users = userService.initializeMultipleInvestors();
-        AppUser user = new AppUser();
-        user.setId(0L);
-        user.setLogin("Выберите инвестора");
-        this.initializedUsers.add(user);
-        this.initializedUsers.addAll(users);
-        this.initializedUsersList.addAll(users);
-    }
-
-    private void initFacilities() {
-        List<Facility> facilities = facilityService.initializeFacilitiesForMultiple();
-        Facility facility = new Facility();
-        facility.setId(0L);
-        facility.setName("Выберите объект");
-        this.initializedFacilities.add(facility);
-        this.initializedFacilities.addAll(facilities);
-        this.initializedFacilitiesList.addAll(facilities);
-    }
-
-    private void initUnderFacilities() {
-        List<UnderFacility> underFacilities = underFacilityService.initializeUnderFacilitiesList();
-        UnderFacility underFacility = new UnderFacility();
-        underFacility.setId(0L);
-        underFacility.setName("Выберите подобъект");
-        this.initializedUnderFacilities.add(underFacility);
-        this.initializedUnderFacilities.addAll(underFacilities);
-        this.initializedUnderFacilitiesList.addAll(underFacilities);
-    }
-
-    private void clearInitData() {
-        initializedUsers = new ArrayList<>();
-        initializedUsersList = new ArrayList<>();
-        initializedFacilities = new ArrayList<>();
-        initializedFacilitiesList = new ArrayList<>();
-        initializedUnderFacilities = new ArrayList<>();
-        initializedUnderFacilitiesList = new ArrayList<>();
+        return moneyService.close(closeCashDTO);
     }
 
     @ModelAttribute("facilities")
     public List<Facility> initializeFacilities() {
-        initialize();
-        return initializedFacilities;
+        return facilityService.initializeFacilities();
     }
 
     @ModelAttribute("facilitiesList")
     public List<Facility> initializeMultipleFacilities() {
-        return initializedFacilitiesList;
+        return facilityService.initializeFacilitiesForMultiple();
     }
 
     @ModelAttribute("sourceFacilities")
     public List<Facility> initializeReFacilities() {
-        return initializedFacilities;
+        return facilityService.initializeFacilities();
     }
 
     @ModelAttribute("investors")
     public List<AppUser> initializeInvestors() {
-        return initializedUsers;
+        return userService.initializeInvestors();
     }
 
     @ModelAttribute("investorsMulti")
     public List<AppUser> initializeInvestorsMultiple() {
-        return initializedUsersList;
+        return userService.initializeMultipleInvestors();
     }
 
     @ModelAttribute("cashSources")
@@ -900,17 +839,17 @@ public class InvestorCashController {
 
     @ModelAttribute("underFacilities")
     public List<UnderFacility> initializeUnderFacilities() {
-        return initializedUnderFacilities;
+        return underFacilityService.initializeUnderFacilities();
     }
 
     @ModelAttribute("underFacilitiesList")
     public List<UnderFacility> initializeUnderFacilitiesList() {
-        return initializedUnderFacilitiesList;
+        return underFacilityService.initializeUnderFacilitiesList();
     }
 
     @ModelAttribute("sourceUnderFacilities")
     public List<UnderFacility> initializeReUnderFacilities() {
-        return initializedUnderFacilities;
+        return underFacilityService.initializeUnderFacilities();
     }
 
     @ModelAttribute("typeClosingInvest")

@@ -20,7 +20,7 @@
     <script type="text/javascript" src="<c:url value='/resources/core/js/jsFunctions.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/investors-cash.js' />"></script>
+    <script type="text/javascript" src="<c:url value='/resources/core/js/monies.js' />"></script>
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
 </head>
 
@@ -35,7 +35,7 @@
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="facility">Объект:</label>
                 <div class="col-md-7">
-                    <form:select path="investorCash.facility" id="facility" items="${facilities}" multiple="false"
+                    <form:select path="money.facility" id="facility" items="${facilities}" multiple="false"
                                  itemValue="id" itemLabel="name" class="selectpicker form-control input-sm"
                                  data-live-search="true"/>
                 </div>
@@ -48,7 +48,7 @@
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="underFacility">Подобъект:</label>
                 <div class="col-md-7">
-                    <form:select path="investorCash.underFacility" id="underFacility" multiple="false"
+                    <form:select path="money.underFacility" id="underFacility" multiple="false"
                                  class="form-control input-sm">
                         <c:forEach var="uf" items="${uf}">
                             <form:option value="${uf.name}" id="${uf.id}" data-parent-id="${uf.facility.id}">
@@ -64,7 +64,7 @@
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="investor">Инвестор:</label>
                 <div class="col-md-7">
-                    <form:select path="investorCash.investor" id="investor" items="${investorsMulti}"
+                    <form:select path="money.investor" id="investor" items="${investorsMulti}"
                                  title="Выберите инвесторов..."
                                  multiple="true"
                                  itemValue="id" itemLabel="login" class="selectpicker form-control input-sm investorPicker"
@@ -77,7 +77,7 @@
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="cash">Сумма к выводу:</label>
                 <div class="col-md-7">
-                    <form:input type="number" path="investorCash.givenCash" id="cash" class="form-control input-sm"
+                    <form:input type="number" path="money.givenCash" id="cash" class="form-control input-sm"
                                 min="0.0" step="any"/>
                     <div id="toBigSumForCashing" class="has-error">
                     </div>
@@ -89,7 +89,7 @@
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="dateGivedCash">Дата вывода:</label>
                 <div class="col-md-7">
-                    <form:input type="date" path="investorCash.dateGiven" id="dateGivedCash"
+                    <form:input type="date" path="money.dateGiven" id="dateGivedCash"
                                 class="form-control input-sm"/>
                 </div>
             </div>
