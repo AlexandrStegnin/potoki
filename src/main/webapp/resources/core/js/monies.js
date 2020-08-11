@@ -493,24 +493,24 @@ jQuery(document).ready(function ($) {
 
     $(document).on("change", "#typeClosing", function () {
         let typeClosing = $('#typeClosingRow');
-        let reFacility = $('#sourceFacility');
-        let reUnderFacility = $('#sourceUnderFacility');
+        // let reFacility = $('#sourceFacility');
+        // let reUnderFacility = $('#sourceUnderFacility');
 
         if ($(this).find(':selected').text() === 'Реинвестирование') {
-            reFacility.css("display", "block");
+            // reFacility.css("display", "block");
             $("#dateRepRow").css("display", "block");
             $('#shareKindName').find('option:contains(Основная)').attr('selected', 'selected');
-            reFacility.insertAfter(typeClosing);
-            reUnderFacility.insertAfter(reFacility);
+            // reFacility.insertAfter(typeClosing);
+            // reUnderFacility.insertAfter(reFacility);
             $('#investorBuyerRow').css('display', 'none');
         } else if ($(this).find(':selected').text() === 'Перепродажа доли') {
-            reFacility.css("display", "none");
-            reUnderFacility.css("display", "none");
+            // reFacility.css("display", "none");
+            // reUnderFacility.css("display", "none");
             $("#dateRepRow").css("display", "none");
             $('#investorBuyerRow').css('display', 'block');
         } else {
-            reFacility.css("display", "none");
-            reUnderFacility.css("display", "none");
+            // reFacility.css("display", "none");
+            // reUnderFacility.css("display", "none");
             $("#dateRepRow").css("display", "none");
             $('#investorBuyerRow').css('display', 'none');
             if ($(this).find(':selected').text() === 'Выберите вид закрытия') {
@@ -847,13 +847,13 @@ function disableFields() {
         $('#cash').prop('disabled', true);
         $('#dateGivedCash').prop('disabled', true);
         $('#cashSrc').prop('disabled', true);
-        $('#cashTyp').prop('disabled', true);
+        // $('#cashTyp').prop('disabled', true);
         $('#cashDetail').prop('disabled', true);
-        $('#invType').prop('disabled', true);
+        // $('#invType').prop('disabled', true);
         $('#dateCloseInv').prop('disabled', false);
         $('#typeClosing').prop('disabled', false);
-        $('#reFacilities').prop('disabled', false);
-        $('#reUnderFacilities').prop('disabled', false);
+        // $('#reFacilities').prop('disabled', false);
+        // $('#reUnderFacilities').prop('disabled', false);
         $('#dateRep').prop('disabled', true);
         $('#shareKindName').prop('disabled', true);
     } else if ($('#doubleCash').val() === 'true') {
@@ -863,21 +863,21 @@ function disableFields() {
         $('#cash').prop('disabled', false);
         $('#dateGivedCash').prop('disabled', true);
         $('#cashSrc').prop('disabled', true);
-        $('#cashTyp').prop('disabled', true);
+        // $('#cashTyp').prop('disabled', true);
         $('#cashDetail').prop('disabled', true);
-        $('#invType').prop('disabled', true);
+        // $('#invType').prop('disabled', true);
         $('#dateCloseInv').prop('disabled', true);
         $('#dateCloseInvRow').css('display', 'none');
         $('#typeClosing').prop('disabled', true);
         $('#typeClosingRow').css('display', 'none');
-        $('#reFacilities').prop('disabled', true);
-        $('#reUnderFacilities').prop('disabled', true);
+        // $('#reFacilities').prop('disabled', true);
+        // $('#reUnderFacilities').prop('disabled', true);
         $('#dateRep').prop('disabled', true);
         $('#shareKindName').prop('disabled', true);
     } else if ($('#edit').val() === 'true') {
         let cashDetail = $('#cashDetail');
-        let reFacility = $('#sourceFacility');
-        let reUnderFacility = $('#sourceUnderFacility');
+        // let reFacility = $('#sourceFacility');
+        // let reUnderFacility = $('#sourceUnderFacility');
         let dateRep = $('#dateRepRow');
 
         $('#facilities').prop('disabled', false);
@@ -886,28 +886,28 @@ function disableFields() {
         $('#cash').prop('disabled', false);
         $('#dateGivedCash').prop('disabled', false);
         $('#cashSrc').prop('disabled', false);
-        $('#cashTyp').prop('disabled', false);
+        // $('#cashTyp').prop('disabled', false);
 
         cashDetail.prop('disabled', false);
         if (cashDetail.text() === 'Реинвестирование с продажи') {
-            reFacility.css("display", "block");
-            reUnderFacility.css("display", "block");
+            // reFacility.css("display", "block");
+            // reUnderFacility.css("display", "block");
             dateRep.css("display", "none");
         } else if (cashDetail.text() === 'Реинвестирование с аренды') {
-            reFacility.css("display", "block");
-            reUnderFacility.css("display", "block");
+            // reFacility.css("display", "block");
+            // reUnderFacility.css("display", "block");
             dateRep.css("display", "block");
         } else {
-            reFacility.css("display", "none");
-            reUnderFacility.css("display", "none");
+            // reFacility.css("display", "none");
+            // reUnderFacility.css("display", "none");
             dateRep.css("display", "none");
         }
-        $('#invType').prop('disabled', false);
+        // $('#invType').prop('disabled', false);
         $('#dateCloseInv').removeAttr('disabled');
         $('#dateCloseInvRow').removeAttr('disabled');
         $('#typeClosing').prop('disabled', false);
-        $('#reFacilities').prop('disabled', false);
-        $('#reUnderFacilities').prop('disabled', false);
+        // $('#reFacilities').prop('disabled', false);
+        // $('#reUnderFacilities').prop('disabled', false);
         $('#dateRep').prop('disabled', false);
     } else if ($('#newCash').val() === 'true') {
         $('#facilities').prop('disabled', false);
@@ -916,15 +916,15 @@ function disableFields() {
         $('#cash').prop('disabled', false);
         $('#dateGivedCash').prop('disabled', false);
         $('#cashSrc').prop('disabled', false);
-        $('#cashTyp').prop('disabled', false);
+        // $('#cashTyp').prop('disabled', false);
         $('#cashDetail').prop('disabled', false);
-        $('#invType').prop('disabled', false);
+        // $('#invType').prop('disabled', false);
         $('#dateCloseInv').prop('disabled', true);
         $('#dateCloseInvRow').css('display', 'none');
         $('#typeClosing').prop('disabled', true);
         $('#typeClosingRow').css('display', 'none');
-        $('#reFacilities').prop('disabled', false);
-        $('#reUnderFacilities').prop('disabled', false);
+        // $('#reFacilities').prop('disabled', false);
+        // $('#reUnderFacilities').prop('disabled', false);
         $('#dateRep').prop('disabled', false);
     }
 }

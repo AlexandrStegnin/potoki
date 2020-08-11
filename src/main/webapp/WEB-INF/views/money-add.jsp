@@ -26,17 +26,16 @@
     <form:form method="POST" modelAttribute="money" class="form-horizontal generic-container"
                style="margin: 10px 0 10px 0" id="iCashTable">
         <form:input type="hidden" path="id" id="id"/>
-        <form:input type="hidden" path="" id="newCash" value="${newCash}"/>
-        <form:input type="hidden" path="" id="edit" value="${edit}"/>
-        <form:input type="hidden" path="" id="doubleCash" value="${doubleCash}"/>
-        <form:input type="hidden" path="" id="closeCash" value="${closeCash}"/>
+        <input type="hidden" id="newCash" value="${newCash}"/>
+        <input type="hidden" id="edit" value="${edit}"/>
+        <input type="hidden" id="doubleCash" value="${doubleCash}"/>
+        <input type="hidden" id="closeCash" value="${closeCash}"/>
         <div class="form-group row" id="facilitiesRow">
             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="facilities">Объект:</label>
             <div class="col-sm-6">
                 <form:select path="facility" id="facilities" items="${facilities}" multiple="false"
                              itemValue="id" itemLabel="name" class="form-control form-control-sm selectpicker"
-                             data-size="10"
-                data-live-search="true"/>
+                             data-size="10" data-live-search="true" data-none-selected-text="Выберите объект"/>
                 <div class="has-error">
                     <form:errors path="facility" class="help-inline"/>
                 </div>
@@ -75,7 +74,7 @@
             <div class="col-sm-6">
                 <form:select path="investor" id="investor" items="${investors}" multiple="false"
                              itemValue="id" itemLabel="login" class="form-control form-control-sm selectpicker"
-                             data-live-search="true" data-size="10"/>
+                             data-live-search="true" data-size="10" data-none-selected-text="Выберите инвестора"/>
                 <div class="has-error">
                     <form:errors path="investor" class="help-inline"/>
                 </div>
@@ -90,12 +89,12 @@
             </div>
         </div>
 
-        <div class="form-group row" hidden>
-            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="source">Источник:</label>
-            <div class="col-sm-6">
-                <form:input type="text" path="source" id="source" class="form-control form-control-sm selectpicker"/>
-            </div>
-        </div>
+<%--        <div class="form-group row" hidden>--%>
+<%--            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="source">Источник:</label>--%>
+<%--            <div class="col-sm-6">--%>
+<%--                <form:input type="text" path="source" id="source" class="form-control form-control-sm selectpicker"/>--%>
+<%--            </div>--%>
+<%--        </div>--%>
 
         <div class="form-group row" id="dateGivedCashRow">
             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="dateGivedCash">Дата передачи денег:</label>
@@ -112,7 +111,7 @@
             <div class="col-sm-6">
                 <form:select path="cashSource" id="cashSrc" items="${cashSources}" multiple="false"
                              itemValue="id" itemLabel="name" class="form-control form-control-sm selectpicker"
-                             data-size="10"/>
+                             data-size="10" data-none-selected-text="Выберите источник денег"/>
                 <div class="has-error">
                     <form:errors path="cashSource" class="help-inline"/>
                 </div>
@@ -123,7 +122,8 @@
             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="cashDetail">Детали новых денег:</label>
             <div class="col-sm-6">
                 <form:select path="newCashDetail" id="cashDetail" items="${newCashDetails}" multiple="false"
-                             itemValue="id" itemLabel="name" class="form-control form-control-sm selectpicker"/>
+                             itemValue="id" itemLabel="name" class="form-control form-control-sm selectpicker"
+                             data-none-selected-text="Выберите детали новых денег"/>
                 <div class="has-error">
                     <form:errors path="newCashDetail" class="help-inline"/>
                 </div>
@@ -147,6 +147,7 @@
                 <form:select path="typeClosing" id="typeClosing" items="${typeClosingInvest}"
                              multiple="false"
                              itemValue="id" itemLabel="name" class="form-control form-control-sm selectpicker"
+                             data-none-selected-text="Выберите вид закрытия"
                              readonly="${edit}"/>
                 <div class="has-error">
                     <form:errors path="typeClosing" class="help-inline"/>
@@ -159,7 +160,7 @@
             <div class="col-sm-6">
                 <form:select path="investorBuyer" id="investorBuyer" items="${investors}" multiple="false"
                              itemValue="id" itemLabel="login" class="form-control form-control-sm selectpicker"
-                             data-size="10"/>
+                             data-size="10" data-none-selected-text="Выберите инвнстора"/>
                 <div class="has-error" id="investorBuyerErr">
                 </div>
             </div>
@@ -174,38 +175,38 @@
             </div>
         </div>
 
-        <div class="form-group row" style="display: none;" id="sourceFacility">
-            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="sourceFacilities" id="sourceFacilitiesLbl">Объект
-                реинвестирования:</label>
-            <div class="col-sm-6">
-                <form:select path="sourceFacility" id="sourceFacilities" items="${sourceFacilities}"
-                             multiple="false"
-                             itemValue="id" itemLabel="name" class="form-control form-control-sm selectpicker"
-                             data-size="10"/>
-                <div class="has-error" id="sourceFacilityErr">
-                </div>
-            </div>
-        </div>
+<%--        <div class="form-group row" style="display: none;" id="sourceFacility">--%>
+<%--            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="sourceFacilities" id="sourceFacilitiesLbl">Объект--%>
+<%--                реинвестирования:</label>--%>
+<%--            <div class="col-sm-6">--%>
+<%--                <form:select path="sourceFacility" id="sourceFacilities" items="${sourceFacilities}"--%>
+<%--                             multiple="false"--%>
+<%--                             itemValue="id" itemLabel="name" class="form-control form-control-sm selectpicker"--%>
+<%--                             data-size="10" data-none-selected-text="Без объекта"/>--%>
+<%--                <div class="has-error" id="sourceFacilityErr">--%>
+<%--                </div>--%>
+<%--            </div>--%>
+<%--        </div>--%>
 
-        <div class="form-group row" style="display: none;" id="sourceUnderFacility">
-            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="sourceUnderFacilities"
-                   id="sourceUnderFacilitiesLbl">Подобъект
-                реинвестирования:</label>
-            <div class="col-sm-6">
-                <form:select path="sourceUnderFacility" id="sourceUnderFacilities" multiple="false"
-                             class="form-control form-control-sm selectpicker"
-                             data-size="10">
-                    <c:forEach var="uf" items="${sourceUnderFacilities}">
-                        <form:option value="${uf.name}" id="${uf.id}" data-parent-id="${uf.facility.id}">
+<%--        <div class="form-group row" style="display: none;" id="sourceUnderFacility">--%>
+<%--            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="sourceUnderFacilities"--%>
+<%--                   id="sourceUnderFacilitiesLbl">Подобъект--%>
+<%--                реинвестирования:</label>--%>
+<%--            <div class="col-sm-6">--%>
+<%--                <form:select path="sourceUnderFacility" id="sourceUnderFacilities" multiple="false"--%>
+<%--                             class="form-control form-control-sm selectpicker"--%>
+<%--                             data-size="10">--%>
+<%--                    <c:forEach var="uf" items="${sourceUnderFacilities}">--%>
+<%--                        <form:option value="${uf.name}" id="${uf.id}" data-parent-id="${uf.facility.id}">--%>
 
-                        </form:option>
-                    </c:forEach>
-                </form:select>
+<%--                        </form:option>--%>
+<%--                    </c:forEach>--%>
+<%--                </form:select>--%>
 
-                <div class="has-error" id="reUnderFacilityErr">
-                </div>
-            </div>
-        </div>
+<%--                <div class="has-error" id="reUnderFacilityErr">--%>
+<%--                </div>--%>
+<%--            </div>--%>
+<%--        </div>--%>
 
         <div class="form-group row" id="shareKindNameRow">
             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="shareTypeName">Вид доли:</label>
