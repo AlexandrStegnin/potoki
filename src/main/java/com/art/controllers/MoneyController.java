@@ -219,12 +219,12 @@ public class MoneyController {
      * @param model модель со страницы
      * @return страница для закрытия суммы вложения
      */
-    @GetMapping(value = {"/close-cash-{id}"})
+    @GetMapping(path = Location.MONEY_CLOSE_ID)
     public String closeCash(@PathVariable Long id, ModelMap model) {
         String title = "Закрытие вложения";
         Money money = moneyService.findById(id);
         money.setGivenCash(money.getGivenCash().setScale(2, RoundingMode.DOWN));
-        model.addAttribute("investorsCash", money);
+        model.addAttribute("money", money);
 
         model.addAttribute("newCash", false);
         model.addAttribute("edit", false);
@@ -243,8 +243,8 @@ public class MoneyController {
      * @param realDateGiven реальная дата передачи денег
      * @return переадресация на страницу денег инвесторов
      */
-    @PostMapping(value = "/close-cash-{id}")
-    public String closeCash(@ModelAttribute("investorsCash") Money money,
+    @PostMapping(path = Location.MONEY_CLOSE_ID)
+    public String closeCash(@ModelAttribute("money") Money money,
                             @PathVariable("id") Long id, @RequestParam("dateClosingInvest") Date dateClosingInvest,
                             @RequestParam("realDateGiven") Date realDateGiven) {
         ModelAndView modelAndView = new ModelAndView("money-list");
@@ -813,10 +813,10 @@ public class MoneyController {
         return facilityService.initializeFacilitiesForMultiple();
     }
 
-//    @ModelAttribute("sourceFacilities")
-//    public List<Facility> initializeReFacilities() {
-//        return facilityService.initializeFacilities();
-//    }
+    @ModelAttribute("sourceFacilities")
+    public List<Facility> initializeReFacilities() {
+        return facilityService.initializeFacilities();
+    }
 
     @ModelAttribute("investors")
     public List<AppUser> initializeInvestors() {
@@ -848,10 +848,10 @@ public class MoneyController {
         return underFacilityService.initializeUnderFacilitiesList();
     }
 
-//    @ModelAttribute("sourceUnderFacilities")
-//    public List<UnderFacility> initializeReUnderFacilities() {
-//        return underFacilityService.initializeUnderFacilities();
-//    }
+    @ModelAttribute("sourceUnderFacilities")
+    public List<UnderFacility> initializeReUnderFacilities() {
+        return underFacilityService.initializeUnderFacilities();
+    }
 
     @ModelAttribute("typeClosingInvest")
     public List<TypeClosing> initializeTypeClosingInvest() {

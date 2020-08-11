@@ -493,26 +493,26 @@ jQuery(document).ready(function ($) {
 
     $(document).on("change", "#typeClosing", function () {
         let typeClosing = $('#typeClosingRow');
-        // let reFacility = $('#sourceFacility');
-        // let reUnderFacility = $('#sourceUnderFacility');
+        let reFacility = $('#sourceFacility');
+        let reUnderFacility = $('#sourceUnderFacility');
 
         if ($(this).find(':selected').text() === 'Реинвестирование') {
-            // reFacility.css("display", "block");
+            reFacility.css("display", "block");
             $("#dateRepRow").css("display", "block");
-            $('#shareKindName').find('option:contains(Основная)').attr('selected', 'selected');
-            // reFacility.insertAfter(typeClosing);
-            // reUnderFacility.insertAfter(reFacility);
-            $('#investorBuyerRow').css('display', 'none');
+            $('#shareTypeName').find('option:contains(Основная)').attr('selected', 'selected');
+            reFacility.insertAfter(typeClosing);
+            reUnderFacility.insertAfter(reFacility);
+            $('#investorBuyerRow').addClass('d-none');
         } else if ($(this).find(':selected').text() === 'Перепродажа доли') {
-            // reFacility.css("display", "none");
-            // reUnderFacility.css("display", "none");
-            $("#dateRepRow").css("display", "none");
-            $('#investorBuyerRow').css('display', 'block');
+            reFacility.css("display", "none");
+            reUnderFacility.css("display", "none");
+            $("#dateRepRow").addClass('d-none');
+            $('#investorBuyerRow').removeClass('d-none');
         } else {
-            // reFacility.css("display", "none");
-            // reUnderFacility.css("display", "none");
-            $("#dateRepRow").css("display", "none");
-            $('#investorBuyerRow').css('display', 'none');
+            reFacility.css("display", "none");
+            reUnderFacility.css("display", "none");
+            $("#dateRepRow").addClass('d-none');
+            $('#investorBuyerRow').addClass('d-none');
             if ($(this).find(':selected').text() === 'Выберите вид закрытия') {
                 $('#dateCloseInv').val('');
             }
@@ -526,8 +526,6 @@ jQuery(document).ready(function ($) {
             $('#buyerRow').addClass('d-none');
         }
     });
-
-
 
     $(document).on("change", "#cashDetail", function () {
 
@@ -543,14 +541,14 @@ jQuery(document).ready(function ($) {
             reFacility.css("display", "block");
             reUnderFacility.css("display", "block");
             dateRep.css("display", "block");
-            $('#shareKindName').find('option:contains(Основная)').attr('selected', 'selected');
+            $('#shareTypeName').find('option:contains(Основная)').attr('selected', 'selected');
         } else if ($(this).find(':selected').text() === 'Реинвестирование с продажи') {
             reFacility.insertAfter(cashDetail);
             reUnderFacility.insertAfter(reFacility);
             reFacility.css("display", "block");
             reUnderFacility.css("display", "block");
             dateRep.css("display", "none");
-            $('#shareKindName').find('option:contains(Основная)').attr('selected', 'selected');
+            $('#shareTypeName').find('option:contains(Основная)').attr('selected', 'selected');
         } else {
             reFacility.css("display", "none");
             reUnderFacility.css("display", "none");
@@ -847,15 +845,13 @@ function disableFields() {
         $('#cash').prop('disabled', true);
         $('#dateGivedCash').prop('disabled', true);
         $('#cashSrc').prop('disabled', true);
-        // $('#cashTyp').prop('disabled', true);
         $('#cashDetail').prop('disabled', true);
-        // $('#invType').prop('disabled', true);
         $('#dateCloseInv').prop('disabled', false);
         $('#typeClosing').prop('disabled', false);
-        // $('#reFacilities').prop('disabled', false);
-        // $('#reUnderFacilities').prop('disabled', false);
+        $('#reFacilities').prop('disabled', false);
+        $('#reUnderFacilities').prop('disabled', false);
         $('#dateRep').prop('disabled', true);
-        $('#shareKindName').prop('disabled', true);
+        $('#shareTypeName').prop('disabled', true);
     } else if ($('#doubleCash').val() === 'true') {
         $('#facilities').prop('disabled', true);
         $('#underFacilities').prop('disabled', false);
@@ -863,21 +859,19 @@ function disableFields() {
         $('#cash').prop('disabled', false);
         $('#dateGivedCash').prop('disabled', true);
         $('#cashSrc').prop('disabled', true);
-        // $('#cashTyp').prop('disabled', true);
         $('#cashDetail').prop('disabled', true);
-        // $('#invType').prop('disabled', true);
         $('#dateCloseInv').prop('disabled', true);
         $('#dateCloseInvRow').css('display', 'none');
         $('#typeClosing').prop('disabled', true);
         $('#typeClosingRow').css('display', 'none');
-        // $('#reFacilities').prop('disabled', true);
-        // $('#reUnderFacilities').prop('disabled', true);
+        $('#reFacilities').prop('disabled', true);
+        $('#reUnderFacilities').prop('disabled', true);
         $('#dateRep').prop('disabled', true);
-        $('#shareKindName').prop('disabled', true);
+        $('#shareTypeName').prop('disabled', true);
     } else if ($('#edit').val() === 'true') {
         let cashDetail = $('#cashDetail');
-        // let reFacility = $('#sourceFacility');
-        // let reUnderFacility = $('#sourceUnderFacility');
+        let reFacility = $('#sourceFacility');
+        let reUnderFacility = $('#sourceUnderFacility');
         let dateRep = $('#dateRepRow');
 
         $('#facilities').prop('disabled', false);
@@ -886,28 +880,26 @@ function disableFields() {
         $('#cash').prop('disabled', false);
         $('#dateGivedCash').prop('disabled', false);
         $('#cashSrc').prop('disabled', false);
-        // $('#cashTyp').prop('disabled', false);
 
         cashDetail.prop('disabled', false);
         if (cashDetail.text() === 'Реинвестирование с продажи') {
-            // reFacility.css("display", "block");
-            // reUnderFacility.css("display", "block");
+            reFacility.css("display", "block");
+            reUnderFacility.css("display", "block");
             dateRep.css("display", "none");
         } else if (cashDetail.text() === 'Реинвестирование с аренды') {
-            // reFacility.css("display", "block");
-            // reUnderFacility.css("display", "block");
+            reFacility.css("display", "block");
+            reUnderFacility.css("display", "block");
             dateRep.css("display", "block");
         } else {
-            // reFacility.css("display", "none");
-            // reUnderFacility.css("display", "none");
+            reFacility.css("display", "none");
+            reUnderFacility.css("display", "none");
             dateRep.css("display", "none");
         }
-        // $('#invType').prop('disabled', false);
         $('#dateCloseInv').removeAttr('disabled');
         $('#dateCloseInvRow').removeAttr('disabled');
         $('#typeClosing').prop('disabled', false);
-        // $('#reFacilities').prop('disabled', false);
-        // $('#reUnderFacilities').prop('disabled', false);
+        $('#reFacilities').prop('disabled', false);
+        $('#reUnderFacilities').prop('disabled', false);
         $('#dateRep').prop('disabled', false);
     } else if ($('#newCash').val() === 'true') {
         $('#facilities').prop('disabled', false);
@@ -916,15 +908,13 @@ function disableFields() {
         $('#cash').prop('disabled', false);
         $('#dateGivedCash').prop('disabled', false);
         $('#cashSrc').prop('disabled', false);
-        // $('#cashTyp').prop('disabled', false);
         $('#cashDetail').prop('disabled', false);
-        // $('#invType').prop('disabled', false);
         $('#dateCloseInv').prop('disabled', true);
         $('#dateCloseInvRow').css('display', 'none');
         $('#typeClosing').prop('disabled', true);
         $('#typeClosingRow').css('display', 'none');
-        // $('#reFacilities').prop('disabled', false);
-        // $('#reUnderFacilities').prop('disabled', false);
+        $('#reFacilities').prop('disabled', false);
+        $('#reUnderFacilities').prop('disabled', false);
         $('#dateRep').prop('disabled', false);
     }
 }
@@ -936,9 +926,7 @@ function enableFields() {
     $('#cash').prop('disabled', false);
     $('#dateGivedCash').prop('disabled', false);
     $('#cashSrc').prop('disabled', false);
-    $('#cashTyp').prop('disabled', false);
     $('#cashDetail').prop('disabled', false);
-    $('#invType').prop('disabled', false);
     $('#dateCloseInv').prop('disabled', false);
     $('#typeClosing').prop('disabled', false);
     $('#reFacilities').prop('disabled', false);
@@ -962,7 +950,7 @@ function moveFields(mAttribute) {
     let dateRep = $('#dateRepRow');
     let reFacility = $('#reFacility');
     let reUnderFacility = $('#reUnderFacility');
-    let shareKindName = $('#shareKindNameRow');
+    let shareTypeName = $('#shareTypeNameRow');
     let realDateGiven = $('#realDateGivenRow');
 
     switch (mAttribute) {
@@ -972,11 +960,9 @@ function moveFields(mAttribute) {
             cash.insertAfter(investor);
             dateGivedCash.insertAfter(cash);
             cashSrc.insertAfter(dateGivedCash);
-            cashTyp.insertAfter(cashSrc);
             cashDetail.insertAfter(cashTyp);
-            invType.insertAfter(cashDetail);
-            shareKindName.insertAfter(invType);
-            dateRep.insertAfter(shareKindName);
+            shareTypeName.insertAfter(invType);
+            dateRep.insertAfter(shareTypeName);
             dateCloseInv.insertAfter(dateRep);
             typeClosing.insertAfter(dateCloseInv);
             reFacility.insertAfter(dateRep);
@@ -994,8 +980,8 @@ function moveFields(mAttribute) {
             reFacility.insertAfter(dateRep);
             reUnderFacility.insertAfter(reFacility);
             invType.insertAfter(reUnderFacility);
-            shareKindName.insertAfter(invType);
-            dateCloseInv.insertAfter(shareKindName);
+            shareTypeName.insertAfter(invType);
+            dateCloseInv.insertAfter(shareTypeName);
             typeClosing.insertAfter(dateCloseInv);
 
             break;
@@ -1007,11 +993,9 @@ function moveFields(mAttribute) {
             cash.insertAfter(investor);
             dateGivedCash.insertAfter(cash);
             cashSrc.insertAfter(dateGivedCash);
-            cashTyp.insertAfter(cashSrc);
             cashDetail.insertAfter(cashTyp);
-            invType.insertAfter(cashDetail);
-            shareKindName.insertAfter(invType);
-            dateRep.insertAfter(shareKindName);
+            shareTypeName.insertAfter(invType);
+            dateRep.insertAfter(shareTypeName);
             dateCloseInv.insertAfter(dateRep);
             typeClosing.insertAfter(dateCloseInv);
             reFacility.insertAfter(dateRep);

@@ -155,7 +155,7 @@
             </div>
         </div>
 
-        <div class="form-group row" style="display: none;" id="investorBuyerRow">
+        <div class="form-group row" id="investorBuyerRow">
             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="investorBuyer">Инвестор покупатель:</label>
             <div class="col-sm-6">
                 <form:select path="investorBuyer" id="investorBuyer" items="${investors}" multiple="false"
@@ -166,7 +166,7 @@
             </div>
         </div>
 
-        <div class="form-group row" style="display: none;" id="dateRepRow">
+        <div class="form-group row" id="dateRepRow">
             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="dateRep">Период расчёта:</label>
             <div class="col-sm-6">
                 <form:input type="date" path="dateReport" id="dateRep" class="form-control form-control-sm"/>
@@ -175,38 +175,38 @@
             </div>
         </div>
 
-<%--        <div class="form-group row" style="display: none;" id="sourceFacility">--%>
-<%--            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="sourceFacilities" id="sourceFacilitiesLbl">Объект--%>
-<%--                реинвестирования:</label>--%>
-<%--            <div class="col-sm-6">--%>
-<%--                <form:select path="sourceFacility" id="sourceFacilities" items="${sourceFacilities}"--%>
-<%--                             multiple="false"--%>
-<%--                             itemValue="id" itemLabel="name" class="form-control form-control-sm selectpicker"--%>
-<%--                             data-size="10" data-none-selected-text="Без объекта"/>--%>
-<%--                <div class="has-error" id="sourceFacilityErr">--%>
-<%--                </div>--%>
-<%--            </div>--%>
-<%--        </div>--%>
+        <div class="form-group row" style="display: none;" id="sourceFacility">
+            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="sourceFacilities" id="sourceFacilitiesLbl">Объект
+                реинвестирования:</label>
+            <div class="col-sm-6">
+                <form:select path="sourceFacility" id="sourceFacilities" items="${sourceFacilities}"
+                             multiple="false"
+                             itemValue="id" itemLabel="name" class="form-control form-control-sm selectpicker"
+                             data-size="10" data-none-selected-text="Без объекта"/>
+                <div class="has-error" id="sourceFacilityErr">
+                </div>
+            </div>
+        </div>
 
-<%--        <div class="form-group row" style="display: none;" id="sourceUnderFacility">--%>
-<%--            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="sourceUnderFacilities"--%>
-<%--                   id="sourceUnderFacilitiesLbl">Подобъект--%>
-<%--                реинвестирования:</label>--%>
-<%--            <div class="col-sm-6">--%>
-<%--                <form:select path="sourceUnderFacility" id="sourceUnderFacilities" multiple="false"--%>
-<%--                             class="form-control form-control-sm selectpicker"--%>
-<%--                             data-size="10">--%>
-<%--                    <c:forEach var="uf" items="${sourceUnderFacilities}">--%>
-<%--                        <form:option value="${uf.name}" id="${uf.id}" data-parent-id="${uf.facility.id}">--%>
+        <div class="form-group row" style="display: none;" id="sourceUnderFacility">
+            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="sourceUnderFacilities"
+                   id="sourceUnderFacilitiesLbl">Подобъект
+                реинвестирования:</label>
+            <div class="col-sm-6">
+                <form:select path="sourceUnderFacility" id="sourceUnderFacilities" multiple="false"
+                             class="form-control form-control-sm selectpicker"
+                             data-size="10">
+                    <c:forEach var="uf" items="${sourceUnderFacilities}">
+                        <form:option value="${uf.name}" id="${uf.id}" data-parent-id="${uf.facility.id}">
 
-<%--                        </form:option>--%>
-<%--                    </c:forEach>--%>
-<%--                </form:select>--%>
+                        </form:option>
+                    </c:forEach>
+                </form:select>
 
-<%--                <div class="has-error" id="reUnderFacilityErr">--%>
-<%--                </div>--%>
-<%--            </div>--%>
-<%--        </div>--%>
+                <div class="has-error" id="reUnderFacilityErr">
+                </div>
+            </div>
+        </div>
 
         <div class="form-group row" id="shareKindNameRow">
             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="shareTypeName">Вид доли:</label>

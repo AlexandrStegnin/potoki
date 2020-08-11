@@ -224,7 +224,7 @@
                                     <a class="dropdown-item" id="aDivide"
                                        href="<c:url value='/double-cash-${money.id}' />">Разделить</a>
                                     <a class="dropdown-item" id="aDouble"
-                                       href="<c:url value='/close-cash-${money.id}' />">Закрыть</a></div>
+                                       href="<c:url value='close/${money.id}' />">Закрыть</a></div>
                             </div>
                         </td>
                     </sec:authorize>
