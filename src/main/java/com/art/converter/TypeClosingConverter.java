@@ -18,6 +18,9 @@ public class TypeClosingConverter implements Converter<String, TypeClosing> {
 
     public TypeClosing convert(String id) {
         TypeClosing typeClosing;
+        if (id.equalsIgnoreCase("0")) {
+            return null;
+        }
         try {
             Long longId = Long.valueOf(id);
             typeClosing = typeClosingService.findById(longId);

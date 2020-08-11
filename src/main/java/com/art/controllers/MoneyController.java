@@ -163,6 +163,7 @@ public class MoneyController {
                            BindingResult result, ModelMap model) {
 
         if (result.hasErrors()) {
+            model.addAttribute("money", money);
             return "money-add";
         }
         String ret = "списку денег инвестора";
@@ -804,7 +805,7 @@ public class MoneyController {
 
     @ModelAttribute("facilities")
     public List<Facility> initializeFacilities() {
-        return facilityService.initializeFacilities();
+        return facilityService.initializeFacilitiesForMultiple();
     }
 
     @ModelAttribute("facilitiesList")
@@ -812,10 +813,10 @@ public class MoneyController {
         return facilityService.initializeFacilitiesForMultiple();
     }
 
-    @ModelAttribute("sourceFacilities")
-    public List<Facility> initializeReFacilities() {
-        return facilityService.initializeFacilities();
-    }
+//    @ModelAttribute("sourceFacilities")
+//    public List<Facility> initializeReFacilities() {
+//        return facilityService.initializeFacilities();
+//    }
 
     @ModelAttribute("investors")
     public List<AppUser> initializeInvestors() {
@@ -839,7 +840,7 @@ public class MoneyController {
 
     @ModelAttribute("underFacilities")
     public List<UnderFacility> initializeUnderFacilities() {
-        return underFacilityService.initializeUnderFacilities();
+        return underFacilityService.initializeUnderFacilitiesList();
     }
 
     @ModelAttribute("underFacilitiesList")
@@ -847,10 +848,10 @@ public class MoneyController {
         return underFacilityService.initializeUnderFacilitiesList();
     }
 
-    @ModelAttribute("sourceUnderFacilities")
-    public List<UnderFacility> initializeReUnderFacilities() {
-        return underFacilityService.initializeUnderFacilities();
-    }
+//    @ModelAttribute("sourceUnderFacilities")
+//    public List<UnderFacility> initializeReUnderFacilities() {
+//        return underFacilityService.initializeUnderFacilities();
+//    }
 
     @ModelAttribute("typeClosingInvest")
     public List<TypeClosing> initializeTypeClosingInvest() {
