@@ -9,6 +9,7 @@ import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.dto.CloseCashDTO;
 import com.art.model.supporting.dto.DividedCashDTO;
 import com.art.model.supporting.dto.ReinvestCashDTO;
+import com.art.model.supporting.enums.MoneyOperation;
 import com.art.model.supporting.enums.ShareType;
 import com.art.model.supporting.enums.TransactionType;
 import com.art.model.supporting.filters.CashFilter;
@@ -146,6 +147,7 @@ public class MoneyController {
         model.addAttribute("edit", false);
         model.addAttribute("doubleCash", false);
         model.addAttribute("closeCash", false);
+        model.addAttribute("operation", MoneyOperation.CREATE.getTitle());
         model.addAttribute("title", title);
         return "money-add";
     }

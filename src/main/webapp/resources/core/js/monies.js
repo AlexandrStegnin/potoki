@@ -2,6 +2,16 @@ let filters = [];
 
 jQuery(document).ready(function ($) {
 
+    $('#money-table').on('submit', function (e) {
+        e.preventDefault()
+        let operation = $('#operation').val();
+        switch (operation) {
+            case "CREATE":
+                checkAndCreate();
+                break
+        }
+    })
+
     blockActions();
     getFiltersFromLS((window.location.pathname + '').split("/")[1]);
     $(document).on('mousedown', '#underFacilitiesList > option', function (e) {
@@ -449,7 +459,7 @@ jQuery(document).ready(function ($) {
             let facility = $('#facilities').find(':selected').text();
             let investor = $('#investor').find(':selected').text();
             let cashing = $('#cashing').val();
-            let dateCashing = $('#dateGivedCash').val();
+            let dateCashing = $('#dateGivenCash').val();
             if (facility === 'Выберите объект' || investor === 'Выберите инвесторов...' || investor === '' || cashing === '' || dateCashing === '') {
                 hasError.errors = true;
                 $('#allMoneyCashing').hide();
@@ -630,7 +640,7 @@ function allMoneyCashing() {
                 id: investor.find("option:selected").val(),
                 login: investor.find("option:selected").text()
             },
-            dateGivedCash: $('#dateGivedCash').val(),
+            dateGivedCash: $('#dateGivenCash').val(),
             givedCash: $('#cash').val()
         }
     });
@@ -693,7 +703,7 @@ function prepareCashSave(what) {
 
     let givedCash = $('#cash').val();
 
-    let dateGivedCash = new Date($('#dateGivedCash').val()).getTime();
+    let dateGivenCash = new Date($('#dateGivenCash').val()).getTime();
 
     let cashSources = $('#cashSrc');
     let cashSource = {id: cashSources.find(':selected').val(), cashSource: cashSources.find(':selected').text()};
@@ -740,10 +750,10 @@ function prepareCashSave(what) {
 
     let dateReinvest = dateClosingInvest;
 
-    let shareKinds = $('#shareTypeName');
-    let shareKind = shareKinds.find(':selected').text();
-    if (shareKind === 'Не определена') {
-        shareKind = null;
+    let shareTypes = $('#shareTypeName');
+    let shareType = shareTypes.find(':selected').text();
+    if (shareType === 'Не определена') {
+        shareType = null;
     }
 
     let source = $('#source').val();
@@ -757,12 +767,12 @@ function prepareCashSave(what) {
         underFacility: underFacility,
         investor: investor,
         givedCash: givedCash,
-        dateGivedCash: dateGivedCash,
+        dateGivedCash: dateGivenCash,
         cashSource: cashSource,
         newCashDetail: newCashDetail,
         dateClosingInvest: dateClosingInvest,
         typeClosing: typeClosingInvest,
-        shareType: shareKind,
+        shareType: shareType,
         dateReport: dateReport,
         sourceFacility: reFacility,
         source: source,
@@ -814,7 +824,7 @@ function saveCash(cash, reFacility, reUnderFacility, dateReinvest, flag, invBuye
             $('#underFacilities').prop('selectedIndex', 0);
             $('#investor').prop('selectedIndex', 0);
             $('#cash').val(0);
-            $('#dateGivedCash').val('');
+            $('#dateGivenCash').val('');
             $('#cashSrc').prop('selectedIndex', 0);
             $('#cashTyp').prop('selectedIndex', 0);
             $('#cashDetail').prop('selectedIndex', 0);
@@ -843,7 +853,7 @@ function disableFields() {
         $('#underFacilities').prop('disabled', true);
         $('#investor').prop('disabled', true);
         $('#cash').prop('disabled', true);
-        $('#dateGivedCash').prop('disabled', true);
+        $('#dateGivenCash').prop('disabled', true);
         $('#cashSrc').prop('disabled', true);
         $('#cashDetail').prop('disabled', true);
         $('#dateCloseInv').prop('disabled', false);
@@ -857,7 +867,7 @@ function disableFields() {
         $('#underFacilities').prop('disabled', false);
         $('#investor').prop('disabled', true);
         $('#cash').prop('disabled', false);
-        $('#dateGivedCash').prop('disabled', true);
+        $('#dateGivenCash').prop('disabled', true);
         $('#cashSrc').prop('disabled', true);
         $('#cashDetail').prop('disabled', true);
         $('#dateCloseInv').prop('disabled', true);
@@ -878,7 +888,7 @@ function disableFields() {
         $('#underFacilities').prop('disabled', false);
         $('#investor').prop('disabled', false);
         $('#cash').prop('disabled', false);
-        $('#dateGivedCash').prop('disabled', false);
+        $('#dateGivenCash').prop('disabled', false);
         $('#cashSrc').prop('disabled', false);
 
         cashDetail.prop('disabled', false);
@@ -906,7 +916,7 @@ function disableFields() {
         $('#underFacilities').removeClass('d-none');
         $('#investor').removeClass('d-none');
         $('#cash').removeClass('d-none');
-        $('#dateGivedCash').removeClass('d-none');
+        $('#dateGivenCash').removeClass('d-none');
         $('#cashSrc').removeClass('d-none');
         $('#cashDetail').removeClass('d-none');
         $('#dateCloseInvRow').addClass('d-none');
@@ -923,7 +933,7 @@ function enableFields() {
     $('#underFacilities').prop('disabled', false);
     $('#investor').prop('disabled', false);
     $('#cash').prop('disabled', false);
-    $('#dateGivedCash').prop('disabled', false);
+    $('#dateGivenCash').prop('disabled', false);
     $('#cashSrc').prop('disabled', false);
     $('#cashDetail').prop('disabled', false);
     $('#dateCloseInv').prop('disabled', false);
@@ -939,7 +949,7 @@ function moveFields(mAttribute) {
     let underFacilities = $('#underFacilitiesRow');
     let investor = $('#investorRow');
     let cash = $('#cashRow');
-    let dateGivedCash = $('#dateGivedCashRow');
+    let dateGivenCash = $('#dateGivenCashRow');
     let cashSrc = $('#cashSrcRow');
     let cashTyp = $('#cashTypRow');
     let cashDetail = $('#cashDetailRow');
@@ -957,8 +967,8 @@ function moveFields(mAttribute) {
             underFacilities.insertAfter(facilities);
             investor.insertAfter(underFacilities);
             cash.insertAfter(investor);
-            dateGivedCash.insertAfter(cash);
-            cashSrc.insertAfter(dateGivedCash);
+            dateGivenCash.insertAfter(cash);
+            cashSrc.insertAfter(dateGivenCash);
             cashDetail.insertAfter(cashTyp);
             shareTypeName.insertAfter(invType);
             dateRep.insertAfter(shareTypeName);
@@ -971,8 +981,8 @@ function moveFields(mAttribute) {
             underFacilities.insertAfter(facilities);
             investor.insertAfter(underFacilities);
             cash.insertAfter(investor);
-            dateGivedCash.insertAfter(cash);
-            cashSrc.insertAfter(dateGivedCash);
+            dateGivenCash.insertAfter(cash);
+            cashSrc.insertAfter(dateGivenCash);
             cashTyp.insertAfter(cashSrc);
             cashDetail.insertAfter(cashTyp);
             dateRep.insertAfter(cashDetail);
@@ -990,8 +1000,8 @@ function moveFields(mAttribute) {
             underFacilities.insertAfter(facilities);
             investor.insertAfter(underFacilities);
             cash.insertAfter(investor);
-            dateGivedCash.insertAfter(cash);
-            cashSrc.insertAfter(dateGivedCash);
+            dateGivenCash.insertAfter(cash);
+            cashSrc.insertAfter(dateGivenCash);
             cashDetail.insertAfter(cashTyp);
             shareTypeName.insertAfter(invType);
             dateRep.insertAfter(shareTypeName);
@@ -1160,7 +1170,7 @@ function cashingMoney() {
                 id: investor.find("option:selected").val(),
                 login: investor.find("option:selected").text()
             },
-            dateGivedCash: $('#dateGivedCash').val(),
+            dateGivedCash: $('#dateGivenCash').val(),
             givedCash: $('#cash').val()
         }
     });
@@ -1443,4 +1453,38 @@ function showPopup(message) {
 
 function linkHasClass(link) {
     if (link.hasClass('disabled')) return true;
+}
+
+function checkAndCreate() {
+    let facilitySelect = $('#facilities');
+    if (facilitySelect.find(':selected').val() === '0') {
+        $('#facilityError').removeClass('d-none')
+        return false
+    } else {
+        $('#facilityError').addClass('d-none')
+    }
+    let underFacilitySelect = $('#underFacilities');
+    if (underFacilitySelect.find(':selected').attr('id') === '0') {
+        $('#underFacilityError').removeClass('d-none')
+        return false
+    } else {
+        $('#underFacilityError').addClass('d-none')
+    }
+    let investorSelect = $('#investor');
+    if (investorSelect.find(':selected').val() === '0') {
+        $('#investorError').removeClass('d-none')
+        return false
+    } else {
+        $('#investorError').addClass('d-none')
+    }
+    // $('#cash').removeClass('d-none');
+    // $('#dateGivedCash').removeClass('d-none');
+    // $('#cashSrc').removeClass('d-none');
+    // $('#cashDetail').removeClass('d-none');
+    // $('#dateCloseInvRow').addClass('d-none');
+    // $('#typeClosingRow').addClass('d-none');
+    // $('#reFacilities').addClass('d-none');
+    // $('#reUnderFacilities').addClass('d-none');
+    // $('#dateRepRow').addClass('d-none');
+    // $('#investorBuyerRow').addClass('d-none');
 }

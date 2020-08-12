@@ -18,14 +18,21 @@
           href="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.14/css/bootstrap-select.min.css' />">
     <link href="<c:url value='/resources/core/css/generic-container.css' />" rel="stylesheet"/>
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
+    <style type="text/css">
+        .has-error {
+            color: red;
+            padding: 8px 0 0 8px;
+        }
+    </style>
 </head>
 
 <body>
 <%@include file="header.jsp" %>
 <div class="container">
     <form:form method="POST" modelAttribute="money" class="form-horizontal generic-container"
-               style="margin: 10px 0 10px 0" id="iCashTable">
+               style="margin: 10px 0 10px 0" id="money-table">
         <form:input type="hidden" path="id" id="id"/>
+        <input type="hidden" id="operation" value="${operation}"/>
         <input type="hidden" id="newCash" value="${newCash}"/>
         <input type="hidden" id="edit" value="${edit}"/>
         <input type="hidden" id="doubleCash" value="${doubleCash}"/>
@@ -36,8 +43,8 @@
                 <form:select path="facility" id="facilities" items="${facilities}" multiple="false"
                              itemValue="id" itemLabel="name" class="form-control form-control-sm selectpicker"
                              data-size="10" data-live-search="true" data-none-selected-text="Выберите объект"/>
-                <div class="has-error">
-                    <form:errors path="facility" class="help-inline"/>
+                <div class="has-error col-sm-6 d-none" id="facilityError">
+                    Необходимо выбрать объект
                 </div>
             </div>
         </div>
@@ -63,8 +70,8 @@
                         </form:option>
                     </c:forEach>
                 </form:select>
-                <div class="has-error">
-                    <form:errors path="underFacility" class="help-inline"/>
+                <div class="has-error col-sm-6 d-none" id="underFacilityError">
+                    Необходимо выбрать подобъект
                 </div>
             </div>
         </div>
@@ -75,8 +82,8 @@
                 <form:select path="investor" id="investor" items="${investors}" multiple="false"
                              itemValue="id" itemLabel="login" class="form-control form-control-sm selectpicker"
                              data-live-search="true" data-size="10" data-none-selected-text="Выберите инвестора"/>
-                <div class="has-error">
-                    <form:errors path="investor" class="help-inline"/>
+                <div class="has-error col-sm-6 d-none" id="investorError">
+                    Необходимо выбрать инвестора
                 </div>
             </div>
         </div>
@@ -96,12 +103,12 @@
 <%--            </div>--%>
 <%--        </div>--%>
 
-        <div class="form-group row" id="dateGivedCashRow">
-            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="dateGivedCash">Дата передачи денег:</label>
+        <div class="form-group row" id="dateGivenCashRow">
+            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="dateGivenCash">Дата передачи денег:</label>
             <div class="col-sm-6">
-                <form:input type="date" path="dateGiven" id="dateGivedCash" class="form-control form-control-sm"/>
-                <div class="has-error">
-                    <form:errors path="dateGiven" class="help-inline"/>
+                <form:input type="date" path="dateGiven" id="dateGivenCash" class="form-control form-control-sm"/>
+                <div class="has-error col-sm-6 d-none">
+                    Необходимо указать дату вложения
                 </div>
             </div>
         </div>
@@ -112,8 +119,8 @@
                 <form:select path="cashSource" id="cashSrc" items="${cashSources}" multiple="false"
                              itemValue="id" itemLabel="name" class="form-control form-control-sm selectpicker"
                              data-size="10" data-none-selected-text="Выберите источник денег"/>
-                <div class="has-error">
-                    <form:errors path="cashSource" class="help-inline"/>
+                <div class="has-error col-sm-6 d-none">
+                    Необходимо выбрать источник денег
                 </div>
             </div>
         </div>
@@ -124,8 +131,8 @@
                 <form:select path="newCashDetail" id="cashDetail" items="${newCashDetails}" multiple="false"
                              itemValue="id" itemLabel="name" class="form-control form-control-sm selectpicker"
                              data-none-selected-text="Выберите детали новых денег"/>
-                <div class="has-error">
-                    <form:errors path="newCashDetail" class="help-inline"/>
+                <div class="has-error col-sm-6 d-none">
+                    Необходимо выбрать детали новых денег
                 </div>
             </div>
         </div>
@@ -136,7 +143,7 @@
                 <form:input type="date" path="dateClosing" id="dateCloseInv"
                             class="form-control form-control-sm"
                             readonly="${edit}"/>
-                <div class="has-error" id="reInvestDateErr">
+                <div class="has-error col-sm-6 d-none" id="reInvestDateErr">
                 </div>
             </div>
         </div>
@@ -149,7 +156,7 @@
                              itemValue="id" itemLabel="name" class="form-control form-control-sm selectpicker"
                              data-none-selected-text="Выберите вид закрытия"
                              readonly="${edit}"/>
-                <div class="has-error">
+                <div class="has-error col-sm-6 d-none">
                     <form:errors path="typeClosing" class="help-inline"/>
                 </div>
             </div>
@@ -161,7 +168,7 @@
                 <form:select path="investorBuyer" id="investorBuyer" items="${investors}" multiple="false"
                              itemValue="id" itemLabel="login" class="form-control form-control-sm selectpicker"
                              data-size="10" data-none-selected-text="Выберите инвнстора"/>
-                <div class="has-error" id="investorBuyerErr">
+                <div class="has-error col-sm-6 d-none" id="investorBuyerErr">
                 </div>
             </div>
         </div>
@@ -170,12 +177,12 @@
             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="dateRep">Период расчёта:</label>
             <div class="col-sm-6">
                 <form:input type="date" path="dateReport" id="dateRep" class="form-control form-control-sm"/>
-                <div class="has-error" id="dateRepErr">
+                <div class="has-error col-sm-6 d-none" id="dateRepErr">
                 </div>
             </div>
         </div>
 
-        <div class="form-group row" style="display: none;" id="sourceFacility">
+        <div class="form-group row" id="sourceFacility">
             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="sourceFacilities" id="sourceFacilitiesLbl">Объект
                 реинвестирования:</label>
             <div class="col-sm-6">
@@ -183,12 +190,12 @@
                              multiple="false"
                              itemValue="id" itemLabel="name" class="form-control form-control-sm selectpicker"
                              data-size="10" data-none-selected-text="Без объекта"/>
-                <div class="has-error" id="sourceFacilityErr">
+                <div class="has-error col-sm-6 d-none" id="sourceFacilityErr">
                 </div>
             </div>
         </div>
 
-        <div class="form-group row" style="display: none;" id="sourceUnderFacility">
+        <div class="form-group row" id="sourceUnderFacility">
             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="sourceUnderFacilities"
                    id="sourceUnderFacilitiesLbl">Подобъект
                 реинвестирования:</label>
@@ -203,18 +210,18 @@
                     </c:forEach>
                 </form:select>
 
-                <div class="has-error" id="reUnderFacilityErr">
+                <div class="has-error col-sm-6 d-none" id="reUnderFacilityErr">
                 </div>
             </div>
         </div>
 
-        <div class="form-group row" id="shareKindNameRow">
+        <div class="form-group row" id="shareTypeNameRow">
             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="shareTypeName">Вид доли:</label>
             <div class="col-sm-6">
                 <form:select path="shareType" id="shareTypeName" items="${shareTypes}" multiple="false"
                              itemValue="id" itemLabel="title" class="form-control form-control-sm selectpicker"/>
-                <div class="has-error">
-                    <form:errors path="shareType" class="help-inline"/>
+                <div class="has-error col-sm-6 d-none">
+                    Необходимо выбрать вид доли
                 </div>
             </div>
         </div>
@@ -223,7 +230,7 @@
             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="realDateGiven">Дата реальной передачи денег:</label>
             <div class="col-sm-6">
                 <form:input type="date" path="realDateGiven" id="realDateGiven" class="form-control form-control-sm"/>
-                <div class="has-error" id="realDateGivenErr">
+                <div class="has-error col-sm-6 d-none" id="realDateGivenErr">
                 </div>
             </div>
         </div>
