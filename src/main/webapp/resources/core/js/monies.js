@@ -902,20 +902,19 @@ function disableFields() {
         $('#reUnderFacilities').prop('disabled', false);
         $('#dateRep').prop('disabled', false);
     } else if ($('#newCash').val() === 'true') {
-        $('#facilities').prop('disabled', false);
-        $('#underFacilities').prop('disabled', false);
-        $('#investor').prop('disabled', false);
-        $('#cash').prop('disabled', false);
-        $('#dateGivedCash').prop('disabled', false);
-        $('#cashSrc').prop('disabled', false);
-        $('#cashDetail').prop('disabled', false);
-        $('#dateCloseInv').prop('disabled', true);
-        $('#dateCloseInvRow').css('display', 'none');
-        $('#typeClosing').prop('disabled', true);
-        $('#typeClosingRow').css('display', 'none');
-        $('#reFacilities').prop('disabled', false);
-        $('#reUnderFacilities').prop('disabled', false);
-        $('#dateRep').prop('disabled', false);
+        $('#facilities').removeClass('d-none');
+        $('#underFacilities').removeClass('d-none');
+        $('#investor').removeClass('d-none');
+        $('#cash').removeClass('d-none');
+        $('#dateGivedCash').removeClass('d-none');
+        $('#cashSrc').removeClass('d-none');
+        $('#cashDetail').removeClass('d-none');
+        $('#dateCloseInvRow').addClass('d-none');
+        $('#typeClosingRow').addClass('d-none');
+        $('#reFacilities').addClass('d-none');
+        $('#reUnderFacilities').addClass('d-none');
+        $('#dateRepRow').addClass('d-none');
+        $('#investorBuyerRow').addClass('d-none');
     }
 }
 
