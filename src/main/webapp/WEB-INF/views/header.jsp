@@ -74,3 +74,4 @@
         </div>
     </div>
 </nav>
+<script src="<c:url value='https://kit.fontawesome.com/2b84e2f58d.js' />" crossorigin="anonymous"></script>
