@@ -122,7 +122,9 @@ public class MoneyService {
         CashSource cashSource = cashSourceService.findById(moneyDTO.getCashSourceId());
         NewCashDetail newCashDetail = newCashDetailService.findById(moneyDTO.getNewCashDetailId());
         ShareType shareType = ShareType.fromId(moneyDTO.getShareTypeId());
-        Money money = new Money(facility, underFacility, investor, cashSource, newCashDetail, shareType);
+        BigDecimal cash = moneyDTO.getCash();
+        Date dateGiven = moneyDTO.getDateGiven();
+        Money money = new Money(facility, underFacility, investor, cash, dateGiven, cashSource, newCashDetail, shareType);
         return create(money);
     }
 
