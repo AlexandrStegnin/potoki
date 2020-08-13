@@ -8,7 +8,7 @@ public enum MoneyOperation {
 
     UNDEFINED(0, "UNDEFINED"),
     CREATE(1, "CREATE"),
-    EDIT(2, "EDIT"),
+    UPDATE(2, "UPDATE"),
     CLOSE(3, "CLOSE"),
     DOUBLE(4, "DOUBLE");
 
