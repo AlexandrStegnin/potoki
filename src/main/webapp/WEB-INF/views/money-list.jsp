@@ -277,7 +277,7 @@
                     <div class="form-group row" id="facilitiesRow">
                         <label class="col-md-3 col-form-label" for="srcFacilities">Объект:</label>
                         <div class="col-md-9">
-                            <form:select path="reFacility" id="srcFacilities" items="${facilities}" multiple="false"
+                            <form:select path="reFacility" id="srcFacilities" items="${facilities}" multiple="true"
                                          itemValue="id" itemLabel="name" class="selectpicker form-control input-sm"
                                          data-live-search="true"/>
                             <div id="facilityErr" style="color: red; display: none">Необходимо выбрать объект</div>
