@@ -142,6 +142,8 @@ public class Location {
 
     public static final String MONEY_CLOSE = MONEY + "/close";
 
+    public static final String MONEY_UPDATE = MONEY + "/update";
+
     // Детали новых денег
     public static final String NEW_CASH_DETAILS = "/new-cash-details";
 
