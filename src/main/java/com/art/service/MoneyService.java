@@ -5,11 +5,9 @@ import com.art.model.*;
 import com.art.model.supporting.AfterCashing;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.SearchSummary;
-import com.art.model.supporting.dto.CloseCashDTO;
-import com.art.model.supporting.dto.CreateMoneyDTO;
-import com.art.model.supporting.dto.DividedCashDTO;
-import com.art.model.supporting.dto.ReinvestCashDTO;
+import com.art.model.supporting.dto.*;
 import com.art.model.supporting.enums.ShareType;
+import com.art.model.supporting.enums.TransactionType;
 import com.art.model.supporting.filters.CashFilter;
 import com.art.repository.MoneyRepository;
 import com.art.specifications.MoneySpecification;
@@ -85,6 +83,7 @@ public class MoneyService {
         return moneyRepository.findByFacilityId(facilityId);
     }
 
+    @Transactional
     @CachePut(value = Constant.MONEY_CACHE_KEY, key = "#money.id")
     public Money update(Money money) {
         money = moneyRepository.saveAndFlush(money);
@@ -97,7 +96,7 @@ public class MoneyService {
         return money;
     }
 
-    @CacheEvict(Constant.MONEY_CACHE_KEY)
+    @CacheEvict(value = Constant.MONEY_CACHE_KEY, key = "#id")
     public void deleteById(Long id) {
         moneyRepository.deleteById(id);
     }
@@ -115,6 +114,12 @@ public class MoneyService {
         return this.em.merge(money);
     }
 
+    /**
+     * Создать сумму на основе DTO
+     *
+     * @param moneyDTO DTO суммы
+     * @return созданная сумма
+     */
     public Money create(CreateMoneyDTO moneyDTO) {
         Facility facility = facilityService.findById(moneyDTO.getFacilityId());
         UnderFacility underFacility = underFacilityService.findById(moneyDTO.getUnderFacilityId());
@@ -125,7 +130,37 @@ public class MoneyService {
         BigDecimal cash = moneyDTO.getCash();
         Date dateGiven = moneyDTO.getDateGiven();
         Money money = new Money(facility, underFacility, investor, cash, dateGiven, cashSource, newCashDetail, shareType);
-        return create(money);
+        money = create(money);
+        transactionLogService.create(money, TransactionType.CREATE);
+        return money;
+    }
+
+    /**
+     * Обновить деньги инвестора на основе DTO
+     *
+     * @param moneyDTO DTO для обновления
+     * @return обновлённая сумма инвестора
+     */
+    public Money update(UpdateMoneyDTO moneyDTO) {
+        Money money = findById(moneyDTO.getId());
+        transactionLogService.update(money);
+        Facility facility = facilityService.findById(moneyDTO.getFacilityId());
+        UnderFacility underFacility = underFacilityService.findById(moneyDTO.getUnderFacilityId());
+        AppUser investor = userService.findById(moneyDTO.getInvestorId());
+        CashSource cashSource = cashSourceService.findById(moneyDTO.getCashSourceId());
+        NewCashDetail newCashDetail = newCashDetailService.findById(moneyDTO.getNewCashDetailId());
+        ShareType shareType = ShareType.fromId(moneyDTO.getShareTypeId());
+        BigDecimal cash = moneyDTO.getCash();
+        Date dateGiven = moneyDTO.getDateGiven();
+        money.setFacility(facility);
+        money.setUnderFacility(underFacility);
+        money.setInvestor(investor);
+        money.setCashSource(cashSource);
+        money.setNewCashDetail(newCashDetail);
+        money.setShareType(shareType);
+        money.setGivenCash(cash);
+        money.setDateGiven(dateGiven);
+        return update(money);
     }
 
     @Cacheable(Constant.MONEY_CACHE_KEY)
