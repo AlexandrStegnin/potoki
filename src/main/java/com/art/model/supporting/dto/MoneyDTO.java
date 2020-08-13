@@ -1,5 +1,6 @@
 package com.art.model.supporting.dto;
 
+import com.art.model.supporting.enums.MoneyOperation;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -27,5 +28,7 @@ public abstract class MoneyDTO {
     private Long newCashDetailId;
 
     private int shareTypeId;
+    
+    private MoneyOperation operation;
 
 }
