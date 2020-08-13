@@ -146,7 +146,8 @@
                 <form:input type="date" path="dateClosing" id="dateCloseInv"
                             class="form-control form-control-sm"
                             readonly="${edit}"/>
-                <div class="has-error col-sm-6 d-none" id="reInvestDateErr">
+                <div class="has-error col-sm-6 d-none" id="dateCloseError">
+                    Необходимо указать дату закрытия
                 </div>
             </div>
         </div>
@@ -159,8 +160,8 @@
                              itemValue="id" itemLabel="name" class="form-control form-control-sm selectpicker"
                              data-none-selected-text="Выберите вид закрытия"
                              readonly="${edit}"/>
-                <div class="has-error col-sm-6 d-none">
-                    <form:errors path="typeClosing" class="help-inline"/>
+                <div class="has-error col-sm-6 d-none" id="typeClosingError">
+                    Необходимо выбрать вид закрытия
                 </div>
             </div>
         </div>
@@ -171,7 +172,8 @@
                 <form:select path="investorBuyer" id="investorBuyer" items="${investors}" multiple="false"
                              itemValue="id" itemLabel="login" class="form-control form-control-sm selectpicker"
                              data-size="10" data-none-selected-text="Выберите инвнстора"/>
-                <div class="has-error col-sm-6 d-none" id="investorBuyerErr">
+                <div class="has-error col-sm-6 d-none" id="investorBuyerError">
+                    Необходимо выбрать инвестора покупателя
                 </div>
             </div>
         </div>
@@ -194,6 +196,7 @@
                              itemValue="id" itemLabel="name" class="form-control form-control-sm selectpicker"
                              data-size="10" data-none-selected-text="Без объекта"/>
                 <div class="has-error col-sm-6 d-none" id="sourceFacilityErr">
+                    Необходимо выбрать объект реинвестирования
                 </div>
             </div>
         </div>
@@ -212,8 +215,8 @@
                         </form:option>
                     </c:forEach>
                 </form:select>
-
                 <div class="has-error col-sm-6 d-none" id="reUnderFacilityErr">
+                    Необходимо выбрать подобъект реинвестирования
                 </div>
             </div>
         </div>

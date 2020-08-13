@@ -3,12 +3,20 @@ let filters = [];
 let OperationEnum = {
     CREATE: 'CREATE',
     UPDATE: 'UPDATE',
+    CLOSE: 'CLOSE',
+    RESALE: 'RESALE',
     properties: {
         CREATE: {
             url: 'create'
         },
         UPDATE: {
             url: '/money/update'
+        },
+        CLOSE: {
+            url: '/money/close/one'
+        },
+        RESALE: {
+            url: '/money/close/resale'
         }
     }
 }
@@ -27,6 +35,9 @@ jQuery(document).ready(function ($) {
                 break
             case "UPDATE":
                 save(OperationEnum.UPDATE);
+                break
+            case "CLOSE":
+                save(OperationEnum.CLOSE)
                 break
         }
     })
@@ -434,7 +445,7 @@ jQuery(document).ready(function ($) {
             }
         },
         'investorBuyerFunc': function () {
-            let dateClosingInfo = $('#reInvestDateErr');
+            let dateClosingInfo = $('#dateCloseError');
             let typeClosingInfo = $('#investorBuyerErr');
             let investorBuyer = $('#investorBuyer');
             if (investorBuyer.css('display') === 'block' && investorBuyer.find(':selected').text() === 'Выберите инвестора') {
@@ -463,7 +474,7 @@ jQuery(document).ready(function ($) {
         },
         'reInvestDateFunc': function () {
 
-            let reInvestDateInfo = $('#reInvestDateErr');
+            let reInvestDateInfo = $('#dateCloseError');
             let reInvestDate = $('#dateCloseInv');
             let reInvDate = reInvestDate.text();
             if (reInvDate === '' && $('#typeClosing').find(':selected').text() === 'Реинвестирование') {
@@ -880,68 +891,120 @@ function disableFields(operation) {
     let dateRepRow = $('#dateRepRow');
     let typeCloseRow = $('#typeClosingRow');
     let buyerRow = $('#investorBuyerRow');
+
+    let facilities = $('#facilities')
+    let underFacilities = $('#underFacilities');
+    let investor = $('#investor');
+    let cash = $('#cash');
+    let dateGiven = $('#dateGivenCash');
+    let cashSrc = $('#cashSrc');
+    let cashDetail = $('#cashDetail');
+    let dateReport = $('#dateRep');
+    let shareType = $('#shareType');
+
+    let dateClose = $('#dateCloseInv');
+    let typeClose = $('#typeClosing');
+    let reFacility = $('#sourceFacilities');
+    let reUnderFacility = $('#sourceUnderFacilities');
+
     switch (operation) {
         case OperationEnum.CREATE:
-            facilitiesRow.removeClass('d-none');
-            underFacilitiesRow.removeClass('d-none');
-            investorRow.removeClass('d-none');
-            cashRow.removeClass('d-none');
-            dateGivenRow.removeClass('d-none');
-            cashSrcRow.removeClass('d-none');
-            cashDetailRow.removeClass('d-none');
-            dateCloseInvRow.addClass('d-none');
-            typeCloseRow.addClass('d-none');
-            reFacilityRow.addClass('d-none');
-            reUnderFacilityRow.addClass('d-none');
-            dateRepRow.addClass('d-none');
-            buyerRow.addClass('d-none');
+            facilitiesRow.removeClass('d-none')
+            underFacilitiesRow.removeClass('d-none')
+            investorRow.removeClass('d-none')
+            cashRow.removeClass('d-none')
+            dateGivenRow.removeClass('d-none')
+            cashSrcRow.removeClass('d-none')
+            cashDetailRow.removeClass('d-none')
+            dateCloseInvRow.addClass('d-none')
+            typeCloseRow.addClass('d-none')
+            reFacilityRow.addClass('d-none')
+            reUnderFacilityRow.addClass('d-none')
+            dateRepRow.addClass('d-none')
+            buyerRow.addClass('d-none')
+
+            facilities.prop('disabled', false)
+            underFacilities.prop('disabled', false)
+            investor.prop('disabled', false)
+            cash.prop('disabled', false)
+            dateGiven.prop('disabled', false)
+            cashSrc.prop('disabled', false)
+            cashDetail.prop('disabled', false)
+            dateReport.prop('disabled', false)
+            shareType.prop('disabled', false)
+
+            dateClose.prop('disabled', true)
+            typeClose.prop('disabled', true)
+            reFacility.prop('disabled', true)
+            reUnderFacility.prop('disabled', true)
+
             break
         case OperationEnum.UPDATE:
-            facilitiesRow.removeClass('d-none');
-            underFacilitiesRow.removeClass('d-none');
-            investorRow.removeClass('d-none');
-            cashRow.removeClass('d-none');
-            dateGivenRow.removeClass('d-none');
-            cashSrcRow.removeClass('d-none');
-            cashDetailRow.removeClass('d-none');
-            let cashDetailVal = $('#cashDetail:selected').text();
+            facilitiesRow.removeClass('d-none')
+            underFacilitiesRow.removeClass('d-none')
+            investorRow.removeClass('d-none')
+            cashRow.removeClass('d-none')
+            dateGivenRow.removeClass('d-none')
+            cashSrcRow.removeClass('d-none')
+            cashDetailRow.removeClass('d-none')
+            let cashDetailVal = $('#cashDetail:selected').text()
             if (cashDetailVal === 'Реинвестирование с продажи') {
-                reFacilityRow.removeClass('d-none');
-                reUnderFacilityRow.removeClass('d-none');
-                dateRepRow.addClass('d-none');
+                reFacilityRow.removeClass('d-none')
+                reUnderFacilityRow.removeClass('d-none')
+                dateRepRow.addClass('d-none')
             } else if (cashDetailVal === 'Реинвестирование с аренды') {
-                reFacilityRow.removeClass('d-none');
-                reUnderFacilityRow.removeClass('d-none');
-                dateRepRow.removeClass('d-none');
+                reFacilityRow.removeClass('d-none')
+                reUnderFacilityRow.removeClass('d-none')
+                dateRepRow.removeClass('d-none')
             } else {
-                reFacilityRow.addClass('d-none');
-                reUnderFacilityRow.addClass('d-none');
-                dateRepRow.addClass('d-none');
+                reFacilityRow.addClass('d-none')
+                reUnderFacilityRow.addClass('d-none')
+                dateRepRow.addClass('d-none')
             }
-            dateCloseInvRow.addClass('d-none');
-            typeCloseRow.addClass('d-none');
-            reFacilityRow.addClass('d-none');
-            reUnderFacilityRow.addClass('d-none');
-            dateRepRow.addClass('d-none');
+            dateCloseInvRow.addClass('d-none')
+            typeCloseRow.addClass('d-none')
+            reFacilityRow.addClass('d-none')
+            reUnderFacilityRow.addClass('d-none')
+            dateRepRow.addClass('d-none')
             buyerRow.addClass('d-none')
+            break
+        case OperationEnum.CLOSE:
+            dateCloseInvRow.removeClass('d-none');
+            typeCloseRow.removeClass('d-none');
+
+            dateClose.prop('disabled', false)
+            typeClose.prop('disabled', false)
+            reFacility.prop('disabled', false)
+            reUnderFacility.prop('disabled', false)
+
+            facilities.prop('disabled', true);
+            underFacilities.prop('disabled', true);
+            investor.prop('disabled', true);
+            cash.prop('disabled', true);
+            dateGiven.prop('disabled', true);
+            cashSrc.prop('disabled', true);
+            cashDetail.prop('disabled', true);
+            dateReport.prop('disabled', true);
+            shareType.prop('disabled', true);
             break
     }
 
-    if ($('#closeCash').val() === 'true') {
-        $('#facilities').prop('disabled', true);
-        $('#underFacilities').prop('disabled', true);
-        $('#investor').prop('disabled', true);
-        $('#cash').prop('disabled', true);
-        $('#dateGivenCash').prop('disabled', true);
-        $('#cashSrc').prop('disabled', true);
-        $('#cashDetail').prop('disabled', true);
-        $('#dateCloseInv').prop('disabled', false);
-        $('#typeClosing').prop('disabled', false);
-        $('#reFacilities').prop('disabled', false);
-        $('#reUnderFacilities').prop('disabled', false);
-        $('#dateRep').prop('disabled', true);
-        $('#shareType').prop('disabled', true);
-    } else if ($('#doubleCash').val() === 'true') {
+    // if ($('#closeCash').val() === 'true') {
+    //     $('#facilities').prop('disabled', true);
+    //     $('#underFacilities').prop('disabled', true);
+    //     $('#investor').prop('disabled', true);
+    //     $('#cash').prop('disabled', true);
+    //     $('#dateGivenCash').prop('disabled', true);
+    //     $('#cashSrc').prop('disabled', true);
+    //     $('#cashDetail').prop('disabled', true);
+    //     $('#dateRep').prop('disabled', true);
+    //     $('#shareType').prop('disabled', true);
+    //     $('#dateCloseInv').prop('disabled', false);
+    //     $('#typeClosing').prop('disabled', false);
+    //     $('#reFacilities').prop('disabled', false);
+    //     $('#reUnderFacilities').prop('disabled', false);
+    // } else
+    if ($('#doubleCash').val() === 'true') {
         $('#facilities').prop('disabled', true);
         $('#underFacilities').prop('disabled', false);
         $('#investor').prop('disabled', true);
@@ -1505,6 +1568,11 @@ MoneyDTO.prototype = {
     newCashDetailId: null,
     shareTypeId: 0,
     dateReport: null,
+    buyerId: null,
+    dateClose: null,
+    typeCloseId: null,
+    realDateGiven: null,
+    operation: null,
     build: function (facilityId, underFacilityId, investorId, cash, dateGiven, cashSourceId,
                      newCashDetailId, shareTypeId) {
         this.facilityId = facilityId;
@@ -1521,6 +1589,14 @@ MoneyDTO.prototype = {
     },
     setDateReport: function (dateReport) {
         this.dateReport = dateReport;
+    },
+    resale: function (id, buyerId, dateClose, typeCloseId, realDateGiven) {
+        this.id = id;
+        this.buyerId = buyerId;
+        this.dateClose = dateClose;
+        this.typeCloseId = typeCloseId;
+        this.realDateGiven = realDateGiven;
+        this.operation = OperationEnum.RESALE
     }
 }
 
@@ -1553,6 +1629,7 @@ function saveMoney(moneyDTO, operation) {
                     clearMoneyForm()
                     break
                 case OperationEnum.UPDATE:
+                case OperationEnum.RESALE:
                     window.location.href = '/money/list'
                     break
             }
@@ -1587,8 +1664,12 @@ function clearMoneyForm() {
  */
 function save(operation) {
     if (check(operation)) {
-        let updateMoneyDTO = getMoneyDTO(operation)
-        saveMoney(updateMoneyDTO, operation);
+        let moneyDTO = getMoneyDTO(operation)
+        if (moneyDTO.operation === OperationEnum.RESALE) {
+            saveMoney(moneyDTO, OperationEnum.RESALE);
+        } else {
+            saveMoney(moneyDTO, operation);
+        }
     }
 }
 
@@ -1665,6 +1746,46 @@ function check(operation) {
                 $('#shareTypeError').addClass('d-none')
             }
             break
+        case OperationEnum.CLOSE:
+            let dateClose = $('#dateCloseInv').val();
+            if (dateClose.length === 0 || dateClose.length > 10) {
+                $('#dateCloseError').removeClass('d-none')
+                return false
+            } else {
+                $('#dateCloseError').addClass('d-none')
+            }
+            let typeClosing = $('#typeClosing').find(':selected').text()
+            if (typeClosing === 'Выберите вид закрытия') {
+                $('#typeClosingError').removeClass('d-none')
+                return false
+            } else {
+                if (typeClosing === 'Перепродажа доли') {
+                    let buyer = $('#investorBuyer').find(':selected').val()
+                    if (buyer === '0') {
+                        $('#investorBuyerError').removeClass('d-none')
+                        return false
+                    } else {
+                        $('#investorBuyerError').addClass('d-none')
+                    }
+                } else if (typeClosing === 'Реинвестирование') {
+                    let reFacility = $('#sourceFacilities').find(':selected').val()
+                    if (reFacility === '0') {
+                        $('#sourceFacilityErr').removeClass('d-none')
+                        return false
+                    } else {
+                        $('#sourceFacilityErr').addClass('d-none')
+                    }
+                    let reUnderFacility = $('#sourceUnderFacilities').find(':selected').attr('id')
+                    if (reUnderFacility === '0') {
+                        $('#reUnderFacilityErr').removeClass('d-none')
+                        return false
+                    } else {
+                        $('#reUnderFacilityErr').addClass('d-none')
+                    }
+                }
+                $('#typeClosingError').addClass('d-none')
+            }
+            break
     }
     return true
 }
@@ -1686,6 +1807,7 @@ function getMoneyDTO(operation) {
     let newCashDetailId = $('#cashDetail').find(':selected').val()
     let shareTypeId = $('#shareType').find(':selected').val()
     let dateReport = $('#dateRep').val()
+    let realDateGiven = $('#realDateGiven').val()
     let moneyDTO = new MoneyDTO()
     switch (operation) {
         case OperationEnum.CREATE:
@@ -1696,6 +1818,16 @@ function getMoneyDTO(operation) {
             moneyDTO.build(facilityId, underFacilityId, investorId, cashSum, dateGiven,
                 cashSourceId, newCashDetailId, shareTypeId)
             moneyDTO.setId(cashId)
+            return moneyDTO
+        case OperationEnum.CLOSE:
+            let buyerId = $('#investorBuyer').find(':selected').val()
+            let dateClose = $('#dateCloseInv').val()
+            let typeClosing = $('#typeClosing');
+            let typeCloseId = typeClosing.find(':selected').val()
+            let typeClose = typeClosing.find(':selected').text()
+            if (typeClose === 'Перепродажа доли') {
+                moneyDTO.resale(cashId, buyerId, dateClose, typeCloseId, realDateGiven)
+            }
             return moneyDTO
     }
 }
