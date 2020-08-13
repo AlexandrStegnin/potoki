@@ -4,13 +4,13 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * DTO для создания новой суммы инвестора
- *
  * @author Alexandr Stegnin
  */
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class CreateMoneyDTO extends MoneyDTO {
+public class UpdateMoneyDTO extends MoneyDTO {
+
+    private Long id;
 
 }
