@@ -163,6 +163,55 @@ public class MoneyService {
         return update(money);
     }
 
+    /**
+     * Перепродажа доли
+     *
+     * @param moneyDTO DTO для перепродажи
+     * @return перепроданная сумма
+     */
+    public Money resale(ResaleMoneyDTO moneyDTO) {
+        TypeClosing closingInvest = typeClosingService.findByName("Перепродажа доли");
+        NewCashDetail newCashDetail = newCashDetailService.findByName("Перепокупка доли");
+        AppUser buyer = userService.findById(moneyDTO.getBuyerId());
+        Date dateClosingInvest = moneyDTO.getDateClose();
+
+        Money oldCash = findById(moneyDTO.getId());
+
+        Money cash = new Money(oldCash);
+        Money newMoney = new Money(oldCash);
+
+        oldCash.setDateClosing(dateClosingInvest);
+        oldCash.setTypeClosing(closingInvest);
+        oldCash.setRealDateGiven(moneyDTO.getRealDateGiven());
+
+        cash.setInvestor(buyer);
+        cash.setDateGiven(dateClosingInvest);
+        cash.setSourceId(moneyDTO.getId());
+        cash.setCashSource(null);
+        cash.setSource(null);
+        cash.setNewCashDetail(newCashDetail);
+
+        newMoney.setCashSource(null);
+        newMoney.setSource(null);
+        newMoney.setGivenCash(newMoney.getGivenCash().negate());
+        newMoney.setSourceId(moneyDTO.getId());
+        newMoney.setDateGiven(dateClosingInvest);
+        newMoney.setDateClosing(dateClosingInvest);
+        newMoney.setTypeClosing(closingInvest);
+
+        createNew(cash);
+        createNew(newMoney);
+        update(oldCash);
+        Money transactionOldCash = new Money(oldCash);
+        transactionOldCash.setId(oldCash.getId());
+        Set<Money> cashSet = new HashSet<>();
+        cashSet.add(cash);
+        cashSet.add(newMoney);
+        cashSet.add(transactionOldCash);
+        transactionLogService.resale(Collections.singleton(transactionOldCash), cashSet);
+        return oldCash;
+    }
+
     @Cacheable(Constant.MONEY_CACHE_KEY)
     public List<Money> findByIdIn(List<Long> idList) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
