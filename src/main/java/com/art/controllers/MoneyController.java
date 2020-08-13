@@ -7,6 +7,7 @@ import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.dto.CloseCashDTO;
+import com.art.model.supporting.dto.CreateMoneyDTO;
 import com.art.model.supporting.dto.DividedCashDTO;
 import com.art.model.supporting.dto.ReinvestCashDTO;
 import com.art.model.supporting.enums.MoneyOperation;
@@ -155,27 +156,15 @@ public class MoneyController {
     /**
      * Создать сумму инвестора
      *
-     * @param money сумма инвестора
-     * @param result для валидации ошибок привязки
-     * @param model модель со страницы
-     * @return страница успешной операции
+     * @param moneyDTO сумма инвестора
+     * @return ответ
      */
     @PostMapping(path = Location.MONEY_CREATE)
-    public String saveCash(@ModelAttribute("money") Money money,
-                           BindingResult result, ModelMap model) {
-
-        if (result.hasErrors()) {
-            model.addAttribute("money", money);
-            return "money-add";
-        }
-        String ret = "списку денег инвестора";
-        money = moneyService.create(money);
+    @ResponseBody
+    public ApiResponse createCash(@RequestBody CreateMoneyDTO moneyDTO) {
+        Money money = moneyService.create(moneyDTO);
         transactionLogService.create(money, TransactionType.CREATE);
-        model.addAttribute("success", "Деньги инвестора " + money.getInvestor().getLogin() +
-                " успешно добавлены.");
-        model.addAttribute("redirectUrl", Location.MONEY_LIST);
-        model.addAttribute("ret", ret);
-        return "registration-success";
+        return new ApiResponse(String.format("Деньги инвестора [%s] успешно добавлены", money.getInvestor().getLogin()));
     }
 
     /**
