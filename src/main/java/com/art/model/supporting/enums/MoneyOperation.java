@@ -10,7 +10,8 @@ public enum MoneyOperation {
     CREATE(1, "CREATE"),
     UPDATE(2, "UPDATE"),
     CLOSE(3, "CLOSE"),
-    DOUBLE(4, "DOUBLE");
+    DOUBLE(4, "DOUBLE"),
+    RESALE(5, "RESALE");
 
     private final int id;
 
