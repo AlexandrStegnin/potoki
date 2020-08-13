@@ -209,13 +209,26 @@ public class MoneyController {
         Money money = moneyService.findById(id);
         money.setGivenCash(money.getGivenCash().setScale(2, RoundingMode.DOWN));
         model.addAttribute("money", money);
-
         model.addAttribute("newCash", false);
         model.addAttribute("edit", false);
         model.addAttribute("closeCash", true);
         model.addAttribute("doubleCash", false);
         model.addAttribute("title", title);
+        model.addAttribute("operation", MoneyOperation.CLOSE.getTitle());
         return "money-add";
+    }
+
+    /**
+     * Закрытие суммы вложения (перепродажа доли)
+     *
+     * @param moneyDTO DTO для закрытия
+     * @return ответ
+     */
+    @PostMapping(path = Location.MONEY_CLOSE_RESALE)
+    @ResponseBody
+    public ApiResponse resaleCash(@RequestBody ResaleMoneyDTO moneyDTO) {
+        Money money = moneyService.resale(moneyDTO);
+        return new ApiResponse(String.format("Перепродажа доли инвестора [%s] прошла успешно", money.getInvestor().getLogin()));
     }
 
     /**
