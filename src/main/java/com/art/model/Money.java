@@ -126,6 +126,16 @@ public class Money implements Serializable {
         this.transactionUUID = null;
     }
 
+    public Money(Facility facility, UnderFacility underFacility, AppUser investor, CashSource cashSource,
+                 NewCashDetail newCashDetail, ShareType shareType) {
+        this.facility = facility;
+        this.underFacility = underFacility;
+        this.investor = investor;
+        this.cashSource = cashSource;
+        this.newCashDetail = newCashDetail;
+        this.shareType = shareType;
+    }
+
     @Transient
     public String getShareTypeTitle() {
         return shareType.getTitle();
