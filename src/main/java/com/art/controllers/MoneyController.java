@@ -174,7 +174,7 @@ public class MoneyController {
      * @param model модель со страницы
      * @return страница для редактирования суммы
      */
-    @GetMapping(value = {"/edit-cash-{id}"})
+    @GetMapping(path = Location.MONEY_EDIT_ID)
     public String editCash(@PathVariable Long id, ModelMap model) {
         String title = "Обновление данных по деньгам инвесторов";
         Money money = moneyService.findById(id);
@@ -195,7 +195,7 @@ public class MoneyController {
      * @param id id суммы
      * @return переадресация на страницу отображения денег инвесторов
      */
-    @PostMapping(value = "/edit-cash-{id}")
+    @PostMapping(path = Location.MONEY_EDIT_ID)
     public String editCash(@ModelAttribute("investorsCash") Money money, @PathVariable("id") Long id) {
         Money dbCash = moneyService.findById(id);
         transactionLogService.update(dbCash);

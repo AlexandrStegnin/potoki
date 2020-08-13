@@ -220,7 +220,7 @@
                                         class="btn btn-success btn-sm dropdown-toggle pull-right"><span
                                         class="fas fa-cog"></span></button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" id="aEdit" href="<c:url value='/edit-cash-${money.id}' />">Изменить</a>
+                                    <a class="dropdown-item" id="aEdit" href="<c:url value='edit/${money.id}' />">Изменить</a>
                                     <a class="dropdown-item" id="aDivide"
                                        href="<c:url value='/double-cash-${money.id}' />">Разделить</a>
                                     <a class="dropdown-item" id="aDouble"

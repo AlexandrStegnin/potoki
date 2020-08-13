@@ -374,7 +374,7 @@ jQuery(document).ready(function ($) {
     }
 
     let url = window.location.href;
-    if (url.indexOf('money/create') >= 0 || url.indexOf('edit-cash') >= 0 || url.indexOf('double-cash') >= 0 || url.indexOf('close-cash') >= 0) {
+    if (url.indexOf('money/create') >= 0 || url.indexOf('money/edit') >= 0 || url.indexOf('double-cash') >= 0 || url.indexOf('close-cash') >= 0) {
         populateStorageUnderFacilities('underFacilities');
     } else {
         populateStorageUnderFacilities('uFacilities');
