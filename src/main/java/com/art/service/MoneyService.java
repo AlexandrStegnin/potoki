@@ -109,12 +109,12 @@ public class MoneyService {
     @PersistenceContext(name = "persistanceUnit")
     private EntityManager em;
 
+    @Transactional
     @CachePut(Constant.MONEY_CACHE_KEY)
     public Money create(Money money) {
         return this.em.merge(money);
     }
 
-    @Transactional
     public Money create(CreateMoneyDTO moneyDTO) {
         Facility facility = facilityService.findById(moneyDTO.getFacilityId());
         UnderFacility underFacility = underFacilityService.findById(moneyDTO.getUnderFacilityId());
