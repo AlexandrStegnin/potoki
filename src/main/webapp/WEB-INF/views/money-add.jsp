@@ -140,7 +140,7 @@
             </div>
         </div>
 
-        <div class="form-group row" id="dateCloseInvRow">
+        <div class="form-group row d-none" id="dateCloseInvRow">
             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="dateCloseInv">Дата закрытия вложения:</label>
             <div class="col-sm-6">
                 <form:input type="date" path="dateClosing" id="dateCloseInv"
@@ -151,7 +151,7 @@
             </div>
         </div>
 
-        <div class="form-group row" id="typeClosingRow">
+        <div class="form-group row d-none" id="typeClosingRow">
             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="typeClosing">Вид закрытия вложения:</label>
             <div class="col-sm-6">
                 <form:select path="typeClosing" id="typeClosing" items="${typeClosingInvest}"
@@ -165,7 +165,7 @@
             </div>
         </div>
 
-        <div class="form-group row" id="investorBuyerRow">
+        <div class="form-group row d-none" id="investorBuyerRow">
             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="investorBuyer">Инвестор покупатель:</label>
             <div class="col-sm-6">
                 <form:select path="investorBuyer" id="investorBuyer" items="${investors}" multiple="false"
@@ -176,7 +176,7 @@
             </div>
         </div>
 
-        <div class="form-group row" id="dateRepRow">
+        <div class="form-group row d-none" id="dateRepRow">
             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="dateRep">Период расчёта:</label>
             <div class="col-sm-6">
                 <form:input type="date" path="dateReport" id="dateRep" class="form-control form-control-sm"/>
@@ -185,7 +185,7 @@
             </div>
         </div>
 
-        <div class="form-group row" id="sourceFacility">
+        <div class="form-group row d-none" id="sourceFacility">
             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="sourceFacilities" id="sourceFacilitiesLbl">Объект
                 реинвестирования:</label>
             <div class="col-sm-6">
@@ -198,7 +198,7 @@
             </div>
         </div>
 
-        <div class="form-group row" id="sourceUnderFacility">
+        <div class="form-group row d-none" id="sourceUnderFacility">
             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="sourceUnderFacilities"
                    id="sourceUnderFacilitiesLbl">Подобъект
                 реинвестирования:</label>
@@ -229,7 +229,7 @@
             </div>
         </div>
 
-        <div class="form-group row" id="realDateGivenRow">
+        <div class="form-group row d-none" id="realDateGivenRow">
             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="realDateGiven">Дата реальной передачи денег:</label>
             <div class="col-sm-6">
                 <form:input type="date" path="realDateGiven" id="realDateGiven" class="form-control form-control-sm"/>
