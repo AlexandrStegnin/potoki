@@ -6,13 +6,9 @@ import com.art.model.supporting.AfterCashing;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
-import com.art.model.supporting.dto.CloseCashDTO;
-import com.art.model.supporting.dto.CreateMoneyDTO;
-import com.art.model.supporting.dto.DividedCashDTO;
-import com.art.model.supporting.dto.ReinvestCashDTO;
+import com.art.model.supporting.dto.*;
 import com.art.model.supporting.enums.MoneyOperation;
 import com.art.model.supporting.enums.ShareType;
-import com.art.model.supporting.enums.TransactionType;
 import com.art.model.supporting.filters.CashFilter;
 import com.art.service.*;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -163,7 +159,6 @@ public class MoneyController {
     @ResponseBody
     public ApiResponse createCash(@RequestBody CreateMoneyDTO moneyDTO) {
         Money money = moneyService.create(moneyDTO);
-        transactionLogService.create(money, TransactionType.CREATE);
         return new ApiResponse(String.format("Деньги инвестора [%s] успешно добавлены", money.getInvestor().getLogin()));
     }
 
@@ -176,31 +171,29 @@ public class MoneyController {
      */
     @GetMapping(path = Location.MONEY_EDIT_ID)
     public String editCash(@PathVariable Long id, ModelMap model) {
-        String title = "Обновление данных по деньгам инвесторов";
+        String title = "Обновление суммы инвестора";
         Money money = moneyService.findById(id);
-
         model.addAttribute("money", money);
         model.addAttribute("newCash", false);
         model.addAttribute("edit", true);
         model.addAttribute("closeCash", false);
         model.addAttribute("doubleCash", false);
         model.addAttribute("title", title);
+        model.addAttribute("operation", MoneyOperation.UPDATE.getTitle());
         return "money-add";
     }
 
     /**
      * Обновление суммы инвестора
      *
-     * @param money сумма для обновления
-     * @param id id суммы
+     * @param moneyDTO DTO суммы для обновления
      * @return переадресация на страницу отображения денег инвесторов
      */
-    @PostMapping(path = Location.MONEY_EDIT_ID)
-    public String editCash(@ModelAttribute("investorsCash") Money money, @PathVariable("id") Long id) {
-        Money dbCash = moneyService.findById(id);
-        transactionLogService.update(dbCash);
-        moneyService.update(money);
-        return "redirect:" + Location.MONEY_LIST;
+    @PostMapping(path = Location.MONEY_UPDATE)
+    @ResponseBody
+    public ApiResponse editCash(@RequestBody UpdateMoneyDTO moneyDTO) {
+        Money money = moneyService.update(moneyDTO);
+        return new ApiResponse(String.format("Деньги инвестора [%s] успешно обновлены", money.getInvestor().getLogin()));
     }
 
     /**
@@ -831,7 +824,7 @@ public class MoneyController {
 
     @ModelAttribute("underFacilities")
     public List<UnderFacility> initializeUnderFacilities() {
-        return underFacilityService.initializeUnderFacilities();
+        return underFacilityService.initializeUnderFacilitiesList();
     }
 
     @ModelAttribute("underFacilitiesList")

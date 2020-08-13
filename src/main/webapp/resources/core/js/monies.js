@@ -1,5 +1,20 @@
 let filters = [];
 
+let OperationEnum = {
+    CREATE: 'CREATE',
+    UPDATE: 'UPDATE',
+    properties: {
+        CREATE: {
+            url: 'create'
+        },
+        UPDATE: {
+            url: '/money/update'
+        }
+    }
+}
+
+Object.freeze(OperationEnum)
+
 jQuery(document).ready(function ($) {
 
     let operation = $('#operation').val();
@@ -8,7 +23,10 @@ jQuery(document).ready(function ($) {
         e.preventDefault()
         switch (operation) {
             case "CREATE":
-                checkAndCreate();
+                save(OperationEnum.CREATE);
+                break
+            case "UPDATE":
+                save(OperationEnum.UPDATE);
                 break
         }
     })
@@ -849,21 +867,63 @@ function saveCash(cash, reFacility, reUnderFacility, dateReinvest, flag, invBuye
 }
 
 function disableFields(operation) {
+    let facilitiesRow = $('#facilitiesRow');
+    let underFacilitiesRow = $('#underFacilitiesRow');
+    let investorRow = $('#investorRow');
+    let cashRow = $('#cashRow');
+    let dateGivenRow = $('#dateGivenCashRow');
+    let cashSrcRow = $('#cashSrcRow');
+    let cashDetailRow = $('#cashDetailRow');
+    let dateCloseInvRow = $('#dateCloseInvRow');
+    let reFacilityRow = $('#sourceFacility');
+    let reUnderFacilityRow = $('#sourceUnderFacility');
+    let dateRepRow = $('#dateRepRow');
+    let typeCloseRow = $('#typeClosingRow');
+    let buyerRow = $('#investorBuyerRow');
     switch (operation) {
-        case 'CREATE':
-            $('#facilities').removeClass('d-none');
-            $('#underFacilities').removeClass('d-none');
-            $('#investor').removeClass('d-none');
-            $('#cash').removeClass('d-none');
-            $('#dateGivenCash').removeClass('d-none');
-            $('#cashSrc').removeClass('d-none');
-            $('#cashDetail').removeClass('d-none');
-            $('#dateCloseInvRow').addClass('d-none');
-            $('#typeClosingRow').addClass('d-none');
-            $('#sourceFacility').addClass('d-none');
-            $('#sourceUnderFacility').addClass('d-none');
-            $('#dateRepRow').addClass('d-none');
-            $('#investorBuyerRow').addClass('d-none');
+        case OperationEnum.CREATE:
+            facilitiesRow.removeClass('d-none');
+            underFacilitiesRow.removeClass('d-none');
+            investorRow.removeClass('d-none');
+            cashRow.removeClass('d-none');
+            dateGivenRow.removeClass('d-none');
+            cashSrcRow.removeClass('d-none');
+            cashDetailRow.removeClass('d-none');
+            dateCloseInvRow.addClass('d-none');
+            typeCloseRow.addClass('d-none');
+            reFacilityRow.addClass('d-none');
+            reUnderFacilityRow.addClass('d-none');
+            dateRepRow.addClass('d-none');
+            buyerRow.addClass('d-none');
+            break
+        case OperationEnum.UPDATE:
+            facilitiesRow.removeClass('d-none');
+            underFacilitiesRow.removeClass('d-none');
+            investorRow.removeClass('d-none');
+            cashRow.removeClass('d-none');
+            dateGivenRow.removeClass('d-none');
+            cashSrcRow.removeClass('d-none');
+            cashDetailRow.removeClass('d-none');
+            let cashDetailVal = $('#cashDetail:selected').text();
+            if (cashDetailVal === 'Реинвестирование с продажи') {
+                reFacilityRow.removeClass('d-none');
+                reUnderFacilityRow.removeClass('d-none');
+                dateRepRow.addClass('d-none');
+            } else if (cashDetailVal === 'Реинвестирование с аренды') {
+                reFacilityRow.removeClass('d-none');
+                reUnderFacilityRow.removeClass('d-none');
+                dateRepRow.removeClass('d-none');
+            } else {
+                reFacilityRow.addClass('d-none');
+                reUnderFacilityRow.addClass('d-none');
+                dateRepRow.addClass('d-none');
+            }
+            dateCloseInvRow.addClass('d-none');
+            typeCloseRow.addClass('d-none');
+            reFacilityRow.addClass('d-none');
+            reUnderFacilityRow.addClass('d-none');
+            dateRepRow.addClass('d-none');
+            buyerRow.addClass('d-none')
             break
     }
 
@@ -897,39 +957,6 @@ function disableFields(operation) {
         $('#reUnderFacilities').prop('disabled', true);
         $('#dateRep').prop('disabled', true);
         $('#shareType').prop('disabled', true);
-    } else if ($('#edit').val() === 'true') {
-        let cashDetail = $('#cashDetail');
-        let reFacility = $('#sourceFacility');
-        let reUnderFacility = $('#sourceUnderFacility');
-        let dateRep = $('#dateRepRow');
-
-        $('#facilities').prop('disabled', false);
-        $('#underFacilities').prop('disabled', false);
-        $('#investor').prop('disabled', false);
-        $('#cash').prop('disabled', false);
-        $('#dateGivenCash').prop('disabled', false);
-        $('#cashSrc').prop('disabled', false);
-
-        cashDetail.prop('disabled', false);
-        if (cashDetail.text() === 'Реинвестирование с продажи') {
-            reFacility.css("display", "block");
-            reUnderFacility.css("display", "block");
-            dateRep.css("display", "none");
-        } else if (cashDetail.text() === 'Реинвестирование с аренды') {
-            reFacility.css("display", "block");
-            reUnderFacility.css("display", "block");
-            dateRep.css("display", "block");
-        } else {
-            reFacility.css("display", "none");
-            reUnderFacility.css("display", "none");
-            dateRep.css("display", "none");
-        }
-        $('#dateCloseInv').removeAttr('disabled');
-        $('#dateCloseInvRow').removeAttr('disabled');
-        $('#typeClosing').prop('disabled', false);
-        $('#reFacilities').prop('disabled', false);
-        $('#reUnderFacilities').prop('disabled', false);
-        $('#dateRep').prop('disabled', false);
     }
 }
 
@@ -1460,97 +1487,58 @@ function linkHasClass(link) {
     if (link.hasClass('disabled')) return true;
 }
 
-function checkAndCreate() {
-    let facilitySelect = $('#facilities');
-    let facilityId = facilitySelect.find(':selected').val();
-    if (facilityId === '0') {
-        $('#facilityError').removeClass('d-none')
-        return false
-    } else {
-        $('#facilityError').addClass('d-none')
-    }
-    let underFacilitySelect = $('#underFacilities');
-    let underFacilityId = underFacilitySelect.find(':selected').attr('id');
-    if (underFacilityId === '0') {
-        $('#underFacilityError').removeClass('d-none')
-        return false
-    } else {
-        $('#underFacilityError').addClass('d-none')
-    }
-    let investorSelect = $('#investor');
-    let investorId = investorSelect.find(':selected').val();
-    if (investorId === '0') {
-        $('#investorError').removeClass('d-none')
-        return false
-    } else {
-        $('#investorError').addClass('d-none')
-    }
-    let cashSum = $('#cash').val()
-    if (cashSum.length === 0) {
-        $('#cashError').removeClass('d-none')
-        return false
-    } else {
-        $('#cashError').addClass('d-none')
-    }
-    let dateGiven = $('#dateGivenCash').val()
-    if (dateGiven.length === 0 || dateGiven.length > 10) {
-        $('#dateGivenError').removeClass('d-none')
-        return false
-    } else {
-        $('#dateGivenError').addClass('d-none')
-    }
-    let cashSourceSelect = $('#cashSrc')
-    let cashSourceId = cashSourceSelect.find(':selected').val();
-    if (cashSourceId === '0') {
-        $('#cashSourceError').removeClass('d-none')
-        return false
-    } else {
-        $('#cashSourceError').addClass('d-none')
-    }
-    let newCashDetailSelect = $('#cashDetail')
-    let newCashDetailId = newCashDetailSelect.find(':selected').val()
-    if (newCashDetailId === '0') {
-        $('#cashDetailError').removeClass('d-none')
-        return false
-    } else {
-        $('#cashDetailError').addClass('d-none')
-    }
-    let shareTypeSelect = $('#shareType')
-    let shareTypeId = shareTypeSelect.find(':selected').val()
-    if (shareTypeId === '0') {
-        $('#shareTypeError').removeClass('d-none')
-        return false
-    } else {
-        $('#shareTypeError').addClass('d-none')
-    }
+/***
+ *
+ * Новая версия
+ */
 
-    let createMoneyDTO = {
-        facilityId: facilityId,
-        underFacilityId: underFacilityId,
-        investorId: investorId,
-        cash: cashSum,
-        dateGiven: dateGiven,
-        cashSourceId: cashSourceId,
-        newCashDetailId: newCashDetailId,
-        shareTypeId: shareTypeId
+let MoneyDTO = function () {}
+
+MoneyDTO.prototype = {
+    id: null,
+    facilityId: null,
+    underFacilityId: null,
+    investorId: null,
+    cash: 0.0,
+    dateGiven: null,
+    cashSourceId: null,
+    newCashDetailId: null,
+    shareTypeId: 0,
+    dateReport: null,
+    build: function (facilityId, underFacilityId, investorId, cash, dateGiven, cashSourceId,
+                     newCashDetailId, shareTypeId) {
+        this.facilityId = facilityId;
+        this.underFacilityId = underFacilityId;
+        this.investorId = investorId;
+        this.cash = cash;
+        this.dateGiven = dateGiven;
+        this.cashSourceId = cashSourceId;
+        this.newCashDetailId = newCashDetailId;
+        this.shareTypeId = shareTypeId;
+    },
+    setId: function (cashId) {
+        this.id = cashId;
+    },
+    setDateReport: function (dateReport) {
+        this.dateReport = dateReport;
     }
-    createMoney(createMoneyDTO);
 }
 
 /**
- * Создать сумму инвестора
+ * Сохранить сумму инвестора
  *
- * @param moneyDTO DTO суммы
+ * @param {MoneyDTO} moneyDTO DTO суммы
+ * @param {OperationEnum} operation вид операции
  */
-function createMoney(moneyDTO) {
+function saveMoney(moneyDTO, operation) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
     showLoader();
-
+    let url = OperationEnum.properties[operation].url
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: "create",
+        url: url,
         data: JSON.stringify(moneyDTO),
         dataType: 'json',
         timeout: 100000,
@@ -1558,9 +1546,17 @@ function createMoney(moneyDTO) {
             xhr.setRequestHeader(header, token);
         },
         success: function (data) {
-            clearMoneyForm()
             closeLoader();
             showPopup(data.message);
+            switch (operation) {
+                case OperationEnum.CREATE:
+                    clearMoneyForm()
+                    break
+                case OperationEnum.UPDATE:
+                    window.location.href = '/money/list'
+                    break
+            }
+
         },
         error: function (e) {
             closeLoader()
@@ -1569,6 +1565,10 @@ function createMoney(moneyDTO) {
     });
 }
 
+/**
+ * Очистить поля формы создания/изменения/разделения/закрытия денег
+ *
+ */
 function clearMoneyForm() {
     $('#facilities').val('0')
     $('#underFacilities').val('0')
@@ -1579,4 +1579,123 @@ function clearMoneyForm() {
     $('#cashDetail').val('0')
     $('#shareType').val('0')
     $('.selectpicker').selectpicker('refresh')
+}
+
+/**
+ * Проверить и сохранить сумму инвестора
+ * @param {OperationEnum} operation вид операции
+ */
+function save(operation) {
+    if (check(operation)) {
+        let updateMoneyDTO = getMoneyDTO(operation)
+        saveMoney(updateMoneyDTO, operation);
+    }
+}
+
+/**
+ * Проверить поля формы
+ *
+ * @param {OperationEnum} operation вид операции
+ * @returns {boolean} результат проверки
+ */
+function check(operation) {
+    switch (operation) {
+        case OperationEnum.CREATE:
+        case OperationEnum.UPDATE:
+            let facilitySelect = $('#facilities');
+            let facilityId = facilitySelect.find(':selected').val();
+            if (facilityId === '0') {
+                $('#facilityError').removeClass('d-none')
+                return false
+            } else {
+                $('#facilityError').addClass('d-none')
+            }
+            let underFacilitySelect = $('#underFacilities');
+            let underFacilityId = underFacilitySelect.find(':selected').attr('id');
+            if (underFacilityId === '0') {
+                $('#underFacilityError').removeClass('d-none')
+                return false
+            } else {
+                $('#underFacilityError').addClass('d-none')
+            }
+            let investorSelect = $('#investor');
+            let investorId = investorSelect.find(':selected').val();
+            if (investorId === '0') {
+                $('#investorError').removeClass('d-none')
+                return false
+            } else {
+                $('#investorError').addClass('d-none')
+            }
+            let cashSum = $('#cash').val()
+            if (cashSum.length === 0) {
+                $('#cashError').removeClass('d-none')
+                return false
+            } else {
+                $('#cashError').addClass('d-none')
+            }
+            let dateGiven = $('#dateGivenCash').val()
+            if (dateGiven.length === 0 || dateGiven.length > 10) {
+                $('#dateGivenError').removeClass('d-none')
+                return false
+            } else {
+                $('#dateGivenError').addClass('d-none')
+            }
+            let cashSourceSelect = $('#cashSrc')
+            let cashSourceId = cashSourceSelect.find(':selected').val();
+            if (cashSourceId === '0') {
+                $('#cashSourceError').removeClass('d-none')
+                return false
+            } else {
+                $('#cashSourceError').addClass('d-none')
+            }
+            let newCashDetailSelect = $('#cashDetail')
+            let newCashDetailId = newCashDetailSelect.find(':selected').val()
+            if (newCashDetailId === '0') {
+                $('#cashDetailError').removeClass('d-none')
+                return false
+            } else {
+                $('#cashDetailError').addClass('d-none')
+            }
+            let shareTypeSelect = $('#shareType')
+            let shareTypeId = shareTypeSelect.find(':selected').val()
+            if (shareTypeId === '0') {
+                $('#shareTypeError').removeClass('d-none')
+                return false
+            } else {
+                $('#shareTypeError').addClass('d-none')
+            }
+            break
+    }
+    return true
+}
+
+/**
+ * Подготовить DTO для создания/обновления/закрытия/разделения денег
+ *
+ * @param {OperationEnum} operation
+ * @returns {MoneyDTO} подготовленный DTO
+ */
+function getMoneyDTO(operation) {
+    let cashId = $('#id').val()
+    let facilityId = $('#facilities').find(':selected').val()
+    let underFacilityId = $('#underFacilities').find(':selected').attr('id')
+    let investorId = $('#investor').find(':selected').val()
+    let cashSum = $('#cash').val()
+    let dateGiven = $('#dateGivenCash').val()
+    let cashSourceId = $('#cashSrc').find(':selected').val()
+    let newCashDetailId = $('#cashDetail').find(':selected').val()
+    let shareTypeId = $('#shareType').find(':selected').val()
+    let dateReport = $('#dateRep').val()
+    let moneyDTO = new MoneyDTO()
+    switch (operation) {
+        case OperationEnum.CREATE:
+            moneyDTO.build(facilityId, underFacilityId, investorId, cashSum, dateGiven,
+                cashSourceId, newCashDetailId, shareTypeId)
+            return moneyDTO
+        case OperationEnum.UPDATE:
+            moneyDTO.build(facilityId, underFacilityId, investorId, cashSum, dateGiven,
+                cashSourceId, newCashDetailId, shareTypeId)
+            moneyDTO.setId(cashId)
+            return moneyDTO
+    }
 }
