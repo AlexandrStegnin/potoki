@@ -2,9 +2,10 @@ let filters = [];
 
 jQuery(document).ready(function ($) {
 
-    $('#money-table').on('submit', function (e) {
+    let operation = $('#operation').val();
+
+    $('#submit').on('click', function (e) {
         e.preventDefault()
-        let operation = $('#operation').val();
         switch (operation) {
             case "CREATE":
                 checkAndCreate();
@@ -382,7 +383,7 @@ jQuery(document).ready(function ($) {
         $('#doubleCash').val('true');
     }
 
-    disableFields();
+    disableFields(operation);
 
     $('.investorPicker').change(function () {
         let selectedText = $(this).find('option:selected').map(function () {
@@ -509,7 +510,7 @@ jQuery(document).ready(function ($) {
         if ($(this).find(':selected').text() === 'Реинвестирование') {
             reFacility.css("display", "block");
             $("#dateRepRow").css("display", "block");
-            $('#shareTypeName').find('option:contains(Основная)').attr('selected', 'selected');
+            $('#shareType').find('option:contains(Основная)').attr('selected', 'selected');
             reFacility.insertAfter(typeClosing);
             reUnderFacility.insertAfter(reFacility);
             $('#investorBuyerRow').addClass('d-none');
@@ -551,14 +552,14 @@ jQuery(document).ready(function ($) {
             reFacility.css("display", "block");
             reUnderFacility.css("display", "block");
             dateRep.css("display", "block");
-            $('#shareTypeName').find('option:contains(Основная)').attr('selected', 'selected');
+            $('#shareType').find('option:contains(Основная)').attr('selected', 'selected');
         } else if ($(this).find(':selected').text() === 'Реинвестирование с продажи') {
             reFacility.insertAfter(cashDetail);
             reUnderFacility.insertAfter(reFacility);
             reFacility.css("display", "block");
             reUnderFacility.css("display", "block");
             dateRep.css("display", "none");
-            $('#shareTypeName').find('option:contains(Основная)').attr('selected', 'selected');
+            $('#shareType').find('option:contains(Основная)').attr('selected', 'selected');
         } else {
             reFacility.css("display", "none");
             reUnderFacility.css("display", "none");
@@ -750,7 +751,7 @@ function prepareCashSave(what) {
 
     let dateReinvest = dateClosingInvest;
 
-    let shareTypes = $('#shareTypeName');
+    let shareTypes = $('#shareType');
     let shareType = shareTypes.find(':selected').text();
     if (shareType === 'Не определена') {
         shareType = null;
@@ -847,7 +848,25 @@ function saveCash(cash, reFacility, reUnderFacility, dateReinvest, flag, invBuye
     });
 }
 
-function disableFields() {
+function disableFields(operation) {
+    switch (operation) {
+        case 'CREATE':
+            $('#facilities').removeClass('d-none');
+            $('#underFacilities').removeClass('d-none');
+            $('#investor').removeClass('d-none');
+            $('#cash').removeClass('d-none');
+            $('#dateGivenCash').removeClass('d-none');
+            $('#cashSrc').removeClass('d-none');
+            $('#cashDetail').removeClass('d-none');
+            $('#dateCloseInvRow').addClass('d-none');
+            $('#typeClosingRow').addClass('d-none');
+            $('#sourceFacility').addClass('d-none');
+            $('#sourceUnderFacility').addClass('d-none');
+            $('#dateRepRow').addClass('d-none');
+            $('#investorBuyerRow').addClass('d-none');
+            break
+    }
+
     if ($('#closeCash').val() === 'true') {
         $('#facilities').prop('disabled', true);
         $('#underFacilities').prop('disabled', true);
@@ -861,7 +880,7 @@ function disableFields() {
         $('#reFacilities').prop('disabled', false);
         $('#reUnderFacilities').prop('disabled', false);
         $('#dateRep').prop('disabled', true);
-        $('#shareTypeName').prop('disabled', true);
+        $('#shareType').prop('disabled', true);
     } else if ($('#doubleCash').val() === 'true') {
         $('#facilities').prop('disabled', true);
         $('#underFacilities').prop('disabled', false);
@@ -877,7 +896,7 @@ function disableFields() {
         $('#reFacilities').prop('disabled', true);
         $('#reUnderFacilities').prop('disabled', true);
         $('#dateRep').prop('disabled', true);
-        $('#shareTypeName').prop('disabled', true);
+        $('#shareType').prop('disabled', true);
     } else if ($('#edit').val() === 'true') {
         let cashDetail = $('#cashDetail');
         let reFacility = $('#sourceFacility');
@@ -911,20 +930,6 @@ function disableFields() {
         $('#reFacilities').prop('disabled', false);
         $('#reUnderFacilities').prop('disabled', false);
         $('#dateRep').prop('disabled', false);
-    } else if ($('#newCash').val() === 'true') {
-        $('#facilities').removeClass('d-none');
-        $('#underFacilities').removeClass('d-none');
-        $('#investor').removeClass('d-none');
-        $('#cash').removeClass('d-none');
-        $('#dateGivenCash').removeClass('d-none');
-        $('#cashSrc').removeClass('d-none');
-        $('#cashDetail').removeClass('d-none');
-        $('#dateCloseInvRow').addClass('d-none');
-        $('#typeClosingRow').addClass('d-none');
-        $('#reFacilities').addClass('d-none');
-        $('#reUnderFacilities').addClass('d-none');
-        $('#dateRepRow').addClass('d-none');
-        $('#investorBuyerRow').addClass('d-none');
     }
 }
 
@@ -1060,7 +1065,7 @@ function prepareReinvestCash() {
         $('#facilityErr').css('display', 'none');
     }
 
-    shareTypeId = $('#shareTypeName').find('option:selected').val()
+    shareTypeId = $('#shareType').find('option:selected').val()
 
     if (shareTypeId === 0) {
         $('#shareTypeErr').css('display', 'block');
@@ -1457,34 +1462,121 @@ function linkHasClass(link) {
 
 function checkAndCreate() {
     let facilitySelect = $('#facilities');
-    if (facilitySelect.find(':selected').val() === '0') {
+    let facilityId = facilitySelect.find(':selected').val();
+    if (facilityId === '0') {
         $('#facilityError').removeClass('d-none')
         return false
     } else {
         $('#facilityError').addClass('d-none')
     }
     let underFacilitySelect = $('#underFacilities');
-    if (underFacilitySelect.find(':selected').attr('id') === '0') {
+    let underFacilityId = underFacilitySelect.find(':selected').attr('id');
+    if (underFacilityId === '0') {
         $('#underFacilityError').removeClass('d-none')
         return false
     } else {
         $('#underFacilityError').addClass('d-none')
     }
     let investorSelect = $('#investor');
-    if (investorSelect.find(':selected').val() === '0') {
+    let investorId = investorSelect.find(':selected').val();
+    if (investorId === '0') {
         $('#investorError').removeClass('d-none')
         return false
     } else {
         $('#investorError').addClass('d-none')
     }
-    // $('#cash').removeClass('d-none');
-    // $('#dateGivedCash').removeClass('d-none');
-    // $('#cashSrc').removeClass('d-none');
-    // $('#cashDetail').removeClass('d-none');
-    // $('#dateCloseInvRow').addClass('d-none');
-    // $('#typeClosingRow').addClass('d-none');
-    // $('#reFacilities').addClass('d-none');
-    // $('#reUnderFacilities').addClass('d-none');
-    // $('#dateRepRow').addClass('d-none');
-    // $('#investorBuyerRow').addClass('d-none');
+    let cashSum = $('#cash').val()
+    if (cashSum.length === 0) {
+        $('#cashError').removeClass('d-none')
+        return false
+    } else {
+        $('#cashError').addClass('d-none')
+    }
+    let dateGiven = $('#dateGivenCash').val()
+    if (dateGiven.length === 0 || dateGiven.length > 10) {
+        $('#dateGivenError').removeClass('d-none')
+        return false
+    } else {
+        $('#dateGivenError').addClass('d-none')
+    }
+    let cashSourceSelect = $('#cashSrc')
+    let cashSourceId = cashSourceSelect.find(':selected').val();
+    if (cashSourceId === '0') {
+        $('#cashSourceError').removeClass('d-none')
+        return false
+    } else {
+        $('#cashSourceError').addClass('d-none')
+    }
+    let newCashDetailSelect = $('#cashDetail')
+    let newCashDetailId = newCashDetailSelect.find(':selected').val()
+    if (newCashDetailId === '0') {
+        $('#cashDetailError').removeClass('d-none')
+        return false
+    } else {
+        $('#cashDetailError').addClass('d-none')
+    }
+    let shareTypeSelect = $('#shareType')
+    let shareTypeId = shareTypeSelect.find(':selected').val()
+    if (shareTypeId === '0') {
+        $('#shareTypeError').removeClass('d-none')
+        return false
+    } else {
+        $('#shareTypeError').addClass('d-none')
+    }
+
+    let createMoneyDTO = {
+        facilityId: facilityId,
+        underFacilityId: underFacilityId,
+        investorId: investorId,
+        cash: cashSum,
+        dateGiven: dateGiven,
+        cashSourceId: cashSourceId,
+        newCashDetailId: newCashDetailId,
+        shareTypeId: shareTypeId
+    }
+    createMoney(createMoneyDTO);
+}
+
+/**
+ * Создать сумму инвестора
+ *
+ * @param moneyDTO DTO суммы
+ */
+function createMoney(moneyDTO) {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+    showLoader();
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: "create",
+        data: JSON.stringify(moneyDTO),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (data) {
+            clearMoneyForm()
+            closeLoader();
+            showPopup(data.message);
+        },
+        error: function (e) {
+            closeLoader()
+            showPopup(e.error);
+        }
+    });
+}
+
+function clearMoneyForm() {
+    $('#facilities').val('0')
+    $('#underFacilities').val('0')
+    $('#investor').val('0')
+    $('#cash').val('')
+    $('#dateGivenCash').val('')
+    $('#cashSrc').val('0')
+    $('#cashDetail').val('0')
+    $('#shareType').val('0')
+    $('.selectpicker').selectpicker('refresh')
 }

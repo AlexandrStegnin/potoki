@@ -93,6 +93,9 @@
             <div class="col-sm-6">
                 <form:input type="number" path="givenCash" id="cash" class="form-control form-control-sm"
                             min="0.0" step="any"/>
+                <div class="has-error col-sm-6 d-none" id="cashError">
+                    Необходимо указать сумму
+                </div>
             </div>
         </div>
 
@@ -107,7 +110,7 @@
             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="dateGivenCash">Дата передачи денег:</label>
             <div class="col-sm-6">
                 <form:input type="date" path="dateGiven" id="dateGivenCash" class="form-control form-control-sm"/>
-                <div class="has-error col-sm-6 d-none">
+                <div class="has-error col-sm-6 d-none" id="dateGivenError">
                     Необходимо указать дату вложения
                 </div>
             </div>
@@ -119,7 +122,7 @@
                 <form:select path="cashSource" id="cashSrc" items="${cashSources}" multiple="false"
                              itemValue="id" itemLabel="name" class="form-control form-control-sm selectpicker"
                              data-size="10" data-none-selected-text="Выберите источник денег"/>
-                <div class="has-error col-sm-6 d-none">
+                <div class="has-error col-sm-6 d-none" id="cashSourceError">
                     Необходимо выбрать источник денег
                 </div>
             </div>
@@ -131,7 +134,7 @@
                 <form:select path="newCashDetail" id="cashDetail" items="${newCashDetails}" multiple="false"
                              itemValue="id" itemLabel="name" class="form-control form-control-sm selectpicker"
                              data-none-selected-text="Выберите детали новых денег"/>
-                <div class="has-error col-sm-6 d-none">
+                <div class="has-error col-sm-6 d-none" id="cashDetailError">
                     Необходимо выбрать детали новых денег
                 </div>
             </div>
@@ -216,11 +219,11 @@
         </div>
 
         <div class="form-group row" id="shareTypeNameRow">
-            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="shareTypeName">Вид доли:</label>
+            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="shareType">Вид доли:</label>
             <div class="col-sm-6">
-                <form:select path="shareType" id="shareTypeName" items="${shareTypes}" multiple="false"
+                <form:select path="shareType" id="shareType" items="${shareTypes}" multiple="false"
                              itemValue="id" itemLabel="title" class="form-control form-control-sm selectpicker"/>
-                <div class="has-error col-sm-6 d-none">
+                <div class="has-error col-sm-6 d-none" id="shareTypeError">
                     Необходимо выбрать вид доли
                 </div>
             </div>
@@ -245,7 +248,7 @@
                 </c:otherwise>
             </c:choose>
             <div class="col-sm-2 col-sm-offset-2">
-            <button type="submit" class="btn btn-primary btn-sm">${title}</button>
+            <button type="submit" class="btn btn-primary btn-sm" id="submit">${title}</button>
             </div>
             <a href="<c:url value='/money/list' />" class="btn btn-sm btn-danger" role="button">Отмена</a>
         </div>
