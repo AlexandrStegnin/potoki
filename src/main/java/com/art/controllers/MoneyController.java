@@ -179,7 +179,7 @@ public class MoneyController {
         String title = "Обновление данных по деньгам инвесторов";
         Money money = moneyService.findById(id);
 
-        model.addAttribute("investorsCash", money);
+        model.addAttribute("money", money);
         model.addAttribute("newCash", false);
         model.addAttribute("edit", true);
         model.addAttribute("closeCash", false);
@@ -291,7 +291,7 @@ public class MoneyController {
             updatedCash.setTypeClosing(typeClosingService.findByName("Вывод"));
             moneyService.update(updatedCash);
         }
-        modelAndView.addObject("investorsCash", moneyService.findAll());
+        modelAndView.addObject("money", moneyService.findAll());
         return "redirect:" + Location.MONEY_LIST;
     }
 
@@ -356,7 +356,7 @@ public class MoneyController {
                 .collect(Collectors.toList()));
 
         model.addAttribute("underFacilitiesList", underFacilityList);
-        model.addAttribute("investorsCash", money);
+        model.addAttribute("money", money);
         model.addAttribute("newCash", false);
         model.addAttribute("edit", false);
         model.addAttribute("closeCash", false);
@@ -400,7 +400,7 @@ public class MoneyController {
         if (money.getGivenCash().compareTo(BigDecimal.ZERO) == 0) {
             return "redirect:" + Location.MONEY_LIST;
         } else {
-            model.addObject("investorsCash", money);
+            model.addObject("money", money);
             return model.getViewName();
         }
     }
