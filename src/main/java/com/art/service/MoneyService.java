@@ -6,6 +6,7 @@ import com.art.model.supporting.AfterCashing;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.dto.CloseCashDTO;
+import com.art.model.supporting.dto.CreateMoneyDTO;
 import com.art.model.supporting.dto.DividedCashDTO;
 import com.art.model.supporting.dto.ReinvestCashDTO;
 import com.art.model.supporting.enums.ShareType;
@@ -50,13 +51,14 @@ public class MoneyService {
     private final NewCashDetailService newCashDetailService;
     private final UserService userService;
     private final TransactionLogService transactionLogService;
+    private final CashSourceService cashSourceService;
 
     @Autowired
     public MoneyService(MoneyRepository moneyRepository, MoneySpecification specification,
                         TypeClosingService typeClosingService, AfterCashingService afterCashingService,
                         UnderFacilityService underFacilityService, FacilityService facilityService,
                         StatusService statusService, NewCashDetailService newCashDetailService, UserService userService,
-                        TransactionLogService transactionLogService) {
+                        TransactionLogService transactionLogService, CashSourceService cashSourceService) {
         this.moneyRepository = moneyRepository;
         this.specification = specification;
         this.typeClosingService = typeClosingService;
@@ -67,6 +69,7 @@ public class MoneyService {
         this.newCashDetailService = newCashDetailService;
         this.userService = userService;
         this.transactionLogService = transactionLogService;
+        this.cashSourceService = cashSourceService;
     }
 
     @Cacheable(Constant.MONEY_CACHE_KEY)
@@ -109,6 +112,18 @@ public class MoneyService {
     @CachePut(Constant.MONEY_CACHE_KEY)
     public Money create(Money money) {
         return this.em.merge(money);
+    }
+
+    @Transactional
+    public Money create(CreateMoneyDTO moneyDTO) {
+        Facility facility = facilityService.findById(moneyDTO.getFacilityId());
+        UnderFacility underFacility = underFacilityService.findById(moneyDTO.getUnderFacilityId());
+        AppUser investor = userService.findById(moneyDTO.getInvestorId());
+        CashSource cashSource = cashSourceService.findById(moneyDTO.getCashSourceId());
+        NewCashDetail newCashDetail = newCashDetailService.findById(moneyDTO.getNewCashDetailId());
+        ShareType shareType = ShareType.fromId(moneyDTO.getShareTypeId());
+        Money money = new Money(facility, underFacility, investor, cashSource, newCashDetail, shareType);
+        return create(money);
     }
 
     @Cacheable(Constant.MONEY_CACHE_KEY)
