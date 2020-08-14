@@ -6,20 +6,24 @@ package com.art.model.supporting.enums;
 
 public enum MoneyOperation {
 
-    UNDEFINED(0, "UNDEFINED"),
-    CREATE(1, "CREATE"),
-    UPDATE(2, "UPDATE"),
-    CLOSE(3, "CLOSE"),
-    DOUBLE(4, "DOUBLE"),
-    RESALE(5, "RESALE");
+    UNDEFINED(0, "UNDEFINED", "Не определена"),
+    CREATE(1, "CREATE", "Создание"),
+    UPDATE(2, "UPDATE", "Обновление"),
+    CLOSE(3, "CLOSE", "ЗАКРЫТИЕ"),
+    DOUBLE(4, "DOUBLE", "Разделение"),
+    RESALE(5, "RESALE", "Перепродажа доли"),
+    CASHING(6, "CASHING", "Вывод");
 
     private final int id;
 
     private final String title;
 
-    MoneyOperation(int id, String title) {
+    private final String description;
+
+    MoneyOperation(int id, String title, String description) {
         this.id = id;
         this.title = title;
+        this.description = description;
     }
 
     public int getId() {
@@ -28,6 +32,10 @@ public enum MoneyOperation {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public static MoneyOperation fromId(int id) {
