@@ -6,6 +6,7 @@ let OperationEnum = {
     CLOSE: 'CLOSE',
     RESALE: 'RESALE',
     CASHING: 'CASHING',
+    REINVEST: 'REINVEST',
     properties: {
         CREATE: {
             url: 'create'
@@ -21,6 +22,9 @@ let OperationEnum = {
         },
         CASHING: {
             url: '/money/close/cashing/one'
+        },
+        REINVEST: {
+            url: '/money/close/reinvest/one'
         }
     }
 }
@@ -535,14 +539,20 @@ jQuery(document).ready(function ($) {
         getUnderFacilitiesFromLocalStorage(facility, 'srcUnderFacilities');
     });
 
+    $('#sourceFacilities').change(function () {
+        let facility = $(this).find('option:selected').val();
+        getUnderFacilitiesFromLocalStorage(facility, 'sourceUnderFacilities');
+    })
+
     $(document).on("change", "#typeClosing", function () {
         let typeClosing = $('#typeClosingRow');
         let reFacility = $('#sourceFacility');
         let reUnderFacility = $('#sourceUnderFacility');
 
         if ($(this).find(':selected').text() === 'Реинвестирование') {
-            reFacility.css("display", "block");
-            $("#dateRepRow").css("display", "block");
+            reFacility.removeClass('d-none');
+            reUnderFacility.removeClass('d-none');
+            $("#dateRepRow").removeClass('d-none');
             $('#shareType').find('option:contains(Основная)').attr('selected', 'selected');
             reFacility.insertAfter(typeClosing);
             reUnderFacility.insertAfter(reFacility);
@@ -553,8 +563,8 @@ jQuery(document).ready(function ($) {
             $("#dateRepRow").addClass('d-none');
             $('#investorBuyerRow').removeClass('d-none');
         } else {
-            reFacility.css("display", "none");
-            reUnderFacility.css("display", "none");
+            reFacility.addClass('d-none');
+            reUnderFacility.addClass('d-none');
             $("#dateRepRow").addClass('d-none');
             $('#investorBuyerRow').addClass('d-none');
             if ($(this).find(':selected').text() === 'Выберите вид закрытия') {
@@ -563,13 +573,13 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    $(document).on("change", "#typeClosing", function () {
-        if ($(this).find(':selected').text() === 'Перепродажа доли') {
-            $('#buyerRow').removeClass('d-none');
-        } else {
-            $('#buyerRow').addClass('d-none');
-        }
-    });
+    // $(document).on("change", "#typeClosing", function () {
+    //     if ($(this).find(':selected').text() === 'Перепродажа доли') {
+    //         $('#buyerRow').removeClass('d-none');
+    //     } else {
+    //         $('#buyerRow').addClass('d-none');
+    //     }
+    // });
 
     $(document).on("change", "#cashDetail", function () {
 
@@ -704,182 +714,182 @@ function allMoneyCashing() {
     });
 }
 
-function prepareCashSave(what) {
-    let invBuyer = $('#investorBuyer');
-    let investorBuyer = {
-        id: invBuyer.find(':selected').val(),
-        login: invBuyer.find(':selected').text()
-    };
-
-    if (investorBuyer.id === '0') {
-        investorBuyer = null;
-    }
-
-    let cashId = $('#id').val();
-
-    let facilities = $('#facilities');
-    let facility = {
-        id: facilities.find(':selected').val(),
-        name: facilities.find(':selected').text()
-    };
-
-    let underFacilities = $('#underFacilities');
-    let underFacility = {
-        id: underFacilities.find(':selected').attr('id'),
-        name: underFacilities.find(':selected').text()
-    };
-    if (underFacility.id === '0') {
-        underFacility = null;
-    }
-
-    let investors = $('#investor');
-    let investor = {id: investors.find(':selected').val(), login: investors.find(':selected').text()};
-
-    let givedCash = $('#cash').val();
-
-    let dateGivenCash = new Date($('#dateGivenCash').val()).getTime();
-
-    let cashSources = $('#cashSrc');
-    let cashSource = {id: cashSources.find(':selected').val(), cashSource: cashSources.find(':selected').text()};
-    if (cashSource.id === '0') {
-        cashSource = null;
-    }
-
-    let newCashDetails = $('#cashDetail');
-    let newCashDetail = {
-        id: newCashDetails.find(':selected').val(),
-        name: newCashDetails.find(':selected').text()
-    };
-    if (newCashDetail.id === '0') {
-        newCashDetail = null;
-    }
-
-    let dateClosingInvest = new Date($('#dateCloseInv').val()).getTime();
-
-    let dateReport = new Date($('#dateRep').val()).getTime();
-
-    let typeClosingInvests = $('#typeClosing');
-    let typeClosingInvest = {
-        id: typeClosingInvests.find(':selected').val(),
-        name: typeClosingInvests.find(':selected').text()
-    };
-    if (typeClosingInvest.id === '0') {
-        typeClosingInvest = null;
-    }
-
-    let reFacilities = $('#sourceFacilities');
-    let reFacility = {id: reFacilities.find(':selected').val(), name: reFacilities.find(':selected').text()};
-    if (reFacility.id === '0') {
-        reFacility = null;
-    }
-
-    let reUnderFacilities = $('#sourceUnderFacilities');
-    let reUnderFacility = {
-        id: reUnderFacilities.find(':selected').attr('id'),
-        name: reUnderFacilities.find(':selected').text()
-    };
-    if (reUnderFacility.id === '0') {
-        reUnderFacility = null;
-    }
-
-    let dateReinvest = dateClosingInvest;
-
-    let shareTypes = $('#shareType');
-    let shareType = shareTypes.find(':selected').text();
-    if (shareType === 'Не определена') {
-        shareType = null;
-    }
-
-    let source = $('#source').val();
-    if (source.length === 0) {
-        source = null;
-    }
-
-    let cash = {
-        id: cashId,
-        facility: facility,
-        underFacility: underFacility,
-        investor: investor,
-        givedCash: givedCash,
-        dateGivedCash: dateGivenCash,
-        cashSource: cashSource,
-        newCashDetail: newCashDetail,
-        dateClosingInvest: dateClosingInvest,
-        typeClosing: typeClosingInvest,
-        shareType: shareType,
-        dateReport: dateReport,
-        sourceFacility: reFacility,
-        source: source,
-        sourceUnderFacility: reUnderFacility
-    };
-
-    let flag = true;
-    if (cashId === '') {
-        flag = false;
-    }
-
-    saveCash(cash, reFacility, reUnderFacility, dateReinvest, flag, investorBuyer, what);
-}
-
-function saveCash(cash, reFacility, reUnderFacility, dateReinvest, flag, invBuyer, what) {
-    let token = $("meta[name='_csrf']").attr("content");
-    let header = $("meta[name='_csrf_header']").attr("content");
-    let search = ({
-        "monies": cash,
-        "reFacility": reFacility,
-        "reUnderFacility": reUnderFacility,
-        "dateReinvest": dateReinvest,
-        "user": invBuyer,
-        "what": what
-    });
-
-    showLoader();
-
-    $.ajax({
-        type: "POST",
-        contentType: "application/json;charset=utf-8",
-        url: "saveCash",
-        data: JSON.stringify(search),
-        dataType: 'json',
-        timeout: 100000,
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader(header, token);
-        },
-        success: function (data) {
-            closeLoader();
-            $('#popup_modal_form').find('#message').append(data.message);
-            showPopup();
-            closePopup();
-            if (flag) {
-                window.location.href = '/money/list';
-            }
-
-            $('#facilities').prop('selectedIndex', 0);
-            $('#underFacilities').prop('selectedIndex', 0);
-            $('#investor').prop('selectedIndex', 0);
-            $('#cash').val(0);
-            $('#dateGivenCash').val('');
-            $('#cashSrc').prop('selectedIndex', 0);
-            $('#cashTyp').prop('selectedIndex', 0);
-            $('#cashDetail').prop('selectedIndex', 0);
-            $('#invType').prop('selectedIndex', 0);
-            $('#dateCloseInv').val('');
-            $('#typeClosing').prop('selectedIndex', 0);
-            $('#reFacilities').prop('selectedIndex', 0);
-            $('#reUnderFacilities').prop('selectedIndex', 0);
-            $('#dateRep').val('');
-            if (what !== null && what === 'doubleCash') {
-                window.location.href = '/double-cash-' + cash.id
-            }
-        },
-        error: function (e) {
-            $('#popup_modal_form').find('#message').append(e.error);
-            closeLoader();
-            showPopup();
-            closePopup();
-        }
-    });
-}
+// function prepareCashSave(what) {
+//     let invBuyer = $('#investorBuyer');
+//     let investorBuyer = {
+//         id: invBuyer.find(':selected').val(),
+//         login: invBuyer.find(':selected').text()
+//     };
+//
+//     if (investorBuyer.id === '0') {
+//         investorBuyer = null;
+//     }
+//
+//     let cashId = $('#id').val();
+//
+//     let facilities = $('#facilities');
+//     let facility = {
+//         id: facilities.find(':selected').val(),
+//         name: facilities.find(':selected').text()
+//     };
+//
+//     let underFacilities = $('#underFacilities');
+//     let underFacility = {
+//         id: underFacilities.find(':selected').attr('id'),
+//         name: underFacilities.find(':selected').text()
+//     };
+//     if (underFacility.id === '0') {
+//         underFacility = null;
+//     }
+//
+//     let investors = $('#investor');
+//     let investor = {id: investors.find(':selected').val(), login: investors.find(':selected').text()};
+//
+//     let givedCash = $('#cash').val();
+//
+//     let dateGivenCash = new Date($('#dateGivenCash').val()).getTime();
+//
+//     let cashSources = $('#cashSrc');
+//     let cashSource = {id: cashSources.find(':selected').val(), cashSource: cashSources.find(':selected').text()};
+//     if (cashSource.id === '0') {
+//         cashSource = null;
+//     }
+//
+//     let newCashDetails = $('#cashDetail');
+//     let newCashDetail = {
+//         id: newCashDetails.find(':selected').val(),
+//         name: newCashDetails.find(':selected').text()
+//     };
+//     if (newCashDetail.id === '0') {
+//         newCashDetail = null;
+//     }
+//
+//     let dateClosingInvest = new Date($('#dateCloseInv').val()).getTime();
+//
+//     let dateReport = new Date($('#dateRep').val()).getTime();
+//
+//     let typeClosingInvests = $('#typeClosing');
+//     let typeClosingInvest = {
+//         id: typeClosingInvests.find(':selected').val(),
+//         name: typeClosingInvests.find(':selected').text()
+//     };
+//     if (typeClosingInvest.id === '0') {
+//         typeClosingInvest = null;
+//     }
+//
+//     let reFacilities = $('#sourceFacilities');
+//     let reFacility = {id: reFacilities.find(':selected').val(), name: reFacilities.find(':selected').text()};
+//     if (reFacility.id === '0') {
+//         reFacility = null;
+//     }
+//
+//     let reUnderFacilities = $('#sourceUnderFacilities');
+//     let reUnderFacility = {
+//         id: reUnderFacilities.find(':selected').attr('id'),
+//         name: reUnderFacilities.find(':selected').text()
+//     };
+//     if (reUnderFacility.id === '0') {
+//         reUnderFacility = null;
+//     }
+//
+//     let dateReinvest = dateClosingInvest;
+//
+//     let shareTypes = $('#shareType');
+//     let shareType = shareTypes.find(':selected').text();
+//     if (shareType === 'Не определена') {
+//         shareType = null;
+//     }
+//
+//     let source = $('#source').val();
+//     if (source.length === 0) {
+//         source = null;
+//     }
+//
+//     let cash = {
+//         id: cashId,
+//         facility: facility,
+//         underFacility: underFacility,
+//         investor: investor,
+//         givedCash: givedCash,
+//         dateGivedCash: dateGivenCash,
+//         cashSource: cashSource,
+//         newCashDetail: newCashDetail,
+//         dateClosingInvest: dateClosingInvest,
+//         typeClosing: typeClosingInvest,
+//         shareType: shareType,
+//         dateReport: dateReport,
+//         sourceFacility: reFacility,
+//         source: source,
+//         sourceUnderFacility: reUnderFacility
+//     };
+//
+//     let flag = true;
+//     if (cashId === '') {
+//         flag = false;
+//     }
+//
+//     saveCash(cash, reFacility, reUnderFacility, dateReinvest, flag, investorBuyer, what);
+// }
+//
+// function saveCash(cash, reFacility, reUnderFacility, dateReinvest, flag, invBuyer, what) {
+//     let token = $("meta[name='_csrf']").attr("content");
+//     let header = $("meta[name='_csrf_header']").attr("content");
+//     let search = ({
+//         "monies": cash,
+//         "reFacility": reFacility,
+//         "reUnderFacility": reUnderFacility,
+//         "dateReinvest": dateReinvest,
+//         "user": invBuyer,
+//         "what": what
+//     });
+//
+//     showLoader();
+//
+//     $.ajax({
+//         type: "POST",
+//         contentType: "application/json;charset=utf-8",
+//         url: "saveCash",
+//         data: JSON.stringify(search),
+//         dataType: 'json',
+//         timeout: 100000,
+//         beforeSend: function (xhr) {
+//             xhr.setRequestHeader(header, token);
+//         },
+//         success: function (data) {
+//             closeLoader();
+//             $('#popup_modal_form').find('#message').append(data.message);
+//             showPopup();
+//             closePopup();
+//             if (flag) {
+//                 window.location.href = '/money/list';
+//             }
+//
+//             $('#facilities').prop('selectedIndex', 0);
+//             $('#underFacilities').prop('selectedIndex', 0);
+//             $('#investor').prop('selectedIndex', 0);
+//             $('#cash').val(0);
+//             $('#dateGivenCash').val('');
+//             $('#cashSrc').prop('selectedIndex', 0);
+//             $('#cashTyp').prop('selectedIndex', 0);
+//             $('#cashDetail').prop('selectedIndex', 0);
+//             $('#invType').prop('selectedIndex', 0);
+//             $('#dateCloseInv').val('');
+//             $('#typeClosing').prop('selectedIndex', 0);
+//             $('#reFacilities').prop('selectedIndex', 0);
+//             $('#reUnderFacilities').prop('selectedIndex', 0);
+//             $('#dateRep').val('');
+//             if (what !== null && what === 'doubleCash') {
+//                 window.location.href = '/double-cash-' + cash.id
+//             }
+//         },
+//         error: function (e) {
+//             $('#popup_modal_form').find('#message').append(e.error);
+//             closeLoader();
+//             showPopup();
+//             closePopup();
+//         }
+//     });
+// }
 
 function disableFields(operation) {
     let facilitiesRow = $('#facilitiesRow');
@@ -1583,6 +1593,10 @@ MoneyDTO.prototype = {
     typeCloseId: null,
     realDateGiven: null,
     operation: null,
+    reFacilityId: null,
+    reUnderFacilityId: null,
+    sourceFacilityId: null,
+    sourceUnderFacilityId: null,
     build: function (facilityId, underFacilityId, investorId, cash, dateGiven, cashSourceId,
                      newCashDetailId, shareTypeId) {
         this.facilityId = facilityId;
@@ -1612,6 +1626,15 @@ MoneyDTO.prototype = {
         this.id = id;
         this.dateClose = dateClose;
         this.operation = OperationEnum.CASHING
+    },
+    reinvest: function (id, dateClose, reFacilityId, reUnderFacilityId, sourceFacilityId, sourceUnderFacilityId) {
+        this.id = id;
+        this.dateClose = dateClose;
+        this.reFacilityId = reFacilityId
+        this.reUnderFacilityId = reUnderFacilityId
+        this.sourceFacilityId = sourceFacilityId
+        this.sourceUnderFacilityId = sourceUnderFacilityId
+        this.operation = OperationEnum.REINVEST
     }
 }
 
@@ -1645,6 +1668,7 @@ function saveMoney(moneyDTO) {
                 case OperationEnum.UPDATE:
                 case OperationEnum.RESALE:
                 case OperationEnum.CASHING:
+                case OperationEnum.REINVEST:
                     window.location.href = '/money/list'
                     break
             }
@@ -1778,21 +1802,6 @@ function check(operation) {
                     } else {
                         $('#investorBuyerError').addClass('d-none')
                     }
-                } else if (typeClosing === 'Реинвестирование') {
-                    let reFacility = $('#sourceFacilities').find(':selected').val()
-                    if (reFacility === '0') {
-                        $('#sourceFacilityErr').removeClass('d-none')
-                        return false
-                    } else {
-                        $('#sourceFacilityErr').addClass('d-none')
-                    }
-                    let reUnderFacility = $('#sourceUnderFacilities').find(':selected').attr('id')
-                    if (reUnderFacility === '0') {
-                        $('#reUnderFacilityErr').removeClass('d-none')
-                        return false
-                    } else {
-                        $('#reUnderFacilityErr').addClass('d-none')
-                    }
                 }
                 $('#typeClosingError').addClass('d-none')
             }
@@ -1842,6 +1851,10 @@ function getMoneyDTO(operation) {
                 moneyDTO.resale(cashId, buyerId, dateClose, typeCloseId, realDateGiven)
             } else if (typeClose === 'Вывод') {
                 moneyDTO.cashing(cashId, dateClose)
+            } else if (typeClose === 'Реинвестирование') {
+                let reFacilityId = $('#sourceFacilities').val()
+                let reUnderFacilityId = $('#sourceUnderFacilities').val()
+                moneyDTO.reinvest(cashId, dateClose, reFacilityId, reUnderFacilityId, facilityId, underFacilityId)
             }
             return moneyDTO
     }
