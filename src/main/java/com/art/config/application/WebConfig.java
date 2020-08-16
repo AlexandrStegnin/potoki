@@ -111,7 +111,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                                 .expireAfterWrite(30, TimeUnit.MINUTES)
                                 .maximumSize(500)
                                 .build().asMap(),
-                        false);
+                        true);
             }
         };
     }

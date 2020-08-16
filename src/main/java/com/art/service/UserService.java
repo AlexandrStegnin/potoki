@@ -58,17 +58,17 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    @CacheEvict(Constant.USERS_CACHE_KEY)
+    @CacheEvict(value = Constant.USERS_CACHE_KEY, key = "#id")
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
 
-    @Cacheable(Constant.USERS_CACHE_KEY)
+    @Cacheable(value = Constant.USERS_CACHE_KEY, key = "#login")
     public AppUser findByLogin(String login) {
         return userRepository.findByLogin(login);
     }
 
-    @Cacheable(Constant.USERS_CACHE_KEY)
+    @Cacheable(value = Constant.USERS_CACHE_KEY, key = "#id")
     public AppUser findById(Long id) {
         return userRepository.findOne(id);
     }
@@ -115,7 +115,6 @@ public class UserService {
 
      */
 
-    @Cacheable(Constant.USERS_CACHE_KEY)
     public AppUser findByLoginWithAnnexes(String login) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<AppUser> usersCriteriaQuery = cb.createQuery(AppUser.class);
@@ -125,7 +124,7 @@ public class UserService {
         return em.createQuery(usersCriteriaQuery).getSingleResult();
     }
 
-    @CachePut(Constant.USERS_CACHE_KEY)
+    @CachePut(value = Constant.USERS_CACHE_KEY, key = "#user?.id")
     public void create(AppUser user) {
         String password = generatePassword();
         user.setPassword(password);
@@ -139,7 +138,7 @@ public class UserService {
         }
     }
 
-    @CachePut(value = Constant.USERS_CACHE_KEY, key = "#user.id")
+    @CachePut(value = Constant.USERS_CACHE_KEY, key = "#user?.id")
     public void updateProfile(AppUser user) {
         AppUser dbUser = findById(user.getId());
         if (null != user.getPassword()) {
@@ -151,7 +150,7 @@ public class UserService {
         userRepository.save(dbUser);
     }
 
-    @CachePut(value = Constant.USERS_CACHE_KEY, key = "#user.id")
+    @CachePut(value = Constant.USERS_CACHE_KEY, key = "#user?.id")
     public void update(AppUser user) {
         AppUser dbUser = findById(user.getId());
         dbUser.setPartnerId(user.getPartnerId());
