@@ -11,6 +11,7 @@ import com.art.model.supporting.enums.MoneyOperation;
 import com.art.model.supporting.enums.ShareType;
 import com.art.model.supporting.filters.CashFilter;
 import com.art.service.*;
+import org.hibernate.Hibernate;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -173,6 +174,8 @@ public class MoneyController {
     public String editCash(@PathVariable Long id, ModelMap model) {
         String title = "Обновление суммы инвестора";
         Money money = moneyService.findById(id);
+        Hibernate.initialize(money.getSourceFacility());
+        Hibernate.initialize(money.getSourceUnderFacility());
         model.addAttribute("money", money);
         model.addAttribute("newCash", false);
         model.addAttribute("edit", true);
@@ -242,121 +245,6 @@ public class MoneyController {
     public ApiResponse cashingMoney(@RequestBody CashingMoneyDTO moneyDTO) {
         Money money = moneyService.cashing(moneyDTO);
         return new ApiResponse(String.format("Вывод суммы инвестора [%s] прошёл успешно", money.getInvestor().getLogin()));
-    }
-
-    /**
-     * Закрытие суммы вложения
-     *
-     * @param money сумма для закрытия
-     * @param id id суммы
-     * @param dateClosingInvest дата закрытия
-     * @param realDateGiven реальная дата передачи денег
-     * @return переадресация на страницу денег инвесторов
-     */
-    @PostMapping(path = Location.MONEY_CLOSE_ID)
-    public String closeCash(@ModelAttribute("money") Money money,
-                            @PathVariable("id") Long id, @RequestParam("dateClosingInvest") Date dateClosingInvest,
-                            @RequestParam("realDateGiven") Date realDateGiven) {
-        ModelAndView modelAndView = new ModelAndView("money-list");
-
-        AppUser invBuyer;
-        TypeClosing closingInvest = typeClosingService.findByName("Перепродажа доли");
-        NewCashDetail newCashDetail = newCashDetailService.findByName("Перепокупка доли");
-
-        // Перепродажа доли
-        if (null != money.getInvestorBuyer()) {
-            invBuyer = userService.findById(money.getInvestorBuyer().getId());
-
-            Money cash = new Money(moneyService.findById(money.getId()));
-            Money newMoney = new Money(moneyService.findById(money.getId()));
-            Money oldCash = moneyService.findById(money.getId());
-            oldCash.setDateClosing(dateClosingInvest);
-            oldCash.setTypeClosing(closingInvest);
-            oldCash.setRealDateGiven(realDateGiven);
-
-            cash.setId(null);
-            cash.setInvestor(invBuyer);
-            cash.setDateGiven(dateClosingInvest);
-            cash.setSourceId(money.getId());
-            cash.setCashSource(null);
-            cash.setSource(null);
-            cash.setNewCashDetail(newCashDetail);
-
-            newMoney.setId(null);
-            newMoney.setCashSource(null);
-            newMoney.setSource(null);
-            newMoney.setGivenCash(newMoney.getGivenCash().negate());
-            newMoney.setSourceId(money.getId());
-            newMoney.setDateGiven(dateClosingInvest);
-            newMoney.setDateClosing(dateClosingInvest);
-            newMoney.setTypeClosing(closingInvest);
-
-            moneyService.createNew(cash);
-            moneyService.createNew(newMoney);
-            moneyService.update(oldCash);
-            Money transactionOldCash = new Money(oldCash);
-            transactionOldCash.setId(oldCash.getId());
-            Set<Money> cashSet = new HashSet<>();
-            cashSet.add(cash);
-            cashSet.add(newMoney);
-            cashSet.add(transactionOldCash);
-            transactionLogService.resale(Collections.singleton(transactionOldCash), cashSet);
-        } else {
-            Money updatedCash = moneyService.findById(money.getId());
-            transactionLogService.close(Collections.singleton(updatedCash));
-            updatedCash.setDateClosing(dateClosingInvest);
-            updatedCash.setRealDateGiven(realDateGiven);
-
-            updatedCash.setTypeClosing(typeClosingService.findByName("Вывод"));
-            moneyService.update(updatedCash);
-        }
-        modelAndView.addObject("money", moneyService.findAll());
-        return "redirect:" + Location.MONEY_LIST;
-    }
-
-    /**
-     * Реинвестирование (?) суммы инвестора
-     *
-     * @param searchSummary сумма для реинвестирования
-     * @return ответ об успешном/не успешном реинвестировании суммы
-     */
-    @PostMapping(value = {"/saveCash"}, produces = "application/json;charset=UTF-8")
-    public @ResponseBody
-    GenericResponse saveCash(@RequestBody SearchSummary searchSummary) {
-
-        GenericResponse response = new GenericResponse();
-        Money money = searchSummary.getMoney();
-
-        Facility reFacility = searchSummary.getReFacility();
-        UnderFacility reUnderFacility = searchSummary.getReUnderFacility();
-        Date reinvestDate = searchSummary.getDateReinvest();
-
-        String whatWeDoWithCash = "обновлены.";
-
-        String invLogin = money.getInvestor().getLogin();
-
-        if (null != reFacility && null != money.getId() &&
-                null != money.getNewCashDetail() &&
-                (!money.getNewCashDetail().getName().equalsIgnoreCase("Реинвестирование с продажи") &&
-                        !money.getNewCashDetail().getName().equalsIgnoreCase("Реинвестирование с аренды")) &&
-                (null != searchSummary.getWhat() && !searchSummary.getWhat().equalsIgnoreCase("edit"))) {
-            Money newMoney = new Money();
-            newMoney.setFacility(reFacility);
-            newMoney.setSourceFacility(money.getFacility());
-            newMoney.setUnderFacility(reUnderFacility);
-            newMoney.setInvestor(money.getInvestor());
-            newMoney.setGivenCash(money.getGivenCash());
-            newMoney.setDateGiven(reinvestDate);
-            newMoney.setCashSource(null);
-            newMoney.setNewCashDetail(newCashDetailService.findByName("Реинвестирование с продажи"));
-            newMoney.setShareType(money.getShareType());
-            moneyService.create(newMoney);
-            whatWeDoWithCash = "добавлены.";
-        }
-        moneyService.update(money);
-
-        response.setMessage("Деньги инвестора " + invLogin + " успешно " + whatWeDoWithCash);
-        return response;
     }
 
     @GetMapping(value = {"/double-cash-{id}"})
@@ -898,4 +786,50 @@ public class MoneyController {
     private void sendStatus(String message) {
         statusService.sendStatus(message);
     }
+
+    //
+//    /**
+//     * Реинвестирование (?) суммы инвестора
+//     *
+//     * @param searchSummary сумма для реинвестирования
+//     * @return ответ об успешном/не успешном реинвестировании суммы
+//     */
+//    @PostMapping(value = {"/saveCash"}, produces = "application/json;charset=UTF-8")
+//    public @ResponseBody
+//    GenericResponse saveCash(@RequestBody SearchSummary searchSummary) {
+//
+//        GenericResponse response = new GenericResponse();
+//        Money money = searchSummary.getMoney();
+//
+//        Facility reFacility = searchSummary.getReFacility();
+//        UnderFacility reUnderFacility = searchSummary.getReUnderFacility();
+//        Date reinvestDate = searchSummary.getDateReinvest();
+//
+//        String whatWeDoWithCash = "обновлены.";
+//
+//        String invLogin = money.getInvestor().getLogin();
+//
+//        if (null != reFacility && null != money.getId() &&
+//                null != money.getNewCashDetail() &&
+//                (!money.getNewCashDetail().getName().equalsIgnoreCase("Реинвестирование с продажи") &&
+//                        !money.getNewCashDetail().getName().equalsIgnoreCase("Реинвестирование с аренды")) &&
+//                (null != searchSummary.getWhat() && !searchSummary.getWhat().equalsIgnoreCase("edit"))) {
+//            Money newMoney = new Money();
+//            newMoney.setFacility(reFacility);
+//            newMoney.setSourceFacility(money.getFacility());
+//            newMoney.setUnderFacility(reUnderFacility);
+//            newMoney.setInvestor(money.getInvestor());
+//            newMoney.setGivenCash(money.getGivenCash());
+//            newMoney.setDateGiven(reinvestDate);
+//            newMoney.setCashSource(null);
+//            newMoney.setNewCashDetail(newCashDetailService.findByName("Реинвестирование с продажи"));
+//            newMoney.setShareType(money.getShareType());
+//            moneyService.create(newMoney);
+//            whatWeDoWithCash = "добавлены.";
+//        }
+//        moneyService.update(money);
+//
+//        response.setMessage("Деньги инвестора " + invLogin + " успешно " + whatWeDoWithCash);
+//        return response;
+//    }
 }
