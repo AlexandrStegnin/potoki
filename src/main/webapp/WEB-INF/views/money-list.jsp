@@ -222,7 +222,7 @@
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" id="aEdit" href="<c:url value='edit/${money.id}' />">Изменить</a>
                                     <a class="dropdown-item" id="aDivide"
-                                       href="<c:url value='/double-cash-${money.id}' />">Разделить</a>
+                                       href="<c:url value='double/${money.id}' />">Разделить</a>
                                     <a class="dropdown-item" id="aDouble"
                                        href="<c:url value='close/${money.id}' />">Закрыть</a></div>
                             </div>

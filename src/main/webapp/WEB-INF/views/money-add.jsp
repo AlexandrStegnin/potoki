@@ -9,7 +9,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Форма внесения денег инвесторов</title>
+    <title>${title}</title>
     <sec:csrfMetaTags/>
     <link rel="stylesheet"
           href="<c:url value='https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css' />"/>

@@ -247,11 +247,11 @@ public class MoneyController {
         return new ApiResponse(String.format("Вывод суммы инвестора [%s] прошёл успешно", money.getInvestor().getLogin()));
     }
 
-    @GetMapping(value = {"/double-cash-{id}"})
+    @GetMapping(path = Location.MONEY_DOUBLE_ID)
     public String doubleInvCash(@PathVariable Long id, ModelMap model) {
-        String title = "Разделение строк по деньгам инвесторов";
+        String title = "Разделение денег";
         Money money = moneyService.findById(id);
-
+        money.setGivenCash(money.getGivenCash().setScale(2, RoundingMode.CEILING));
         List<UnderFacility> underFacilityList = new ArrayList<>(0);
         UnderFacility underFacility = new UnderFacility();
         underFacility.setId(0L);
@@ -261,7 +261,8 @@ public class MoneyController {
                 .stream()
                 .filter(uf -> uf.getFacility().equals(money.getFacility()))
                 .collect(Collectors.toList()));
-
+        Hibernate.initialize(money.getSourceFacility());
+        Hibernate.initialize(money.getSourceUnderFacility());
         model.addAttribute("underFacilitiesList", underFacilityList);
         model.addAttribute("money", money);
         model.addAttribute("newCash", false);
@@ -269,14 +270,16 @@ public class MoneyController {
         model.addAttribute("closeCash", false);
         model.addAttribute("doubleCash", true);
         model.addAttribute("title", title);
+        model.addAttribute("operation", MoneyOperation.DOUBLE.getTitle());
         return "money-add";
     }
 
-    @PostMapping(value = "/double-cash-{id}")
-    public String doubleCash(@ModelAttribute("investorsCash") Money money, @PathVariable("id") int id) {
-        Money newMoney = moneyService.findById(money.getId());
+    @PostMapping(path = Location.MONEY_DOUBLE_ID)
+    public String doubleCash(@ModelAttribute("money") Money money, @PathVariable("id") int id) {
+        Money dbMoney = moneyService.findById(money.getId());
+        Money newMoney = new Money(dbMoney);
         Money inMemoryCash = moneyService.findById(money.getId());
-        ModelAndView model = new ModelAndView("money-add");
+
         money.setFacility(newMoney.getFacility());
         money.setInvestor(newMoney.getInvestor());
         money.setDateGiven(newMoney.getDateGiven());
@@ -289,7 +292,7 @@ public class MoneyController {
         money.setGivenCash(newSum);
         newMoney.setCashSource(money.getCashSource());
         newMoney.setShareType(money.getShareType());
-        newMoney.setId(null);
+
         newMoney.setSource(money.getId().toString());
         newMoney.setUnderFacility(money.getUnderFacility());
         newMoney.setSourceFacility(money.getSourceFacility());
@@ -307,8 +310,7 @@ public class MoneyController {
         if (money.getGivenCash().compareTo(BigDecimal.ZERO) == 0) {
             return "redirect:" + Location.MONEY_LIST;
         } else {
-            model.addObject("money", money);
-            return model.getViewName();
+            return "redirect:" + Location.MONEY_DOUBLE.concat("/").concat(money.getId().toString());
         }
     }
 

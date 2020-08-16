@@ -7,6 +7,7 @@ let OperationEnum = {
     RESALE: 'RESALE',
     CASHING: 'CASHING',
     REINVEST: 'REINVEST',
+    DOUBLE: 'DOUBLE',
     properties: {
         CREATE: {
             url: 'create'
@@ -36,18 +37,24 @@ jQuery(document).ready(function ($) {
     let operation = $('#operation').val();
 
     $('#submit').on('click', function (e) {
-        e.preventDefault()
-        switch (operation) {
-            case "CREATE":
-                save(OperationEnum.CREATE);
-                break
-            case "UPDATE":
-                save(OperationEnum.UPDATE);
-                break
-            case "CLOSE":
-                save(OperationEnum.CLOSE)
-                break
+        if (operation !== OperationEnum.DOUBLE) {
+            e.preventDefault()
+            save(operation)
         }
+        // switch (operation) {
+        //     case "CREATE":
+        //         save(OperationEnum.CREATE);
+        //         break
+        //     case "UPDATE":
+        //         save(OperationEnum.UPDATE);
+        //         break
+        //     case "CLOSE":
+        //         save(OperationEnum.CLOSE)
+        //         break
+        //     case "DOUBLE":
+        //         save(OperationEnum.DOUBLE)
+        //         break
+        // }
     })
 
     blockActions();
@@ -1857,5 +1864,8 @@ function getMoneyDTO(operation) {
                 moneyDTO.reinvest(cashId, dateClose, reFacilityId, reUnderFacilityId, facilityId, underFacilityId)
             }
             return moneyDTO
+        case OperationEnum.DOUBLE:
+
+
     }
 }
