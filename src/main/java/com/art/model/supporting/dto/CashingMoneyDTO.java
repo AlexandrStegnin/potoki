@@ -15,7 +15,7 @@ public class CashingMoneyDTO {
 
     private Long id;
 
-    private Date dateClosing;
+    private Date dateClose;
 
     private Date realDateGiven;
 
