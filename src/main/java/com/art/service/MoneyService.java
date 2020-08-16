@@ -212,6 +212,21 @@ public class MoneyService {
         return oldCash;
     }
 
+    /**
+     * Вывод одиночной суммы
+     *
+     * @param moneyDTO DTO для перепродажи
+     * @return перепроданная сумма
+     */
+    public Money cashing(CashingMoneyDTO moneyDTO) {
+        Money updatedCash = findById(moneyDTO.getId());
+        transactionLogService.close(Collections.singleton(updatedCash));
+        updatedCash.setDateClosing(moneyDTO.getDateClosing());
+        updatedCash.setRealDateGiven(moneyDTO.getRealDateGiven());
+        updatedCash.setTypeClosing(typeClosingService.findByName("Вывод"));
+        return update(updatedCash);
+    }
+
     @Cacheable(Constant.MONEY_CACHE_KEY)
     public List<Money> findByIdIn(List<Long> idList) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
