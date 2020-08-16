@@ -269,7 +269,7 @@
                         <label class="col-md-3 col-form-label" for="dateClose">Дата закрытия:</label>
                         <div class="col-md-9">
                             <form:input type="date" path="dateClose" id="dateClose" class="form-control input-sm"/>
-                            <div id="dateCloseErr" style="color: red; display: none">Необходимо выбрать дату
+                            <div id="dateCloseErr" class="has-error col-md-9 d-none">Необходимо выбрать дату
                                 вложения
                             </div>
                         </div>
@@ -280,7 +280,7 @@
                             <form:select path="reFacility" id="srcFacilities" items="${facilities}" multiple="true"
                                          itemValue="id" itemLabel="name" class="selectpicker form-control input-sm"
                                          data-live-search="true" data-none-selected-text="Выберите объект"/>
-                            <div id="facilityErr" style="color: red; display: none">Необходимо выбрать объект</div>
+                            <div id="facilityErr" class="has-error col-md-9 d-none">Необходимо выбрать объект</div>
                         </div>
                     </div>
                     <div class="form-group row" id="underFacilityRow">
@@ -291,7 +291,7 @@
                                          data-none-selected-text="Без подобъекта"
                                          itemValue="id" itemLabel="name"
                                          class="form-control input-sm selectpicker"/>
-                            <div id="underFacilityErr" style="color: red; display: none">Необходимо выбрать
+                            <div id="underFacilityErr" class="has-error col-md-9 d-none">Необходимо выбрать
                                 подобъект
                             </div>
                         </div>
@@ -301,7 +301,7 @@
                         <div class="col-md-9">
                             <form:select path="shareType" id="shareTypeName" items="${shareTypes}" multiple="false"
                                          itemValue="id" itemLabel="title" class="form-control input-sm"/>
-                            <div id="shareTypeErr" style="color: red; display: none">Необходимо выбрать вид доли
+                            <div id="shareTypeErr" class="has-error col-md-9 d-none">Необходимо выбрать вид доли
                             </div>
                         </div>
                     </div>
@@ -316,7 +316,7 @@
                                          data-live-search="true" data-size="7"
                                          data-actions-box="true" data-select-all-text="Выбрать всё"
                                          data-deselect-all-text="Очистить"/>
-                            <div id="underFacilityErr" style="color: red; display: none">Необходимо выбрать из каких
+                            <div id="underFacilityErr" class="has-error col-md-9 d-none">Необходимо выбрать из каких
                                 подобъектов состоит остаток
                             </div>
                         </div>
@@ -327,7 +327,7 @@
                         <div class="col-md-9">
                             <form:input type="date" path="realDateGiven" id="realDateGiven"
                                         class="form-control input-sm"/>
-                            <div id="dateCloseErr" style="color: red; display: none">Необходимо выбрать дату
+                            <div id="dateCloseErr" class="has-error col-md-9 d-none">Необходимо выбрать дату
                                 передачи денег
                             </div>
                         </div>
@@ -339,18 +339,18 @@
                                          multiple="false"
                                          itemValue="id" itemLabel="name"
                                          class="form-control input-sm selectpicker"/>
-                            <div id="typeClosingErr" style="color: red; display: none">Необходимо выбрать вид
+                            <div id="typeClosingErr" class="has-error col-md-9 d-none">Необходимо выбрать вид
                                 закрытия
                             </div>
                         </div>
                     </div>
-                    <div class="form-group row" id="buyerRow">
+                    <div class="form-group row d-none" id="buyerRow">
                         <label class="col-md-3 col-form-label" for="buyer">Инвестор покупатель:</label>
                         <div class="col-md-9">
                             <form:select path="user" id="buyer" items="${investors}" multiple="false"
                                          itemValue="id" itemLabel="login" class="form-control input-sm selectpicker"
                                          data-live-search="true"/>
-                            <div id="buyerErr" style="color: red; display: none">Необходимо выбрать инвестора
+                            <div id="buyerErr"  class="has-error col-md-9 d-none">Необходимо выбрать инвестора
                                 покупателя
                             </div>
                         </div>

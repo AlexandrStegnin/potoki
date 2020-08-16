@@ -565,10 +565,15 @@ jQuery(document).ready(function ($) {
             reUnderFacility.insertAfter(reFacility);
             $('#investorBuyerRow').addClass('d-none');
         } else if ($(this).find(':selected').text() === 'Перепродажа доли') {
-            reFacility.css("display", "none");
-            reUnderFacility.css("display", "none");
+            reFacility.addClass('d-none');
+            reUnderFacility.addClass('d-none');
             $("#dateRepRow").addClass('d-none');
             $('#investorBuyerRow').removeClass('d-none');
+            if ($("#all-modal").hasClass('show')) {
+                $('#buyerRow').removeClass('d-none')
+            } else {
+                $('#buyerRow').addClass('d-none')
+            }
         } else {
             reFacility.addClass('d-none');
             reUnderFacility.addClass('d-none');
@@ -1469,6 +1474,7 @@ function deleteCash(cashIdList) {
 function prepareCloseCash() {
     let what = "closeCash";
     let invBuyer = $('#buyer');
+    let investorBuyerId = invBuyer.find(':selected').val();
     let investorBuyer = {
         id: invBuyer.find(':selected').val(),
         login: invBuyer.find(':selected').text()
@@ -1488,7 +1494,7 @@ function prepareCloseCash() {
         })
     });
     $('#all-modal').modal('hide')
-    closeCash(cashIdList, investorBuyer, dateClosingInvest, what, realDateGiven);
+    closeCash(cashIdList, investorBuyerId, dateClosingInvest, what, realDateGiven);
 }
 
 function closeCash(cashIdList, invBuyer, dateClosingInvest, what, realDateGiven) {
