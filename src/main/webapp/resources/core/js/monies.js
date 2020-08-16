@@ -5,6 +5,7 @@ let OperationEnum = {
     UPDATE: 'UPDATE',
     CLOSE: 'CLOSE',
     RESALE: 'RESALE',
+    CASHING: 'CASHING',
     properties: {
         CREATE: {
             url: 'create'
@@ -17,6 +18,9 @@ let OperationEnum = {
         },
         RESALE: {
             url: '/money/close/resale'
+        },
+        CASHING: {
+            url: '/money/close/cashing/one'
         }
     }
 }
@@ -1597,6 +1601,11 @@ MoneyDTO.prototype = {
         this.typeCloseId = typeCloseId;
         this.realDateGiven = realDateGiven;
         this.operation = OperationEnum.RESALE
+    },
+    cashing: function (id, dateClose) {
+        this.id = id;
+        this.dateClose = dateClose;
+        this.operation = OperationEnum.CASHING
     }
 }
 
@@ -1604,13 +1613,12 @@ MoneyDTO.prototype = {
  * Сохранить сумму инвестора
  *
  * @param {MoneyDTO} moneyDTO DTO суммы
- * @param {OperationEnum} operation вид операции
  */
-function saveMoney(moneyDTO, operation) {
+function saveMoney(moneyDTO) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
     showLoader();
-    let url = OperationEnum.properties[operation].url
+    let url = OperationEnum.properties[moneyDTO.operation].url
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
@@ -1624,12 +1632,13 @@ function saveMoney(moneyDTO, operation) {
         success: function (data) {
             closeLoader();
             showPopup(data.message);
-            switch (operation) {
+            switch (moneyDTO.operation) {
                 case OperationEnum.CREATE:
                     clearMoneyForm()
                     break
                 case OperationEnum.UPDATE:
                 case OperationEnum.RESALE:
+                case OperationEnum.CASHING:
                     window.location.href = '/money/list'
                     break
             }
@@ -1665,11 +1674,7 @@ function clearMoneyForm() {
 function save(operation) {
     if (check(operation)) {
         let moneyDTO = getMoneyDTO(operation)
-        if (moneyDTO.operation === OperationEnum.RESALE) {
-            saveMoney(moneyDTO, OperationEnum.RESALE);
-        } else {
-            saveMoney(moneyDTO, operation);
-        }
+        saveMoney(moneyDTO);
     }
 }
 
@@ -1813,11 +1818,13 @@ function getMoneyDTO(operation) {
         case OperationEnum.CREATE:
             moneyDTO.build(facilityId, underFacilityId, investorId, cashSum, dateGiven,
                 cashSourceId, newCashDetailId, shareTypeId)
+            moneyDTO.operation = OperationEnum.CREATE
             return moneyDTO
         case OperationEnum.UPDATE:
             moneyDTO.build(facilityId, underFacilityId, investorId, cashSum, dateGiven,
                 cashSourceId, newCashDetailId, shareTypeId)
             moneyDTO.setId(cashId)
+            moneyDTO.operation = OperationEnum.UPDATE
             return moneyDTO
         case OperationEnum.CLOSE:
             let buyerId = $('#investorBuyer').find(':selected').val()
@@ -1827,6 +1834,8 @@ function getMoneyDTO(operation) {
             let typeClose = typeClosing.find(':selected').text()
             if (typeClose === 'Перепродажа доли') {
                 moneyDTO.resale(cashId, buyerId, dateClose, typeCloseId, realDateGiven)
+            } else if (typeClose === 'Вывод') {
+                moneyDTO.cashing(cashId, dateClose)
             }
             return moneyDTO
     }
