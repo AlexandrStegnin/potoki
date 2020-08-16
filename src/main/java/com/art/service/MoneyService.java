@@ -164,7 +164,7 @@ public class MoneyService {
     }
 
     /**
-     * Перепродажа доли
+     * Перепродажа доли (одиночное)
      *
      * @param moneyDTO DTO для перепродажи
      * @return перепроданная сумма
