@@ -61,7 +61,8 @@ public class TypeClosingService {
         typeClosingList.add(typeClosing);
         List<TypeClosing> typeClosings = findAll();
         typeClosingList.addAll(typeClosings.stream()
-                .filter(tc -> !tc.getName().equalsIgnoreCase("Вывод_комиссия"))
+                .filter(tc -> !tc.getName().equalsIgnoreCase("Вывод_комиссия") &&
+                        !tc.getName().equalsIgnoreCase("Реинвестирование"))
                 .collect(Collectors.toList()));
         return typeClosingList;
     }
