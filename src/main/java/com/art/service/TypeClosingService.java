@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -58,7 +59,10 @@ public class TypeClosingService {
         typeClosing.setName("Выберите вид закрытия");
         List<TypeClosing> typeClosingList = new ArrayList<>(0);
         typeClosingList.add(typeClosing);
-        typeClosingList.addAll(findAll());
+        List<TypeClosing> typeClosings = findAll();
+        typeClosingList.addAll(typeClosings.stream()
+                .filter(tc -> !tc.getName().equalsIgnoreCase("Вывод_комиссия"))
+                .collect(Collectors.toList()));
         return typeClosingList;
     }
 }
