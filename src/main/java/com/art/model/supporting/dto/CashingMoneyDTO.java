@@ -17,6 +17,6 @@ public class CashingMoneyDTO {
 
     private Date dateClose;
 
-    private Date realDateGiven;
+    private String operation;
 
 }
