@@ -1386,7 +1386,7 @@ function saveDivideCash(cashes, reUnderFacility, excludedUnderFacilities) {
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: "divide-cash",
+        url: "/divide-cash",
         data: JSON.stringify(divideCashDTO),
         dataType: 'json',
         timeout: 0,
