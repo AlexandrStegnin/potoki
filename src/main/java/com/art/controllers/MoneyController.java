@@ -850,7 +850,7 @@ public class MoneyController {
 
     @ModelAttribute("underFacilities")
     public List<UnderFacility> initializeUnderFacilities() {
-        return underFacilityService.initializeUnderFacilitiesList();
+        return underFacilityService.initializeUnderFacilities();
     }
 
     @ModelAttribute("underFacilitiesList")
