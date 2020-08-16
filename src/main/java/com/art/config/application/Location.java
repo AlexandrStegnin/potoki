@@ -122,6 +122,8 @@ public class Location {
 
     public static final String MONEY_SAVE = MONEY + "/save";
 
+    public static final String MONEY_DOUBLE = MONEY + "/double";
+
     public static final String MONEY_DOUBLE_ID = MONEY + "/double/{id}";
 
     public static final String MONEY_DELETE_LIST = MONEY + "/delete/list";
