@@ -84,13 +84,13 @@ public class MoneyService {
     }
 
     @Transactional
-    @CachePut(value = Constant.MONEY_CACHE_KEY, key = "#money.id")
+    @CachePut(value = Constant.MONEY_CACHE_KEY, key = "#money?.id")
     public Money update(Money money) {
         money = moneyRepository.saveAndFlush(money);
         return money;
     }
 
-    @CachePut(Constant.MONEY_CACHE_KEY)
+    @CachePut(value = Constant.MONEY_CACHE_KEY, key = "#money?.id")
     public Money createNew(Money money) {
         money = moneyRepository.saveAndFlush(money);
         return money;
@@ -109,7 +109,7 @@ public class MoneyService {
     private EntityManager em;
 
     @Transactional
-    @CachePut(Constant.MONEY_CACHE_KEY)
+    @CachePut(value = Constant.MONEY_CACHE_KEY, key = "#money?.id")
     public Money create(Money money) {
         return this.em.merge(money);
     }
@@ -223,7 +223,6 @@ public class MoneyService {
         return em.createQuery(investorsCashCriteriaQuery).getResultList();
     }
 
-    @Cacheable(Constant.MONEY_CACHE_KEY)
     public List<Money> findBySource(String source) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Money> investorsCashCriteriaQuery = cb.createQuery(Money.class);
@@ -234,12 +233,10 @@ public class MoneyService {
         return em.createQuery(investorsCashCriteriaQuery).getResultList();
     }
 
-    @Cacheable(Constant.MONEY_CACHE_KEY)
     public List<Money> findBySourceId(Long sourceId) {
         return moneyRepository.findBySourceId(sourceId);
     }
 
-    @Cacheable(Constant.MONEY_CACHE_KEY)
     public List<Money> findByInvestorId(Long investorId) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Money> investorsCashCriteriaQuery = cb.createQuery(Money.class);
