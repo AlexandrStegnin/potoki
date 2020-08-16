@@ -895,6 +895,7 @@ function disableFields(operation) {
     let dateRepRow = $('#dateRepRow');
     let typeCloseRow = $('#typeClosingRow');
     let buyerRow = $('#investorBuyerRow');
+    let realDateGivenRow = $('#realDateGivenRow')
 
     let facilities = $('#facilities')
     let underFacilities = $('#underFacilities');
@@ -910,6 +911,7 @@ function disableFields(operation) {
     let typeClose = $('#typeClosing');
     let reFacility = $('#sourceFacilities');
     let reUnderFacility = $('#sourceUnderFacilities');
+    let realDateGiven = $('#realDateGiven')
 
     switch (operation) {
         case OperationEnum.CREATE:
@@ -920,6 +922,8 @@ function disableFields(operation) {
             dateGivenRow.removeClass('d-none')
             cashSrcRow.removeClass('d-none')
             cashDetailRow.removeClass('d-none')
+            realDateGivenRow.removeClass('d-none')
+
             dateCloseInvRow.addClass('d-none')
             typeCloseRow.addClass('d-none')
             reFacilityRow.addClass('d-none')
@@ -936,6 +940,7 @@ function disableFields(operation) {
             cashDetail.prop('disabled', false)
             dateReport.prop('disabled', false)
             shareType.prop('disabled', false)
+            realDateGiven.prop('disabled', false)
 
             dateClose.prop('disabled', true)
             typeClose.prop('disabled', true)
@@ -951,6 +956,7 @@ function disableFields(operation) {
             dateGivenRow.removeClass('d-none')
             cashSrcRow.removeClass('d-none')
             cashDetailRow.removeClass('d-none')
+            realDateGivenRow.removeClass('d-none')
             let cashDetailVal = $('#cashDetail:selected').text()
             if (cashDetailVal === 'Реинвестирование с продажи') {
                 reFacilityRow.removeClass('d-none')
@@ -975,7 +981,7 @@ function disableFields(operation) {
         case OperationEnum.CLOSE:
             dateCloseInvRow.removeClass('d-none');
             typeCloseRow.removeClass('d-none');
-
+            realDateGivenRow.addClass('d-none')
             dateClose.prop('disabled', false)
             typeClose.prop('disabled', false)
             reFacility.prop('disabled', false)
