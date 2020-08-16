@@ -247,6 +247,13 @@ public class MoneyController {
         return new ApiResponse(String.format("Вывод суммы инвестора [%s] прошёл успешно", money.getInvestor().getLogin()));
     }
 
+    /**
+     * Страница разделения денег инвесторов
+     *
+     * @param id id суммы для разделения
+     * @param model модель
+     * @return страница для разделения
+     */
     @GetMapping(path = Location.MONEY_DOUBLE_ID)
     public String doubleInvCash(@PathVariable Long id, ModelMap model) {
         String title = "Разделение денег";
@@ -274,6 +281,13 @@ public class MoneyController {
         return "money-add";
     }
 
+    /**
+     * Разделение денег инвесторов
+     *
+     * @param money сумма для разделениея
+     * @param id id суммы
+     * @return страница с деньгами или страницу для разделения остатка
+     */
     @PostMapping(path = Location.MONEY_DOUBLE_ID)
     public String doubleCash(@ModelAttribute("money") Money money, @PathVariable("id") int id) {
         Money dbMoney = moneyService.findById(money.getId());
