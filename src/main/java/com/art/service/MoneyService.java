@@ -109,7 +109,7 @@ public class MoneyService {
     private EntityManager em;
 
     @Transactional
-    @CachePut(value = Constant.MONEY_CACHE_KEY, key = "#money?.id")
+    @CachePut(value = Constant.MONEY_CACHE_KEY)
     public Money create(Money money) {
         return this.em.merge(money);
     }
@@ -221,8 +221,7 @@ public class MoneyService {
     public Money cashing(CashingMoneyDTO moneyDTO) {
         Money updatedCash = findById(moneyDTO.getId());
         transactionLogService.close(Collections.singleton(updatedCash));
-        updatedCash.setDateClosing(moneyDTO.getDateClosing());
-        updatedCash.setRealDateGiven(moneyDTO.getRealDateGiven());
+        updatedCash.setDateClosing(moneyDTO.getDateClose());
         updatedCash.setTypeClosing(typeClosingService.findByName("Вывод"));
         return update(updatedCash);
     }
