@@ -279,7 +279,7 @@
                         <div class="col-md-9">
                             <form:select path="reFacility" id="srcFacilities" items="${facilities}" multiple="true"
                                          itemValue="id" itemLabel="name" class="selectpicker form-control input-sm"
-                                         data-live-search="true"/>
+                                         data-live-search="true" data-none-selected-text="Выберите объект"/>
                             <div id="facilityErr" style="color: red; display: none">Необходимо выбрать объект</div>
                         </div>
                     </div>
