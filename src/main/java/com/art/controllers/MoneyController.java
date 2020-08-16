@@ -219,7 +219,7 @@ public class MoneyController {
     }
 
     /**
-     * Закрытие суммы вложения (перепродажа доли)
+     * Закрытие суммы вложения (перепродажа доли) одиночное
      *
      * @param moneyDTO DTO для закрытия
      * @return ответ
@@ -229,6 +229,19 @@ public class MoneyController {
     public ApiResponse resaleCash(@RequestBody ResaleMoneyDTO moneyDTO) {
         Money money = moneyService.resale(moneyDTO);
         return new ApiResponse(String.format("Перепродажа доли инвестора [%s] прошла успешно", money.getInvestor().getLogin()));
+    }
+
+    /**
+     * Закрытие суммы вложения (вывод) одиночное
+     *
+     * @param moneyDTO DTO для закрытия
+     * @return ответ
+     */
+    @PostMapping(path = Location.MONEY_CLOSE_CASHING_ONE)
+    @ResponseBody
+    public ApiResponse cashingMoney(@RequestBody CashingMoneyDTO moneyDTO) {
+        Money money = moneyService.cashing(moneyDTO);
+        return new ApiResponse(String.format("Вывод суммы инвестора [%s] прошёл успешно", money.getInvestor().getLogin()));
     }
 
     /**
