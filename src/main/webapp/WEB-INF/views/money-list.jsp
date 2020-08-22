@@ -244,6 +244,9 @@
                         <c:when test="${money.typeClosing.name.length() > 0 && money.givenCash != 0}">
                             <c:set var="enabled" value="disabled "/>
                         </c:when>
+                        <c:when test="${not empty money.dateClosing && money.givenCash != 0}">
+                            <c:set var="enabled" value="disabled "/>
+                        </c:when>
                         <c:otherwise>
                             <c:set var="enabled" value=""/>
                         </c:otherwise>
