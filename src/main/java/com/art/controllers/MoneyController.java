@@ -210,6 +210,7 @@ public class MoneyController {
     public String closeCash(@PathVariable Long id, ModelMap model) {
         String title = "Закрытие вложения";
         Money money = moneyService.findById(id);
+        Hibernate.initialize(money.getSourceUnderFacility().getFacility());
         money.setGivenCash(money.getGivenCash().setScale(2, RoundingMode.DOWN));
         model.addAttribute("money", money);
         model.addAttribute("newCash", false);
