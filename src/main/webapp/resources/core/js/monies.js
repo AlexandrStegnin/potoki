@@ -1777,14 +1777,6 @@ function check(operation) {
             } else {
                 $('#cashSourceError').addClass('d-none')
             }
-            let newCashDetailSelect = $('#cashDetail')
-            let newCashDetailId = newCashDetailSelect.find(':selected').val()
-            if (newCashDetailId === '0') {
-                $('#cashDetailError').removeClass('d-none')
-                return false
-            } else {
-                $('#cashDetailError').addClass('d-none')
-            }
             let shareTypeSelect = $('#shareType')
             let shareTypeId = shareTypeSelect.find(':selected').val()
             if (shareTypeId === '0') {
@@ -1870,8 +1862,5 @@ function getMoneyDTO(operation) {
                 moneyDTO.reinvest(cashId, dateClose, reFacilityId, reUnderFacilityId, facilityId, underFacilityId)
             }
             return moneyDTO
-        case OperationEnum.DOUBLE:
-
-
     }
 }
