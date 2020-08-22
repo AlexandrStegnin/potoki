@@ -13,7 +13,7 @@ let OperationEnum = {
             url: 'create'
         },
         UPDATE: {
-            url: '/money/update'
+            url: '../update'
         },
         CLOSE: {
             url: '/money/close/one'
