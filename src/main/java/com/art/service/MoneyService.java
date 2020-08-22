@@ -109,9 +109,10 @@ public class MoneyService {
     private EntityManager em;
 
     @Transactional
-    @CachePut(value = Constant.MONEY_CACHE_KEY)
+//    @CachePut(value = Constant.MONEY_CACHE_KEY)
     public Money create(Money money) {
-        return this.em.merge(money);
+        return createNew(money);
+//        return this.em.merge(money);
     }
 
     /**
