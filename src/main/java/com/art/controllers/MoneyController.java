@@ -291,9 +291,8 @@ public class MoneyController {
      */
     @PostMapping(path = Location.MONEY_DOUBLE_ID)
     public String doubleCash(@ModelAttribute("money") Money money, @PathVariable("id") int id) {
-        Money dbMoney = moneyService.findById(money.getId());
-        Money newMoney = new Money(dbMoney);
         Money inMemoryCash = moneyService.findById(money.getId());
+        Money newMoney = new Money(inMemoryCash);
 
         money.setFacility(newMoney.getFacility());
         money.setInvestor(newMoney.getInvestor());
