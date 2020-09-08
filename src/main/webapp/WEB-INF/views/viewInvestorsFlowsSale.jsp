@@ -359,7 +359,6 @@
         </div>
     </div>
 </div>
-<%@include file="slideDiv.jsp" %>
 
 <link rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/css/bootstrap-select.css">

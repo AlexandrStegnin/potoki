@@ -260,23 +260,20 @@ function loadFlowsAjax(action) {
             xhr.setRequestHeader(header, token);
         },
         success: function (data) {
-            let $message = $('#popup_modal_form').find('#message');
-            let text = "";
+            let $message = $('#msg');
             let error = data.error;
             if (error === null) {
-                $message.append(data.message).css("color", "black");
+                $message.css("color", "black")
+                showPopup(data.message);
             } else {
-                $message.append(data.error).css("color", "red");
+                $message.css("color", "red")
+                showPopup(data.error);w
             }
             closeLoader();
-            showPopup();
-            closePopup();
         },
         error: function(error) {
-            $('#popup_modal_form').find('#message').append(error.responseText);
+            showPopup(error.responseText);
             closeLoader();
-            showPopup();
-            closePopup();
         }
     });
 
@@ -440,15 +437,15 @@ function prepareSaveInvestorsCash() {
 
     facility = {
         id: reinvestData.find('#srcFacilities').val(),
-        facility: $('#srcFacilities').find('option:selected').text()
+        name: $('#srcFacilities').find('option:selected').text()
     };
 
     underFacility = {
         id: reinvestData.find('#srcUnderFacilities').children(":selected").attr("id"),
-        underFacility: $('#srcUnderFacilities').find('option:selected').text()
+        name: $('#srcUnderFacilities').find('option:selected').text()
     };
 
-    if (facility.facility.indexOf('Выберите объект') >= 0) {
+    if (facility.name.indexOf('Выберите объект') >= 0) {
         $('#facilityErr').css('display', 'block');
         err = true;
     } else {
@@ -456,7 +453,7 @@ function prepareSaveInvestorsCash() {
         err = false;
     }
 
-    if (underFacility.underFacility.indexOf('Выберите подобъект') >= 0) {
+    if (underFacility.name.indexOf('Выберите подобъект') >= 0) {
         $('#underFacilityErr').css('display', 'block');
         err = true;
     } else {
@@ -500,12 +497,12 @@ function prepareSaveInvestorsCash() {
 
             sourceFacility = {
                 id: current.children('td:eq(0)').attr('data-facility-id'),
-                facility: current.children('td:eq(0)').text()
+                name: current.children('td:eq(0)').text()
             };
 
             sourceUnderFacility = {
                 id: current.children('td:eq(10)').attr('data-under-facility-id'),
-                underFacility: current.children('td:eq(10)').text()
+                name: current.children('td:eq(10)').text()
             };
 
             room = null;
@@ -525,11 +522,10 @@ function prepareSaveInvestorsCash() {
                 dateGivedCash: dateGived,
                 facility: facility,
                 investor: investor,
-                cashType: cashType,
                 newCashDetail: newCashDetails,
                 underFacility: underFacility,
                 dateClosingInvest: null,
-                typeClosingInvest: null,
+                typeClosing: null,
                 shareType: shareKind,
                 dateReport: dateReport,
                 sourceFacility: sourceFacility,
@@ -568,8 +564,7 @@ function saveReinvestCash(cashes, reinvestIdList) {
         },
         success: function (data) {
             closeLoader();
-            $('#msg').html(data.message);
-            $('#msg-modal').modal('show');
+            showPopup(data.message)
         },
         error: function (e) {
             closeLoader();
@@ -586,21 +581,11 @@ function checkChecked() {
     return $('table#invFlowsSale').find('[type="checkbox"]:checked:not(:disabled)').length;
 }
 
-function showPopup() {
-    $('#popup_modal_form')
-        .css('display', 'block') // убирaем у мoдaльнoгo oкнa display: none;
-        .animate({opacity: 1, top: '50%'}, 200); // плaвнo прибaвляем прoзрaчнoсть oднoвременнo сo съезжaнием вниз
-}
-
-function closePopup() {
+function showPopup(message) {
+    $('#msg').html(message);
+    $('#msg-modal').modal('show');
     setTimeout(function () {
-        $('#popup_modal_form')
-            .animate({opacity: 0, top: '45%'}, 200,  // плaвнo меняем прoзрaчнoсть нa 0 и oднoвременнo двигaем oкнo вверх
-                function () { // пoсле aнимaции
-                    $(this).css('display', 'none'); // делaем ему display: none;
-                }
-            )
-            .find('#message').html('');
+        $('#msg-modal').modal('hide');
     }, 3000);
 }
 
@@ -654,16 +639,6 @@ function deleteCash(cashIdList) {
             console.log('Закончили!');
         });
 
-}
-
-function slideBox(message) {
-    $('#slideBox').find('h4').html(message);
-    setTimeout(function () {
-        $('#slideBox').animate({'right': '52px'}, 500);
-    }, 500);
-    setTimeout(function () {
-        $('#slideBox').animate({'right': '-300px'}, 500);
-    }, 4000);
 }
 
 function linkHasClass(link) {
