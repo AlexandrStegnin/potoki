@@ -22,13 +22,12 @@
         <mysql.old.connector.version>5.1.31</mysql.old.connector.version>
         <mysql.connector.version>8.0.13</mysql.connector.version>
         <hibernate.version>4.3.6.Final</hibernate.version>
-        <slf4j.version>1.7.5</slf4j.version>
-        <junit.version>4.12</junit.version>
         <logback.version>1.0.13</logback.version>
         <commons-dbcp.version>2.1.1</commons-dbcp.version>
         <projectLombok.version>1.16.14</projectLombok.version>
         <apachiPOI.version>3.17-beta1</apachiPOI.version>
-        <jackson.version>2.10.2</jackson.version>
+        <jackson.version>RELEASE</jackson.version>
+
         <spring-websocket.version>4.3.9.RELEASE</spring-websocket.version>
     </properties>
 
@@ -192,19 +191,6 @@
             <version>${commons-dbcp.version}</version>
         </dependency>
 
-        <!-- Logging dependencies -->
-        <!--
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-        -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
