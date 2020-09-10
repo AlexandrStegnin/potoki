@@ -70,11 +70,6 @@ public class MoneyService {
         this.cashSourceService = cashSourceService;
     }
 
-    @Cacheable(Constant.MONEY_CACHE_KEY)
-    public List<Money> findAll() {
-        return moneyRepository.findAll();
-    }
-
     public Money findById(Long id) {
         return moneyRepository.findById(id);
     }
@@ -84,19 +79,19 @@ public class MoneyService {
     }
 
     @Transactional
-    @CachePut(value = Constant.MONEY_CACHE_KEY, key = "#money?.id")
+    @CachePut(cacheNames = Constant.MONEY_CACHE_KEY, key = "#money.id")
     public Money update(Money money) {
         money = moneyRepository.saveAndFlush(money);
         return money;
     }
 
-    @CachePut(value = Constant.MONEY_CACHE_KEY, key = "#money?.id")
+    @CachePut(cacheNames = Constant.MONEY_CACHE_KEY, key = "#money?.id")
     public Money createNew(Money money) {
         money = moneyRepository.saveAndFlush(money);
         return money;
     }
 
-    @CacheEvict(value = Constant.MONEY_CACHE_KEY, key = "#id")
+    @CacheEvict(cacheNames = Constant.MONEY_CACHE_KEY, key = "#id")
     public void deleteById(Long id) {
         moneyRepository.deleteById(id);
     }
@@ -263,7 +258,7 @@ public class MoneyService {
         return em.createQuery(investorsCashCriteriaQuery).getResultList();
     }
 
-    @Cacheable(Constant.MONEY_CACHE_KEY)
+    @Cacheable(cacheNames = Constant.MONEY_CACHE_KEY)
     public Page<Money> findAll(CashFilter filters, Pageable pageable) {
         return moneyRepository.findAll(
                 specification.getFilter(filters),
