@@ -1,13 +1,9 @@
 package com.art.service;
 
-import com.art.config.application.Constant;
 import com.art.model.InvestorsFlows;
 import com.art.model.supporting.SearchSummary;
 import com.art.repository.InvestorsFlowsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -37,7 +33,7 @@ public class InvestorsFlowsService {
         this.investorsFlowsRepository = investorsFlowsRepository;
     }
 
-    @Cacheable(Constant.INVESTOR_FLOWS_CACHE_KEY)
+//    @Cacheable(Constant.INVESTOR_FLOWS_CACHE_KEY)
     public List<InvestorsFlows> findAll() {
         return investorsFlowsRepository.findAll();
     }
@@ -46,37 +42,37 @@ public class InvestorsFlowsService {
         return investorsFlowsRepository.findByRoomId(roomId);
     }
 
-    @CacheEvict(Constant.INVESTOR_FLOWS_CACHE_KEY)
+//    @CacheEvict(Constant.INVESTOR_FLOWS_CACHE_KEY)
     public void delete() {
         investorsFlowsRepository.deleteAll();
     }
 
-    @CachePut(Constant.INVESTOR_FLOWS_CACHE_KEY)
+//    @CachePut(Constant.INVESTOR_FLOWS_CACHE_KEY)
     public void saveList(List<InvestorsFlows> investorsFlowsList) {
         investorsFlowsRepository.save(investorsFlowsList);
     }
 
-    @Cacheable(Constant.INVESTOR_FLOWS_CACHE_KEY)
+//    @Cacheable(Constant.INVESTOR_FLOWS_CACHE_KEY)
     public List<InvestorsFlows> findByIdIn(List<Long> idList) {
         return investorsFlowsRepository.findByIdIn(idList);
     }
 
-    @Cacheable(Constant.INVESTOR_FLOWS_CACHE_KEY)
+//    @Cacheable(Constant.INVESTOR_FLOWS_CACHE_KEY)
     public InvestorsFlows findById(BigInteger id) {
         return this.em.find(InvestorsFlows.class, id);
     }
 
-    @CachePut(value = Constant.INVESTOR_FLOWS_CACHE_KEY, key = "#flows.id")
+//    @CachePut(value = Constant.INVESTOR_FLOWS_CACHE_KEY, key = "#flows.id")
     public void update(InvestorsFlows flows) {
         investorsFlowsRepository.save(flows);
     }
 
-    @CacheEvict(Constant.INVESTOR_FLOWS_CACHE_KEY)
+//    @CacheEvict(Constant.INVESTOR_FLOWS_CACHE_KEY)
     public void deleteByIdIn(List<Long> idList) {
         idList.forEach(investorsFlowsRepository::delete);
     }
 
-    @Cacheable(Constant.INVESTOR_FLOWS_CACHE_KEY)
+//    @Cacheable(Constant.INVESTOR_FLOWS_CACHE_KEY)
     public Page<InvestorsFlows> findAllFiltering(Pageable pageable, SearchSummary filters) {
         String investor = filters.getInvestor();
         String facility = filters.getFacilityStr();

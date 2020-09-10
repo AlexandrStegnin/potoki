@@ -1,14 +1,10 @@
 package com.art.service;
 
-import com.art.config.application.Constant;
 import com.art.model.Facility;
 import com.art.model.Facility_;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.enums.OwnerType;
 import com.art.repository.FacilityRepository;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +31,7 @@ public class FacilityService {
         this.accountService = accountService;
     }
 
-    @Cacheable(Constant.FACILITIES_CACHE_KEY)
+//    @Cacheable(Constant.FACILITIES_CACHE_KEY)
     public List<Facility> findAll() {
         return facilityRepository.findAll();
     }
@@ -71,13 +67,13 @@ public class FacilityService {
         return this.em.createQuery(facilitiesCriteriaQuery).getSingleResult();
     }
 
-    @CacheEvict(Constant.FACILITIES_CACHE_KEY)
+//    @CacheEvict(Constant.FACILITIES_CACHE_KEY)
     public void deleteById(Long id) {
         facilityRepository.delete(id);
         accountService.deleteByOwnerId(id, OwnerType.FACILITY);
     }
 
-    @CachePut(value = Constant.FACILITIES_CACHE_KEY, key = "#facility.id")
+//    @CachePut(value = Constant.FACILITIES_CACHE_KEY, key = "#facility.id")
     public void update(Facility facility) {
         CriteriaBuilder criteriaBuilder = this.em.getCriteriaBuilder();
         CriteriaUpdate<Facility> update = criteriaBuilder.createCriteriaUpdate(Facility.class);
@@ -95,7 +91,7 @@ public class FacilityService {
      * @param facility объект
      * @return ответ об успешности операции
      */
-    @Cacheable(Constant.FACILITIES_CACHE_KEY)
+//    @Cacheable(Constant.FACILITIES_CACHE_KEY)
     public ApiResponse create(Facility facility) {
         ApiResponse apiResponse = accountService.checkAccountNumber(facility);
         if (apiResponse != null) {

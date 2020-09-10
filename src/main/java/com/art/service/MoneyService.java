@@ -1,6 +1,5 @@
 package com.art.service;
 
-import com.art.config.application.Constant;
 import com.art.model.*;
 import com.art.model.supporting.AfterCashing;
 import com.art.model.supporting.ApiResponse;
@@ -12,9 +11,6 @@ import com.art.model.supporting.filters.CashFilter;
 import com.art.repository.MoneyRepository;
 import com.art.specifications.MoneySpecification;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -79,19 +75,19 @@ public class MoneyService {
     }
 
     @Transactional
-    @CachePut(cacheNames = Constant.MONEY_CACHE_KEY, key = "#money.id")
+//    @CachePut(cacheNames = Constant.MONEY_CACHE_KEY, key = "#money.id")
     public Money update(Money money) {
         money = moneyRepository.saveAndFlush(money);
         return money;
     }
 
-    @CachePut(cacheNames = Constant.MONEY_CACHE_KEY, key = "#money?.id")
+//    @CachePut(cacheNames = Constant.MONEY_CACHE_KEY, key = "#money?.id")
     public Money createNew(Money money) {
         money = moneyRepository.saveAndFlush(money);
         return money;
     }
 
-    @CacheEvict(cacheNames = Constant.MONEY_CACHE_KEY, key = "#id")
+//    @CacheEvict(cacheNames = Constant.MONEY_CACHE_KEY, key = "#id")
     public void deleteById(Long id) {
         moneyRepository.deleteById(id);
     }
@@ -222,7 +218,7 @@ public class MoneyService {
         return update(updatedCash);
     }
 
-    @Cacheable(Constant.MONEY_CACHE_KEY)
+//    @Cacheable(Constant.MONEY_CACHE_KEY)
     public List<Money> findByIdIn(List<Long> idList) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Money> investorsCashCriteriaQuery = cb.createQuery(Money.class);
@@ -258,7 +254,7 @@ public class MoneyService {
         return em.createQuery(investorsCashCriteriaQuery).getResultList();
     }
 
-    @Cacheable(cacheNames = Constant.MONEY_CACHE_KEY)
+//    @Cacheable(cacheNames = Constant.MONEY_CACHE_KEY, key = "#filters")
     public Page<Money> findAll(CashFilter filters, Pageable pageable) {
         return moneyRepository.findAll(
                 specification.getFilter(filters),
