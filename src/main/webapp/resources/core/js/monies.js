@@ -19,7 +19,7 @@ let OperationEnum = {
             url: '/money/close/one'
         },
         RESALE: {
-            url: '/money/close/resale'
+            url: '../close/resale'
         },
         CASHING: {
             url: '/money/close/cashing/one'
