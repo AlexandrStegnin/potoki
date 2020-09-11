@@ -41,20 +41,6 @@ jQuery(document).ready(function ($) {
             e.preventDefault()
             save(operation)
         }
-        // switch (operation) {
-        //     case "CREATE":
-        //         save(OperationEnum.CREATE);
-        //         break
-        //     case "UPDATE":
-        //         save(OperationEnum.UPDATE);
-        //         break
-        //     case "CLOSE":
-        //         save(OperationEnum.CLOSE)
-        //         break
-        //     case "DOUBLE":
-        //         save(OperationEnum.DOUBLE)
-        //         break
-        // }
     })
 
     blockActions();
