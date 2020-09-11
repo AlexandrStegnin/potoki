@@ -36,6 +36,10 @@ jQuery(document).ready(function ($) {
 
     let operation = $('#operation').val();
 
+    $('#all').on('change', function () {
+        $('#bth-search').click()
+    })
+
     $('#submit').on('click', function (e) {
         if (operation !== OperationEnum.DOUBLE) {
             e.preventDefault()
