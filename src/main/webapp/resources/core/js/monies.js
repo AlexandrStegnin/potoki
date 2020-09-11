@@ -1668,7 +1668,7 @@ function saveMoney(moneyDTO) {
                 case OperationEnum.RESALE:
                 case OperationEnum.CASHING:
                 case OperationEnum.REINVEST:
-                    window.location.href = '/money/list'
+                    window.location.href = '../list'
                     break
             }
 
