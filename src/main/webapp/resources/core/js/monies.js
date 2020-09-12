@@ -16,16 +16,16 @@ let OperationEnum = {
             url: '../update'
         },
         CLOSE: {
-            url: '/money/close/one'
+            url: '../close/one'
         },
         RESALE: {
             url: '../close/resale'
         },
         CASHING: {
-            url: '/money/close/cashing/one'
+            url: '../close/cashing/one'
         },
         REINVEST: {
-            url: '/money/close/reinvest/one'
+            url: '../close/reinvest/one'
         }
     }
 }
