@@ -246,6 +246,9 @@
                 <c:when test="${edit == true}">
                     <c:set var="title" value="Обновить"/>
                 </c:when>
+                <c:when test="${closeCash == true}">
+                    <c:set var="title" value="Закрыть"/>
+                </c:when>
                 <c:otherwise>
                     <c:set var="title" value="Создать"/>
                 </c:otherwise>
