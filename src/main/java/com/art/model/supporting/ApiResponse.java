@@ -18,9 +18,16 @@ public class ApiResponse {
 
     private int status;
 
+    private String error;
+
     public ApiResponse(String message) {
         this.message = message;
         this.status = HttpStatus.OK.value();
+    }
+
+    public ApiResponse(String message, int status) {
+        this.message = message;
+        this.status = status;
     }
 
 }
