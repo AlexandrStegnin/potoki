@@ -43,7 +43,7 @@ function uploadAnnexes() {
             showPopup(data.message);
         },
         error: function (e) {
-            showPopup(e.toString());
+            showPopup(e.error);
             disconnect();
         }
     });
@@ -69,7 +69,7 @@ function deleteAnnex(annexId) {
             showPopup(data.message);
         },
         error: function (e) {
-            showPopup('Что-то пошло не так [' + e.toString() + ']');
+            showPopup('Что-то пошло не так [' + e.error + ']');
         }
     });
 }
@@ -96,7 +96,7 @@ function deleteAnnexList(annexIdList) {
             showPopup(data.message);
         },
         error: function (e) {
-            showPopup('Что-то пошло не так [' + e.toString() + ']');
+            showPopup('Что-то пошло не так [' + e.error + ']');
         }
     });
 }
