@@ -149,8 +149,8 @@
         </sec:authorize>
     </div>
     <c:if test="${cashFilters.allRows == false}">
-        <nav class="text-center" aria-label="Деньги инвесторов">
-            <ul class="pagination pagination-sm justify-content-center">
+        <nav class="text-center" style="margin: 10px"; aria-label="Деньги инвесторов">
+            <ul class="pagination pagination-sm justify-content-center flex-wrap">
 
                 <c:forEach begin="1" end="${page.totalPages}" varStatus="page">
                     <c:choose>
