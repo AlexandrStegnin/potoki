@@ -7,9 +7,11 @@ import com.art.model.AppUser;
 import com.art.model.AppUser_;
 import com.art.model.UserProfile;
 import com.art.model.UserProfile_;
+import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.SendingMail;
 import com.art.model.supporting.enums.UserRole;
 import com.art.repository.UserRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -119,7 +121,13 @@ public class UserService {
     }
 
 //    @CachePut(value = Constant.USERS_CACHE_KEY, key = "#user?.id")
-    public void create(AppUser user) {
+    public ApiResponse create(AppUser user) {
+        ApiResponse response = new ApiResponse();
+        if (loginIsBusy(user.getLogin())) {
+            response.setError(String.format("Логин [%s] занят", user.getLogin()));
+            response.setStatus(HttpStatus.PRECONDITION_FAILED.value());
+            return response;
+        }
         String password = generatePassword();
         user.setPassword(password);
         user.getProfile().setUser(user);
@@ -130,6 +138,8 @@ public class UserService {
             accountService.createAccount(user);
             sendWelcomeMessage(user, password);
         }
+        response.setMessage("Пользователь успешно создан");
+        return response;
     }
 
 //    @CachePut(value = Constant.USERS_CACHE_KEY, key = "#user?.id")
@@ -145,7 +155,7 @@ public class UserService {
     }
 
 //    @CachePut(value = Constant.USERS_CACHE_KEY, key = "#user?.id")
-    public void update(AppUser user) {
+    public ApiResponse update(AppUser user) {
         AppUser dbUser = findById(user.getId());
         dbUser.setPartnerId(user.getPartnerId());
         dbUser.setKin(user.getKin());
@@ -156,6 +166,7 @@ public class UserService {
         profile.setPatronymic(user.getProfile().getPatronymic());
         profile.setEmail(user.getProfile().getEmail());
         userRepository.save(dbUser);
+        return new ApiResponse("Пользователь успешно обновлён");
     }
 
     private void sendWelcomeMessage(AppUser user, String password) {
@@ -203,6 +214,16 @@ public class UserService {
 
     private String generatePassword() {
         return UUID.randomUUID().toString().substring(0, 8);
+    }
+
+    /**
+     * Проверка занят ли логин
+     *
+     * @param login логин для проверки
+     * @return статус
+     */
+    public boolean loginIsBusy(String login) {
+        return userRepository.existsByLogin(login);
     }
 
 }

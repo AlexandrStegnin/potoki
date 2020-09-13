@@ -17,4 +17,6 @@ public interface UserRepository extends JpaRepository<AppUser, Long> {
 
     @Query(value = "SELECT new com.art.model.AppUser(u.id, u.partnerId) FROM AppUser u WHERE u.partnerId IS NOT NULL ")
     List<AppUser> getForFindPartnerChild();
+
+    boolean existsByLogin(String login);
 }
