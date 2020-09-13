@@ -2,6 +2,7 @@ package com.art.controllers;
 
 import com.art.config.SecurityUtils;
 import com.art.model.*;
+import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.FileBucket;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
@@ -165,17 +166,15 @@ public class UserController {
      */
     @PostMapping(path = "/users/save", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
-    GenericResponse saveUser(@RequestBody UserDTO userDTO) {
+    ApiResponse saveUser(@RequestBody UserDTO userDTO) {
         AppUser user = new AppUser(userDTO);
-        String message;
+        ApiResponse response;
         if (user.getId() == null) {
-            userService.create(user);
-            message = "Пользователь <b>" + user.getLogin() + "</b> успешно создан";
+            response = userService.create(user);
         } else {
-            userService.update(user);
-            message = "Пользователь <b>" + user.getLogin() + "</b> успешно обновлён";
+            response = userService.update(user);
         }
-        return new GenericResponse(message);
+        return response;
     }
 
     @PostMapping(value = {"/setReadToAnnex"}, produces = "application/json;charset=UTF-8")

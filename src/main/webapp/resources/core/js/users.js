@@ -200,13 +200,17 @@ function saveUser(user) {
             if (url.indexOf('edit') >= 0) {
                 window.location.href = '/admin';
             }
-            showPopup(data.message);
-            $('#last_name').val('');
-            $('#first_name').val('');
-            $('#middle_name').val('');
-            $('#login').val('');
-            $('#email').val('');
-            $('#roles').prop('selectedIndex', -1);
+            if (data.status === 412) {
+                showPopup(data.error);
+            } else {
+                showPopup(data.message);
+                $('#last_name').val('');
+                $('#first_name').val('');
+                $('#middle_name').val('');
+                $('#login').val('');
+                $('#email').val('');
+                $('#roles').prop('selectedIndex', -1);
+            }
         },
         error: function (e) {
             closeLoader();
