@@ -19,7 +19,6 @@ import javax.persistence.criteria.Root;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -39,11 +38,11 @@ public class MarketingTreeService {
     private final MarketingTreeSpecification specification;
     private final MarketingTreeRepository marketingTreeRepository;
 
-    private Long pantyaId;
-    private Long kolesnikId;
+    private final Long pantyaId;
+    private final Long kolesnikId;
     private final List<AppUser> users;
-    private static AtomicReference<Long> parentPartnerId = new AtomicReference<>(0L);
-    private static Set<Long> partnerChild = new HashSet<>();
+    private static final AtomicReference<Long> parentPartnerId = new AtomicReference<>(0L);
+    private static final Set<Long> partnerChild = new HashSet<>();
     private List<MarketingTreeDTO> marketingTreeDTOList = new ArrayList<>();
 
     @Autowired
@@ -73,15 +72,21 @@ public class MarketingTreeService {
     }
 
     public String updateMarketingTreeFromApp() {
-        CompletableFuture<Void> getMarketingTreeDTOListFuture = CompletableFuture
-                .runAsync(this::fillMarketingTreeDTOList);
-        getMarketingTreeDTOListFuture.thenRunAsync(this::setDaysToDeactivate);
-        getMarketingTreeDTOListFuture.thenRunAsync(this::setSerialNumbers);
-
-        getMarketingTreeDTOListFuture.thenRunAsync(() -> findPartnerChild(kolesnikId, users))
-                .thenRunAsync(this::fillParentPartner);
-
-        getMarketingTreeDTOListFuture.join();
+        fillMarketingTreeDTOList();
+        setDaysToDeactivate();
+        setSerialNumbers();
+        findPartnerChild(kolesnikId, users);
+        fillParentPartner();
+//        fillParentPartner();
+//        CompletableFuture<Void> getMarketingTreeDTOListFuture = CompletableFuture
+//                .runAsync(this::fillMarketingTreeDTOList);
+//        getMarketingTreeDTOListFuture.thenRunAsync(this::setDaysToDeactivate);
+//        getMarketingTreeDTOListFuture.thenRunAsync(this::setSerialNumbers);
+//
+//        getMarketingTreeDTOListFuture.thenRunAsync(() -> findPartnerChild(kolesnikId, users))
+//                .thenRunAsync(this::fillParentPartner);
+//
+//        getMarketingTreeDTOListFuture.join();
 
         truncateTree();
         updateTree();
@@ -189,10 +194,10 @@ public class MarketingTreeService {
             if (partnerId == null) break;
             Long finalPartnerId = partnerId;
             List<AppUser> users = availableUsers.stream()
-                    .filter(user -> user.getPartnerId().compareTo(finalPartnerId) == 0)
+                    .filter(user -> user.getPartnerId().equals(finalPartnerId))
                     .filter(user -> !queue.contains(user.getId()))
                     .filter(user -> !partnerChild.contains(user.getId()))
-                    .filter(user -> user.getPartnerId().compareTo(pantyaId) != 0)
+                    .filter(user -> !user.getPartnerId().equals(pantyaId))
                     .collect(Collectors.toList());
             if (users.size() > 0) {
                 queue.addAll(users.stream().map(AppUser::getId).collect(Collectors.toList()));
