@@ -37,6 +37,8 @@
         <input type="hidden" id="edit" value="${edit}"/>
         <input type="hidden" id="doubleCash" value="${doubleCash}"/>
         <input type="hidden" id="closeCash" value="${closeCash}"/>
+        <input type="hidden" id="createAccepted" value="false"/>
+
         <div class="form-group row" id="facilitiesRow">
             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="facilities">Объект:</label>
             <div class="col-sm-6">
@@ -262,6 +264,28 @@
 </div>
 <%@include file="ddk_loader.jsp" %>
 <%@include file="popup_modal.jsp" %>
+
+<div class="modal" tabindex="-1" role="dialog" id="confirm-create">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Создание суммы</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Сумма с такими параметрами уже существует.</p>
+                <p>Вы действительно хотите добавить сумму?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="accept-create">Да</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript"
         src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' />"></script>
 <script type="text/javascript"
