@@ -30,9 +30,8 @@ public interface MoneyRepository extends JpaRepository<Money, Long>, JpaSpecific
     List<Money> findBySourceId(Long sourceId);
 
     @Query("SELECT m FROM Money m WHERE m.investor.id = :investorId AND m.givenCash = :givenCash AND " +
-            "m.facility.id = :facilityId AND DATE(m.dateGiven) = DATE(:dateGiven) AND m.cashSource.id = :cashSourceId")
+            "m.facility.id = :facilityId AND DATE(m.dateGiven) = DATE(:dateGiven)")
     List<Money> findDuplicate(@Param("investorId") Long investorId, @Param("givenCash") BigDecimal givenCash,
-                        @Param("facilityId") Long facilityId, @Param("dateGiven") Date dateGiven,
-                        @Param("cashSourceId") Long cashSourceId);
+                        @Param("facilityId") Long facilityId, @Param("dateGiven") Date dateGiven);
 
 }

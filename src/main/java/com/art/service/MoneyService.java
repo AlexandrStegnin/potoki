@@ -764,8 +764,8 @@ public class MoneyService {
      */
     private boolean exist(MoneyDTO dto) {
         Date dateGiven = dto.getDateGiven();
-        List<Money> monies = moneyRepository.findDuplicate(dto.getInvestorId(), dto.getCash(), dto.getFacilityId(),
-                dateGiven, dto.getCashSourceId());
+        List<Money> monies = moneyRepository.findDuplicate(dto.getInvestorId(), dto.getCash(),
+                dto.getFacilityId(), dateGiven);
         return monies != null && monies.size() > 0;
     }
 
