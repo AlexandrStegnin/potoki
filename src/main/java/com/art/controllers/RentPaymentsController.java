@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Controller
-public class InvestorsSummaryController {
+public class RentPaymentsController {
 
     private final FacilityService facilityService;
 
@@ -49,7 +49,7 @@ public class InvestorsSummaryController {
 
     private final SearchSummary filters = new SearchSummary();
 
-    public InvestorsSummaryController(FacilityService facilityService, UserService userService, InvestorsFlowsService investorsFlowsService, UnderFacilityService underFacilityService, RoomService roomService) {
+    public RentPaymentsController(FacilityService facilityService, UserService userService, InvestorsFlowsService investorsFlowsService, UnderFacilityService underFacilityService, RoomService roomService) {
         this.facilityService = facilityService;
         this.userService = userService;
         this.investorsFlowsService = investorsFlowsService;
@@ -67,7 +67,7 @@ public class InvestorsSummaryController {
                                               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                               @RequestParam(value = "endDate", required = false) LocalDate endDate,
                                               Model model, HttpServletRequest request) {
-        ModelAndView modelAndView = new ModelAndView("viewinvestorsflows");
+        ModelAndView modelAndView = new ModelAndView("rent-payments");
         filters.setStartDate(startDate);
         filters.setEndDate(endDate);
         filters.setFacilityStr(facility);
