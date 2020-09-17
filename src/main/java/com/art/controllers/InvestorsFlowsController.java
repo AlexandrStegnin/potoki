@@ -5,7 +5,7 @@ import com.art.model.InvestorsFlowsSale;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
 import com.art.service.InvestorsFlowsSaleService;
-import com.art.service.InvestorsFlowsService;
+import com.art.service.RentPaymentService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,8 +31,8 @@ public class InvestorsFlowsController {
     @Resource(name = "uploadExcelFunc")
     private UploadExcelFunc uploadExcelFunc;
 
-    @Resource(name = "investorsFlowsService")
-    private InvestorsFlowsService investorsFlowsService;
+    @Resource(name = "rentPaymentService")
+    private RentPaymentService rentPaymentService;
 
     @Resource(name = "investorsFlowsSaleService")
     private InvestorsFlowsSaleService investorsFlowsSaleService;
@@ -84,7 +84,7 @@ public class InvestorsFlowsController {
                     }
                 });
             } else {
-                investorsFlowsService.deleteByIdIn(searchSummary.getCashIdList());
+                rentPaymentService.deleteByIdIn(searchSummary.getCashIdList());
             }
             response.setMessage("Данные успешно удалены");
 
@@ -97,7 +97,7 @@ public class InvestorsFlowsController {
 
     @GetMapping(value = "/deleteFlows")
     public String deleteFlows() {
-        investorsFlowsService.delete();
+        rentPaymentService.delete();
         return "redirect:/paysToInv";
     }
 }

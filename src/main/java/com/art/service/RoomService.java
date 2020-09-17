@@ -14,7 +14,7 @@ import java.util.List;
 @Transactional
 public class RoomService {
 
-    private final InvestorsFlowsService flowsService;
+    private final RentPaymentService flowsService;
 
     private final MoneyService cashService;
 
@@ -22,7 +22,7 @@ public class RoomService {
 
     private final RoomRepository roomRepository;
 
-    public RoomService(InvestorsFlowsService flowsService, MoneyService cashService,
+    public RoomService(RentPaymentService flowsService, MoneyService cashService,
                        AccountService accountService, RoomRepository roomRepository) {
         this.flowsService = flowsService;
         this.cashService = cashService;
@@ -58,7 +58,7 @@ public class RoomService {
 
 //    @CacheEvict(value = Constant.ROOMS_CACHE_KEY)
     public void deleteById(Long id) {
-        List<InvestorsFlows> flows = flowsService.findByRoomId(id);
+        List<RentPayment> flows = flowsService.findByRoomId(id);
         flows.forEach(f -> f.setRoom(null));
         flowsService.saveList(flows);
         List<Money> cashes = cashService.findByRoomId(id);

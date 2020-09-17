@@ -60,7 +60,7 @@ public class MoneyController {
 
     private final TypeClosingService typeClosingService;
 
-    private final InvestorsFlowsService investorsFlowsService;
+    private final RentPaymentService rentPaymentService;
 
     private final InvestorsFlowsSaleService investorsFlowsSaleService;
 
@@ -74,7 +74,7 @@ public class MoneyController {
                            InvestorsFlowsSaleService investorsFlowsSaleService, UserService userService,
                            CashSourceService cashSourceService, NewCashDetailService newCashDetailService,
                            UnderFacilityService underFacilityService,
-                           InvestorsFlowsService investorsFlowsService,
+                           RentPaymentService rentPaymentService,
                            TypeClosingService typeClosingService) {
         this.moneyService = moneyService;
         this.statusService = statusService;
@@ -86,7 +86,7 @@ public class MoneyController {
         this.cashSourceService = cashSourceService;
         this.newCashDetailService = newCashDetailService;
         this.underFacilityService = underFacilityService;
-        this.investorsFlowsService = investorsFlowsService;
+        this.rentPaymentService = rentPaymentService;
         this.typeClosingService = typeClosingService;
     }
 
@@ -351,11 +351,11 @@ public class MoneyController {
                 }
 
                 sourceIdList.forEach(id -> {
-                    InvestorsFlows flows = investorsFlowsService.findById(id);
+                    RentPayment flows = rentPaymentService.findById(id);
                     InvestorsFlowsSale flowsSale = investorsFlowsSaleService.findById(id);
                     if (!Objects.equals(null, flows)) {
                         flows.setIsReinvest(0);
-                        investorsFlowsService.update(flows);
+                        rentPaymentService.update(flows);
                     }
                     if (!Objects.equals(null, flowsSale)) {
                         flowsSale.setIsReinvest(0);
@@ -592,7 +592,7 @@ public class MoneyController {
         List<InvestorsFlowsSale> flowsSaleList = new ArrayList<>();
 
         // список для создания записи в логе по операции реинвестирования с аренды
-        List<InvestorsFlows> flowsList = new ArrayList<>();
+        List<RentPayment> flowsList = new ArrayList<>();
 
 
         if ("sale".equals(searchSummary.getWhat())) {
@@ -606,9 +606,9 @@ public class MoneyController {
             flowsSaleList = flowsSales;
         } else {
             newCashDetail = newCashDetailService.findByName("Реинвестирование с аренды");
-            List<InvestorsFlows> flows = investorsFlowsService.findByIdIn(searchSummary.getReinvestIdList());
+            List<RentPayment> flows = rentPaymentService.findByIdIn(searchSummary.getReinvestIdList());
             flows.forEach(f -> f.setIsReinvest(1));
-            investorsFlowsService.saveList(flows);
+            rentPaymentService.saveList(flows);
             flowsList = flows;
         }
 
@@ -640,9 +640,9 @@ public class MoneyController {
                     investorsFlowsSaleService.update(f);
                 });
             } else {
-                List<InvestorsFlows> flows = investorsFlowsService.findByIdIn(searchSummary.getReinvestIdList());
+                List<RentPayment> flows = rentPaymentService.findByIdIn(searchSummary.getReinvestIdList());
                 flows.forEach(f -> f.setIsReinvest(0));
-                investorsFlowsService.saveList(flows);
+                rentPaymentService.saveList(flows);
             }
             response.setError(ex.getMessage());
         }

@@ -109,7 +109,7 @@ public class InvestorCashLogService {
      * @param flows суммы с аренды
      * @param log   лог
      */
-    public void reinvestmentRent(List<InvestorsFlows> flows, TransactionLog log) {
+    public void reinvestmentRent(List<RentPayment> flows, TransactionLog log) {
         flows.forEach(sum -> {
             InvestorCashLog cashLog = new InvestorCashLog(sum, log, CashType.RENT_CASH);
             investorCashLogRepository.save(cashLog);

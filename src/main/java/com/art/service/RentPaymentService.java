@@ -1,8 +1,8 @@
 package com.art.service;
 
-import com.art.model.InvestorsFlows;
+import com.art.model.RentPayment;
 import com.art.model.supporting.SearchSummary;
-import com.art.repository.InvestorsFlowsRepository;
+import com.art.repository.RentPaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,59 +21,59 @@ import java.util.Objects;
 
 @Service
 @Transactional
-public class InvestorsFlowsService {
+public class RentPaymentService {
 
     @PersistenceContext(name = "persistanceUnit")
     private EntityManager em;
 
-    private final InvestorsFlowsRepository investorsFlowsRepository;
+    private final RentPaymentRepository rentPaymentRepository;
 
     @Autowired
-    public InvestorsFlowsService(InvestorsFlowsRepository investorsFlowsRepository) {
-        this.investorsFlowsRepository = investorsFlowsRepository;
+    public RentPaymentService(RentPaymentRepository rentPaymentRepository) {
+        this.rentPaymentRepository = rentPaymentRepository;
     }
 
 //    @Cacheable(Constant.INVESTOR_FLOWS_CACHE_KEY)
-    public List<InvestorsFlows> findAll() {
-        return investorsFlowsRepository.findAll();
+    public List<RentPayment> findAll() {
+        return rentPaymentRepository.findAll();
     }
 
-    public List<InvestorsFlows> findByRoomId(Long roomId) {
-        return investorsFlowsRepository.findByRoomId(roomId);
+    public List<RentPayment> findByRoomId(Long roomId) {
+        return rentPaymentRepository.findByRoomId(roomId);
     }
 
 //    @CacheEvict(Constant.INVESTOR_FLOWS_CACHE_KEY)
     public void delete() {
-        investorsFlowsRepository.deleteAll();
+        rentPaymentRepository.deleteAll();
     }
 
 //    @CachePut(Constant.INVESTOR_FLOWS_CACHE_KEY)
-    public void saveList(List<InvestorsFlows> investorsFlowsList) {
-        investorsFlowsRepository.save(investorsFlowsList);
+    public void saveList(List<RentPayment> rentPaymentList) {
+        rentPaymentRepository.save(rentPaymentList);
     }
 
 //    @Cacheable(Constant.INVESTOR_FLOWS_CACHE_KEY)
-    public List<InvestorsFlows> findByIdIn(List<Long> idList) {
-        return investorsFlowsRepository.findByIdIn(idList);
+    public List<RentPayment> findByIdIn(List<Long> idList) {
+        return rentPaymentRepository.findByIdIn(idList);
     }
 
 //    @Cacheable(Constant.INVESTOR_FLOWS_CACHE_KEY)
-    public InvestorsFlows findById(BigInteger id) {
-        return this.em.find(InvestorsFlows.class, id);
+    public RentPayment findById(BigInteger id) {
+        return this.em.find(RentPayment.class, id);
     }
 
 //    @CachePut(value = Constant.INVESTOR_FLOWS_CACHE_KEY, key = "#flows.id")
-    public void update(InvestorsFlows flows) {
-        investorsFlowsRepository.save(flows);
+    public void update(RentPayment flows) {
+        rentPaymentRepository.save(flows);
     }
 
 //    @CacheEvict(Constant.INVESTOR_FLOWS_CACHE_KEY)
     public void deleteByIdIn(List<Long> idList) {
-        idList.forEach(investorsFlowsRepository::delete);
+        idList.forEach(rentPaymentRepository::delete);
     }
 
 //    @Cacheable(Constant.INVESTOR_FLOWS_CACHE_KEY)
-    public Page<InvestorsFlows> findAllFiltering(Pageable pageable, SearchSummary filters) {
+    public Page<RentPayment> findAllFiltering(Pageable pageable, SearchSummary filters) {
         String investor = filters.getInvestor();
         String facility = filters.getFacilityStr();
         String underFacility = filters.getUnderFacilityStr();
@@ -88,7 +88,7 @@ public class InvestorsFlowsService {
         if (!Objects.equals(null, facility) && facility.equalsIgnoreCase("Выберите объект")) facility = null;
         if (!Objects.equals(null, underFacility) && underFacility.equalsIgnoreCase("Выберите подобъект")) underFacility = null;
 
-        return investorsFlowsRepository.findFiltering(pageable, investor, facility, underFacility, start, end);
+        return rentPaymentRepository.findFiltering(pageable, investor, facility, underFacility, start, end);
     }
 
     public void updateInvestorDemo() {

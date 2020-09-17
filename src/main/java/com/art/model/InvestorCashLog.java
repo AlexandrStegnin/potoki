@@ -142,7 +142,7 @@ public class InvestorCashLog {
         this.shareType = flowsSale.getShareType();
     }
 
-    public InvestorCashLog(InvestorsFlows flows, TransactionLog log, CashType instanceOf) {
+    public InvestorCashLog(RentPayment flows, TransactionLog log, CashType instanceOf) {
         this.cashId = flows.getId();
         this.investor = flows.getInvestor();
         this.facility = flows.getFacility();

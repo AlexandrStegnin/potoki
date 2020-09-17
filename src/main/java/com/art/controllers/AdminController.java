@@ -6,7 +6,7 @@ import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.enums.UserRole;
 import com.art.model.supporting.enums.UserStatus;
 import com.art.model.supporting.filters.Filterable;
-import com.art.service.InvestorsFlowsService;
+import com.art.service.RentPaymentService;
 import com.art.service.UserService;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
@@ -25,11 +25,11 @@ public class AdminController {
 
     private final UserService userService;
 
-    private final InvestorsFlowsService investorsFlowsService;
+    private final RentPaymentService rentPaymentService;
 
-    public AdminController(UserService userService, InvestorsFlowsService investorsFlowsService) {
+    public AdminController(UserService userService, RentPaymentService rentPaymentService) {
         this.userService = userService;
-        this.investorsFlowsService = investorsFlowsService;
+        this.rentPaymentService = rentPaymentService;
     }
 
     @Secured("ROLE_ADMIN")
@@ -49,7 +49,7 @@ public class AdminController {
     @PostMapping(path = Location.UPDATE_INV_DEMO, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
     ApiResponse updateInvestorDemo() {
-        investorsFlowsService.updateInvestorDemo();
+        rentPaymentService.updateInvestorDemo();
         return new ApiResponse("Данные инвестора демо успешно обновлены");
     }
 

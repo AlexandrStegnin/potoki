@@ -29,7 +29,6 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 @Controller
 public class RentPaymentController {
@@ -41,7 +40,7 @@ public class RentPaymentController {
 
     private final UserService userService;
 
-    private final InvestorsFlowsService investorsFlowsService;
+    private final RentPaymentService rentPaymentService;
 
     private final UnderFacilityService underFacilityService;
 
@@ -49,16 +48,16 @@ public class RentPaymentController {
 
     private final SearchSummary filters = new SearchSummary();
 
-    public RentPaymentController(FacilityService facilityService, UserService userService, InvestorsFlowsService investorsFlowsService, UnderFacilityService underFacilityService, RoomService roomService) {
+    public RentPaymentController(FacilityService facilityService, UserService userService, RentPaymentService rentPaymentService, UnderFacilityService underFacilityService, RoomService roomService) {
         this.facilityService = facilityService;
         this.userService = userService;
-        this.investorsFlowsService = investorsFlowsService;
+        this.rentPaymentService = rentPaymentService;
         this.underFacilityService = underFacilityService;
         this.roomService = roomService;
     }
 
-    @GetMapping(value = "/paysToInv")
-    public ModelAndView paysToInvByPageNumber(@PageableDefault(size = 100, sort = "id") Pageable pageable,
+    @GetMapping(path = Location.RENT_PAYMENTS)
+    public ModelAndView rentPayments(@PageableDefault(size = 100, sort = "id") Pageable pageable,
                                               @RequestParam(name = "facility", required = false) String facility,
                                               @RequestParam(name = "underFacility", required = false) String underFacility,
                                               @RequestParam(name = "investor", required = false) String investor,
@@ -74,21 +73,21 @@ public class RentPaymentController {
         filters.setUnderFacilityStr(underFacility);
         filters.setInvestor(investor);
         FileBucket fileModel = new FileBucket();
-        Page<InvestorsFlows> flowsList = investorsFlowsService.findAllFiltering(pageable, filters);
-        int pageCount = flowsList.getTotalPages();
-        List<InvestorsFlows> investorsFlows = flowsList.getContent();
+        Page<RentPayment> rentPaymentsList = rentPaymentService.findAllFiltering(pageable, filters);
+        int pageCount = rentPaymentsList.getTotalPages();
+        List<RentPayment> rentPayments = rentPaymentsList.getContent();
         String queryParams = request.getQueryString();
-        if (!Objects.equals(null, queryParams)) queryParams = "&" + queryParams;
+        if (queryParams != null) queryParams = "&" + queryParams;
         modelAndView.addObject("searchSummary", filters);
         modelAndView.addObject("fileBucket", fileModel);
         modelAndView.addObject("pageCount", pageCount);
-        modelAndView.addObject("investorsFlows", investorsFlows);
+        modelAndView.addObject("rentPayments", rentPayments);
         modelAndView.addObject("queryParams", queryParams);
 
         return modelAndView;
     }
 
-    @PostMapping(value = "/paysToInv")
+    @PostMapping(path = Location.RENT_PAYMENTS)
     public String ptiUploadExcel(ModelMap model, @ModelAttribute("fileBucket") FileBucket fileBucket, HttpServletRequest request) throws IOException, ParseException {
         MultipartFile multipartFile = fileBucket.getFile();
         String ret = "Выплатам инвесторам.";

@@ -34,7 +34,7 @@ public class TransactionLogService {
 
     private final InvestorsFlowsSaleService investorsFlowsSaleService;
 
-    private final InvestorsFlowsService investorsFlowsService;
+    private final RentPaymentService rentPaymentService;
 
     @Autowired
     public TransactionLogService(TransactionLogSpecification specification,
@@ -42,13 +42,13 @@ public class TransactionLogService {
                                  InvestorCashLogService investorCashLogService,
                                  MoneyRepository moneyRepository,
                                  InvestorsFlowsSaleService investorsFlowsSaleService,
-                                 InvestorsFlowsService investorsFlowsService) {
+                                 RentPaymentService rentPaymentService) {
         this.specification = specification;
         this.transactionLogRepository = transactionLogRepository;
         this.investorCashLogService = investorCashLogService;
         this.moneyRepository = moneyRepository;
         this.investorsFlowsSaleService = investorsFlowsSaleService;
-        this.investorsFlowsService = investorsFlowsService;
+        this.rentPaymentService = rentPaymentService;
     }
 
     /**
@@ -246,7 +246,7 @@ public class TransactionLogService {
      * @param flowsList список денег с аренды
      * @param cashList список денег, основанных на деньгах с продажи
      */
-    public void reinvestmentRent(List<InvestorsFlows> flowsList, Set<Money> cashList) {
+    public void reinvestmentRent(List<RentPayment> flowsList, Set<Money> cashList) {
         TransactionLog log = new TransactionLog();
         log.setMonies(cashList);
         log.setType(TransactionType.REINVESTMENT_RENT);
@@ -353,12 +353,12 @@ public class TransactionLogService {
                 .stream()
                 .map(InvestorCashLog::getCashId)
                 .collect(Collectors.toList());
-        List<InvestorsFlows> flowsRent = investorsFlowsService.findByIdIn(flowsCashIdList);
+        List<RentPayment> flowsRent = rentPaymentService.findByIdIn(flowsCashIdList);
         try {
             cashes.forEach(moneyRepository::delete);
             flowsRent.forEach(flowRent -> {
                 flowRent.setIsReinvest(0);
-                investorsFlowsService.update(flowRent);
+                rentPaymentService.update(flowRent);
             });
             cashLogs.forEach(investorCashLogService::delete);
             transactionLogRepository.delete(log);

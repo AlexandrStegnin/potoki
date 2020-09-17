@@ -1,6 +1,6 @@
 package com.art.repository;
 
-import com.art.model.InvestorsFlows;
+import com.art.model.RentPayment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -12,18 +12,18 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface InvestorsFlowsRepository extends PagingAndSortingRepository<InvestorsFlows, Long> {
+public interface RentPaymentRepository extends PagingAndSortingRepository<RentPayment, Long> {
 
-    List<InvestorsFlows> findByInvestorId(Long investorId);
+    List<RentPayment> findByInvestorId(Long investorId);
 
-    List<InvestorsFlows> findByIdIn(List<Long> idList);
+    List<RentPayment> findByIdIn(List<Long> idList);
 
-    List<InvestorsFlows> findByRoomId(Long roomId);
+    List<RentPayment> findByRoomId(Long roomId);
 
-    Page<InvestorsFlows> findAll(Pageable pageable);
+    Page<RentPayment> findAll(Pageable pageable);
 
     @Query(
-            "SELECT fl FROM InvestorsFlows fl " +
+            "SELECT fl FROM RentPayment fl " +
                     "JOIN fl.investor u " +
                     "JOIN fl.facility f " +
                     "JOIN fl.underFacility uf " +
@@ -33,7 +33,7 @@ public interface InvestorsFlowsRepository extends PagingAndSortingRepository<Inv
                     "(:startDate IS NULL OR fl.reportDate >= :startDate) AND " +
                     "(:endDate IS NULL OR fl.reportDate <= :endDate) "
     )
-    Page<InvestorsFlows> findFiltering(
+    Page<RentPayment> findFiltering(
             Pageable pageable,
             @Param(value = "investor") String investor,
             @Param(value = "name") String name,
@@ -42,5 +42,5 @@ public interface InvestorsFlowsRepository extends PagingAndSortingRepository<Inv
             @Param(value = "endDate") Date endDate
     );
 
-    List<InvestorsFlows> findAll();
+    List<RentPayment> findAll();
 }

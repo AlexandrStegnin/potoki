@@ -14,7 +14,7 @@ import java.util.Date;
 @Setter
 @Entity
 @Table(name = "InvestorsFlows")
-public class InvestorsFlows implements Serializable {
+public class RentPayment implements Serializable {
     private Long id;
     private Date reportDate;
     private Facility facility;
@@ -37,25 +37,25 @@ public class InvestorsFlows implements Serializable {
     private int isReinvest;
     private Room room;
 
-    public InvestorsFlows() {
+    public RentPayment() {
     }
 
-    public InvestorsFlows(Facility facility) {
+    public RentPayment(Facility facility) {
         this.facility = facility;
     }
 
-    public InvestorsFlows(Facility facility, float afterCashing) {
+    public RentPayment(Facility facility, float afterCashing) {
         this.facility = facility;
         this.afterCashing = afterCashing;
     }
 
-    public InvestorsFlows(Facility facility, UnderFacility underFacility, AppUser investor) {
+    public RentPayment(Facility facility, UnderFacility underFacility, AppUser investor) {
         this.facility = facility;
         this.underFacility = underFacility;
         this.investor = investor;
     }
 
-    public InvestorsFlows(Facility facility, UnderFacility underFacility, AppUser investor, float afterCashing) {
+    public RentPayment(Facility facility, UnderFacility underFacility, AppUser investor, float afterCashing) {
         this.facility = facility;
         this.underFacility = underFacility;
         this.investor = investor;

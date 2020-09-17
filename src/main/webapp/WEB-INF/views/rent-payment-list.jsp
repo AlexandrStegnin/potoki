@@ -169,7 +169,7 @@
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${investorsFlows}" var="flows">
+            <c:forEach items="${rentPayments}" var="flows">
                 <tr id="${flows.id}">
                     <td data-report-date="${flows.reportDate.time}">${flows.getReportDateToLocalDate()}</td>
                     <td data-facility-id="${flows.facility.id}">${flows.facility.name}</td>

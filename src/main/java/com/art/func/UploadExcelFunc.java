@@ -30,8 +30,8 @@ public class UploadExcelFunc {
     @Resource(name = "userService")
     private UserService userService;
 
-    @Resource(name = "investorsFlowsService")
-    private InvestorsFlowsService investorsFlowsService;
+    @Resource(name = "rentPaymentService")
+    private RentPaymentService rentPaymentService;
 
     @Resource(name = "globalFunctions")
     private GlobalFunctions globalFunctions;
@@ -80,10 +80,10 @@ public class UploadExcelFunc {
 
     private void rewriteInvestorsFlows(Sheet sheet) {
 
-        List<InvestorsFlows> investorsFlowsTmp = investorsFlowsService.findAll();
+        List<RentPayment> rentPaymentTmp = rentPaymentService.findAll();
         List<Room> rooms = roomService.findAll();
         int cel = 0;
-        List<InvestorsFlows> investorsFlowsList = new ArrayList<>(0);
+        List<RentPayment> rentPaymentList = new ArrayList<>(0);
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy", Locale.ENGLISH);
         List<AppUser> users = userService.findAll();
 
@@ -136,32 +136,32 @@ public class UploadExcelFunc {
                     if (null == facility) {
                         return;
                     }
-                    InvestorsFlows investorsFlows = new InvestorsFlows();
-                    investorsFlows.setReportDate(Date.from(cal.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-                    investorsFlows.setFacility(facility);
+                    RentPayment rentPayment = new RentPayment();
+                    rentPayment.setReportDate(Date.from(cal.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+                    rentPayment.setFacility(facility);
 
-                    investorsFlows.setUnderFacility(underFacility);
+                    rentPayment.setUnderFacility(underFacility);
 
-                    investorsFlows.setRoom(rooms.stream()
+                    rentPayment.setRoom(rooms.stream()
                             .filter(r -> r.getName().equalsIgnoreCase(row.getCell(3).getStringCellValue()))
                             .findFirst().orElse(null));
 
-                    investorsFlows.setInvestor(user);
-                    investorsFlows.setShareKind(row.getCell(5).getStringCellValue());
-                    investorsFlows.setGivedCash(Float.parseFloat(row.getCell(6).getStringCellValue()));
-                    investorsFlows.setSumInUnderFacility(Float.parseFloat(row.getCell(7).getStringCellValue()));
-                    investorsFlows.setShareForSvod(Float.parseFloat(row.getCell(8).getStringCellValue()));
+                    rentPayment.setInvestor(user);
+                    rentPayment.setShareKind(row.getCell(5).getStringCellValue());
+                    rentPayment.setGivedCash(Float.parseFloat(row.getCell(6).getStringCellValue()));
+                    rentPayment.setSumInUnderFacility(Float.parseFloat(row.getCell(7).getStringCellValue()));
+                    rentPayment.setShareForSvod(Float.parseFloat(row.getCell(8).getStringCellValue()));
 
-                    investorsFlows.setShare(Float.parseFloat(row.getCell(9).getStringCellValue()));
-                    investorsFlows.setTaxation(Float.parseFloat(row.getCell(10).getStringCellValue()));
-                    investorsFlows.setCashing(Float.parseFloat(row.getCell(11).getStringCellValue()));
-                    investorsFlows.setSumma(Float.parseFloat(row.getCell(13).getStringCellValue()));
-                    investorsFlows.setOnInvestors(Float.parseFloat(row.getCell(14).getStringCellValue()));
-                    investorsFlows.setAfterTax(Float.parseFloat(row.getCell(15).getStringCellValue()));
-                    investorsFlows.setAfterDeductionEmptyFacility(Float.parseFloat(row.getCell(16).getStringCellValue()));
-                    investorsFlows.setAfterCashing(Float.parseFloat(row.getCell(17).getStringCellValue()));
+                    rentPayment.setShare(Float.parseFloat(row.getCell(9).getStringCellValue()));
+                    rentPayment.setTaxation(Float.parseFloat(row.getCell(10).getStringCellValue()));
+                    rentPayment.setCashing(Float.parseFloat(row.getCell(11).getStringCellValue()));
+                    rentPayment.setSumma(Float.parseFloat(row.getCell(13).getStringCellValue()));
+                    rentPayment.setOnInvestors(Float.parseFloat(row.getCell(14).getStringCellValue()));
+                    rentPayment.setAfterTax(Float.parseFloat(row.getCell(15).getStringCellValue()));
+                    rentPayment.setAfterDeductionEmptyFacility(Float.parseFloat(row.getCell(16).getStringCellValue()));
+                    rentPayment.setAfterCashing(Float.parseFloat(row.getCell(17).getStringCellValue()));
 
-                    investorsFlows.setReInvest(row.getCell(18).getStringCellValue());
+                    rentPayment.setReInvest(row.getCell(18).getStringCellValue());
 
                     String reFacilityName = row.getCell(19).getStringCellValue();
                     if (null == reFacilityName || reFacilityName.isEmpty()) {
@@ -172,35 +172,35 @@ public class UploadExcelFunc {
                         return;
                     }
 
-                    investorsFlows.setReFacility(reFacility);
+                    rentPayment.setReFacility(reFacility);
 
-                    List<InvestorsFlows> flowsList = investorsFlowsTmp.stream()
+                    List<RentPayment> flowsList = rentPaymentTmp.stream()
                             .filter(flows -> globalFunctions.getMonthInt(flows.getReportDate()) ==
-                                    globalFunctions.getMonthInt(investorsFlows.getReportDate()) &&
+                                    globalFunctions.getMonthInt(rentPayment.getReportDate()) &&
                                     globalFunctions.getYearInt(flows.getReportDate()) ==
-                                            globalFunctions.getYearInt(investorsFlows.getReportDate()) &&
+                                            globalFunctions.getYearInt(rentPayment.getReportDate()) &&
                                     globalFunctions.getDayInt(flows.getReportDate()) ==
-                                            globalFunctions.getDayInt(investorsFlows.getReportDate()))
+                                            globalFunctions.getDayInt(rentPayment.getReportDate()))
 
                             .filter(flows -> !Objects.equals(flows.getFacility(), null) &&
-                                    flows.getFacility().getId().equals(investorsFlows.getFacility().getId()))
+                                    flows.getFacility().getId().equals(rentPayment.getFacility().getId()))
 
-                            .filter(flows -> !Objects.equals(investorsFlows.getUnderFacility(), null) &&
-                                    flows.getUnderFacility().getId().equals(investorsFlows.getUnderFacility().getId()))
+                            .filter(flows -> !Objects.equals(rentPayment.getUnderFacility(), null) &&
+                                    flows.getUnderFacility().getId().equals(rentPayment.getUnderFacility().getId()))
 
-                            .filter(flows -> flows.getInvestor().getId().equals(investorsFlows.getInvestor().getId()))
+                            .filter(flows -> flows.getInvestor().getId().equals(rentPayment.getInvestor().getId()))
 
                             .collect(Collectors.toList());
 
                     if (flowsList.size() <= 0) {
-                        investorsFlowsList.add(investorsFlows);
+                        rentPaymentList.add(rentPayment);
                     }
                 }
 
             }
         }
 
-        investorsFlowsService.saveList(investorsFlowsList);
+        rentPaymentService.saveList(rentPaymentList);
 
     }
 
