@@ -185,6 +185,7 @@
             <th>Детали новых денег</th>
             <th>Дата закрытия вложения</th>
             <th>Вид закрытия вложения</th>
+            <th>Подобъект источник</th>
             <th>Из 1С</th>
             <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                 <th style="text-align: center">Действие</th>
@@ -207,6 +208,7 @@
                 <td>${money.newCashDetail.name}</td>
                 <td>${money.getDateClosingToLocalDate()}</td>
                 <td>${money.typeClosing.name}</td>
+                <td>${money.sourceUnderFacility.name}</td>
                 <c:set var="is1C" value="Да"/>
                 <c:if test="${empty money.transactionUUID}">
                     <c:set var="is1C" value="Нет"/>
