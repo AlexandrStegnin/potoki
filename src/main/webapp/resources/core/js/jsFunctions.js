@@ -232,10 +232,10 @@ function releaseOperations(tableId, what) {
         case 'unblock':
             $('table#' + tableId).find('> tbody').find('> tr').each(function () {
                 $(this).find(':checkbox:disabled').each(function () {
-                    $(this).closest('tr').find('#liDivide').removeClass('disabled').addClass('active');
-                    $(this).closest('tr').find('#liDouble').removeClass('disabled').addClass('active');
-                    $(this).closest('tr').find('#liEdit').removeClass('disabled').addClass('active');
-                    $(this).closest('tr').find('#liDelete').removeClass('disabled').addClass('active').find('a#del').css('cssText', 'color: #ff0000 !important');
+                    $(this).closest('tr').find('#aDivide').removeClass('disabled');
+                    $(this).closest('tr').find('#aDouble').removeClass('disabled');
+                    $(this).closest('tr').find('#aEdit').removeClass('disabled');
+                    $(this).closest('tr').find('#aDelete').removeClass('disabled').find('a#del').css('cssText', 'color: #ff0000 !important');
                     $(this).removeAttr('checked').removeAttr('disabled');
                 })
             });
