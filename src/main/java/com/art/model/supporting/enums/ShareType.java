@@ -7,7 +7,7 @@ package com.art.model.supporting.enums;
 public enum ShareType {
 
     UNDEFINED(0, "Не определена"),
-    MAIN(1, "Основная"),
+    MAIN(1, "Основная доля"),
     OVER(2, "Сверхдоля");
 
     private final int id;
