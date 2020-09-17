@@ -114,7 +114,7 @@ public class MoneyService {
      * @return созданная сумма
      */
     public ApiResponse create(CreateMoneyDTO moneyDTO) {
-        if (exist(moneyDTO)) {
+        if (!moneyDTO.isCreateAccepted() && exist(moneyDTO)) {
             return new ApiResponse("Такая сумма уже существует", HttpStatus.PRECONDITION_FAILED.value());
         }
         Facility facility = facilityService.findById(moneyDTO.getFacilityId());
