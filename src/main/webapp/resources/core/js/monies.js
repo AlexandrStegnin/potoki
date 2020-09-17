@@ -1664,9 +1664,12 @@ function saveMoney(moneyDTO) {
         success: function (data) {
             closeLoader();
             showPopup(data.message);
+            let status = data.status;
             switch (moneyDTO.operation) {
                 case OperationEnum.CREATE:
-                    clearMoneyForm()
+                    if (status === 200) {
+                        clearMoneyForm()
+                    }
                     break
                 case OperationEnum.UPDATE:
                 case OperationEnum.RESALE:
