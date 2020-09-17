@@ -19,6 +19,7 @@ import javax.persistence.criteria.Root;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -72,21 +73,15 @@ public class MarketingTreeService {
     }
 
     public String updateMarketingTreeFromApp() {
-        fillMarketingTreeDTOList();
-        setDaysToDeactivate();
-        setSerialNumbers();
-        findPartnerChild(kolesnikId, users);
-        fillParentPartner();
-//        fillParentPartner();
-//        CompletableFuture<Void> getMarketingTreeDTOListFuture = CompletableFuture
-//                .runAsync(this::fillMarketingTreeDTOList);
-//        getMarketingTreeDTOListFuture.thenRunAsync(this::setDaysToDeactivate);
-//        getMarketingTreeDTOListFuture.thenRunAsync(this::setSerialNumbers);
-//
-//        getMarketingTreeDTOListFuture.thenRunAsync(() -> findPartnerChild(kolesnikId, users))
-//                .thenRunAsync(this::fillParentPartner);
-//
-//        getMarketingTreeDTOListFuture.join();
+        CompletableFuture<Void> getMarketingTreeDTOListFuture = CompletableFuture
+                .runAsync(this::fillMarketingTreeDTOList);
+        getMarketingTreeDTOListFuture.thenRunAsync(this::setDaysToDeactivate);
+        getMarketingTreeDTOListFuture.thenRunAsync(this::setSerialNumbers);
+
+        getMarketingTreeDTOListFuture.thenRunAsync(() -> findPartnerChild(kolesnikId, users))
+                .thenRunAsync(this::fillParentPartner);
+
+        getMarketingTreeDTOListFuture.join();
 
         truncateTree();
         updateTree();
