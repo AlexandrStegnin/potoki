@@ -575,14 +575,6 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    // $(document).on("change", "#typeClosing", function () {
-    //     if ($(this).find(':selected').text() === 'Перепродажа доли') {
-    //         $('#buyerRow').removeClass('d-none');
-    //     } else {
-    //         $('#buyerRow').addClass('d-none');
-    //     }
-    // });
-
     $(document).on("change", "#cashDetail", function () {
 
         let cashDetail = $('#cashDetailRow');
@@ -617,6 +609,12 @@ jQuery(document).ready(function ($) {
         getUnderFacilitiesFromLocalStorage(reFacility, 'reUnderFacilities');
     });
     $('.selectpicker').selectpicker('refresh');
+
+    $('#accept-create').on('click', function () {
+        $('#createAccepted').val('true')
+        $('#confirm-create').modal('hide')
+        save(OperationEnum.CREATE)
+    })
 });
 
 let User = function () {
@@ -715,183 +713,6 @@ function allMoneyCashing() {
         }
     });
 }
-
-// function prepareCashSave(what) {
-//     let invBuyer = $('#investorBuyer');
-//     let investorBuyer = {
-//         id: invBuyer.find(':selected').val(),
-//         login: invBuyer.find(':selected').text()
-//     };
-//
-//     if (investorBuyer.id === '0') {
-//         investorBuyer = null;
-//     }
-//
-//     let cashId = $('#id').val();
-//
-//     let facilities = $('#facilities');
-//     let facility = {
-//         id: facilities.find(':selected').val(),
-//         name: facilities.find(':selected').text()
-//     };
-//
-//     let underFacilities = $('#underFacilities');
-//     let underFacility = {
-//         id: underFacilities.find(':selected').attr('id'),
-//         name: underFacilities.find(':selected').text()
-//     };
-//     if (underFacility.id === '0') {
-//         underFacility = null;
-//     }
-//
-//     let investors = $('#investor');
-//     let investor = {id: investors.find(':selected').val(), login: investors.find(':selected').text()};
-//
-//     let givedCash = $('#cash').val();
-//
-//     let dateGivenCash = new Date($('#dateGivenCash').val()).getTime();
-//
-//     let cashSources = $('#cashSrc');
-//     let cashSource = {id: cashSources.find(':selected').val(), cashSource: cashSources.find(':selected').text()};
-//     if (cashSource.id === '0') {
-//         cashSource = null;
-//     }
-//
-//     let newCashDetails = $('#cashDetail');
-//     let newCashDetail = {
-//         id: newCashDetails.find(':selected').val(),
-//         name: newCashDetails.find(':selected').text()
-//     };
-//     if (newCashDetail.id === '0') {
-//         newCashDetail = null;
-//     }
-//
-//     let dateClosingInvest = new Date($('#dateCloseInv').val()).getTime();
-//
-//     let dateReport = new Date($('#dateRep').val()).getTime();
-//
-//     let typeClosingInvests = $('#typeClosing');
-//     let typeClosingInvest = {
-//         id: typeClosingInvests.find(':selected').val(),
-//         name: typeClosingInvests.find(':selected').text()
-//     };
-//     if (typeClosingInvest.id === '0') {
-//         typeClosingInvest = null;
-//     }
-//
-//     let reFacilities = $('#sourceFacilities');
-//     let reFacility = {id: reFacilities.find(':selected').val(), name: reFacilities.find(':selected').text()};
-//     if (reFacility.id === '0') {
-//         reFacility = null;
-//     }
-//
-//     let reUnderFacilities = $('#sourceUnderFacilities');
-//     let reUnderFacility = {
-//         id: reUnderFacilities.find(':selected').attr('id'),
-//         name: reUnderFacilities.find(':selected').text()
-//     };
-//     if (reUnderFacility.id === '0') {
-//         reUnderFacility = null;
-//     }
-//
-//     let dateReinvest = dateClosingInvest;
-//
-//     let shareTypes = $('#shareType');
-//     let shareType = shareTypes.find(':selected').text();
-//     if (shareType === 'Не определена') {
-//         shareType = null;
-//     }
-//
-//     let source = $('#source').val();
-//     if (source.length === 0) {
-//         source = null;
-//     }
-//
-//     let cash = {
-//         id: cashId,
-//         facility: facility,
-//         underFacility: underFacility,
-//         investor: investor,
-//         givedCash: givedCash,
-//         dateGivedCash: dateGivenCash,
-//         cashSource: cashSource,
-//         newCashDetail: newCashDetail,
-//         dateClosingInvest: dateClosingInvest,
-//         typeClosing: typeClosingInvest,
-//         shareType: shareType,
-//         dateReport: dateReport,
-//         sourceFacility: reFacility,
-//         source: source,
-//         sourceUnderFacility: reUnderFacility
-//     };
-//
-//     let flag = true;
-//     if (cashId === '') {
-//         flag = false;
-//     }
-//
-//     saveCash(cash, reFacility, reUnderFacility, dateReinvest, flag, investorBuyer, what);
-// }
-//
-// function saveCash(cash, reFacility, reUnderFacility, dateReinvest, flag, invBuyer, what) {
-//     let token = $("meta[name='_csrf']").attr("content");
-//     let header = $("meta[name='_csrf_header']").attr("content");
-//     let search = ({
-//         "monies": cash,
-//         "reFacility": reFacility,
-//         "reUnderFacility": reUnderFacility,
-//         "dateReinvest": dateReinvest,
-//         "user": invBuyer,
-//         "what": what
-//     });
-//
-//     showLoader();
-//
-//     $.ajax({
-//         type: "POST",
-//         contentType: "application/json;charset=utf-8",
-//         url: "saveCash",
-//         data: JSON.stringify(search),
-//         dataType: 'json',
-//         timeout: 100000,
-//         beforeSend: function (xhr) {
-//             xhr.setRequestHeader(header, token);
-//         },
-//         success: function (data) {
-//             closeLoader();
-//             $('#popup_modal_form').find('#message').append(data.message);
-//             showPopup();
-//             closePopup();
-//             if (flag) {
-//                 window.location.href = '/money/list';
-//             }
-//
-//             $('#facilities').prop('selectedIndex', 0);
-//             $('#underFacilities').prop('selectedIndex', 0);
-//             $('#investor').prop('selectedIndex', 0);
-//             $('#cash').val(0);
-//             $('#dateGivenCash').val('');
-//             $('#cashSrc').prop('selectedIndex', 0);
-//             $('#cashTyp').prop('selectedIndex', 0);
-//             $('#cashDetail').prop('selectedIndex', 0);
-//             $('#invType').prop('selectedIndex', 0);
-//             $('#dateCloseInv').val('');
-//             $('#typeClosing').prop('selectedIndex', 0);
-//             $('#reFacilities').prop('selectedIndex', 0);
-//             $('#reUnderFacilities').prop('selectedIndex', 0);
-//             $('#dateRep').val('');
-//             if (what !== null && what === 'doubleCash') {
-//                 window.location.href = '/double-cash-' + cash.id
-//             }
-//         },
-//         error: function (e) {
-//             $('#popup_modal_form').find('#message').append(e.error);
-//             closeLoader();
-//             showPopup();
-//             closePopup();
-//         }
-//     });
-// }
 
 function disableFields(operation) {
     let facilitiesRow = $('#facilitiesRow');
@@ -1011,21 +832,6 @@ function disableFields(operation) {
             break
     }
 
-    // if ($('#closeCash').val() === 'true') {
-    //     $('#facilities').prop('disabled', true);
-    //     $('#underFacilities').prop('disabled', true);
-    //     $('#investor').prop('disabled', true);
-    //     $('#cash').prop('disabled', true);
-    //     $('#dateGivenCash').prop('disabled', true);
-    //     $('#cashSrc').prop('disabled', true);
-    //     $('#cashDetail').prop('disabled', true);
-    //     $('#dateRep').prop('disabled', true);
-    //     $('#shareType').prop('disabled', true);
-    //     $('#dateCloseInv').prop('disabled', false);
-    //     $('#typeClosing').prop('disabled', false);
-    //     $('#reFacilities').prop('disabled', false);
-    //     $('#reUnderFacilities').prop('disabled', false);
-    // } else
     if ($('#doubleCash').val() === 'true') {
         $('#facilities').prop('disabled', true);
         $('#underFacilities').prop('disabled', false);
@@ -1600,8 +1406,9 @@ MoneyDTO.prototype = {
     reUnderFacilityId: null,
     sourceFacilityId: null,
     sourceUnderFacilityId: null,
+    createAccepted: false,
     build: function (facilityId, underFacilityId, investorId, cash, dateGiven, cashSourceId,
-                     newCashDetailId, shareTypeId) {
+                     newCashDetailId, shareTypeId, createAccepted) {
         this.facilityId = facilityId;
         this.underFacilityId = underFacilityId;
         this.investorId = investorId;
@@ -1610,6 +1417,7 @@ MoneyDTO.prototype = {
         this.cashSourceId = cashSourceId;
         this.newCashDetailId = newCashDetailId;
         this.shareTypeId = shareTypeId;
+        this.createAccepted = createAccepted;
     },
     setId: function (cashId) {
         this.id = cashId;
@@ -1663,18 +1471,21 @@ function saveMoney(moneyDTO) {
         },
         success: function (data) {
             closeLoader();
-            showPopup(data.message);
             let status = data.status;
             switch (moneyDTO.operation) {
                 case OperationEnum.CREATE:
                     if (status === 200) {
+                        showPopup(data.message);
                         clearMoneyForm()
+                    } else {
+                        $('#confirm-create').modal('show');
                     }
                     break
                 case OperationEnum.UPDATE:
                 case OperationEnum.RESALE:
                 case OperationEnum.CASHING:
                 case OperationEnum.REINVEST:
+                    showPopup(data.message);
                     window.location.href = '../list'
                     break
             }
@@ -1827,10 +1638,11 @@ function getMoneyDTO(operation) {
     let dateReport = $('#dateRep').val()
     let realDateGiven = $('#realDateGiven').val()
     let moneyDTO = new MoneyDTO()
+    let createAccepted = $('#createAccepted').val()
     switch (operation) {
         case OperationEnum.CREATE:
             moneyDTO.build(facilityId, underFacilityId, investorId, cashSum, dateGiven,
-                cashSourceId, newCashDetailId, shareTypeId)
+                cashSourceId, newCashDetailId, shareTypeId, createAccepted)
             moneyDTO.operation = OperationEnum.CREATE
             return moneyDTO
         case OperationEnum.UPDATE:
