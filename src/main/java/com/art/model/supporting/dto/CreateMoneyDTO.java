@@ -13,4 +13,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class CreateMoneyDTO extends MoneyDTO {
 
+    private boolean createAccepted = false;
+
 }
