@@ -25,6 +25,7 @@ public class Money implements Serializable {
     @Column(name = "given_cash")
     private BigDecimal givenCash;
 
+    @Temporal(TemporalType.DATE)
     @Column(name = "date_given")
     private Date dateGiven;
 
