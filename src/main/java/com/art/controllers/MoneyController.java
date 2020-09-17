@@ -804,49 +804,4 @@ public class MoneyController {
         statusService.sendStatus(message);
     }
 
-    //
-//    /**
-//     * Реинвестирование (?) суммы инвестора
-//     *
-//     * @param searchSummary сумма для реинвестирования
-//     * @return ответ об успешном/не успешном реинвестировании суммы
-//     */
-//    @PostMapping(value = {"/saveCash"}, produces = "application/json;charset=UTF-8")
-//    public @ResponseBody
-//    GenericResponse saveCash(@RequestBody SearchSummary searchSummary) {
-//
-//        GenericResponse response = new GenericResponse();
-//        Money money = searchSummary.getMoney();
-//
-//        Facility reFacility = searchSummary.getReFacility();
-//        UnderFacility reUnderFacility = searchSummary.getReUnderFacility();
-//        Date reinvestDate = searchSummary.getDateReinvest();
-//
-//        String whatWeDoWithCash = "обновлены.";
-//
-//        String invLogin = money.getInvestor().getLogin();
-//
-//        if (null != reFacility && null != money.getId() &&
-//                null != money.getNewCashDetail() &&
-//                (!money.getNewCashDetail().getName().equalsIgnoreCase("Реинвестирование с продажи") &&
-//                        !money.getNewCashDetail().getName().equalsIgnoreCase("Реинвестирование с аренды")) &&
-//                (null != searchSummary.getWhat() && !searchSummary.getWhat().equalsIgnoreCase("edit"))) {
-//            Money newMoney = new Money();
-//            newMoney.setFacility(reFacility);
-//            newMoney.setSourceFacility(money.getFacility());
-//            newMoney.setUnderFacility(reUnderFacility);
-//            newMoney.setInvestor(money.getInvestor());
-//            newMoney.setGivenCash(money.getGivenCash());
-//            newMoney.setDateGiven(reinvestDate);
-//            newMoney.setCashSource(null);
-//            newMoney.setNewCashDetail(newCashDetailService.findByName("Реинвестирование с продажи"));
-//            newMoney.setShareType(money.getShareType());
-//            moneyService.create(newMoney);
-//            whatWeDoWithCash = "добавлены.";
-//        }
-//        moneyService.update(money);
-//
-//        response.setMessage("Деньги инвестора " + invLogin + " успешно " + whatWeDoWithCash);
-//        return response;
-//    }
 }
