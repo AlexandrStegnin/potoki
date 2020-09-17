@@ -159,8 +159,7 @@ public class MoneyController {
     @PostMapping(path = Location.MONEY_CREATE)
     @ResponseBody
     public ApiResponse createCash(@RequestBody CreateMoneyDTO moneyDTO) {
-        Money money = moneyService.create(moneyDTO);
-        return new ApiResponse(String.format("Деньги инвестора [%s] успешно добавлены", money.getInvestor().getLogin()));
+        return moneyService.create(moneyDTO);
     }
 
     /**

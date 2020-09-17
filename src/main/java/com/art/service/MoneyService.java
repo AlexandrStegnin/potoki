@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -112,7 +113,10 @@ public class MoneyService {
      * @param moneyDTO DTO суммы
      * @return созданная сумма
      */
-    public Money create(CreateMoneyDTO moneyDTO) {
+    public ApiResponse create(CreateMoneyDTO moneyDTO) {
+        if (exist(moneyDTO)) {
+            return new ApiResponse("Такая сумма уже существует", HttpStatus.PRECONDITION_FAILED.value());
+        }
         Facility facility = facilityService.findById(moneyDTO.getFacilityId());
         UnderFacility underFacility = underFacilityService.findById(moneyDTO.getUnderFacilityId());
         AppUser investor = userService.findById(moneyDTO.getInvestorId());
@@ -124,7 +128,7 @@ public class MoneyService {
         Money money = new Money(facility, underFacility, investor, cash, dateGiven, cashSource, newCashDetail, shareType);
         money = create(money);
         transactionLogService.create(money, TransactionType.CREATE);
-        return money;
+        return new ApiResponse(String.format("Деньги инвестора [%s] успешно добавлены", money.getInvestor().getLogin()));
     }
 
     /**
@@ -751,4 +755,18 @@ public class MoneyService {
     private void sendStatus(String message) {
         statusService.sendStatus(message);
     }
+
+    /**
+     * Проверить, если такая же сумма уже присутствует на сервере
+     *
+     * @param dto DTO суммы
+     * @return результат проверки
+     */
+    private boolean exist(MoneyDTO dto) {
+        Date dateGiven = dto.getDateGiven();
+        List<Money> monies = moneyRepository.findDuplicate(dto.getInvestorId(), dto.getCash(), dto.getFacilityId(),
+                dateGiven, dto.getCashSourceId());
+        return monies != null && monies.size() > 0;
+    }
+
 }
