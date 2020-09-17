@@ -183,6 +183,13 @@ public class Location {
 
     public static final String CHANGE_PASSWORD = "/changePassword";
 
+    // Выплаты инвесторам по аренде/продаже
+    public static final String PAYMENTS_URL = "/payments";
+
+    public static final String RENT_PAYMENTS = PAYMENTS_URL + "/rent";
+
+    public static final String SALE_PAYMENTS = PAYMENTS_URL + "/sale";
+
     public static final String[] ADMIN_URLS = {
             ADMIN,
             CATALOGUE,
@@ -202,7 +209,8 @@ public class Location {
             TYPE_CLOSING + WILD_CARD,
             MONEY_DIVIDE,
             MONEY_DIVIDE_MULTIPLE,
-            MONEY + WILD_CARD
+            MONEY + WILD_CARD,
+            PAYMENTS_URL + WILD_CARD
     };
 
     public static final String[] INVESTOR_URLS = {
