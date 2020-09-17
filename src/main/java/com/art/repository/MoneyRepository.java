@@ -6,8 +6,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -24,5 +28,11 @@ public interface MoneyRepository extends JpaRepository<Money, Long>, JpaSpecific
     List<Money> findByFacilityId(Long facilityId);
 
     List<Money> findBySourceId(Long sourceId);
+
+    @Query("SELECT m FROM Money m WHERE m.investor.id = :investorId AND m.givenCash = :givenCash AND " +
+            "m.facility.id = :facilityId AND DATE(m.dateGiven) = DATE(:dateGiven) AND m.cashSource.id = :cashSourceId")
+    List<Money> findDuplicate(@Param("investorId") Long investorId, @Param("givenCash") BigDecimal givenCash,
+                        @Param("facilityId") Long facilityId, @Param("dateGiven") Date dateGiven,
+                        @Param("cashSourceId") Long cashSourceId);
 
 }
