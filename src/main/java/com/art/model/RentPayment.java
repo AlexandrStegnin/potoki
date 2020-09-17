@@ -40,28 +40,6 @@ public class RentPayment implements Serializable {
     public RentPayment() {
     }
 
-    public RentPayment(Facility facility) {
-        this.facility = facility;
-    }
-
-    public RentPayment(Facility facility, float afterCashing) {
-        this.facility = facility;
-        this.afterCashing = afterCashing;
-    }
-
-    public RentPayment(Facility facility, UnderFacility underFacility, AppUser investor) {
-        this.facility = facility;
-        this.underFacility = underFacility;
-        this.investor = investor;
-    }
-
-    public RentPayment(Facility facility, UnderFacility underFacility, AppUser investor, float afterCashing) {
-        this.facility = facility;
-        this.underFacility = underFacility;
-        this.investor = investor;
-        this.afterCashing = afterCashing;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "Id")
