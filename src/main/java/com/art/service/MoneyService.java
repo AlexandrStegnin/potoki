@@ -10,6 +10,7 @@ import com.art.model.supporting.enums.TransactionType;
 import com.art.model.supporting.filters.CashFilter;
 import com.art.repository.MoneyRepository;
 import com.art.specifications.MoneySpecification;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -260,10 +261,12 @@ public class MoneyService {
 
 //    @Cacheable(cacheNames = Constant.MONEY_CACHE_KEY, key = "#filters")
     public Page<Money> findAll(CashFilter filters, Pageable pageable) {
-        return moneyRepository.findAll(
+        Page<Money> page = moneyRepository.findAll(
                 specification.getFilter(filters),
                 pageable
         );
+        page.getContent().forEach(money -> Hibernate.initialize(money.getSourceUnderFacility()));
+        return page;
     }
 
     public String cashingAllMoney(final SearchSummary searchSummary) {
