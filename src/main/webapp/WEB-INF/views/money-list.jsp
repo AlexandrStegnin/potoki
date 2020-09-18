@@ -34,7 +34,7 @@
     <div class="row" style="margin: 10px;">
         <div class="col-md-12">
             <form:form modelAttribute="cashFilters" method="POST" action="list"
-                       class="form-inline  d-flex flex-row justify-content-center"
+                       class="form-inline d-flex flex-row justify-content-center"
                        id="search-form">
             <input type="hidden" id="pageNumber" name="pageNumber" value="0">
             <input type="hidden" id="pageSize" name="pageSize" value="${cashFilters.pageSize}">
