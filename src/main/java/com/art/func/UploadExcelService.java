@@ -13,6 +13,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -60,6 +61,16 @@ public class UploadExcelService {
         this.rentPaymentService = rentPaymentService;
         this.investorsFlowsSaleService = investorsFlowsSaleService;
         this.globalFunctions = globalFunctions;
+    }
+
+    public ApiResponse upload(MultipartHttpServletRequest request, UploadType type) {
+        Iterator<String> itr = request.getFileNames();
+        List<MultipartFile> multipartFiles = new ArrayList<>(0);
+        while (itr.hasNext()) {
+            multipartFiles.add(request.getFile(itr.next()));
+        }
+        MultipartFile file = multipartFiles.get(0);
+        return upload(file, request, type);
     }
 
     /**
