@@ -161,7 +161,7 @@
             <th>После налогов</th>
             <th>После расходов по пустому помещению</th>
             <th>После вывода</th>
-            <th style="width: 30px"><input type="checkbox" id="checkIt" value=""></th>
+            <th style="width: 30px"><input type="checkbox" id="checkAll" value=""></th>
         </tr>
         </thead>
         <tbody style="text-align: center">

@@ -1,7 +1,7 @@
-var filters = [];
+let filters = [];
 
-var max;
-var min;
+let max;
+let min;
 
 jQuery(document).ready(function ($) {
 
@@ -10,7 +10,7 @@ jQuery(document).ready(function ($) {
     getFiltersFromLS((window.location.pathname + '').split("/")[1]);
     $('#msg-modal').on('shown.bs.modal', function () {
         // if data-timer attribute is set use that, otherwise use default (7000)
-        var timer = 3000;
+        let timer = 3000;
         $(this).delay(timer).fadeOut(200, function () {
             $(this).modal('hide');
         });
@@ -74,11 +74,11 @@ jQuery(document).ready(function ($) {
     });
 
     $(document).on('change', ':checkbox', function () {
-        var id = $(this).attr('id');
-        var noDivide;
+        let id = $(this).attr('id');
+        let noDivide;
         noDivide = $(this).closest('tr').find('> td:eq(1)').text().length > 0 && $(this).prop('checked') === true;
         if (typeof id === 'undefined') {
-            var cnt = checkChecked();
+            let cnt = checkChecked();
             if (cnt > 0) {
                 blockUnblockDropdownMenus('unblock', noDivide);
             } else {
@@ -92,11 +92,6 @@ jQuery(document).ready(function ($) {
     min = findMinMaxDate('#invFlowsSale tbody', 5, "min");
     populateStorageUnderFacilities('uFacilities');
     populateStorageRooms();
-    $("#search-form").submit(function (event) {
-        enableSearchButton(false);
-        event.preventDefault();
-        searchFlows("allInvFlows");
-    });
 
     $(document).on('click', 'a[name*="page_"]', function (e) {
         e.preventDefault();
@@ -131,7 +126,7 @@ jQuery(document).ready(function ($) {
     });
 
     $(document).on('change', '#checkIt', function () {
-        var checked = $('#checkIt').prop('checked');
+        let checked = $('#checkIt').prop('checked');
         if (!checked) {
             blockUnblockDropdownMenus('block', false);
             $('table#invFlowsSale').find('> tbody').find('> tr').each(function () {
@@ -151,31 +146,18 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    $("#searchFacility").submit(function (event) {
-        enableSearchButton(false);
-        event.preventDefault();
-        searchByMonths("invPaysMonth");
-        searchFlows("invPaysAll");
-    });
-
-    $("#search-form-months").submit(function (event) {
-        enableSearchButton(false);
-        event.preventDefault();
-        searchByMonths("invPaysMonth");
-    });
-
     $('#fFacilities').change(function () {
         let facility = $(this).find('option:selected').attr('id');
         getUFFromLS(facility, 'uFacilities');
     });
 
     $(document).on('change', '#srcFacilities', function () {
-        var facility = $(this).val();
+        let facility = $(this).val();
         getUnderFacilitiesFromLocalStorage(facility, 'srcUnderFacilities');
     });
 
     $(document).on('change', '#srcUnderFacilities', function () {
-        var room = $(this).find('option:selected').attr('id');
+        let room = $(this).find('option:selected').attr('id');
         getRoomsFromLocalStorage(room);
     });
 
@@ -188,7 +170,7 @@ jQuery(document).ready(function ($) {
         event.preventDefault();
         if (linkHasClass($('#deleteAll'))) return false;
         showLoader();
-        var cashIdList = [];
+        let cashIdList = [];
         $('table#invFlowsSale').find('> tbody').find('> tr').each(function () {
             $(this).find(':checkbox:checked').not(':disabled').each(function () {
                 cashIdList.push($(this).closest('tr').attr('id'));
@@ -201,8 +183,8 @@ jQuery(document).ready(function ($) {
     $('#divideAll').on('click', function (event) {
         event.preventDefault();
         if (linkHasClass($('#divideAll'))) return false;
-        var chk = $('table#investorsCash').find('> tbody').find('> tr').find(':checkbox:checked:not(:disabled)');
-        var facilityId = chk.closest('td').parent().find('td:eq(0)').attr('data-facility-id');
+        let chk = $('table#investorsCash').find('> tbody').find('> tr').find(':checkbox:checked:not(:disabled)');
+        let facilityId = chk.closest('td').parent().find('td:eq(0)').attr('data-facility-id');
 
         getUnderFacilitiesFromLocalStorage(
             facilityId,
@@ -218,7 +200,7 @@ jQuery(document).ready(function ($) {
 });
 
 function show(data) {
-    var json = JSON.stringify(data);
+    let json = JSON.stringify(data);
     $('#cash-details').html(json);
 }
 
@@ -227,7 +209,7 @@ function enableSearchButton(flag) {
 }
 
 function display(data, tableForSearch) {
-    var json = JSON.stringify(data, null, 4);
+    let json = JSON.stringify(data, null, 4);
     $('#' + tableForSearch).html(json);
 }
 
@@ -279,118 +261,13 @@ function loadFlowsAjax(action) {
 
 }
 
-function prepareFilter() {
-    let facility = $('#fFacilities').find(':selected').text();
-    let underFacility = $('#uFacilities').find(':selected').text();
-    let investor = $('#investors').find(':selected').text();
-    let dateBegin = $('#beginPeriod').val();
-    let dateEnd = $('#endPeriod').val();
-    dateBegin = dateBegin + '';
-    dateEnd = dateEnd + '';
-
-    if (facility !== 'Выберите объект' && underFacility !== 'Выберите подобъект' && investor !== 'Выберите инвестора') {
-        filters = [];
-        apply_filter('#invFlowsSale tbody', 1, facility);
-        apply_filter('#invFlowsSale tbody', 11, underFacility);
-        apply_filter('#invFlowsSale tbody', 2, investor);
-    } else if (facility !== 'Выберите объект' && underFacility === 'Выберите подобъект' && investor === 'Выберите инвестора') {
-        filters = [];
-        apply_filter('#invFlowsSale tbody', 1, facility);
-    } else if (facility === 'Выберите объект' && underFacility !== 'Выберите подобъект' && investor === 'Выберите инвестора') {
-        filters = [];
-        apply_filter('#invFlowsSale tbody', 11, underFacility);
-    } else if (facility === 'Выберите объект' && underFacility === 'Выберите подобъект' && investor !== 'Выберите инвестора') {
-        filters = [];
-        apply_filter('#invFlowsSale tbody', 2, investor);
-    } else if (facility === 'Выберите объект' && underFacility === 'Выберите подобъект' && investor === 'Выберите инвестора') {
-        filters = [];
-        apply_filter('#invFlowsSale tbody', 1, 'any');
-    } else if (facility !== 'Выберите объект' && underFacility !== 'Выберите подобъект' && investor === 'Выберите инвестора') {
-        filters = [];
-        apply_filter('#invFlowsSale tbody', 1, facility);
-        apply_filter('#invFlowsSale tbody', 11, underFacility);
-    } else if (facility !== 'Выберите объект' && underFacility === 'Выберите подобъект' && investor !== 'Выберите инвестора') {
-        filters = [];
-        apply_filter('#invFlowsSale tbody', 1, facility);
-        apply_filter('#invFlowsSale tbody', 2, investor);
-    } else if (facility === 'Выберите объект' && underFacility !== 'Выберите подобъект' && investor !== 'Выберите инвестора') {
-        filters = [];
-        apply_filter('#invFlowsSale tbody', 11, underFacility);
-        apply_filter('#invFlowsSale tbody', 2, investor);
-    }
-
-    if (dateBegin === '' && dateEnd === '') {
-        filters = [];
-        apply_date_filter('#invFlowsSale tbody', 12, min, max, "any");
-    } else {
-        filters = [];
-        apply_date_filter('#invFlowsSale tbody', 12, dateBegin, dateEnd, "not");
-    }
-}
-
-function apply_date_filter(table, col, dateFrom, dateTo, any) {
-    var fDate, tDate, cDate;
-    var parts;
-    dateFrom = dateFrom + '';
-    dateTo = dateTo + '';
-    if (dateFrom.length === 10) {
-        parts = dateFrom.split("-");
-        fDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-    } else {
-        fDate = null;
-    }
-    if (dateTo.length === 10) {
-        parts = dateTo.split("-");
-        tDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-    } else {
-        tDate = null;
-    }
-
-    filters[col] = any;
-
-    if (filters[col] !== 'any') {
-        $(table).find('tr td:nth-child(' + col + ')').each(function (i) {
-            var checkDate = $(this).text();
-            parts = checkDate.split(".");
-            cDate = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
-            if (fDate === null && tDate !== null) {
-                if (cDate <= tDate && $(this).parent().data('passed')) {
-                    $(this).parent().data('passed', true);
-                } else {
-                    $(this).parent().data('passed', false);
-                }
-            } else if (fDate !== null && tDate === null) {
-                if (cDate >= fDate && $(this).parent().data('passed')) {
-                    $(this).parent().data('passed', true);
-                } else {
-                    $(this).parent().data('passed', false);
-                }
-            } else {
-                if ((cDate <= tDate && cDate >= fDate) && $(this).parent().data('passed')) {
-                    $(this).parent().data('passed', true);
-                } else {
-                    $(this).parent().data('passed', false);
-                }
-            }
-        });
-    }
-
-    $(table).find('tr').each(function (i) {
-        if (!$(this).data('passed')) {
-            $(this).hide();
-        } else {
-            $(this).show();
-        }
-    });
-}
-
 function findMinMaxDate(table, col, maxOrMin) {
-    var max, min;
-    var data = [];
-    var cDate;
+    let max, min;
+    let data = [];
+    let cDate;
     $(table).find('tr td:nth-child(' + col + ')').each(function (i) {
-        var checkDate = $(this).text();
-        var parts = checkDate.split(".");
+        let checkDate = $(this).text();
+        let parts = checkDate.split(".");
         cDate = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
         data.push(cDate);
     });
@@ -483,7 +360,7 @@ function prepareSaveInvestorsCash() {
         closeLoader();
         return false;
     }
-    var current;
+    let current;
 
     $('#reInvestModal').modal('hide');
     $('#reinvestAll').prop('disabled', true);
@@ -590,7 +467,7 @@ function showPopup(message) {
 }
 
 function blockUnblockDropdownMenus(blockUnblock, noDivide) {
-    var reinvest = $('#reinvest');
+    let reinvest = $('#reinvest');
     switch (blockUnblock) {
         case 'block':
             reinvest.find('> li').each(function () {
@@ -610,9 +487,9 @@ function blockUnblockDropdownMenus(blockUnblock, noDivide) {
 }
 
 function deleteCash(cashIdList) {
-    var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
-    var search = ({
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+    let search = ({
         cashIdList: cashIdList,
         what: "sale"
     });
