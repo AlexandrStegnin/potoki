@@ -2,9 +2,12 @@ package com.art.service;
 
 import com.art.model.RentPayment;
 import com.art.model.supporting.SearchSummary;
+import com.art.model.supporting.filters.RentPaymentFilter;
 import com.art.repository.RentPaymentRepository;
+import com.art.specifications.RentPaymentSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,9 +31,12 @@ public class RentPaymentService {
 
     private final RentPaymentRepository rentPaymentRepository;
 
+    private final RentPaymentSpecification specification;
+
     @Autowired
-    public RentPaymentService(RentPaymentRepository rentPaymentRepository) {
+    public RentPaymentService(RentPaymentRepository rentPaymentRepository, RentPaymentSpecification specification) {
         this.rentPaymentRepository = rentPaymentRepository;
+        this.specification = specification;
     }
 
 //    @Cacheable(Constant.INVESTOR_FLOWS_CACHE_KEY)
@@ -94,5 +100,13 @@ public class RentPaymentService {
     public void updateInvestorDemo() {
         Query q = em.createNativeQuery("{call UPDATE_INVESTOR_DEMO()}");
         q.executeUpdate();
+    }
+
+    public Page<RentPayment> findAll(RentPaymentFilter filters, Pageable pageable) {
+        if (filters.getPageSize() == 0) pageable = new PageRequest(filters.getPageNumber(), filters.getTotal() + 1);
+        return rentPaymentRepository.findAll(
+                specification.getFilter(filters),
+                pageable
+        );
     }
 }
