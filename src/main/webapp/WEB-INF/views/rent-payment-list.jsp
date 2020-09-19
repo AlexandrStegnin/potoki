@@ -32,17 +32,17 @@
 <%@include file="header.jsp" %>
 <div class="container-fluid">
     <div class="d-flex flex-row justify-content-center" style="margin: 10px;">
-        <form:form modelAttribute="searchSummary" method="POST" action="payments/rent"
+        <form:form modelAttribute="filter" method="POST" action="rent"
                    class="form-inline" id="filter-form">
         <div style="padding: 5px;">
-            <form:select path="facilityStr" id="fFacilities" multiple="false" class="selectpicker">
+            <form:select path="facility" id="fFacilities" multiple="false" class="selectpicker">
                 <c:forEach var="f" items="${facilitiesList}">
                     <option
                             <c:choose>
                                 <c:when test="${f.name eq 'Выберите объект'}">selected="selected"</c:when>
-                                <c:when test="${f.name eq searchSummary.facilityStr}">selected="selected"</c:when>
+                                <c:when test="${f.name eq filter.facility}">selected="selected"</c:when>
                             </c:choose>
-                            value="${f.id}" id="${f.id}">${f.name}
+                            value="${f.name}" id="${f.id}">${f.name}
                     </option>
                 </c:forEach>
             </form:select>
@@ -53,7 +53,7 @@
                     <option
                             <c:choose>
                                 <c:when test="${uf.name eq 'Выберите подобъект'}">selected="selected"</c:when>
-                                <c:when test="${uf.name eq searchSummary.underFacility}">selected="selected"</c:when>
+                                <c:when test="${uf.name eq filter.underFacility}">selected="selected"</c:when>
                             </c:choose>
                             value="${uf.name}" id="${uf.id}" data-parent-id="${uf.facility.id}">${uf.name}
                     </option>
@@ -66,7 +66,7 @@
                     <option
                             <c:choose>
                                 <c:when test="${inv.login eq 'Выберите инвестора'}">selected="selected"</c:when>
-                                <c:when test="${inv.login eq searchSummary.investor}">selected="selected"</c:when>
+                                <c:when test="${inv.login eq filter.investor}">selected="selected"</c:when>
                             </c:choose> value="${inv.login}" id="${inv.id}">${inv.login}
                     </option>
                 </c:forEach>
@@ -74,12 +74,12 @@
         </div>
         <form:label path="" for="beginPeriod"
                     style="margin-left:10px; margin-right:5px; font-size:14px">Период с:</form:label>
-        <form:input path="startDate" id="beginPeriod" name="startDate" type="date" class="form-control input-sm"
-                    value="${searchSummary.startDate}"/>
+        <form:input path="fromDate" id="beginPeriod" name="startDate" type="date" class="form-control input-sm"
+                    value="${filter.fromDate}"/>
         <form:label path="" for="endPeriod"
                     style="margin-left:10px; margin-right:5px; font-size:14px">по:</form:label>
-        <form:input path="endDate" id="endPeriod" name="endDate" type="date" class="form-control input-sm"
-                    value="${searchSummary.endDate}"
+        <form:input path="toDate" id="endPeriod" name="endDate" type="date" class="form-control input-sm"
+                    value="${filter.toDate}"
                     style="margin-right:5px"/>
         <button type="submit" id="bth-search" class="btn btn-primary btn-md" style="margin-right:5px">Фильтр
         </button>
@@ -124,19 +124,20 @@
         </sec:authorize>
     </sec:authorize>
 
+    <c:if test="${filter.allRows == false}">
     <div class="d-flex flex-row justify-content-center">
-        <nav class="text-center" aria-label="Деньги инвесторов">
+        <nav class="text-center" aria-label="Выплаты инвесторам - аренда">
             <ul class="pagination pagination-sm justify-content-center">
-                <c:forEach begin="1" end="${pageCount}" varStatus="page">
-                    <c:set var="link" value="/paysToInv?page=${page.index - 1}&size=100${queryParams}"/>
+                <c:forEach begin="1" end="${page.totalPages}" varStatus="page">
                     <li class="page-item" data-page="${page.index}">
-                        <a id="page_${page.index}" class="page-link"
-                           href="<c:url value='${link}' />">${page.index}</a>
+                        <a id="${page.index}" name="page_${page.index}" class="page-link"
+                           href="#">${page.index}</a>
                     </li>
                 </c:forEach>
             </ul>
         </nav>
     </div>
+    </c:if>
     </form:form>
 </div>
 <div class="container-fluid">
@@ -165,52 +166,52 @@
         </tr>
         </thead>
         <tbody style="text-align: center">
-        <c:forEach items="${rentPayments}" var="flows">
-            <tr id="${flows.id}">
-                <td data-report-date="${flows.reportDate.time}">${flows.getReportDateToLocalDate()}</td>
-                <td data-facility-id="${flows.facility.id}">${flows.facility.name}</td>
-                <td data-under-facility-id="${flows.underFacility.id}">${flows.underFacility.name}</td>
-                <td data-room-id="${flows.room.id}">${flows.room.name}</td>
-                <td data-investor-id="${flows.investor.id}">${flows.investor.login}</td>
-                <td>${flows.shareKind}</td>
-                <td data-gived-cash="${flows.givedCash}">
+        <c:forEach items="${page.content}" var="payment">
+            <tr id="${payment.id}">
+                <td data-report-date="${payment.reportDate.time}">${payment.getReportDateToLocalDate()}</td>
+                <td data-facility-id="${payment.facility.id}">${payment.facility.name}</td>
+                <td data-under-facility-id="${payment.underFacility.id}">${payment.underFacility.name}</td>
+                <td data-room-id="${payment.room.id}">${payment.room.name}</td>
+                <td data-investor-id="${payment.investor.id}">${payment.investor.login}</td>
+                <td>${payment.shareKind}</td>
+                <td data-gived-cash="${payment.givedCash}">
                     <fmt:setLocale value="ru-RU" scope="session"/>
-                    <fmt:formatNumber value="${flows.givedCash}" type="currency" minFractionDigits="2"/>
+                    <fmt:formatNumber value="${payment.givedCash}" type="currency" minFractionDigits="2"/>
                 </td>
                 <td>
-                    <fmt:formatNumber value="${flows.sumInUnderFacility}" type="currency" minFractionDigits="2"/>
+                    <fmt:formatNumber value="${payment.sumInUnderFacility}" type="currency" minFractionDigits="2"/>
                 </td>
                 <td>
-                    <fmt:formatNumber value="${flows.shareForSvod}" type="percent" minFractionDigits="2"/>
+                    <fmt:formatNumber value="${payment.shareForSvod}" type="percent" minFractionDigits="2"/>
                 </td>
                 <td>
-                    <fmt:formatNumber value="${flows.share}" type="percent" minFractionDigits="2"/>
+                    <fmt:formatNumber value="${payment.share}" type="percent" minFractionDigits="2"/>
                 </td>
                 <td>
-                    <fmt:formatNumber value="${flows.taxation}" type="percent" minFractionDigits="2"/>
+                    <fmt:formatNumber value="${payment.taxation}" type="percent" minFractionDigits="2"/>
                 </td>
                 <td>
-                    <fmt:formatNumber value="${flows.cashing}" type="percent" minFractionDigits="2"/>
+                    <fmt:formatNumber value="${payment.cashing}" type="percent" minFractionDigits="2"/>
                 </td>
                 <td>
-                    <fmt:formatNumber value="${flows.summa}" type="currency" minFractionDigits="2"/>
+                    <fmt:formatNumber value="${payment.summa}" type="currency" minFractionDigits="2"/>
                 </td>
                 <td>
-                    <fmt:formatNumber value="${flows.onInvestors}" type="currency" minFractionDigits="2"/>
+                    <fmt:formatNumber value="${payment.onInvestors}" type="currency" minFractionDigits="2"/>
                 </td>
                 <td>
-                    <fmt:formatNumber value="${flows.afterTax}" type="currency" minFractionDigits="2"/>
+                    <fmt:formatNumber value="${payment.afterTax}" type="currency" minFractionDigits="2"/>
                 </td>
                 <td>
-                    <fmt:formatNumber value="${flows.afterDeductionEmptyFacility}" type="currency"
+                    <fmt:formatNumber value="${payment.afterDeductionEmptyFacility}" type="currency"
                                       minFractionDigits="2"/>
                 </td>
-                <td data-gived-cash="${flows.afterCashing}">
-                    <fmt:formatNumber value="${flows.afterCashing}" type="currency" minFractionDigits="2"/>
+                <td data-gived-cash="${payment.afterCashing}">
+                    <fmt:formatNumber value="${payment.afterCashing}" type="currency" minFractionDigits="2"/>
                 </td>
                 <td>
                     <c:choose>
-                        <c:when test="${flows.isReinvest == 1}">
+                        <c:when test="${payment.isReinvest == 1}">
                             <c:set var="checked" value="checked"/>
                             <c:set var="disabled" value="disabled"/>
                         </c:when>
