@@ -35,7 +35,8 @@
         <form:form modelAttribute="filter" method="POST" action="rent"
                    class="form-inline" id="filter-form">
         <div style="padding: 5px;">
-            <form:select path="facility" id="fFacilities" multiple="false" class="selectpicker">
+            <form:select path="facility" id="fFacilities" multiple="false" class="selectpicker"
+                         data-size="10" data-live-search="true" data-none-selected-text="Выберите объект">
                 <c:forEach var="f" items="${facilitiesList}">
                     <option
                             <c:choose>
@@ -48,7 +49,8 @@
             </form:select>
         </div>
         <div style="padding: 5px;">
-            <form:select path="underFacility" id="uFacilities" multiple="false" class="selectpicker">
+            <form:select path="underFacility" id="uFacilities" multiple="false" class="selectpicker"
+                         data-size="10" data-live-search="true" data-none-selected-text="Выберите подобъект">
                 <c:forEach var="uf" items="${underFacilities}">
                     <option
                             <c:choose>
@@ -61,7 +63,8 @@
             </form:select>
         </div>
         <div style="padding: 5px;">
-            <form:select path="investor" id="investors" multiple="false" class="selectpicker">
+            <form:select path="investor" id="investors" multiple="false" class="selectpicker"
+                         data-size="10" data-live-search="true" data-none-selected-text="Выберите инвестора">
                 <c:forEach var="inv" items="${investors}">
                     <option
                             <c:choose>
