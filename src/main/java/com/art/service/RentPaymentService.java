@@ -1,7 +1,6 @@
 package com.art.service;
 
 import com.art.model.RentPayment;
-import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.filters.RentPaymentFilter;
 import com.art.repository.RentPaymentRepository;
 import com.art.specifications.RentPaymentSpecification;
@@ -16,11 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.math.BigInteger;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @Transactional
@@ -76,25 +71,6 @@ public class RentPaymentService {
 //    @CacheEvict(Constant.INVESTOR_FLOWS_CACHE_KEY)
     public void deleteByIdIn(List<Long> idList) {
         idList.forEach(rentPaymentRepository::delete);
-    }
-
-//    @Cacheable(Constant.INVESTOR_FLOWS_CACHE_KEY)
-    public Page<RentPayment> findAllFiltering(Pageable pageable, SearchSummary filters) {
-        String investor = filters.getInvestor();
-        String facility = filters.getFacilityStr();
-        String underFacility = filters.getUnderFacilityStr();
-        LocalDate startDate = filters.getStartDate();
-        LocalDate endDate = filters.getEndDate();
-        Date start = null;
-        Date end = null;
-        if (!Objects.equals(null, startDate)) start = Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        if (!Objects.equals(null, endDate)) end = Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-
-        if (!Objects.equals(null, investor) && investor.equalsIgnoreCase("Выберите инвестора")) investor = null;
-        if (!Objects.equals(null, facility) && facility.equalsIgnoreCase("Выберите объект")) facility = null;
-        if (!Objects.equals(null, underFacility) && underFacility.equalsIgnoreCase("Выберите подобъект")) underFacility = null;
-
-        return rentPaymentRepository.findFiltering(pageable, investor, facility, underFacility, start, end);
     }
 
     public void updateInvestorDemo() {
