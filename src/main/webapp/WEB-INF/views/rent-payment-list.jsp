@@ -6,57 +6,37 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<html lang="en-RU">
+<!DOCTYPE html>
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Выплаты инвесторам (аренда)</title>
     <sec:csrfMetaTags/>
-    <link href="<c:url value='/resources/core/css/old_bootstrap.min.css' />" rel="stylesheet"/>
-    <link href="<c:url value='/resources/core/css/applic.css' />" rel="stylesheet"/>
-    <link href="<c:url value='/resources/core/css/popup.css' />" rel="stylesheet"/>
-    <link href="<c:url value='/resources/core/css/ddk_loader.css' />" rel="stylesheet"/>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/jquery-3.2.1.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min_old.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/jsFunctions.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/flows.js' />"></script>
+    <link rel="stylesheet"
+          href="<c:url value='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' />"/>
+    <link rel="stylesheet"
+          href="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css' />">
+    <link href="<c:url value='https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css' />"
+          rel="stylesheet">
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
+    <link href="<c:url value='/resources/core/css/ddk_loader.css' />" rel="stylesheet"/>
     <style type="text/css">
-        table, td, th {
-            text-align: center;
+        .bootstrap-select > select {
+            margin: 10px !important;
         }
-
-        #msg-modal .modal-dialog {
-            -webkit-transform: translate(0, -50%);
-            -o-transform: translate(0, -50%);
-            transform: translate(0, -50%);
-            top: 50%;
-            margin: 0 auto;
-        }
-
-        .dropdown-menu > .active > a {
-            color: #0c0c0c !important;
-            background-color: transparent !important;
-        }
-
-        .dropdown-menu > .active > a:hover {
-            text-shadow: 1px 1px 1px gray;
-        }
-
     </style>
 </head>
 
 <body>
-<div class="generic-container">
-    <%@include file="old_authheader.jsp" %>
-    <div class="panel panel-default">
-        <!-- Default panel contents -->
-        <div class="panel-heading"><span class="lead">Потоки инвесторов. Выплаты:</span></div>
-        <form:form modelAttribute="searchSummary" method="GET" action="/paysToInv" class="form-inline" id="filter-form">
-            <div class="row" style="margin: 10px;">
-                <label class="sr-only" for="fFacilities">Объект:</label>
+<%@include file="header.jsp" %>
+<div class="container-fluid">
+    <div class="row" style="margin: 10px;">
+        <div class="col-md-12">
+        <form:form modelAttribute="searchSummary" method="GET" action="payments/rent"
+                   class="form-inline d-flex flex-row justify-content-center"
+                   id="filter-form">
+            <div style="padding: 5px;">
                 <form:select path="facilityStr" id="fFacilities" multiple="false" class="selectpicker">
                     <c:forEach var="f" items="${facilitiesList}">
                         <option
@@ -64,11 +44,12 @@
                                     <c:when test="${f.name eq 'Выберите объект'}">selected="selected"</c:when>
                                     <c:when test="${f.name eq searchSummary.facilityStr}">selected="selected"</c:when>
                                 </c:choose>
-                                value="${f.name}" id="${f.id}">${f.name}
+                                value="${f.id}" id="${f.id}">${f.name}
                         </option>
                     </c:forEach>
                 </form:select>
-                <label class="sr-only" for="uFacilities">Подобъект:</label>
+            </div>
+            <div style="padding: 5px;">
                 <form:select path="underFacility" id="uFacilities" multiple="false" class="selectpicker">
                     <c:forEach var="uf" items="${underFacilities}">
                         <option
@@ -80,7 +61,8 @@
                         </option>
                     </c:forEach>
                 </form:select>
-                <label class="sr-only" for="investors">Инвестор:</label>
+            </div>
+            <div style="padding: 5px;">
                 <form:select path="investor" id="investors" multiple="false" class="selectpicker">
                     <c:forEach var="inv" items="${investors}">
                         <option
@@ -91,16 +73,18 @@
                         </option>
                     </c:forEach>
                 </form:select>
-                <label for="beginPeriod" style="margin-left:10px; margin-right:5px; font-size:14px">Период с:</label>
-                <input id="beginPeriod" name="startDate" type="date" class="form-control input-sm" value="${searchSummary.startDate}">
-                <label for="endPeriod" style="margin-left:10px; margin-right:5px; font-size:14px">по:</label>
-                <input id="endPeriod" name="endDate" type="date" class="form-control input-sm" value="${searchSummary.endDate}"
-                       style="margin-right:5px">
-                <button type="submit" id="bth-search" class="btn btn-primary btn-sm">Фильтр</button>
-                <button type="submit" id="bth-clear" class="btn btn-danger btn-sm">Сбросить фильтры</button>
-                <button data-table-id="invFlows" type="button" id="unblock_operations" class="btn btn-danger btn-sm">Разблокировать операции</button>
             </div>
-        </form:form>
+                <form:label path="" for="beginPeriod" style="margin-left:10px; margin-right:5px; font-size:14px">Период с:</form:label>
+                <form:input path="startDate" id="beginPeriod" name="startDate" type="date" class="form-control input-sm" value="${searchSummary.startDate}" />
+                <form:label path="" for="endPeriod" style="margin-left:10px; margin-right:5px; font-size:14px">по:</form:label>
+                <form:input path="endDate" id="endPeriod" name="endDate" type="date" class="form-control input-sm" value="${searchSummary.endDate}"
+                       style="margin-right:5px" />
+                <button type="submit" id="bth-search" class="btn btn-primary btn-sm">Фильтр</button>
+<%--                <button type="submit" id="bth-clear" class="btn btn-danger btn-sm">Сбросить фильтры</button>--%>
+<%--                <button data-table-id="invFlows" type="button" id="unblock_operations" class="btn btn-danger btn-sm">Разблокировать операции</button>--%>
+            </div>
+
+        <div class="d-flex flex-row justify-content-center">
         <sec:authorize access="isFullyAuthenticated()">
             <sec:authorize access="hasRole('ADMIN')">
                 <form:form method="POST" modelAttribute="fileBucket" enctype="multipart/form-data" class="form-inline"
@@ -116,10 +100,10 @@
                                id="loadInvFlowsAjax">
                         <a href="<c:url value='/deleteFlows' />" class="btn btn-danger btn-sm"
                            style="margin-left: 10px">Удалить</a>
-                        <div class="btn btn-primary btn-sm pull-right" id="checkAll">
-                            <label class="checkbox-inline">
-                                <input type="checkbox" id="checkIt" value="">Выделить всё</label>
-                        </div>
+<%--                        <div class="btn btn-primary btn-sm pull-right" id="checkAll">--%>
+<%--                            <label class="checkbox-inline">--%>
+<%--                                <input type="checkbox" id="checkIt" value="">Выделить всё</label>--%>
+<%--                        </div>--%>
                         <div class="dropdown pull-right" style="margin-right: 10px">
                             <button id="actions" type="button" data-toggle="dropdown"
                                     class="btn btn-success btn-sm dropdown-toggle pull-right">Действия <span
@@ -133,6 +117,7 @@
                 </form:form>
             </sec:authorize>
         </sec:authorize>
+        </div>
 
         <nav class="text-center" aria-label="Деньги инвесторов">
             <ul class="pagination pagination-sm justify-content-center">
@@ -145,6 +130,10 @@
                 </c:forEach>
             </ul>
         </nav>
+        </form:form>
+        </div>
+    </div>
+</div>
         <table class="table table-hover" style="font-size: small" id="invFlows">
             <thead>
             <tr>
@@ -165,7 +154,7 @@
                 <th>После налогов</th>
                 <th>После расходов по пустому помещению</th>
                 <th>После вывода</th>
-                <th>Реинвестировать</th>
+                <th style="width: 30px"><input type="checkbox" id="checkIt" value=""></th>
             </tr>
             </thead>
             <tbody>
@@ -231,9 +220,6 @@
         </table>
     </div>
 </div>
-<%@include file="loader.jsp" %>
-<%@include file="popup.jsp" %>
-<%@include file="slideDiv.jsp" %>
 <div id="reInvestModal" class="modal fade" role="dialog">
     <div class="modal-dialog" style="width: 90%">
         <div class="modal-content" id="content">
@@ -298,10 +284,24 @@
         </div>
     </div>
 </div>
-<%@include file="loader.jsp" %>
-<%@include file="slideDiv.jsp" %>
-<link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/css/bootstrap-select.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
+
+<%@include file="popup_modal.jsp" %>
+<%@include file="ddk_loader.jsp" %>
+<script type="text/javascript"
+        src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' />"></script>
+<script type="text/javascript"
+        src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js' />"></script>
+<script type="text/javascript"
+        src="<c:url value='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js' />"></script>
+<script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js' />"></script>
+<script type="text/javascript"
+        src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js' />"></script>
+<script type="text/javascript"
+        src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js' />"></script>
+<script src="<c:url value='https://kit.fontawesome.com/2b84e2f58d.js' />" crossorigin="anonymous"></script>
+<script src="<c:url value='https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/progress.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/progress.js' />"></script>
 </body>
 </html>
