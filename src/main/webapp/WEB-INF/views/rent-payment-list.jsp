@@ -34,6 +34,9 @@
     <div class="d-flex flex-row justify-content-center" style="margin: 10px;">
         <form:form modelAttribute="filter" method="POST" action="rent"
                    class="form-inline" id="filter-form">
+            <input type="hidden" id="pageNumber" name="pageNumber" value="0">
+            <input type="hidden" id="pageSize" name="pageSize" value="${filter.pageSize}">
+            <input type="hidden" id="total" name="total" value="${page.content.size()}">
         <div style="padding: 5px;">
             <form:select path="facility" id="fFacilities" multiple="false" class="selectpicker"
                          data-size="10" data-live-search="true" data-none-selected-text="Выберите объект">
@@ -132,7 +135,15 @@
         <nav class="text-center" aria-label="Выплаты инвесторам - аренда">
             <ul class="pagination pagination-sm justify-content-center">
                 <c:forEach begin="1" end="${page.totalPages}" varStatus="page">
-                    <li class="page-item" data-page="${page.index}">
+                    <c:choose>
+                        <c:when test="${filter.pageNumber == page.index - 1}">
+                            <c:set var="active" value="active" />
+                        </c:when>
+                        <c:otherwise>
+                            <c:set var="active" value="" />
+                        </c:otherwise>
+                    </c:choose>
+                    <li class="page-item ${active}" data-page="${page.index}">
                         <a id="${page.index}" name="page_${page.index}" class="page-link"
                            href="#">${page.index}</a>
                     </li>

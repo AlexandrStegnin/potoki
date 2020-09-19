@@ -60,6 +60,15 @@ jQuery(document).ready(function ($) {
         }
     });
 
+    $(document).on('click', 'a[name*="page_"]', function (e) {
+        e.preventDefault();
+        $('#pageNumber').val(parseInt($(this).attr('id')) - 1);
+        let pageSize = 100;
+        if ($('#all').prop('checked')) pageSize = 1;
+        $('#pageSize').val(pageSize);
+        $('#filter-form').submit();
+    });
+
     $('table#invFlows').find('> tbody').find('> tr').each(function (i) {
         $(this).data('passed', true);
     });
