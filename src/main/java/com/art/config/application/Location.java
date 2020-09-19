@@ -188,6 +188,8 @@ public class Location {
 
     public static final String RENT_PAYMENTS = PAYMENTS_URL + "/rent";
 
+    public static final String RENT_PAYMENTS_UPLOAD = RENT_PAYMENTS + "/upload";
+
     public static final String SALE_PAYMENTS = PAYMENTS_URL + "/sale";
 
     public static final String[] ADMIN_URLS = {
