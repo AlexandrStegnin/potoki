@@ -57,7 +57,8 @@ public class InvestorsFlowsSaleSpecification extends BaseSpecification<Investors
 
     private static Specification<InvestorsFlowsSale> underFacilityEqual(String underFacility) {
         return ((root, criteriaQuery, criteriaBuilder) -> {
-            if (Objects.equals(null, underFacility) || StringUtils.isEmpty(underFacility) || "Выберите подобъект".equalsIgnoreCase(underFacility.trim())) {
+            if (Objects.equals(null, underFacility) || StringUtils.isEmpty(underFacility) || "Выберите подобъект".equalsIgnoreCase(underFacility.trim())
+            || "Без подобъекта".equalsIgnoreCase(underFacility.trim())) {
                 return null;
             } else {
                 return criteriaBuilder.equal(root.get(InvestorsFlowsSale_.underFacility).get(UnderFacility_.name), underFacility);
