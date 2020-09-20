@@ -6,6 +6,7 @@ import com.art.model.supporting.dto.TransactionLogDTO;
 import com.art.model.supporting.enums.TransactionType;
 import com.art.model.supporting.filters.TxLogFilter;
 import com.art.repository.MoneyRepository;
+import com.art.repository.RentPaymentRepository;
 import com.art.repository.TransactionLogRepository;
 import com.art.specifications.TransactionLogSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class TransactionLogService {
 
     private final InvestorsFlowsSaleService investorsFlowsSaleService;
 
-    private final RentPaymentService rentPaymentService;
+    private final RentPaymentRepository rentPaymentRepository;
 
     @Autowired
     public TransactionLogService(TransactionLogSpecification specification,
@@ -42,13 +43,13 @@ public class TransactionLogService {
                                  InvestorCashLogService investorCashLogService,
                                  MoneyRepository moneyRepository,
                                  InvestorsFlowsSaleService investorsFlowsSaleService,
-                                 RentPaymentService rentPaymentService) {
+                                 RentPaymentRepository rentPaymentRepository) {
         this.specification = specification;
         this.transactionLogRepository = transactionLogRepository;
         this.investorCashLogService = investorCashLogService;
         this.moneyRepository = moneyRepository;
         this.investorsFlowsSaleService = investorsFlowsSaleService;
-        this.rentPaymentService = rentPaymentService;
+        this.rentPaymentRepository = rentPaymentRepository;
     }
 
     /**
@@ -353,12 +354,12 @@ public class TransactionLogService {
                 .stream()
                 .map(InvestorCashLog::getCashId)
                 .collect(Collectors.toList());
-        List<RentPayment> rentPayments = rentPaymentService.findByIdIn(rentPaymentsId);
+        List<RentPayment> rentPayments = rentPaymentRepository.findByIdIn(rentPaymentsId);
         try {
             moneyRepository.delete(cashes);
-            rentPayments.forEach(flowRent -> {
-                flowRent.setIsReinvest(0);
-                rentPaymentService.update(flowRent);
+            rentPayments.forEach(rentPayment -> {
+                rentPayment.setIsReinvest(0);
+                rentPaymentRepository.save(rentPayment);
             });
             cashLogs.forEach(investorCashLogService::delete);
             transactionLogRepository.delete(log);

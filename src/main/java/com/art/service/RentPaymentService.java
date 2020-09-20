@@ -6,6 +6,7 @@ import com.art.model.RentPayment;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.dto.RentPaymentDTO;
 import com.art.model.supporting.filters.RentPaymentFilter;
+import com.art.repository.FacilityRepository;
 import com.art.repository.MoneyRepository;
 import com.art.repository.RentPaymentRepository;
 import com.art.specifications.RentPaymentSpecification;
@@ -35,7 +36,7 @@ public class RentPaymentService {
 
     private final RentPaymentSpecification specification;
 
-    private final FacilityService facilityService;
+    private final FacilityRepository facilityRepository;
 
     private final MoneyRepository moneyRepository;
 
@@ -43,10 +44,10 @@ public class RentPaymentService {
 
     @Autowired
     public RentPaymentService(RentPaymentRepository rentPaymentRepository, RentPaymentSpecification specification,
-                              FacilityService facilityService, MoneyRepository moneyRepository, TransactionLogService txLogService) {
+                              FacilityRepository facilityRepository, MoneyRepository moneyRepository, TransactionLogService txLogService) {
         this.rentPaymentRepository = rentPaymentRepository;
         this.specification = specification;
-        this.facilityService = facilityService;
+        this.facilityRepository = facilityRepository;
         this.moneyRepository = moneyRepository;
         this.txLogService = txLogService;
     }
@@ -112,7 +113,7 @@ public class RentPaymentService {
     public ApiResponse reinvest(RentPaymentDTO dto) {
         List<RentPayment> rentPayments = rentPaymentRepository.findByIdIn(dto.getRentPaymentsId());
         Set<Money> monies = new HashSet<>();
-        Facility facility = facilityService.findById(dto.getFacilityId());
+        Facility facility = facilityRepository.findOne(dto.getFacilityId());
         rentPayments.forEach(rentPayment -> {
             Money money = new Money(rentPayment, dto, facility);
             money = moneyRepository.saveAndFlush(money);
