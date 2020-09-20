@@ -243,16 +243,16 @@ public class TransactionLogService {
     /**
      * Создать запись категории "Реинвестирование с аренды" в логе
      *
-     * @param flowsList список денег с аренды
+     * @param rentPayments список денег с аренды
      * @param cashList список денег, основанных на деньгах с продажи
      */
-    public void reinvestmentRent(List<RentPayment> flowsList, Set<Money> cashList) {
+    public void reinvestmentRent(List<RentPayment> rentPayments, Set<Money> cashList) {
         TransactionLog log = new TransactionLog();
         log.setMonies(cashList);
         log.setType(TransactionType.REINVESTMENT_RENT);
         log.setRollbackEnabled(true);
         create(log);
-        investorCashLogService.reinvestmentRent(flowsList, log);
+        investorCashLogService.reinvestmentRent(rentPayments, log);
     }
 
     @Transactional
@@ -349,14 +349,14 @@ public class TransactionLogService {
     public String rollbackReinvestmentRent(TransactionLog log) {
         Set<Money> cashes = log.getMonies();
         List<InvestorCashLog> cashLogs = investorCashLogService.findByTxId(log.getId());
-        List<Long> flowsCashIdList = cashLogs
+        List<Long> rentPaymentsId = cashLogs
                 .stream()
                 .map(InvestorCashLog::getCashId)
                 .collect(Collectors.toList());
-        List<RentPayment> flowsRent = rentPaymentService.findByIdIn(flowsCashIdList);
+        List<RentPayment> rentPayments = rentPaymentService.findByIdIn(rentPaymentsId);
         try {
-            cashes.forEach(moneyRepository::delete);
-            flowsRent.forEach(flowRent -> {
+            moneyRepository.delete(cashes);
+            rentPayments.forEach(flowRent -> {
                 flowRent.setIsReinvest(0);
                 rentPaymentService.update(flowRent);
             });
