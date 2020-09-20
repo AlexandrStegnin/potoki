@@ -3,6 +3,21 @@ let filters = [];
 let max;
 let min;
 
+let RentPaymentDTO = function () {}
+
+RentPaymentDTO.prototype = {
+    dateGiven: null,
+    facilityId: 0,
+    shareType: null,
+    rentPaymentsId: [],
+    build: function (dateGiven, facilityId, shareType, rentPaymentsId) {
+        this.dateGiven = dateGiven;
+        this.facilityId = facilityId;
+        this.shareType = shareType;
+        this.rentPaymentsId = rentPaymentsId;
+    }
+}
+
 jQuery(document).ready(function ($) {
 
     blockUnblockDropdownMenus('block');
@@ -42,8 +57,8 @@ jQuery(document).ready(function ($) {
     });
 
     $('#reinvestAll').prop('disabled', true);
-    max = findMinMaxDate('#invFlows tbody', 1, "max");
-    min = findMinMaxDate('#invFlows tbody', 1, "min");
+    max = findMinMaxDate('#rentPayments tbody', 1, "max");
+    min = findMinMaxDate('#rentPayments tbody', 1, "min");
     populateStorageUnderFacilities('uFacilities');
     populateStorageRooms();
 
@@ -69,7 +84,7 @@ jQuery(document).ready(function ($) {
         $('#filter-form').submit();
     });
 
-    $('table#invFlows').find('> tbody').find('> tr').each(function (i) {
+    $('table#rentPayments').find('> tbody').find('> tr').each(function (i) {
         $(this).data('passed', true);
     });
 
@@ -90,13 +105,13 @@ jQuery(document).ready(function ($) {
         if (!checked) {
             $('#reinvestAll').addClass('disabled');
             $('#deleteAll').addClass('disabled');
-            $('table#invFlows').find('> tbody').find('> tr').each(function () {
+            $('table#rentPayments').find('> tbody').find('> tr').each(function () {
                 $(this).find(':checkbox:not(:disabled)').prop('checked', false);
             });
         } else {
             $('#reinvestAll').removeClass('disabled');
             $('#deleteAll').removeClass('disabled');
-            $('table#invFlows').find('> tbody').find('> tr').each(function () {
+            $('table#rentPayments').find('> tbody').find('> tr').each(function () {
                 if (!$(this).data('passed')) {
                     $(this).find(':checkbox:not(:disabled)').prop('checked', false);
                 } else {
@@ -136,7 +151,7 @@ jQuery(document).ready(function ($) {
         showLoader();
         event.preventDefault();
         let cashIdList = [];
-        $('table#invFlows').find('> tbody').find('> tr').each(function () {
+        $('table#rentPayments').find('> tbody').find('> tr').each(function () {
             $(this).find(':checkbox:checked').not(':disabled').each(function () {
                 cashIdList.push($(this).closest('tr').attr('id'));
                 $(this).closest('tr').remove();
@@ -165,7 +180,7 @@ function loadFlowsAjax(action) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
 
-    let form = $('#invFlows')[0];
+    let form = $('#rentPayments')[0];
     let data = new FormData();
     let fileBuckets = [];
     $.each($('#file')[0].files, function (k, value) {
@@ -225,73 +240,40 @@ function findMinMaxDate(table, col, maxOrMin) {
 
 function prepareSaveInvestorsCash() {
     showLoader();
-    let err = false;
-    let cashes = [];
-    let cash;
-    let givedCash;
-    let dateGived;
-    let facility;
-    let investor;
-    let cashType = null;
-    let newCashDetails = null;
-    let investorsType;
-    let underFacility;
+    let dateGiven;
+    let facilityId;
     let dateReport;
-    let shareKind;
-    let sourceFacility;
-    let sourceUnderFacility;
+    let shareType;
     let reinvestData = $('form#reInvestData');
     let reinvestIdList = [];
-    let sourceFlowsId;
-    let room;
 
-    dateGived = $('#dateGiv').val();
+    dateGiven = $('#dateGiv').val();
 
-    if (dateGived.length === 0) {
-        $('#dateRepErr').css('display', 'block');
-        err = true;
+    if (dateGiven.length === 0) {
+        $('#dateGivenErr').css('display', 'block');
+        return false;
     } else {
-        $('#dateRepErr').css('display', 'none');
-        err = false;
-        dateGived = new Date(dateGived).getTime();
+        $('#dateGivenErr').css('display', 'none');
+        dateGiven = new Date(dateGiven).getTime();
     }
 
-    facility = {
-        id: reinvestData.find('#srcFacilities').val(),
-        facility: $('#srcFacilities').find('option:selected').text()
-    };
+    facilityId = reinvestData.find('#srcFacility').val()
 
-    if (facility.facility.indexOf('Выберите объект') >= 0) {
+    if (facilityId === 0) {
         $('#facilityErr').css('display', 'block');
-        err = true;
+        return false;
     } else {
         $('#facilityErr').css('display', 'none');
         err = false;
     }
 
-    investorsType = {
-        id: reinvestData.find('#invType').val(),
-        investorsType: $('#invType').find('option:selected').text()
-    };
+    shareType = reinvestData.find('#shareKindName').val()
 
-    if (investorsType.investorsType.indexOf('Выберите вид инвестора') >= 0) {
-        $('#invTypeErr').css('display', 'block');
+    if (shareType.indexOf('Выберите вид доли') >= 0) {
+        $('#shareTypeErr').css('display', 'block');
         err = true;
     } else {
-        $('#invTypeErr').css('display', 'none');
-        err = false;
-    }
-
-    shareKind = {
-        id: reinvestData.find('#shareKindName').val(),
-        shareKind: $('#shareKindName').find('option:selected').text()
-    };
-
-    if (shareKind.shareKind.indexOf('Выберите вид доли') >= 0) {
-        $('#shareKindErr').css('display', 'block');
-        err = true;
-    } else {
-        $('#shareKindErr').css('display', 'none');
+        $('#shareTypeErr').css('display', 'none');
         err = false;
     }
 
@@ -299,93 +281,38 @@ function prepareSaveInvestorsCash() {
         closeLoader();
         return false;
     }
-    let tmpDate;
     let current;
 
     $('#reInvestModal').modal('hide');
     $('#reinvestAll').prop('disabled', true);
-    $('table#invFlows').find('> tbody').find('> tr').each(function (i) {
+    $('table#rentPayments').find('> tbody').find('> tr').each(function (i) {
         $(this).find(':checkbox:checked').not(':disabled').each(function () {
             $(this).closest('tr').find('input:checkbox').prop('disabled', true);
             current = $(this).closest('tr');
-            sourceFlowsId = current.attr('id');
             reinvestIdList.push(current.attr('id'));
             $('#' + current.attr('id') + ' input:checkbox').prop('disabled', true);
-
-            sourceFacility = {
-                id: current.children('td:eq(1)').attr('data-facility-id'),
-                facility: current.children('td:eq(1)').text()
-            };
-
-            sourceUnderFacility = {
-                id: current.children('td:eq(2)').attr('data-under-facility-id'),
-                underFacility: current.children('td:eq(2)').text()
-            };
-
-            room = {
-                id: current.children('td:eq(3)').attr('data-room-id'),
-                room: current.children('td:eq(3)').text()
-            };
-
-            if (room.room.length === 0) {
-                room = null;
-            }
-
-            dateReport = current.children('td:eq(0)').attr('data-report-date');
-            //tmpDate = dateReport.split(".");
-            //dateReport = new Date(parseInt(tmpDate[2]), parseInt(tmpDate[1]) - 1, parseInt(tmpDate[0])).getTime();
-
-            investor = {
-                id: current.children('td:eq(4)').attr('data-investor-id'),
-                login: current.children('td:eq(4)').text()
-            };
-
-            givedCash = current.children('td:eq(16)').attr('data-gived-cash');
-
-            cash = {
-                id: null,
-                givedCash: givedCash,
-                dateGivedCash: dateGived,
-                facility: facility,
-                investor: investor,
-                cashSource: null,
-                cashType: cashType,
-                newCashDetails: newCashDetails,
-                investorsType: investorsType,
-                underFacility: null,
-                dateClosingInvest: null,
-                typeClosingInvest: null,
-                shareKind: shareKind,
-                dateReport: dateReport,
-                sourceFacility: sourceFacility,
-                sourceUnderFacility: sourceUnderFacility,
-                sourceFlowsId: sourceFlowsId,
-                room: room
-            };
-
-            cashes.push(cash);
-
         });
     });
-
-    saveReinvestCash(cashes, reinvestIdList);
+    let rentPaymentDTO = new RentPaymentDTO();
+    rentPaymentDTO.build(dateGiven, facilityId, shareType, reinvestIdList);
+    reinvestRentPayments(rentPaymentDTO);
 
 }
 
-function saveReinvestCash(cashes, reinvestIdList) {
+/**
+ * Реивестировать выплаты с аренды
+ *
+ * @param rentPaymentDTO {RentPaymentDTO} DTO для реинвестирования
+ */
+function reinvestRentPayments(rentPaymentDTO) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
-    let search = ({
-        investorsCashList: cashes,
-        reinvestIdList: reinvestIdList,
-        what: ""
-    });
 
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: "saveReCash",
-        data: JSON.stringify(search),
+        url: "reinvest",
+        data: JSON.stringify(rentPaymentDTO),
         dataType: 'json',
         timeout: 100000,
         beforeSend: function (xhr) {
@@ -393,8 +320,7 @@ function saveReinvestCash(cashes, reinvestIdList) {
         },
         success: function (data) {
             closeLoader();
-            $('#msg').html(data.message);
-            $('#msg-modal').modal('show');
+            showPopup(data.message)
         },
         error: function (e) {
             closeLoader();
@@ -408,25 +334,7 @@ function saveReinvestCash(cashes, reinvestIdList) {
 }
 
 function checkChecked() {
-    return $('table#invflows').find('[type="checkbox"]:checked:not(:disabled)').length;
-}
-
-function showPopup() {
-    $('#popup_modal_form')
-        .css('display', 'block') // убирaем у мoдaльнoгo oкнa display: none;
-        .animate({opacity: 1, top: '50%'}, 200); // плaвнo прибaвляем прoзрaчнoсть oднoвременнo сo съезжaнием вниз
-}
-
-function closePopup() {
-    setTimeout(function () {
-        $('#popup_modal_form')
-            .animate({opacity: 0, top: '45%'}, 200,  // плaвнo меняем прoзрaчнoсть нa 0 и oднoвременнo двигaем oкнo вверх
-                function () { // пoсле aнимaции
-                    $(this).css('display', 'none'); // делaем ему display: none;
-                }
-            )
-            .find('#message').html('');
-    }, 3000);
+    return $('table#rentPayments').find('[type="checkbox"]:checked:not(:disabled)').length;
 }
 
 function blockUnblockDropdownMenus(blockUnblock) {
@@ -475,4 +383,12 @@ function deleteCash(cashIdList) {
             console.log('Закончили!');
         });
 
+}
+
+function showPopup(message) {
+    $('#msg').html(message);
+    $('#msg-modal').modal('show');
+    setTimeout(function () {
+        $('#msg-modal').modal('hide');
+    }, 3000);
 }

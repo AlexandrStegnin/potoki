@@ -109,7 +109,7 @@
                         <button type="submit" id="bth-clear" class="btn btn-danger input-md" style="margin-right: 10px">
                             Сбросить фильтры
                         </button>
-                        <button data-table-id="invFlows" type="button" id="unblock_operations"
+                        <button data-table-id="rentPayments" type="button" id="unblock_operations"
                                 class="btn btn-danger input-md" style="margin-right: 10px">Разблокировать операции
                         </button>
                         <div class="dropdown pull-right" style="margin-right: 10px">
@@ -156,7 +156,7 @@
 </div>
 <div class="container-fluid">
     <table class="table table-striped w-auto table-hover table-sm" style="table-layout: fixed"
-           id="invFlows">
+           id="rentPayments">
         <thead style="text-align: center">
         <tr>
             <th>Дата</th>
@@ -197,6 +197,7 @@
         </tbody>
     </table>
 </div>
+
 <div id="reInvestModal" class="modal fade" role="dialog">
     <div class="modal-dialog" style="width: 90%">
         <div class="modal-content" id="content">
@@ -205,13 +206,13 @@
                 <h4></h4>
             </div>
             <div class="modal-body">
-                <form:form method="POST" modelAttribute="searchSummary" class="form-horizontal" id="reInvestData">
+                <form:form method="POST" modelAttribute="rentPaymentDTO" class="form-horizontal" id="reInvestData">
                     <div class="row">
                         <div class="form-group col-md-12">
                             <label class="col-md-3 control-lable" for="dateGiv">Дата вложения:</label>
                             <div class="col-md-7">
-                                <form:input type="date" path="period" id="dateGiv" class="form-control input-sm"/>
-                                <div id="dateRepErr" style="color: red; display: none">Необходимо выбрать дату
+                                <form:input type="date" path="dateGiven" id="dateGiv" class="form-control input-sm"/>
+                                <div id="dateGivenErr" style="color: red; display: none">Необходимо выбрать дату
                                     вложения
                                 </div>
                             </div>
@@ -220,23 +221,23 @@
 
                     <div class="row" id="facilitiesRow">
                         <div class="form-group col-md-12">
-                            <label class="col-md-3 control-lable" for="srcFacilities">Объект:</label>
+                            <label class="col-md-3 control-lable" for="srcFacility">Объект:</label>
                             <div class="col-md-7">
-                                <form:select path="reFacility" id="srcFacilities" items="${facilitiesList}"
+                                <form:select path="facilityId" id="srcFacility" items="${facilitiesList}"
                                              multiple="false"
-                                             itemValue="id" itemLabel="name" class="form-control input-sm"/>
+                                             itemValue="id" itemLabel="name" class="selectric form-control input-sm"/>
                                 <div id="facilityErr" style="color: red; display: none">Необходимо выбрать объект</div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="row" id="shareKindNameRow">
+                    <div class="row" id="shareTypeNameRow">
                         <div class="form-group col-md-12">
-                            <label class="col-md-3 control-lable" for="shareKindName">Вид доли:</label>
+                            <label class="col-md-3 control-lable" for="shareTypeName">Вид доли:</label>
                             <div class="col-md-7">
-                                <form:select path="shareKind" id="shareKindName" items="${shareTypes}" multiple="false"
-                                             itemValue="id" itemLabel="title" class="form-control input-sm"/>
-                                <div id="shareKindErr" style="color: red; display: none">Необходимо выбрать вид доли
+                                <form:select path="shareType" id="shareTypeName" items="${shareTypes}" multiple="false"
+                                             itemValue="title" itemLabel="title" class="form-control input-sm"/>
+                                <div id="shareTypeErr" style="color: red; display: none">Необходимо выбрать вид доли
                                 </div>
                             </div>
                         </div>
