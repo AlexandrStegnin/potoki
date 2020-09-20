@@ -155,7 +155,7 @@
     </form:form>
 </div>
 <div class="container-fluid">
-    <table class="table table-striped w-auto table-hover table-sm" style="font-size: smaller; table-layout: fixed"
+    <table class="table table-striped w-auto table-hover table-sm" style="table-layout: fixed"
            id="invFlows">
         <thead style="text-align: center">
         <tr>
@@ -164,17 +164,6 @@
             <th>Подобъект</th>
             <th>Помещение</th>
             <th>Инвестор</th>
-            <th>Вид доли</th>
-            <th>Сумма в объекте</th>
-            <th>Сумма в подобъекте</th>
-            <th>Доля для сводной</th>
-            <th>Доля</th>
-            <th>Налог</th>
-            <th>Вывод денег</th>
-            <th>Сумма за месяц</th>
-            <th>По инвестору</th>
-            <th>После налогов</th>
-            <th>После расходов по пустому помещению</th>
             <th>После вывода</th>
             <th style="width: 30px"><input type="checkbox" id="checkAll" value=""></th>
         </tr>
@@ -187,39 +176,6 @@
                 <td data-under-facility-id="${payment.underFacility.id}">${payment.underFacility.name}</td>
                 <td data-room-id="${payment.room.id}">${payment.room.name}</td>
                 <td data-investor-id="${payment.investor.id}">${payment.investor.login}</td>
-                <td>${payment.shareKind}</td>
-                <td data-gived-cash="${payment.givedCash}">
-                    <fmt:setLocale value="ru-RU" scope="session"/>
-                    <fmt:formatNumber value="${payment.givedCash}" type="currency" minFractionDigits="2"/>
-                </td>
-                <td>
-                    <fmt:formatNumber value="${payment.sumInUnderFacility}" type="currency" minFractionDigits="2"/>
-                </td>
-                <td>
-                    <fmt:formatNumber value="${payment.shareForSvod}" type="percent" minFractionDigits="2"/>
-                </td>
-                <td>
-                    <fmt:formatNumber value="${payment.share}" type="percent" minFractionDigits="2"/>
-                </td>
-                <td>
-                    <fmt:formatNumber value="${payment.taxation}" type="percent" minFractionDigits="2"/>
-                </td>
-                <td>
-                    <fmt:formatNumber value="${payment.cashing}" type="percent" minFractionDigits="2"/>
-                </td>
-                <td>
-                    <fmt:formatNumber value="${payment.summa}" type="currency" minFractionDigits="2"/>
-                </td>
-                <td>
-                    <fmt:formatNumber value="${payment.onInvestors}" type="currency" minFractionDigits="2"/>
-                </td>
-                <td>
-                    <fmt:formatNumber value="${payment.afterTax}" type="currency" minFractionDigits="2"/>
-                </td>
-                <td>
-                    <fmt:formatNumber value="${payment.afterDeductionEmptyFacility}" type="currency"
-                                      minFractionDigits="2"/>
-                </td>
                 <td data-gived-cash="${payment.afterCashing}">
                     <fmt:formatNumber value="${payment.afterCashing}" type="currency" minFractionDigits="2"/>
                 </td>
