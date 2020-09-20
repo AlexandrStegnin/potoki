@@ -1,7 +1,12 @@
 package com.art.service;
 
+import com.art.model.Facility;
+import com.art.model.Money;
 import com.art.model.RentPayment;
+import com.art.model.supporting.ApiResponse;
+import com.art.model.supporting.dto.RentPaymentDTO;
 import com.art.model.supporting.filters.RentPaymentFilter;
+import com.art.repository.MoneyRepository;
 import com.art.repository.RentPaymentRepository;
 import com.art.specifications.RentPaymentSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +20,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.math.BigInteger;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -28,10 +35,20 @@ public class RentPaymentService {
 
     private final RentPaymentSpecification specification;
 
+    private final FacilityService facilityService;
+
+    private final MoneyRepository moneyRepository;
+
+    private final TransactionLogService txLogService;
+
     @Autowired
-    public RentPaymentService(RentPaymentRepository rentPaymentRepository, RentPaymentSpecification specification) {
+    public RentPaymentService(RentPaymentRepository rentPaymentRepository, RentPaymentSpecification specification,
+                              FacilityService facilityService, MoneyRepository moneyRepository, TransactionLogService txLogService) {
         this.rentPaymentRepository = rentPaymentRepository;
         this.specification = specification;
+        this.facilityService = facilityService;
+        this.moneyRepository = moneyRepository;
+        this.txLogService = txLogService;
     }
 
 //    @Cacheable(Constant.INVESTOR_FLOWS_CACHE_KEY)
@@ -85,4 +102,24 @@ public class RentPaymentService {
                 pageable
         );
     }
+
+    /**
+     * Реинвестировать суммы с аренды
+     *
+     * @param dto DTO для реинвестирования
+     * @return сообщение об успешном/неудачном завершении операции
+     */
+    public ApiResponse reinvest(RentPaymentDTO dto) {
+        List<RentPayment> rentPayments = rentPaymentRepository.findByIdIn(dto.getRentPaymentsId());
+        Set<Money> monies = new HashSet<>();
+        Facility facility = facilityService.findById(dto.getFacilityId());
+        rentPayments.forEach(rentPayment -> {
+            Money money = new Money(rentPayment, dto, facility);
+            money = moneyRepository.saveAndFlush(money);
+            monies.add(money);
+        });
+        txLogService.reinvestmentRent(rentPayments, monies);
+        return new ApiResponse("Реинвестирование денег с аренды прошло успешно");
+    }
+
 }

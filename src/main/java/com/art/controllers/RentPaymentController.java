@@ -6,6 +6,7 @@ import com.art.model.*;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.FileBucket;
 import com.art.model.supporting.SearchSummary;
+import com.art.model.supporting.dto.RentPaymentDTO;
 import com.art.model.supporting.enums.ShareType;
 import com.art.model.supporting.enums.UploadType;
 import com.art.model.supporting.filters.RentPaymentFilter;
@@ -65,7 +66,7 @@ public class RentPaymentController {
      * @return страница
      */
     @GetMapping(path = Location.RENT_PAYMENTS)
-    public ModelAndView flowsSale(@PageableDefault(size = 100) @SortDefault Pageable pageable) {
+    public ModelAndView rentPayments(@PageableDefault(size = 100) @SortDefault Pageable pageable) {
         return prepareModel(filters);
     }
 
@@ -92,6 +93,12 @@ public class RentPaymentController {
         return uploadExcelService.upload(request, UploadType.RENT);
     }
 
+    @PostMapping(path = Location.RENT_PAYMENTS_REINVEST)
+    @ResponseBody
+    public ApiResponse reinvestRentPayments(@RequestBody RentPaymentDTO rentPaymentDTO) {
+        return rentPaymentService.reinvest(rentPaymentDTO);
+    }
+
     /**
      * Подготовить модель для страницы
      *
@@ -107,6 +114,7 @@ public class RentPaymentController {
         model.addObject("fileBucket", fileModel);
         model.addObject("filter", filters);
         model.addObject("searchSummary", searchSummary);
+        model.addObject("rentPaymentDTO", new RentPaymentDTO());
         return model;
     }
 
