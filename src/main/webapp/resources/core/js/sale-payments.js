@@ -199,18 +199,8 @@ jQuery(document).ready(function ($) {
     });
 });
 
-function show(data) {
-    let json = JSON.stringify(data);
-    $('#cash-details').html(json);
-}
-
 function enableSearchButton(flag) {
     $("#btn-search").prop("disabled", flag);
-}
-
-function display(data, tableForSearch) {
-    let json = JSON.stringify(data, null, 4);
-    $('#' + tableForSearch).html(json);
 }
 
 function loadFlowsAjax(action) {
@@ -566,7 +556,6 @@ function blockUnblockDivide() {
         }
     });
 }
-
 
 function getUFFromLS(facilityId, uFacilitiesId) {
     let underFacilities;
