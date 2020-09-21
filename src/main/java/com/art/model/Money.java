@@ -142,12 +142,12 @@ public class Money implements Serializable {
     }
 
     public Money(RentPayment rentPayment, RentPaymentDTO dto, Facility facility) {
-        this.givenCash = BigDecimal.valueOf(rentPayment.getGivedCash());
+        this.givenCash = BigDecimal.valueOf(rentPayment.getGivenCash());
         this.dateGiven = dto.getDateGiven();
         this.facility = facility;
         this.investor = rentPayment.getInvestor();
         this.shareType = ShareType.fromTitle(dto.getShareType());
-        this.dateReport = rentPayment.getReportDate();
+        this.dateReport = rentPayment.getDateReport();
         this.sourceFacility = rentPayment.getFacility();
         this.sourceUnderFacility = rentPayment.getUnderFacility();
         this.sourceFlowsId = String.valueOf(rentPayment.getId());

@@ -146,11 +146,11 @@ public class InvestorCashLog {
         this.cashId = payment.getId();
         this.investor = payment.getInvestor();
         this.facility = payment.getFacility();
-        this.dateGivenCash = payment.getReportDate();
+        this.dateGivenCash = payment.getDateReport();
         this.givenCash = BigDecimal.valueOf(payment.getAfterCashing());
         this.transactionLog = log;
         this.instanceOf = instanceOf;
-        this.shareType = ShareType.fromTitle(payment.getShareKind());
+        this.shareType = ShareType.fromTitle(payment.getShareType());
     }
 
 }

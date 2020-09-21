@@ -33,13 +33,13 @@ public class RentPaymentSpecification extends BaseSpecification<RentPayment, Ren
         return ((root, criteriaQuery, criteriaBuilder) -> {
             if (!Objects.equals(null, min) && !Objects.equals(null, max)) {
                 return criteriaBuilder.and(
-                        criteriaBuilder.greaterThanOrEqualTo(root.get(RentPayment_.reportDate), min),
-                        criteriaBuilder.lessThanOrEqualTo(root.get(RentPayment_.reportDate), max)
+                        criteriaBuilder.greaterThanOrEqualTo(root.get(RentPayment_.dateReport), min),
+                        criteriaBuilder.lessThanOrEqualTo(root.get(RentPayment_.dateReport), max)
                 );
             } else if (!Objects.equals(null, min)) {
-                return criteriaBuilder.greaterThanOrEqualTo(root.get(RentPayment_.reportDate), min);
+                return criteriaBuilder.greaterThanOrEqualTo(root.get(RentPayment_.dateReport), min);
             } else if (!Objects.equals(null, max)) {
-                return criteriaBuilder.lessThanOrEqualTo(root.get(RentPayment_.reportDate), max);
+                return criteriaBuilder.lessThanOrEqualTo(root.get(RentPayment_.dateReport), max);
             } else {
                 return null;
             }

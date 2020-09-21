@@ -177,7 +177,7 @@
         <tbody style="text-align: center">
         <c:forEach items="${page.content}" var="payment">
             <tr id="${payment.id}">
-                <td data-report-date="${payment.reportDate.time}">${payment.getReportDateToLocalDate()}</td>
+                <td data-report-date="${payment.dateReport.time}">${payment.getDateReportFormatted()}</td>
                 <td data-facility-id="${payment.facility.id}">${payment.facility.name}</td>
                 <td data-under-facility-id="${payment.underFacility.id}">${payment.underFacility.name}</td>
                 <td data-room-id="${payment.room.id}">${payment.room.name}</td>
@@ -276,7 +276,6 @@
 <script src="<c:url value='https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/progress.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
-<script type="text/javascript" src="<c:url value='/resources/core/js/progress.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/jsFunctions.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/payments-rent.js' />"></script>

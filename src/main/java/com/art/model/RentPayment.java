@@ -1,274 +1,100 @@
 package com.art.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@ToString
-@AllArgsConstructor
-@EqualsAndHashCode
-@Getter
-@Setter
+@Data
 @Entity
-@Table(name = "InvestorsFlows")
-public class RentPayment implements Serializable {
-    private Long id;
-    private Date reportDate;
-    private Facility facility;
-    private UnderFacility underFacility;
-    private AppUser investor;
-    private String shareKind;
-    private float givedCash;
-    private float share;
-    private float taxation;
-    private float cashing;
-    private float summa;
-    private float sumInUnderFacility;
-    private float shareForSvod;
-    private float onInvestors;
-    private float afterTax;
-    private float afterDeductionEmptyFacility;
-    private float afterCashing;
-    private String reInvest;
-    private Facility reFacility;
-    private int isReinvest;
-    private Room room;
-
-    public RentPayment() {
-    }
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "rent_payment")
+public class RentPayment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "Id")
-    public Long getId() {
-        return id;
-    }
+    @Column(name = "id")
+    private Long id;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Column(name = "date_report")
+    private Date dateReport;
 
-    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinColumn(name = "facilityId", referencedColumnName = "id")
-    public Facility getFacility() {
-        return facility;
-    }
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "facility_id", referencedColumnName = "id")
+    private Facility facility;
 
-    public void setFacility(Facility facility) {
-        this.facility = facility;
-    }
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "under_facility_id", referencedColumnName = "id")
+    private UnderFacility underFacility;
 
-    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinColumn(name = "underFacilityId", referencedColumnName = "id")
-    public UnderFacility getUnderFacility() {
-        return underFacility;
-    }
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "investor_id", referencedColumnName = "id")
+    private AppUser investor;
 
-    public void setUnderFacility(UnderFacility underFacility) {
-        this.underFacility = underFacility;
-    }
+    @Column(name = "share_type")
+    private String shareType;
 
-    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinColumn(name = "investorId", referencedColumnName = "id")
-    public AppUser getInvestor() {
-        return investor;
-    }
+    @Column(name = "given_cash")
+    private float givenCash;
 
-    public void setInvestor(AppUser investor) {
-        this.investor = investor;
-    }
+    @Column(name = "share")
+    private float share;
 
-    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinColumn(name = "reFacilityId", referencedColumnName = "id")
-    public Facility getReFacility() {
-        return reFacility;
-    }
+    @Column(name = "taxation")
+    private float taxation;
 
-    public void setReFacility(Facility reFacility) {
-        this.reFacility = reFacility;
-    }
+    @Column(name = "cashing")
+    private float cashing;
 
-    @Column(name = "ReportDate")
-    public Date getReportDate() {
-        return reportDate;
-    }
+    @Column(name = "summa")
+    private float summa;
 
-    public void setReportDate(Date reportDate) {
-        this.reportDate = reportDate;
-    }
+    @Column(name = "sum_in_under_facility")
+    private float sumInUnderFacility;
 
-    @Column(name = "ShareKind")
-    public String getShareKind() {
-        return shareKind;
-    }
+    @Column(name = "share_for_svod")
+    private float shareForSvod;
 
-    public void setShareKind(String shareKind) {
-        this.shareKind = shareKind;
-    }
+    @Column(name = "on_investor")
+    private float onInvestor;
 
-    @Column(name = "GivedCash")
-    public float getGivedCash() {
-        return givedCash;
-    }
+    @Column(name = "after_tax")
+    private float afterTax;
 
-    public void setGivedCash(float givedCash) {
-        this.givedCash = givedCash;
-    }
+    @Column(name = "after_deduction_empty_facility")
+    private float afterDeductionEmptyFacility;
 
-    @Column(name = "Share")
-    public float getShare() {
-        return share;
-    }
+    @Column(name = "after_cashing")
+    private float afterCashing;
 
-    public void setShare(float share) {
-        this.share = share;
-    }
+    @Column(name = "reinvest")
+    private String reInvest;
 
-    @Column(name = "Taxation")
-    public float getTaxation() {
-        return taxation;
-    }
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "re_facility_id", referencedColumnName = "id")
+    private Facility reFacility;
 
-    public void setTaxation(float taxation) {
-        this.taxation = taxation;
-    }
+    @Column(name = "is_reinvest")
+    private int isReinvest;
 
-    @Column(name = "Cashing")
-    public float getCashing() {
-        return cashing;
-    }
-
-    public void setCashing(float cashing) {
-        this.cashing = cashing;
-    }
-
-    @Column(name = "Summa")
-    public float getSumma() {
-        return summa;
-    }
-
-    public void setSumma(float summa) {
-        this.summa = summa;
-    }
-
-    @Column(name = "OnInvestors")
-    public float getOnInvestors() {
-        return onInvestors;
-    }
-
-    public void setOnInvestors(float onInvestors) {
-        this.onInvestors = onInvestors;
-    }
-
-    @Column(name = "AfterTax")
-    public float getAfterTax() {
-        return afterTax;
-    }
-
-    public void setAfterTax(float afterTax) {
-        this.afterTax = afterTax;
-    }
-
-    @Column(name = "AfterCashing")
-    public float getAfterCashing() {
-        return afterCashing;
-    }
-
-    public void setAfterCashing(float afterCashing) {
-        this.afterCashing = afterCashing;
-    }
-
-    @Column(name = "ReInvest")
-    public String getReInvest() {
-        return reInvest;
-    }
-
-    public void setReInvest(String reInvest) {
-        this.reInvest = reInvest;
-    }
-
-    @Column(name = "SumInUnderFacility")
-    public float getSumInUnderFacility() {
-        return sumInUnderFacility;
-    }
-
-    public void setSumInUnderFacility(float sumInUnderFacility) {
-        this.sumInUnderFacility = sumInUnderFacility;
-    }
-
-    @Column(name = "ShareForSvod")
-    public float getShareForSvod() {
-        return shareForSvod;
-    }
-
-    public void setShareForSvod(float shareForSvod) {
-        this.shareForSvod = shareForSvod;
-    }
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "room_id", referencedColumnName = "id")
+    private Room room;
 
     @Transient
-    public String getReportDateToLocalDate() {
+    public String getDateReportFormatted() {
         String localDate = "";
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         try {
-            localDate = format.format(reportDate);
+            localDate = format.format(dateReport);
         } catch (Exception ignored) {
         }
 
         return localDate;
     }
 
-    @Transient
-    public String getYearReportDate() {
-        String localDate = "";
-        SimpleDateFormat format = new SimpleDateFormat("yyyy");
-        try {
-            localDate = format.format(reportDate);
-        } catch (Exception ignored) {
-        }
-
-        return localDate;
-    }
-
-    @Transient
-    public String getMonthReportDate() {
-        String localDate = "";
-        SimpleDateFormat format = new SimpleDateFormat("MM");
-        try {
-            localDate = format.format(reportDate);
-        } catch (Exception ignored) {
-        }
-
-        return localDate;
-    }
-
-    @Column(name = "AfterDeductionEmptyFacility")
-    public float getAfterDeductionEmptyFacility() {
-        return afterDeductionEmptyFacility;
-    }
-
-    public void setAfterDeductionEmptyFacility(float afterDeductionEmptyFacility) {
-        this.afterDeductionEmptyFacility = afterDeductionEmptyFacility;
-    }
-
-    @Column(name = "IsReinvest")
-    public int getIsReinvest() {
-        return isReinvest;
-    }
-
-    public void setIsReinvest(int isReinvest) {
-        this.isReinvest = isReinvest;
-    }
-
-    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinColumn(name = "RoomId", referencedColumnName = "id")
-    public Room getRoom() {
-        return room;
-    }
-
-    public void setRoom(Room room) {
-        this.room = room;
-    }
 }

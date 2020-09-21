@@ -137,7 +137,7 @@ public class UploadExcelFunc {
                         return;
                     }
                     RentPayment rentPayment = new RentPayment();
-                    rentPayment.setReportDate(Date.from(cal.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+                    rentPayment.setDateReport(Date.from(cal.atStartOfDay(ZoneId.systemDefault()).toInstant()));
                     rentPayment.setFacility(facility);
 
                     rentPayment.setUnderFacility(underFacility);
@@ -147,8 +147,8 @@ public class UploadExcelFunc {
                             .findFirst().orElse(null));
 
                     rentPayment.setInvestor(user);
-                    rentPayment.setShareKind(row.getCell(5).getStringCellValue());
-                    rentPayment.setGivedCash(Float.parseFloat(row.getCell(6).getStringCellValue()));
+                    rentPayment.setShareType(row.getCell(5).getStringCellValue());
+                    rentPayment.setGivenCash(Float.parseFloat(row.getCell(6).getStringCellValue()));
                     rentPayment.setSumInUnderFacility(Float.parseFloat(row.getCell(7).getStringCellValue()));
                     rentPayment.setShareForSvod(Float.parseFloat(row.getCell(8).getStringCellValue()));
 
@@ -156,7 +156,7 @@ public class UploadExcelFunc {
                     rentPayment.setTaxation(Float.parseFloat(row.getCell(10).getStringCellValue()));
                     rentPayment.setCashing(Float.parseFloat(row.getCell(11).getStringCellValue()));
                     rentPayment.setSumma(Float.parseFloat(row.getCell(13).getStringCellValue()));
-                    rentPayment.setOnInvestors(Float.parseFloat(row.getCell(14).getStringCellValue()));
+                    rentPayment.setOnInvestor(Float.parseFloat(row.getCell(14).getStringCellValue()));
                     rentPayment.setAfterTax(Float.parseFloat(row.getCell(15).getStringCellValue()));
                     rentPayment.setAfterDeductionEmptyFacility(Float.parseFloat(row.getCell(16).getStringCellValue()));
                     rentPayment.setAfterCashing(Float.parseFloat(row.getCell(17).getStringCellValue()));
@@ -175,12 +175,12 @@ public class UploadExcelFunc {
                     rentPayment.setReFacility(reFacility);
 
                     List<RentPayment> flowsList = rentPaymentTmp.stream()
-                            .filter(flows -> globalFunctions.getMonthInt(flows.getReportDate()) ==
-                                    globalFunctions.getMonthInt(rentPayment.getReportDate()) &&
-                                    globalFunctions.getYearInt(flows.getReportDate()) ==
-                                            globalFunctions.getYearInt(rentPayment.getReportDate()) &&
-                                    globalFunctions.getDayInt(flows.getReportDate()) ==
-                                            globalFunctions.getDayInt(rentPayment.getReportDate()))
+                            .filter(flows -> globalFunctions.getMonthInt(flows.getDateReport()) ==
+                                    globalFunctions.getMonthInt(rentPayment.getDateReport()) &&
+                                    globalFunctions.getYearInt(flows.getDateReport()) ==
+                                            globalFunctions.getYearInt(rentPayment.getDateReport()) &&
+                                    globalFunctions.getDayInt(flows.getDateReport()) ==
+                                            globalFunctions.getDayInt(rentPayment.getDateReport()))
 
                             .filter(flows -> !Objects.equals(flows.getFacility(), null) &&
                                     flows.getFacility().getId().equals(rentPayment.getFacility().getId()))
