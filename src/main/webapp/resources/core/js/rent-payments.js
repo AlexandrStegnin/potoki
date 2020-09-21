@@ -45,6 +45,18 @@ jQuery(document).ready(function ($) {
         prepareSaveInvestorsCash();
     });
 
+    $(document).on('click', '#delete-all', function (e) {
+        e.preventDefault()
+        let deleteForm = $('#confirm-delete');
+        deleteForm.find('#message').html('Вы действительно хотите удалить все данные по выплатам (аренда)?')
+        deleteForm.modal('show')
+    })
+
+    $(document).on('click', '#accept-delete', function () {
+        $('#confirm-delete').modal('hide')
+        deleteAll()
+    })
+
     $(document).on('click', '#bth-clear', function (e) {
         e.preventDefault();
         $('#fFacilities').find('option:eq(0)').prop('selected', true);
@@ -200,6 +212,7 @@ function upload() {
         success: function (data) {
             closeLoader();
             showPopup(data.message);
+            window.location.href = 'rent'
         },
         error: function (e) {
             closeLoader();
@@ -366,8 +379,36 @@ function deleteCash(cashIdList) {
         .always(function () {
             console.log('Закончили!');
         });
-
 }
+
+function deleteAll() {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+    showLoader()
+    $.ajax({
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: "rent/delete/all",
+        timeout: 100000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        }
+    })
+        .done(function (data) {
+            closeLoader();
+            showPopup(data.message);
+            window.location.href = 'rent'
+        })
+        .fail(function (e) {
+            closeLoader();
+            console.log(e);
+        })
+        .always(function () {
+            closeLoader();
+            console.log('Закончили!');
+        });
+}
+
 
 function showPopup(message) {
     $('#msg').html(message);
