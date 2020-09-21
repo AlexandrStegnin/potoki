@@ -96,7 +96,7 @@ public class InvestorCashLogService {
      * @param flowsSales суммы с продажи
      * @param log        лог
      */
-    public void reinvestmentSale(List<InvestorsFlowsSale> flowsSales, TransactionLog log) {
+    public void reinvestmentSale(List<SalePayment> flowsSales, TransactionLog log) {
         flowsSales.forEach(flowsSale -> {
             InvestorCashLog cashLog = new InvestorCashLog(flowsSale, log, CashType.SALE_CASH);
             investorCashLogRepository.save(cashLog);

@@ -110,8 +110,8 @@ public class InvestorsFlowsSaleController {
         GenericResponse response = new GenericResponse();
         BigInteger flowId = searchSummary.getDivideSumId();
         BigDecimal divideSum = searchSummary.getDivideSum();
-        InvestorsFlowsSale oldFlows = investorsFlowsSaleService.findById(flowId);
-        InvestorsFlowsSale newFlows = investorsFlowsSaleService.findById(flowId);
+        SalePayment oldFlows = investorsFlowsSaleService.findById(flowId);
+        SalePayment newFlows = investorsFlowsSaleService.findById(flowId);
         oldFlows.setProfitToReInvest(oldFlows.getProfitToReInvest().subtract(divideSum));
         newFlows.setId(null);
         newFlows.setProfitToReInvest(divideSum);
@@ -135,11 +135,11 @@ public class InvestorsFlowsSaleController {
      * @param filters фильтры
      */
     private ModelAndView prepareModel(FlowsSaleFilter filters) {
-        ModelAndView model = new ModelAndView("viewInvestorsFlowsSale");
+        ModelAndView model = new ModelAndView("sale-payment-list");
         FileBucket fileModel = new FileBucket();
         SearchSummary searchSummary = new SearchSummary();
         Pageable pageable = new PageRequest(filters.getPageNumber(), filters.getPageSize());
-        Page<InvestorsFlowsSale> page = investorsFlowsSaleService.findAll(filters, pageable);
+        Page<SalePayment> page = investorsFlowsSaleService.findAll(filters, pageable);
         model.addObject("page", page);
         model.addObject("fileBucket", fileModel);
         model.addObject("flowsSaleFilters", filters);

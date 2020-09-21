@@ -352,7 +352,7 @@ public class MoneyController {
 
                 sourceIdList.forEach(id -> {
                     RentPayment flows = rentPaymentService.findById(id);
-                    InvestorsFlowsSale flowsSale = investorsFlowsSaleService.findById(id);
+                    SalePayment flowsSale = investorsFlowsSaleService.findById(id);
                     if (!Objects.equals(null, flows)) {
                         flows.setIsReinvest(0);
                         rentPaymentService.update(flows);
@@ -589,7 +589,7 @@ public class MoneyController {
         NewCashDetail newCashDetail;
 
         // список для создания записи в логе по операции реинвестирования с продажи
-        List<InvestorsFlowsSale> flowsSaleList = new ArrayList<>();
+        List<SalePayment> flowsSaleList = new ArrayList<>();
 
         // список для создания записи в логе по операции реинвестирования с аренды
         List<RentPayment> flowsList = new ArrayList<>();
@@ -597,7 +597,7 @@ public class MoneyController {
 
         if ("sale".equals(searchSummary.getWhat())) {
             newCashDetail = newCashDetailService.findByName("Реинвестирование с продажи (прибыль)");
-            List<InvestorsFlowsSale> flowsSales = investorsFlowsSaleService.
+            List<SalePayment> flowsSales = investorsFlowsSaleService.
                     findByIdInWithAllFields(searchSummary.getReinvestIdList());
             flowsSales.forEach(f -> {
                 f.setIsReinvest(1);
@@ -633,7 +633,7 @@ public class MoneyController {
 
         } catch (Exception ex) {
             if ("sale".equals(searchSummary.getWhat())) {
-                List<InvestorsFlowsSale> flowsSales = investorsFlowsSaleService.
+                List<SalePayment> flowsSales = investorsFlowsSaleService.
                         findByIdInWithAllFields(searchSummary.getReinvestIdList());
                 flowsSales.forEach(f -> {
                     f.setIsReinvest(0);

@@ -13,10 +13,10 @@ import java.util.Objects;
 import static org.springframework.data.jpa.domain.Specifications.where;
 
 @Component
-public class InvestorsFlowsSaleSpecification extends BaseSpecification<InvestorsFlowsSale, FlowsSaleFilter> {
+public class InvestorsFlowsSaleSpecification extends BaseSpecification<SalePayment, FlowsSaleFilter> {
 
     @Override
-    public Specification<InvestorsFlowsSale> getFilter(FlowsSaleFilter filter) {
+    public Specification<SalePayment> getFilter(FlowsSaleFilter filter) {
         return (root, query, cb) -> where(
                 dateGivenCashBetween(filter.getFromDate(), filter.getToDate()))
                 .and(facilityEqual(filter.getFacility()))
@@ -26,17 +26,17 @@ public class InvestorsFlowsSaleSpecification extends BaseSpecification<Investors
                 .toPredicate(root, query, cb);
     }
 
-    private static Specification<InvestorsFlowsSale> dateGivenCashBetween(Date min, Date max) {
+    private static Specification<SalePayment> dateGivenCashBetween(Date min, Date max) {
         return ((root, criteriaQuery, criteriaBuilder) -> {
             if (!Objects.equals(null, min) && !Objects.equals(null, max)) {
                 return criteriaBuilder.and(
-                        criteriaBuilder.greaterThanOrEqualTo(root.get(InvestorsFlowsSale_.dateGived), min),
-                        criteriaBuilder.lessThanOrEqualTo(root.get(InvestorsFlowsSale_.dateGived), max)
+                        criteriaBuilder.greaterThanOrEqualTo(root.get(SalePayment_.dateGived), min),
+                        criteriaBuilder.lessThanOrEqualTo(root.get(SalePayment_.dateGived), max)
                 );
             } else if (!Objects.equals(null, min)) {
-                return criteriaBuilder.greaterThanOrEqualTo(root.get(InvestorsFlowsSale_.dateGived), min);
+                return criteriaBuilder.greaterThanOrEqualTo(root.get(SalePayment_.dateGived), min);
             } else if (!Objects.equals(null, max)) {
-                return criteriaBuilder.lessThanOrEqualTo(root.get(InvestorsFlowsSale_.dateGived), max);
+                return criteriaBuilder.lessThanOrEqualTo(root.get(SalePayment_.dateGived), max);
             } else {
                 return null;
             }
@@ -44,42 +44,42 @@ public class InvestorsFlowsSaleSpecification extends BaseSpecification<Investors
         );
     }
 
-    private static Specification<InvestorsFlowsSale> facilityEqual(String name) {
+    private static Specification<SalePayment> facilityEqual(String name) {
         return ((root, criteriaQuery, criteriaBuilder) -> {
             if (Objects.equals(null, name) || StringUtils.isEmpty(name) || "Выберите объект".equalsIgnoreCase(name.trim())) {
                 return null;
             } else {
-                return criteriaBuilder.equal(root.get(InvestorsFlowsSale_.facility).get(Facility_.name), name);
+                return criteriaBuilder.equal(root.get(SalePayment_.facility).get(Facility_.name), name);
             }
         }
         );
     }
 
-    private static Specification<InvestorsFlowsSale> underFacilityEqual(String underFacility) {
+    private static Specification<SalePayment> underFacilityEqual(String underFacility) {
         return ((root, criteriaQuery, criteriaBuilder) -> {
             if (Objects.equals(null, underFacility) || StringUtils.isEmpty(underFacility) || "Выберите подобъект".equalsIgnoreCase(underFacility.trim())
             || "Без подобъекта".equalsIgnoreCase(underFacility.trim())) {
                 return null;
             } else {
-                return criteriaBuilder.equal(root.get(InvestorsFlowsSale_.underFacility).get(UnderFacility_.name), underFacility);
+                return criteriaBuilder.equal(root.get(SalePayment_.underFacility).get(UnderFacility_.name), underFacility);
             }
         }
         );
     }
 
-    private static Specification<InvestorsFlowsSale> loginIn(List<String> loginList) {
+    private static Specification<SalePayment> loginIn(List<String> loginList) {
         if (loginList == null || loginList.size() == 0 || loginList.get(0).trim().equalsIgnoreCase("Выберите инвестора")) {
             return null;
         } else {
             return ((root, criteriaQuery, criteriaBuilder) ->
-                    root.get(InvestorsFlowsSale_.investor).get(AppUser_.login).in(loginList)
+                    root.get(SalePayment_.investor).get(AppUser_.login).in(loginList)
             );
         }
     }
 
-    private static Specification<InvestorsFlowsSale> facilityIsNotNull() {
+    private static Specification<SalePayment> facilityIsNotNull() {
         return ((root, criteriaQuery, criteriaBuilder) ->
-                root.get(InvestorsFlowsSale_.facility).get(Facility_.name).isNotNull()
+                root.get(SalePayment_.facility).get(Facility_.name).isNotNull()
         );
     }
 

@@ -1,7 +1,7 @@
 package com.art.service;
 
-import com.art.model.InvestorsFlowsSale;
-import com.art.model.InvestorsFlowsSale_;
+import com.art.model.SalePayment;
+import com.art.model.SalePayment_;
 import com.art.model.supporting.filters.FlowsSaleFilter;
 import com.art.repository.InvestorsFlowsSaleRepository;
 import com.art.specifications.InvestorsFlowsSaleSpecification;
@@ -38,97 +38,97 @@ public class InvestorsFlowsSaleService {
     }
 
 //    @CachePut(Constant.INVESTOR_FLOWS_SALE_CACHE_KEY)
-    public void create(InvestorsFlowsSale sale) {
+    public void create(SalePayment sale) {
         saleRepository.save(sale);
     }
 
 //    @CachePut(value = Constant.INVESTOR_FLOWS_SALE_CACHE_KEY, key = "#sale.id")
-    public void update(InvestorsFlowsSale sale) {
+    public void update(SalePayment sale) {
         this.em.merge(sale);
     }
 
 //    @Cacheable(Constant.INVESTOR_FLOWS_SALE_CACHE_KEY)
-    public List<InvestorsFlowsSale> findAll() {
+    public List<SalePayment> findAll() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<InvestorsFlowsSale> saleCriteriaQuery = cb.createQuery(InvestorsFlowsSale.class);
-        Root<InvestorsFlowsSale> saleRoot = saleCriteriaQuery.from(InvestorsFlowsSale.class);
-        saleRoot.fetch(InvestorsFlowsSale_.facility, JoinType.LEFT);
-        saleRoot.fetch(InvestorsFlowsSale_.investor, JoinType.LEFT);
-        saleRoot.fetch(InvestorsFlowsSale_.underFacility, JoinType.LEFT);
+        CriteriaQuery<SalePayment> saleCriteriaQuery = cb.createQuery(SalePayment.class);
+        Root<SalePayment> saleRoot = saleCriteriaQuery.from(SalePayment.class);
+        saleRoot.fetch(SalePayment_.facility, JoinType.LEFT);
+        saleRoot.fetch(SalePayment_.investor, JoinType.LEFT);
+        saleRoot.fetch(SalePayment_.underFacility, JoinType.LEFT);
         saleCriteriaQuery.select(saleRoot).distinct(true);
         return em.createQuery(saleCriteriaQuery).getResultList();
     }
 
 //    @Cacheable(Constant.INVESTOR_FLOWS_SALE_CACHE_KEY)
-    public List<InvestorsFlowsSale> findByIdInWithAllFields(List<Long> idList) {
+    public List<SalePayment> findByIdInWithAllFields(List<Long> idList) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<InvestorsFlowsSale> saleCriteriaQuery = cb.createQuery(InvestorsFlowsSale.class);
-        Root<InvestorsFlowsSale> saleRoot = saleCriteriaQuery.from(InvestorsFlowsSale.class);
-        saleRoot.fetch(InvestorsFlowsSale_.facility, JoinType.LEFT);
-        saleRoot.fetch(InvestorsFlowsSale_.investor, JoinType.LEFT);
-        saleRoot.fetch(InvestorsFlowsSale_.underFacility, JoinType.LEFT);
+        CriteriaQuery<SalePayment> saleCriteriaQuery = cb.createQuery(SalePayment.class);
+        Root<SalePayment> saleRoot = saleCriteriaQuery.from(SalePayment.class);
+        saleRoot.fetch(SalePayment_.facility, JoinType.LEFT);
+        saleRoot.fetch(SalePayment_.investor, JoinType.LEFT);
+        saleRoot.fetch(SalePayment_.underFacility, JoinType.LEFT);
         saleCriteriaQuery.select(saleRoot).distinct(true);
-        saleCriteriaQuery.where(saleRoot.get(InvestorsFlowsSale_.id).in(idList));
+        saleCriteriaQuery.where(saleRoot.get(SalePayment_.id).in(idList));
         return em.createQuery(saleCriteriaQuery).getResultList();
     }
 
 //    @Cacheable(Constant.INVESTOR_FLOWS_SALE_CACHE_KEY)
-    public List<InvestorsFlowsSale> findByIdIn(List<Long> idList) {
+    public List<SalePayment> findByIdIn(List<Long> idList) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<InvestorsFlowsSale> saleCriteriaQuery = cb.createQuery(InvestorsFlowsSale.class);
-        Root<InvestorsFlowsSale> saleRoot = saleCriteriaQuery.from(InvestorsFlowsSale.class);
+        CriteriaQuery<SalePayment> saleCriteriaQuery = cb.createQuery(SalePayment.class);
+        Root<SalePayment> saleRoot = saleCriteriaQuery.from(SalePayment.class);
         saleCriteriaQuery.select(saleRoot);
-        saleCriteriaQuery.where(saleRoot.get(InvestorsFlowsSale_.id).in(idList));
+        saleCriteriaQuery.where(saleRoot.get(SalePayment_.id).in(idList));
         return em.createQuery(saleCriteriaQuery).getResultList();
     }
 
 //    @Cacheable(Constant.INVESTOR_FLOWS_SALE_CACHE_KEY)
-    public InvestorsFlowsSale findById(BigInteger id) {
-        return this.em.find(InvestorsFlowsSale.class, id);
+    public SalePayment findById(BigInteger id) {
+        return this.em.find(SalePayment.class, id);
     }
 
 //    @CacheEvict(Constant.INVESTOR_FLOWS_SALE_CACHE_KEY)
     public void delete() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaDelete<InvestorsFlowsSale> query = cb.createCriteriaDelete(InvestorsFlowsSale.class);
-        query.from(InvestorsFlowsSale.class);
+        CriteriaDelete<SalePayment> query = cb.createCriteriaDelete(SalePayment.class);
+        query.from(SalePayment.class);
         em.createQuery(query).executeUpdate();
     }
 
 //    @CacheEvict(Constant.INVESTOR_FLOWS_SALE_CACHE_KEY)
     public void deleteById(BigInteger id) {
         CriteriaBuilder cb = this.em.getCriteriaBuilder();
-        CriteriaDelete<InvestorsFlowsSale> delete = cb.createCriteriaDelete(InvestorsFlowsSale.class);
-        Root<InvestorsFlowsSale> flowsSaleRoot = delete.from(InvestorsFlowsSale.class);
-        delete.where(cb.equal(flowsSaleRoot.get(InvestorsFlowsSale_.id), id));
+        CriteriaDelete<SalePayment> delete = cb.createCriteriaDelete(SalePayment.class);
+        Root<SalePayment> flowsSaleRoot = delete.from(SalePayment.class);
+        delete.where(cb.equal(flowsSaleRoot.get(SalePayment_.id), id));
         this.em.createQuery(delete).executeUpdate();
     }
 
 //    @Cacheable(Constant.INVESTOR_FLOWS_SALE_CACHE_KEY)
-    public List<InvestorsFlowsSale> findBySourceId(BigInteger sourceId) {
+    public List<SalePayment> findBySourceId(BigInteger sourceId) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<InvestorsFlowsSale> saleCriteriaQuery = cb.createQuery(InvestorsFlowsSale.class);
-        Root<InvestorsFlowsSale> saleRoot = saleCriteriaQuery.from(InvestorsFlowsSale.class);
-        saleRoot.fetch(InvestorsFlowsSale_.facility, JoinType.LEFT);
-        saleRoot.fetch(InvestorsFlowsSale_.investor, JoinType.LEFT);
-        saleRoot.fetch(InvestorsFlowsSale_.underFacility, JoinType.LEFT);
+        CriteriaQuery<SalePayment> saleCriteriaQuery = cb.createQuery(SalePayment.class);
+        Root<SalePayment> saleRoot = saleCriteriaQuery.from(SalePayment.class);
+        saleRoot.fetch(SalePayment_.facility, JoinType.LEFT);
+        saleRoot.fetch(SalePayment_.investor, JoinType.LEFT);
+        saleRoot.fetch(SalePayment_.underFacility, JoinType.LEFT);
         saleCriteriaQuery.select(saleRoot).distinct(true);
-        saleCriteriaQuery.where(cb.equal(saleRoot.get(InvestorsFlowsSale_.sourceId), sourceId));
+        saleCriteriaQuery.where(cb.equal(saleRoot.get(SalePayment_.sourceId), sourceId));
         return em.createQuery(saleCriteriaQuery).getResultList();
     }
 
-    public InvestorsFlowsSale findParentFlow(InvestorsFlowsSale flowsSale, List<InvestorsFlowsSale> childFlows) {
+    public SalePayment findParentFlow(SalePayment flowsSale, List<SalePayment> childFlows) {
         if (!Objects.equals(null, flowsSale.getSourceId())) {
             childFlows.add(flowsSale);
-            InvestorsFlowsSale finalFlowsSale = flowsSale;
+            SalePayment finalFlowsSale = flowsSale;
             flowsSale = findById(finalFlowsSale.getSourceId());
             return findParentFlow(flowsSale, childFlows);
         }
         return flowsSale;
     }
 
-    public List<InvestorsFlowsSale> findAllChildes(InvestorsFlowsSale parentFlow, List<InvestorsFlowsSale> childFlows, int next) {
-        List<InvestorsFlowsSale> tmp = findBySourceId(parentFlow.getId());
+    public List<SalePayment> findAllChildes(SalePayment parentFlow, List<SalePayment> childFlows, int next) {
+        List<SalePayment> tmp = findBySourceId(parentFlow.getId());
         tmp.forEach(t -> {
             if (!childFlows.contains(t)) {
                 childFlows.add(t);
@@ -136,7 +136,7 @@ public class InvestorsFlowsSaleService {
         });
         if (next >= childFlows.size()) next--;
         if (next < 0) return childFlows;
-        InvestorsFlowsSale parent = childFlows.get(next);
+        SalePayment parent = childFlows.get(next);
         if (parentFlow.getId().equals(parent.getId())) return childFlows;
         next++;
         return findAllChildes(parent, childFlows, next);
@@ -144,7 +144,7 @@ public class InvestorsFlowsSaleService {
     }
 
 //    @Cacheable(Constant.INVESTOR_FLOWS_SALE_CACHE_KEY)
-    public Page<InvestorsFlowsSale> findAll(FlowsSaleFilter filters, Pageable pageable) {
+    public Page<SalePayment> findAll(FlowsSaleFilter filters, Pageable pageable) {
         if (filters.getPageSize() == 0) pageable = new PageRequest(filters.getPageNumber(), filters.getTotal() + 1);
         return saleRepository.findAll(
                 saleSpecification.getFilter(filters),

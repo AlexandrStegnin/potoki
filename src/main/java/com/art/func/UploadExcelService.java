@@ -233,9 +233,9 @@ public class UploadExcelService {
             return new ApiResponse("Проверьте кол-во столбцов в файле. Должно быть 36", HttpStatus.BAD_REQUEST.value());
         }
         List<AppUser> users = userService.findAll();
-        List<InvestorsFlowsSale> investorsFlowsSales = investorsFlowsSaleService.findAll();
+        List<SalePayment> salePayments = investorsFlowsSaleService.findAll();
         int cel = 0;
-        List<InvestorsFlowsSale> investorsFlowsSaleList = new ArrayList<>(0);
+        List<SalePayment> salePaymentList = new ArrayList<>(0);
 
         List<ShareType> shareKinds = Arrays.asList(ShareType.values());
         Map<String, Facility> facilities = new HashMap<>();
@@ -289,7 +289,7 @@ public class UploadExcelService {
                         return new ApiResponse(String.format("Не указан объект! Строка %d, столбец 1", cel),
                                 HttpStatus.PRECONDITION_FAILED.value());
                     }
-                    InvestorsFlowsSale investorsFlowsSale = new InvestorsFlowsSale();
+                    SalePayment salePayment = new SalePayment();
                     Facility facility = facilities.get(facilityName);
                     if (facility == null) {
                         facility = facilityService.findByFacility(facilityName);
@@ -300,8 +300,8 @@ public class UploadExcelService {
                     }
                     facilities.putIfAbsent(facilityName, facility);
 
-                    investorsFlowsSale.setFacility(facility);
-                    investorsFlowsSale.setInvestor(user);
+                    salePayment.setFacility(facility);
+                    salePayment.setInvestor(user);
                     String shareType = row.getCell(2).getStringCellValue();
                     if (shareType == null) {
                         return new ApiResponse(String.format("Не указана доля. Строка %d, столбец 3", cel),
@@ -316,7 +316,7 @@ public class UploadExcelService {
                         return new ApiResponse(String.format("Не указана или не верно указана доля \"%s\". Строка %d, столбец 3", shareType, cel),
                                 HttpStatus.PRECONDITION_FAILED.value());
                     }
-                    investorsFlowsSale.setShareType(shareKind);
+                    salePayment.setShareType(shareKind);
                     String strCashInFacility = row.getCell(3).getStringCellValue();
                     BigDecimal cashInFacility;
                     try {
@@ -326,8 +326,8 @@ public class UploadExcelService {
                                 HttpStatus.PRECONDITION_FAILED.value());
                     }
 
-                    investorsFlowsSale.setCashInFacility(cashInFacility);
-                    investorsFlowsSale.setDateGived(Date.from(cal.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+                    salePayment.setCashInFacility(cashInFacility);
+                    salePayment.setDateGived(Date.from(cal.atStartOfDay(ZoneId.systemDefault()).toInstant()));
                     String strInvShare = row.getCell(5).getStringCellValue();
                     BigDecimal invShare;
                     try {
@@ -337,7 +337,7 @@ public class UploadExcelService {
                                 HttpStatus.PRECONDITION_FAILED.value());
                     }
 
-                    investorsFlowsSale.setInvestorShare(invShare);
+                    salePayment.setInvestorShare(invShare);
 
                     String strCashInUnderFacility = row.getCell(6).getStringCellValue();
                     BigDecimal cashInUnderFacility;
@@ -348,7 +348,7 @@ public class UploadExcelService {
                                 HttpStatus.PRECONDITION_FAILED.value());
                     }
 
-                    investorsFlowsSale.setCashInUnderFacility(cashInUnderFacility);
+                    salePayment.setCashInUnderFacility(cashInUnderFacility);
 
                     BigDecimal profitToCashingAuto;
                     BigDecimal profitToCashingMain;
@@ -362,8 +362,8 @@ public class UploadExcelService {
                     } else {
                         profitToCashingMain = BigDecimal.ZERO;
                     }
-                    investorsFlowsSale.setProfitToCashingAuto(profitToCashingAuto);
-                    investorsFlowsSale.setProfitToCashingMain(profitToCashingMain);
+                    salePayment.setProfitToCashingAuto(profitToCashingAuto);
+                    salePayment.setProfitToCashingMain(profitToCashingMain);
                     String strProfitToReinvest = row.getCell(33).getStringCellValue();
                     BigDecimal profitToReinvest;
                     try {
@@ -373,7 +373,7 @@ public class UploadExcelService {
                                 HttpStatus.PRECONDITION_FAILED.value());
                     }
 
-                    investorsFlowsSale.setProfitToReInvest(profitToReinvest);
+                    salePayment.setProfitToReInvest(profitToReinvest);
 
                     String underFacilityName = row.getCell(34).getStringCellValue();
                     if (underFacilityName == null || underFacilityName.isEmpty()) {
@@ -390,36 +390,36 @@ public class UploadExcelService {
                     }
                     underFacilities.putIfAbsent(underFacilityName, underFacility);
 
-                    investorsFlowsSale.setUnderFacility(underFacility);
+                    salePayment.setUnderFacility(underFacility);
 
-                    investorsFlowsSale.setDateSale(Date.from(calSale.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+                    salePayment.setDateSale(Date.from(calSale.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
-                    List<InvestorsFlowsSale> flowsSaleList = investorsFlowsSales.stream()
+                    List<SalePayment> flowsSaleList = salePayments.stream()
                             .filter(flows -> globalFunctions.getMonthInt(flows.getDateSale()) ==
-                                    globalFunctions.getMonthInt(investorsFlowsSale.getDateSale()) &&
+                                    globalFunctions.getMonthInt(salePayment.getDateSale()) &&
                                     globalFunctions.getYearInt(flows.getDateSale()) ==
-                                            globalFunctions.getYearInt(investorsFlowsSale.getDateSale()) &&
+                                            globalFunctions.getYearInt(salePayment.getDateSale()) &&
                                     globalFunctions.getDayInt(flows.getDateSale()) ==
-                                            globalFunctions.getDayInt(investorsFlowsSale.getDateSale()))
+                                            globalFunctions.getDayInt(salePayment.getDateSale()))
 
                             .filter(flows -> !Objects.equals(flows.getFacility(), null) &&
-                                    flows.getFacility().getId().equals(investorsFlowsSale.getFacility().getId()))
+                                    flows.getFacility().getId().equals(salePayment.getFacility().getId()))
 
-                            .filter(flows -> !Objects.equals(investorsFlowsSale.getUnderFacility(), null) &&
-                                    flows.getUnderFacility().getId().equals(investorsFlowsSale.getUnderFacility().getId()))
+                            .filter(flows -> !Objects.equals(salePayment.getUnderFacility(), null) &&
+                                    flows.getUnderFacility().getId().equals(salePayment.getUnderFacility().getId()))
 
-                            .filter(flows -> flows.getInvestor().getId().equals(investorsFlowsSale.getInvestor().getId()))
+                            .filter(flows -> flows.getInvestor().getId().equals(salePayment.getInvestor().getId()))
 
                             .collect(Collectors.toList());
 
                     if (flowsSaleList.size() == 0) {
-                        investorsFlowsSaleList.add(investorsFlowsSale);
+                        salePaymentList.add(salePayment);
                     }
                 }
 
             }
         }
-        investorsFlowsSaleList.forEach(investorsFlowsSaleService::create);
+        salePaymentList.forEach(investorsFlowsSaleService::create);
         return new ApiResponse("Загрузка файла с данными о продаже завершена");
     }
 

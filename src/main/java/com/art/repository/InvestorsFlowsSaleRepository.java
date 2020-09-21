@@ -1,6 +1,6 @@
 package com.art.repository;
 
-import com.art.model.InvestorsFlowsSale;
+import com.art.model.SalePayment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -11,8 +11,8 @@ import org.springframework.stereotype.Repository;
 import java.math.BigInteger;
 
 @Repository
-public interface InvestorsFlowsSaleRepository extends JpaRepository<InvestorsFlowsSale, BigInteger>, JpaSpecificationExecutor<InvestorsFlowsSale> {
+public interface InvestorsFlowsSaleRepository extends JpaRepository<SalePayment, BigInteger>, JpaSpecificationExecutor<SalePayment> {
 
-    Page<InvestorsFlowsSale> findAll(Specification<InvestorsFlowsSale> specification, Pageable pageable);
+    Page<SalePayment> findAll(Specification<SalePayment> specification, Pageable pageable);
 
 }

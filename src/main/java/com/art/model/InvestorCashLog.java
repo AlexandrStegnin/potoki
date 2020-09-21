@@ -131,7 +131,7 @@ public class InvestorCashLog {
         this.instanceOf = instanceOf;
     }
 
-    public InvestorCashLog(InvestorsFlowsSale flowsSale, TransactionLog log, CashType instanceOf) {
+    public InvestorCashLog(SalePayment flowsSale, TransactionLog log, CashType instanceOf) {
         this.cashId = flowsSale.getId().longValue();
         this.investor = flowsSale.getInvestor();
         this.facility = flowsSale.getFacility();

@@ -4,7 +4,6 @@ import com.art.model.supporting.enums.ShareType;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
@@ -18,7 +17,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @Table(name = "InvestorsFlowsSale")
-public class InvestorsFlowsSale implements Serializable {
+public class SalePayment {
     private BigInteger id;
     private Facility facility;
     private AppUser investor;

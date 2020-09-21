@@ -1,7 +1,7 @@
 package com.art.controllers;
 
 import com.art.func.UploadExcelFunc;
-import com.art.model.InvestorsFlowsSale;
+import com.art.model.SalePayment;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
 import com.art.service.InvestorsFlowsSaleService;
@@ -63,14 +63,14 @@ public class InvestorsFlowsController {
         try {
             if ("sale".equals(searchSummary.getWhat())) {
                 List<BigInteger> deletedChildesIds = new ArrayList<>();
-                List<InvestorsFlowsSale> listToDelete = investorsFlowsSaleService.findByIdIn(searchSummary.getCashIdList());
+                List<SalePayment> listToDelete = investorsFlowsSaleService.findByIdIn(searchSummary.getCashIdList());
                 listToDelete.forEach(ltd -> {
                     if (!deletedChildesIds.contains(ltd.getId())) {
-                        List<InvestorsFlowsSale> childFlows = new ArrayList<>();
-                        InvestorsFlowsSale parentFlow = investorsFlowsSaleService.findParentFlow(ltd, childFlows);
+                        List<SalePayment> childFlows = new ArrayList<>();
+                        SalePayment parentFlow = investorsFlowsSaleService.findParentFlow(ltd, childFlows);
                         if (parentFlow.getIsReinvest() == 1) parentFlow.setIsReinvest(0);
                         childFlows = investorsFlowsSaleService.findAllChildes(parentFlow, childFlows, 0);
-                        childFlows.sort(Comparator.comparing(InvestorsFlowsSale::getId).reversed());
+                        childFlows.sort(Comparator.comparing(SalePayment::getId).reversed());
                         childFlows.forEach(cf -> {
                             deletedChildesIds.add(cf.getId());
                             parentFlow.setProfitToReInvest(parentFlow.getProfitToReInvest().add(cf.getProfitToReInvest()));

@@ -6,34 +6,30 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<html lang="en-RU">
+<!DOCTYPE html>
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Выплаты инвесторам (продажа)</title>
     <sec:csrfMetaTags/>
-    <link href="<c:url value='/resources/core/css/old_bootstrap.min.css' />" rel="stylesheet"/>
-    <link href="<c:url value='/resources/core/css/applic.css' />" rel="stylesheet"/>
-    <link href="<c:url value='/resources/core/css/popup.css' />" rel="stylesheet"/>
-    <link href="<c:url value='/resources/core/css/ddk_loader.css' />" rel="stylesheet"/>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/jquery-3.2.1.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min_old.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/jsFunctions.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/sale-payments.js' />"></script>
+    <link rel="stylesheet"
+          href="<c:url value='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' />"/>
+    <link rel="stylesheet"
+          href="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css' />">
+    <link href="<c:url value='https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css' />"
+          rel="stylesheet">
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
+    <link href="<c:url value='/resources/core/css/ddk_loader.css' />" rel="stylesheet"/>
+    <style type="text/css">
+        .has-error {
+            color: red;
+            padding: 8px 0 0 8px;
+        }
+    </style>
     <style type="text/css">
         table, td, th {
             text-align: center;
-        }
-
-        #msg-modal .modal-dialog {
-            -webkit-transform: translate(0, -50%);
-            -o-transform: translate(0, -50%);
-            transform: translate(0, -50%);
-            top: 50%;
-            margin: 0 auto;
         }
 
         .dropdown-menu > .active > a {
@@ -49,8 +45,8 @@
 </head>
 
 <body>
+<%@include file="header.jsp" %>
 <div class="generic-container">
-    <%@include file="old_authheader.jsp" %>
     <div class="panel panel-default">
         <!-- Default panel contents -->
         <div class="panel-heading"><span class="lead">Выплаты инвесторам (продажа)</span></div>
@@ -352,16 +348,26 @@
     </div>
 </div>
 
-<div id="msg-modal" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-body" id="msg" style="text-align: center"></div>
-        </div>
-    </div>
-</div>
-
-<link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/css/bootstrap-select.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
+<%@include file="popup_modal.jsp" %>
+<%@include file="confirm-delete.jsp" %>
+<%@include file="ddk_loader.jsp" %>
+<script type="text/javascript"
+        src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' />"></script>
+<script type="text/javascript"
+        src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js' />"></script>
+<script type="text/javascript"
+        src="<c:url value='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js' />"></script>
+<script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js' />"></script>
+<script type="text/javascript"
+        src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js' />"></script>
+<script type="text/javascript"
+        src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js' />"></script>
+<script src="<c:url value='https://kit.fontawesome.com/2b84e2f58d.js' />" crossorigin="anonymous"></script>
+<script src="<c:url value='https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/progress.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/jsFunctions.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/sale-payments.js' />"></script>
 </body>
 </html>

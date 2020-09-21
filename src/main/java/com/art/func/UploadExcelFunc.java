@@ -207,9 +207,9 @@ public class UploadExcelFunc {
     private String rewriteInvestorsFlowsSale(Sheet sheet) {
         checkSheet(sheet);
         StringBuilder errors = new StringBuilder();
-        List<InvestorsFlowsSale> investorsFlowsSales = investorsFlowsSaleService.findAll();
+        List<SalePayment> salePayments = investorsFlowsSaleService.findAll();
         int cel = 0;
-        List<InvestorsFlowsSale> investorsFlowsSaleList = new ArrayList<>(0);
+        List<SalePayment> salePaymentList = new ArrayList<>(0);
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy", Locale.ENGLISH);
         List<AppUser> users = userService.findAll();
         List<ShareType> shareKinds = Arrays.asList(ShareType.values());
@@ -268,7 +268,7 @@ public class UploadExcelFunc {
                         errors.append(String.format("Не указан объект! Строка %d, столбец 1", cel));
                         return errors.toString();
                     }
-                    InvestorsFlowsSale investorsFlowsSale = new InvestorsFlowsSale();
+                    SalePayment salePayment = new SalePayment();
                     Facility facility = facilities.get(facilityName);
                     if (facility == null) {
                         facility = facilityService.findByFacility(facilityName);
@@ -279,8 +279,8 @@ public class UploadExcelFunc {
                     }
                     facilities.putIfAbsent(facilityName, facility);
 
-                    investorsFlowsSale.setFacility(facility);
-                    investorsFlowsSale.setInvestor(user);
+                    salePayment.setFacility(facility);
+                    salePayment.setInvestor(user);
                     ShareType shareKind = shareKinds
                             .stream()
                             .filter(share -> share.getTitle().equalsIgnoreCase(row.getCell(2).getStringCellValue()))
@@ -290,7 +290,7 @@ public class UploadExcelFunc {
                         errors.append(String.format("Не указана или не верно указана доля \"%s\". Строка %d, столбец 3", row.getCell(0).getStringCellValue(), cel));
                         return errors.toString();
                     }
-                    investorsFlowsSale.setShareType(shareKind);
+                    salePayment.setShareType(shareKind);
                     String strCashInFacility = row.getCell(3).getStringCellValue();
                     BigDecimal cashInFacility;
                     try {
@@ -300,8 +300,8 @@ public class UploadExcelFunc {
                         return errors.toString();
                     }
 
-                    investorsFlowsSale.setCashInFacility(cashInFacility);
-                    investorsFlowsSale.setDateGived(Date.from(cal.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+                    salePayment.setCashInFacility(cashInFacility);
+                    salePayment.setDateGived(Date.from(cal.atStartOfDay(ZoneId.systemDefault()).toInstant()));
                     String strInvShare = row.getCell(5).getStringCellValue();
                     BigDecimal invShare;
                     try {
@@ -311,7 +311,7 @@ public class UploadExcelFunc {
                         return errors.toString();
                     }
 
-                    investorsFlowsSale.setInvestorShare(invShare);
+                    salePayment.setInvestorShare(invShare);
 
                     String strCashInUnderFacility = row.getCell(6).getStringCellValue();
                     BigDecimal cashInUnderFacility;
@@ -322,7 +322,7 @@ public class UploadExcelFunc {
                         return errors.toString();
                     }
 
-                    investorsFlowsSale.setCashInUnderFacility(cashInUnderFacility);
+                    salePayment.setCashInUnderFacility(cashInUnderFacility);
 
                     BigDecimal profitToCashingAuto;
                     BigDecimal profitToCashingMain;
@@ -336,8 +336,8 @@ public class UploadExcelFunc {
                     } else {
                         profitToCashingMain = BigDecimal.ZERO;
                     }
-                    investorsFlowsSale.setProfitToCashingAuto(profitToCashingAuto);
-                    investorsFlowsSale.setProfitToCashingMain(profitToCashingMain);
+                    salePayment.setProfitToCashingAuto(profitToCashingAuto);
+                    salePayment.setProfitToCashingMain(profitToCashingMain);
                     String strProfitToReinvest = row.getCell(33).getStringCellValue();
                     BigDecimal profitToReinvest;
                     try {
@@ -347,7 +347,7 @@ public class UploadExcelFunc {
                         return errors.toString();
                     }
 
-                    investorsFlowsSale.setProfitToReInvest(profitToReinvest);
+                    salePayment.setProfitToReInvest(profitToReinvest);
 
                     String underFacilityName = row.getCell(34).getStringCellValue();
                     if (null == underFacilityName || underFacilityName.isEmpty()) {
@@ -364,37 +364,37 @@ public class UploadExcelFunc {
                     }
                     underFacilities.putIfAbsent(underFacilityName, underFacility);
 
-                    investorsFlowsSale.setUnderFacility(underFacility);
+                    salePayment.setUnderFacility(underFacility);
 
-                    investorsFlowsSale.setDateSale(Date.from(calSale.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+                    salePayment.setDateSale(Date.from(calSale.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
-                    List<InvestorsFlowsSale> flowsSaleList = investorsFlowsSales.stream()
+                    List<SalePayment> flowsSaleList = salePayments.stream()
                             .filter(flows -> globalFunctions.getMonthInt(flows.getDateSale()) ==
-                                    globalFunctions.getMonthInt(investorsFlowsSale.getDateSale()) &&
+                                    globalFunctions.getMonthInt(salePayment.getDateSale()) &&
                                     globalFunctions.getYearInt(flows.getDateSale()) ==
-                                            globalFunctions.getYearInt(investorsFlowsSale.getDateSale()) &&
+                                            globalFunctions.getYearInt(salePayment.getDateSale()) &&
                                     globalFunctions.getDayInt(flows.getDateSale()) ==
-                                            globalFunctions.getDayInt(investorsFlowsSale.getDateSale()))
+                                            globalFunctions.getDayInt(salePayment.getDateSale()))
 
                             .filter(flows -> !Objects.equals(flows.getFacility(), null) &&
-                                    flows.getFacility().getId().equals(investorsFlowsSale.getFacility().getId()))
+                                    flows.getFacility().getId().equals(salePayment.getFacility().getId()))
 
-                            .filter(flows -> !Objects.equals(investorsFlowsSale.getUnderFacility(), null) &&
-                                    flows.getUnderFacility().getId().equals(investorsFlowsSale.getUnderFacility().getId()))
+                            .filter(flows -> !Objects.equals(salePayment.getUnderFacility(), null) &&
+                                    flows.getUnderFacility().getId().equals(salePayment.getUnderFacility().getId()))
 
-                            .filter(flows -> flows.getInvestor().getId().equals(investorsFlowsSale.getInvestor().getId()))
+                            .filter(flows -> flows.getInvestor().getId().equals(salePayment.getInvestor().getId()))
 
                             .collect(Collectors.toList());
 
                     if (flowsSaleList.size() <= 0) {
-                        investorsFlowsSaleList.add(investorsFlowsSale);
+                        salePaymentList.add(salePayment);
                     }
                 }
 
             }
         }
 
-        investorsFlowsSaleList.forEach(flows -> investorsFlowsSaleService.create(flows));
+        salePaymentList.forEach(flows -> investorsFlowsSaleService.create(flows));
         return errors.toString();
     }
 

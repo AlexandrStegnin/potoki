@@ -232,7 +232,7 @@ public class TransactionLogService {
      * @param flowsSaleList список денег с продажи
      * @param cashList список денег, основанных на деньгах с продажи
      */
-    public void reinvestmentSale(List<InvestorsFlowsSale> flowsSaleList, Set<Money> cashList) {
+    public void reinvestmentSale(List<SalePayment> flowsSaleList, Set<Money> cashList) {
         TransactionLog log = new TransactionLog();
         log.setMonies(cashList);
         log.setType(TransactionType.REINVESTMENT_SALE);
@@ -331,7 +331,7 @@ public class TransactionLogService {
                 .stream()
                 .map(InvestorCashLog::getCashId)
                 .collect(Collectors.toList());
-        List<InvestorsFlowsSale> flowsSales = investorsFlowsSaleService.findByIdIn(flowsCashIdList);
+        List<SalePayment> flowsSales = investorsFlowsSaleService.findByIdIn(flowsCashIdList);
         try {
             cashes.forEach(moneyRepository::delete);
             flowsSales.forEach(flowSale -> {
