@@ -239,48 +239,40 @@ function findMinMaxDate(table, col, maxOrMin) {
 }
 
 function prepareSaveInvestorsCash() {
-    showLoader();
     let dateGiven;
     let facilityId;
-    let dateReport;
     let shareType;
     let reinvestData = $('form#reInvestData');
     let reinvestIdList = [];
 
-    dateGiven = $('#dateGiv').val();
+    dateGiven = $('#dateGiven').val();
 
     if (dateGiven.length === 0) {
-        $('#dateGivenErr').css('display', 'block');
+        $('#dateGivenErr').addClass('d-block');
         return false;
     } else {
-        $('#dateGivenErr').css('display', 'none');
+        $('#dateGivenErr').removeClass('d-block');
         dateGiven = new Date(dateGiven).getTime();
     }
 
     facilityId = reinvestData.find('#srcFacility').val()
 
-    if (facilityId === 0) {
-        $('#facilityErr').css('display', 'block');
+    if (facilityId === "0") {
+        $('#facilityErr').addClass('d-block');
         return false;
     } else {
-        $('#facilityErr').css('display', 'none');
-        err = false;
+        $('#facilityErr').removeClass('d-block');
     }
 
-    shareType = reinvestData.find('#shareKindName').val()
+    shareType = reinvestData.find('#shareTypeName').find('option:selected').val()
 
-    if (shareType.indexOf('Выберите вид доли') >= 0) {
-        $('#shareTypeErr').css('display', 'block');
-        err = true;
-    } else {
-        $('#shareTypeErr').css('display', 'none');
-        err = false;
-    }
-
-    if (err) {
-        closeLoader();
+    if (shareType.indexOf('Не определена') >= 0) {
+        $('#shareTypeErr').addClass('d-block');
         return false;
+    } else {
+        $('#shareTypeErr').removeClass('d-block');
     }
+
     let current;
 
     $('#reInvestModal').modal('hide');
@@ -307,11 +299,12 @@ function prepareSaveInvestorsCash() {
 function reinvestRentPayments(rentPaymentDTO) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
+    showLoader();
 
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: "reinvest",
+        url: "./rent/reinvest",
         data: JSON.stringify(rentPaymentDTO),
         dataType: 'json',
         timeout: 100000,
