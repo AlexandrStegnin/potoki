@@ -113,6 +113,13 @@ public class RentPaymentController {
         return model;
     }
 
+    @PostMapping(path = Location.RENT_PAYMENTS_DELETE_ALL)
+    @ResponseBody
+    public ApiResponse deleteRentPayments() {
+        rentPaymentService.delete();
+        return new ApiResponse("Данные по выплатам (аренда) успешно удалены");
+    }
+
     @InitBinder
     public void initBinder(WebDataBinder webDataBinder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
