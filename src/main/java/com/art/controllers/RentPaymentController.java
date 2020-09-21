@@ -5,7 +5,6 @@ import com.art.func.UploadExcelService;
 import com.art.model.*;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.FileBucket;
-import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.dto.RentPaymentDTO;
 import com.art.model.supporting.enums.ShareType;
 import com.art.model.supporting.enums.UploadType;
@@ -42,8 +41,6 @@ public class RentPaymentController {
     private final UnderFacilityService underFacilityService;
 
     private final RoomService roomService;
-
-//    private final SearchSummary filters = new SearchSummary();
 
     private final RentPaymentFilter filters = new RentPaymentFilter();
 
@@ -107,13 +104,11 @@ public class RentPaymentController {
     private ModelAndView prepareModel(RentPaymentFilter filters) {
         ModelAndView model = new ModelAndView("rent-payment-list");
         FileBucket fileModel = new FileBucket();
-        SearchSummary searchSummary = new SearchSummary();
         Pageable pageable = new PageRequest(filters.getPageNumber(), filters.getPageSize());
         Page<RentPayment> page = rentPaymentService.findAll(filters, pageable);
         model.addObject("page", page);
         model.addObject("fileBucket", fileModel);
         model.addObject("filter", filters);
-        model.addObject("searchSummary", searchSummary);
         model.addObject("rentPaymentDTO", new RentPaymentDTO());
         return model;
     }
