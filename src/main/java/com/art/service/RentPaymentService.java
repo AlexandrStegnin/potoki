@@ -118,6 +118,8 @@ public class RentPaymentService {
             Money money = new Money(rentPayment, dto, facility);
             money = moneyRepository.saveAndFlush(money);
             monies.add(money);
+            rentPayment.setIsReinvest(1);
+            rentPaymentRepository.saveAndFlush(rentPayment);
         });
         txLogService.reinvestmentRent(rentPayments, monies);
         return new ApiResponse("Реинвестирование денег с аренды прошло успешно");
