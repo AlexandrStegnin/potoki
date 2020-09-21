@@ -185,13 +185,10 @@ public class UploadExcelService {
 
                     rentPayment.setReInvest(row.getCell(18).getStringCellValue());
 
+                    Facility reFacility = null;
                     String reFacilityName = row.getCell(19).getStringCellValue();
-                    if (reFacilityName == null || reFacilityName.isEmpty()) {
-                        break;
-                    }
-                    Facility reFacility = facilityService.findByFacility(reFacilityName);
-                    if (reFacility == null) {
-                        break;
+                    if (reFacilityName != null && !reFacilityName.isEmpty()) {
+                        reFacility = facilityService.findByFacility(reFacilityName);
                     }
 
                     rentPayment.setReFacility(reFacility);
