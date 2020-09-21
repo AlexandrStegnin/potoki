@@ -11,7 +11,7 @@
             <div class="modal-body">
                 <p id="message">Вы действительно хотите удалить выбранные суммы?</p>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" data-action="" id="action">
                 <button type="button" class="btn btn-primary" id="accept-delete">Да</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
             </div>

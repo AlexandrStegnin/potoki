@@ -116,7 +116,7 @@
                             class="fas fa-list"></span></button>
                     <div class="dropdown-menu" id="reinvest">
                         <a class="dropdown-item" id="reinvestAll" href="#">Массовое реинвестирование</a>
-                        <a class="dropdown-item" id="deleteAll" href="#" style="color: red">Удалить выбранные
+                        <a class="dropdown-item" id="delete-list" href="#" style="color: red">Удалить выбранные
                             суммы</a>
                     </div>
                 </div>

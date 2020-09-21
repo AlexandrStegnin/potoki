@@ -113,10 +113,27 @@ public class RentPaymentController {
         return model;
     }
 
+    /**
+     * Удалить все данные о выплатах (аренда)
+     *
+     * @return сообщение об успешном/неудачном выполнении
+     */
     @PostMapping(path = Location.RENT_PAYMENTS_DELETE_ALL)
     @ResponseBody
     public ApiResponse deleteRentPayments() {
         rentPaymentService.delete();
+        return new ApiResponse("Данные по выплатам (аренда) успешно удалены");
+    }
+
+    /**
+     * Удалить выбранные данные о выплатах (аренда)
+     *
+     * @return сообщение об успешном/неудачном выполнении
+     */
+    @PostMapping(path = Location.RENT_PAYMENTS_DELETE_CHECKED)
+    @ResponseBody
+    public ApiResponse deleteRentPaymentsChecked(@RequestBody RentPaymentDTO dto) {
+        rentPaymentService.deleteByIdIn(dto.getRentPaymentsId());
         return new ApiResponse("Данные по выплатам (аренда) успешно удалены");
     }
 

@@ -49,12 +49,28 @@ jQuery(document).ready(function ($) {
         e.preventDefault()
         let deleteForm = $('#confirm-delete');
         deleteForm.find('#message').html('Вы действительно хотите удалить все данные по выплатам (аренда)?')
+        deleteForm.find('#action').attr('data-action', 'delete-all')
         deleteForm.modal('show')
     })
 
-    $(document).on('click', '#accept-delete', function () {
-        $('#confirm-delete').modal('hide')
-        deleteAll()
+    $(document).on('click', '#accept-delete', function (event) {
+        let confirm = $('#confirm-delete');
+        confirm.modal('hide')
+        let action = confirm.find('#action').attr('data-action')
+        if (action === 'delete-list') {
+            showLoader();
+            event.preventDefault();
+            let cashIdList = [];
+            $('table#rentPayments').find('> tbody').find('> tr').each(function () {
+                $(this).find(':checkbox:checked').not(':disabled').each(function () {
+                    cashIdList.push($(this).closest('tr').attr('id'));
+                    $(this).closest('tr').remove();
+                })
+            });
+            deleteList(cashIdList);
+        } else {
+            deleteAll()
+        }
     })
 
     $(document).on('click', '#bth-clear', function (e) {
@@ -116,13 +132,13 @@ jQuery(document).ready(function ($) {
         let checked = $('#checkAll').prop('checked');
         if (!checked) {
             $('#reinvestAll').addClass('disabled');
-            $('#deleteAll').addClass('disabled');
+            $('#delete-list').addClass('disabled');
             $('table#rentPayments').find('> tbody').find('> tr').each(function () {
                 $(this).find(':checkbox:not(:disabled)').prop('checked', false);
             });
         } else {
             $('#reinvestAll').removeClass('disabled');
-            $('#deleteAll').removeClass('disabled');
+            $('#delete-list').removeClass('disabled');
             $('table#rentPayments').find('> tbody').find('> tr').each(function () {
                 if (!$(this).data('passed')) {
                     $(this).find(':checkbox:not(:disabled)').prop('checked', false);
@@ -159,17 +175,10 @@ jQuery(document).ready(function ($) {
 
     $('[data-toggle="tooltip"]').tooltip();
 
-    $('#deleteAll').on('click', function (event) {
-        showLoader();
-        event.preventDefault();
-        let cashIdList = [];
-        $('table#rentPayments').find('> tbody').find('> tr').each(function () {
-            $(this).find(':checkbox:checked').not(':disabled').each(function () {
-                cashIdList.push($(this).closest('tr').attr('id'));
-                $(this).closest('tr').remove();
-            })
-        });
-        deleteCash(cashIdList);
+    $('#delete-list').on('click', function (event) {
+        let confirm = $('#confirm-delete');
+        confirm.modal('show')
+        confirm.find('#action').attr('data-action', 'delete-list')
     });
 
 });
@@ -350,19 +359,18 @@ function blockUnblockDropdownMenus(blockUnblock) {
     }
 }
 
-function deleteCash(cashIdList) {
+function deleteList(cashIdList) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
-    let search = ({
-        cashIdList: cashIdList,
-        what: ""
+    let rentPaymentDTO = ({
+        rentPaymentsId: cashIdList
     });
 
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: "/deleteFlowsList",
-        data: JSON.stringify(search),
+        url: "rent/delete/checked",
+        data: JSON.stringify(rentPaymentDTO),
         dataType: 'json',
         timeout: 100000,
         beforeSend: function (xhr) {
@@ -371,12 +379,15 @@ function deleteCash(cashIdList) {
     })
         .done(function (data) {
             closeLoader();
-            slideBox(data.message);
+            showPopup(data.message);
+            window.location.href = 'rent'
         })
         .fail(function (e) {
+            closeLoader();
             console.log(e);
         })
         .always(function () {
+            closeLoader();
             console.log('Закончили!');
         });
 }

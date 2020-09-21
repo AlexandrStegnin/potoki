@@ -194,6 +194,8 @@ public class Location {
 
     public static final String RENT_PAYMENTS_DELETE_ALL = RENT_PAYMENTS + "/delete/all";
 
+    public static final String RENT_PAYMENTS_DELETE_CHECKED = RENT_PAYMENTS + "/delete/checked";
+
     public static final String SALE_PAYMENTS = PAYMENTS_URL + "/sale";
 
     public static final String[] ADMIN_URLS = {
