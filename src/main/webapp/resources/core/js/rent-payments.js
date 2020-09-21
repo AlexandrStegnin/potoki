@@ -140,9 +140,9 @@ jQuery(document).ready(function ($) {
         getRoomsFromLocalStorage(room);
     });
 
-    $(document).on('click', '#loadInvFlowsAjax', function (event) {
+    $(document).on('click', '#upload', function (event) {
         event.preventDefault();
-        loadFlowsAjax("loadFlowsAjax");
+        upload();
     });
 
     $('[data-toggle="tooltip"]').tooltip();
@@ -176,26 +176,21 @@ function display(data, tableForSearch) {
     $('#' + tableForSearch).html(json);
 }
 
-function loadFlowsAjax(action) {
+function upload() {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
-
-    let form = $('#rentPayments')[0];
+    showLoader();
     let data = new FormData();
-    let fileBuckets = [];
     $.each($('#file')[0].files, function (k, value) {
         data.append(k, value);
-        fileBuckets.push(k, value);
     });
-
-    showLoader();
     $.ajax({
         type: "POST",
         enctype: "multipart/form-data",
         processData: false,
         contentType: false,
         cache: false,
-        url: action,
+        url: "rent/upload",
         data: data,
         dataType: 'json',
         timeout: 100000,
@@ -203,19 +198,15 @@ function loadFlowsAjax(action) {
             xhr.setRequestHeader(header, token);
         },
         success: function (data) {
-            $('#popup_modal_form').find('#message').append(data.message);
             closeLoader();
-            showPopup();
-            closePopup();
+            showPopup(data.message);
         },
         error: function (e) {
-            $('#popup_modal_form').find('#message').append(e.error);
             closeLoader();
-            showPopup();
-            closePopup();
+            showPopup(e.error);
+            disconnect();
         }
     });
-
 }
 
 function findMinMaxDate(table, col, maxOrMin) {

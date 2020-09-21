@@ -1,11 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page trimDirectiveWhitespaces="true" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 
 <head>
@@ -22,11 +19,6 @@
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
     <link href="<c:url value='/resources/core/css/ddk_loader.css' />" rel="stylesheet"/>
     <style type="text/css">
-        .bootstrap-select > select {
-            margin: 10px !important;
-        }
-    </style>
-    <style type="text/css">
         .has-error {
             color: red;
             padding: 8px 0 0 8px;
@@ -40,9 +32,9 @@
     <div class="d-flex flex-row justify-content-center" style="margin: 10px;">
         <form:form modelAttribute="filter" method="POST" action="rent"
                    class="form-inline" id="filter-form">
-            <input type="hidden" id="pageNumber" name="pageNumber" value="0">
-            <input type="hidden" id="pageSize" name="pageSize" value="${filter.pageSize}">
-            <input type="hidden" id="total" name="total" value="${page.content.size()}">
+        <input type="hidden" id="pageNumber" name="pageNumber" value="0">
+        <input type="hidden" id="pageSize" name="pageSize" value="${filter.pageSize}">
+        <input type="hidden" id="total" name="total" value="${page.content.size()}">
         <div style="padding: 5px;">
             <form:select path="facility" id="fFacilities" multiple="false" class="selectpicker"
                          data-size="10" data-live-search="true" data-none-selected-text="Выберите объект">
@@ -95,70 +87,67 @@
                     style="margin-right:5px"/>
         <button type="submit" id="bth-search" class="btn btn-primary btn-md" style="margin-right:5px">Фильтр
         </button>
+        </form:form>
     </div>
-    <sec:authorize access="isFullyAuthenticated()">
-        <sec:authorize access="hasRole('ADMIN')">
-            <div class="d-flex flex-row justify-content-center" style="margin-left: 10px">
-                <form:form method="POST" modelAttribute="fileBucket" enctype="multipart/form-data"
-                           class="form-horizontal">
-                    <div class="col-md-4 p-2" style="margin-left: 10px">
-                        <div class="input-group" style="margin-left: 10px">
-                            <div class="custom-file">
-                                <input type="file" id="file" name="uploadingFiles" class="form-control-file"/>
-                            </div>
-                            <button type="button" class="btn btn-primary btn-md" id="upload">Загрузить</button>
-                        </div>
+
+    <div class="d-flex flex-row justify-content-center" style="margin-left: 10px">
+        <form:form method="POST" modelAttribute="fileBucket" enctype="multipart/form-data"
+                   class="form-horizontal" id="files">
+            <div class="p-2" style="margin-left: 10px">
+                <div class="input-group" style="margin-left: 10px">
+                    <div class="custom-file">
+                        <input type="file" id="file" name="uploadingFiles" class="form-control-file"/>
                     </div>
-                </form:form>
-                <div class="col-md-6 offset-md-2 p-2">
-                    <div class="row float-right">
-                        <button type="submit" id="bth-clear" class="btn btn-danger input-md" style="margin-right: 10px">
-                            Сбросить фильтры
-                        </button>
-                        <button data-table-id="rentPayments" type="button" id="unblock_operations"
-                                class="btn btn-danger input-md" style="margin-right: 10px">Разблокировать операции
-                        </button>
-                        <div class="dropdown pull-right" style="margin-right: 10px">
-                            <button id="actions" type="button" data-toggle="dropdown"
-                                    class="btn btn-success input-md dropdown-toggle pull-right">Действия <span
-                                    class="fas fa-list"></span></button>
-                            <div class="dropdown-menu" id="reinvest">
-                                <a class="dropdown-item" id="reinvestAll" href="#">Массовое реинвестирование</a>
-                                <a class="dropdown-item" id="deleteAll" href="#" style="color: red">Удалить выбранные
-                                    суммы</a>
-                            </div>
-                        </div>
-                        <a href="<c:url value='/deleteFlows' />" class="btn btn-danger input-md"
-                           style="margin-right: 10px">Удалить</a>
-                    </div>
+                    <button type="button" class="btn btn-primary btn-md" id="upload">Загрузить</button>
                 </div>
             </div>
-        </sec:authorize>
-    </sec:authorize>
+        </form:form>
+        <div class="col-md-6 offset-md-2 p-2">
+            <div class="row float-right">
+                <button type="submit" id="bth-clear" class="btn btn-danger input-md" style="margin-right: 10px">
+                    Сбросить фильтры
+                </button>
+                <button data-table-id="rentPayments" type="button" id="unblock_operations"
+                        class="btn btn-danger input-md" style="margin-right: 10px">Разблокировать операции
+                </button>
+                <div class="dropdown pull-right" style="margin-right: 10px">
+                    <button id="actions" type="button" data-toggle="dropdown"
+                            class="btn btn-success input-md dropdown-toggle pull-right">Действия <span
+                            class="fas fa-list"></span></button>
+                    <div class="dropdown-menu" id="reinvest">
+                        <a class="dropdown-item" id="reinvestAll" href="#">Массовое реинвестирование</a>
+                        <a class="dropdown-item" id="deleteAll" href="#" style="color: red">Удалить выбранные
+                            суммы</a>
+                    </div>
+                </div>
+                <a href="<c:url value='/deleteFlows' />" class="btn btn-danger input-md"
+                   style="margin-right: 10px">Удалить</a>
+            </div>
+        </div>
+    </div>
 
     <c:if test="${filter.allRows == false}">
-    <div class="d-flex flex-row justify-content-center">
-        <nav class="text-center" aria-label="Выплаты инвесторам - аренда">
-            <ul class="pagination pagination-sm justify-content-center">
-                <c:forEach begin="1" end="${page.totalPages}" varStatus="page">
-                    <c:choose>
-                        <c:when test="${filter.pageNumber == page.index - 1}">
-                            <c:set var="active" value="active" />
-                        </c:when>
-                        <c:otherwise>
-                            <c:set var="active" value="" />
-                        </c:otherwise>
-                    </c:choose>
-                    <li class="page-item ${active}" data-page="${page.index}">
-                        <a id="${page.index}" name="page_${page.index}" class="page-link"
-                           href="#">${page.index}</a>
-                    </li>
-                </c:forEach>
-            </ul>
-        </nav>
-    </div>
+        <div class="d-flex flex-row justify-content-center">
+            <nav class="text-center" aria-label="Выплаты инвесторам - аренда">
+                <ul class="pagination pagination-sm justify-content-center">
+                    <c:forEach begin="1" end="${page.totalPages}" varStatus="page">
+                        <c:choose>
+                            <c:when test="${filter.pageNumber == page.index - 1}">
+                                <c:set var="active" value="active"/>
+                            </c:when>
+                            <c:otherwise>
+                                <c:set var="active" value=""/>
+                            </c:otherwise>
+                        </c:choose>
+                        <li class="page-item ${active}" data-page="${page.index}">
+                            <a id="${page.index}" name="page_${page.index}" class="page-link"
+                               href="#">${page.index}</a>
+                        </li>
+                    </c:forEach>
+                </ul>
+            </nav>
+        </div>
     </c:if>
-    </form:form>
 </div>
 <div class="container-fluid">
     <table class="table table-striped w-auto table-hover table-sm" style="table-layout: fixed"
@@ -227,7 +216,8 @@
                         <div class="col-md-9">
                             <form:select path="facilityId" id="srcFacility" items="${facilitiesList}" multiple="false"
                                          itemValue="id" itemLabel="name" class="selectpicker form-control input-sm"
-                                         data-size="10" data-live-search="true" data-none-selected-text="Выберите объект"/>
+                                         data-size="10" data-live-search="true"
+                                         data-none-selected-text="Выберите объект"/>
                             <div id="facilityErr" class="has-error col-md-9 d-none">Необходимо выбрать объект</div>
                         </div>
                     </div>
@@ -235,7 +225,8 @@
                         <label class="col-md-3 col-form-label" for="shareTypeName">Вид доли:</label>
                         <div class="col-md-9">
                             <form:select path="shareType" id="shareTypeName" items="${shareTypes}" multiple="false"
-                                         itemValue="title" itemLabel="title" class="selectpicker form-control input-sm"/>
+                                         itemValue="title" itemLabel="title"
+                                         class="selectpicker form-control input-sm"/>
                             <div id="shareTypeErr" class="has-error col-md-9 d-none">Необходимо выбрать вид доли
                             </div>
                         </div>
@@ -247,14 +238,6 @@
                     </div>
                 </form:form>
             </div>
-        </div>
-    </div>
-</div>
-
-<div id="msg-modal" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-body" id="msg" style="text-align: center"></div>
         </div>
     </div>
 </div>
@@ -278,6 +261,6 @@
 <script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/jsFunctions.js' />"></script>
-<script type="text/javascript" src="<c:url value='/resources/core/js/payments-rent.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/rent-payments.js' />"></script>
 </body>
 </html>
