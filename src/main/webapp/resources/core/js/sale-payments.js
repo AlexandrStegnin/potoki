@@ -20,6 +20,17 @@ SalePaymentDTO.prototype = {
     }
 }
 
+let SalePaymentDivideDTO = function () {}
+
+SalePaymentDivideDTO.prototype = {
+    salePaymentId: 0,
+    extractedSum: 0.0,
+    build: function (salePaymentId, extractedSum) {
+        this.salePaymentId = salePaymentId;
+        this.extractedSum = extractedSum;
+    }
+}
+
 jQuery(document).ready(function ($) {
 
     blockUnblockDropdownMenus('block', false);
@@ -110,14 +121,14 @@ jQuery(document).ready(function ($) {
         e.preventDefault();
         let divideModal = $('#divideModal');
         let flowId = parseFloat(divideModal.find('#divideId').val());
-        let divideSum = parseFloat(divideModal.find('#divideCash').val());
+        let divideSum = parseFloat(divideModal.find('#divideCash').val()) || 0;
         let divideCashErr = $('#divideCashErr');
-        let flowMaxSum = parseFloat(divideModal.find('#flowMaxSum').val());
+        let flowMaxSum = parseFloat(divideModal.find('#flowMaxSum').val()) || 0;
         if (divideSum <= 0 || divideSum > flowMaxSum) {
-            divideCashErr.show();
+            divideCashErr.addClass('d-block');
             return false;
         } else {
-            divideCashErr.hide();
+            divideCashErr.removeClass('d-block');
         }
         divideCash(flowId, divideSum);
     });
@@ -476,20 +487,18 @@ function linkHasClass(link) {
     if (link.hasClass('disabled')) return true;
 }
 
-function divideCash(flowId, divideSum) {
+function divideCash(salePaymentId, extractedSum) {
     showLoader();
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
-    let search = ({
-        divideSumId: flowId,
-        divideSum: divideSum
-    });
+    let divideSaleDTO = new SalePaymentDivideDTO()
+    divideSaleDTO.build(salePaymentId, extractedSum)
 
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: "/divideFlows",
-        data: JSON.stringify(search),
+        url: "sale/divide",
+        data: JSON.stringify(divideSaleDTO),
         dataType: 'json',
         timeout: 100000,
         beforeSend: function (xhr) {

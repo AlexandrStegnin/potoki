@@ -130,7 +130,8 @@
                 <button data-table-id="salePayments" type="button" id="unblock_operations"
                         class="btn btn-danger input-md" style="margin-right: 10px">Разблокировать операции
                 </button>
-                <button type="button" class="btn btn-primary input-md" id="checkIt" data-checked="false" style="margin-right: 10px">
+                <button type="button" class="btn btn-primary input-md" id="checkIt" data-checked="false"
+                        style="margin-right: 10px">
                     Выделить всё
                 </button>
                 <div class="dropdown pull-right" style="margin-right: 10px">
@@ -313,24 +314,20 @@
                 <form:form method="POST" modelAttribute="searchSummary" class="form-horizontal" id="divideData">
                     <form:input type="hidden" path="divideSumId" id="divideId"/>
                     <form:input type="hidden" path="" id="flowMaxSum"/>
-                    <div class="row" id="cashRow">
-                        <div class="form-group col-md-12">
-                            <label class="col-md-3 control-lable" for="divideCash">Выделить сумму:</label>
-                            <div class="col-md-7">
-                                <form:input type="number" path="divideSum" id="divideCash" min="0.00" step="any"
-                                            class="form-control input-sm"/>
-                                <div id="divideCashErr" style="color: red; display: none">
-                                    Необходимо ввести сумму > 0 и меньше разделяемой суммы
-                                </div>
+                    <div class="form-group row" id="cashRow">
+                        <label class="col-md-3 col-form-label" for="divideCash">Выделить сумму:</label>
+                        <div class="col-md-9">
+                            <form:input type="number" path="divideSum" id="divideCash" min="0.00" step="any"
+                                        class="form-control input-sm"/>
+                            <div id="divideCashErr" class="has-error col-md-9 d-none">
+                                Необходимо ввести сумму > 0 и меньше разделяемой суммы
                             </div>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="form-actions floatRight">
-                            <input type="submit" value="Разделить" class="btn btn-primary btn-sm"/> или <a
-                                href="<c:url value='/#' />" id="cancelDivide">Отмена</a>
-                        </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-primary btn-md" data-action="" value="Разделить"/>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
                     </div>
                 </form:form>
             </div>
