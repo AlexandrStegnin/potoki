@@ -3,6 +3,7 @@ package com.art.service;
 import com.art.model.*;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.dto.SalePaymentDTO;
+import com.art.model.supporting.dto.SalePaymentDivideDTO;
 import com.art.model.supporting.filters.FlowsSaleFilter;
 import com.art.repository.FacilityRepository;
 import com.art.repository.MoneyRepository;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
+import java.math.BigDecimal;
 import java.util.*;
 
 @Service
@@ -221,5 +223,25 @@ public class SalePaymentService {
         });
         txLogService.reinvestmentSale(salePayments, monies);
         return new ApiResponse("Реинвестирование денег с аренды прошло успешно");
+    }
+
+    /**
+     * Выделить сумму из выплаты (продажа)
+     *
+     * @param divideDTO DTO для выделения суммы
+     * @return ответ
+     */
+    public ApiResponse divideSalePayment(SalePaymentDivideDTO divideDTO) {
+        Long salePaymentId = divideDTO.getSalePaymentId();
+        BigDecimal divideSum = divideDTO.getExtractedSum();
+        SalePayment oldFlows = findById(salePaymentId);
+        SalePayment newFlows = new SalePayment(oldFlows);
+        oldFlows.setProfitToReInvest(oldFlows.getProfitToReInvest().subtract(divideSum));
+        newFlows.setProfitToReInvest(divideSum);
+        newFlows.setSourceId(oldFlows.getId());
+        if (oldFlows.getProfitToReInvest().compareTo(BigDecimal.ZERO) <= 0) oldFlows.setIsReinvest(1);
+        update(oldFlows);
+        create(newFlows);
+        return new ApiResponse(oldFlows.getProfitToReInvest().toPlainString());
     }
 }
