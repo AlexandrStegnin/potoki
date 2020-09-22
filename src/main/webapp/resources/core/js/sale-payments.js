@@ -50,6 +50,11 @@ jQuery(document).ready(function ($) {
         }
     })
 
+    $(document).on('click', '#upload', function (event) {
+        event.preventDefault();
+        upload();
+    });
+
     $(document).on('click', '#unblock_operations', function () {
         let tableId = $(this).data('table-id');
         if ($(this).text() === 'Разблокировать операции') {
@@ -617,4 +622,42 @@ function getUFFromLS(facilityId, uFacilitiesId) {
         .end()
         .append(options)
         .selectpicker('refresh');
+}
+
+function upload() {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+    showLoader();
+    let data = new FormData();
+    $.each($('#file')[0].files, function (k, value) {
+        data.append(k, value);
+    });
+    $.ajax({
+        type: "POST",
+        enctype: "multipart/form-data",
+        processData: false,
+        contentType: false,
+        cache: false,
+        url: "sale/upload",
+        data: data,
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (data) {
+            closeLoader();
+            showPopup(data.message);
+            if (data.status !== 412) {
+                window.location.href = 'sale'
+            } else {
+                $('#file').val('')
+            }
+        },
+        error: function (e) {
+            closeLoader();
+            showPopup(e.error);
+            disconnect();
+        }
+    });
 }
