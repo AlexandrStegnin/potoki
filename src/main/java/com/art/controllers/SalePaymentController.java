@@ -10,6 +10,7 @@ import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.FileBucket;
 import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.dto.SalePaymentDTO;
+import com.art.model.supporting.dto.SalePaymentDivideDTO;
 import com.art.model.supporting.enums.ShareType;
 import com.art.model.supporting.enums.UploadType;
 import com.art.model.supporting.filters.FlowsSaleFilter;
@@ -122,24 +123,11 @@ public class SalePaymentController {
         return salePaymentService.reinvest(dto);
     }
 
-//    @PostMapping(value = "/divideFlows", produces = "application/json;charset=UTF-8")
-//    public @ResponseBody
-//    GenericResponse divideFlowsSale(@RequestBody SearchSummary searchSummary) {
-//        GenericResponse response = new GenericResponse();
-//        Long flowId = searchSummary.getDivideSumId();
-//        BigDecimal divideSum = searchSummary.getDivideSum();
-//        SalePayment oldFlows = salePaymentService.findById(flowId);
-//        SalePayment newFlows = salePaymentService.findById(flowId);
-//        oldFlows.setProfitToReInvest(oldFlows.getProfitToReInvest().subtract(divideSum));
-//        newFlows.setId(null);
-//        newFlows.setProfitToReInvest(divideSum);
-//        newFlows.setSourceId(oldFlows.getId());
-//        if (oldFlows.getProfitToReInvest().compareTo(BigDecimal.ZERO) <= 0) oldFlows.setIsReinvest(1);
-//        salePaymentService.update(oldFlows);
-//        salePaymentService.create(newFlows);
-//        response.setMessage(oldFlows.getProfitToReInvest().toPlainString());
-//        return response;
-//    }
+    @PostMapping(path = Location.SALE_PAYMENTS_DIVIDE)
+    public @ResponseBody
+    ApiResponse divideSalePayments(@RequestBody SalePaymentDivideDTO divideDTO) {
+        return salePaymentService.divideSalePayment(divideDTO);
+    }
 
     /**
      * Подготовить модель для страницы
