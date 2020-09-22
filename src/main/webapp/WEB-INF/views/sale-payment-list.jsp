@@ -128,8 +128,7 @@
                     Сбросить фильтры
                 </button>
                 <button data-table-id="salePayments" type="button" id="unblock_operations"
-                        class="btn btn-danger input-md" style="margin-right: 10px">Разблокировать операции
-                </button>
+                        class="btn btn-danger input-md" style="margin-right: 10px">Разблокировать операции</button>
                 <button type="button" class="btn btn-primary input-md" id="checkIt" data-checked="false"
                         style="margin-right: 10px">
                     Выделить всё
@@ -229,7 +228,7 @@
                                 class="btn btn-success btn-sm dropdown-toggle pull-right"><span
                                 class="fas fa-cog"></span></button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" id="liDivide"
+                            <a class="dropdown-item" id="aDivide"
                                href="<c:url value='#' />">Разделить</a></div>
                     </div>
                 </td>

@@ -101,7 +101,7 @@ jQuery(document).ready(function ($) {
         window.location.href = window.location.pathname;
     });
 
-    $(document).on('click', '#liDivide', function (e) {
+    $(document).on('click', '#aDivide', function (e) {
         e.preventDefault();
         if (linkHasClass($(this))) return false;
         let divideModal = $('#divideModal');
@@ -523,9 +523,9 @@ function divideCash(salePaymentId, extractedSum) {
 function blockUnblockDivide() {
     $('table#salePayments').find('> tbody').find('> tr').each(function () {
         if ($(this).find(':checkbox').attr('checked') === 'checked') {
-            $(this).find('td:last-child').find('div.dropdown-menu').find('#liDivide').addClass('disabled');
+            $(this).find('td:last-child').find('div.dropdown-menu').find('#aDivide').addClass('disabled');
         } else {
-            $(this).find('td:last-child').find('div.dropdown-menu').find('#liDivide').removeClass('disabled');
+            $(this).find('td:last-child').find('div.dropdown-menu').find('#aDivide').removeClass('disabled');
         }
     });
 }
@@ -616,4 +616,21 @@ function upload() {
             disconnect();
         }
     });
+}
+
+function releaseOperations(tableId, what) {
+    switch (what) {
+        case 'block':
+            $('#bth-search').click();
+            break;
+        case 'unblock':
+            $('table#' + tableId).find('> tbody').find('> tr').each(function () {
+                $(this).find(':checkbox:disabled').each(function () {
+                    $(this).closest('tr').find('#aDivide').removeClass('disabled');
+                    $(this).removeAttr('checked').removeAttr('disabled');
+                })
+            });
+            $('#unblock_operations').removeClass('btn-danger').addClass('btn-success').text('Заблокировать операции');
+            break;
+    }
 }
