@@ -27,7 +27,7 @@
         <projectLombok.version>1.16.14</projectLombok.version>
         <apachiPOI.version>3.17-beta1</apachiPOI.version>
         <jackson.version>RELEASE</jackson.version>
-        <spring.shedlock.version>4.10.1</spring.shedlock.version>
+        <spring.shedlock.version>4.0.0</spring.shedlock.version>
         <spring-websocket.version>4.3.9.RELEASE</spring-websocket.version>
     </properties>
 
