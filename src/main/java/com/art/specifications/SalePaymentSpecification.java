@@ -30,13 +30,13 @@ public class SalePaymentSpecification extends BaseSpecification<SalePayment, Flo
         return ((root, criteriaQuery, criteriaBuilder) -> {
             if (!Objects.equals(null, min) && !Objects.equals(null, max)) {
                 return criteriaBuilder.and(
-                        criteriaBuilder.greaterThanOrEqualTo(root.get(SalePayment_.dateGived), min),
-                        criteriaBuilder.lessThanOrEqualTo(root.get(SalePayment_.dateGived), max)
+                        criteriaBuilder.greaterThanOrEqualTo(root.get(SalePayment_.dateGiven), min),
+                        criteriaBuilder.lessThanOrEqualTo(root.get(SalePayment_.dateGiven), max)
                 );
             } else if (!Objects.equals(null, min)) {
-                return criteriaBuilder.greaterThanOrEqualTo(root.get(SalePayment_.dateGived), min);
+                return criteriaBuilder.greaterThanOrEqualTo(root.get(SalePayment_.dateGiven), min);
             } else if (!Objects.equals(null, max)) {
-                return criteriaBuilder.lessThanOrEqualTo(root.get(SalePayment_.dateGived), max);
+                return criteriaBuilder.lessThanOrEqualTo(root.get(SalePayment_.dateGiven), max);
             } else {
                 return null;
             }
