@@ -8,174 +8,72 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@ToString
-@EqualsAndHashCode(exclude = {"facility", "investor", "underFacility"})
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+
+@Data
 @Entity
-@Table(name = "InvestorsFlowsSale")
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "sale_payment")
+@EqualsAndHashCode(exclude = {"facility", "investor", "underFacility"})
 public class SalePayment {
-    private Long id;
-    private Facility facility;
-    private AppUser investor;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "ShareType")
-    private ShareType shareType;
-
-    private BigDecimal cashInFacility;
-    private Date dateGived;
-    private BigDecimal investorShare;
-    private BigDecimal cashInUnderFacility;
-    private BigDecimal profitToCashingAuto;
-    private BigDecimal profitToCashingMain;
-    private BigDecimal profitToReInvest;
-    private UnderFacility underFacility;
-    private Date dateSale;
-    private int isReinvest;
-
-    @Column
-    private Long sourceId;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "Id")
-    public Long getId() {
-        return id;
-    }
+    @Column(name = "id")
+    private Long id;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "facility_id", referencedColumnName = "id")
+    private Facility facility;
 
-    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinColumn(name = "facilityId", referencedColumnName = "id")
-    public Facility getFacility() {
-        return facility;
-    }
-
-    public void setFacility(Facility facility) {
-        this.facility = facility;
-    }
-
-    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinColumn(name = "underFacilityId", referencedColumnName = "id")
-    public UnderFacility getUnderFacility() {
-        return underFacility;
-    }
-
-    public void setUnderFacility(UnderFacility underFacility) {
-        this.underFacility = underFacility;
-    }
-
-    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinColumn(name = "investorId", referencedColumnName = "id")
-    public AppUser getInvestor() {
-        return investor;
-    }
-
-    public void setInvestor(AppUser investor) {
-        this.investor = investor;
-    }
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "investor_id", referencedColumnName = "id")
+    private AppUser investor;
 
     @Enumerated(EnumType.STRING)
-    public ShareType getShareType() {
-        return shareType;
-    }
+    @Column(name = "share_type")
+    private ShareType shareType;
 
-    public void setShareType(ShareType shareType) {
-        this.shareType = shareType;
-    }
+    @Column(name = "cash_in_facility")
+    private BigDecimal cashInFacility;
 
-    @Column(name = "CashInFacility")
-    public BigDecimal getCashInFacility() {
-        return cashInFacility;
-    }
+    @Column(name = "date_given")
+    private Date dateGiven;
 
-    public void setCashInFacility(BigDecimal cashInFacility) {
-        this.cashInFacility = cashInFacility;
-    }
+    @Column(name = "investor_share")
+    private BigDecimal investorShare;
 
-    @Column(name = "DateGived")
-    public Date getDateGived() {
-        return dateGived;
-    }
+    @Column(name = "cash_in_under_facility")
+    private BigDecimal cashInUnderFacility;
 
-    public void setDateGived(Date dateGived) {
-        this.dateGived = dateGived;
-    }
+    @Column(name = "profit_to_cashing_auto")
+    private BigDecimal profitToCashingAuto;
 
-    @Column(name = "InvestorShare")
-    public BigDecimal getInvestorShare() {
-        return investorShare;
-    }
+    @Column(name = "profit_to_cashing_main")
+    private BigDecimal profitToCashingMain;
 
-    public void setInvestorShare(BigDecimal investorShare) {
-        this.investorShare = investorShare;
-    }
+    @Column(name = "profit_to_reinvest")
+    private BigDecimal profitToReInvest;
 
-    @Column(name = "CashInUnderFacility")
-    public BigDecimal getCashInUnderFacility() {
-        return cashInUnderFacility;
-    }
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "under_facility_id", referencedColumnName = "id")
+    private UnderFacility underFacility;
 
-    public void setCashInUnderFacility(BigDecimal cashInUnderFacility) {
-        this.cashInUnderFacility = cashInUnderFacility;
-    }
+    @Column(name = "date_sale")
+    private Date dateSale;
 
-    @Column(name = "ProfitToCashingAuto")
-    public BigDecimal getProfitToCashingAuto() {
-        return profitToCashingAuto;
-    }
+    @Column(name = "is_reinvest")
+    private int isReinvest;
 
-    public void setProfitToCashingAuto(BigDecimal profitToCashingAuto) {
-        this.profitToCashingAuto = profitToCashingAuto;
-    }
-
-    @Column(name = "ProfitToCashingMain")
-    public BigDecimal getProfitToCashingMain() {
-        return profitToCashingMain;
-    }
-
-    public void setProfitToCashingMain(BigDecimal profitToCashingMain) {
-        this.profitToCashingMain = profitToCashingMain;
-    }
-
-    @Column(name = "ProfitToReInvest")
-    public BigDecimal getProfitToReInvest() {
-        return profitToReInvest;
-    }
-
-    public void setProfitToReInvest(BigDecimal profitToReInvest) {
-        this.profitToReInvest = profitToReInvest;
-    }
-
-    @Column(name = "DateSale")
-    public Date getDateSale() {
-        return dateSale;
-    }
-
-    public void setDateSale(Date dateSale) {
-        this.dateSale = dateSale;
-    }
-
-    @Column(name = "IsReinvest")
-    public int getIsReinvest() {
-        return isReinvest;
-    }
-
-    public void setIsReinvest(int isReinvest) {
-        this.isReinvest = isReinvest;
-    }
+    @Column(name = "source_id")
+    private Long sourceId;
 
     @Transient
-    public String getDateGivedToLocalDate() {
+    public String getDateGivenToLocalDate() {
         String localDate = "";
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         try {
-            localDate = format.format(dateGived);
+            localDate = format.format(dateGiven);
         } catch (Exception ignored) {
         }
 
@@ -200,7 +98,7 @@ public class SalePayment {
         this.investor = salePayment.getInvestor();
         this.shareType = salePayment.getShareType();
         this.cashInFacility = salePayment.getCashInFacility();
-        this.dateGived = salePayment.getDateGived();
+        this.dateGiven = salePayment.getDateGiven();
         this.investorShare = salePayment.getInvestorShare();
         this.cashInUnderFacility = salePayment.getCashInUnderFacility();
         this.profitToCashingAuto = salePayment.getProfitToCashingAuto();

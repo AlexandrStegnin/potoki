@@ -199,7 +199,7 @@
                     <fmt:setLocale value="ru-RU" scope="session"/>
                     <fmt:formatNumber value="${flows.cashInFacility}" type="currency" minFractionDigits="2"/>
                 </td>
-                <td data-date-gived="${flows.dateGived.time}">${flows.dateGivedToLocalDate}</td>
+                <td data-date-gived="${flows.dateGiven.time}">${flows.dateGivenToLocalDate}</td>
                 <td>
                     <fmt:formatNumber value="${flows.cashInUnderFacility}" type="currency" minFractionDigits="2"/>
                 </td>

@@ -327,7 +327,7 @@ public class UploadExcelService {
                     }
 
                     salePayment.setCashInFacility(cashInFacility);
-                    salePayment.setDateGived(Date.from(cal.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+                    salePayment.setDateGiven(Date.from(cal.atStartOfDay(ZoneId.systemDefault()).toInstant()));
                     String strInvShare = row.getCell(5).getStringCellValue();
                     BigDecimal invShare;
                     try {
