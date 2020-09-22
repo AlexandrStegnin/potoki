@@ -8,7 +8,6 @@ import com.art.model.SalePayment;
 import com.art.model.UnderFacility;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.FileBucket;
-import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.dto.SalePaymentDTO;
 import com.art.model.supporting.enums.ShareType;
@@ -30,8 +29,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -113,24 +110,36 @@ public class SalePaymentController {
         return salePaymentService.deleteAll(dto);
     }
 
-    @PostMapping(value = "/divideFlows", produces = "application/json;charset=UTF-8")
-    public @ResponseBody
-    GenericResponse divideFlowsSale(@RequestBody SearchSummary searchSummary) {
-        GenericResponse response = new GenericResponse();
-        BigInteger flowId = searchSummary.getDivideSumId();
-        BigDecimal divideSum = searchSummary.getDivideSum();
-        SalePayment oldFlows = salePaymentService.findById(flowId);
-        SalePayment newFlows = salePaymentService.findById(flowId);
-        oldFlows.setProfitToReInvest(oldFlows.getProfitToReInvest().subtract(divideSum));
-        newFlows.setId(null);
-        newFlows.setProfitToReInvest(divideSum);
-        newFlows.setSourceId(oldFlows.getId());
-        if (oldFlows.getProfitToReInvest().compareTo(BigDecimal.ZERO) <= 0) oldFlows.setIsReinvest(1);
-        salePaymentService.update(oldFlows);
-        salePaymentService.create(newFlows);
-        response.setMessage(oldFlows.getProfitToReInvest().toPlainString());
-        return response;
+    /**
+     * Реинвестирование сумм с выплат (продажа)
+     *
+     * @param dto DTO для реинвестирования
+     * @return ответ о выполнении
+     */
+    @PostMapping(path = Location.SALE_PAYMENTS_REINVEST)
+    @ResponseBody
+    public ApiResponse reinvestSalePayments(@RequestBody SalePaymentDTO dto) {
+        return salePaymentService.reinvest(dto);
     }
+
+//    @PostMapping(value = "/divideFlows", produces = "application/json;charset=UTF-8")
+//    public @ResponseBody
+//    GenericResponse divideFlowsSale(@RequestBody SearchSummary searchSummary) {
+//        GenericResponse response = new GenericResponse();
+//        Long flowId = searchSummary.getDivideSumId();
+//        BigDecimal divideSum = searchSummary.getDivideSum();
+//        SalePayment oldFlows = salePaymentService.findById(flowId);
+//        SalePayment newFlows = salePaymentService.findById(flowId);
+//        oldFlows.setProfitToReInvest(oldFlows.getProfitToReInvest().subtract(divideSum));
+//        newFlows.setId(null);
+//        newFlows.setProfitToReInvest(divideSum);
+//        newFlows.setSourceId(oldFlows.getId());
+//        if (oldFlows.getProfitToReInvest().compareTo(BigDecimal.ZERO) <= 0) oldFlows.setIsReinvest(1);
+//        salePaymentService.update(oldFlows);
+//        salePaymentService.create(newFlows);
+//        response.setMessage(oldFlows.getProfitToReInvest().toPlainString());
+//        return response;
+//    }
 
     /**
      * Подготовить модель для страницы
@@ -140,13 +149,13 @@ public class SalePaymentController {
     private ModelAndView prepareModel(FlowsSaleFilter filters) {
         ModelAndView model = new ModelAndView("sale-payment-list");
         FileBucket fileModel = new FileBucket();
-        SearchSummary searchSummary = new SearchSummary();
         Pageable pageable = new PageRequest(filters.getPageNumber(), filters.getPageSize());
         Page<SalePayment> page = salePaymentService.findAll(filters, pageable);
         model.addObject("page", page);
         model.addObject("fileBucket", fileModel);
         model.addObject("filter", filters);
-        model.addObject("searchSummary", searchSummary);
+        model.addObject("searchSummary", new SearchSummary());
+        model.addObject("salePaymentDTO", new SalePaymentDTO());
         return model;
     }
 
