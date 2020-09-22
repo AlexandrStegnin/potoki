@@ -1,6 +1,7 @@
 package com.art.model;
 
 import com.art.model.supporting.dto.RentPaymentDTO;
+import com.art.model.supporting.dto.SalePaymentDTO;
 import com.art.model.supporting.enums.ShareType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -152,6 +153,19 @@ public class Money implements Serializable {
         this.sourceUnderFacility = rentPayment.getUnderFacility();
         this.sourceFlowsId = String.valueOf(rentPayment.getId());
         this.room = rentPayment.getRoom();
+    }
+
+    public Money(SalePayment salePayment, SalePaymentDTO dto, Facility facility, UnderFacility underFacility) {
+        this.givenCash = salePayment.getProfitToReInvest();
+        this.dateGiven = dto.getDateGiven();
+        this.facility = facility;
+        this.investor = salePayment.getInvestor();
+        this.shareType = ShareType.fromTitle(dto.getShareType());
+        this.dateReport = salePayment.getDateSale();
+        this.sourceFacility = salePayment.getFacility();
+        this.sourceUnderFacility = salePayment.getUnderFacility();
+        this.sourceFlowsId = String.valueOf(salePayment.getId());
+        this.underFacility = underFacility;
     }
 
     @Transient
