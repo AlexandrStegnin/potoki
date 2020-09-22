@@ -130,7 +130,7 @@
                 <button data-table-id="salePayments" type="button" id="unblock_operations"
                         class="btn btn-danger input-md" style="margin-right: 10px">Разблокировать операции
                 </button>
-                <button type="button" class="btn btn-primary input-md" id="checkIt" style="margin-right: 10px">
+                <button type="button" class="btn btn-primary input-md" id="checkIt" data-checked="false" style="margin-right: 10px">
                     Выделить всё
                 </button>
                 <div class="dropdown pull-right" style="margin-right: 10px">
@@ -171,7 +171,7 @@
         </nav>
     </c:if>
 
-    <table class="table table-striped w-auto table-hover table-sm" style="table-layout: fixed" id="invFlowsSale">
+    <table class="table table-striped w-auto table-hover table-sm" style="table-layout: fixed" id="salePayments">
         <thead>
         <tr>
             <th>Объект</th>

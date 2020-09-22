@@ -48,7 +48,7 @@ jQuery(document).ready(function ($) {
             showLoader();
             event.preventDefault();
             let cashIdList = [];
-            $('table#rentPayments').find('> tbody').find('> tr').each(function () {
+            $('table#salePayments').find('> tbody').find('> tr').each(function () {
                 $(this).find(':checkbox:checked').not(':disabled').each(function () {
                     cashIdList.push($(this).closest('tr').attr('id'));
                     $(this).closest('tr').remove();
@@ -137,8 +137,8 @@ jQuery(document).ready(function ($) {
     });
 
     $('#reinvestAll').addClass('disabled');
-    max = findMinMaxDate('#invFlowsSale tbody', 5, "max");
-    min = findMinMaxDate('#invFlowsSale tbody', 5, "min");
+    max = findMinMaxDate('#salePayments tbody', 5, "max");
+    min = findMinMaxDate('#salePayments tbody', 5, "min");
     populateStorageUnderFacilities('uFacilities');
     populateStorageRooms();
 
@@ -157,7 +157,7 @@ jQuery(document).ready(function ($) {
         enableSearchButton(true);
     });
 
-    $('table#invFlowsSale').find('> tbody').find('> tr').each(function (i) {
+    $('table#salePayments').find('> tbody').find('> tr').each(function (i) {
         $(this).data('passed', true);
     });
 
@@ -174,15 +174,22 @@ jQuery(document).ready(function ($) {
         $('#reInvestModal').modal("hide");
     });
 
-    $(document).on('change', '#checkIt', function () {
-        let checked = $('#checkIt').prop('checked');
-        if (!checked) {
+    $(document).on('click', '#checkIt', function () {
+        let checkIt = $('#checkIt');
+        let checked = checkIt.attr('data-checked');
+        if (checked === 'true') {
+            checkIt.attr('data-checked', 'false');
+            checkIt.text('Выделить всё')
+            checkIt.removeClass('btn-danger').addClass('btn-primary')
             blockUnblockDropdownMenus('block', false);
-            $('table#invFlowsSale').find('> tbody').find('> tr').each(function () {
+            $('table#salePayments').find('> tbody').find('> tr').each(function () {
                 $(this).find(':checkbox:not(:disabled)').prop('checked', false);
             });
         } else {
-            $('table#invFlowsSale').find('> tbody').find('> tr').each(function () {
+            checkIt.attr('data-checked', 'true');
+            checkIt.text('Очистить выбор')
+            checkIt.removeClass('btn-primary').addClass('btn-danger')
+            $('table#salePayments').find('> tbody').find('> tr').each(function () {
                 if (!$(this).data('passed')) {
                     $(this).find(':checkbox:not(:disabled)').prop('checked', false);
                 } else {
@@ -215,7 +222,7 @@ jQuery(document).ready(function ($) {
         if (linkHasClass($('#deleteAll'))) return false;
         showLoader();
         let cashIdList = [];
-        $('table#invFlowsSale').find('> tbody').find('> tr').each(function () {
+        $('table#salePayments').find('> tbody').find('> tr').each(function () {
             $(this).find(':checkbox:checked').not(':disabled').each(function () {
                 cashIdList.push($(this).closest('tr').attr('id'));
                 $(this).closest('tr').remove();
@@ -327,7 +334,7 @@ function prepareReinvestSale() {
 
     $('#reInvestModal').modal('hide');
     $('#reinvestAll').prop('disabled', true);
-    $('table#invFlowsSale').find('> tbody').find('> tr').each(function () {
+    $('table#salePayments').find('> tbody').find('> tr').each(function () {
         $(this).find(':checkbox:checked').not(':disabled').each(function () {
             $(this).closest('tr').find('input:checkbox').prop('disabled', true);
             current = $(this).closest('tr');
@@ -371,7 +378,7 @@ function reinvestSalePayments(salePaymentDTO) {
 }
 
 function checkChecked() {
-    return $('table#invFlowsSale').find('[type="checkbox"]:checked:not(:disabled)').length;
+    return $('table#salePayments').find('[type="checkbox"]:checked:not(:disabled)').length;
 }
 
 function showPopup(message) {
@@ -505,7 +512,7 @@ function divideCash(flowId, divideSum) {
 }
 
 function blockUnblockDivide() {
-    $('table#invFlowsSale').find('> tbody').find('> tr').each(function () {
+    $('table#salePayments').find('> tbody').find('> tr').each(function () {
         if ($(this).find(':checkbox').attr('checked') === 'checked') {
             $(this).find('td:last-child').find('ul.dropdown-menu').find('#liDivide').removeClass('active').addClass('disabled');
         } else {
