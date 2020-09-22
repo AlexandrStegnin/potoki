@@ -42,7 +42,7 @@ jQuery(document).ready(function ($) {
 
     $(document).on('submit', '#reInvestData', function (event) {
         event.preventDefault();
-        prepareSaveInvestorsCash();
+        prepareReinvestRent();
     });
 
     $(document).on('click', '#delete-all', function (e) {
@@ -251,7 +251,7 @@ function findMinMaxDate(table, col, maxOrMin) {
     }
 }
 
-function prepareSaveInvestorsCash() {
+function prepareReinvestRent() {
     let dateGiven;
     let facilityId;
     let shareType;
