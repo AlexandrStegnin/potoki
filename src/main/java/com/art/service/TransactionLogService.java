@@ -7,6 +7,7 @@ import com.art.model.supporting.enums.TransactionType;
 import com.art.model.supporting.filters.TxLogFilter;
 import com.art.repository.MoneyRepository;
 import com.art.repository.RentPaymentRepository;
+import com.art.repository.SalePaymentRepository;
 import com.art.repository.TransactionLogRepository;
 import com.art.specifications.TransactionLogSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class TransactionLogService {
 
     private final MoneyRepository moneyRepository;
 
-    private final SalePaymentService salePaymentService;
+    private final SalePaymentRepository salePaymentRepository;
 
     private final RentPaymentRepository rentPaymentRepository;
 
@@ -42,13 +43,13 @@ public class TransactionLogService {
                                  TransactionLogRepository transactionLogRepository,
                                  InvestorCashLogService investorCashLogService,
                                  MoneyRepository moneyRepository,
-                                 SalePaymentService salePaymentService,
+                                 SalePaymentRepository salePaymentRepository,
                                  RentPaymentRepository rentPaymentRepository) {
         this.specification = specification;
         this.transactionLogRepository = transactionLogRepository;
         this.investorCashLogService = investorCashLogService;
         this.moneyRepository = moneyRepository;
-        this.salePaymentService = salePaymentService;
+        this.salePaymentRepository = salePaymentRepository;
         this.rentPaymentRepository = rentPaymentRepository;
     }
 
@@ -229,16 +230,16 @@ public class TransactionLogService {
     /**
      * Создать запись категории "Реинвестирование с продажи" в логе
      *
-     * @param flowsSaleList список денег с продажи
+     * @param salePayments список денег с продажи
      * @param cashList список денег, основанных на деньгах с продажи
      */
-    public void reinvestmentSale(List<SalePayment> flowsSaleList, Set<Money> cashList) {
+    public void reinvestmentSale(List<SalePayment> salePayments, Set<Money> cashList) {
         TransactionLog log = new TransactionLog();
         log.setMonies(cashList);
         log.setType(TransactionType.REINVESTMENT_SALE);
         log.setRollbackEnabled(true);
         create(log);
-        investorCashLogService.reinvestmentSale(flowsSaleList, log);
+        investorCashLogService.reinvestmentSale(salePayments, log);
     }
 
     /**
@@ -331,12 +332,12 @@ public class TransactionLogService {
                 .stream()
                 .map(InvestorCashLog::getCashId)
                 .collect(Collectors.toList());
-        List<SalePayment> flowsSales = salePaymentService.findByIdIn(flowsCashIdList);
+        List<SalePayment> flowsSales = salePaymentRepository.findByIdIn(flowsCashIdList);
         try {
-            cashes.forEach(moneyRepository::delete);
+            moneyRepository.delete(cashes);
             flowsSales.forEach(flowSale -> {
                 flowSale.setIsReinvest(0);
-                salePaymentService.update(flowSale);
+                salePaymentRepository.saveAndFlush(flowSale);
             });
             cashLogs.forEach(investorCashLogService::delete);
             transactionLogRepository.delete(log);
