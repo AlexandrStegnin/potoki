@@ -59,9 +59,6 @@
                         <a href="<c:url value='/facilities/create' />" class="dropdown-item">
                             <span style="color: #0D345D;" class="fas fa-plus"></span> Добавить объект
                         </a>
-                        <a href="<c:url value='/update-inv-demo' />" id="updateInvestorDemo" class="dropdown-item">
-                            <span style="color: #0D345D;" class="fas fa-sync-alt"></span> Обновить инвестор-демо
-                        </a>
                     </div>
                 </li>
             </sec:authorize>

@@ -73,11 +73,6 @@
                             <li><a href="/facilities/create">
                             <span style="margin-right: 5px;  color: dodgerblue;"
                                   class="glyphicon glyphicon-plus"></span>Добавить объект</a></li>
-
-                            <li><a href="/update-inv-demo" id="updateInvestorDemo">
-                            <span style="margin-right: 5px;  color: dodgerblue;"
-                                  class="glyphicon glyphicon-refresh"></span>Обновить инвестор-демо</a></li>
-
                             <li><a href="#"><span style="margin-right: 5px;  color: dodgerblue;" class="glyphicon glyphicon-off"></span><div class="material-switch pull-right" style="margin-top: 10px;">
                                 <input id="someSwitchOptionWarning" name="someSwitchOption001" type="checkbox">
                                 <label for="someSwitchOptionWarning" id="someSwitchOptionWarningLbl" class="label-warning"></label>

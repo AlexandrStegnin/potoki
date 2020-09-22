@@ -2,11 +2,6 @@ jQuery(document).ready(function ($) {
 
     /* МОДАЛЬНОЕ ОКНО */
 
-    $(document).on('click', 'a#updateInvestorDemo', function (e) {
-        e.preventDefault();
-        updateInvestorDemo();
-    });
-
     $(document).on('click', '#clearLS', function (e) {
         e.preventDefault();
         if (window.localStorage) localStorage.clear();
@@ -208,33 +203,6 @@ function savePass() {
     });
 
 
-}
-
-function updateInvestorDemo() {
-    let token = $("meta[name='_csrf']").attr("content");
-    let header = $("meta[name='_csrf_header']").attr("content");
-
-    showLoader();
-
-    $.ajax({
-        type: "POST",
-        contentType: "application/json;charset=utf-8",
-        url: "../updateInvestorDemo",
-        data: "",
-        dataType: 'json',
-        timeout: 100000,
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader(header, token);
-        },
-        success: function (data) {
-            closeLoader();
-            slideBox(data.message);
-        },
-        error: function (e) {
-            console.log("ERROR: ", e);
-            closeLoader();
-        }
-    });
 }
 
 function updateMarketingTree() {

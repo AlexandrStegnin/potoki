@@ -26,8 +26,6 @@ public class Location {
 
     public static final String CATALOGUE = "/catalogue";
 
-    public static final String UPDATE_INV_DEMO = "/update-inv-demo";
-
     // Транзакции
     public static final String URL_TRANSACTIONS = "/transactions";
 
@@ -212,7 +210,6 @@ public class Location {
     public static final String[] ADMIN_URLS = {
             ADMIN,
             CATALOGUE,
-            UPDATE_INV_DEMO,
             URL_TRANSACTIONS + WILD_CARD,
             FACILITIES + WILD_CARD,
             ROOMS + WILD_CARD,

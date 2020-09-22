@@ -2,7 +2,6 @@ package com.art.controllers;
 
 import com.art.config.SecurityUtils;
 import com.art.config.application.Location;
-import com.art.model.AppUser;
 import com.art.service.UserService;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -89,15 +88,7 @@ public class AppController {
         if (Objects.nonNull(auth) && !(auth instanceof AnonymousAuthenticationToken)) {
             SecurityContextHolder.clearContext();
         }
-        AppUser demo = userService.findByLogin(SecurityUtils.getInvestorDemoLogin());
-        String login;
-        if (null == demo) {
-            login = SecurityUtils.getUsername();
-        } else {
-            login = demo.getLogin();
-        }
-        model.addAttribute("investorLogin", login);
-        return "flows";
+        return "redirect:" + Location.LOGIN;
     }
 
 }

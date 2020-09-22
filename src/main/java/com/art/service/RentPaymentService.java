@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -88,11 +87,6 @@ public class RentPaymentService {
 //    @CacheEvict(Constant.INVESTOR_FLOWS_CACHE_KEY)
     public void deleteByIdIn(List<Long> idList) {
         idList.forEach(rentPaymentRepository::delete);
-    }
-
-    public void updateInvestorDemo() {
-        Query q = em.createNativeQuery("{call UPDATE_INVESTOR_DEMO()}");
-        q.executeUpdate();
     }
 
     public Page<RentPayment> findAll(RentPaymentFilter filters, Pageable pageable) {
