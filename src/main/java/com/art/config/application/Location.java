@@ -206,6 +206,9 @@ public class Location {
 
     public static final String SALE_PAYMENTS_REINVEST = SALE_PAYMENTS + "/reinvest";
 
+    public static final String SALE_PAYMENTS_DIVIDE = SALE_PAYMENTS + "/divide";
+
+
     public static final String[] ADMIN_URLS = {
             ADMIN,
             CATALOGUE,
