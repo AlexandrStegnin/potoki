@@ -514,9 +514,9 @@ function divideCash(flowId, divideSum) {
 function blockUnblockDivide() {
     $('table#salePayments').find('> tbody').find('> tr').each(function () {
         if ($(this).find(':checkbox').attr('checked') === 'checked') {
-            $(this).find('td:last-child').find('ul.dropdown-menu').find('#liDivide').removeClass('active').addClass('disabled');
+            $(this).find('td:last-child').find('div.dropdown-menu').find('#liDivide').addClass('disabled');
         } else {
-            $(this).find('td:last-child').find('ul.dropdown-menu').find('#liDivide').removeClass('disabled').addClass('active');
+            $(this).find('td:last-child').find('div.dropdown-menu').find('#liDivide').removeClass('disabled');
         }
     });
 }
