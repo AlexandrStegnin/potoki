@@ -2,17 +2,12 @@ package com.art.converter;
 
 import com.art.model.Facility;
 import com.art.service.FacilityService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
-
-import javax.annotation.Resource;
 
 public class FacilityConverter implements Converter<String, Facility> {
 
-    @Resource(name = "facilityService")
-    private FacilityService facilityService;
+    private final FacilityService facilityService;
 
-    @Autowired
     public FacilityConverter(FacilityService facilityService) {
         this.facilityService = facilityService;
     }
@@ -23,7 +18,7 @@ public class FacilityConverter implements Converter<String, Facility> {
             Long IntId = Long.valueOf(id);
             facility = facilityService.findById(IntId);
         } catch (Exception ex) {
-            facility = facilityService.findByFacility(id);
+            facility = facilityService.findByName(id);
         }
 
         return facility;

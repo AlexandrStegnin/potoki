@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
@@ -57,14 +56,8 @@ public class FacilityService {
     @PersistenceContext(name = "persistanceUnit")
     private EntityManager em;
 
-    public Facility findByFacility(String facility) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Facility> facilitiesCriteriaQuery = cb.createQuery(Facility.class);
-        Root<Facility> facilitiesRoot = facilitiesCriteriaQuery.from(Facility.class);
-        facilitiesCriteriaQuery.select(facilitiesRoot);
-        facilitiesCriteriaQuery.where(cb.equal(facilitiesRoot.get(Facility_.name), facility));
-
-        return this.em.createQuery(facilitiesCriteriaQuery).getSingleResult();
+    public Facility findByName(String name) {
+        return facilityRepository.findByName(name);
     }
 
 //    @CacheEvict(Constant.FACILITIES_CACHE_KEY)

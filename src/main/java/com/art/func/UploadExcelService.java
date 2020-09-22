@@ -154,7 +154,7 @@ public class UploadExcelService {
                     if (facilityName == null || facilityName.isEmpty()) {
                         break;
                     }
-                    Facility facility = facilityService.findByFacility(facilityName);
+                    Facility facility = facilityService.findByName(facilityName);
                     if (facility == null) {
                         break;
                     }
@@ -188,7 +188,7 @@ public class UploadExcelService {
                     Facility reFacility = null;
                     String reFacilityName = row.getCell(19).getStringCellValue();
                     if (reFacilityName != null && !reFacilityName.isEmpty()) {
-                        reFacility = facilityService.findByFacility(reFacilityName);
+                        reFacility = facilityService.findByName(reFacilityName);
                     }
 
                     rentPayment.setReFacility(reFacility);
@@ -292,7 +292,7 @@ public class UploadExcelService {
                     SalePayment salePayment = new SalePayment();
                     Facility facility = facilities.get(facilityName);
                     if (facility == null) {
-                        facility = facilityService.findByFacility(facilityName);
+                        facility = facilityService.findByName(facilityName);
                         if (facility == null) {
                             return new ApiResponse(String.format("Не указан или не верно указан объект \"%s\". Строка %d, столбец 1", facilityName, cel),
                                     HttpStatus.PRECONDITION_FAILED.value());
