@@ -1,6 +1,7 @@
 package com.art.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -30,6 +31,20 @@ public class PersistenceConfig {
 
     @Bean
     public DataSource dataSource() throws ClassNotFoundException {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+
+        Class.forName(env.getProperty("jdbc.driverClassName"));
+        dataSource.setDriverClassName(env.getProperty("jdbc.driverClassName"));
+        dataSource.setUrl(env.getProperty("jdbc.url"));
+        dataSource.setUsername(env.getProperty("jdbc.username"));
+        dataSource.setPassword(env.getProperty("jdbc.password"));
+        dataSource.setCatalog(env.getProperty("jdbc.catalog"));
+        return dataSource;
+    }
+
+    @Bean
+    @Qualifier("schedulerLockDataSource")
+    public DataSource schedulerLockDataSource() throws ClassNotFoundException {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
         Class.forName(env.getProperty("jdbc.driverClassName"));
