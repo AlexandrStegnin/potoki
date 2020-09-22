@@ -13,7 +13,7 @@ import java.util.Objects;
 import static org.springframework.data.jpa.domain.Specifications.where;
 
 @Component
-public class InvestorsFlowsSaleSpecification extends BaseSpecification<SalePayment, FlowsSaleFilter> {
+public class SalePaymentSpecification extends BaseSpecification<SalePayment, FlowsSaleFilter> {
 
     @Override
     public Specification<SalePayment> getFilter(FlowsSaleFilter filter) {

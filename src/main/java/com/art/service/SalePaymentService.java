@@ -3,8 +3,8 @@ package com.art.service;
 import com.art.model.SalePayment;
 import com.art.model.SalePayment_;
 import com.art.model.supporting.filters.FlowsSaleFilter;
-import com.art.repository.InvestorsFlowsSaleRepository;
-import com.art.specifications.InvestorsFlowsSaleSpecification;
+import com.art.repository.SalePaymentRepository;
+import com.art.specifications.SalePaymentSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,18 +21,18 @@ import java.util.Objects;
 
 @Service
 @Transactional
-public class InvestorsFlowsSaleService {
+public class SalePaymentService {
 
     @PersistenceContext(name = "persistanceUnit")
     private EntityManager em;
 
-    private final InvestorsFlowsSaleRepository saleRepository;
+    private final SalePaymentRepository saleRepository;
 
-    private final InvestorsFlowsSaleSpecification saleSpecification;
+    private final SalePaymentSpecification saleSpecification;
 
     @Autowired
-    public InvestorsFlowsSaleService(InvestorsFlowsSaleRepository saleRepository,
-                                     InvestorsFlowsSaleSpecification saleSpecification) {
+    public SalePaymentService(SalePaymentRepository saleRepository,
+                              SalePaymentSpecification saleSpecification) {
         this.saleRepository = saleRepository;
         this.saleSpecification = saleSpecification;
     }

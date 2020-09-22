@@ -47,19 +47,19 @@ public class UploadExcelService {
 
     private final RentPaymentService rentPaymentService;
 
-    private final InvestorsFlowsSaleService investorsFlowsSaleService;
+    private final SalePaymentService salePaymentService;
 
     private final GlobalFunctions globalFunctions;
 
     public UploadExcelService(UserService userService, RoomService roomService, FacilityService facilityService,
                               UnderFacilityService underFacilityService, RentPaymentService rentPaymentService,
-                              InvestorsFlowsSaleService investorsFlowsSaleService, GlobalFunctions globalFunctions) {
+                              SalePaymentService salePaymentService, GlobalFunctions globalFunctions) {
         this.userService = userService;
         this.roomService = roomService;
         this.facilityService = facilityService;
         this.underFacilityService = underFacilityService;
         this.rentPaymentService = rentPaymentService;
-        this.investorsFlowsSaleService = investorsFlowsSaleService;
+        this.salePaymentService = salePaymentService;
         this.globalFunctions = globalFunctions;
     }
 
@@ -233,7 +233,7 @@ public class UploadExcelService {
             return new ApiResponse("Проверьте кол-во столбцов в файле. Должно быть 36", HttpStatus.BAD_REQUEST.value());
         }
         List<AppUser> users = userService.findAll();
-        List<SalePayment> salePayments = investorsFlowsSaleService.findAll();
+        List<SalePayment> salePayments = salePaymentService.findAll();
         int cel = 0;
         List<SalePayment> salePaymentList = new ArrayList<>(0);
 
@@ -419,7 +419,7 @@ public class UploadExcelService {
 
             }
         }
-        salePaymentList.forEach(investorsFlowsSaleService::create);
+        salePaymentList.forEach(salePaymentService::create);
         return new ApiResponse("Загрузка файла с данными о продаже завершена");
     }
 

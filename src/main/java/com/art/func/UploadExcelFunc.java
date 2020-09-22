@@ -39,8 +39,8 @@ public class UploadExcelFunc {
     @Resource(name = "roomService")
     private RoomService roomService;
 
-    @Resource(name = "investorsFlowsSaleService")
-    private InvestorsFlowsSaleService investorsFlowsSaleService;
+    @Resource(name = "salePaymentService")
+    private SalePaymentService salePaymentService;
 
     @Autowired
     private FacilityService facilityService;
@@ -207,7 +207,7 @@ public class UploadExcelFunc {
     private String rewriteInvestorsFlowsSale(Sheet sheet) {
         checkSheet(sheet);
         StringBuilder errors = new StringBuilder();
-        List<SalePayment> salePayments = investorsFlowsSaleService.findAll();
+        List<SalePayment> salePayments = salePaymentService.findAll();
         int cel = 0;
         List<SalePayment> salePaymentList = new ArrayList<>(0);
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy", Locale.ENGLISH);
@@ -394,7 +394,7 @@ public class UploadExcelFunc {
             }
         }
 
-        salePaymentList.forEach(flows -> investorsFlowsSaleService.create(flows));
+        salePaymentList.forEach(flows -> salePaymentService.create(flows));
         return errors.toString();
     }
 

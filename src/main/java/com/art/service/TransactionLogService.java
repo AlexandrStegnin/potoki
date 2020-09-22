@@ -33,7 +33,7 @@ public class TransactionLogService {
 
     private final MoneyRepository moneyRepository;
 
-    private final InvestorsFlowsSaleService investorsFlowsSaleService;
+    private final SalePaymentService salePaymentService;
 
     private final RentPaymentRepository rentPaymentRepository;
 
@@ -42,13 +42,13 @@ public class TransactionLogService {
                                  TransactionLogRepository transactionLogRepository,
                                  InvestorCashLogService investorCashLogService,
                                  MoneyRepository moneyRepository,
-                                 InvestorsFlowsSaleService investorsFlowsSaleService,
+                                 SalePaymentService salePaymentService,
                                  RentPaymentRepository rentPaymentRepository) {
         this.specification = specification;
         this.transactionLogRepository = transactionLogRepository;
         this.investorCashLogService = investorCashLogService;
         this.moneyRepository = moneyRepository;
-        this.investorsFlowsSaleService = investorsFlowsSaleService;
+        this.salePaymentService = salePaymentService;
         this.rentPaymentRepository = rentPaymentRepository;
     }
 
@@ -331,12 +331,12 @@ public class TransactionLogService {
                 .stream()
                 .map(InvestorCashLog::getCashId)
                 .collect(Collectors.toList());
-        List<SalePayment> flowsSales = investorsFlowsSaleService.findByIdIn(flowsCashIdList);
+        List<SalePayment> flowsSales = salePaymentService.findByIdIn(flowsCashIdList);
         try {
             cashes.forEach(moneyRepository::delete);
             flowsSales.forEach(flowSale -> {
                 flowSale.setIsReinvest(0);
-                investorsFlowsSaleService.update(flowSale);
+                salePaymentService.update(flowSale);
             });
             cashLogs.forEach(investorCashLogService::delete);
             transactionLogRepository.delete(log);

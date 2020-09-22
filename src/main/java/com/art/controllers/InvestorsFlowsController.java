@@ -4,7 +4,7 @@ import com.art.func.UploadExcelFunc;
 import com.art.model.SalePayment;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
-import com.art.service.InvestorsFlowsSaleService;
+import com.art.service.SalePaymentService;
 import com.art.service.RentPaymentService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,8 +33,8 @@ public class InvestorsFlowsController {
     @Resource(name = "rentPaymentService")
     private RentPaymentService rentPaymentService;
 
-    @Resource(name = "investorsFlowsSaleService")
-    private InvestorsFlowsSaleService investorsFlowsSaleService;
+    @Resource(name = "salePaymentService")
+    private SalePaymentService salePaymentService;
 
     @PostMapping(value = "/loadFlowsAjax", produces = "application/json;charset=UTF-8")
     public @ResponseBody
@@ -63,22 +63,22 @@ public class InvestorsFlowsController {
         try {
             if ("sale".equals(searchSummary.getWhat())) {
                 List<BigInteger> deletedChildesIds = new ArrayList<>();
-                List<SalePayment> listToDelete = investorsFlowsSaleService.findByIdIn(searchSummary.getCashIdList());
+                List<SalePayment> listToDelete = salePaymentService.findByIdIn(searchSummary.getCashIdList());
                 listToDelete.forEach(ltd -> {
                     if (!deletedChildesIds.contains(ltd.getId())) {
                         List<SalePayment> childFlows = new ArrayList<>();
-                        SalePayment parentFlow = investorsFlowsSaleService.findParentFlow(ltd, childFlows);
+                        SalePayment parentFlow = salePaymentService.findParentFlow(ltd, childFlows);
                         if (parentFlow.getIsReinvest() == 1) parentFlow.setIsReinvest(0);
-                        childFlows = investorsFlowsSaleService.findAllChildes(parentFlow, childFlows, 0);
+                        childFlows = salePaymentService.findAllChildes(parentFlow, childFlows, 0);
                         childFlows.sort(Comparator.comparing(SalePayment::getId).reversed());
                         childFlows.forEach(cf -> {
                             deletedChildesIds.add(cf.getId());
                             parentFlow.setProfitToReInvest(parentFlow.getProfitToReInvest().add(cf.getProfitToReInvest()));
-                            investorsFlowsSaleService.deleteById(cf.getId());
-                            investorsFlowsSaleService.update(parentFlow);
+                            salePaymentService.deleteById(cf.getId());
+                            salePaymentService.update(parentFlow);
                         });
                         if (parentFlow.getId().equals(ltd.getId())) {
-                            investorsFlowsSaleService.deleteById(parentFlow.getId());
+                            salePaymentService.deleteById(parentFlow.getId());
                         }
                     }
                 });

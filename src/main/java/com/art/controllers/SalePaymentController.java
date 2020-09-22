@@ -1,13 +1,22 @@
 package com.art.controllers;
 
-import com.art.func.UploadExcelFunc;
-import com.art.model.*;
+import com.art.config.application.Location;
+import com.art.func.UploadExcelService;
+import com.art.model.AppUser;
+import com.art.model.Facility;
+import com.art.model.SalePayment;
+import com.art.model.UnderFacility;
+import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.FileBucket;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.enums.ShareType;
+import com.art.model.supporting.enums.UploadType;
 import com.art.model.supporting.filters.FlowsSaleFilter;
-import com.art.service.*;
+import com.art.service.FacilityService;
+import com.art.service.SalePaymentService;
+import com.art.service.UnderFacilityService;
+import com.art.service.UserService;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,39 +26,40 @@ import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 @Controller
-public class InvestorsFlowsSaleController {
+public class SalePaymentController {
 
-    @Resource(name = "uploadExcelFunc")
-    private UploadExcelFunc uploadExcelFunc;
+    private final UploadExcelService uploadExcelService;
 
-    @Resource(name = "facilityService")
-    private FacilityService facilityService;
+    private final FacilityService facilityService;
 
-    @Resource(name = "investorsFlowsSaleService")
-    private InvestorsFlowsSaleService investorsFlowsSaleService;
+    private final SalePaymentService salePaymentService;
 
-    @Resource(name = "underFacilityService")
-    private UnderFacilityService underFacilityService;
+    private final UnderFacilityService underFacilityService;
 
-    @Resource(name = "userService")
-    private UserService userService;
+    private final UserService userService;
 
-    private final FlowsSaleFilter filters = new FlowsSaleFilter();
+    private final FlowsSaleFilter filter = new FlowsSaleFilter();
+
+    public SalePaymentController(UploadExcelService uploadExcelService, FacilityService facilityService,
+                                 SalePaymentService salePaymentService, UnderFacilityService underFacilityService,
+                                 UserService userService) {
+        this.uploadExcelService = uploadExcelService;
+        this.facilityService = facilityService;
+        this.salePaymentService = salePaymentService;
+        this.underFacilityService = underFacilityService;
+        this.userService = userService;
+    }
 
     /**
      * Получить страницу для отображения списка денег инвесторов с продажи
@@ -57,52 +67,65 @@ public class InvestorsFlowsSaleController {
      * @param pageable для постраничного отображения
      * @return страница
      */
-    @GetMapping(value = "/flowsSale")
+    @GetMapping(path = Location.SALE_PAYMENTS)
     public ModelAndView flowsSale(@PageableDefault(size = 100) @SortDefault Pageable pageable) {
-        return prepareModel(filters);
+        return prepareModel(filter);
     }
 
     /**
      * Получить страницу для отображения списка денег инвесторов с продажи с фильтрами
      *
-     * @param filters фильтры
+     * @param filter фильтры
      * @return страница
      */
-    @PostMapping(value = "/flowsSale")
-    public ModelAndView flowsSaleWithFilter(@ModelAttribute("flowsSaleFilters") FlowsSaleFilter filters) {
-        return prepareModel(filters);
+    @PostMapping(path = Location.SALE_PAYMENTS)
+    public ModelAndView flowsSaleWithFilter(@ModelAttribute("filter") FlowsSaleFilter filter) {
+        return prepareModel(filter);
     }
 
-    @PostMapping(value = "/loadFlowsSaleAjax", produces = "application/json;charset=UTF-8")
-    public @ResponseBody
-    GenericResponse loadFlowsSale(MultipartHttpServletRequest request, HttpServletRequest httpServletRequest,
-                                  HttpServletResponse res) {
-
-        GenericResponse response = new GenericResponse();
-
-        Iterator<String> itr = request.getFileNames();
-        List<MultipartFile> multipartFiles = new ArrayList<>(0);
-        while (itr.hasNext()) {
-            multipartFiles.add(request.getFile(itr.next()));
-        }
-
-        MultipartFile multipartFile = multipartFiles.get(0);
-        String err = "";
-        try {
-            err = uploadExcelFunc.ExcelParser(multipartFile, "invFlowsSale", httpServletRequest);
-            if (err.isEmpty()) {
-                response.setMessage("Файл <b>" + multipartFile.getOriginalFilename() + "</b> успешно загружен.");
-            } else {
-                response.setError(err);
-            }
-        } catch (IOException | ParseException e) {
-            System.out.println(err);
-            e.printStackTrace();
-            response.setError(e.getLocalizedMessage());
-        }
-
-        return response;
+    /**
+     * Загрузить файл выплат по продаже
+     *
+     * @param request запрос
+     * @return сообщение об успешной/неудачной загрузке
+     */
+    @PostMapping(path = Location.SALE_PAYMENTS_UPLOAD)
+    @ResponseBody
+    public ApiResponse uploadSalePayments(MultipartHttpServletRequest request) {
+        return uploadExcelService.upload(request, UploadType.SALE);
     }
+
+//
+//    @PostMapping(value = "/loadFlowsSaleAjax", produces = "application/json;charset=UTF-8")
+//    public @ResponseBody
+//    GenericResponse loadFlowsSale(MultipartHttpServletRequest request, HttpServletRequest httpServletRequest,
+//                                  HttpServletResponse res) {
+//
+//        GenericResponse response = new GenericResponse();
+//
+//        Iterator<String> itr = request.getFileNames();
+//        List<MultipartFile> multipartFiles = new ArrayList<>(0);
+//        while (itr.hasNext()) {
+//            multipartFiles.add(request.getFile(itr.next()));
+//        }
+//
+//        MultipartFile multipartFile = multipartFiles.get(0);
+//        String err = "";
+//        try {
+//            err = uploadExcelFunc.ExcelParser(multipartFile, "invFlowsSale", httpServletRequest);
+//            if (err.isEmpty()) {
+//                response.setMessage("Файл <b>" + multipartFile.getOriginalFilename() + "</b> успешно загружен.");
+//            } else {
+//                response.setError(err);
+//            }
+//        } catch (IOException | ParseException e) {
+//            System.out.println(err);
+//            e.printStackTrace();
+//            response.setError(e.getLocalizedMessage());
+//        }
+//
+//        return response;
+//    }
 
     @PostMapping(value = "/divideFlows", produces = "application/json;charset=UTF-8")
     public @ResponseBody
@@ -110,22 +133,22 @@ public class InvestorsFlowsSaleController {
         GenericResponse response = new GenericResponse();
         BigInteger flowId = searchSummary.getDivideSumId();
         BigDecimal divideSum = searchSummary.getDivideSum();
-        SalePayment oldFlows = investorsFlowsSaleService.findById(flowId);
-        SalePayment newFlows = investorsFlowsSaleService.findById(flowId);
+        SalePayment oldFlows = salePaymentService.findById(flowId);
+        SalePayment newFlows = salePaymentService.findById(flowId);
         oldFlows.setProfitToReInvest(oldFlows.getProfitToReInvest().subtract(divideSum));
         newFlows.setId(null);
         newFlows.setProfitToReInvest(divideSum);
         newFlows.setSourceId(oldFlows.getId());
         if (oldFlows.getProfitToReInvest().compareTo(BigDecimal.ZERO) <= 0) oldFlows.setIsReinvest(1);
-        investorsFlowsSaleService.update(oldFlows);
-        investorsFlowsSaleService.create(newFlows);
+        salePaymentService.update(oldFlows);
+        salePaymentService.create(newFlows);
         response.setMessage(oldFlows.getProfitToReInvest().toPlainString());
         return response;
     }
 
     @GetMapping(value = "/deleteFlowsSale")
     public String deleteFlows() {
-        investorsFlowsSaleService.delete();
+        salePaymentService.delete();
         return "redirect:/flowsSale";
     }
 
@@ -139,10 +162,10 @@ public class InvestorsFlowsSaleController {
         FileBucket fileModel = new FileBucket();
         SearchSummary searchSummary = new SearchSummary();
         Pageable pageable = new PageRequest(filters.getPageNumber(), filters.getPageSize());
-        Page<SalePayment> page = investorsFlowsSaleService.findAll(filters, pageable);
+        Page<SalePayment> page = salePaymentService.findAll(filters, pageable);
         model.addObject("page", page);
         model.addObject("fileBucket", fileModel);
-        model.addObject("flowsSaleFilters", filters);
+        model.addObject("filter", filters);
         model.addObject("searchSummary", searchSummary);
         return model;
     }

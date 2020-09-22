@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.math.BigInteger;
 
 @Repository
-public interface InvestorsFlowsSaleRepository extends JpaRepository<SalePayment, BigInteger>, JpaSpecificationExecutor<SalePayment> {
+public interface SalePaymentRepository extends JpaRepository<SalePayment, BigInteger>, JpaSpecificationExecutor<SalePayment> {
 
     Page<SalePayment> findAll(Specification<SalePayment> specification, Pageable pageable);
 
