@@ -16,6 +16,40 @@ jQuery(document).ready(function ($) {
         });
     });
 
+    $('#delete-list').on('click', function (event) {
+        let confirm = $('#confirm-delete');
+        confirm.modal('show')
+        confirm.find('#action').attr('data-action', 'delete-list')
+    });
+
+    $(document).on('click', '#delete-all', function (e) {
+        e.preventDefault()
+        let deleteForm = $('#confirm-delete');
+        deleteForm.find('#message').html('Вы действительно хотите удалить все данные по выплатам (продажа)?')
+        deleteForm.find('#action').attr('data-action', 'delete-all')
+        deleteForm.modal('show')
+    })
+
+    $(document).on('click', '#accept-delete', function (event) {
+        let confirm = $('#confirm-delete');
+        confirm.modal('hide')
+        let action = confirm.find('#action').attr('data-action')
+        if (action === 'delete-list') {
+            showLoader();
+            event.preventDefault();
+            let cashIdList = [];
+            $('table#rentPayments').find('> tbody').find('> tr').each(function () {
+                $(this).find(':checkbox:checked').not(':disabled').each(function () {
+                    cashIdList.push($(this).closest('tr').attr('id'));
+                    $(this).closest('tr').remove();
+                })
+            });
+            deleteList(cashIdList);
+        } else {
+            deleteAll()
+        }
+    })
+
     $(document).on('click', '#unblock_operations', function () {
         let tableId = $(this).data('table-id');
         if ($(this).text() === 'Разблокировать операции') {
@@ -161,11 +195,6 @@ jQuery(document).ready(function ($) {
         getRoomsFromLocalStorage(room);
     });
 
-    $(document).on('click', '#loadInvFlowsSaleAjax', function (event) {
-        event.preventDefault();
-        loadFlowsAjax("loadFlowsSaleAjax");
-    });
-
     $('#deleteAll').on('click', function (event) {
         event.preventDefault();
         if (linkHasClass($('#deleteAll'))) return false;
@@ -201,54 +230,6 @@ jQuery(document).ready(function ($) {
 
 function enableSearchButton(flag) {
     $("#btn-search").prop("disabled", flag);
-}
-
-function loadFlowsAjax(action) {
-    let token = $("meta[name='_csrf']").attr("content");
-    let header = $("meta[name='_csrf_header']").attr("content");
-
-    let data = new FormData();
-    let fileBuckets = [];
-    $.each($('#file')[0].files, function (k, value) {
-        data.append(k, value);
-        fileBuckets.push(k, value);
-    });
-    if (fileBuckets.length === 0) {
-        return;
-    }
-
-    showLoader();
-    $.ajax({
-        type: "POST",
-        enctype: "multipart/form-data",
-        processData: false,
-        contentType: false,
-        cache: false,
-        url: action,
-        data: data,
-        dataType: 'json',
-        timeout: 100000,
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader(header, token);
-        },
-        success: function (data) {
-            let $message = $('#msg');
-            let error = data.error;
-            if (error === null) {
-                $message.css("color", "black")
-                showPopup(data.message);
-            } else {
-                $message.css("color", "red")
-                showPopup(data.error);w
-            }
-            closeLoader();
-        },
-        error: function(error) {
-            showPopup(error.responseText);
-            closeLoader();
-        }
-    });
-
 }
 
 function findMinMaxDate(table, col, maxOrMin) {
@@ -476,19 +457,18 @@ function blockUnblockDropdownMenus(blockUnblock, noDivide) {
     }
 }
 
-function deleteCash(cashIdList) {
+function deleteList(cashIdList) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
-    let search = ({
-        cashIdList: cashIdList,
-        what: "sale"
+    let salePaymentDTO = ({
+        salePaymentsId: cashIdList
     });
 
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: "/deleteFlowsList",
-        data: JSON.stringify(search),
+        url: "sale/delete/checked",
+        data: JSON.stringify(salePaymentDTO),
         dataType: 'json',
         timeout: 100000,
         beforeSend: function (xhr) {
@@ -497,15 +477,47 @@ function deleteCash(cashIdList) {
     })
         .done(function (data) {
             closeLoader();
-            slideBox(data.message);
+            showPopup(data.message);
+            window.location.href = 'sale'
         })
         .fail(function (e) {
-            console.log(e);
+            closeLoader();
+            showPopup(e.error);
+            console.log(e.error);
         })
         .always(function () {
+            closeLoader();
             console.log('Закончили!');
         });
+}
 
+function deleteAll() {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+    showLoader()
+    $.ajax({
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: "sale/delete/all",
+        timeout: 100000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        }
+    })
+        .done(function (data) {
+            closeLoader();
+            showPopup(data.message);
+            window.location.href = 'sale'
+        })
+        .fail(function (e) {
+            closeLoader();
+            showPopup(e.error);
+            console.log(e.error);
+        })
+        .always(function () {
+            closeLoader();
+            console.log('Закончили!');
+        });
 }
 
 function linkHasClass(link) {

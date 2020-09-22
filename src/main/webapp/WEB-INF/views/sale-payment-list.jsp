@@ -179,10 +179,7 @@
             <th>Вид доли</th>
             <th>Вложено в объект</th>
             <th>Дата вложения</th>
-            <th>Доля инвестора</th>
             <th>Вложено в подобъект</th>
-            <th>Сколько прибыли на вывод (авто)</th>
-            <th>Сколько прибыли на вывод (вручную)</th>
             <th>Сколько прибыли реинвест</th>
             <th>Подобъект</th>
             <th>Дата продажи</th>
@@ -204,16 +201,7 @@
                 </td>
                 <td data-date-gived="${flows.dateGived.time}">${flows.dateGivedToLocalDate}</td>
                 <td>
-                    <fmt:formatNumber value="${flows.investorShare}" type="percent" minFractionDigits="2"/>
-                </td>
-                <td>
                     <fmt:formatNumber value="${flows.cashInUnderFacility}" type="currency" minFractionDigits="2"/>
-                </td>
-                <td>
-                    <fmt:formatNumber value="${flows.profitToCashingAuto}" type="currency" minFractionDigits="2"/>
-                </td>
-                <td>
-                    <fmt:formatNumber value="${flows.profitToCashingMain}" type="currency" minFractionDigits="2"/>
                 </td>
                 <td data-gived-cash="${flows.profitToReInvest}">
                     <fmt:formatNumber value="${flows.profitToReInvest}" type="currency" minFractionDigits="2"/>
@@ -300,7 +288,7 @@
                             <label class="col-md-3 control-lable" for="shareTypeName">Вид доли:</label>
                             <div class="col-md-7">
                                 <form:select path="shareType" id="shareTypeName" items="${shareTypes}" multiple="false"
-                                             itemValue="id" itemLabel="title" class="form-control input-sm"/>
+                                             itemValue="id" itemLabel="title" class="form-control input-sm" data-type="name()"/>
                                 <div id="shareKindErr" style="color: red; display: none">Необходимо выбрать вид доли
                                 </div>
                             </div>
