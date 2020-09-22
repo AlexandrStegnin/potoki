@@ -8,13 +8,6 @@ jQuery(document).ready(function ($) {
     blockUnblockDropdownMenus('block', false);
     blockUnblockDivide();
     getFiltersFromLS((window.location.pathname + '').split("/")[1]);
-    $('#msg-modal').on('shown.bs.modal', function () {
-        // if data-timer attribute is set use that, otherwise use default (7000)
-        let timer = 3000;
-        $(this).delay(timer).fadeOut(200, function () {
-            $(this).modal('hide');
-        });
-    });
 
     $('#delete-list').on('click', function (event) {
         let confirm = $('#confirm-delete');
@@ -451,11 +444,11 @@ function blockUnblockDropdownMenus(blockUnblock, noDivide) {
             });
             break;
         case 'unblock':
-            reinvest.find('> li').each(function () {
-                if ($(this).find($(":first-child")).text() === 'Массовое разделение сумм' && noDivide) {
-                    $(this).closest('li').removeClass('active').addClass('disabled');
+            reinvest.find('> a').each(function () {
+                if ($(this).text() === 'Массовое разделение сумм' && noDivide) {
+                    $(this).addClass('disabled');
                 } else {
-                    $(this).closest('li').removeClass('disabled').addClass('active');
+                    $(this).removeClass('disabled');
                 }
             });
             break;
