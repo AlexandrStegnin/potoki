@@ -10,6 +10,7 @@ import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.FileBucket;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
+import com.art.model.supporting.dto.SalePaymentDTO;
 import com.art.model.supporting.enums.ShareType;
 import com.art.model.supporting.enums.UploadType;
 import com.art.model.supporting.filters.FlowsSaleFilter;
@@ -68,7 +69,7 @@ public class SalePaymentController {
      * @return страница
      */
     @GetMapping(path = Location.SALE_PAYMENTS)
-    public ModelAndView flowsSale(@PageableDefault(size = 100) @SortDefault Pageable pageable) {
+    public ModelAndView paymentsSale(@PageableDefault(size = 100) @SortDefault Pageable pageable) {
         return prepareModel(filter);
     }
 
@@ -79,7 +80,7 @@ public class SalePaymentController {
      * @return страница
      */
     @PostMapping(path = Location.SALE_PAYMENTS)
-    public ModelAndView flowsSaleWithFilter(@ModelAttribute("filter") FlowsSaleFilter filter) {
+    public ModelAndView paymentsSaleFiltered(@ModelAttribute("filter") FlowsSaleFilter filter) {
         return prepareModel(filter);
     }
 
@@ -95,37 +96,22 @@ public class SalePaymentController {
         return uploadExcelService.upload(request, UploadType.SALE);
     }
 
-//
-//    @PostMapping(value = "/loadFlowsSaleAjax", produces = "application/json;charset=UTF-8")
-//    public @ResponseBody
-//    GenericResponse loadFlowsSale(MultipartHttpServletRequest request, HttpServletRequest httpServletRequest,
-//                                  HttpServletResponse res) {
-//
-//        GenericResponse response = new GenericResponse();
-//
-//        Iterator<String> itr = request.getFileNames();
-//        List<MultipartFile> multipartFiles = new ArrayList<>(0);
-//        while (itr.hasNext()) {
-//            multipartFiles.add(request.getFile(itr.next()));
-//        }
-//
-//        MultipartFile multipartFile = multipartFiles.get(0);
-//        String err = "";
-//        try {
-//            err = uploadExcelFunc.ExcelParser(multipartFile, "invFlowsSale", httpServletRequest);
-//            if (err.isEmpty()) {
-//                response.setMessage("Файл <b>" + multipartFile.getOriginalFilename() + "</b> успешно загружен.");
-//            } else {
-//                response.setError(err);
-//            }
-//        } catch (IOException | ParseException e) {
-//            System.out.println(err);
-//            e.printStackTrace();
-//            response.setError(e.getLocalizedMessage());
-//        }
-//
-//        return response;
-//    }
+    @PostMapping(path = Location.SALE_PAYMENTS_DELETE_ALL)
+    public @ResponseBody
+    ApiResponse deleteSalePayments() {
+        return salePaymentService.delete();
+    }
+
+    /**
+     * Удалить выбранные данные о выплатах (аренда)
+     *
+     * @return сообщение об успешном/неудачном выполнении
+     */
+    @PostMapping(path = Location.SALE_PAYMENTS_DELETE_CHECKED)
+    @ResponseBody
+    public ApiResponse deleteRentPaymentsChecked(@RequestBody SalePaymentDTO dto) {
+        return salePaymentService.deleteAll(dto);
+    }
 
     @PostMapping(value = "/divideFlows", produces = "application/json;charset=UTF-8")
     public @ResponseBody
@@ -144,12 +130,6 @@ public class SalePaymentController {
         salePaymentService.create(newFlows);
         response.setMessage(oldFlows.getProfitToReInvest().toPlainString());
         return response;
-    }
-
-    @GetMapping(value = "/deleteFlowsSale")
-    public String deleteFlows() {
-        salePaymentService.delete();
-        return "redirect:/flowsSale";
     }
 
     /**

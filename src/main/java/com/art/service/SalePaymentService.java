@@ -2,6 +2,8 @@ package com.art.service;
 
 import com.art.model.SalePayment;
 import com.art.model.SalePayment_;
+import com.art.model.supporting.ApiResponse;
+import com.art.model.supporting.dto.SalePaymentDTO;
 import com.art.model.supporting.filters.FlowsSaleFilter;
 import com.art.repository.SalePaymentRepository;
 import com.art.specifications.SalePaymentSpecification;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +19,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -88,11 +93,12 @@ public class SalePaymentService {
     }
 
 //    @CacheEvict(Constant.INVESTOR_FLOWS_SALE_CACHE_KEY)
-    public void delete() {
+    public ApiResponse delete() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaDelete<SalePayment> query = cb.createCriteriaDelete(SalePayment.class);
         query.from(SalePayment.class);
         em.createQuery(query).executeUpdate();
+        return new ApiResponse("Данные по выпалатам (продажа) успешно удалены");
     }
 
 //    @CacheEvict(Constant.INVESTOR_FLOWS_SALE_CACHE_KEY)
@@ -150,5 +156,41 @@ public class SalePaymentService {
                 saleSpecification.getFilter(filters),
                 pageable
         );
+    }
+
+    /**
+     * Удалить список выплат (продажа)
+     *
+     * @param dto DTO со списком сумм для удаления
+     * @return ответ
+     */
+    public ApiResponse deleteAll(SalePaymentDTO dto) {
+        ApiResponse response;
+        try {
+            List<BigInteger> deletedChildesIds = new ArrayList<>();
+            List<SalePayment> listToDelete = findByIdIn(dto.getSalePaymentsId());
+            listToDelete.forEach(ltd -> {
+                if (!deletedChildesIds.contains(ltd.getId())) {
+                    List<SalePayment> childFlows = new ArrayList<>();
+                    SalePayment parentFlow = findParentFlow(ltd, childFlows);
+                    if (parentFlow.getIsReinvest() == 1) parentFlow.setIsReinvest(0);
+                    childFlows = findAllChildes(parentFlow, childFlows, 0);
+                    childFlows.sort(Comparator.comparing(SalePayment::getId).reversed());
+                    childFlows.forEach(cf -> {
+                        deletedChildesIds.add(cf.getId());
+                        parentFlow.setProfitToReInvest(parentFlow.getProfitToReInvest().add(cf.getProfitToReInvest()));
+                        deleteById(cf.getId());
+                        update(parentFlow);
+                    });
+                    if (parentFlow.getId().equals(ltd.getId())) {
+                        deleteById(parentFlow.getId());
+                    }
+                }
+            });
+            response = new ApiResponse("Данные по выплатам с продажи успешно удалены");
+        } catch (Exception ex) {
+            response = new ApiResponse(ex.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value());
+        }
+        return response;
     }
 }
