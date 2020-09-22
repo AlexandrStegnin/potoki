@@ -3,6 +3,10 @@ package com.art.config.application;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
 import com.google.common.cache.CacheBuilder;
+import net.javacrumbs.shedlock.core.LockProvider;
+import net.javacrumbs.shedlock.provider.jdbctemplate.JdbcTemplateLockProvider;
+import net.javacrumbs.shedlock.spring.annotation.EnableSchedulerLock;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
@@ -25,6 +29,7 @@ import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import javax.sql.DataSource;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -34,6 +39,7 @@ import java.util.concurrent.TimeUnit;
 @EnableScheduling
 @ComponentScan(basePackages = {"com.art"})
 @EnableSpringDataWebSupport
+@EnableSchedulerLock(defaultLockAtMostFor = "PT30S")
 @EnableCaching
 public class WebConfig extends WebMvcConfigurerAdapter {
 
@@ -115,4 +121,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
             }
         };
     }
+
+    @Bean
+    public LockProvider lockProvider(@Qualifier("schedulerLockDataSource")
+                                             DataSource dataSource) {
+        return new JdbcTemplateLockProvider(dataSource, "pss_projects.shedlock");
+    }
+
 }
