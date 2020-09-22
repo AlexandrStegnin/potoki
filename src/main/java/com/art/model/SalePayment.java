@@ -194,4 +194,22 @@ public class SalePayment {
         return localDate;
     }
 
+    public SalePayment(SalePayment salePayment) {
+        this.id = null;
+        this.facility = salePayment.getFacility();
+        this.investor = salePayment.getInvestor();
+        this.shareType = salePayment.getShareType();
+        this.cashInFacility = salePayment.getCashInFacility();
+        this.dateGived = salePayment.getDateGived();
+        this.investorShare = salePayment.getInvestorShare();
+        this.cashInUnderFacility = salePayment.getCashInUnderFacility();
+        this.profitToCashingAuto = salePayment.getProfitToCashingAuto();
+        this.profitToCashingMain = salePayment.getProfitToCashingMain();
+        this.underFacility = salePayment.getUnderFacility();
+        this.dateSale = salePayment.getDateSale();
+        this.isReinvest = 0;
+        this.sourceId = null;
+        this.profitToReInvest = null;
+    }
+
 }
