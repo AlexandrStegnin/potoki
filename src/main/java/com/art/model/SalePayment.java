@@ -5,7 +5,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -18,7 +17,7 @@ import java.util.Date;
 @Entity
 @Table(name = "InvestorsFlowsSale")
 public class SalePayment {
-    private BigInteger id;
+    private Long id;
     private Facility facility;
     private AppUser investor;
 
@@ -38,16 +37,16 @@ public class SalePayment {
     private int isReinvest;
 
     @Column
-    private BigInteger sourceId;
+    private Long sourceId;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "Id")
-    public BigInteger getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -1,11 +1,13 @@
 package com.art.service;
 
-import com.art.model.SalePayment;
-import com.art.model.SalePayment_;
+import com.art.model.*;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.dto.SalePaymentDTO;
 import com.art.model.supporting.filters.FlowsSaleFilter;
+import com.art.repository.FacilityRepository;
+import com.art.repository.MoneyRepository;
 import com.art.repository.SalePaymentRepository;
+import com.art.repository.UnderFacilityRepository;
 import com.art.specifications.SalePaymentSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,11 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 @Transactional
@@ -31,20 +29,34 @@ public class SalePaymentService {
     @PersistenceContext(name = "persistanceUnit")
     private EntityManager em;
 
-    private final SalePaymentRepository saleRepository;
+    private final SalePaymentRepository salePaymentRepository;
 
     private final SalePaymentSpecification saleSpecification;
 
+    private final FacilityRepository facilityRepository;
+
+    private final UnderFacilityRepository underFacilityRepository;
+
+    private final MoneyRepository moneyRepository;
+
+    private final TransactionLogService txLogService;
+
     @Autowired
-    public SalePaymentService(SalePaymentRepository saleRepository,
-                              SalePaymentSpecification saleSpecification) {
-        this.saleRepository = saleRepository;
+    public SalePaymentService(SalePaymentRepository salePaymentRepository,
+                              SalePaymentSpecification saleSpecification, FacilityRepository facilityRepository,
+                              UnderFacilityRepository underFacilityRepository, MoneyRepository moneyRepository,
+                              TransactionLogService txLogService) {
+        this.salePaymentRepository = salePaymentRepository;
         this.saleSpecification = saleSpecification;
+        this.facilityRepository = facilityRepository;
+        this.underFacilityRepository = underFacilityRepository;
+        this.moneyRepository = moneyRepository;
+        this.txLogService = txLogService;
     }
 
 //    @CachePut(Constant.INVESTOR_FLOWS_SALE_CACHE_KEY)
     public void create(SalePayment sale) {
-        saleRepository.save(sale);
+        salePaymentRepository.save(sale);
     }
 
 //    @CachePut(value = Constant.INVESTOR_FLOWS_SALE_CACHE_KEY, key = "#sale.id")
@@ -88,7 +100,7 @@ public class SalePaymentService {
     }
 
 //    @Cacheable(Constant.INVESTOR_FLOWS_SALE_CACHE_KEY)
-    public SalePayment findById(BigInteger id) {
+    public SalePayment findById(Long id) {
         return this.em.find(SalePayment.class, id);
     }
 
@@ -102,7 +114,7 @@ public class SalePaymentService {
     }
 
 //    @CacheEvict(Constant.INVESTOR_FLOWS_SALE_CACHE_KEY)
-    public void deleteById(BigInteger id) {
+    public void deleteById(Long id) {
         CriteriaBuilder cb = this.em.getCriteriaBuilder();
         CriteriaDelete<SalePayment> delete = cb.createCriteriaDelete(SalePayment.class);
         Root<SalePayment> flowsSaleRoot = delete.from(SalePayment.class);
@@ -111,7 +123,7 @@ public class SalePaymentService {
     }
 
 //    @Cacheable(Constant.INVESTOR_FLOWS_SALE_CACHE_KEY)
-    public List<SalePayment> findBySourceId(BigInteger sourceId) {
+    public List<SalePayment> findBySourceId(Long sourceId) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<SalePayment> saleCriteriaQuery = cb.createQuery(SalePayment.class);
         Root<SalePayment> saleRoot = saleCriteriaQuery.from(SalePayment.class);
@@ -152,7 +164,7 @@ public class SalePaymentService {
 //    @Cacheable(Constant.INVESTOR_FLOWS_SALE_CACHE_KEY)
     public Page<SalePayment> findAll(FlowsSaleFilter filters, Pageable pageable) {
         if (filters.getPageSize() == 0) pageable = new PageRequest(filters.getPageNumber(), filters.getTotal() + 1);
-        return saleRepository.findAll(
+        return salePaymentRepository.findAll(
                 saleSpecification.getFilter(filters),
                 pageable
         );
@@ -167,7 +179,7 @@ public class SalePaymentService {
     public ApiResponse deleteAll(SalePaymentDTO dto) {
         ApiResponse response;
         try {
-            List<BigInteger> deletedChildesIds = new ArrayList<>();
+            List<Long> deletedChildesIds = new ArrayList<>();
             List<SalePayment> listToDelete = findByIdIn(dto.getSalePaymentsId());
             listToDelete.forEach(ltd -> {
                 if (!deletedChildesIds.contains(ltd.getId())) {
@@ -192,5 +204,27 @@ public class SalePaymentService {
             response = new ApiResponse(ex.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
         return response;
+    }
+
+    /**
+     * Реинвестировать суммы по выплатам (продажа)
+     *
+     * @param dto DTO сумм к реинвестирования
+     * @return ответ об успешном окончании
+     */
+    public ApiResponse reinvest(SalePaymentDTO dto) {
+        List<SalePayment> salePayments = salePaymentRepository.findByIdIn(dto.getSalePaymentsId());
+        Set<Money> monies = new HashSet<>();
+        Facility facility = facilityRepository.findOne(dto.getFacilityId());
+        UnderFacility underFacility = underFacilityRepository.findOne(dto.getUnderFacilityId());
+        salePayments.forEach(salePayment -> {
+            Money money = new Money(salePayment, dto, facility, underFacility);
+            money = moneyRepository.saveAndFlush(money);
+            monies.add(money);
+            salePayment.setIsReinvest(1);
+            salePaymentRepository.saveAndFlush(salePayment);
+        });
+        txLogService.reinvestmentSale(salePayments, monies);
+        return new ApiResponse("Реинвестирование денег с аренды прошло успешно");
     }
 }

@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -345,9 +344,9 @@ public class MoneyController {
             sendStatus(String.format("Удаляем %d из %d сумм", counter[0], count));
             if (!Objects.equals(null, deleting.getSourceFlowsId())) {
                 String[] tmp = deleting.getSourceFlowsId().split(Pattern.quote("|"));
-                List<BigInteger> sourceIdList = new ArrayList<>(0);
+                List<Long> sourceIdList = new ArrayList<>(0);
                 for (String bigInt : tmp) {
-                    sourceIdList.add(new BigInteger(bigInt));
+                    sourceIdList.add(Long.valueOf(bigInt));
                 }
 
                 sourceIdList.forEach(id -> {

@@ -9,10 +9,13 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
+import java.util.List;
 
 @Repository
 public interface SalePaymentRepository extends JpaRepository<SalePayment, BigInteger>, JpaSpecificationExecutor<SalePayment> {
 
     Page<SalePayment> findAll(Specification<SalePayment> specification, Pageable pageable);
+
+    List<SalePayment> findByIdIn(List<Long> ids);
 
 }

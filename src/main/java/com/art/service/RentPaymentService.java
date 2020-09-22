@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -77,7 +76,7 @@ public class RentPaymentService {
     }
 
 //    @Cacheable(Constant.INVESTOR_FLOWS_CACHE_KEY)
-    public RentPayment findById(BigInteger id) {
+    public RentPayment findById(Long id) {
         return this.em.find(RentPayment.class, id);
     }
 
