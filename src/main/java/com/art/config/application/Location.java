@@ -198,6 +198,8 @@ public class Location {
 
     public static final String SALE_PAYMENTS = PAYMENTS_URL + "/sale";
 
+    public static final String SALE_PAYMENTS_UPLOAD = SALE_PAYMENTS + "/upload";
+
     public static final String[] ADMIN_URLS = {
             ADMIN,
             CATALOGUE,
