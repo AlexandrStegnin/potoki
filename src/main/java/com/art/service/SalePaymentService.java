@@ -91,12 +91,7 @@ public class SalePaymentService {
 
 //    @Cacheable(Constant.INVESTOR_FLOWS_SALE_CACHE_KEY)
     public List<SalePayment> findByIdIn(List<Long> idList) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<SalePayment> saleCriteriaQuery = cb.createQuery(SalePayment.class);
-        Root<SalePayment> saleRoot = saleCriteriaQuery.from(SalePayment.class);
-        saleCriteriaQuery.select(saleRoot);
-        saleCriteriaQuery.where(saleRoot.get(SalePayment_.id).in(idList));
-        return em.createQuery(saleCriteriaQuery).getResultList();
+        return salePaymentRepository.findByIdIn(idList);
     }
 
 //    @Cacheable(Constant.INVESTOR_FLOWS_SALE_CACHE_KEY)
