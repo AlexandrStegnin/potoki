@@ -27,7 +27,7 @@
         <projectLombok.version>1.16.14</projectLombok.version>
         <apachiPOI.version>3.17-beta1</apachiPOI.version>
         <jackson.version>RELEASE</jackson.version>
-
+        <spring.shedlock.version>4.10.1</spring.shedlock.version>
         <spring-websocket.version>4.3.9.RELEASE</spring-websocket.version>
     </properties>
 
@@ -323,7 +323,16 @@
             <artifactId>guava</artifactId>
             <version>29.0-jre</version>
         </dependency>
-
+        <dependency>
+            <groupId>net.javacrumbs.shedlock</groupId>
+            <artifactId>shedlock-provider-jdbc-template</artifactId>
+            <version>${spring.shedlock.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.javacrumbs.shedlock</groupId>
+            <artifactId>shedlock-spring</artifactId>
+            <version>${spring.shedlock.version}</version>
+        </dependency>
 
     </dependencies>
 
