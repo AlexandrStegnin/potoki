@@ -3,6 +3,23 @@ let filters = [];
 let max;
 let min;
 
+let SalePaymentDTO = function () {}
+
+SalePaymentDTO.prototype = {
+    dateGiven: null,
+    facilityId: 0,
+    underFacilityId: 0,
+    shareType: null,
+    salePaymentsId: [],
+    build: function (dateGiven, facilityId, underFacilityId, shareType, salePaymentsId) {
+        this.dateGiven = dateGiven;
+        this.facilityId = facilityId;
+        this.underFacilityId = underFacilityId;
+        this.shareType = shareType;
+        this.salePaymentsId = salePaymentsId;
+    }
+}
+
 jQuery(document).ready(function ($) {
 
     blockUnblockDropdownMenus('block', false);
@@ -59,7 +76,7 @@ jQuery(document).ready(function ($) {
 
     $(document).on('submit', '#reInvestData', function (event) {
         event.preventDefault();
-        prepareSaveInvestorsCash();
+        prepareReinvestSale();
     });
 
     $(document).on('click', '#bth-clear', function (e) {
@@ -183,12 +200,12 @@ jQuery(document).ready(function ($) {
         getUFFromLS(facility, 'uFacilities');
     });
 
-    $(document).on('change', '#srcFacilities', function () {
+    $(document).on('change', '#srcFacility', function () {
         let facility = $(this).val();
-        getUnderFacilitiesFromLocalStorage(facility, 'srcUnderFacilities');
+        getUnderFacilitiesFromLocalStorage(facility, 'srcUnderFacility');
     });
 
-    $(document).on('change', '#srcUnderFacilities', function () {
+    $(document).on('change', '#srcUnderFacility', function () {
         let room = $(this).find('option:selected').attr('id');
         getRoomsFromLocalStorage(room);
     });
@@ -250,85 +267,62 @@ function findMinMaxDate(table, col, maxOrMin) {
     }
 }
 
-function prepareSaveInvestorsCash() {
-    showLoader();
-    let err = false;
-    let cashes = [];
-    let cash;
-    let givedCash;
-    let dateGived;
-    let facility;
-    let investor;
-    let newCashDetails = null;
-    let underFacility;
-    let dateReport;
-    let shareKind;
-    let sourceFacility;
-    let sourceUnderFacility;
-    let reinvestData = $('form#reInvestData');
+function prepareReinvestSale() {
+    let dateGiven;
+    let facilityId;
+    let underFacilityId;
+    let shareType;
     let reinvestIdList = [];
-    let sourceFlowsId;
-    let room;
 
-    dateGived = $('#dateGiv').val();
+    dateGiven = $('#dateGiven').val();
 
-    if (dateGived.length === 0) {
-        $('#dateRepErr').css('display', 'block');
-        err = true;
+    if (dateGiven.length === 0) {
+        $('#dateGivenErr').addClass('d-block');
+        return false;
     } else {
-        $('#dateRepErr').css('display', 'none');
-        err = false;
-        dateGived = new Date(dateGived).getTime();
+        $('#dateGivenErr').removeClass('d-block');
+        dateGiven = new Date(dateGiven).getTime();
     }
 
-    facility = {
-        id: reinvestData.find('#srcFacilities').val(),
-        name: $('#srcFacilities').find('option:selected').text()
-    };
+    facilityId = $('#srcFacility').find('option:selected').val()
 
-    underFacility = {
-        id: reinvestData.find('#srcUnderFacilities').children(":selected").attr("id"),
-        name: $('#srcUnderFacilities').find('option:selected').text()
-    };
-
-    if (facility.name.indexOf('Выберите объект') >= 0) {
-        $('#facilityErr').css('display', 'block');
-        err = true;
+    if (facilityId === "0") {
+        $('#facilityErr').addClass('d-block');
+        return false;
     } else {
-        $('#facilityErr').css('display', 'none');
-        err = false;
+        $('#facilityErr').removeClass('d-block');
     }
 
-    if (underFacility.name.indexOf('Выберите подобъект') >= 0) {
-        $('#underFacilityErr').css('display', 'block');
-        err = true;
+    underFacilityId = $('#srcUnderFacility').find('option:selected').val()
+
+    if (underFacilityId === "0" || underFacilityId === 'Без подобъекта') {
+        $('#underFacilityErr').addClass('d-block');
+        return false;
     } else {
-        $('#underFacilityErr').css('display', 'none');
-        err = false;
+        $('#underFacilityErr').removeClass('d-block');
     }
 
-    shareKind = $('#shareTypeName').find('option:selected').text();
-
-    if (shareKind.indexOf('Не определена') >= 0) {
-        $('#shareKindErr').css('display', 'block');
-        err = true;
+    shareType = $('#shareTypeName').find('option:selected').val();
+    let shareTypeErr = $('#shareTypeErr');
+    if (shareType.indexOf('Не определена') >= 0) {
+        shareTypeErr.addClass('d-block');
+        return false;
     } else {
-        $('#shareKindErr').css('display', 'none');
-        err = false;
+        shareTypeErr.removeClass('d-block');
     }
 
-    switch (shareKind) {
-        case 'Основная':
-            shareKind = 'MAIN'
+    switch (shareType) {
+        case 'Основная доля':
+            shareType = 'MAIN'
             break
         case 'Сверхдоля':
-            shareKind = 'OVER'
+            shareType = 'OVER'
+            break
+        default:
+            shareTypeErr.addClass('d-block');
+            return false;
     }
 
-    if (err) {
-        closeLoader();
-        return false;
-    }
     let current;
 
     $('#reInvestModal').modal('hide');
@@ -337,72 +331,24 @@ function prepareSaveInvestorsCash() {
         $(this).find(':checkbox:checked').not(':disabled').each(function () {
             $(this).closest('tr').find('input:checkbox').prop('disabled', true);
             current = $(this).closest('tr');
-            sourceFlowsId = current.attr('id');
             reinvestIdList.push(current.attr('id'));
             $('#' + current.attr('id') + ' input:checkbox').prop('disabled', true);
-
-            sourceFacility = {
-                id: current.children('td:eq(0)').attr('data-facility-id'),
-                name: current.children('td:eq(0)').text()
-            };
-
-            sourceUnderFacility = {
-                id: current.children('td:eq(10)').attr('data-under-facility-id'),
-                name: current.children('td:eq(10)').text()
-            };
-
-            room = null;
-
-            dateReport = current.children('td:eq(11)').attr('data-date-sale');
-
-            investor = {
-                id: current.children('td:eq(1)').attr('data-investor-id'),
-                login: current.children('td:eq(1)').text()
-            };
-
-            givedCash = current.children('td:eq(9)').attr('data-gived-cash');
-
-            cash = {
-                id: null,
-                givedCash: givedCash,
-                dateGivedCash: dateGived,
-                facility: facility,
-                investor: investor,
-                newCashDetail: newCashDetails,
-                underFacility: underFacility,
-                dateClosingInvest: null,
-                typeClosing: null,
-                shareType: shareKind,
-                dateReport: dateReport,
-                sourceFacility: sourceFacility,
-                sourceUnderFacility: sourceUnderFacility,
-                sourceFlowsId: sourceFlowsId,
-                room: room
-            };
-
-            cashes.push(cash);
-
         });
     });
-
-    saveReinvestCash(cashes, reinvestIdList);
-
+    let salePaymentDTO = new SalePaymentDTO();
+    salePaymentDTO.build(dateGiven, facilityId, underFacilityId, shareType, reinvestIdList);
+    reinvestSalePayments(salePaymentDTO);
 }
 
-function saveReinvestCash(cashes, reinvestIdList) {
+function reinvestSalePayments(salePaymentDTO) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
-    let search = ({
-        investorsCashList: cashes,
-        reinvestIdList: reinvestIdList,
-        what: "sale"
-    });
 
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: "saveReCash",
-        data: JSON.stringify(search),
+        url: "./sale/reinvest",
+        data: JSON.stringify(salePaymentDTO),
         dataType: 'json',
         timeout: 100000,
         beforeSend: function (xhr) {
@@ -414,7 +360,8 @@ function saveReinvestCash(cashes, reinvestIdList) {
         },
         error: function (e) {
             closeLoader();
-            console.log(e);
+            showPopup(e.error)
+            console.log(e.error);
         },
         done: function (e) {
             closeLoader();

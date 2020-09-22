@@ -156,10 +156,10 @@
                 <c:forEach begin="1" end="${page.totalPages}" varStatus="page">
                     <c:choose>
                         <c:when test="${filter.pageNumber == page.index - 1}">
-                            <c:set var="active" value="active" />
+                            <c:set var="active" value="active"/>
                         </c:when>
                         <c:otherwise>
-                            <c:set var="active" value="" />
+                            <c:set var="active" value=""/>
                         </c:otherwise>
                     </c:choose>
                     <li class="page-item ${active}" data-page="${page.index}">
@@ -246,60 +246,55 @@
                 <h4></h4>
             </div>
             <div class="modal-body">
-                <form:form method="POST" modelAttribute="searchSummary" class="form-horizontal" id="reInvestData">
-                    <div class="row">
-                        <div class="form-group col-md-12">
-                            <label class="col-md-3 control-lable" for="dateGiv">Дата вложения:</label>
-                            <div class="col-md-7">
-                                <form:input type="date" path="period" id="dateGiv" class="form-control input-sm"/>
-                                <div id="dateRepErr" style="color: red; display: none">Необходимо выбрать дату
-                                    вложения
-                                </div>
+                <form:form method="POST" modelAttribute="salePaymentDTO" class="form-horizontal" id="reInvestData">
+                    <div class="form-group row" id="dateGivenRow">
+                        <label class="col-md-3 col-form-label" for="dateGiven">Дата вложения:</label>
+                        <div class="col-md-9">
+                            <form:input type="date" path="dateGiven" id="dateGiven" class="form-control input-sm"/>
+                            <div id="dateGivenErr" class="has-error col-md-9 d-none">Необходимо указать дату
+                                вложения
                             </div>
                         </div>
                     </div>
 
-                    <div class="row" id="facilitiesRow">
-                        <div class="form-group col-md-12">
-                            <label class="col-md-3 control-lable" for="srcFacilities">Объект:</label>
-                            <div class="col-md-7">
-                                <form:select path="reFacility" id="srcFacilities" items="${facilities}" multiple="false"
-                                             itemValue="id" itemLabel="name" class="form-control input-sm"/>
-                                <div id="facilityErr" style="color: red; display: none">Необходимо выбрать объект</div>
+                    <div class="form-group row" id="facilitiesRow">
+                        <label class="col-md-3 col-form-label" for="srcFacility">Объект:</label>
+                        <div class="col-md-9">
+                            <form:select path="facilityId" id="srcFacility" items="${facilities}" multiple="false"
+                                         itemValue="id" itemLabel="name" class="selectpicker form-control input-sm"
+                                         data-size="10" data-live-search="true"
+                                         data-none-selected-text="Выберите объект"/>
+                            <div id="facilityErr" class="has-error col-md-9 d-none">Необходимо выбрать объект</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row" id="underFacilityRow">
+                        <label class="col-md-3 col-form-label" for="srcUnderFacility">Подобъект:</label>
+                        <div class="col-md-9">
+                            <form:select path="underFacilityId" id="srcUnderFacility" items="${underFacilities}"
+                                         multiple="false"
+                                         itemValue="id" itemLabel="name" class="selectpicker form-control input-sm"
+                                         data-size="10" data-live-search="true"
+                                         data-none-selected-text="Выберите подобъект"/>
+                            <div id="underFacilityErr" class="has-error col-md-9 d-none">Необходимо выбрать подобъект
                             </div>
                         </div>
                     </div>
 
-                    <div class="row" id="underFacilitiesRow">
-                        <div class="form-group col-md-12">
-                            <label class="col-md-3 control-lable" for="srcUnderFacilities">Подобъект:</label>
-                            <div class="col-md-7">
-                                <form:select path="reUnderFacility" id="srcUnderFacilities" items="${underFacilities}"
-                                             multiple="false"
-                                             itemValue="id" itemLabel="name" class="form-control input-sm"/>
-                                <div id="reFacilityErr" style="color: red; display: none">Необходимо выбрать подобъект
-                                </div>
+                    <div class="form-group row" id="shareTypeNameRow">
+                        <label class="col-md-3 col-form-label" for="shareTypeName">Вид доли:</label>
+                        <div class="col-md-9">
+                            <form:select path="shareType" id="shareTypeName" items="${shareTypes}" multiple="false"
+                                         itemValue="title" itemLabel="title"
+                                         class="selectpicker form-control input-sm"/>
+                            <div id="shareTypeErr" class="has-error col-md-9 d-none">Необходимо выбрать вид доли
                             </div>
                         </div>
                     </div>
 
-                    <div class="row" id="shareKindNameRow">
-                        <div class="form-group col-md-12">
-                            <label class="col-md-3 control-lable" for="shareTypeName">Вид доли:</label>
-                            <div class="col-md-7">
-                                <form:select path="shareType" id="shareTypeName" items="${shareTypes}" multiple="false"
-                                             itemValue="id" itemLabel="title" class="form-control input-sm" data-type="name()"/>
-                                <div id="shareKindErr" style="color: red; display: none">Необходимо выбрать вид доли
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-actions floatRight">
-                            <input type="submit" value="Реинвестировать" class="btn btn-primary btn-sm"/> или <a
-                                href="<c:url value='/#' />" id="cancelReinvest">Отмена</a>
-                        </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-primary btn-md" data-action="" value="Реинвестировать"/>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
                     </div>
                 </form:form>
             </div>
