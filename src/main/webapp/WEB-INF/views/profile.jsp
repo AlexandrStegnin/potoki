@@ -81,7 +81,7 @@
         </sec:authorize>
         <sec:authorize access="isFullyAuthenticated()">
             <sec:authorize access="hasRole('ADMIN')">
-                <a id="updateMarketingTree" href="<c:url value='/updateMarketingTree' />"
+                <a id="updateMarketingTree" href="<c:url value='updateMarketingTree' />"
                    class="btn btn-success btn-sm pull-right" style="margin-right: 5px">Обновить
                     маркетинговое дерево</a>
             </sec:authorize>
