@@ -9,6 +9,8 @@ import com.art.model.UserProfile;
 import com.art.model.UserProfile_;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.SendingMail;
+import com.art.model.supporting.dto.UserDTO;
+import com.art.model.supporting.enums.KinEnum;
 import com.art.model.supporting.enums.UserRole;
 import com.art.repository.UserRepository;
 import org.springframework.http.HttpStatus;
@@ -224,6 +226,27 @@ public class UserService {
      */
     public boolean loginIsBusy(String login) {
         return userRepository.existsByLogin(login);
+    }
+
+    /**
+     * Деактивировать пользователя, чтоб убрать из маркетингового дерева
+     *
+     * @param dto DTO для деактивации
+     * @return ответ
+     */
+    public ApiResponse deactivateUser(UserDTO dto) {
+        if (dto.getId() == null) {
+            return new ApiResponse("Не задан id пользователя", HttpStatus.PRECONDITION_FAILED.value());
+        }
+        AppUser user = findById(dto.getId());
+        if (user == null) {
+            return new ApiResponse("Пользователь не найден", HttpStatus.PRECONDITION_FAILED.value());
+        }
+        user.setConfirmed(false);
+        user.setKin(KinEnum.EMPTY);
+        user.setPartnerId(null);
+        update(user);
+        return new ApiResponse("Пользователь успешно деактивирован");
     }
 
 }
