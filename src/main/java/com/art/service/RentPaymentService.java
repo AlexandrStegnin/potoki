@@ -17,8 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,9 +24,6 @@ import java.util.Set;
 @Service
 @Transactional
 public class RentPaymentService {
-
-    @PersistenceContext(name = "persistanceUnit")
-    private EntityManager em;
 
     private final RentPaymentRepository rentPaymentRepository;
 
@@ -71,7 +66,7 @@ public class RentPaymentService {
 
 //    @Cacheable(Constant.INVESTOR_FLOWS_CACHE_KEY)
     public RentPayment findById(Long id) {
-        return this.em.find(RentPayment.class, id);
+        return rentPaymentRepository.findOne(id);
     }
 
 //    @CachePut(value = Constant.INVESTOR_FLOWS_CACHE_KEY, key = "#flows.id")
