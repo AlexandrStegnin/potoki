@@ -328,11 +328,11 @@ public class MoneyController {
         }
     }
 
-    @PostMapping(value = {"/deleteCashList"}, produces = "application/json;charset=UTF-8")
+    @PostMapping(path = Location.MONEY_DELETE_LIST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
-    GenericResponse deleteCashList(@RequestBody SearchSummary searchSummary) {
-        GenericResponse response = new GenericResponse();
-        List<Money> listToDelete = moneyService.findByIdIn(searchSummary.getCashIdList());
+    ApiResponse deleteMonies(@RequestBody DeleteMoneyDTO dto) {
+        ApiResponse response = new ApiResponse();
+        List<Money> listToDelete = moneyService.findByIdIn(dto.getMoneyIds());
         List<AfterCashing> afterCashingList = afterCashingService.findAll();
         Comparator<AfterCashing> comparator = Comparator.comparing(AfterCashing::getId);
 
@@ -342,7 +342,7 @@ public class MoneyController {
         listToDelete.forEach(deleting -> {
             counter[0]++;
             sendStatus(String.format("Удаляем %d из %d сумм", counter[0], count));
-            if (!Objects.equals(null, deleting.getSourceFlowsId())) {
+            if (deleting.getSourceFlowsId() != null) {
                 String[] tmp = deleting.getSourceFlowsId().split(Pattern.quote("|"));
                 List<Long> sourceIdList = new ArrayList<>(0);
                 for (String bigInt : tmp) {
@@ -352,17 +352,17 @@ public class MoneyController {
                 sourceIdList.forEach(id -> {
                     RentPayment flows = rentPaymentService.findById(id);
                     SalePayment flowsSale = salePaymentService.findById(id);
-                    if (!Objects.equals(null, flows)) {
+                    if (flows != null) {
                         flows.setIsReinvest(0);
                         rentPaymentService.update(flows);
                     }
-                    if (!Objects.equals(null, flowsSale)) {
+                    if (flowsSale != null) {
                         flowsSale.setIsReinvest(0);
                         salePaymentService.update(flowsSale);
                     }
                 });
             }
-            if (!Objects.equals(null, deleting.getSource())) {
+            if (deleting.getSource() != null) {
 
                 String[] tmp = deleting.getSource().split(Pattern.quote("|"));
                 List<Long> sourceIdList = new ArrayList<>(tmp.length);
@@ -373,11 +373,11 @@ public class MoneyController {
                 }
                 sourceIdList.forEach(parentCashId -> {
                     Money parentCash = moneyService.findById(parentCashId);
-                    if (!Objects.equals(null, parentCash)) {
+                    if (parentCash != null) {
                         List<AfterCashing> afterCashing = afterCashingList.stream()
                                 .filter(ac -> ac.getOldId().equals(parentCashId))
                                 .collect(Collectors.toList());
-                        if ((!Objects.equals(null, deleting.getTypeClosing()) &&
+                        if ((deleting.getTypeClosing() != null &&
                                 (
                                         deleting.getTypeClosing().getName().equalsIgnoreCase("Вывод") ||
                                                 deleting.getTypeClosing().getName().equalsIgnoreCase("Вывод_комиссия")
@@ -398,7 +398,7 @@ public class MoneyController {
                                         .stream()
                                         .filter(m -> !m.getId().equals(deleting.getId()))
                                         .findFirst().orElse(null);
-                        if (Objects.equals(null, makeDelete)) {
+                        if (makeDelete == null) {
                             parentCash.setIsReinvest(0);
                             parentCash.setIsDivide(0);
                             parentCash.setTypeClosing(null);
@@ -408,7 +408,7 @@ public class MoneyController {
                         if (deleting.getFacility().equals(parentCash.getFacility()) &&
                                 deleting.getInvestor().equals(parentCash.getInvestor()) &&
                                 deleting.getShareType().equals(parentCash.getShareType()) &&
-                                Objects.equals(null, deleting.getTypeClosing()) &&
+                                deleting.getTypeClosing() == null &&
                                 deleting.getDateGiven().compareTo(parentCash.getDateGiven()) == 0) {
                             parentCash.setGivenCash(parentCash.getGivenCash().add(deleting.getGivenCash()));
                         }
@@ -439,7 +439,7 @@ public class MoneyController {
                 });
             }
 
-            if (!Objects.equals(null, deleting.getSourceId())) {
+            if (deleting.getSourceId() != null) {
                 List<Money> monies = moneyService.findBySourceId(deleting.getSourceId())
                         .stream()
                         .filter(ic -> !Objects.equals(deleting, ic))
@@ -449,7 +449,7 @@ public class MoneyController {
                 }
 
                 Money parentCash = moneyService.findById(deleting.getSourceId());
-                if (!Objects.equals(null, parentCash)) {
+                if (parentCash!= null) {
                     parentCash.setIsReinvest(0);
                     parentCash.setIsDivide(0);
                     parentCash.setTypeClosing(null);
@@ -460,7 +460,6 @@ public class MoneyController {
 
             moneyService.deleteById(deleting.getId());
             response.setMessage("Данные успешно удалены");
-
         });
         sendStatus("OK");
         return response;
