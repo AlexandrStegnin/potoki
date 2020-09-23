@@ -130,8 +130,7 @@
                     Сбросить фильтры
                 </button>
                 <button data-table-id="salePayments" type="button" id="unblock_operations"
-                        class="btn btn-danger input-md" style="margin-right: 10px">Разблокировать операции
-                </button>
+                        class="btn btn-danger input-md" style="margin-right: 10px">Разблокировать операции</button>
                 <button type="button" class="btn btn-primary input-md" id="checkIt" data-checked="false"
                         style="margin-right: 10px">
                     Выделить всё
