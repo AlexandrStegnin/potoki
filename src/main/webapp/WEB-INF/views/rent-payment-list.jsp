@@ -178,15 +178,15 @@
                 <td>
                     <c:choose>
                         <c:when test="${payment.isReinvest == 1}">
-                            <c:set var="checked" value="checked"/>
-                            <c:set var="disabled" value="disabled"/>
+                            <c:set var="checked" value="checked "/>
+                            <c:set var="disabled" value="disabled "/>
                         </c:when>
                         <c:otherwise>
                             <c:set var="checked" value=""/>
                             <c:set var="disabled" value=""/>
                         </c:otherwise>
                     </c:choose>
-                    <input data-is-reinvest="${payment.isReinvest}" type="checkbox" title="Выбрать" ${checked} ${disabled}/>
+                    <input type="checkbox" title="Выбрать" ${checked} ${disabled}/>
                 </td>
             </tr>
         </c:forEach>
