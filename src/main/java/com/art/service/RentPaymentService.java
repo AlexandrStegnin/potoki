@@ -76,7 +76,11 @@ public class RentPaymentService {
 
 //    @CacheEvict(Constant.INVESTOR_FLOWS_CACHE_KEY)
     public void deleteByIdIn(List<Long> idList) {
-        idList.forEach(rentPaymentRepository::delete);
+        idList.forEach(id -> {
+            List<Money> monies = moneyRepository.findBySourceFlowsId(String.valueOf(id));
+            moneyRepository.delete(monies);
+            rentPaymentRepository.delete(id);
+        });
     }
 
     public Page<RentPayment> findAll(RentPaymentFilter filters, Pageable pageable) {
