@@ -45,14 +45,6 @@ jQuery(document).ready(function ($) {
         prepareReinvestRent();
     });
 
-    $(document).on('click', '#delete-all', function (e) {
-        e.preventDefault()
-        let deleteForm = $('#confirm-delete');
-        deleteForm.find('#message').html('Вы действительно хотите удалить все данные по выплатам (аренда)?')
-        deleteForm.find('#action').attr('data-action', 'delete-all')
-        deleteForm.modal('show')
-    })
-
     $(document).on('click', '#accept-delete', function (event) {
         let confirm = $('#confirm-delete');
         confirm.modal('hide')

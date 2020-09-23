@@ -146,8 +146,6 @@
                             суммы</a>
                     </div>
                 </div>
-                <a href="<c:url value='/payments/sale/delete/all' />" class="btn btn-danger input-md"
-                   style="margin-right: 10px" id="delete-all">Удалить всё</a>
             </div>
         </div>
     </div>
