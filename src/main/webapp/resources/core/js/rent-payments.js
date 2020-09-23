@@ -384,35 +384,6 @@ function deleteList(cashIdList) {
         });
 }
 
-function deleteAll() {
-    let token = $("meta[name='_csrf']").attr("content");
-    let header = $("meta[name='_csrf_header']").attr("content");
-    showLoader()
-    $.ajax({
-        type: "POST",
-        contentType: "application/json;charset=utf-8",
-        url: "rent/delete/all",
-        timeout: 100000,
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader(header, token);
-        }
-    })
-        .done(function (data) {
-            closeLoader();
-            showPopup(data.message);
-            window.location.href = 'rent'
-        })
-        .fail(function (e) {
-            closeLoader();
-            console.log(e);
-        })
-        .always(function () {
-            closeLoader();
-            console.log('Закончили!');
-        });
-}
-
-
 function showPopup(message) {
     $('#msg').html(message);
     $('#msg-modal').modal('show');

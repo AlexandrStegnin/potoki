@@ -446,35 +446,6 @@ function deleteList(cashIdList) {
         });
 }
 
-function deleteAll() {
-    let token = $("meta[name='_csrf']").attr("content");
-    let header = $("meta[name='_csrf_header']").attr("content");
-    showLoader()
-    $.ajax({
-        type: "POST",
-        contentType: "application/json;charset=utf-8",
-        url: "sale/delete/all",
-        timeout: 100000,
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader(header, token);
-        }
-    })
-        .done(function (data) {
-            closeLoader();
-            showPopup(data.message);
-            window.location.href = 'sale'
-        })
-        .fail(function (e) {
-            closeLoader();
-            showPopup(e.error);
-            console.log(e.error);
-        })
-        .always(function () {
-            closeLoader();
-            console.log('Закончили!');
-        });
-}
-
 function linkHasClass(link) {
     if (link.hasClass('disabled')) return true;
 }
