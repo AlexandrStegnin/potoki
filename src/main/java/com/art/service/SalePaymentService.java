@@ -164,7 +164,7 @@ public class SalePaymentService {
      * @param dto DTO со списком сумм для удаления
      * @return ответ
      */
-    public ApiResponse deleteAll(SalePaymentDTO dto) {
+    public ApiResponse deleteChecked(SalePaymentDTO dto) {
         ApiResponse response;
         try {
             List<Long> deletedChildesIds = new ArrayList<>();

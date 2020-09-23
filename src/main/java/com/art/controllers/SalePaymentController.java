@@ -102,7 +102,7 @@ public class SalePaymentController {
     @PostMapping(path = Location.SALE_PAYMENTS_DELETE_CHECKED)
     @ResponseBody
     public ApiResponse deleteRentPaymentsChecked(@RequestBody SalePaymentDTO dto) {
-        return salePaymentService.deleteAll(dto);
+        return salePaymentService.deleteChecked(dto);
     }
 
     /**
