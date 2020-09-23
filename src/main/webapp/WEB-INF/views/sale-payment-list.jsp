@@ -50,6 +50,8 @@
     <div class="d-flex flex-row justify-content-center" style="margin: 10px;">
         <form:form modelAttribute="filter" action="sale" method="POST" class="form-inline"
                    id="filter-form">
+        <fmt:formatDate pattern="yyyy-MM-dd" value="${filter.fromDate}" var="fromDate"/>
+        <fmt:formatDate pattern="yyyy-MM-dd" value="${filter.toDate}" var="toDate"/>
         <input type="hidden" id="pageNumber" name="pageNumber" value="0">
         <input type="hidden" id="pageSize" name="pageSize" value="${filter.pageSize}">
         <input type="hidden" id="total" name="total" value="${page.content.size()}">
@@ -97,11 +99,11 @@
         <form:label path="" for="beginPeriod"
                     style="margin-left:10px; margin-right:5px; font-size:14px">Период с:</form:label>
         <form:input path="fromDate" id="beginPeriod" name="startDate" type="date" class="form-control input-sm"
-                    value="${filter.fromDate}"/>
+                    value="${fromDate}"/>
         <form:label path="" for="endPeriod"
                     style="margin-left:10px; margin-right:5px; font-size:14px">по:</form:label>
         <form:input path="toDate" id="endPeriod" name="endDate" type="date" class="form-control input-sm"
-                    value="${filter.toDate}"
+                    value="${toDate}"
                     style="margin-right:5px"/>
         <input id="all" name="allRows" type="checkbox"
         <c:if test="${filter.allRows == true}"> checked="checked" </c:if> data-toggle="toggle"
@@ -128,7 +130,8 @@
                     Сбросить фильтры
                 </button>
                 <button data-table-id="salePayments" type="button" id="unblock_operations"
-                        class="btn btn-danger input-md" style="margin-right: 10px">Разблокировать операции</button>
+                        class="btn btn-danger input-md" style="margin-right: 10px">Разблокировать операции
+                </button>
                 <button type="button" class="btn btn-primary input-md" id="checkIt" data-checked="false"
                         style="margin-right: 10px">
                     Выделить всё

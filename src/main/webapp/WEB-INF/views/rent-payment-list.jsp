@@ -33,61 +33,63 @@
     <div class="d-flex flex-row justify-content-center" style="margin: 10px;">
         <form:form modelAttribute="filter" method="POST" action="rent"
                    class="form-inline" id="filter-form">
-        <input type="hidden" id="pageNumber" name="pageNumber" value="0">
-        <input type="hidden" id="pageSize" name="pageSize" value="${filter.pageSize}">
-        <input type="hidden" id="total" name="total" value="${page.content.size()}">
-        <div style="padding: 5px;">
-            <form:select path="facility" id="fFacilities" multiple="false" class="selectpicker"
-                         data-size="10" data-live-search="true" data-none-selected-text="Выберите объект">
-                <c:forEach var="f" items="${facilitiesList}">
-                    <option
-                            <c:choose>
-                                <c:when test="${f.name eq 'Выберите объект'}">selected="selected"</c:when>
-                                <c:when test="${f.name eq filter.facility}">selected="selected"</c:when>
-                            </c:choose>
-                            value="${f.name}" id="${f.id}">${f.name}
-                    </option>
-                </c:forEach>
-            </form:select>
-        </div>
-        <div style="padding: 5px;">
-            <form:select path="underFacility" id="uFacilities" multiple="false" class="selectpicker"
-                         data-size="10" data-live-search="true" data-none-selected-text="Выберите подобъект">
-                <c:forEach var="uf" items="${underFacilities}">
-                    <option
-                            <c:choose>
-                                <c:when test="${uf.name eq 'Выберите подобъект'}">selected="selected"</c:when>
-                                <c:when test="${uf.name eq filter.underFacility}">selected="selected"</c:when>
-                            </c:choose>
-                            value="${uf.name}" id="${uf.id}" data-parent-id="${uf.facility.id}">${uf.name}
-                    </option>
-                </c:forEach>
-            </form:select>
-        </div>
-        <div style="padding: 5px;">
-            <form:select path="investor" id="investors" multiple="false" class="selectpicker"
-                         data-size="10" data-live-search="true" data-none-selected-text="Выберите инвестора">
-                <c:forEach var="inv" items="${investors}">
-                    <option
-                            <c:choose>
-                                <c:when test="${inv.login eq 'Выберите инвестора'}">selected="selected"</c:when>
-                                <c:when test="${inv.login eq filter.investor}">selected="selected"</c:when>
-                            </c:choose> value="${inv.login}" id="${inv.id}">${inv.login}
-                    </option>
-                </c:forEach>
-            </form:select>
-        </div>
-        <form:label path="" for="beginPeriod"
-                    style="margin-left:10px; margin-right:5px; font-size:14px">Период с:</form:label>
-        <form:input path="fromDate" id="beginPeriod" name="startDate" type="date" class="form-control input-sm"
-                    value="${filter.fromDate}"/>
-        <form:label path="" for="endPeriod"
-                    style="margin-left:10px; margin-right:5px; font-size:14px">по:</form:label>
-        <form:input path="toDate" id="endPeriod" name="endDate" type="date" class="form-control input-sm"
-                    value="${filter.toDate}"
-                    style="margin-right:5px"/>
-        <button type="submit" id="bth-search" class="btn btn-primary btn-md" style="margin-right:5px">Фильтр
-        </button>
+            <fmt:formatDate pattern="yyyy-MM-dd" value="${filter.fromDate}" var="fromDate"/>
+            <fmt:formatDate pattern="yyyy-MM-dd" value="${filter.toDate}" var="toDate"/>
+            <input type="hidden" id="pageNumber" name="pageNumber" value="0">
+            <input type="hidden" id="pageSize" name="pageSize" value="${filter.pageSize}">
+            <input type="hidden" id="total" name="total" value="${page.content.size()}">
+            <div style="padding: 5px;">
+                <form:select path="facility" id="fFacilities" multiple="false" class="selectpicker"
+                             data-size="10" data-live-search="true" data-none-selected-text="Выберите объект">
+                    <c:forEach var="f" items="${facilitiesList}">
+                        <option
+                                <c:choose>
+                                    <c:when test="${f.name eq 'Выберите объект'}">selected="selected"</c:when>
+                                    <c:when test="${f.name eq filter.facility}">selected="selected"</c:when>
+                                </c:choose>
+                                value="${f.name}" id="${f.id}">${f.name}
+                        </option>
+                    </c:forEach>
+                </form:select>
+            </div>
+            <div style="padding: 5px;">
+                <form:select path="underFacility" id="uFacilities" multiple="false" class="selectpicker"
+                             data-size="10" data-live-search="true" data-none-selected-text="Выберите подобъект">
+                    <c:forEach var="uf" items="${underFacilities}">
+                        <option
+                                <c:choose>
+                                    <c:when test="${uf.name eq 'Выберите подобъект'}">selected="selected"</c:when>
+                                    <c:when test="${uf.name eq filter.underFacility}">selected="selected"</c:when>
+                                </c:choose>
+                                value="${uf.name}" id="${uf.id}" data-parent-id="${uf.facility.id}">${uf.name}
+                        </option>
+                    </c:forEach>
+                </form:select>
+            </div>
+            <div style="padding: 5px;">
+                <form:select path="investor" id="investors" multiple="false" class="selectpicker"
+                             data-size="10" data-live-search="true" data-none-selected-text="Выберите инвестора">
+                    <c:forEach var="inv" items="${investors}">
+                        <option
+                                <c:choose>
+                                    <c:when test="${inv.login eq 'Выберите инвестора'}">selected="selected"</c:when>
+                                    <c:when test="${inv.login eq filter.investor}">selected="selected"</c:when>
+                                </c:choose> value="${inv.login}" id="${inv.id}">${inv.login}
+                        </option>
+                    </c:forEach>
+                </form:select>
+            </div>
+            <form:label path="" for="beginPeriod"
+                        style="margin-left:10px; margin-right:5px; font-size:14px">Период с:</form:label>
+            <form:input path="fromDate" id="beginPeriod" name="startDate" type="date" class="form-control input-sm"
+                        value="${fromDate}"/>
+            <form:label path="" for="endPeriod"
+                        style="margin-left:10px; margin-right:5px; font-size:14px">по:</form:label>
+            <form:input path="toDate" id="endPeriod" name="endDate" type="date" class="form-control input-sm"
+                        value="${toDate}"
+                        style="margin-right:5px"/>
+            <button type="submit" id="bth-search" class="btn btn-primary btn-md" style="margin-right:5px">Фильтр
+            </button>
         </form:form>
     </div>
 
