@@ -34,4 +34,6 @@ public interface MoneyRepository extends JpaRepository<Money, Long>, JpaSpecific
     List<Money> findDuplicate(@Param("investorId") Long investorId, @Param("givenCash") BigDecimal givenCash,
                         @Param("facilityId") Long facilityId, @Param("dateGiven") Date dateGiven);
 
+    List<Money> findBySourceFlowsId(String sourceId);
+
 }
