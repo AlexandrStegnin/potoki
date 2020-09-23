@@ -186,6 +186,8 @@ public class SalePaymentService {
                         deleteById(parentFlow.getId());
                     }
                 }
+                List<Money> monies = moneyRepository.findBySourceFlowsId(String.valueOf(ltd.getId()));
+                moneyRepository.delete(monies);
             });
             response = new ApiResponse("Данные по выплатам с продажи успешно удалены");
         } catch (Exception ex) {
