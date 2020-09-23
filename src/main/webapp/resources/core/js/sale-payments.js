@@ -353,7 +353,7 @@ function prepareReinvestSale() {
 function reinvestSalePayments(salePaymentDTO) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
-
+    showLoader()
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
