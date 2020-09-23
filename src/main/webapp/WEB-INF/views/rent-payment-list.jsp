@@ -167,12 +167,12 @@
         <tbody style="text-align: center">
         <c:forEach items="${page.content}" var="payment">
             <tr id="${payment.id}">
-                <td data-report-date="${payment.dateReport.time}">${payment.getDateReportFormatted()}</td>
+                <td>${payment.getDateReportFormatted()}</td>
                 <td data-facility-id="${payment.facility.id}">${payment.facility.name}</td>
-                <td data-under-facility-id="${payment.underFacility.id}">${payment.underFacility.name}</td>
-                <td data-room-id="${payment.room.id}">${payment.room.name}</td>
-                <td data-investor-id="${payment.investor.id}">${payment.investor.login}</td>
-                <td data-gived-cash="${payment.afterCashing}">
+                <td>${payment.underFacility.name}</td>
+                <td>${payment.room.name}</td>
+                <td>${payment.investor.login}</td>
+                <td>
                     <fmt:formatNumber value="${payment.afterCashing}" type="currency" minFractionDigits="2"/>
                 </td>
                 <td>
@@ -186,7 +186,7 @@
                             <c:set var="disabled" value=""/>
                         </c:otherwise>
                     </c:choose>
-                    <input type="checkbox" title="Выбрать" ${checked} ${disabled}/>
+                    <input data-is-reinvest="${payment.isReinvest}" type="checkbox" title="Выбрать" ${checked} ${disabled}/>
                 </td>
             </tr>
         </c:forEach>
