@@ -94,12 +94,6 @@ public class SalePaymentController {
         return uploadExcelService.upload(request, UploadType.SALE);
     }
 
-    @PostMapping(path = Location.SALE_PAYMENTS_DELETE_ALL)
-    public @ResponseBody
-    ApiResponse deleteSalePayments() {
-        return salePaymentService.delete();
-    }
-
     /**
      * Удалить выбранные данные о выплатах (аренда)
      *

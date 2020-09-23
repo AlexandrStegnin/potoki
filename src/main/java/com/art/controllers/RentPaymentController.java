@@ -114,18 +114,6 @@ public class RentPaymentController {
     }
 
     /**
-     * Удалить все данные о выплатах (аренда)
-     *
-     * @return сообщение об успешном/неудачном выполнении
-     */
-    @PostMapping(path = Location.RENT_PAYMENTS_DELETE_ALL)
-    @ResponseBody
-    public ApiResponse deleteRentPayments() {
-        rentPaymentService.delete();
-        return new ApiResponse("Данные по выплатам (аренда) успешно удалены");
-    }
-
-    /**
      * Удалить выбранные данные о выплатах (аренда)
      *
      * @return сообщение об успешном/неудачном выполнении

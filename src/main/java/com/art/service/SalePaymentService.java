@@ -102,15 +102,6 @@ public class SalePaymentService {
     }
 
 //    @CacheEvict(Constant.INVESTOR_FLOWS_SALE_CACHE_KEY)
-    public ApiResponse delete() {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaDelete<SalePayment> query = cb.createCriteriaDelete(SalePayment.class);
-        query.from(SalePayment.class);
-        em.createQuery(query).executeUpdate();
-        return new ApiResponse("Данные по выпалатам (продажа) успешно удалены");
-    }
-
-//    @CacheEvict(Constant.INVESTOR_FLOWS_SALE_CACHE_KEY)
     public void deleteById(Long id) {
         CriteriaBuilder cb = this.em.getCriteriaBuilder();
         CriteriaDelete<SalePayment> delete = cb.createCriteriaDelete(SalePayment.class);

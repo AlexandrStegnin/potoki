@@ -190,15 +190,11 @@ public class Location {
 
     public static final String RENT_PAYMENTS_REINVEST = RENT_PAYMENTS + "/reinvest";
 
-    public static final String RENT_PAYMENTS_DELETE_ALL = RENT_PAYMENTS + "/delete/all";
-
     public static final String RENT_PAYMENTS_DELETE_CHECKED = RENT_PAYMENTS + "/delete/checked";
 
     public static final String SALE_PAYMENTS = PAYMENTS_URL + "/sale";
 
     public static final String SALE_PAYMENTS_UPLOAD = SALE_PAYMENTS + "/upload";
-
-    public static final String SALE_PAYMENTS_DELETE_ALL = SALE_PAYMENTS + "/delete/all";
 
     public static final String SALE_PAYMENTS_DELETE_CHECKED = SALE_PAYMENTS + "/delete/checked";
 

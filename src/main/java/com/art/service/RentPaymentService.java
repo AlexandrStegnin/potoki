@@ -59,11 +59,6 @@ public class RentPaymentService {
         return rentPaymentRepository.findByRoomId(roomId);
     }
 
-//    @CacheEvict(Constant.INVESTOR_FLOWS_CACHE_KEY)
-    public void delete() {
-        rentPaymentRepository.deleteAll();
-    }
-
 //    @CachePut(Constant.INVESTOR_FLOWS_CACHE_KEY)
     public void saveList(List<RentPayment> rentPaymentList) {
         rentPaymentRepository.save(rentPaymentList);
