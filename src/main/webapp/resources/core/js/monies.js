@@ -8,6 +8,7 @@ let OperationEnum = {
     CASHING: 'CASHING',
     REINVEST: 'REINVEST',
     DOUBLE: 'DOUBLE',
+    DELETE: 'DELETE',
     properties: {
         CREATE: {
             url: 'create'
@@ -26,6 +27,9 @@ let OperationEnum = {
         },
         REINVEST: {
             url: '../close/reinvest/one'
+        },
+        DELETE: {
+            url: '../delete/list'
         }
     }
 }
@@ -288,36 +292,12 @@ jQuery(document).ready(function ($) {
         $('#confirm-delete').modal('hide');
         if (linkHasClass($('#deleteAll'))) return false;
         let cashIdList = [];
-        let sourceIdList = [];
         $('table#monies').find('> tbody').find('> tr').each(function () {
             $(this).find(':checkbox:checked').not(':disabled').each(function () {
                 cashIdList.push($(this).closest('tr').attr('id'));
-                sourceIdList.push($(this).closest('tr').find('> td:last').data('source'));
                 $(this).closest('tr').remove();
             })
         });
-        if (sourceIdList.indexOf('|') >= 0) {
-            $.each(sourceIdList, function (ind, el) {
-                let tmp = el.split('|');
-                if (tmp.length > 0) {
-                    $.each(tmp, function (i, elem) {
-                        $('table#monies').find('> tbody').find('> tr').each(function () {
-                            if ($(this).attr('id') === elem) {
-                                $(this).find(':checkbox').prop('disabled', false);
-                                $(this).find(':checkbox').prop('checked', false);
-                            }
-                        })
-                    })
-                }
-            });
-        } else {
-            $('table#monies').find('> tbody').find('> tr').each(function () {
-                if ($(this).attr('id') === sourceIdList[0]) {
-                    $(this).find(':checkbox').prop('disabled', false);
-                    $(this).find(':checkbox').prop('checked', false);
-                }
-            })
-        }
         $('#msg').html('Начинаем удаление денег...');
         $('#msg-modal').modal('show');
         connect();
@@ -1081,7 +1061,7 @@ function cashingMoney() {
         underFacilitiesList: underFacilitiesList,
         commission: $('#cashing').val(),
         commissionNoMore: $('#commissionNoMore').val(),
-        monies: {
+        moneyList: {
             facility: {
                 id: $("#facilities").find("option:selected").val(),
                 name: $("#facilities").find("option:selected").text()
@@ -1093,8 +1073,8 @@ function cashingMoney() {
                 id: investor.find("option:selected").val(),
                 login: investor.find("option:selected").text()
             },
-            dateGivedCash: $('#dateGivenCash').val(),
-            givedCash: $('#cash').val()
+            dateGiven: $('#dateGivenCash').val(),
+            givenCash: $('#cash').val()
         }
     });
     showLoader();
