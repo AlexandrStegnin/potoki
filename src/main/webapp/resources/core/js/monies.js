@@ -1220,15 +1220,15 @@ function divideMultiple(cashes, reUnderFacilitiesList, excludedUnderFacilities) 
 function deleteCash(cashIdList) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
-    let search = ({
-        cashIdList: cashIdList
+    let deleteMoneyDTO = ({
+        moneyIds: cashIdList
     });
 
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: "/deleteCashList",
-        data: JSON.stringify(search),
+        url: "delete/list",
+        data: JSON.stringify(deleteMoneyDTO),
         dataType: 'json',
         timeout: 100000,
         beforeSend: function (xhr) {
