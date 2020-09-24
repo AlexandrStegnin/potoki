@@ -34,7 +34,7 @@
     <div class="panel panel-default">
         <!-- Default panel contents -->
         <div class="panel-heading"><span class="lead">${title}</span>
-            <form:form modelAttribute="filters" action="/marketingTree" method="POST" class="form-inline"
+            <form:form modelAttribute="filters" action="marketingTree" method="POST" class="form-inline"
                        id="filter-form">
                 <div class="row" style="margin: 10px;">
                     <input type="hidden" id="pageNumber" name="pageNumber" value="0">
