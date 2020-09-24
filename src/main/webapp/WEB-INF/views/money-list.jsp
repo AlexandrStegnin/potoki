@@ -40,6 +40,7 @@
             <input type="hidden" id="pageSize" name="pageSize" value="${cashFilters.pageSize}">
             <input type="hidden" id="total" name="total" value="${page.content.size()}">
             <input type="hidden" id="filtered" name="filtered" value="${cashFilters.filtered}">
+            <input type="hidden" id="accepted" name="accepted" value="${cashFilters.accepted}">
             <div style="padding: 5px">
                 <form:select path="facilities" id="fFacilities" multiple="true" class="selectpicker"
                              data-live-search="true" title="Выберите объект..."
@@ -140,16 +141,23 @@
                             <a class="dropdown-item" id="reinvestAll" href="#">Массовое реинвестирование</a>
                             <a class="dropdown-item" id="divideAll" href="#">Массовое разделение сумм</a>
                             <a class="dropdown-item" id="closeAll" href="#">Закрыть выбранные суммы</a>
+                            <a class="dropdown-item" id="accept-all" href="#">Согласовать выбранные суммы</a>
                             <a class="dropdown-item" id="deleteAll" href="#" style="color: red">Удалить выбранные
                                 суммы</a>
                         </div>
                     </div>
                 </div>
+                <div class="p-2">
+                    <input id="not-accepted" name="not-accepted" type="checkbox"
+                    <c:if test="${cashFilters.accepted == true}"> checked="checked" </c:if> data-toggle="toggle"
+                           data-on="Все суммы" data-off="Не согласованные" data-onstyle="success" data-offstyle="danger"
+                           data-size="input-sm">
+                </div>
             </sec:authorize>
         </sec:authorize>
     </div>
     <c:if test="${cashFilters.allRows == false}">
-        <nav class="text-center" style="margin: 10px"; aria-label="Деньги инвесторов">
+        <nav class="text-center" style="margin: 10px" aria-label="Деньги инвесторов">
             <ul class="pagination pagination-sm justify-content-center flex-wrap">
 
                 <c:forEach begin="1" end="${page.totalPages}" varStatus="page">
@@ -187,6 +195,7 @@
             <th>Вид закрытия вложения</th>
             <th>Подобъект источник</th>
             <th>Из 1С</th>
+            <th>Согласована</th>
             <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                 <th style="text-align: center">Действие</th>
             </sec:authorize>
@@ -214,6 +223,11 @@
                     <c:set var="is1C" value="Нет"/>
                 </c:if>
                 <td>${is1C}</td>
+                <c:set var="active" value="Да"/>
+                <c:if test="${money.state != 'ACTIVE'}">
+                    <c:set var="active" value="Нет"/>
+                </c:if>
+                <td>${active}</td>
                 <c:choose>
                     <c:when test="${money.typeClosing == null}">
                         <c:set var="isDisabledClass" value="isEnabled"/>
@@ -262,7 +276,7 @@
                             <c:set var="enabled" value=""/>
                         </c:otherwise>
                     </c:choose>
-                    <input type="checkbox" title="Выбрать" ${checked} ${disabled} ${enabled}/>
+                    <input type="checkbox" title="Выбрать" ${checked} ${disabled} ${enabled} data-money-id="${money.id}"/>
                 </td>
             </tr>
         </c:forEach>
