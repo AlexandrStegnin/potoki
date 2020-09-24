@@ -12,6 +12,7 @@ import com.art.model.supporting.SendingMail;
 import com.art.model.supporting.dto.UserDTO;
 import com.art.model.supporting.enums.KinEnum;
 import com.art.model.supporting.enums.UserRole;
+import com.art.repository.MarketingTreeRepository;
 import com.art.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -42,15 +43,18 @@ public class UserService {
 
     private final AccountService accountService;
 
+    private final MarketingTreeRepository marketingTreeRepository;
+
     @PersistenceContext(name = "persistanceUnit")
     private EntityManager em;
 
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, PersonalMailService personalMailService,
-                       AccountService accountService) {
+                       AccountService accountService, MarketingTreeRepository marketingTreeRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.personalMailService = personalMailService;
         this.accountService = accountService;
+        this.marketingTreeRepository = marketingTreeRepository;
     }
 
 //    @Cacheable(Constant.USERS_CACHE_KEY)
@@ -246,6 +250,7 @@ public class UserService {
         user.setKin(KinEnum.EMPTY);
         user.setPartnerId(null);
         update(user);
+        marketingTreeRepository.deleteByInvestorId(user.getId());
         return new ApiResponse("Пользователь успешно деактивирован");
     }
 

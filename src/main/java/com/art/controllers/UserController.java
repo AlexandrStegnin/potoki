@@ -1,6 +1,7 @@
 package com.art.controllers;
 
 import com.art.config.SecurityUtils;
+import com.art.config.application.Location;
 import com.art.model.*;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.FileBucket;
@@ -187,6 +188,12 @@ public class UserController {
         usersAnnexToContractsService.update(usersAnnexToContracts);
         response.setMessage("Запись успешно изменена");
         return response;
+    }
+
+    @ResponseBody
+    @PostMapping(path = Location.DEACTIVATE_USER)
+    public ApiResponse deactivateUser(@RequestBody UserDTO dto) {
+        return userService.deactivateUser(dto);
     }
 
     @InitBinder
