@@ -48,6 +48,25 @@ UserProfileDTO.prototype = {
 }
 
 jQuery(document).ready(function ($) {
+
+    let confirmForm = $('#confirm-form');
+
+    $('.deactivate').on('click', function (e) {
+        e.preventDefault()
+        let userId = $(this).data('user-id')
+        confirmForm.find('#title').html('Деактивация пользователя')
+        confirmForm.find('#message').html('Действительно хотите деактивировать пользователя?')
+        confirmForm.find('#accept').attr('data-object-id', userId)
+        confirmForm.modal('show')
+    })
+
+    $('#accept').on('click', function (e) {
+        e.preventDefault()
+        let userId = $(this).data('object-id')
+        confirmForm.modal('hide')
+        deactivate(userId)
+    })
+
     let isValid = {
         'login': function () {
             let loginErr = $('#loginErr');
@@ -266,6 +285,37 @@ function prepareUsersFilter() {
         filters = [];
         apply_filter('#tblUsers tbody', 5, status);
     }
+}
+
+function deactivate(userId) {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+
+    showLoader();
+
+    let userDTO = {
+        id: userId
+    }
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: "users/deactivate",
+        data: JSON.stringify(userDTO),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (data) {
+            closeLoader();
+            showPopup(data.message)
+        },
+        error: function (e) {
+            closeLoader();
+            showPopup(e.error)
+        }
+    });
 }
 
 function enableSearchButton(flag) {

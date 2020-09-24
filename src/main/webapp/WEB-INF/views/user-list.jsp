@@ -95,6 +95,7 @@
                                             class="caret"></span></button>
                                     <ul class="dropdown-menu">
                                         <li><a href="<c:url value='/edit-user-${user.id}' />">Изменить</a></li>
+                                        <li><a href="<c:url value='#' />" data-user-id="${user.id}" class="deactivate">Деактивировать</a></li>
                                         <li class="divider"></li>
                                         <li><a href="<c:url value='/#' />" id="delete" data-user-id="${user.id}" style="color: red">Удалить</a>
                                         </li>
@@ -111,5 +112,6 @@
 </div>
 <%@include file="popup_modal.jsp" %>
 <%@include file="ddk_loader.jsp" %>
+<%@include file="confirm-form.jsp" %>
 </body>
 </html>
