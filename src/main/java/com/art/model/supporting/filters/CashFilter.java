@@ -16,4 +16,5 @@ public class CashFilter extends AbstractFilter {
     private List<UnderFacility> underFacilities;
     private boolean fromApi;
     private int filtered = 0;
+    private boolean accepted = true;
 }
