@@ -5,6 +5,7 @@ import com.art.model.supporting.AfterCashing;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.dto.*;
+import com.art.model.supporting.enums.MoneyState;
 import com.art.model.supporting.enums.ShareType;
 import com.art.model.supporting.enums.TransactionType;
 import com.art.model.supporting.filters.CashFilter;
@@ -920,4 +921,21 @@ public class MoneyService {
         return response;
     }
 
+    /**
+     * Согласовать суммы
+     *
+     * @param dto суммы для согласования
+     * @return ответ
+     */
+    public ApiResponse accept(AcceptMoneyDTO dto) {
+        dto.getAcceptedMoneyIds()
+                .forEach(id -> {
+                    Money money = findById(id);
+                    if (money != null && money.getState() != MoneyState.ACTIVE) {
+                        money.setState(MoneyState.ACTIVE);
+                        update(money);
+                    }
+                });
+        return new ApiResponse("Суммы успешно согласованы");
+    }
 }
