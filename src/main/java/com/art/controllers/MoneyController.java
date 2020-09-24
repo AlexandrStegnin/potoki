@@ -514,6 +514,12 @@ public class MoneyController {
         return moneyService.close(closeCashDTO);
     }
 
+    @ResponseBody
+    @PostMapping(path = Location.MONEY_ACCEPT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ApiResponse acceptMonies(@RequestBody AcceptMoneyDTO dto) {
+        return moneyService.accept(dto);
+    }
+
     @ModelAttribute("facilities")
     public List<Facility> initializeFacilities() {
         return facilityService.initializeFacilities();
