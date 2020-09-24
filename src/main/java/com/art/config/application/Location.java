@@ -148,6 +148,8 @@ public class Location {
 
     public static final String MONEY_CLOSE_CASHING_ONE = MONEY + "/close/cashing/one";
 
+    public static final String MONEY_ACCEPT = MONEY + "/accept";
+
     // Детали новых денег
     public static final String NEW_CASH_DETAILS = "/new-cash-details";
 
