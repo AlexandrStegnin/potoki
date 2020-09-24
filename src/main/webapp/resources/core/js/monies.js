@@ -44,11 +44,28 @@ jQuery(document).ready(function ($) {
         $('#bth-search').click()
     })
 
+    $('#not-accepted').on('change', function () {
+        $('#accepted').val(!$(this).attr('checked'))
+        $('#bth-search').click()
+    })
+
     $('#submit').on('click', function (e) {
         if (operation !== OperationEnum.DOUBLE) {
             e.preventDefault()
             save(operation)
         }
+    })
+
+    $('#accept-all').on('click', function (e) {
+        e.preventDefault()
+        let acceptedIds = []
+        let checked = $('table#monies').find('> tbody').find('> tr').find(':checkbox:checked:not(:disabled)');
+        checked.map(function () {
+            acceptedIds.push($(this).data('money-id'))
+        })
+        let acceptedMoneyDTO = new AcceptedMoneyDTO()
+        acceptedMoneyDTO.build(acceptedIds)
+        acceptMonies(acceptedMoneyDTO)
     })
 
     blockActions();
@@ -480,11 +497,6 @@ jQuery(document).ready(function ($) {
                 $('#allMoneyCashing').hide();
             } else {
                 $('#allMoneyCashing').show();
-            }
-        },
-        'sendIt': function () {
-            if (!hasError.errors) {
-                prepareCashSave(what);
             }
         }
     };
@@ -1648,4 +1660,45 @@ function getMoneyDTO(operation) {
             }
             return moneyDTO
     }
+}
+
+let AcceptedMoneyDTO = function () {
+}
+
+AcceptedMoneyDTO.prototype = {
+    acceptedMoneyIds: [],
+    build: function (acceptedMoneyIds) {
+        this.acceptedMoneyIds = acceptedMoneyIds;
+    }
+}
+
+/**
+ * Согласовать выбранные суммы
+ *
+ * @param acceptedMoneyDTO {AcceptedMoneyDTO}
+ */
+function acceptMonies(acceptedMoneyDTO) {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+    showLoader();
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: 'accept',
+        data: JSON.stringify(acceptedMoneyDTO),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (data) {
+            closeLoader();
+            showPopup(data.message)
+        },
+        error: function (e) {
+            closeLoader()
+            showPopup(e.error);
+        }
+    });
 }
