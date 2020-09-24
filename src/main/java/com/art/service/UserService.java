@@ -249,6 +249,7 @@ public class UserService {
         user.setConfirmed(false);
         user.setKin(KinEnum.EMPTY);
         user.setPartnerId(null);
+        user.getProfile().setLocked(true);
         update(user);
         marketingTreeRepository.deleteByInvestorId(user.getId());
         return new ApiResponse("Пользователь успешно деактивирован");

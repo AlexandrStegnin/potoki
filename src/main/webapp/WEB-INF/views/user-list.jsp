@@ -51,6 +51,7 @@
                 <th>Имя пользователя</th>
                 <th>Email</th>
                 <th>Подтверждён</th>
+                <th>Деактивирован</th>
                 <th>Роль</th>
                 <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                     <th style="text-align: center">Действие</th>
@@ -66,6 +67,14 @@
                     <td>${user.profile.email}</td>
                     <c:choose>
                         <c:when test="${user.confirmed}">
+                            <td>Да</td>
+                        </c:when>
+                        <c:otherwise>
+                            <td>Нет</td>
+                        </c:otherwise>
+                    </c:choose>
+                    <c:choose>
+                        <c:when test="${user.profile.locked}">
                             <td>Да</td>
                         </c:when>
                         <c:otherwise>

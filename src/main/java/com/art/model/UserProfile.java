@@ -35,6 +35,8 @@ public class UserProfile {
 
     private String email;
 
+    private boolean locked = false;
+
     public UserProfile(UserProfileDTO profileDTO) {
         this.lastName = profileDTO.getLastName();
         this.firstName = profileDTO.getFirstName();
