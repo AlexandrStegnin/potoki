@@ -2,6 +2,7 @@ package com.art.model;
 
 import com.art.model.supporting.dto.RentPaymentDTO;
 import com.art.model.supporting.dto.SalePaymentDTO;
+import com.art.model.supporting.enums.MoneyState;
 import com.art.model.supporting.enums.ShareType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -101,6 +102,10 @@ public class Money implements Serializable {
     @Transient
     private transient AppUser investorBuyer;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "state")
+    private MoneyState state;
+
     public Money() {
     }
 
@@ -127,6 +132,7 @@ public class Money implements Serializable {
         this.isDivide = cash.getIsDivide();
         this.realDateGiven = null;
         this.transactionUUID = null;
+        this.state = MoneyState.ACTIVE;
     }
 
     public Money(Facility facility, UnderFacility underFacility, AppUser investor,
@@ -140,6 +146,7 @@ public class Money implements Serializable {
         this.cashSource = cashSource;
         this.newCashDetail = newCashDetail;
         this.shareType = shareType;
+        this.state = MoneyState.ACTIVE;
     }
 
     public Money(RentPayment rentPayment, RentPaymentDTO dto, Facility facility) {
@@ -153,6 +160,7 @@ public class Money implements Serializable {
         this.sourceUnderFacility = rentPayment.getUnderFacility();
         this.sourceFlowsId = String.valueOf(rentPayment.getId());
         this.room = rentPayment.getRoom();
+        this.state = MoneyState.ACTIVE;
     }
 
     public Money(SalePayment salePayment, SalePaymentDTO dto, Facility facility, UnderFacility underFacility) {
@@ -166,6 +174,7 @@ public class Money implements Serializable {
         this.sourceUnderFacility = salePayment.getUnderFacility();
         this.sourceFlowsId = String.valueOf(salePayment.getId());
         this.underFacility = underFacility;
+        this.state = MoneyState.ACTIVE;
     }
 
     @Transient
