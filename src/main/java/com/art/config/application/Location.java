@@ -202,6 +202,10 @@ public class Location {
 
     public static final String SALE_PAYMENTS_DIVIDE = SALE_PAYMENTS + "/divide";
 
+    // ПОЛЬЗОВАТЕЛИ
+    public static final String USERS_URL = "/users";
+
+    public static final String DEACTIVATE_USER = USERS_URL + "/deactivate";
 
     public static final String[] ADMIN_URLS = {
             ADMIN,
