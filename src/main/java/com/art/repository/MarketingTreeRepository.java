@@ -29,4 +29,5 @@ public interface MarketingTreeRepository extends JpaRepository<MarketingTree, Bi
             "ORDER BY inv.partnerId, MIN(ic.dateGiven), inv.id")
     List<MarketingTreeDTO> findGroupedCash();
 
+    void deleteByInvestorId(Long investorId);
 }
