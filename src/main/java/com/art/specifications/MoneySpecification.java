@@ -1,6 +1,7 @@
 package com.art.specifications;
 
 import com.art.model.*;
+import com.art.model.supporting.enums.MoneyState;
 import com.art.model.supporting.filters.CashFilter;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
@@ -25,6 +26,7 @@ public class MoneySpecification extends BaseSpecification<Money, CashFilter> {
                 .and(loginIn(filter.getInvestors()))
                 .and(facilityIsNotNull())
                 .and(is1C(filter.isFromApi()))
+                .and(accepted(filter.isAccepted()))
                 .toPredicate(root, query, cb);
     }
 
@@ -194,4 +196,16 @@ public class MoneySpecification extends BaseSpecification<Money, CashFilter> {
         }
         );
     }
+
+    private static Specification<Money> accepted(boolean accepted) {
+        return ((root, criteriaQuery, criteriaBuilder) -> {
+            if (accepted) {
+                return null;
+            }
+            return criteriaBuilder.equal(root
+                    .get(Money_.state), MoneyState.MATCHING);
+        }
+        );
+    }
+
 }
