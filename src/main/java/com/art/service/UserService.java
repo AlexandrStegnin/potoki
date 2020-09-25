@@ -12,8 +12,12 @@ import com.art.model.supporting.SendingMail;
 import com.art.model.supporting.dto.UserDTO;
 import com.art.model.supporting.enums.KinEnum;
 import com.art.model.supporting.enums.UserRole;
+import com.art.model.supporting.filters.AppUserFilter;
 import com.art.repository.MarketingTreeRepository;
 import com.art.repository.UserRepository;
+import com.art.specifications.AppUserSpecification;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -45,16 +49,20 @@ public class UserService {
 
     private final MarketingTreeRepository marketingTreeRepository;
 
+    private final AppUserSpecification specification;
+
     @PersistenceContext(name = "persistanceUnit")
     private EntityManager em;
 
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, PersonalMailService personalMailService,
-                       AccountService accountService, MarketingTreeRepository marketingTreeRepository) {
+                       AccountService accountService, MarketingTreeRepository marketingTreeRepository,
+                       AppUserSpecification specification) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.personalMailService = personalMailService;
         this.accountService = accountService;
         this.marketingTreeRepository = marketingTreeRepository;
+        this.specification = specification;
     }
 
 //    @Cacheable(Constant.USERS_CACHE_KEY)
@@ -253,6 +261,13 @@ public class UserService {
         update(user);
         marketingTreeRepository.deleteByInvestorId(user.getId());
         return new ApiResponse("Пользователь успешно деактивирован");
+    }
+
+    public Page<AppUser> findAll(AppUserFilter filter, Pageable pageable) {
+        return userRepository.findAll(
+                specification.getFilter(filter),
+                pageable
+        );
     }
 
 }
