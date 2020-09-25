@@ -209,6 +209,8 @@ public class Location {
 
     public static final String DEACTIVATE_USER = USERS_URL + "/deactivate";
 
+    public static final String USERS_LIST = USERS_URL + "/list";
+
     public static final String[] ADMIN_URLS = {
             ADMIN,
             CATALOGUE,
@@ -228,7 +230,8 @@ public class Location {
             MONEY_DIVIDE,
             MONEY_DIVIDE_MULTIPLE,
             MONEY + WILD_CARD,
-            PAYMENTS_URL + WILD_CARD
+            PAYMENTS_URL + WILD_CARD,
+            USERS_URL + WILD_CARD
     };
 
     public static final String[] INVESTOR_URLS = {
