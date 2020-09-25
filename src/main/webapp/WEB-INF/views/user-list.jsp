@@ -18,32 +18,53 @@
           rel="stylesheet">
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
     <link href="<c:url value='/resources/core/css/ddk_loader.css' />" rel="stylesheet"/>
-    <style type="text/css">
-        .bootstrap-select > select {
-            margin: 10px !important;
-        }
-    </style>
 </head>
 
 <body>
 <%@include file="header.jsp" %>
 <div class="container-fluid">
-    <div class="row" style="margin: 10px;">
-        <div class="col-md-12">
-        <label class="sr-only" for="userStatus">Статус:</label>
-        <select id="userStatus" class="input-sm selectpicker">
-            <c:forEach items="${userStatuses}" var="status">
-                <option value="${status.title}">${status.title}</option>
-            </c:forEach>
-        </select>
-        <button type="button" id="bth-search" class="btn btn-primary btn-md">Фильтр</button>
-        <sec:authorize access="isFullyAuthenticated()">
-            <sec:authorize access="hasRole('ADMIN')">
-                <a href="<c:url value='/users/create' />" class="btn btn-success btn-md pull-right">Создать</a>
-            </sec:authorize>
-        </sec:authorize>
+    <div class="d-flex flex-row justify-content-between" style="margin: 10px;">
+            <form:form modelAttribute="filter" method="POST" action="list"
+                       class="form-inline" id="search-form">
+                <input type="hidden" id="pageNumber" name="pageNumber" value="0">
+                <input type="hidden" id="pageSize" name="pageSize" value="${filter.pageSize}">
+                <input type="hidden" id="total" name="total" value="${page.content.size()}">
+                <div style="padding: 5px;">
+                    <form:select path="login" id="login" multiple="false" class="selectpicker"
+                                 data-size="10" data-live-search="true" data-none-selected-text="Выберите инвестора">
+                        <c:forEach var="user" items="${investors}">
+                            <option
+                                    <c:choose>
+                                        <c:when test="${user.login eq 'Выберите инвестора'}">selected="selected"</c:when>
+                                        <c:when test="${user.login eq filter.login}">selected="selected"</c:when>
+                                    </c:choose>
+                                    value="${user.login}" id="${user.id}">${user.login}
+                            </option>
+                        </c:forEach>
+                    </form:select>
+                </div>
+                <button type="submit" id="bth-search" class="btn btn-primary btn-md" style="margin-left: 10px">Фильтр
+                </button>
+            </form:form>
+                <input id="deactivated" name="deactivated" type="checkbox"
+                <c:if test="${filter.deactivated == false}"> checked="checked" </c:if> data-toggle="toggle"
+                       data-on="Все пользователи" data-off="Деактивированные" data-onstyle="success" data-offstyle="danger"
+                       data-size="input-sm">
+
+
+<%--        <label class="sr-only" for="userStatus">Статус:</label>--%>
+<%--        <select id="userStatus" class="input-sm selectpicker">--%>
+<%--            <c:forEach items="${userStatuses}" var="status">--%>
+<%--                <option value="${status.title}">${status.title}</option>--%>
+<%--            </c:forEach>--%>
+<%--        </select>--%>
+
+<%--        <sec:authorize access="isFullyAuthenticated()">--%>
+<%--            <sec:authorize access="hasRole('ADMIN')">--%>
+<%--                <a href="<c:url value='/users/create' />" class="btn btn-success btn-md pull-right">Создать</a>--%>
+<%--            </sec:authorize>--%>
+<%--        </sec:authorize>--%>
         </div>
-    </div>
 </div>
 <div class="container-fluid">
     <table class="table table-striped w-auto table-hover table-sm" style="table-layout: fixed"
@@ -62,7 +83,7 @@
         </tr>
         </thead>
         <tbody style="text-align: center">
-        <c:forEach items="${users}" var="user">
+        <c:forEach items="${page.content}" var="user">
             <tr id="${user.id}">
                 <td>${user.id}</td>
                 <td>${user.login}</td>
