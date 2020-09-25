@@ -26,7 +26,7 @@
 <%@include file="header.jsp" %>
 <div class="container generic-container" style="margin-top: 10%">
     <sec:authorize access="hasRole('ADMIN') or hasRole('DBA') or hasRole('BIGDADDY')">
-        <a href="<c:url value='/admin' />" class="btn btn-success btn-block" >Пользователи (app_user)</a>
+        <a href="<c:url value='/users/list' />" class="btn btn-success btn-block" >Пользователи (app_user)</a>
         <a href="<c:url value='/facilities/list' />" class="btn btn-success btn-block">Объекты (facility)</a>
         <a href="<c:url value='/facilities/child/list' />" class="btn btn-success btn-block">Подобъекы (under_facility)</a>
         <a href="<c:url value='/rooms/list' />" class="btn btn-success btn-block">Помещения (room)</a>
