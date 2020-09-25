@@ -10,9 +10,19 @@ import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.dto.UserDTO;
 import com.art.model.supporting.enums.KinEnum;
 import com.art.model.supporting.enums.OwnerType;
+import com.art.model.supporting.enums.UserRole;
+import com.art.model.supporting.enums.UserStatus;
+import com.art.model.supporting.filters.AppUserFilter;
+import com.art.model.supporting.filters.Filterable;
 import com.art.service.*;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
@@ -42,6 +52,8 @@ public class UserController {
 
     private final AccountService accountService;
 
+    private final AppUserFilter filter = new AppUserFilter();
+
     public UserController(UserService userService, RoleService roleService,
                           FacilityService facilityService, MoneyService moneyService,
                           UsersAnnexToContractsService usersAnnexToContractsService, AccountService accountService) {
@@ -51,6 +63,44 @@ public class UserController {
         this.moneyService = moneyService;
         this.usersAnnexToContractsService = usersAnnexToContractsService;
         this.accountService = accountService;
+    }
+
+    @Secured("ROLE_ADMIN")
+    @GetMapping(path = Location.USERS_LIST)
+    public ModelAndView usersList(@PageableDefault(size = 1000) @SortDefault Pageable pageable) {
+        return prepareModel(filter);
+    }
+
+    @Secured("ROLE_ADMIN")
+    @PostMapping(path = Location.USERS_LIST)
+    public ModelAndView usersListFiltered(@ModelAttribute("filter") AppUserFilter filter) {
+        return prepareModel(filter);
+    }
+
+    /**
+     * Подготовить модель для страницы
+     *
+     * @param filter фильтры
+     */
+    private ModelAndView prepareModel(AppUserFilter filter) {
+        ModelAndView model = new ModelAndView("user-list");
+        Pageable pageable = new PageRequest(filter.getPageNumber(), filter.getPageSize());
+        Page<AppUser> page = userService.findAll(filter, pageable);
+        model.addObject("page", page);
+        model.addObject("filter", filter);
+        return model;
+    }
+
+    @ModelAttribute("userStatuses")
+    public List<Filterable> initializeStatuses() {
+        List<Filterable> statusesAndRoles = new ArrayList<>();
+        statusesAndRoles.add(UserStatus.ALL);
+        statusesAndRoles.add(UserRole.ROLE_INVESTOR);
+        statusesAndRoles.add(UserRole.ROLE_MANAGER);
+        statusesAndRoles.add(UserRole.ROLE_ADMIN);
+        statusesAndRoles.add(UserStatus.CONFIRMED);
+        statusesAndRoles.add(UserStatus.NOT_CONFIRMED);
+        return statusesAndRoles;
     }
 
     /*
