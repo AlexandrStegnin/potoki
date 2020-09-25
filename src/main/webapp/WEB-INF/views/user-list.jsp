@@ -24,47 +24,78 @@
 <%@include file="header.jsp" %>
 <div class="container-fluid">
     <div class="d-flex flex-row justify-content-between" style="margin: 10px;">
-            <form:form modelAttribute="filter" method="POST" action="list"
-                       class="form-inline" id="search-form">
-                <input type="hidden" id="pageNumber" name="pageNumber" value="0">
-                <input type="hidden" id="pageSize" name="pageSize" value="${filter.pageSize}">
-                <input type="hidden" id="total" name="total" value="${page.content.size()}">
-                <div style="padding: 5px;">
-                    <form:select path="login" id="login" multiple="false" class="selectpicker"
-                                 data-size="10" data-live-search="true" data-none-selected-text="Выберите инвестора">
-                        <c:forEach var="user" items="${investors}">
-                            <option
-                                    <c:choose>
-                                        <c:when test="${user.login eq 'Выберите инвестора'}">selected="selected"</c:when>
-                                        <c:when test="${user.login eq filter.login}">selected="selected"</c:when>
-                                    </c:choose>
-                                    value="${user.login}" id="${user.id}">${user.login}
-                            </option>
-                        </c:forEach>
-                    </form:select>
-                </div>
-                <button type="submit" id="bth-search" class="btn btn-primary btn-md" style="margin-left: 10px">Фильтр
-                </button>
-            </form:form>
-                <input id="deactivated" name="deactivated" type="checkbox"
-                <c:if test="${filter.deactivated == false}"> checked="checked" </c:if> data-toggle="toggle"
-                       data-on="Все пользователи" data-off="Деактивированные" data-onstyle="success" data-offstyle="danger"
-                       data-size="input-sm">
-
-
-<%--        <label class="sr-only" for="userStatus">Статус:</label>--%>
-<%--        <select id="userStatus" class="input-sm selectpicker">--%>
-<%--            <c:forEach items="${userStatuses}" var="status">--%>
-<%--                <option value="${status.title}">${status.title}</option>--%>
-<%--            </c:forEach>--%>
-<%--        </select>--%>
-
-<%--        <sec:authorize access="isFullyAuthenticated()">--%>
-<%--            <sec:authorize access="hasRole('ADMIN')">--%>
-<%--                <a href="<c:url value='/users/create' />" class="btn btn-success btn-md pull-right">Создать</a>--%>
-<%--            </sec:authorize>--%>
-<%--        </sec:authorize>--%>
+        <form:form modelAttribute="filter" method="POST" action="list"
+                   class="form-inline" id="search-form">
+            <input type="hidden" id="pageNumber" name="pageNumber" value="0">
+            <input type="hidden" id="pageSize" name="pageSize" value="${filter.pageSize}">
+            <input type="hidden" id="total" name="total" value="${page.content.size()}">
+            <input type="hidden" id="allRows" name="allRows" value="${filter.allRows}">
+            <input type="hidden" id="deactivated" name="deactivated" value="${filter.deactivated}">
+            <input type="hidden" id="confirmed" name="confirmed" value="${filter.confirmed}">
+            <div style="padding: 5px;">
+                <form:select path="login" id="login" multiple="false" class="selectpicker"
+                             data-size="10" data-live-search="true" data-none-selected-text="Выберите инвестора">
+                    <c:forEach var="user" items="${investors}">
+                        <option
+                                <c:choose>
+                                    <c:when test="${user.login eq 'Выберите инвестора'}">selected="selected"</c:when>
+                                    <c:when test="${user.login eq filter.login}">selected="selected"</c:when>
+                                </c:choose>
+                                value="${user.login}" id="${user.id}">${user.login}
+                        </option>
+                    </c:forEach>
+                </form:select>
+            </div>
+<%--            <div style="padding: 5px;">--%>
+<%--                <form:select path="roleId" id="role" multiple="false" class="selectpicker"--%>
+<%--                             data-size="10" data-live-search="true" data-none-selected-text="Выберите роль">--%>
+<%--                    <c:forEach var="role" items="${roles}">--%>
+<%--                        <option--%>
+<%--                                <c:choose>--%>
+<%--                                    <c:when test="${role.name eq 'Выберите роль'}">selected="selected"</c:when>--%>
+<%--                                    <c:when test="${role.id eq filter.roleId}">selected="selected"</c:when>--%>
+<%--                                </c:choose>--%>
+<%--                                value="${role.id}" id="${role.id}">${role.roleName}--%>
+<%--                        </option>--%>
+<%--                    </c:forEach>--%>
+<%--                </form:select>--%>
+<%--            </div>--%>
+            <button type="submit" id="bth-search" class="btn btn-primary btn-md" style="margin-left: 10px">Фильтр
+            </button>
+        </form:form>
+        <div style="padding: 5px;">
+            <input id="inactive" name="inactive" type="checkbox"
+            <c:if test="${filter.deactivated == false}"> checked="checked" </c:if> data-toggle="toggle"
+                   data-on="Активные и нет" data-off="Деактивированные" data-onstyle="success" data-offstyle="danger"
+                   data-size="input-sm">
         </div>
+        <div style="padding: 5px;">
+            <input id="all" name="all" type="checkbox"
+            <c:if test="${filter.allRows == true}"> checked="checked" </c:if> data-toggle="toggle"
+                   data-on="На одной" data-off="По страницам" data-onstyle="success" data-offstyle="danger"
+                   data-size="input-sm">
+        </div>
+        <div style="padding: 5px;">
+            <input id="confirm" name="confirm" type="checkbox"
+            <c:if test="${filter.confirmed == true}"> checked="checked" </c:if> data-toggle="toggle"
+                   data-on="Подтверждённые и нет" data-off="Не подтверждённые" data-onstyle="success" data-offstyle="danger"
+                   data-size="input-sm">
+        </div>
+        <%--        <label class="sr-only" for="userStatus">Статус:</label>--%>
+        <%--        <select id="userStatus" class="input-sm selectpicker">--%>
+        <%--            <c:forEach items="${userStatuses}" var="status">--%>
+        <%--                <option value="${status.title}">${status.title}</option>--%>
+        <%--            </c:forEach>--%>
+        <%--        </select>--%>
+
+        <sec:authorize access="isFullyAuthenticated()">
+            <sec:authorize access="hasRole('ADMIN')">
+                <div style="padding: 5px;">
+                    <button type="button" class="btn btn-success btn-md pull-right">Создать</button>
+                </div>
+            </sec:authorize>
+        </sec:authorize>
+    </div>
 </div>
 <div class="container-fluid">
     <table class="table table-striped w-auto table-hover table-sm" style="table-layout: fixed"
@@ -127,34 +158,13 @@
                                         class="fas fa-cog"></span></button>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" id="edit-user" href="<c:url value='edit/${user.id}' />">Изменить</a>
-                                    <li class="divider"></li>
+                                    <a href="<c:url value='#' />" data-user-id="${user.id}" class="deactivate">Деактивировать</a>
                                     <a class="dropdown-item" id="delete"
                                        href="<c:url value='delete/${user.id}' />">Удалить</a></div>
                             </div>
                         </td>
                     </sec:authorize>
                 </sec:authorize>
-
-<%--                <sec:authorize access="isFullyAuthenticated()">--%>
-<%--                    <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">--%>
-<%--                        <td style="text-align: center">--%>
-<%--                            <div class="btn-group">--%>
-<%--                                <button type="button" data-toggle="dropdown"--%>
-<%--                                        class="btn btn-primary btn-sm dropdown-toggle">Действие <span--%>
-<%--                                        class="caret"></span></button>--%>
-<%--                                <ul class="dropdown-menu">--%>
-<%--                                    <li><a href="<c:url value='/edit-user-${user.id}' />">Изменить</a></li>--%>
-<%--                                    <li><a href="<c:url value='#' />" data-user-id="${user.id}" class="deactivate">Деактивировать</a>--%>
-<%--                                    </li>--%>
-<%--                                    <li class="divider"></li>--%>
-<%--                                    <li><a href="<c:url value='/#' />" id="delete" data-user-id="${user.id}"--%>
-<%--                                           style="color: red">Удалить</a>--%>
-<%--                                    </li>--%>
-<%--                                </ul>--%>
-<%--                            </div>--%>
-<%--                        </td>--%>
-<%--                    </sec:authorize>--%>
-<%--                </sec:authorize>--%>
             </tr>
         </c:forEach>
         </tbody>
@@ -176,5 +186,6 @@
 <script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/jsFunctions.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/users.js' />"></script>
 </body>
 </html>

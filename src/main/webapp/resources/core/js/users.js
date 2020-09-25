@@ -49,6 +49,16 @@ UserProfileDTO.prototype = {
 
 jQuery(document).ready(function ($) {
 
+    $('#inactive').on('change', function () {
+        $('#deactivated').val(!$(this).prop('checked'))
+        $('#search-form').submit()
+    })
+
+    $('#confirm').on('change', function () {
+        $('#confirmed').val(!$(this).prop('checked'))
+        $('#search-form').submit()
+    })
+
     let confirmForm = $('#confirm-form');
 
     $('.deactivate').on('click', function (e) {
@@ -129,11 +139,6 @@ jQuery(document).ready(function ($) {
         let userId = $(this).attr('data-user-id');
         deleteUser(userId);
         $('#tblUsers').find('tr#' + userId).remove();
-    });
-
-    $('#bth-search').click(function (event) {
-        event.preventDefault();
-        prepareUsersFilter();
     });
 });
 
