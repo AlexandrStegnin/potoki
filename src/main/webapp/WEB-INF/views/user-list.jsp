@@ -4,123 +4,156 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<html lang="en-RU">
-
+<!DOCTYPE html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Список пользователей</title>
     <sec:csrfMetaTags/>
-    <link href="<c:url value='/resources/core/css/old_bootstrap.min.css' />" rel="stylesheet"/>
-    <link href="<c:url value='/resources/core/css/applic.css' />" rel="stylesheet"/>
-    <link href="<c:url value='/resources/core/css/popup.css' />" rel="stylesheet"/>
-    <link href="<c:url value='/resources/core/css/ddk_loader.css' />" rel="stylesheet"/>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/jquery-3.2.1.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min_old.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/jsFunctions.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/users.js' />"></script>
+    <link rel="stylesheet"
+          href="<c:url value='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' />"/>
+    <link rel="stylesheet"
+          href="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css' />">
+    <link href="<c:url value='https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css' />"
+          rel="stylesheet">
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
+    <link href="<c:url value='/resources/core/css/ddk_loader.css' />" rel="stylesheet"/>
+    <style type="text/css">
+        .bootstrap-select > select {
+            margin: 10px !important;
+        }
+    </style>
 </head>
 
 <body>
-<div class="generic-container">
-    <%@include file="old_authheader.jsp" %>
-    <div class="panel panel-default">
-        <!-- Default panel contents -->
-        <div class="panel-heading"><span class="lead">Список пользователей:</span></div>
-        <div class="row" style="margin-top:10px; margin-left:10px; margin-bottom:10px; margin-right:10px">
-            <label class="sr-only" for="userStatus">Статус:</label>
-            <select id="userStatus" class="input-sm">
-                <c:forEach items="${userStatuses}" var="status">
-                    <option value="${status.title}">${status.title}</option>
-                </c:forEach>
-            </select>
-            <button type="button" id="bth-search" class="btn btn-primary btn-sm">Фильтр</button>
-            <sec:authorize access="isFullyAuthenticated()">
-                <sec:authorize access="hasRole('ADMIN')">
-                    <a href="<c:url value='/users/create' />" class="btn btn-success btn-sm pull-right">Добавить
-                        пользователя</a>
-                </sec:authorize>
+<%@include file="header.jsp" %>
+<div class="container-fluid">
+    <div class="row" style="margin: 10px;">
+        <div class="col-md-12">
+        <label class="sr-only" for="userStatus">Статус:</label>
+        <select id="userStatus" class="input-sm selectpicker">
+            <c:forEach items="${userStatuses}" var="status">
+                <option value="${status.title}">${status.title}</option>
+            </c:forEach>
+        </select>
+        <button type="button" id="bth-search" class="btn btn-primary btn-md">Фильтр</button>
+        <sec:authorize access="isFullyAuthenticated()">
+            <sec:authorize access="hasRole('ADMIN')">
+                <a href="<c:url value='/users/create' />" class="btn btn-success btn-md pull-right">Создать</a>
             </sec:authorize>
+        </sec:authorize>
         </div>
-        <table class="table table-hover" id="tblUsers">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Имя пользователя</th>
-                <th>Email</th>
-                <th>Подтверждён</th>
-                <th>Деактивирован</th>
-                <th>Роль</th>
-                <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
-                    <th style="text-align: center">Действие</th>
+    </div>
+</div>
+<div class="container-fluid">
+    <table class="table table-striped w-auto table-hover table-sm" style="table-layout: fixed"
+           id="tblUsers">
+        <thead style="text-align: center">
+        <tr>
+            <th>ID</th>
+            <th>Имя пользователя</th>
+            <th>Email</th>
+            <th>Подтверждён</th>
+            <th>Деактивирован</th>
+            <th>Роль</th>
+            <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
+                <th style="text-align: center">Действие</th>
+            </sec:authorize>
+        </tr>
+        </thead>
+        <tbody style="text-align: center">
+        <c:forEach items="${users}" var="user">
+            <tr id="${user.id}">
+                <td>${user.id}</td>
+                <td>${user.login}</td>
+                <td>${user.profile.email}</td>
+                <c:choose>
+                    <c:when test="${user.confirmed}">
+                        <td>Да</td>
+                    </c:when>
+                    <c:otherwise>
+                        <td>Нет</td>
+                    </c:otherwise>
+                </c:choose>
+                <c:choose>
+                    <c:when test="${user.profile.locked}">
+                        <td>Да</td>
+                    </c:when>
+                    <c:otherwise>
+                        <td>Нет</td>
+                    </c:otherwise>
+                </c:choose>
+                <c:forEach items="${user.roles}" var="role">
+                    <c:choose>
+                        <c:when test="${role.name == 'ROLE_ADMIN'}">
+                            <c:set var="roleName" value="Админ"/>
+                        </c:when>
+                        <c:when test="${role.name == 'ROLE_INVESTOR'}">
+                            <c:set var="roleName" value="Инвестор"/>
+                        </c:when>
+                        <c:when test="${role.name == 'ROLE_MANAGER'}">
+                            <c:set var="roleName" value="Управляющий"/>
+                        </c:when>
+                    </c:choose>
+                </c:forEach>
+                <td>${roleName}</td>
+                <sec:authorize access="isFullyAuthenticated()">
+                    <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
+                        <td style="text-align: center">
+                            <div class="dropdown pull-right" style="margin-right: 10px">
+                                <button type="button" data-toggle="dropdown"
+                                        class="btn btn-success btn-sm dropdown-toggle pull-right"><span
+                                        class="fas fa-cog"></span></button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" id="edit-user" href="<c:url value='edit/${user.id}' />">Изменить</a>
+                                    <li class="divider"></li>
+                                    <a class="dropdown-item" id="delete"
+                                       href="<c:url value='delete/${user.id}' />">Удалить</a></div>
+                            </div>
+                        </td>
+                    </sec:authorize>
                 </sec:authorize>
 
+<%--                <sec:authorize access="isFullyAuthenticated()">--%>
+<%--                    <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">--%>
+<%--                        <td style="text-align: center">--%>
+<%--                            <div class="btn-group">--%>
+<%--                                <button type="button" data-toggle="dropdown"--%>
+<%--                                        class="btn btn-primary btn-sm dropdown-toggle">Действие <span--%>
+<%--                                        class="caret"></span></button>--%>
+<%--                                <ul class="dropdown-menu">--%>
+<%--                                    <li><a href="<c:url value='/edit-user-${user.id}' />">Изменить</a></li>--%>
+<%--                                    <li><a href="<c:url value='#' />" data-user-id="${user.id}" class="deactivate">Деактивировать</a>--%>
+<%--                                    </li>--%>
+<%--                                    <li class="divider"></li>--%>
+<%--                                    <li><a href="<c:url value='/#' />" id="delete" data-user-id="${user.id}"--%>
+<%--                                           style="color: red">Удалить</a>--%>
+<%--                                    </li>--%>
+<%--                                </ul>--%>
+<%--                            </div>--%>
+<%--                        </td>--%>
+<%--                    </sec:authorize>--%>
+<%--                </sec:authorize>--%>
             </tr>
-            </thead>
-            <tbody>
-            <c:forEach items="${users}" var="user">
-                <tr id="${user.id}">
-                    <td>${user.id}</td>
-                    <td>${user.login}</td>
-                    <td>${user.profile.email}</td>
-                    <c:choose>
-                        <c:when test="${user.confirmed}">
-                            <td>Да</td>
-                        </c:when>
-                        <c:otherwise>
-                            <td>Нет</td>
-                        </c:otherwise>
-                    </c:choose>
-                    <c:choose>
-                        <c:when test="${user.profile.locked}">
-                            <td>Да</td>
-                        </c:when>
-                        <c:otherwise>
-                            <td>Нет</td>
-                        </c:otherwise>
-                    </c:choose>
-                    <c:forEach items="${user.roles}" var="role">
-                        <c:choose>
-                            <c:when test="${role.name == 'ROLE_ADMIN'}">
-                                <c:set var="roleName" value="Админ" />
-                            </c:when>
-                            <c:when test="${role.name == 'ROLE_INVESTOR'}">
-                                <c:set var="roleName" value="Инвестор" />
-                            </c:when>
-                            <c:when test="${role.name == 'ROLE_MANAGER'}">
-                                <c:set var="roleName" value="Управляющий" />
-                            </c:when>
-                        </c:choose>
-                    </c:forEach>
-                    <td>${roleName}</td>
-                    <sec:authorize access="isFullyAuthenticated()">
-                        <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
-                            <td style="text-align: center">
-                                <div class="btn-group">
-                                    <button type="button" data-toggle="dropdown"
-                                            class="btn btn-primary btn-sm dropdown-toggle">Действие <span
-                                            class="caret"></span></button>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="<c:url value='/edit-user-${user.id}' />">Изменить</a></li>
-                                        <li><a href="<c:url value='#' />" data-user-id="${user.id}" class="deactivate">Деактивировать</a></li>
-                                        <li class="divider"></li>
-                                        <li><a href="<c:url value='/#' />" id="delete" data-user-id="${user.id}" style="color: red">Удалить</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </sec:authorize>
-                    </sec:authorize>
-                </tr>
-            </c:forEach>
-            </tbody>
-        </table>
-    </div>
+        </c:forEach>
+        </tbody>
+    </table>
 </div>
 <%@include file="popup_modal.jsp" %>
 <%@include file="ddk_loader.jsp" %>
 <%@include file="confirm-form.jsp" %>
+<script type="text/javascript"
+        src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' />"></script>
+<script type="text/javascript"
+        src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js' />"></script>
+<script type="text/javascript"
+        src="<c:url value='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js' />"></script>
+<script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js' />"></script>
+<script src="<c:url value='https://kit.fontawesome.com/2b84e2f58d.js' />" crossorigin="anonymous"></script>
+<script src="<c:url value='https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/progress.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/jsFunctions.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
 </body>
 </html>
