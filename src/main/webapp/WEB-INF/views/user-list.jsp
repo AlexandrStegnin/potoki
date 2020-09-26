@@ -81,17 +81,10 @@
                    data-on="Подтверждённые и нет" data-off="Не подтверждённые" data-onstyle="success" data-offstyle="danger"
                    data-size="input-sm">
         </div>
-        <%--        <label class="sr-only" for="userStatus">Статус:</label>--%>
-        <%--        <select id="userStatus" class="input-sm selectpicker">--%>
-        <%--            <c:forEach items="${userStatuses}" var="status">--%>
-        <%--                <option value="${status.title}">${status.title}</option>--%>
-        <%--            </c:forEach>--%>
-        <%--        </select>--%>
-
         <sec:authorize access="isFullyAuthenticated()">
             <sec:authorize access="hasRole('ADMIN')">
                 <div style="padding: 5px;">
-                    <button type="button" class="btn btn-success btn-md pull-right">Создать</button>
+                    <a href="<c:url value='/users/create' />" class="btn btn-success btn-md pull-right">Создать</a>
                 </div>
             </sec:authorize>
         </sec:authorize>
