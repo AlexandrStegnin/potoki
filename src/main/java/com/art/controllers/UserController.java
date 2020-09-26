@@ -201,7 +201,7 @@ public class UserController {
     /**
      * Страница создания пользователя
      */
-    @GetMapping(path = "/users/create", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(path = Location.USERS_CREATE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public String createUser(ModelMap model) {
         String title = "Создание пользователя";
         List<KinEnum> kins = new ArrayList<>(Arrays.asList(KinEnum.values()));
