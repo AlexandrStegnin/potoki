@@ -151,9 +151,11 @@
                                         class="fas fa-cog"></span></button>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" id="edit-user" href="<c:url value='edit/${user.id}' />">Изменить</a>
-                                    <a href="<c:url value='#' />" data-user-id="${user.id}" class="deactivate">Деактивировать</a>
+                                    <c:if test="${user.profile.locked == false}">
+                                        <a href="<c:url value='#' />" data-user-id="${user.id}" class="dropdown-item deactivate">Деактивировать</a>
+                                    </c:if>
                                     <a class="dropdown-item" id="delete"
-                                       href="<c:url value='delete/${user.id}' />">Удалить</a></div>
+                                       href="<c:url value='delete/${user.id}' />" style="color: red">Удалить</a></div>
                             </div>
                         </td>
                     </sec:authorize>
