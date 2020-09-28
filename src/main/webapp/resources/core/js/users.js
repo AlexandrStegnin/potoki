@@ -198,6 +198,11 @@ function checkUserDTO(userDTO) {
     }
 }
 
+/**
+ * Создать DTO пользователя
+ *
+ * @returns {UserDTO}
+ */
 function getUserDTO() {
     let login = $('#user-login').val()
     let roles = getRoles();
@@ -212,11 +217,20 @@ function getUserDTO() {
     return userDTO
 }
 
+/**
+ * Подготовить пользователя к сохранению
+ *
+ */
 function prepareUserSave() {
     let userDTO = getUserDTO()
     saveUser(userDTO);
 }
 
+/**
+ * Получить список ролей
+ *
+ * @returns {[RoleDTO]}
+ */
 function getRoles() {
     let roles = [];
     $('#roles').find(':selected').each(function (i, selected) {
@@ -227,6 +241,11 @@ function getRoles() {
     return roles;
 }
 
+/**
+ * Получить партнёра, если выбран канал продаж
+ *
+ * @returns {UserDTO}
+ */
 function getPartner() {
     let saleChanel = $('#saleChanel');
     let partnerDTO = new UserDTO();
@@ -237,6 +256,16 @@ function getPartner() {
     return partnerDTO;
 }
 
+/**
+ * Создать профиль для DTO пользователя
+ *
+ * @param userId id пользователя
+ * @param lastName Фамилия
+ * @param firstName Имя
+ * @param patronymic Отчество
+ * @param email адрес эл почты
+ * @returns {UserProfileDTO}
+ */
 function createProfile(userId, lastName, firstName, patronymic, email) {
     let profile = new UserProfileDTO();
     if (lastName.length === 0) {
@@ -300,6 +329,11 @@ function saveUser(user) {
     });
 }
 
+/**
+ * Удалить пользователя
+ *
+ * @param userId id пользователя
+ */
 function deleteUser(userId) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
@@ -313,7 +347,7 @@ function deleteUser(userId) {
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: "users/delete",
+        url: "delete",
         data: JSON.stringify(userDTO),
         dataType: 'json',
         timeout: 100000,
@@ -331,24 +365,11 @@ function deleteUser(userId) {
     });
 }
 
-function prepareUsersFilter() {
-    let status = $('#userStatus').find(':selected').text();
-
-    if (status === 'Все') {
-        filters = [];
-        apply_filter('#tblUsers tbody', 4, 'any');
-    } else if (status === 'Не подтверждён') {
-        filters = [];
-        apply_filter('#tblUsers tbody', 4, 'Нет');
-    } else if (status === 'Подтверждён') {
-        filters = [];
-        apply_filter('#tblUsers tbody', 4, 'Да');
-    } else {
-        filters = [];
-        apply_filter('#tblUsers tbody', 5, status);
-    }
-}
-
+/**
+ * Деактивировать пользователя
+ *
+ * @param userId id пользователя
+ */
 function deactivate(userId) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
@@ -384,6 +405,11 @@ function enableSearchButton(flag) {
     $("#btn-search").prop("disabled", flag);
 }
 
+/**
+ * Показать сообщений
+ *
+ * @param message {String}
+ */
 function showPopup(message) {
     $('#msg').html(message);
     $('#msg-modal').modal('show');
@@ -392,13 +418,17 @@ function showPopup(message) {
     }, 3000);
 }
 
+/**
+ * Очистить форму пользователей от данных
+ */
 function clearUserForm() {
-    $('#lastName').val('')
-    $('#firstName').val('')
-    $('#patronymic').val('')
-    $('#user-login').val('')
-    $('#email').val('')
-    $('#roles').prop('selectedIndex', -1)
-    $('#saleChanel').prop('selectedIndex', -1)
-    $('#kins').prop('selectedIndex', -1)
+    let userModalForm = $('#user-form-modal')
+    userModalForm.find('#lastName').val('')
+    userModalForm.find('#firstName').val('')
+    userModalForm.find('#patronymic').val('')
+    userModalForm.find('#user-login').val('')
+    userModalForm.find('#email').val('')
+    userModalForm.find('#roles').prop('selectedIndex', -1)
+    userModalForm.find('#saleChanel').prop('selectedIndex', -1)
+    userModalForm.find('#kins').prop('selectedIndex', -1)
 }
