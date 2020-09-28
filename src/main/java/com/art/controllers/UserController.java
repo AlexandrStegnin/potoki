@@ -10,10 +10,7 @@ import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.dto.UserDTO;
 import com.art.model.supporting.enums.KinEnum;
 import com.art.model.supporting.enums.OwnerType;
-import com.art.model.supporting.enums.UserRole;
-import com.art.model.supporting.enums.UserStatus;
 import com.art.model.supporting.filters.AppUserFilter;
-import com.art.model.supporting.filters.Filterable;
 import com.art.service.*;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
@@ -86,21 +83,13 @@ public class UserController {
         ModelAndView model = new ModelAndView("user-list");
         Pageable pageable = new PageRequest(filter.getPageNumber(), filter.getPageSize());
         Page<AppUser> page = userService.findAll(filter, pageable);
+        List<KinEnum> kins = new ArrayList<>(Arrays.asList(KinEnum.values()));
         model.addObject("page", page);
         model.addObject("filter", filter);
-        return model;
-    }
+        model.addObject("userDTO", new UserDTO());
+        model.addObject("kins", kins);
 
-    @ModelAttribute("userStatuses")
-    public List<Filterable> initializeStatuses() {
-        List<Filterable> statusesAndRoles = new ArrayList<>();
-        statusesAndRoles.add(UserStatus.ALL);
-        statusesAndRoles.add(UserRole.ROLE_INVESTOR);
-        statusesAndRoles.add(UserRole.ROLE_MANAGER);
-        statusesAndRoles.add(UserRole.ROLE_ADMIN);
-        statusesAndRoles.add(UserStatus.CONFIRMED);
-        statusesAndRoles.add(UserStatus.NOT_CONFIRMED);
-        return statusesAndRoles;
+        return model;
     }
 
     /*
@@ -215,7 +204,7 @@ public class UserController {
     /**
      * Создание/обновление пользователя
      */
-    @PostMapping(path = "/users/save", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = Location.USERS_SAVE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
     ApiResponse saveUser(@RequestBody UserDTO userDTO) {
         AppUser user = new AppUser(userDTO);

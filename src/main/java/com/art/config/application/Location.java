@@ -213,6 +213,8 @@ public class Location {
 
     public static final String USERS_CREATE = USERS_URL + "/create";
 
+    public static final String USERS_SAVE = USERS_URL + "/save";
+
     public static final String[] ADMIN_URLS = {
             ADMIN,
             CATALOGUE,
