@@ -183,7 +183,7 @@
             <th>Сколько прибыли реинвест</th>
             <th>Подобъект</th>
             <th>Дата продажи</th>
-            <th>Реинвестировать</th>
+            <th>Выделить</th>
             <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                 <th style="text-align: center">Действие</th>
             </sec:authorize>
