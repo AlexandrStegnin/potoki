@@ -59,7 +59,7 @@
                             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="kins">Степень родства:</label>
                             <div class="col-md-6">
                                 <form:select path="kin" id="kins" items="${kins}" multiple="false"
-                                             itemLabel="val" class="form-control form-control-sm selectpicker"
+                                             itemLabel="val" itemValue="val" class="form-control form-control-sm selectpicker"
                                              data-size="10" data-live-search="true" data-none-selected-text="Степень родства"
                                 />
                             </div>

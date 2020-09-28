@@ -85,6 +85,15 @@ jQuery(document).ready(function ($) {
         userForm.modal('show')
     })
 
+    $('#edit-user').on('click', function (e) {
+        e.preventDefault()
+        userForm.find('#title').html('Обновить пользователя')
+        userForm.find('#accept').html('Обновить')
+        userForm.find('#accept').attr('data-action', OperationEnum.UPDATE)
+        let userId = $(this).attr('data-user-id')
+        getUser(userId)
+    })
+
     userForm.find('#accept').on('click', function () {
         let userDTO = getUserDTO()
         checkUserDTO(userDTO)
@@ -475,4 +484,102 @@ function showConfirmForm(title, message, objectId, action) {
     confirmForm.find('#accept').attr('data-object-id', objectId)
     confirmForm.find('#accept').attr('data-action', action)
     confirmForm.modal('show')
+}
+
+/**
+ * Получить пользователя по id
+ *
+ * @param userId id пользователя
+ */
+function getUser(userId) {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+    showLoader();
+    let userDTO = {
+        id: userId
+    }
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: "find",
+        data: JSON.stringify(userDTO),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (data) {
+            closeLoader();
+            showUpdateUserForm(data)
+        },
+        error: function (e) {
+            closeLoader();
+            showPopup(e.error)
+        }
+    });
+}
+
+/**
+ * Показать форму для изменения пользователя
+ *
+ * @param data
+ */
+function showUpdateUserForm(data) {
+    let userDTO = new UserDTO()
+    userDTO.build(data.id, data.login, data.roles, data.partnerId, data.kin)
+    userDTO.profile = data.profile
+    console.log(userDTO)
+    let userForm = $('#user-form-modal')
+    userForm.find('#id').val(userDTO.id)
+    userForm.find('#edit').val(true)
+    userForm.find('#user-login').val(userDTO.login)
+    userForm.find('#email').val(userDTO.profile.email)
+    bindRoles(userDTO.roles)
+    bindPartner(userDTO.partnerId)
+    bindKin(userDTO.kin)
+    userForm.find('#lastName').val(userDTO.profile.lastName)
+    userForm.find('#firstName').val(userDTO.profile.firstName)
+    userForm.find('#patronymic').val(userDTO.profile.patronymic)
+    userForm.find('#action').attr("data-action", OperationEnum.UPDATE)
+    userForm.modal('show')
+}
+
+/**
+ * Преобразовать список ролей пользователя в выделенные элементы выпадающего списка
+ *
+ * @param roles {[RoleDTO]}
+ */
+function bindRoles(roles) {
+    $.each($('#user-form-modal').find('#roles option'), function (ind, el) {
+        $.each(roles, function (ind, roleElement) {
+            if (el.value === (roleElement.id + '')) {
+                $(el).attr('selected', 'selected')
+            }
+        })
+    })
+    $('#roles').selectpicker('refresh')
+}
+
+/**
+ * Преобразовать id партнёра в выделенный элемент выпадающего списка
+ *
+ * @param partnerId id партнёра
+ */
+function bindPartner(partnerId) {
+    $.each($('#user-form-modal').find('#saleChanel option'), function (ind, el) {
+        if (el.value === (partnerId + '')) {
+            $(el).attr('selected', 'selected')
+        }
+    })
+    $('#saleChanel').selectpicker('refresh')
+}
+
+function bindKin(kin) {
+    $.each($('#user-form-modal').find('#kins option'), function (ind, el) {
+        if (el.value === (kin + '')) {
+            $(el).attr('selected', 'selected')
+        }
+    })
+    $('#kins').selectpicker('refresh')
 }
