@@ -69,12 +69,16 @@ public class AccountService {
      *
      * @param user пользователь
      */
-    public void createAccount(AppUser user) {
+    public Account createAccount(AppUser user) {
         Account account = new Account();
-        account.setAccountNumber(generateAccountNumber(user));
+        String accountNumber = generateAccountNumber(user);
+        if (accountNumber == null) {
+            return null;
+        }
+        account.setAccountNumber(accountNumber);
         account.setOwnerId(user.getId());
         account.setOwnerType(OwnerType.INVESTOR);
-        accountRepository.save(account);
+        return accountRepository.save(account);
     }
 
     /**
@@ -129,9 +133,13 @@ public class AccountService {
         далее 4 цифры (порядковый номер объекта),
         далее 2 цифры (порядковый номер подобъекта) - всего 14 символов поллучается
          */
-        String clientCode = user.getLogin().substring(Constant.INVESTOR_PREFIX.length());
-        String regionNumber = getRegionNumber();
-        return clientCode.concat(regionNumber);
+        if (user.getLogin().startsWith(Constant.INVESTOR_PREFIX)) {
+            String clientCode = user.getLogin().substring(Constant.INVESTOR_PREFIX.length());
+            String regionNumber = getRegionNumber();
+            return clientCode.concat(regionNumber);
+        } else {
+            return null;
+        }
     }
 
     /**

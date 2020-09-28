@@ -3,10 +3,7 @@ package com.art.service;
 import com.art.config.AppSecurityConfig;
 import com.art.config.SecurityUtils;
 import com.art.func.PersonalMailService;
-import com.art.model.AppUser;
-import com.art.model.AppUser_;
-import com.art.model.UserProfile;
-import com.art.model.UserProfile_;
+import com.art.model.*;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.SendingMail;
 import com.art.model.supporting.dto.UserDTO;
@@ -149,8 +146,10 @@ public class UserService {
         user.setLogin(user.getLogin().toLowerCase());
         userRepository.save(user);
         if (SecurityUtils.isUserInRole(user, UserRole.ROLE_INVESTOR)) {
-            accountService.createAccount(user);
-            sendWelcomeMessage(user, password);
+            Account account = accountService.createAccount(user);
+            if (account != null) {
+                sendWelcomeMessage(user, password);
+            }
         }
         response.setMessage("Пользователь успешно создан");
         return response;
