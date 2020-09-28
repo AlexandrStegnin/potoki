@@ -215,7 +215,7 @@ public class SalePaymentService {
             salePaymentRepository.saveAndFlush(salePayment);
         });
         txLogService.reinvestmentSale(salePayments, monies);
-        return new ApiResponse("Реинвестирование денег с аренды прошло успешно");
+        return new ApiResponse("Реинвестирование денег с продажи прошло успешно");
     }
 
     /**
