@@ -239,6 +239,12 @@ public class UserController {
         return userService.deactivateUser(dto);
     }
 
+    @ResponseBody
+    @PostMapping(path = Location.USERS_FIND_BY_ID)
+    public UserDTO findUser(@RequestBody UserDTO dto) {
+        return userService.find(dto);
+    }
+
     @InitBinder
     public void initBinder(WebDataBinder webDataBinder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

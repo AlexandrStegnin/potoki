@@ -217,6 +217,8 @@ public class Location {
 
     public static final String USERS_DELETE = USERS_URL + "/delete";
 
+    public static final String USERS_FIND_BY_ID = USERS_URL + "/find";
+
     public static final String[] ADMIN_URLS = {
             ADMIN,
             CATALOGUE,
