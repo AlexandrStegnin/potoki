@@ -18,6 +18,12 @@
           rel="stylesheet">
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
     <link href="<c:url value='/resources/core/css/ddk_loader.css' />" rel="stylesheet"/>
+    <style type="text/css">
+        .has-error {
+            color: red;
+            padding: 8px 0 0 8px;
+        }
+    </style>
 </head>
 
 <body>
@@ -81,10 +87,11 @@
                    data-on="Подтверждённые и нет" data-off="Не подтверждённые" data-onstyle="success" data-offstyle="danger"
                    data-size="input-sm">
         </div>
+        <%--<c:url value='/users/create' />--%>
         <sec:authorize access="isFullyAuthenticated()">
             <sec:authorize access="hasRole('ADMIN')">
                 <div style="padding: 5px;">
-                    <a href="<c:url value='/users/create' />" class="btn btn-success btn-md pull-right">Создать</a>
+                    <a href="/#" id="create-user" class="btn btn-success btn-md pull-right">Создать</a>
                 </div>
             </sec:authorize>
         </sec:authorize>
@@ -168,6 +175,8 @@
 <%@include file="popup_modal.jsp" %>
 <%@include file="ddk_loader.jsp" %>
 <%@include file="confirm-form.jsp" %>
+<%@include file="user-form.jsp" %>
+
 <script type="text/javascript"
         src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' />"></script>
 <script type="text/javascript"
