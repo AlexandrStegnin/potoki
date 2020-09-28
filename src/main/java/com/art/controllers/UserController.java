@@ -155,19 +155,6 @@ public class UserController {
         return view;
     }
 
-    @GetMapping(path = "/edit-user-{id}")
-    public String editUser(@PathVariable Long id, ModelMap model) {
-        String title = "Обновление данных пользователя";
-        AppUser user = userService.findById(id);
-
-        List<KinEnum> kins = new ArrayList<>(Arrays.asList(KinEnum.values()));
-        model.addAttribute("user", user);
-        model.addAttribute("edit", true);
-        model.addAttribute("kins", kins);
-        model.addAttribute("title", title);
-        return "user-add";
-    }
-
     /**
      * Удаление пользователя по ID.
      */
