@@ -18,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -170,17 +171,20 @@ public class UserController {
     /**
      * Удаление пользователя по ID.
      */
-    @PostMapping(path = "/users/delete", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = Location.USERS_DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
-    GenericResponse deleteUser(@RequestBody UserDTO userDTO) {
-        GenericResponse response = new GenericResponse();
+    ApiResponse deleteUser(@RequestBody UserDTO userDTO) {
+        if (userDTO.getId() == null) {
+            return new ApiResponse("Не задан id пользоватея для удаления", HttpStatus.BAD_REQUEST.value());
+        }
+        ApiResponse response = new ApiResponse();
         AppUser user = userService.findById(userDTO.getId());
         List<Money> monies;
         monies = moneyService.findByInvestorId(user.getId());
         monies.forEach(ic -> moneyService.deleteById(ic.getId()));
         try {
             userService.deleteUser(user.getId());
-            response.setMessage("Пользователь <b>" + user.getLogin() + "</b> успешно удалён.");
+            return new ApiResponse("Пользователь " + user.getLogin() + " успешно удалён.");
         } catch (Exception e) {
             response.setError("При удалении пользователя <b>" + user.getLogin() + "</b> произошла ошибка.");
         }
