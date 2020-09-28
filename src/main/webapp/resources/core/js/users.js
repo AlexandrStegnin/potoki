@@ -20,11 +20,13 @@ UserDTO.prototype = {
     roles: [],
     partnerId: 0,
     profile: null,
-    build: function (id, login, roles, partnerId) {
+    kin: null,
+    build: function (id, login, roles, partnerId, kin) {
         this.id = id;
         this.login = login;
         this.roles = roles;
         this.partnerId = partnerId;
+        this.kin = kin;
     },
     buildPartner: function (id, login) {
         this.id = id;
@@ -48,6 +50,21 @@ UserProfileDTO.prototype = {
 }
 
 jQuery(document).ready(function ($) {
+
+    let userForm = $('#user-form-modal');
+
+    $('#create-user').on('click', function (e) {
+        e.preventDefault()
+        userForm.find('#title').html('Создание пользователя')
+        userForm.find('#accept').html('Создать')
+        userForm.modal('show')
+    })
+
+    userForm.find('#accept').on('click', function () {
+        let userDTO = getUserDTO()
+        checkUserDTO(userDTO)
+        saveUser(userDTO)
+    })
 
     $('#inactive').on('change', function () {
         $('#deactivated').val(!$(this).prop('checked'))
@@ -142,22 +159,61 @@ jQuery(document).ready(function ($) {
     });
 });
 
-function prepareUserSave() {
+/**
+ * Проверить правильность заполения формы
+ *
+ * @param userDTO {UserDTO}
+ */
+function checkUserDTO(userDTO) {
+    let rus = new RegExp(".*?[А-Яа-я $\/].*?")
+    let loginError = $('#loginError')
+
+    if (userDTO.login.length < 4 || userDTO.login.length > 16) {
+        loginError.html('Имя пользователя должно быть от 4 до 16 символов')
+        loginError.addClass('d-block')
+        return false
+    } else if (rus.test(userDTO.login)) {
+        loginError.html('Имя пользователя может содержать только буквы латинского алфавита, ' +
+            'цифры, знак подчёркивания (_) и точку (.)')
+        loginError.addClass('d-block')
+    } else {
+        loginError.removeClass('d-block')
+    }
+
+    let emailErr = $('#emailError')
+    let emailValid = new RegExp("[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$")
+    if (!emailValid.test(userDTO.profile.email)) {
+        emailErr.html('Введите email в формате mymail@example.ru')
+        emailErr.addClass('d-block')
+        return false
+    } else {
+        emailErr.removeClass('d-block')
+    }
+    let rolesError = $('#rolesError')
+    if (userDTO.roles.length === 0) {
+        rolesError.addClass('d-block')
+        return false
+    } else {
+        rolesError.removeClass('d-block')
+    }
+}
+
+function getUserDTO() {
+    let login = $('#user-login').val()
     let roles = getRoles();
     let partner = getPartner();
     let kin = $('#kins').val();
     let userId = $('#id').val();
 
-    let userDTO = {
-        id: userId,
-        login: $('#login').val(),
-        roles: roles,
-        kin: kin,
-        partnerId: partner.id
-    };
-
+    let userDTO = new UserDTO()
+    userDTO.build(userId, login, roles, partner.id, kin)
     userDTO.profile = createProfile(userId, $('#lastName').val(), $('#firstName').val(), $('#patronymic').val(), $('#email').val());
 
+    return userDTO
+}
+
+function prepareUserSave() {
+    let userDTO = getUserDTO()
     saveUser(userDTO);
 }
 
@@ -196,6 +252,11 @@ function createProfile(userId, lastName, firstName, patronymic, email) {
     return profile;
 }
 
+/**
+ * Сохранить пользователя
+ *
+ * @param user {UserDTO}
+ */
 function saveUser(user) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
@@ -222,18 +283,14 @@ function saveUser(user) {
         success: function (data) {
             closeLoader();
             if (url.indexOf('edit') >= 0) {
-                window.location.href = '/admin';
+                window.location.href = 'list';
             }
             if (data.status === 412) {
-                showPopup(data.error);
+                $('#user-form-modal').find('#loginError').html(data.error).addClass('d-block')
             } else {
+                $('#user-form-modal').modal('hide')
                 showPopup(data.message);
-                $('#last_name').val('');
-                $('#first_name').val('');
-                $('#middle_name').val('');
-                $('#login').val('');
-                $('#email').val('');
-                $('#roles').prop('selectedIndex', -1);
+                clearUserForm()
             }
         },
         error: function (e) {
@@ -333,4 +390,15 @@ function showPopup(message) {
     setTimeout(function () {
         $('#msg-modal').modal('hide');
     }, 3000);
+}
+
+function clearUserForm() {
+    $('#lastName').val('')
+    $('#firstName').val('')
+    $('#patronymic').val('')
+    $('#user-login').val('')
+    $('#email').val('')
+    $('#roles').prop('selectedIndex', -1)
+    $('#saleChanel').prop('selectedIndex', -1)
+    $('#kins').prop('selectedIndex', -1)
 }
