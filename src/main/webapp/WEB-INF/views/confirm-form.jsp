@@ -12,7 +12,7 @@
                 <p id="message"></p>
             </div>
             <div class="modal-footer" data-action="" id="action">
-                <button type="button" class="btn btn-primary" id="accept" data-object-id="">Да</button>
+                <button type="button" class="btn btn-primary" id="accept" data-action="" data-object-id="">Да</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
             </div>
         </div>
