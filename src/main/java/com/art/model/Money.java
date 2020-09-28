@@ -104,7 +104,7 @@ public class Money implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "state")
-    private MoneyState state;
+    private MoneyState state = MoneyState.ACTIVE;
 
     public Money() {
     }
