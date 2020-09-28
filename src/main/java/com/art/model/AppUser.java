@@ -106,7 +106,7 @@ public class AppUser implements Serializable {
         this.profile = new UserProfile(userDTO.getProfile());
         this.login = userDTO.getLogin();
         this.roles = convertRoles(userDTO.getRoles());
-        this.kin = userDTO.getKin() == null ? null : KinEnum.valueOf(userDTO.getKin().toUpperCase());
+        this.kin = userDTO.getKin() == null ? null : KinEnum.fromValue(userDTO.getKin());
         this.partnerId = userDTO.getPartnerId();
         this.password = userDTO.getPassword();
     }

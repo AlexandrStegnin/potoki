@@ -15,4 +15,16 @@ public enum KinEnum {
     public String getVal() {
         return val;
     }
+
+    public static KinEnum fromValue(String val) {
+        for (KinEnum kin : values()) {
+            if (kin.getVal() != null) {
+                if (kin.getVal().equalsIgnoreCase(val)) {
+                    return kin;
+                }
+            }
+        }
+        return EMPTY;
+    }
+
 }
