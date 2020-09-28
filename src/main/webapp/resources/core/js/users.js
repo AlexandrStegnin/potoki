@@ -1,14 +1,14 @@
 let OperationEnum = {
-    CREATE: 'CREATE',
+    SAVE: 'SAVE',
     UPDATE: 'UPDATE',
     DELETE: 'DELETE',
     DEACTIVATE: 'DEACTIVATE',
     properties: {
-        CREATE: {
-            url: 'create'
+        SAVE: {
+            url: 'save'
         },
         UPDATE: {
-            url: '../update'
+            url: 'save'
         },
         DELETE: {
             url: 'delete'
@@ -327,19 +327,12 @@ function saveUser(user) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
 
-    let url = window.location.href;
-    let actionUrl;
-    if (url.indexOf('edit') >= 0) {
-        actionUrl = "users/save"
-    } else {
-        actionUrl = "save"
-    }
     showLoader();
 
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: actionUrl,
+        url: OperationEnum.properties[OperationEnum.SAVE].url,
         data: JSON.stringify(user),
         dataType: 'json',
         timeout: 100000,
@@ -348,9 +341,6 @@ function saveUser(user) {
         },
         success: function (data) {
             closeLoader();
-            if (url.indexOf('edit') >= 0) {
-                window.location.href = 'list';
-            }
             if (data.status === 412) {
                 $('#user-form-modal').find('#loginError').html(data.error).addClass('d-block')
             } else {
@@ -551,14 +541,15 @@ function showUpdateUserForm(data) {
  * @param roles {[RoleDTO]}
  */
 function bindRoles(roles) {
-    $.each($('#user-form-modal').find('#roles option'), function (ind, el) {
+    let userForm = $('#user-form-modal');
+    $.each(userForm.find('#roles option'), function (ind, el) {
         $.each(roles, function (ind, roleElement) {
             if (el.value === (roleElement.id + '')) {
                 $(el).attr('selected', 'selected')
             }
         })
     })
-    $('#roles').selectpicker('refresh')
+    userForm.find('#roles').selectpicker('refresh')
 }
 
 /**
@@ -567,19 +558,26 @@ function bindRoles(roles) {
  * @param partnerId id партнёра
  */
 function bindPartner(partnerId) {
-    $.each($('#user-form-modal').find('#saleChanel option'), function (ind, el) {
+    let userForm = $('#user-form-modal');
+    $.each(userForm.find('#saleChanel option'), function (ind, el) {
         if (el.value === (partnerId + '')) {
             $(el).attr('selected', 'selected')
         }
     })
-    $('#saleChanel').selectpicker('refresh')
+    userForm.find('#saleChanel').selectpicker('refresh')
 }
 
+/**
+ * Преобразовать степень родства в выделенный элемент выпадающего списка
+ *
+ * @param kin
+ */
 function bindKin(kin) {
-    $.each($('#user-form-modal').find('#kins option'), function (ind, el) {
+    let userForm = $('#user-form-modal');
+    $.each(userForm.find('#kins option'), function (ind, el) {
         if (el.value === (kin + '')) {
             $(el).attr('selected', 'selected')
         }
     })
-    $('#kins').selectpicker('refresh')
+    userForm.find('#kins').selectpicker('refresh')
 }
