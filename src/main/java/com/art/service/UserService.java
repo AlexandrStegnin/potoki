@@ -2,6 +2,7 @@ package com.art.service;
 
 import com.art.config.AppSecurityConfig;
 import com.art.config.SecurityUtils;
+import com.art.config.exception.EntityNotFoundException;
 import com.art.func.PersonalMailService;
 import com.art.model.*;
 import com.art.model.supporting.ApiResponse;
@@ -78,6 +79,14 @@ public class UserService {
 
     public AppUser findById(Long id) {
         return userRepository.findOne(id);
+    }
+
+    public UserDTO find(UserDTO dto) {
+        AppUser user = userRepository.findOne(dto.getId());
+        if (user == null) {
+            throw new EntityNotFoundException("Пользователь не найден");
+        }
+        return new UserDTO(user);
     }
 
     public void changeUserPassword(AppUser user, String password) {
