@@ -87,11 +87,10 @@
                    data-on="Подтверждённые и нет" data-off="Не подтверждённые" data-onstyle="success" data-offstyle="danger"
                    data-size="input-sm">
         </div>
-        <%--<c:url value='/users/create' />--%>
         <sec:authorize access="isFullyAuthenticated()">
             <sec:authorize access="hasRole('ADMIN')">
                 <div style="padding: 5px;">
-                    <a href="/#" id="create-user" class="btn btn-success btn-md pull-right">Создать</a>
+                    <a href="<c:url value='/#' />" id="create-user" class="btn btn-success btn-md pull-right">Создать</a>
                 </div>
             </sec:authorize>
         </sec:authorize>
@@ -99,7 +98,7 @@
 </div>
 <div class="container-fluid">
     <table class="table table-striped w-auto table-hover table-sm" style="table-layout: fixed"
-           id="tblUsers">
+           id="users-table">
         <thead style="text-align: center">
         <tr>
             <th>ID</th>
@@ -161,8 +160,7 @@
                                     <c:if test="${user.profile.locked == false}">
                                         <a href="<c:url value='#' />" data-user-id="${user.id}" class="dropdown-item deactivate">Деактивировать</a>
                                     </c:if>
-                                    <a class="dropdown-item" id="delete"
-                                       href="<c:url value='delete/${user.id}' />" style="color: red">Удалить</a></div>
+                                    <a class="dropdown-item" id="delete" href="<c:url value='/#' />" data-user-id="${user.id}" style="color: red">Удалить</a></div>
                             </div>
                         </td>
                     </sec:authorize>

@@ -1,3 +1,26 @@
+let OperationEnum = {
+    CREATE: 'CREATE',
+    UPDATE: 'UPDATE',
+    DELETE: 'DELETE',
+    DEACTIVATE: 'DEACTIVATE',
+    properties: {
+        CREATE: {
+            url: 'create'
+        },
+        UPDATE: {
+            url: '../update'
+        },
+        DELETE: {
+            url: 'delete'
+        },
+        DEACTIVATE: {
+            url: 'deactivate'
+        }
+    }
+}
+
+Object.freeze(OperationEnum)
+
 let UserDTO = function () {}
 
 let RoleDTO = function () {}
@@ -49,8 +72,10 @@ UserProfileDTO.prototype = {
     }
 }
 
-jQuery(document).ready(function ($) {
+let confirmForm
 
+jQuery(document).ready(function ($) {
+    confirmForm = $('#confirm-form');
     let userForm = $('#user-form-modal');
 
     $('#create-user').on('click', function (e) {
@@ -76,22 +101,10 @@ jQuery(document).ready(function ($) {
         $('#search-form').submit()
     })
 
-    let confirmForm = $('#confirm-form');
-
     $('.deactivate').on('click', function (e) {
         e.preventDefault()
         let userId = $(this).data('user-id')
-        confirmForm.find('#title').html('Деактивация пользователя')
-        confirmForm.find('#message').html('Действительно хотите деактивировать пользователя?')
-        confirmForm.find('#accept').attr('data-object-id', userId)
-        confirmForm.modal('show')
-    })
-
-    $('#accept').on('click', function (e) {
-        e.preventDefault()
-        let userId = $(this).data('object-id')
-        confirmForm.modal('hide')
-        deactivate(userId)
+        showConfirmForm('Деактивация пользователя', 'Действительно хотите деактивировать пользователя?', userId, OperationEnum.DEACTIVATE)
     })
 
     let isValid = {
@@ -154,9 +167,24 @@ jQuery(document).ready(function ($) {
     $('a#delete').click(function (event) {
         event.preventDefault();
         let userId = $(this).attr('data-user-id');
-        deleteUser(userId);
-        $('#tblUsers').find('tr#' + userId).remove();
+        showConfirmForm('Удаление пользователя', 'Действительно хотите удалить пользователя?', userId, OperationEnum.DELETE)
     });
+
+    confirmForm.find('#accept').on('click', function () {
+        let userId = confirmForm.find('#accept').attr('data-object-id')
+        let action = confirmForm.find('#accept').attr('data-action')
+        confirmForm.modal('hide')
+        switch (action) {
+            case OperationEnum.DELETE:
+                deleteUser(userId)
+                $('#users-table').find('tr#' + userId).remove();
+                break
+            case OperationEnum.DEACTIVATE:
+                deactivate(userId)
+                break
+        }
+    })
+
 });
 
 /**
@@ -347,7 +375,7 @@ function deleteUser(userId) {
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: "delete",
+        url: OperationEnum.properties[OperationEnum.DELETE].url,
         data: JSON.stringify(userDTO),
         dataType: 'json',
         timeout: 100000,
@@ -383,7 +411,7 @@ function deactivate(userId) {
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: "users/deactivate",
+        url: OperationEnum.properties[OperationEnum.DEACTIVATE].url,
         data: JSON.stringify(userDTO),
         dataType: 'json',
         timeout: 100000,
@@ -431,4 +459,20 @@ function clearUserForm() {
     userModalForm.find('#roles').prop('selectedIndex', -1)
     userModalForm.find('#saleChanel').prop('selectedIndex', -1)
     userModalForm.find('#kins').prop('selectedIndex', -1)
+}
+
+/**
+ * Отобразить форму подтверждения
+ *
+ * @param title {String} заголовок формы
+ * @param message {String} сообщение
+ * @param objectId {String} идентификатор объекта
+ * @param action {OperationEnum} действие
+ */
+function showConfirmForm(title, message, objectId, action) {
+    confirmForm.find('#title').html(title)
+    confirmForm.find('#message').html(message)
+    confirmForm.find('#accept').attr('data-object-id', objectId)
+    confirmForm.find('#accept').attr('data-action', action)
+    confirmForm.modal('show')
 }
