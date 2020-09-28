@@ -5,10 +5,7 @@ import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.dto.SalePaymentDTO;
 import com.art.model.supporting.dto.SalePaymentDivideDTO;
 import com.art.model.supporting.filters.FlowsSaleFilter;
-import com.art.repository.FacilityRepository;
-import com.art.repository.MoneyRepository;
-import com.art.repository.SalePaymentRepository;
-import com.art.repository.UnderFacilityRepository;
+import com.art.repository.*;
 import com.art.specifications.SalePaymentSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -43,17 +40,20 @@ public class SalePaymentService {
 
     private final TransactionLogService txLogService;
 
+    private final NewCashDetailRepository newCashDetailRepository;
+
     @Autowired
     public SalePaymentService(SalePaymentRepository salePaymentRepository,
                               SalePaymentSpecification saleSpecification, FacilityRepository facilityRepository,
                               UnderFacilityRepository underFacilityRepository, MoneyRepository moneyRepository,
-                              TransactionLogService txLogService) {
+                              TransactionLogService txLogService, NewCashDetailRepository newCashDetailRepository) {
         this.salePaymentRepository = salePaymentRepository;
         this.saleSpecification = saleSpecification;
         this.facilityRepository = facilityRepository;
         this.underFacilityRepository = underFacilityRepository;
         this.moneyRepository = moneyRepository;
         this.txLogService = txLogService;
+        this.newCashDetailRepository = newCashDetailRepository;
     }
 
 //    @CachePut(Constant.INVESTOR_FLOWS_SALE_CACHE_KEY)
@@ -207,8 +207,9 @@ public class SalePaymentService {
         Set<Money> monies = new HashSet<>();
         Facility facility = facilityRepository.findOne(dto.getFacilityId());
         UnderFacility underFacility = underFacilityRepository.findOne(dto.getUnderFacilityId());
+        NewCashDetail newCashDetail = newCashDetailRepository.findByName("Реинвестирование с продажи (прибыль)");
         salePayments.forEach(salePayment -> {
-            Money money = new Money(salePayment, dto, facility, underFacility);
+            Money money = new Money(salePayment, dto, facility, underFacility, newCashDetail);
             money = moneyRepository.saveAndFlush(money);
             monies.add(money);
             salePayment.setIsReinvest(1);

@@ -163,7 +163,7 @@ public class Money implements Serializable {
         this.state = MoneyState.ACTIVE;
     }
 
-    public Money(SalePayment salePayment, SalePaymentDTO dto, Facility facility, UnderFacility underFacility) {
+    public Money(SalePayment salePayment, SalePaymentDTO dto, Facility facility, UnderFacility underFacility, NewCashDetail newCashDetail) {
         this.givenCash = salePayment.getProfitToReInvest();
         this.dateGiven = dto.getDateGiven();
         this.facility = facility;
@@ -174,6 +174,7 @@ public class Money implements Serializable {
         this.sourceUnderFacility = salePayment.getUnderFacility();
         this.sourceFlowsId = String.valueOf(salePayment.getId());
         this.underFacility = underFacility;
+        this.newCashDetail = newCashDetail;
         this.state = MoneyState.ACTIVE;
     }
 
