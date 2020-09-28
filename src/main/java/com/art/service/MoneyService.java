@@ -635,7 +635,10 @@ public class MoneyService {
     private List<Money> prepareCashToReinvest(List<Money> oldCashList, Long facilityToReinvestId,
                                               Long underFacilityToReinvestId, int shareTypeId, Date dateClose) {
         Facility facility = facilityService.findById(facilityToReinvestId);
-        UnderFacility underFacility = underFacilityService.findById(underFacilityToReinvestId);
+        UnderFacility underFacility = null;
+        if (underFacilityToReinvestId != null) {
+            underFacility = underFacilityService.findById(underFacilityToReinvestId);
+        }
         ShareType shareType = ShareType.fromId(shareTypeId);
 
         List<Money> newCashList = new ArrayList<>();
