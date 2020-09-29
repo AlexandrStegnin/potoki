@@ -78,6 +78,15 @@ jQuery(document).ready(function ($) {
     confirmForm = $('#confirm-form');
     let userForm = $('#user-form-modal');
 
+    $(document).on('click', 'a[name*="page_"]', function (e) {
+        e.preventDefault();
+        $('#pageNumber').val(parseInt($(this).attr('id')) - 1);
+        let pageSize = 100;
+        if ($('#all').prop('checked')) pageSize = 1;
+        $('#pageSize').val(pageSize);
+        $('#search-form').submit();
+    });
+
     $('#create-user').on('click', function (e) {
         e.preventDefault()
         userForm.find('#title').html('Создание пользователя')

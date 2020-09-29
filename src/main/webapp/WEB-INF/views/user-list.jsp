@@ -95,6 +95,27 @@
             </sec:authorize>
         </sec:authorize>
     </div>
+    <c:if test="${filter.allRows == false}">
+        <nav class="text-center" style="margin: 10px" aria-label="Пользователи">
+            <ul class="pagination pagination-sm justify-content-center flex-wrap">
+
+                <c:forEach begin="1" end="${page.totalPages}" varStatus="page">
+                    <c:choose>
+                        <c:when test="${filter.pageNumber == page.index - 1}">
+                            <c:set var="active" value="active" />
+                        </c:when>
+                        <c:otherwise>
+                            <c:set var="active" value="" />
+                        </c:otherwise>
+                    </c:choose>
+                    <li class="page-item ${active}" data-page="${page.index}">
+                        <a id="${page.index}" name="page_${page.index}" class="page-link"
+                           href="#">${page.index}</a>
+                    </li>
+                </c:forEach>
+            </ul>
+        </nav>
+    </c:if>
 </div>
 <div class="container-fluid">
     <table class="table table-striped w-auto table-hover table-sm" style="table-layout: fixed"
