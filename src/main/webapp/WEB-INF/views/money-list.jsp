@@ -25,6 +25,11 @@
         .bootstrap-select > select {
             margin: 10px !important;
         }
+        .has-error {
+            color: red;
+            padding: 8px 0 0 8px;
+            font-size: 12px;
+        }
     </style>
 </head>
 
@@ -127,7 +132,7 @@
                         <div class="dropdown-menu dropdown-menu-right" id="addGetCash">
                             <a class="dropdown-item" id="addCash" href="<c:url value='/money/create' />">Добавить
                                 деньги</a>
-                            <a class="dropdown-item" id="getCash" href="<c:url value='/getInvestorsCash' />">Вывести
+                            <a class="dropdown-item" id="cashingMoney" href="<c:url value='/#' />">Вывести
                                 деньги</a>
                         </div>
                     </div>
@@ -415,6 +420,7 @@
 
 <%@include file="popup_modal.jsp" %>
 <%@include file="ddk_loader.jsp" %>
+<%@include file="cashing-form.jsp" %>
 <script type="text/javascript"
         src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' />"></script>
 <script type="text/javascript"
@@ -432,6 +438,7 @@
 <script type="text/javascript" src="<c:url value='/resources/core/js/investor-annex.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/jsFunctions.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/cashing.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/monies.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/progress.js' />"></script>
