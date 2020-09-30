@@ -379,7 +379,7 @@ public class MoneyController {
 
         model.addAttribute("searchSummary", searchSummary);
         model.addAttribute("title", title);
-        return "getInvestorsCash";
+        return "cashing";
     }
 
     /**
@@ -413,7 +413,7 @@ public class MoneyController {
                           BindingResult result, ModelMap model) {
         AppUser investor = null;
         if (result.hasErrors()) {
-            return "getInvestorsCash";
+            return "cashing";
         }
         Money cash = summary.getMoney();
         if (cash != null) {
@@ -442,7 +442,7 @@ public class MoneyController {
             return "redirect:" + Location.MONEY_LIST;
         } else {
             model.addAttribute("toBigSumForCashing", out);
-            return "getInvestorsCash";
+            return "cashing";
         }
     }
 
