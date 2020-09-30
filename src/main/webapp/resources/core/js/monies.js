@@ -1037,12 +1037,12 @@ function reinvestCash(facilityToReinvestId, underFacilityToReinvestId, shareType
 function cashingMoney() {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
-    let underFacility = $("#underFacilities").find("option:selected").text();
+    let underFacility = $("#underFacility").find("option:selected").text();
     if (underFacility === 'Выберите подобъект') {
         underFacility = null;
     }
 
-    let underFacilities = $('#underFacilities');
+    let underFacilities = $('#underFacility');
     let underFacilitiesList = [];
     underFacilities.find('option:selected').each(function (ind, el) {
         let uf = new UnderFacility();
@@ -1064,32 +1064,32 @@ function cashingMoney() {
             id: investor.find("option:selected").val(),
             login: investor.find("option:selected").text()
         },
-        facilities: {
-            id: $("#facilities").find("option:selected").val()
+        facility: {
+            id: $("#facility").find("option:selected").val()
         },
-        underFacilities: {
-            underFacility: underFacility
+        underFacility: {
+            name: underFacility
         },
-        underFacilitiesList: underFacilitiesList,
+        underFacilityList: underFacilitiesList,
         commission: $('#cashing').val(),
         commissionNoMore: $('#commissionNoMore').val(),
-        moneyList: {
+        money: {
             facility: {
-                id: $("#facilities").find("option:selected").val(),
-                name: $("#facilities").find("option:selected").text()
+                id: $("#facility").find("option:selected").val(),
+                name: $("#facility").find("option:selected").text()
             },
             underFacility: {
-                name: $("#underFacilities").find("option:selected").text()
+                name: $("#underFacility").find("option:selected").text()
             },
             investor: {
                 id: investor.find("option:selected").val(),
                 login: investor.find("option:selected").text()
             },
-            dateGiven: $('#dateGivenCash').val(),
+            dateGiven: $('#dateGivedCash').val(),
             givenCash: $('#cash').val()
         }
     });
-    showLoader();
+    // showLoader();
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
