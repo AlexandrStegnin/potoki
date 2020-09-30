@@ -337,7 +337,8 @@ public class MoneyService {
                         remainderSum[0] = totalSum;
                     }
                     if ((sumCash.compareTo(totalSum)) < 0) {
-                        result[0] = "Сумма должна быть не более " + String.valueOf(sumCash).substring(0, String.valueOf(sumCash).indexOf("."));
+                        String cashNoMore = String.valueOf(sumCash.subtract(commission).setScale(2, RoundingMode.DOWN));
+                        result[0] = "Сумма должна быть не более " + cashNoMore;
                         return;
                     }
 
