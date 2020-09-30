@@ -2,6 +2,7 @@ package com.art.model.supporting.dto;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -14,6 +15,20 @@ import java.util.Date;
 public class CashingMoneyDTO {
 
     private Long id;
+
+    private Long facilityId;
+
+    private Long underFacilityId;
+
+    private Long investorId;
+
+    private BigDecimal givenCash;
+
+    private Date dateCashing;
+
+    private BigDecimal commission;
+
+    private BigDecimal commissionNoMore;
 
     private Date dateClose;
 
