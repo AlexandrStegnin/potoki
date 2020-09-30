@@ -18,7 +18,7 @@
                                 <form:select path="facilityId" id="facility" items="${facilities}" multiple="false"
                                              itemValue="id" itemLabel="name" class="form-control form-control-sm selectpicker"
                                              data-size="10" data-live-search="true" data-none-selected-text="Выберите объект"/>
-                                <div class="has-error col-sm-6 d-none" id="facilityError">
+                                <div class="has-error d-none" id="facilityError">
                                     Необходимо выбрать объект
                                 </div>
                             </div>
@@ -37,7 +37,7 @@
                                         </form:option>
                                     </c:forEach>
                                 </form:select>
-                                <div class="has-error col-sm-6 d-none" id="underFacilityError">
+                                <div class="has-error d-none" id="underFacilityError">
                                     Необходимо выбрать подобъект
                                 </div>
                             </div>
@@ -50,7 +50,7 @@
                                              itemValue="id" itemLabel="login"
                                              class="form-control form-control-sm selectpicker investorPicker"
                                              data-size="10" data-live-search="true" data-none-selected-text="Выберите инвесторов"/>
-                                <div class="has-error col-sm-6 d-none" id="investorError">
+                                <div class="has-error d-none" id="investorError">
                                     Необходимо выбрать инвесторов
                                 </div>
                             </div>
@@ -61,7 +61,7 @@
                             <div class="col-sm-6">
                                 <form:input type="number" path="givenCash" id="cash" class="form-control form-control-sm"
                                             min="0.0" step="any"/>
-                                <div id="toBigSumForCashing" class="has-error col-sm-6 d-none">
+                                <div id="toBigSumForCashing" class="has-error d-none">
                                 </div>
                             </div>
                         </div>
@@ -71,7 +71,7 @@
                             <div class="col-sm-6">
                                 <form:input type="date" path="dateCashing" id="dateCashing"
                                             class="form-control form-control-sm"/>
-                                <div class="has-error col-sm-6 d-none" id="investorError">
+                                <div class="has-error d-none" id="investorError">
                                     Необходимо выбрать дату вывода
                                 </div>
                             </div>
@@ -82,7 +82,7 @@
                             <div class="col-sm-6">
                                 <form:input type="number" path="commission" id="commission" class="form-control form-control-sm"
                                             min="0.00" max="100" step="any"/>
-                                <div class="has-error col-sm-6 d-none" id="investorError">
+                                <div class="has-error d-none" id="investorError">
                                     Необходимо указать комиссию в (%)
                                 </div>
                             </div>
