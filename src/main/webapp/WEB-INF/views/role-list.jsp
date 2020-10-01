@@ -29,7 +29,18 @@
 
 <body>
 <%@include file="header.jsp" %>
-
+<div class="container-fluid">
+    <div class="d-flex flex-row justify-content-end" style="margin: 10px;">
+        <sec:authorize access="isFullyAuthenticated()">
+            <sec:authorize access="hasRole('ADMIN')">
+                <div style="padding: 5px;">
+                    <a href="<c:url value='/#' />" id="create-role"
+                       class="btn btn-success btn-md pull-right">Создать</a>
+                </div>
+            </sec:authorize>
+        </sec:authorize>
+    </div>
+</div>
 <div class="container-fluid">
     <table class="table table-striped w-auto table-hover table-sm" style="table-layout: fixed"
            id="roles-table">
