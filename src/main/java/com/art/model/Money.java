@@ -1,5 +1,6 @@
 package com.art.model;
 
+import com.art.model.supporting.dto.CashingMoneyDTO;
 import com.art.model.supporting.dto.RentPaymentDTO;
 import com.art.model.supporting.dto.SalePaymentDTO;
 import com.art.model.supporting.enums.MoneyState;
@@ -146,7 +147,6 @@ public class Money implements Serializable {
         this.cashSource = cashSource;
         this.newCashDetail = newCashDetail;
         this.shareType = shareType;
-        this.state = MoneyState.ACTIVE;
     }
 
     public Money(RentPayment rentPayment, RentPaymentDTO dto, Facility facility) {
@@ -176,6 +176,14 @@ public class Money implements Serializable {
         this.underFacility = underFacility;
         this.newCashDetail = newCashDetail;
         this.state = MoneyState.ACTIVE;
+    }
+
+    public Money(AppUser investor, Facility facility, UnderFacility underFacility, CashingMoneyDTO cashingMoneyDTO) {
+        this.investor = investor;
+        this.facility = facility;
+        this.underFacility = underFacility;
+        this.dateGiven = cashingMoneyDTO.getDateCashing();
+        this.givenCash = cashingMoneyDTO.getCash();
     }
 
     @Transient
