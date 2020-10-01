@@ -219,10 +219,10 @@ public class MoneyService {
     }
 
     /**
-     * Вывод одиночной суммы
+     * Закрытие через вывод одиночной суммы
      *
      * @param moneyDTO DTO для перепродажи
-     * @return перепроданная сумма
+     * @return закрытая сумма
      */
     public Money cashing(CashingMoneyDTO moneyDTO) {
         Money updatedCash = findById(moneyDTO.getId());

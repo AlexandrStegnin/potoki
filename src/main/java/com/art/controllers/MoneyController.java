@@ -3,7 +3,6 @@ package com.art.controllers;
 import com.art.config.application.Location;
 import com.art.model.*;
 import com.art.model.supporting.ApiResponse;
-import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.dto.*;
 import com.art.model.supporting.enums.MoneyOperation;
@@ -322,34 +321,6 @@ public class MoneyController {
     public @ResponseBody
     ApiResponse deleteMonies(@RequestBody DeleteMoneyDTO dto) {
         return moneyService.deleteList(dto);
-    }
-
-    /**
-     * Вывести все деньги по инвесторам
-     *
-     * @param summary модель с деньгами для вывода
-     * @return сообщение об успешном/не успешном выполнении
-     */
-    @PostMapping(value = "/allMoneyCashing", produces = "application/json;charset=UTF-8")
-    public @ResponseBody
-    GenericResponse allMoneyCashing(@RequestBody SearchSummary summary) {
-
-        GenericResponse response = new GenericResponse();
-
-        UnderFacility underFacility = null;
-        if (!summary.getMoney().getUnderFacility().getName().equals("Выберите подобъект")) {
-            underFacility = underFacilityService.findByName(summary.getMoney().getUnderFacility().getName());
-        }
-
-        summary.getMoney().setUnderFacility(underFacility);
-        String out = moneyService.cashingAllMoney(summary);
-
-        if (StringUtils.isEmpty(out)) {
-            response.setMessage("Деньги инвестора " + summary.getUser().getLogin() + " успешно выведены.");
-        } else {
-            response.setMessage(out);
-        }
-        return response;
     }
 
     /**
