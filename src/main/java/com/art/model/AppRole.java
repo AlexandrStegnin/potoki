@@ -26,4 +26,13 @@ public class AppRole {
         this.name = dto.getName();
         this.humanized = dto.getHumanized();
     }
+
+    @PrePersist
+    public void prePersist() {
+        this.name = this.name.toUpperCase();
+        if (!this.name.startsWith("ROLE_")) {
+            this.name = "ROLE_".concat(this.name);
+        }
+    }
+
 }
