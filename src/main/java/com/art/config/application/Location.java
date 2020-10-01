@@ -219,6 +219,11 @@ public class Location {
 
     public static final String USERS_FIND_BY_ID = USERS_URL + "/find";
 
+    //РОЛИ СИСТЕМЫ
+    public static final String ROLES_URL = "/roles";
+
+    public static final String ROLE_LIST = ROLES_URL + "/list";
+
     public static final String[] ADMIN_URLS = {
             ADMIN,
             CATALOGUE,
