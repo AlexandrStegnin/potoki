@@ -36,7 +36,7 @@
                         <div class="form-group row">
                             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="roles">Роли:</label>
                             <div class="col-md-6">
-                                <form:select path="roles" id="roles" items="${roles}" multiple="true"
+                                <form:select path="role" id="roles" items="${roles}" multiple="false"
                                              itemValue="id" itemLabel="name" class="form-control form-control-sm selectpicker"
                                              data-size="10" data-live-search="true" data-none-selected-text="Выберите роль"
                                 />

@@ -181,7 +181,7 @@ public class UserService {
         AppUser dbUser = findById(user.getId());
         dbUser.setPartnerId(user.getPartnerId());
         dbUser.setKin(user.getKin());
-        dbUser.setRoles(user.getRoles());
+        dbUser.setRole(user.getRole());
         UserProfile profile = dbUser.getProfile();
         profile.setFirstName(user.getProfile().getFirstName());
         profile.setLastName(user.getProfile().getLastName());

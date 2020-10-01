@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class SecurityUser extends AppUser implements UserDetails {
 
@@ -15,7 +14,7 @@ public class SecurityUser extends AppUser implements UserDetails {
             this.setId(user.getId());
             this.setLogin(user.getLogin());
             this.setPassword(user.getPassword());
-            this.setRoles(user.getRoles());
+            this.setRole(user.getRole());
         }
     }
 
@@ -23,13 +22,11 @@ public class SecurityUser extends AppUser implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-        List<AppRole> userRoles = this.getRoles();
+        AppRole userRole = this.getRole();
 
-        if (userRoles != null) {
-            for (AppRole role : userRoles) {
-                SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.getName());
-                authorities.add(authority);
-            }
+        if (userRole != null) {
+            SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRole.getName());
+            authorities.add(authority);
         }
         return authorities;
     }

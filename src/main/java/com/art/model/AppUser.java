@@ -11,8 +11,6 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @Entity
@@ -21,71 +19,16 @@ import java.util.stream.Collectors;
 @EqualsAndHashCode(of = {"id", "login"})
 public class AppUser implements Serializable {
 
-    private Long id;
-
-    private String login;
-
-    private String password;
-
-    private List<AppRole> roles;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "Kin")
-    private KinEnum kin;
-
-    public AppUser() {
-    }
-
-    public AppUser(String id, String login) {
-        this.id = Long.valueOf(id);
-        this.login = login;
-    }
-
-    public AppUser(Long id, Long partnerId) {
-        this.id = id;
-        this.partnerId = partnerId;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private Long id;
 
     @Column(name = "login", unique = true, nullable = false, length = 30)
-    public String getLogin() {
-        return login;
-    }
+    private String login;
 
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    @Column(name = "password", nullable = false, length = 100)
     @JsonIgnore
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    public List<AppRole> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<AppRole> roles) {
-        this.roles = roles;
-    }
+    @Column(name = "password", nullable = false, length = 100)
+    private String password;
 
     @Column
     private Long partnerId;
@@ -93,40 +36,40 @@ public class AppUser implements Serializable {
     @Column(name = "confirmed")
     private boolean confirmed;
 
-    public boolean isConfirmed() {
-        return confirmed;
+    @OneToOne
+    @JoinColumn(name = "role_id")
+    private AppRole role;
+
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "kin")
+    private KinEnum kin;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private UserProfile profile;
+
+    public AppUser() {
     }
 
-    public void setConfirmed(boolean confirmed) {
-        this.confirmed = confirmed;
+    public AppUser(Long id, Long partnerId) {
+        this.id = id;
+        this.partnerId = partnerId;
     }
 
     public AppUser(UserDTO userDTO) {
         this.id = userDTO.getId() != null ? userDTO.getId() : null;
         this.profile = new UserProfile(userDTO.getProfile());
         this.login = userDTO.getLogin();
-        this.roles = convertRoles(userDTO.getRoles());
+        this.role = convertRole(userDTO.getRole());
         this.kin = userDTO.getKin() == null ? null : KinEnum.fromValue(userDTO.getKin());
         this.partnerId = userDTO.getPartnerId();
         this.password = userDTO.getPassword();
     }
 
-    private List<AppRole> convertRoles(List<AppRoleDTO> dtoList) {
-        if (null == dtoList) {
+    private AppRole convertRole(AppRoleDTO dto) {
+        if (null == dto) {
             return null;
         }
-        return dtoList.stream().map(AppRole::new).collect(Collectors.toList());
-    }
-
-    private UserProfile profile;
-
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    public UserProfile getProfile() {
-        return profile;
-    }
-
-    public void setProfile(UserProfile profile) {
-        this.profile = profile;
+        return new AppRole(dto);
     }
 
 }

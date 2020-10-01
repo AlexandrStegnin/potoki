@@ -4,16 +4,12 @@ import com.art.model.supporting.dto.AppRoleDTO;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
-@NoArgsConstructor
+@Data
 @Entity
+@NoArgsConstructor
 @Table(name = "app_role")
-public class AppRole implements Serializable {
+public class AppRole {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

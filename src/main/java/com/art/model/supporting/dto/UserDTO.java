@@ -7,9 +7,6 @@ import com.art.model.supporting.enums.KinEnum;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 /**
  * @author Alexandr Stegnin
  */
@@ -25,7 +22,7 @@ public class UserDTO {
 
     String login;
 
-    List<AppRoleDTO> roles;
+    AppRoleDTO role;
 
     String kin;
 
@@ -38,7 +35,7 @@ public class UserDTO {
     public UserDTO(AppUser entity) {
         this.id = entity.getId();
         this.login = entity.getLogin();
-        this.roles = convertRoles(entity.getRoles());
+        this.role = convertRole(entity.getRole());
         this.kin = convertKin(entity.getKin());
         this.partnerId = entity.getPartnerId();
         this.profile = convertProfile(entity.getProfile());
@@ -51,10 +48,8 @@ public class UserDTO {
         return null;
     }
 
-    private List<AppRoleDTO> convertRoles(List<AppRole> roles) {
-        return roles.stream()
-                .map(AppRoleDTO::new)
-                .collect(Collectors.toList());
+    private AppRoleDTO convertRole(AppRole role) {
+        return new AppRoleDTO(role);
     }
 
     private UserProfileDTO convertProfile(UserProfile profile) {

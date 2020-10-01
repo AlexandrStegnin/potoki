@@ -52,20 +52,20 @@
                     </c:forEach>
                 </form:select>
             </div>
-<%--            <div style="padding: 5px;">--%>
-<%--                <form:select path="roleId" id="role" multiple="false" class="selectpicker"--%>
-<%--                             data-size="10" data-live-search="true" data-none-selected-text="Выберите роль">--%>
-<%--                    <c:forEach var="role" items="${roles}">--%>
-<%--                        <option--%>
-<%--                                <c:choose>--%>
-<%--                                    <c:when test="${role.name eq 'Выберите роль'}">selected="selected"</c:when>--%>
-<%--                                    <c:when test="${role.id eq filter.roleId}">selected="selected"</c:when>--%>
-<%--                                </c:choose>--%>
-<%--                                value="${role.id}" id="${role.id}">${role.roleName}--%>
-<%--                        </option>--%>
-<%--                    </c:forEach>--%>
-<%--                </form:select>--%>
-<%--            </div>--%>
+            <%--            <div style="padding: 5px;">--%>
+            <%--                <form:select path="roleId" id="role" multiple="false" class="selectpicker"--%>
+            <%--                             data-size="10" data-live-search="true" data-none-selected-text="Выберите роль">--%>
+            <%--                    <c:forEach var="role" items="${roles}">--%>
+            <%--                        <option--%>
+            <%--                                <c:choose>--%>
+            <%--                                    <c:when test="${role.name eq 'Выберите роль'}">selected="selected"</c:when>--%>
+            <%--                                    <c:when test="${role.id eq filter.roleId}">selected="selected"</c:when>--%>
+            <%--                                </c:choose>--%>
+            <%--                                value="${role.id}" id="${role.id}">${role.roleName}--%>
+            <%--                        </option>--%>
+            <%--                    </c:forEach>--%>
+            <%--                </form:select>--%>
+            <%--            </div>--%>
             <button type="submit" id="bth-search" class="btn btn-primary btn-md" style="margin-left: 10px">Фильтр
             </button>
         </form:form>
@@ -84,13 +84,15 @@
         <div style="padding: 5px;">
             <input id="confirm" name="confirm" type="checkbox"
             <c:if test="${filter.confirmed == true}"> checked="checked" </c:if> data-toggle="toggle"
-                   data-on="Подтверждённые и нет" data-off="Не подтверждённые" data-onstyle="success" data-offstyle="danger"
+                   data-on="Подтверждённые и нет" data-off="Не подтверждённые" data-onstyle="success"
+                   data-offstyle="danger"
                    data-size="input-sm">
         </div>
         <sec:authorize access="isFullyAuthenticated()">
             <sec:authorize access="hasRole('ADMIN')">
                 <div style="padding: 5px;">
-                    <a href="<c:url value='/#' />" id="create-user" class="btn btn-success btn-md pull-right">Создать</a>
+                    <a href="<c:url value='/#' />" id="create-user"
+                       class="btn btn-success btn-md pull-right">Создать</a>
                 </div>
             </sec:authorize>
         </sec:authorize>
@@ -102,10 +104,10 @@
                 <c:forEach begin="1" end="${page.totalPages}" varStatus="page">
                     <c:choose>
                         <c:when test="${filter.pageNumber == page.index - 1}">
-                            <c:set var="active" value="active" />
+                            <c:set var="active" value="active"/>
                         </c:when>
                         <c:otherwise>
-                            <c:set var="active" value="" />
+                            <c:set var="active" value=""/>
                         </c:otherwise>
                     </c:choose>
                     <li class="page-item ${active}" data-page="${page.index}">
@@ -155,19 +157,17 @@
                         <td>Нет</td>
                     </c:otherwise>
                 </c:choose>
-                <c:forEach items="${user.roles}" var="role">
-                    <c:choose>
-                        <c:when test="${role.name == 'ROLE_ADMIN'}">
-                            <c:set var="roleName" value="Админ"/>
-                        </c:when>
-                        <c:when test="${role.name == 'ROLE_INVESTOR'}">
-                            <c:set var="roleName" value="Инвестор"/>
-                        </c:when>
-                        <c:when test="${role.name == 'ROLE_MANAGER'}">
-                            <c:set var="roleName" value="Управляющий"/>
-                        </c:when>
-                    </c:choose>
-                </c:forEach>
+                <c:choose>
+                    <c:when test="${user.role.name == 'ROLE_ADMIN'}">
+                        <c:set var="roleName" value="Админ"/>
+                    </c:when>
+                    <c:when test="${user.role.name == 'ROLE_INVESTOR'}">
+                        <c:set var="roleName" value="Инвестор"/>
+                    </c:when>
+                    <c:when test="${user.role.name == 'ROLE_MANAGER'}">
+                        <c:set var="roleName" value="Управляющий"/>
+                    </c:when>
+                </c:choose>
                 <td>${roleName}</td>
                 <sec:authorize access="isFullyAuthenticated()">
                     <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
@@ -177,11 +177,14 @@
                                         class="btn btn-success btn-sm dropdown-toggle pull-right"><span
                                         class="fas fa-cog"></span></button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" id="edit-user" data-user-id="${user.id}" href="<c:url value='edit/${user.id}' />">Изменить</a>
+                                    <a class="dropdown-item" id="edit-user" data-user-id="${user.id}"
+                                       href="<c:url value='edit/${user.id}' />">Изменить</a>
                                     <c:if test="${user.profile.locked == false}">
-                                        <a href="<c:url value='#' />" data-user-id="${user.id}" class="dropdown-item deactivate">Деактивировать</a>
+                                        <a href="<c:url value='#' />" data-user-id="${user.id}"
+                                           class="dropdown-item deactivate">Деактивировать</a>
                                     </c:if>
-                                    <a class="dropdown-item" id="delete" href="<c:url value='/#' />" data-user-id="${user.id}" style="color: red">Удалить</a></div>
+                                    <a class="dropdown-item" id="delete" href="<c:url value='/#' />"
+                                       data-user-id="${user.id}" style="color: red">Удалить</a></div>
                             </div>
                         </td>
                     </sec:authorize>
