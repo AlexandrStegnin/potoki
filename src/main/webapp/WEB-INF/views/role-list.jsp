@@ -71,7 +71,8 @@
                                     <a class="dropdown-item" id="edit-role" data-role-id="${role.id}"
                                        href="<c:url value='/#' />">Изменить</a>
                                     <a class="dropdown-item" id="delete-role" href="<c:url value='/#' />"
-                                       data-role-id="${role.id}" style="color: red">Удалить</a></div>
+                                       data-role-id="${role.id}" style="color: red">Удалить</a>
+                                </div>
                             </div>
                         </td>
                     </sec:authorize>
@@ -84,7 +85,7 @@
 <%@include file="popup_modal.jsp" %>
 <%@include file="ddk_loader.jsp" %>
 <%@include file="confirm-form.jsp" %>
-<%--<%@include file="user-form.jsp" %>--%>
+<%@include file="role-form.jsp" %>
 
 <script type="text/javascript"
         src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' />"></script>
@@ -96,5 +97,6 @@
 <script src="<c:url value='https://kit.fontawesome.com/2b84e2f58d.js' />" crossorigin="anonymous"></script>
 <script src="<c:url value='https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/roles.js' />"></script>
 </body>
 </html>
