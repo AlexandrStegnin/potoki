@@ -44,7 +44,9 @@ jQuery(document).ready(function ($) {
         e.preventDefault()
         let roleDTO = getRoleDTO()
         if (check(roleDTO)) {
-            console.log(roleDTO)
+            let action = roleForm.find('#accept').attr('data-action')
+            roleForm.modal('hide')
+            save(roleDTO, action)
         }
     })
 })
@@ -69,6 +71,7 @@ function showForm(action) {
     }
     roleForm.find('#title').html(title)
     roleForm.find('#accept').html(button)
+    roleForm.find('#accept').attr('data-action', action)
     roleForm.modal('show')
 }
 
@@ -108,4 +111,51 @@ function check(roleDTO) {
         humanizedError.removeClass('d-block')
     }
     return true
+}
+
+/**
+ * Создать/обновить роль
+ *
+ * @param roleDTO {AppRoleDTO} DTO роли
+ * @param action {Action} действие
+ */
+function save(roleDTO, action) {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+
+    showLoader();
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: Action.properties[action].url,
+        data: JSON.stringify(roleDTO),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (data) {
+            closeLoader();
+            showPopup(data.message);
+            window.location.href = 'list'
+        },
+        error: function (e) {
+            closeLoader();
+            showPopup(e.error);
+        }
+    });
+}
+
+/**
+ * Показать сообщение
+ *
+ * @param message {String}
+ */
+function showPopup(message) {
+    $('#msg').html(message);
+    $('#msg-modal').modal('show');
+    setTimeout(function () {
+        $('#msg-modal').modal('hide');
+    }, 3000);
 }
