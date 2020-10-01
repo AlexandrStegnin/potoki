@@ -39,10 +39,6 @@ public class MoneyController {
 
     private final StatusService statusService;
 
-    private final TransactionLogService transactionLogService;
-
-    private final AfterCashingService afterCashingService;
-
     private final MoneyService moneyService;
 
     private final FacilityService facilityService;
@@ -57,33 +53,21 @@ public class MoneyController {
 
     private final TypeClosingService typeClosingService;
 
-    private final RentPaymentService rentPaymentService;
-
-    private final SalePaymentService salePaymentService;
-
     private final SearchSummary filters = new SearchSummary();
 
     private final CashFilter cashFilters = new CashFilter();
 
     public MoneyController(MoneyService moneyService,
-                           StatusService statusService, TransactionLogService transactionLogService,
-                           AfterCashingService afterCashingService, FacilityService facilityService,
-                           SalePaymentService salePaymentService, UserService userService,
+                           StatusService statusService, FacilityService facilityService,UserService userService,
                            CashSourceService cashSourceService, NewCashDetailService newCashDetailService,
-                           UnderFacilityService underFacilityService,
-                           RentPaymentService rentPaymentService,
-                           TypeClosingService typeClosingService) {
+                           UnderFacilityService underFacilityService, TypeClosingService typeClosingService) {
         this.moneyService = moneyService;
         this.statusService = statusService;
-        this.transactionLogService = transactionLogService;
-        this.afterCashingService = afterCashingService;
         this.facilityService = facilityService;
-        this.salePaymentService = salePaymentService;
         this.userService = userService;
         this.cashSourceService = cashSourceService;
         this.newCashDetailService = newCashDetailService;
         this.underFacilityService = underFacilityService;
-        this.rentPaymentService = rentPaymentService;
         this.typeClosingService = typeClosingService;
     }
 
@@ -100,6 +84,7 @@ public class MoneyController {
         modelAndView.addObject("page", page);
         modelAndView.addObject("cashFilters", cashFilters);
         modelAndView.addObject("searchSummary", filters);
+        modelAndView.addObject("cashingDTO", new CashingMoneyDTO());
         return modelAndView;
     }
 
@@ -125,6 +110,7 @@ public class MoneyController {
         modelAndView.addObject("page", page);
         modelAndView.addObject("cashFilters", cashFilters);
         modelAndView.addObject("searchSummary", filters);
+        modelAndView.addObject("cashingDTO", new CashingMoneyDTO());
         return modelAndView;
     }
 
@@ -367,39 +353,15 @@ public class MoneyController {
     }
 
     /**
-     * Страница для вывода денег инвестора
+     * Вывести суммы
      *
-     * @param model модель для страницы
-     * @return страница
-     */
-    @GetMapping(value = {"/getInvestorsCash"})
-    public String getCash(ModelMap model) {
-        String title = "Вывод денег инвестора";
-        SearchSummary searchSummary = new SearchSummary();
-
-        model.addAttribute("searchSummary", searchSummary);
-        model.addAttribute("title", title);
-        return "cashing";
-    }
-
-    /**
-     * Вывести суммы по ОДНОМУ инвестору
-     *
-     * @param summary модель для вывода
+     * @param dto модель для вывода
      * @return сообщение об успешном/не успешном выводе
      */
-    @PostMapping(value = "/cashing-money")
+    @PostMapping(path = Location.MONEY_CASHING)
     public @ResponseBody
-    String cashing(@RequestBody SearchSummary summary) {
-        if (null == summary.getUser().getId()) {
-            throw new RuntimeException("Отсутствует id пользователя");
-        }
-        AppUser investor = userService.findById(summary.getUser().getId());
-        if (null == investor) {
-            throw new RuntimeException("Пользователь с id = [" + summary.getUser().getId() + "] не найден");
-        }
-        summary.setInvestorsList(Collections.singletonList(investor));
-        return moneyService.cashingMoney(summary);
+    ApiResponse cashing(@RequestBody CashingMoneyDTO dto) {
+        return moneyService.cashingMoney(dto);
     }
 
     /**
