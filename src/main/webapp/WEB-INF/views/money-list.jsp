@@ -266,19 +266,16 @@
                             <c:set var="disabled" value="disabled "/>
                         </c:when>
                         <c:otherwise>
-                            <c:set var="checked" value=""/>
-                            <c:set var="disabled" value=""/>
+                            <c:set var="checked" value=" "/>
+                            <c:set var="disabled" value=" "/>
                         </c:otherwise>
                     </c:choose>
                     <c:choose>
-                        <c:when test="${money.typeClosing.name.length() > 0 && money.givenCash != 0}">
-                            <c:set var="enabled" value="disabled "/>
-                        </c:when>
-                        <c:when test="${not empty money.dateClosing && money.givenCash != 0}">
+                        <c:when test="${not empty money.dateClosing && money.typeClosing.name.length() > 0 && money.givenCash != 0 && money.typeClosing.name != 'Вывод_комиссия'}">
                             <c:set var="enabled" value="disabled "/>
                         </c:when>
                         <c:otherwise>
-                            <c:set var="enabled" value=""/>
+                            <c:set var="enabled" value=" "/>
                         </c:otherwise>
                     </c:choose>
                     <input type="checkbox" title="Выбрать" ${checked} ${disabled} ${enabled} data-money-id="${money.id}"/>
