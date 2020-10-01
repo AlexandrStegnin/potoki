@@ -245,7 +245,7 @@ public class UserController {
 
     @ModelAttribute("roles")
     public List<AppRole> initializeRoles() {
-        return roleService.findAll();
+        return roleService.initializeRoles();
     }
 
     @ModelAttribute("investors")

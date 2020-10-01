@@ -5,6 +5,7 @@ import com.art.repository.RoleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,4 +28,13 @@ public class RoleService {
         return roleRepository.findOne(id);
     }
 
+    public List<AppRole> initializeRoles() {
+        AppRole role = new AppRole();
+        role.setId(0L);
+        role.setHumanized("Выберите роль");
+        List<AppRole> roles = new ArrayList<>();
+        roles.add(role);
+        roles.addAll(findAll());
+        return roles;
+    }
 }
