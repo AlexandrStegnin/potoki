@@ -43,6 +43,15 @@ jQuery(document).ready(function ($) {
         }
     })
 
+    cashingForm.find('#cashing-all').on('click', function (e) {
+        e.preventDefault()
+        let dto = getCashingDTO()
+        if (checkDTO(dto)) {
+            dto.all = true
+            cashing(dto)
+        }
+    })
+
 });
 
 function subscribeFormChange() {
@@ -56,7 +65,8 @@ function subscribeFormChange() {
             })
             let cash = cashingForm.find('#cash').val();
             let dateCashing = cashingForm.find('#dateCashing').val();
-            if (facilityId === '0' || investorsIds.length === 0 || cash.length === 0 || dateCashing.length === 0) {
+            let commission = cashingForm.find('#commission').val();
+            if (facilityId === '0' || investorsIds.length === 0 || cash.length === 0 || dateCashing.length === 0 || commission.length === 0) {
                 validate.errors = true;
                 cashingForm.find('#cashing-all').addClass('d-none');
             } else {
@@ -76,6 +86,9 @@ function subscribeFormChange() {
         validate.cashingAll()
     })
     cashingForm.find('#dateCashing').on('input', function () {
+        validate.cashingAll()
+    })
+    cashingForm.find('#commission').on('input', function () {
         validate.cashingAll()
     })
 }
@@ -112,28 +125,35 @@ function getCashingDTO() {
  * @return {boolean}
  */
 function checkDTO(dto) {
-    let facilityErr = $('#facilityError')
+    let facilityErr = cashingForm.find('#facilityError')
     if (dto.facilityId.length === 0 || dto.facilityId === '0') {
         facilityErr.addClass('d-block')
         return false
     } else {
         facilityErr.removeClass('d-block')
     }
-    let underFacilityErr = $('#underFacilityError')
+    let underFacilityErr = cashingForm.find('#underFacilityError')
     if (dto.underFacilityId.length === 0 || dto.underFacilityId === '0') {
         underFacilityErr.addClass('d-block')
         return false
     } else {
         underFacilityErr.removeClass('d-block')
     }
-    let investorErr = $('#investorError')
+    let investorErr = cashingForm.find('#investorError')
     if (dto.investorsIds.length === 0) {
         investorErr.addClass('d-block')
         return false
     } else {
         investorErr.removeClass('d-block')
     }
-    let cashErr = $('#toBigSumForCashing')
+    let commissionErr = cashingForm.find('#commissionError')
+    if (dto.commission.length === 0 || dto.commission === '0') {
+        commissionErr.addClass('d-block')
+        return false
+    } else {
+        commissionErr.removeClass('d-block')
+    }
+    let cashErr = cashingForm.find('#toBigSumForCashing')
     if (dto.cash.length === 0 || dto.cash === '0') {
         cashErr.html('Укажите сумму вывода > 0')
         cashErr.addClass('d-block')
