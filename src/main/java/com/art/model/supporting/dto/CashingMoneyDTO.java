@@ -4,9 +4,10 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
- * DTO для вывода одиночной суммы
+ * DTO для вывода денег
  *
  * @author Alexandr Stegnin
  */
@@ -20,9 +21,9 @@ public class CashingMoneyDTO {
 
     private Long underFacilityId;
 
-    private Long investorId;
+    private List<Long> investorsIds;
 
-    private BigDecimal givenCash;
+    private BigDecimal cash;
 
     private Date dateCashing;
 
@@ -33,5 +34,7 @@ public class CashingMoneyDTO {
     private Date dateClose;
 
     private String operation;
+
+    private boolean all = false;
 
 }

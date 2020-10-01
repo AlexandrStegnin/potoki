@@ -46,7 +46,7 @@
                         <div class="form-group row" id="investorRow">
                             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="investor">Инвестор:</label>
                             <div class="col-sm-6">
-                                <form:select path="investorId" id="investor" items="${investorsMulti}" multiple="true"
+                                <form:select path="investorsIds" id="investor" items="${investorsMulti}" multiple="true"
                                              itemValue="id" itemLabel="login"
                                              class="form-control form-control-sm selectpicker investorPicker"
                                              data-size="10" data-live-search="true" data-none-selected-text="Выберите инвесторов"/>
@@ -59,7 +59,7 @@
                         <div class="form-group row" id="cashRow">
                             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="cash">Сумма к выводу:</label>
                             <div class="col-sm-6">
-                                <form:input type="number" path="givenCash" id="cash" class="form-control form-control-sm"
+                                <form:input type="number" path="cash" id="cash" class="form-control form-control-sm"
                                             min="0.0" step="any"/>
                                 <div id="toBigSumForCashing" class="has-error d-none">
                                 </div>
