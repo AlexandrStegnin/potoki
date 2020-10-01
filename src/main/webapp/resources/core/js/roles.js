@@ -40,6 +40,13 @@ jQuery(document).ready(function ($) {
         e.preventDefault()
         showForm(Action.UPDATE)
     })
+    roleForm.find('#accept').on('click',function (e) {
+        e.preventDefault()
+        let roleDTO = getRoleDTO()
+        if (check(roleDTO)) {
+            console.log(roleDTO)
+        }
+    })
 })
 
 /**
@@ -63,5 +70,42 @@ function showForm(action) {
     roleForm.find('#title').html(title)
     roleForm.find('#accept').html(button)
     roleForm.modal('show')
+}
 
+/**
+ * Собрать DTO с формы
+ *
+ * @return {AppRoleDTO}
+ */
+function getRoleDTO() {
+    let roleDTO = new AppRoleDTO()
+    let roleId = roleForm.find('#role-id').val()
+    let roleName = roleForm.find('#role-name').val()
+    let humanized = roleForm.find('#humanized').val()
+    roleDTO.build(roleId, roleName, humanized)
+    return roleDTO
+}
+
+/**
+ * Проверить заполнение полей формы
+ *
+ * @param roleDTO {AppRoleDTO} DTO для проверки
+ * @return {boolean} результат проверки
+ */
+function check(roleDTO) {
+    let roleNameError = roleForm.find('#roleNameError');
+    if (roleDTO.name.length === 0) {
+        roleNameError.addClass('d-block')
+        return false
+    } else {
+        roleNameError.removeClass('d-block')
+    }
+    let humanizedError = roleForm.find('#humanized')
+    if (roleDTO.humanized.length === 0) {
+        humanizedError.addClass('d-block')
+        return false
+    } else {
+        humanizedError.removeClass('d-block')
+    }
+    return true
 }
