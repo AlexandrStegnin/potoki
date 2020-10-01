@@ -2,6 +2,7 @@ package com.art.controllers;
 
 import com.art.config.application.Location;
 import com.art.model.AppRole;
+import com.art.model.supporting.dto.AppRoleDTO;
 import com.art.service.RoleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -26,6 +27,7 @@ public class RoleController {
     public String getRoles(ModelMap model) {
         List<AppRole> roles = roleService.findAll();
         model.addAttribute("roles", roles);
+        model.addAttribute("roleDTO", new AppRoleDTO());
         return "role-list";
     }
 
