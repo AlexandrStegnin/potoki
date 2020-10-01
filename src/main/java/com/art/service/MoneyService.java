@@ -92,13 +92,13 @@ public class MoneyService {
         return money;
     }
 
-//    @CachePut(cacheNames = Constant.MONEY_CACHE_KEY, key = "#money?.id")
+    //    @CachePut(cacheNames = Constant.MONEY_CACHE_KEY, key = "#money?.id")
     public Money createNew(Money money) {
         money = moneyRepository.saveAndFlush(money);
         return money;
     }
 
-//    @CacheEvict(cacheNames = Constant.MONEY_CACHE_KEY, key = "#id")
+    //    @CacheEvict(cacheNames = Constant.MONEY_CACHE_KEY, key = "#id")
     public void deleteById(Long id) {
         moneyRepository.deleteById(id);
     }
@@ -232,7 +232,7 @@ public class MoneyService {
         return update(updatedCash);
     }
 
-//    @Cacheable(Constant.MONEY_CACHE_KEY)
+    //    @Cacheable(Constant.MONEY_CACHE_KEY)
     public List<Money> findByIdIn(List<Long> idList) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Money> investorsCashCriteriaQuery = cb.createQuery(Money.class);
@@ -268,7 +268,7 @@ public class MoneyService {
         return em.createQuery(investorsCashCriteriaQuery).getResultList();
     }
 
-//    @Cacheable(cacheNames = Constant.MONEY_CACHE_KEY, key = "#filters")
+    //    @Cacheable(cacheNames = Constant.MONEY_CACHE_KEY, key = "#filters")
     public Page<Money> findAll(CashFilter filters, Pageable pageable) {
         Page<Money> page = moneyRepository.findAll(
                 specification.getFilter(filters),
@@ -284,6 +284,176 @@ public class MoneyService {
 
     public String cashingMoney(final SearchSummary searchSummary) {
         return cashing(searchSummary, false);
+    }
+
+    /**
+     * Вывести суммы инвесторов
+     *
+     * @param dto DTO для вывода
+     * @return ответ об окончании операции
+     */
+    public ApiResponse cashingMoney(final CashingMoneyDTO dto) {
+        ApiResponse response = new ApiResponse();
+        if (dto.getFacilityId() == null) {
+            response.setError("Не задан id объекта");
+            response.setStatus(HttpStatus.PRECONDITION_FAILED.value());
+            return response;
+        }
+        List<Long> investorsIds = dto.getInvestorsIds();
+        List<AppUser> investors = new ArrayList<>();
+        investorsIds.forEach(id -> investors.add(userService.findById(id)));
+        return cashing(investors, dto, dto.isAll());
+    }
+
+    /**
+     * Вывести суммы инвесторов
+     *
+     * @param investors список инвесторов
+     * @param dto DTO для вывода
+     * @param all признак необходимости вывести все деньги
+     * @return ответ об окончании операции
+     */
+    private ApiResponse cashing(final List<AppUser> investors, final CashingMoneyDTO dto, final boolean all) {
+        ApiResponse response = new ApiResponse();
+        final Facility facility = facilityService.findById(dto.getFacilityId());
+        final TypeClosing typeClosing = typeClosingService.findByName("Вывод");
+        final TypeClosing typeClosingCommission = typeClosingService.findByName("Вывод_комиссия");
+        UnderFacility underFacility = null;
+        Long underFacilityId = dto.getUnderFacilityId();
+        if (underFacilityId != null) {
+            underFacility = underFacilityService.findById(underFacilityId);
+        }
+        for (AppUser investor : investors) {
+            Money money = new Money(investor, facility, underFacility, dto);
+            List<AfterCashing> cashingList = new ArrayList<>(0);
+
+            Date dateClosing = money.getDateGiven();
+            List<Money> monies = getMoneyForCashing(money);
+            if (monies.size() == 0) {
+                response.setStatus(HttpStatus.PRECONDITION_FAILED.value());
+                response.setError("Нет денег для вывода");
+                return response;
+            }
+            final BigDecimal sumCash = monies.stream().map(Money::getGivenCash).reduce(BigDecimal.ZERO, BigDecimal::add); // все деньги инвестора
+            BigDecimal commission = dto.getCommission(); // сумма комиссии
+            final BigDecimal commissionNoMore = dto.getCommissionNoMore(); // комиссия не более
+            BigDecimal remainderSum; // сумма, которую надо вывести
+            BigDecimal totalSum = BigDecimal.ZERO;
+            if (all) {
+                commission = (sumCash.multiply(commission)).divide(new BigDecimal(100), BigDecimal.ROUND_CEILING);
+                if (commissionNoMore != null && commission.compareTo(commissionNoMore) > 0) {
+                    commission = commissionNoMore;
+                }
+                remainderSum = sumCash;
+                money.setGivenCash(sumCash.subtract(commission));
+            } else {
+                commission = (money.getGivenCash().multiply(commission)).divide(new BigDecimal(100), BigDecimal.ROUND_CEILING);
+                if (commissionNoMore != null && commission.compareTo(commissionNoMore) > 0) {
+                    commission = commissionNoMore;
+                }
+                totalSum = money.getGivenCash().add(commission);
+                remainderSum = totalSum;
+            }
+            if ((sumCash.compareTo(totalSum)) < 0) {
+                String cashNoMore = String.valueOf(sumCash.subtract(commission).setScale(2, RoundingMode.DOWN));
+                response.setStatus(HttpStatus.PRECONDITION_FAILED.value());
+                response.setError("Сумма должна быть не более " + cashNoMore);
+                return response;
+            }
+
+            final Money commissionCash = new Money();
+            Money cashForManipulate = null;
+            commissionCash.setGivenCash(commission.negate());
+            commissionCash.setTypeClosing(typeClosingCommission);
+            commissionCash.setInvestor(money.getInvestor());
+            commissionCash.setFacility(money.getFacility());
+            commissionCash.setUnderFacility(money.getUnderFacility());
+            commissionCash.setDateClosing(dateClosing);
+
+            StringBuilder sourceCash = new StringBuilder();
+            final AtomicInteger incr = new AtomicInteger();
+            Money newCash = null;
+
+            if (all) {
+                for (Money cash : monies) {
+                    cashingList.add(new AfterCashing(cash.getId(), cash.getGivenCash()));
+                    cash.setTypeClosing(typeClosing);
+                    cash.setDateClosing(dateClosing);
+                    if (incr.get() == monies.size() - 1) {
+                        sourceCash.append(cash.getId().toString());
+                    } else {
+                        sourceCash.append(cash.getId().toString()).append("|");
+                    }
+
+                    fillCash(commissionCash, cash);
+                    fillCash(money, cash);
+
+                    update(cash);
+                    incr.getAndIncrement();
+                }
+            } else {
+                for (Money cash : monies) {
+                    if (remainderSum.equals(BigDecimal.ZERO)) {
+                        break;
+                    }
+                    cashingList.add(new AfterCashing(cash.getId(), cash.getGivenCash()));
+                    if (incr.get() == monies.size() - 1) {
+                        sourceCash.append(cash.getId().toString());
+                    } else {
+                        sourceCash.append(cash.getId().toString()).append("|");
+                    }
+                    // если сумма остатка, который надо вывести, больше текущей суммы инвестора
+                    if (cash.getGivenCash().subtract(remainderSum).compareTo(BigDecimal.ZERO) < 0) {
+                        // остаток = остаток - текущая сумма инвестора
+                        remainderSum = remainderSum.subtract(cash.getGivenCash());
+                        cash.setDateClosing(dateClosing);
+                        cash.setTypeClosing(typeClosing);
+                        update(cash);
+                    } else {
+                        // иначе если сумма остатка, который надо вывести, меньше текущей суммы инвестора
+                        // создаём проводку, с которой сможем в дальнейшем проводить какие-либо действия
+                        // на сумму (текущие деньги вычитаем сумму остатка и комиссию)
+                        cashForManipulate = new Money(cash);
+                        cashForManipulate.setGivenCash(cash.getGivenCash().subtract(remainderSum));
+                        // основную сумму блокируем для операций
+                        cash.setGivenCash(BigDecimal.ZERO);
+                        cash.setIsReinvest(1);
+                        cash.setIsDivide(1);
+                        // сохраняем сумму
+                        update(cash);
+
+                        // создаём новую сумму на остаток + комиссия
+                        newCash = new Money(cash);
+                        newCash.setGivenCash(remainderSum);
+                        newCash.setDateClosing(dateClosing);
+                        newCash.setTypeClosing(typeClosing);
+                        remainderSum = BigDecimal.ZERO;
+                        fillCash(commissionCash, cash);
+                        fillCash(money, cash);
+                    }
+                    incr.getAndIncrement();
+                }
+            }
+
+            money.setGivenCash(money.getGivenCash().negate());
+            money.setDateClosing(commissionCash.getDateClosing());
+            money.setTypeClosing(typeClosing);
+
+            cashingList.forEach(afterCashingService::create);
+            money.setSource(sourceCash.toString());
+            commissionCash.setSource(sourceCash.toString());
+            if (cashForManipulate != null) {
+                cashForManipulate.setSource(sourceCash.toString());
+                create(cashForManipulate);
+            }
+            if (newCash != null) {
+                newCash.setSource(sourceCash.toString());
+                create(newCash);
+            }
+            create(money);
+            create(commissionCash);
+        }
+        return new ApiResponse("Вывод денег прошёл успешно");
     }
 
     public String cashing(SearchSummary searchSummary, boolean all) {
@@ -444,9 +614,7 @@ public class MoneyService {
     private void fillCash(Money to, Money from) {
         to.setDateGiven(from.getDateGiven());
         to.setCashSource(from.getCashSource());
-//        to.setCashType(from.getCashType());
         to.setNewCashDetail(from.getNewCashDetail());
-//        to.setInvestorsType(from.getInvestorsType());
         to.setShareType(from.getShareType());
         to.setDateReport(from.getDateReport());
         to.setSourceFacility(from.getSourceFacility());
@@ -569,7 +737,7 @@ public class MoneyService {
      * Подготовить сгруппированный список денег, чтобы не плодить много сумм по объекту/подобъекту
      *
      * @param cashList список денен
-     * @param what признак реинвестирование с продажи или нет
+     * @param what     признак реинвестирование с продажи или нет
      * @return сгрупированный список денег
      */
     public Map<String, Money> groupInvestorsCash(List<Money> cashList, String what) {
@@ -626,11 +794,11 @@ public class MoneyService {
     /**
      * Подготовить список денег для реинвестирования
      *
-     * @param oldCashList старый список денег
-     * @param facilityToReinvestId id объекта, куда реинвестируем
+     * @param oldCashList               старый список денег
+     * @param facilityToReinvestId      id объекта, куда реинвестируем
      * @param underFacilityToReinvestId id подобъекта, куда реинвестируем
-     * @param shareTypeId id доли
-     * @param dateClose дата закрытия вложения
+     * @param shareTypeId               id доли
+     * @param dateClose                 дата закрытия вложения
      * @return новый список денег
      */
     private List<Money> prepareCashToReinvest(List<Money> oldCashList, Long facilityToReinvestId,
@@ -910,7 +1078,7 @@ public class MoneyService {
                 }
 
                 Money parentCash = findById(deleting.getSourceId());
-                if (parentCash!= null) {
+                if (parentCash != null) {
                     parentCash.setIsReinvest(0);
                     parentCash.setIsDivide(0);
                     parentCash.setTypeClosing(null);
