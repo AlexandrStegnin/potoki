@@ -12,13 +12,13 @@
                 <div class="container">
                     <form:form method="POST" modelAttribute="roleDTO" class="form-horizontal"
                                style="margin: 10px 0 10px 0" id="role-form">
-                        <form:input type="hidden" path="id" id="id"/>
+                        <form:input type="hidden" path="id" id="role-id"/>
                         <input type="hidden" id="edit" value="false">
                         <div class="form-group row">
                             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="role-name">Название:</label>
                             <div class="col-sm-6">
                                 <form:input type="text" path="name" id="role-name" class="form-control input-sm"/>
-                                <div class="has-error d-none" id="roleError">
+                                <div class="has-error d-none" id="roleNameError">
                                     Название должно быть более 3 символов
                                 </div>
                             </div>
