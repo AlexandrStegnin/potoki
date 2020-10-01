@@ -224,6 +224,8 @@ public class Location {
 
     public static final String ROLE_LIST = ROLES_URL + "/list";
 
+    public static final String ROLE_CREATE = ROLES_URL + "/create";
+
     public static final String[] ADMIN_URLS = {
             ADMIN,
             CATALOGUE,
