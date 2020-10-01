@@ -17,7 +17,7 @@
                         <div class="form-group row">
                             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="user-login">Имя пользователя:</label>
                             <div class="col-sm-6">
-                                <form:input type="text" path="login" id="user-login" class="form-control input-md"/>
+                                <form:input type="text" path="login" id="user-login" class="form-control input-sm"/>
                                 <div class="has-error d-none" id="loginError">
                                     Логин должен быть более 3 символов
                                 </div>
@@ -26,7 +26,7 @@
                         <div class="form-group row">
                             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="email">Email:</label>
                             <div class="col-md-6">
-                                <form:input type="email" path="profile.email" id="email" class="form-control input-md"/>
+                                <form:input type="email" path="profile.email" id="email" class="form-control input-sm"/>
                                 <div class="has-error d-none" id="emailError">
                                     Необходимо ввести корректный email
                                 </div>
@@ -37,7 +37,7 @@
                             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="roles">Роли:</label>
                             <div class="col-md-6">
                                 <form:select path="role" id="roles" items="${roles}" multiple="false"
-                                             itemValue="id" itemLabel="name" class="form-control form-control-sm selectpicker"
+                                             itemValue="id" itemLabel="humanized" class="form-control form-control-sm selectpicker"
                                              data-size="10" data-live-search="true" data-none-selected-text="Выберите роль"
                                 />
                                 <div class="has-error d-none" id="rolesError">

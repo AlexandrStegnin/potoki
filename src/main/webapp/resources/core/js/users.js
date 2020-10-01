@@ -40,14 +40,14 @@ UserDTO.prototype = {
     id: 0,
     login: '',
     facilities: [],
-    roles: [],
+    role: null,
     partnerId: 0,
     profile: null,
     kin: null,
-    build: function (id, login, roles, partnerId, kin) {
+    build: function (id, login, role, partnerId, kin) {
         this.id = id;
         this.login = login;
-        this.roles = roles;
+        this.role = role;
         this.partnerId = partnerId;
         this.kin = kin;
     },
@@ -105,8 +105,9 @@ jQuery(document).ready(function ($) {
 
     userForm.find('#accept').on('click', function () {
         let userDTO = getUserDTO()
-        checkUserDTO(userDTO)
-        saveUser(userDTO)
+        if (checkUserDTO(userDTO)) {
+            saveUser(userDTO)
+        }
     })
 
     $('#inactive').on('change', function () {
@@ -209,6 +210,7 @@ jQuery(document).ready(function ($) {
  * Проверить правильность заполения формы
  *
  * @param userDTO {UserDTO}
+ * @return {boolean}
  */
 function checkUserDTO(userDTO) {
     let rus = new RegExp(".*?[А-Яа-я $\/].*?")
@@ -222,6 +224,7 @@ function checkUserDTO(userDTO) {
         loginError.html('Имя пользователя может содержать только буквы латинского алфавита, ' +
             'цифры, знак подчёркивания (_) и точку (.)')
         loginError.addClass('d-block')
+        return false
     } else {
         loginError.removeClass('d-block')
     }
@@ -236,12 +239,13 @@ function checkUserDTO(userDTO) {
         emailErr.removeClass('d-block')
     }
     let rolesError = $('#rolesError')
-    if (userDTO.roles.length === 0) {
+    if (userDTO.role.id === '0') {
         rolesError.addClass('d-block')
         return false
     } else {
         rolesError.removeClass('d-block')
     }
+    return true
 }
 
 /**
@@ -251,13 +255,13 @@ function checkUserDTO(userDTO) {
  */
 function getUserDTO() {
     let login = $('#user-login').val()
-    let roles = getRoles();
+    let role = getRole();
     let partner = getPartner();
     let kin = $('#kins').val();
     let userId = $('#id').val();
 
     let userDTO = new UserDTO()
-    userDTO.build(userId, login, roles, partner.id, kin)
+    userDTO.build(userId, login, role, partner.id, kin)
     userDTO.profile = createProfile(userId, $('#lastName').val(), $('#firstName').val(), $('#patronymic').val(), $('#email').val());
 
     return userDTO
@@ -275,16 +279,13 @@ function prepareUserSave() {
 /**
  * Получить список ролей
  *
- * @returns {[RoleDTO]}
+ * @returns {RoleDTO}
  */
-function getRoles() {
-    let roles = [];
-    $('#roles').find(':selected').each(function (i, selected) {
-        let roleDTO = new RoleDTO();
-        roleDTO.build($(selected).val(), $(selected).text());
-        roles.push(roleDTO);
-    });
-    return roles;
+function getRole() {
+    let roleDTO = new RoleDTO();
+    let roleOption = $('#roles').find('option:selected');
+    roleDTO.build(roleOption.val(), roleOption.text());
+    return roleDTO;
 }
 
 /**
@@ -534,7 +535,7 @@ function showUpdateUserForm(data) {
     userForm.find('#edit').val(true)
     userForm.find('#user-login').val(userDTO.login)
     userForm.find('#email').val(userDTO.profile.email)
-    bindRoles(userDTO.roles)
+    bindRoles(userDTO.role)
     bindPartner(userDTO.partnerId)
     bindKin(userDTO.kin)
     userForm.find('#lastName').val(userDTO.profile.lastName)
@@ -547,16 +548,14 @@ function showUpdateUserForm(data) {
 /**
  * Преобразовать список ролей пользователя в выделенные элементы выпадающего списка
  *
- * @param roles {[RoleDTO]}
+ * @param role {RoleDTO}
  */
-function bindRoles(roles) {
+function bindRoles(role) {
     let userForm = $('#user-form-modal');
     $.each(userForm.find('#roles option'), function (ind, el) {
-        $.each(roles, function (ind, roleElement) {
-            if (el.value === (roleElement.id + '')) {
-                $(el).attr('selected', 'selected')
-            }
-        })
+        if (el.value === (role.id + '')) {
+            $(el).attr('selected', 'selected')
+        }
     })
     userForm.find('#roles').selectpicker('refresh')
 }
