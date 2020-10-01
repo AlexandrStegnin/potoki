@@ -3,19 +3,21 @@ let CashingMoneyDTO = function () {}
 CashingMoneyDTO.prototype = {
     facilityId: null,
     underFacilityId: null,
-    investorsId: null,
+    investorsIds: null,
     cash: 0.0,
     dateCashing: null,
     commission: 0.0,
     commissionNoMore: 0.0,
-    build: function (facilityId, underFacilityId, investorsId, cash, dateCashing, commission, commissionNoMore) {
+    all: false,
+    build: function (facilityId, underFacilityId, investorsIds, cash, dateCashing, commission, commissionNoMore, all) {
         this.facilityId = facilityId;
         this.underFacilityId = underFacilityId;
-        this.investorsId = investorsId;
+        this.investorsIds = investorsIds;
         this.cash = cash;
         this.dateCashing = dateCashing;
         this.commission = commission;
         this.commissionNoMore = commissionNoMore;
+        this.all = all;
     }
 }
 
@@ -36,7 +38,8 @@ jQuery(document).ready(function ($) {
         e.preventDefault()
         let dto = getCashingDTO()
         if (checkDTO(dto)) {
-            console.log("VALID")
+            dto.all = false
+            cashing(dto)
         }
     })
 
@@ -63,6 +66,8 @@ function subscribeFormChange() {
     };
     cashingForm.find('#facility').on('change', function () {
         validate.cashingAll()
+        let facilityId = $(this).val()
+        getUFFromLS(facilityId, 'underFacility')
     })
     cashingForm.find('#investor').on('change', function () {
         validate.cashingAll()
@@ -103,7 +108,8 @@ function getCashingDTO() {
 /**
  * Проверить полученное DTO на валидность
  *
- * @param dto
+ * @param dto {CashingMoneyDTO}
+ * @return {boolean}
  */
 function checkDTO(dto) {
     let facilityErr = $('#facilityError')
@@ -121,7 +127,7 @@ function checkDTO(dto) {
         underFacilityErr.removeClass('d-block')
     }
     let investorErr = $('#investorError')
-    if (dto.investorsId.length === 0) {
+    if (dto.investorsIds.length === 0) {
         investorErr.addClass('d-block')
         return false
     } else {
@@ -137,4 +143,96 @@ function checkDTO(dto) {
         cashErr.removeClass('d-block')
     }
     return true
+}
+
+/**
+ * Вывести деньги
+ *
+ * @param dto {CashingMoneyDTO}
+ */
+function cashing(dto) {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+
+    showLoader();
+    $.ajax({
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: "cashing",
+        data: JSON.stringify(dto),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (data) {
+            let status = data.status
+            if (status === 200) {
+                cashingForm.modal('hide')
+                closeLoader();
+                showPopup(data.message);
+                window.location.href = '/money/list';
+            } else {
+                closeLoader();
+                let errorDiv = $('#toBigSumForCashing')
+                errorDiv.html(data.error)
+                errorDiv.addClass('d-block')
+            }
+        },
+        error: function (e) {
+            closeLoader();
+            showPopup('Что-то пошло не так = [' + e.error + "]");
+        },
+        done: function (e) {
+            enableSearchButton(true);
+        }
+    });
+}
+
+/**
+ * Заполнить выпадающий список подобъектов на основе выбранного объекта
+ *
+ * @param facilityId id объекта
+ * @param ufSelectorId id выпадающего списка
+ */
+function getUFFromLS(facilityId, ufSelectorId) {
+    let underFacilities;
+    underFacilities = JSON.parse(localStorage.getItem('uf'));
+    let option;
+
+    let options;
+    if (underFacilities === null) populateStorageUnderFacilities(uFacilitiesId);
+    if (facilityId === '0') {
+        options = underFacilities.map(function (item) {
+            option = document.createElement('option');
+            option.setAttribute('id', item.id);
+            option.setAttribute('data-parent-id', item.facilityId);
+            option.setAttribute('value', item.underFacility);
+            option.innerText = item.underFacility;
+            return option;
+        });
+    } else {
+        options = underFacilities.filter(function (item) {
+            return item.facilityId === parseInt(facilityId);
+        }).map(function (item) {
+            option = document.createElement('option');
+            option.setAttribute('id', item.id);
+            option.setAttribute('data-parent-id', item.facilityId);
+            option.setAttribute('value', item.underFacility);
+            option.innerText = item.underFacility;
+            return option;
+        });
+        option = document.createElement('option');
+        option.setAttribute('id', "0");
+        option.setAttribute('value', 'Без подобъекта');
+        option.innerText = 'Без подобъекта';
+        options.unshift(option);
+    }
+
+    $('#' + ufSelectorId)
+        .find('option')
+        .remove()
+        .end()
+        .append(options)
+        .selectpicker('refresh');
 }
