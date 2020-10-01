@@ -56,16 +56,6 @@
                             </div>
                         </div>
 
-                        <div class="form-group row" id="cashRow">
-                            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="cash">Сумма к выводу:</label>
-                            <div class="col-sm-6">
-                                <form:input type="number" path="cash" id="cash" class="form-control form-control-sm"
-                                            min="0.0" step="any"/>
-                                <div id="toBigSumForCashing" class="has-error d-none">
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="form-group row" id="dateCashingRow">
                             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="dateCashing">Дата вывода:</label>
                             <div class="col-sm-6">
@@ -82,7 +72,7 @@
                             <div class="col-sm-6">
                                 <form:input type="number" path="commission" id="commission" class="form-control form-control-sm"
                                             min="0.00" max="100" step="any"/>
-                                <div class="has-error d-none" id="investorError">
+                                <div class="has-error d-none" id="commissionError">
                                     Необходимо указать комиссию в (%)
                                 </div>
                             </div>
@@ -94,6 +84,16 @@
                                 <form:input type="number" path="commissionNoMore" id="commissionNoMore"
                                             class="form-control form-control-sm"
                                             min="0.00" step="any"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group row" id="cashRow">
+                            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="cash">Сумма к выводу:</label>
+                            <div class="col-sm-6">
+                                <form:input type="number" path="cash" id="cash" class="form-control form-control-sm"
+                                            min="0.0" step="any"/>
+                                <div id="toBigSumForCashing" class="has-error d-none">
+                                </div>
                             </div>
                         </div>
                     </form:form>
