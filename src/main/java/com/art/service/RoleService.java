@@ -1,6 +1,8 @@
 package com.art.service;
 
 import com.art.model.AppRole;
+import com.art.model.supporting.ApiResponse;
+import com.art.model.supporting.dto.AppRoleDTO;
 import com.art.repository.RoleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,5 +38,17 @@ public class RoleService {
         roles.add(role);
         roles.addAll(findAll());
         return roles;
+    }
+
+    /**
+     * Создать роль
+     *
+     * @param dto DTO роли
+     * @return ответ
+     */
+    public ApiResponse create(AppRoleDTO dto) {
+        AppRole role = new AppRole(dto);
+        roleRepository.save(role);
+        return new ApiResponse("Роль " + role.getHumanized() + " успешно создана");
     }
 }
