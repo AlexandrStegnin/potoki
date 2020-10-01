@@ -18,9 +18,12 @@ public class AppRoleDTO {
 
     private String name;
 
+    private String humanized;
+
     public AppRoleDTO(AppRole role) {
         this.id = role.getId();
         this.name = role.getName();
+        this.humanized = role.getHumanized();
     }
 
 }

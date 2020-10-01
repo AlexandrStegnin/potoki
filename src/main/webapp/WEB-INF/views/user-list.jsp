@@ -157,18 +157,7 @@
                         <td>Нет</td>
                     </c:otherwise>
                 </c:choose>
-                <c:choose>
-                    <c:when test="${user.role.name == 'ROLE_ADMIN'}">
-                        <c:set var="roleName" value="Админ"/>
-                    </c:when>
-                    <c:when test="${user.role.name == 'ROLE_INVESTOR'}">
-                        <c:set var="roleName" value="Инвестор"/>
-                    </c:when>
-                    <c:when test="${user.role.name == 'ROLE_MANAGER'}">
-                        <c:set var="roleName" value="Управляющий"/>
-                    </c:when>
-                </c:choose>
-                <td>${roleName}</td>
+                <td>${user.role.humanized}</td>
                 <sec:authorize access="isFullyAuthenticated()">
                     <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                         <td style="text-align: center">

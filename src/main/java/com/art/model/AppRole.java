@@ -18,8 +18,12 @@ public class AppRole {
     @Column(name = "name", unique = true, nullable = false, length = 30)
     private String name;
 
+    @Column(name = "humanized")
+    private String humanized;
+
     public AppRole(AppRoleDTO dto) {
         this.id = dto.getId();
         this.name = dto.getName();
+        this.humanized = dto.getHumanized();
     }
 }
