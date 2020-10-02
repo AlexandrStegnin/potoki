@@ -41,4 +41,16 @@ public class RoleController {
         return roleService.create(dto);
     }
 
+    @ResponseBody
+    @PostMapping(path = Location.ROLE_FIND)
+    public AppRoleDTO findRole(@RequestBody AppRoleDTO dto) {
+        return new AppRoleDTO(roleService.findById(dto.getId()));
+    }
+
+    @ResponseBody
+    @PostMapping(path = Location.ROLE_UPDATE)
+    public ApiResponse updateRole(@RequestBody AppRoleDTO dto) {
+        return roleService.update(dto);
+    }
+
 }

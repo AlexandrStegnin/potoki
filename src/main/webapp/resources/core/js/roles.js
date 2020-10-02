@@ -1,12 +1,16 @@
 let Action = {
     CREATE: 'CREATE',
     UPDATE: 'UPDATE',
+    FIND: 'FIND',
     properties: {
         CREATE: {
             url: 'create'
         },
         UPDATE: {
             url: 'update'
+        },
+        FIND: {
+            url: 'find'
         }
     }
 }
@@ -38,6 +42,13 @@ jQuery(document).ready(function ($) {
     })
     $(document).on('click', '#edit-role',function (e) {
         e.preventDefault()
+        let roleId = $(this).attr('data-role-id')
+        getRole(roleId)
+        showForm(Action.UPDATE)
+    })
+    $(document).on('click', '#delete-role',function (e) {
+        e.preventDefault()
+        let roleId = $(this).attr('data-role-id')
         showForm(Action.UPDATE)
     })
     roleForm.find('#accept').on('click',function (e) {
@@ -158,4 +169,51 @@ function showPopup(message) {
     setTimeout(function () {
         $('#msg-modal').modal('hide');
     }, 3000);
+}
+
+/**
+ * Получить роль по шв
+ *
+ * @param roleId
+ */
+function getRole(roleId) {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+
+    let roleDTO = new AppRoleDTO()
+    roleDTO.build(roleId, null, null)
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: Action.properties[Action.FIND].url,
+        data: JSON.stringify(roleDTO),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (data) {
+            showUpdateRoleForm(data)
+        },
+        error: function (e) {
+            closeLoader();
+            showPopup(e.error);
+        }
+    });
+}
+
+/**
+ * Показать форму для изменения пользователя
+ *
+ * @param data
+ */
+function showUpdateRoleForm(data) {
+    let roleDTO = new AppRoleDTO()
+    roleDTO.build(data.id, data.name, data.humanized)
+    roleForm.find('#role-id').val(roleDTO.id)
+    roleForm.find('#edit').val(true)
+    roleForm.find('#role-name').val(roleDTO.name)
+    roleForm.find('#humanized').val(roleDTO.humanized)
+    roleForm.find('#action').attr("data-action", Action.UPDATE)
 }
