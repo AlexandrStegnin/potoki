@@ -1,5 +1,6 @@
 package com.art.service;
 
+import com.art.config.exception.EntityNotFoundException;
 import com.art.model.AppRole;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.dto.AppRoleDTO;
@@ -27,7 +28,11 @@ public class RoleService {
 
 //    @Cacheable(Constant.ROLES_CACHE_KEY)
     public AppRole findById(Long id) {
-        return roleRepository.findOne(id);
+        AppRole role = roleRepository.findOne(id);
+        if (role == null) {
+            throw new EntityNotFoundException("Роль с id [" + id + "] не найдена");
+        }
+        return role;
     }
 
     public List<AppRole> initializeRoles() {
@@ -50,5 +55,17 @@ public class RoleService {
         AppRole role = new AppRole(dto);
         roleRepository.save(role);
         return new ApiResponse("Роль " + role.getHumanized() + " успешно создана");
+    }
+
+    /**
+     * Обновить роль на основе DTO
+     *
+     * @param dto DTO для обновления
+     * @return ответ
+     */
+    public ApiResponse update(AppRoleDTO dto) {
+        AppRole role = new AppRole(dto);
+        roleRepository.save(role);
+        return new ApiResponse("Роль успешно обновлена");
     }
 }
