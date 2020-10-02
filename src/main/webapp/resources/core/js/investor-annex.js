@@ -1,5 +1,7 @@
 jQuery(document).ready(function ($) {
     connect();
+    toggleTooltip()
+    checkFilesSize()
     $('#upload').on('click', function (e) {
         e.preventDefault();
         uploadAnnexes();
@@ -107,4 +109,32 @@ function showPopup(message) {
     setTimeout(function () {
         $('#msg-modal').modal('hide');
     }, 3000);
+}
+
+function toggleTooltip() {
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip('disable')
+    })
+}
+
+function checkFilesSize() {
+    $('#file').bind('change', function() {
+        let tooltip = $('[data-toggle="tooltip"]');
+        let files = this.files
+        let totalSize = 0
+        $.each(files, function () {
+            totalSize += parseInt(this.size)
+        })
+        if (totalSize > 20971520) {
+            tooltip.tooltip('enable')
+            tooltip.tooltip('show')
+        } else {
+            $('#upload').removeClass('disabled')
+        }
+        if (files.length === 0) {
+            $('#upload').addClass('disabled')
+            tooltip.tooltip('hide')
+            tooltip.tooltip('disable')
+        }
+    });
 }

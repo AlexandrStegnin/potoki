@@ -46,16 +46,16 @@
                        enctype="multipart/form-data" class="form-horizontal">
                 <div class="input-group" style="margin: 20px 20px 20px 0">
                     <div class="custom-file">
-                        <input type="file" id="file" name="uploadingFiles" class="form-control-file" multiple/>
+                        <input type="file" id="file" name="uploadingFiles" class="form-control-file" multiple data-toggle="tooltip" data-placement="top" title="Размер файлов не должен превышать 20 МБ"/>
                     </div>
-                    <button type="button" class="btn btn-primary btn-sm" id="upload">Загрузить</button>
+                    <button type="button" class="btn btn-primary btn-sm disabled" id="upload">Загрузить</button>
                 </div>
             </form:form>
         </div>
         <div class="col-md-2 center-block">
             <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
-                <div class="input-group" style="margin: 20px 0 20px 0; padding: 3px 0 3px 0">
-                    <button type="button" class="btn btn-sm btn-danger" id="delete-annex-list" style="height: 100%">Удалить выбранные
+                <div class="input-group" style="margin: 20px 0 20px 0;">
+                    <button type="button" class="btn btn-md btn-danger" id="delete-annex-list" style="height: 100%">Удалить выбранные
                         <i class="far fa-trash-alt"></i>
                     </button>
                 </div>
