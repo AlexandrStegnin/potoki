@@ -60,9 +60,9 @@
                         <option
                                 <c:choose>
                                     <c:when test="${role.name eq 'Выберите роль'}">selected="selected"</c:when>
-                                    <c:when test="${role.id eq filter.role.id}">selected="selected"</c:when>
+                                    <c:when test="${role.humanized eq filter.role}">selected="selected"</c:when>
                                 </c:choose>
-                                value="${role.id}" id="${role.id}">${role.humanized}
+                                value="${role.humanized}" id="${role.id}">${role.humanized}
                         </option>
                     </c:forEach>
                 </form:select>

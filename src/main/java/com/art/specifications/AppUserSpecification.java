@@ -1,5 +1,6 @@
 package com.art.specifications;
 
+import com.art.model.AppRole_;
 import com.art.model.AppUser;
 import com.art.model.AppUser_;
 import com.art.model.UserProfile_;
@@ -21,6 +22,7 @@ public class AppUserSpecification extends BaseSpecification<AppUser, AppUserFilt
         return (root, query, cb) -> where(
                 loginEqual(filter.getLogin()))
                 .and(isDeactivated(filter.isDeactivated()))
+                .and(roleEqual(filter.getRole()))
                 .toPredicate(root, query, cb);
     }
 
@@ -41,6 +43,16 @@ public class AppUserSpecification extends BaseSpecification<AppUser, AppUserFilt
         return ((root, criteriaQuery, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get(AppUser_.profile).get(UserProfile_.locked), true)
         );
+    }
+
+    private static Specification<AppUser> roleEqual(String role) {
+        if (role == null || "Выберите роль".equalsIgnoreCase(role)) {
+            return null;
+        } else {
+            return ((root, criteriaQuery, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get(AppUser_.role).get(AppRole_.humanized), role)
+            );
+        }
     }
 
 }
