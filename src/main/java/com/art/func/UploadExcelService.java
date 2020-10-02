@@ -419,7 +419,7 @@ public class UploadExcelService {
 
             }
         }
-        salePaymentList.forEach(salePaymentService::create);
+        salePaymentService.saveAll(salePaymentList);
         return new ApiResponse("Загрузка файла с данными о продаже завершена");
     }
 
