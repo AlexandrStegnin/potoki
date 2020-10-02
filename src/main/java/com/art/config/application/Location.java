@@ -226,6 +226,10 @@ public class Location {
 
     public static final String ROLE_CREATE = ROLES_URL + "/create";
 
+    public static final String ROLE_FIND = ROLES_URL + "/find";
+
+    public static final String ROLE_UPDATE = ROLES_URL + "/update";
+
     public static final String[] ADMIN_URLS = {
             ADMIN,
             CATALOGUE,
