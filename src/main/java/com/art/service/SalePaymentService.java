@@ -200,4 +200,14 @@ public class SalePaymentService {
         create(newFlows);
         return new ApiResponse(oldFlows.getProfitToReInvest().toPlainString());
     }
+
+    /**
+     * Сохранить список выплат с продажи
+     *
+     * @param salePayments список
+     */
+    public void saveAll(List<SalePayment> salePayments) {
+        salePaymentRepository.save(salePayments);
+    }
+
 }
