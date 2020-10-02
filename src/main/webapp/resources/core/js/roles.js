@@ -261,8 +261,6 @@ function deleteRole(roleId) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
 
-    showLoader();
-
     let roleDTO = {
         id: roleId
     }
@@ -278,7 +276,6 @@ function deleteRole(roleId) {
             xhr.setRequestHeader(header, token);
         },
         success: function (data) {
-            closeLoader();
             showPopup(data.message)
         },
         error: function (e) {
