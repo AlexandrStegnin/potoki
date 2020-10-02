@@ -230,6 +230,8 @@ public class Location {
 
     public static final String ROLE_UPDATE = ROLES_URL + "/update";
 
+    public static final String ROLE_DELETE = ROLES_URL + "/delete";
+
     public static final String[] ADMIN_URLS = {
             ADMIN,
             CATALOGUE,
