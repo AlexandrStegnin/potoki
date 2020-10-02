@@ -53,20 +53,20 @@
                     </c:forEach>
                 </form:select>
             </div>
-            <%--            <div style="padding: 5px;">--%>
-            <%--                <form:select path="roleId" id="role" multiple="false" class="selectpicker"--%>
-            <%--                             data-size="10" data-live-search="true" data-none-selected-text="Выберите роль">--%>
-            <%--                    <c:forEach var="role" items="${roles}">--%>
-            <%--                        <option--%>
-            <%--                                <c:choose>--%>
-            <%--                                    <c:when test="${role.name eq 'Выберите роль'}">selected="selected"</c:when>--%>
-            <%--                                    <c:when test="${role.id eq filter.roleId}">selected="selected"</c:when>--%>
-            <%--                                </c:choose>--%>
-            <%--                                value="${role.id}" id="${role.id}">${role.roleName}--%>
-            <%--                        </option>--%>
-            <%--                    </c:forEach>--%>
-            <%--                </form:select>--%>
-            <%--            </div>--%>
+            <div style="padding: 5px;">
+                <form:select path="role" id="role" multiple="false" class="selectpicker"
+                             data-size="10" data-live-search="true" data-none-selected-text="Выберите роль">
+                    <c:forEach var="role" items="${roles}">
+                        <option
+                                <c:choose>
+                                    <c:when test="${role.name eq 'Выберите роль'}">selected="selected"</c:when>
+                                    <c:when test="${role.id eq filter.role.id}">selected="selected"</c:when>
+                                </c:choose>
+                                value="${role.id}" id="${role.id}">${role.humanized}
+                        </option>
+                    </c:forEach>
+                </form:select>
+            </div>
             <button type="submit" id="bth-search" class="btn btn-primary btn-md" style="margin-left: 10px">Фильтр
             </button>
         </form:form>

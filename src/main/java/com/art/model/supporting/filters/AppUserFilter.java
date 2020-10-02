@@ -1,5 +1,6 @@
 package com.art.model.supporting.filters;
 
+import com.art.model.supporting.dto.AppRoleDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -16,5 +17,7 @@ public class AppUserFilter extends AbstractFilter {
     private boolean deactivated = false;
 
     private boolean confirmed = true;
+
+    private AppRoleDTO role;
 
 }
