@@ -527,9 +527,8 @@ function getUser(userId) {
  */
 function showUpdateUserForm(data) {
     let userDTO = new UserDTO()
-    userDTO.build(data.id, data.login, data.roles, data.partnerId, data.kin)
+    userDTO.build(data.id, data.login, data.role, data.partnerId, data.kin)
     userDTO.profile = data.profile
-    console.log(userDTO)
     let userForm = $('#user-form-modal')
     userForm.find('#id').val(userDTO.id)
     userForm.find('#edit').val(true)
