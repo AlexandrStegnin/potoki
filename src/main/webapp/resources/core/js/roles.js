@@ -2,6 +2,7 @@ let Action = {
     CREATE: 'CREATE',
     UPDATE: 'UPDATE',
     FIND: 'FIND',
+    DELETE: 'DELETE',
     properties: {
         CREATE: {
             url: 'create'
@@ -11,6 +12,9 @@ let Action = {
         },
         FIND: {
             url: 'find'
+        },
+        DELETE: {
+            url: 'delete'
         }
     }
 }
@@ -49,7 +53,7 @@ jQuery(document).ready(function ($) {
     $(document).on('click', '#delete-role',function (e) {
         e.preventDefault()
         let roleId = $(this).attr('data-role-id')
-        showForm(Action.UPDATE)
+        showConfirmForm('Удаление роли', 'Действительно хотите удалить роль?', roleId, Action.DELETE)
     })
     roleForm.find('#accept').on('click',function (e) {
         e.preventDefault()
@@ -60,6 +64,7 @@ jQuery(document).ready(function ($) {
             save(roleDTO, action)
         }
     })
+    acceptConfirm()
 })
 
 /**
@@ -204,7 +209,7 @@ function getRole(roleId) {
 }
 
 /**
- * Показать форму для изменения пользователя
+ * Показать форму для изменения роли
  *
  * @param data
  */
@@ -216,4 +221,69 @@ function showUpdateRoleForm(data) {
     roleForm.find('#role-name').val(roleDTO.name)
     roleForm.find('#humanized').val(roleDTO.humanized)
     roleForm.find('#action').attr("data-action", Action.UPDATE)
+}
+
+/**
+ * Отобразить форму подтверждения
+ *
+ * @param title {String} заголовок формы
+ * @param message {String} сообщение
+ * @param objectId {String} идентификатор объекта
+ * @param action {Action} действие
+ */
+function showConfirmForm(title, message, objectId, action) {
+    confirmForm.find('#title').html(title)
+    confirmForm.find('#message').html(message)
+    confirmForm.find('#accept').attr('data-object-id', objectId)
+    confirmForm.find('#accept').attr('data-action', action)
+    confirmForm.modal('show')
+}
+
+/**
+ * Подтверждение с формы
+ *
+ */
+function acceptConfirm() {
+    confirmForm.find('#accept').on('click', function () {
+        let roleId = confirmForm.find('#accept').attr('data-object-id')
+        confirmForm.modal('hide')
+        deleteRole(roleId)
+        $('#roles-table').find('tr#' + roleId).remove();
+    })
+}
+
+/**
+ * Удалить роль
+ *
+ * @param roleId id роли
+ */
+function deleteRole(roleId) {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+
+    showLoader();
+
+    let roleDTO = {
+        id: roleId
+    }
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: Action.properties[Action.DELETE].url,
+        data: JSON.stringify(roleDTO),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (data) {
+            closeLoader();
+            showPopup(data.message)
+        },
+        error: function (e) {
+            closeLoader();
+            showPopup(e.error)
+        }
+    });
 }
