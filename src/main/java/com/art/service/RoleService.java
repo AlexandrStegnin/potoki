@@ -68,4 +68,18 @@ public class RoleService {
         roleRepository.save(role);
         return new ApiResponse("Роль успешно обновлена");
     }
+
+    /**
+     * Удаление роли
+     *
+     * @param dto DTO роли
+     * @return ответ
+     */
+    public ApiResponse delete(AppRoleDTO dto) {
+        if (dto.getId() == null) {
+            throw new RuntimeException("Не указан идентификатор роли");
+        }
+        roleRepository.delete(dto.getId());
+        return new ApiResponse("Роль успешно удалена");
+    }
 }

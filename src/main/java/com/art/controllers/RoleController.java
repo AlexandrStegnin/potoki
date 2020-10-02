@@ -53,4 +53,10 @@ public class RoleController {
         return roleService.update(dto);
     }
 
+    @ResponseBody
+    @PostMapping(path = Location.ROLE_DELETE)
+    public ApiResponse deleteRole(@RequestBody AppRoleDTO dto) {
+        return roleService.delete(dto);
+    }
+
 }
