@@ -114,11 +114,11 @@ public class InvestorAnnexService {
     public String uploadFiles(List<MultipartFile> files) throws IOException, RuntimeException {
         String path = System.getProperty("catalina.home") + "/pdfFiles/";
         AppUser currentUser = userService.findByLogin(SecurityUtils.getUsername());
-        int counter = 0;
-        int filesCnt = files.size();
+//        int counter = 0;
+//        int filesCnt = files.size();
         for (MultipartFile uploadedFile : files) {
-            counter++;
-            statusService.sendStatus(String.format("Загружаем %d из %d файлов", counter, filesCnt));
+//            counter++;
+//            statusService.sendStatus(String.format("Загружаем %d из %d файлов", counter, filesCnt));
             String fileName = uploadedFile.getOriginalFilename();
             if (uploadedFile.isEmpty()) {
                 String message = "Файл [" + fileName + "] пустой";
@@ -160,7 +160,7 @@ public class InvestorAnnexService {
             usersAnnexToContractsService.create(usersAnnexToContracts);
             uploadedFile.transferTo(file);
         }
-        statusService.sendStatus("OK");
+//        statusService.sendStatus("OK");
         return "Файлы успешно загружены";
     }
 

@@ -12,6 +12,7 @@
           href="<c:url value='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' />"/>
     <link rel="stylesheet"
           href="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css' />">
+    <link href="<c:url value='/resources/core/css/ddk_loader.css' />" rel="stylesheet"/>
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
 </head>
 <body>
@@ -37,7 +38,7 @@
                             </option>
                         </c:forEach>
                     </form:select>
-                    <button type="submit" class="btn btn-primary btn-sm" style="margin-left: 10px">Фильтр</button>
+                    <button type="submit" class="btn btn-primary btn-sm" id="filter-btn" style="margin-left: 10px">Фильтр</button>
                 </div>
             </form:form>
         </div>
@@ -61,6 +62,12 @@
                 </div>
             </sec:authorize>
         </div>
+    </div>
+</div>
+<div class="container-fluid d-none" id="pb" style="margin-bottom: 10px">
+    <div class="progress">
+        <div id="progressBar" class="progress-bar progress-bar-success" role="progressbar"
+             aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0">0%</div>
     </div>
 </div>
 <div class="container-fluid">
@@ -117,5 +124,6 @@
 <script src="<c:url value='https://kit.fontawesome.com/2b84e2f58d.js' />" crossorigin="anonymous"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/progress.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/investor-annex.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
 </body>
 </html>

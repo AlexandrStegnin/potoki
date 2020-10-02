@@ -1,5 +1,5 @@
 jQuery(document).ready(function ($) {
-    connect();
+    // connect();
     toggleTooltip()
     checkFilesSize()
     $('#upload').on('click', function (e) {
@@ -25,62 +25,56 @@ function uploadAnnexes() {
     $.each($('#file')[0].files, function (k, value) {
         data.append(k, value);
     });
-    $('#msg').html('Начинаем загрузку файлов...');
-    $('#msg-modal').modal('show');
-    // connect();
-    $.ajax({
-        type: "POST",
+    let progressBar = $('#progressBar');
+    // Ajax call for file uploading
+    let ajaxReq = $.ajax({
+        url: 'annexes/upload',
+        type: 'POST',
         enctype: "multipart/form-data",
-        processData: false,
-        contentType: false,
-        cache: false,
-        url: "annexes/upload",
         data: data,
-        dataType: 'json',
-        timeout: 100000,
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader(header, token);
-        },
-        success: function (data) {
-            showPopup(data.message);
-        },
-        error: function (e) {
-            showPopup(e.error);
-            disconnect();
-        }
-    });
-}
+        cache: false,
+        contentType: false,
+        processData: false,
+        xhr: function () {
+            //Get XmlHttpRequest object
+            let xhr = $.ajaxSettings.xhr();
 
-function deleteAnnex(annexId) {
-    let token = $("meta[name='_csrf']").attr("content");
-    let header = $("meta[name='_csrf_header']").attr("content");
-    let annex = ({
-        id: annexId
-    });
-    $.ajax({
-        type: "POST",
-        contentType: "application/json;charset=utf-8",
-        url: "annexes/delete",
-        data: JSON.stringify(annex),
-        dataType: 'json',
-        timeout: 0,
+            //Set onprogress event handler
+            xhr.upload.onprogress = function (event) {
+                let percent = Math.round((event.loaded / event.total) * 100);
+                progressBar.text(percent + '%');
+                progressBar.css('width', percent + '%');
+            };
+            return xhr;
+        },
         beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
-        },
-        success: function (data) {
-            showPopup(data.message);
-        },
-        error: function (e) {
-            showPopup('Что-то пошло не так [' + e.error + ']');
+            //Reset alert message and progress bar
+            $('#pb').addClass('d-block')
+            progressBar.text('');
+            progressBar.css('width', '0%');
         }
+    });
+
+    // Called on success of file upload
+    ajaxReq.done(function (msg) {
+        showPopup(msg.message);
+        $('#file').val('');
+        $('#filter-btn').prop('disabled', false).click();
+    });
+
+    // Called on failure of file upload
+    ajaxReq.fail(function (jqXHR) {
+        showPopup(jqXHR.responseText + '(' + jqXHR.status + ' - ' + jqXHR.statusText + ')');
+        $('#filter-btn').prop('disabled', false);
     });
 }
 
 function deleteAnnexList(annexIdList) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
-
-    let  annexModel = {
+    showLoader()
+    let annexModel = {
         annexIdList: annexIdList
     }
 
@@ -95,9 +89,12 @@ function deleteAnnexList(annexIdList) {
             xhr.setRequestHeader(header, token);
         },
         success: function (data) {
+            closeLoader()
             showPopup(data.message);
+            $('#filter-btn').click()
         },
         error: function (e) {
+            closeLoader()
             showPopup('Что-то пошло не так [' + e.error + ']');
         }
     });
@@ -118,7 +115,7 @@ function toggleTooltip() {
 }
 
 function checkFilesSize() {
-    $('#file').bind('change', function() {
+    $('#file').bind('change', function () {
         let tooltip = $('[data-toggle="tooltip"]');
         let files = this.files
         let totalSize = 0
