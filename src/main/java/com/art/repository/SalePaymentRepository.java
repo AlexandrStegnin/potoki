@@ -17,4 +17,6 @@ public interface SalePaymentRepository extends JpaRepository<SalePayment, Long>,
 
     List<SalePayment> findByIdIn(List<Long> ids);
 
+    List<SalePayment> findBySourceId(Long sourceId);
+
 }

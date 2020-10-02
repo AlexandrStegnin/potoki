@@ -15,18 +15,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.*;
 import java.math.BigDecimal;
 import java.util.*;
 
 @Service
 @Transactional
 public class SalePaymentService {
-
-    @PersistenceContext(name = "persistanceUnit")
-    private EntityManager em;
 
     private final SalePaymentRepository salePaymentRepository;
 
@@ -63,67 +57,35 @@ public class SalePaymentService {
 
 //    @CachePut(value = Constant.INVESTOR_FLOWS_SALE_CACHE_KEY, key = "#sale.id")
     public void update(SalePayment sale) {
-        this.em.merge(sale);
+        salePaymentRepository.save(sale);
     }
 
 //    @Cacheable(Constant.INVESTOR_FLOWS_SALE_CACHE_KEY)
     public List<SalePayment> findAll() {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<SalePayment> saleCriteriaQuery = cb.createQuery(SalePayment.class);
-        Root<SalePayment> saleRoot = saleCriteriaQuery.from(SalePayment.class);
-        saleRoot.fetch(SalePayment_.facility, JoinType.LEFT);
-        saleRoot.fetch(SalePayment_.investor, JoinType.LEFT);
-        saleRoot.fetch(SalePayment_.underFacility, JoinType.LEFT);
-        saleCriteriaQuery.select(saleRoot).distinct(true);
-        return em.createQuery(saleCriteriaQuery).getResultList();
+        return salePaymentRepository.findAll();
     }
 
 //    @Cacheable(Constant.INVESTOR_FLOWS_SALE_CACHE_KEY)
-    public List<SalePayment> findByIdInWithAllFields(List<Long> idList) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<SalePayment> saleCriteriaQuery = cb.createQuery(SalePayment.class);
-        Root<SalePayment> saleRoot = saleCriteriaQuery.from(SalePayment.class);
-        saleRoot.fetch(SalePayment_.facility, JoinType.LEFT);
-        saleRoot.fetch(SalePayment_.investor, JoinType.LEFT);
-        saleRoot.fetch(SalePayment_.underFacility, JoinType.LEFT);
-        saleCriteriaQuery.select(saleRoot).distinct(true);
-        saleCriteriaQuery.where(saleRoot.get(SalePayment_.id).in(idList));
-        return em.createQuery(saleCriteriaQuery).getResultList();
-    }
-
-//    @Cacheable(Constant.INVESTOR_FLOWS_SALE_CACHE_KEY)
-    public List<SalePayment> findByIdIn(List<Long> idList) {
+    private List<SalePayment> findByIdIn(List<Long> idList) {
         return salePaymentRepository.findByIdIn(idList);
     }
 
 //    @Cacheable(Constant.INVESTOR_FLOWS_SALE_CACHE_KEY)
-    public SalePayment findById(Long id) {
-        return this.em.find(SalePayment.class, id);
+    private SalePayment findById(Long id) {
+        return salePaymentRepository.findOne(id);
     }
 
 //    @CacheEvict(Constant.INVESTOR_FLOWS_SALE_CACHE_KEY)
-    public void deleteById(Long id) {
-        CriteriaBuilder cb = this.em.getCriteriaBuilder();
-        CriteriaDelete<SalePayment> delete = cb.createCriteriaDelete(SalePayment.class);
-        Root<SalePayment> flowsSaleRoot = delete.from(SalePayment.class);
-        delete.where(cb.equal(flowsSaleRoot.get(SalePayment_.id), id));
-        this.em.createQuery(delete).executeUpdate();
+    private void deleteById(Long id) {
+        salePaymentRepository.delete(id);
     }
 
 //    @Cacheable(Constant.INVESTOR_FLOWS_SALE_CACHE_KEY)
-    public List<SalePayment> findBySourceId(Long sourceId) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<SalePayment> saleCriteriaQuery = cb.createQuery(SalePayment.class);
-        Root<SalePayment> saleRoot = saleCriteriaQuery.from(SalePayment.class);
-        saleRoot.fetch(SalePayment_.facility, JoinType.LEFT);
-        saleRoot.fetch(SalePayment_.investor, JoinType.LEFT);
-        saleRoot.fetch(SalePayment_.underFacility, JoinType.LEFT);
-        saleCriteriaQuery.select(saleRoot).distinct(true);
-        saleCriteriaQuery.where(cb.equal(saleRoot.get(SalePayment_.sourceId), sourceId));
-        return em.createQuery(saleCriteriaQuery).getResultList();
+    private List<SalePayment> findBySourceId(Long sourceId) {
+        return salePaymentRepository.findBySourceId(sourceId);
     }
 
-    public SalePayment findParentFlow(SalePayment flowsSale, List<SalePayment> childFlows) {
+    private SalePayment findParentFlow(SalePayment flowsSale, List<SalePayment> childFlows) {
         if (!Objects.equals(null, flowsSale.getSourceId())) {
             childFlows.add(flowsSale);
             SalePayment finalFlowsSale = flowsSale;
