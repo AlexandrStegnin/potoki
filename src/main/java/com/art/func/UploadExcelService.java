@@ -1,9 +1,9 @@
 package com.art.func;
 
+import com.art.config.exception.EntityNotFoundException;
 import com.art.model.*;
 import com.art.model.supporting.ApiResponse;
-import com.art.model.supporting.enums.ShareType;
-import com.art.model.supporting.enums.UploadType;
+import com.art.model.supporting.enums.*;
 import com.art.service.*;
 import com.art.util.ExcelUtils;
 import org.apache.poi.ss.usermodel.CellType;
@@ -51,9 +51,14 @@ public class UploadExcelService {
 
     private final GlobalFunctions globalFunctions;
 
+    private final AccountService accountService;
+
+    private final AccountTransactionService accountTransactionService;
+
     public UploadExcelService(UserService userService, RoomService roomService, FacilityService facilityService,
                               UnderFacilityService underFacilityService, RentPaymentService rentPaymentService,
-                              SalePaymentService salePaymentService, GlobalFunctions globalFunctions) {
+                              SalePaymentService salePaymentService, GlobalFunctions globalFunctions,
+                              AccountService accountService, AccountTransactionService accountTransactionService) {
         this.userService = userService;
         this.roomService = roomService;
         this.facilityService = facilityService;
@@ -61,6 +66,8 @@ public class UploadExcelService {
         this.rentPaymentService = rentPaymentService;
         this.salePaymentService = salePaymentService;
         this.globalFunctions = globalFunctions;
+        this.accountService = accountService;
+        this.accountTransactionService = accountTransactionService;
     }
 
     public ApiResponse upload(MultipartHttpServletRequest request, UploadType type) {
@@ -240,6 +247,7 @@ public class UploadExcelService {
         List<ShareType> shareKinds = Arrays.asList(ShareType.values());
         Map<String, Facility> facilities = new HashMap<>();
         Map<String, UnderFacility> underFacilities = new HashMap<>();
+        Map<Long, SalePayment> userPayments = new HashMap<>();
         for (Row row : sheet) {
             cel++;
             if (cel > 1) {
@@ -414,13 +422,44 @@ public class UploadExcelService {
 
                     if (flowsSaleList.size() == 0) {
                         salePaymentList.add(salePayment);
+                        if (userPayments.containsKey(user.getId())) {
+                            SalePayment cash = userPayments.get(user.getId());
+                            cash.setProfitToReInvest(cash.getProfitToReInvest().add(salePayment.getProfitToReInvest()));
+                        } else {
+                            userPayments.put(user.getId(), salePayment);
+                        }
                     }
                 }
 
             }
         }
         salePaymentService.saveAll(salePaymentList);
+        try {
+            mergeSalePaymentsToAccount(userPayments);
+        } catch (Exception e) {
+            return new ApiResponse(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST.value());
+        }
         return new ApiResponse("Загрузка файла с данными о продаже завершена");
+    }
+
+    /**
+     * Переместить деньги с продажи на счёт инвестора
+     *
+     * @param payments список денег с продажи и id пользователей
+     */
+    private void mergeSalePaymentsToAccount(Map<Long, SalePayment> payments) {
+        payments.forEach((k, v) -> {
+            Account account = accountService.findByOwnerId(k, OwnerType.INVESTOR);
+            if (account == null) {
+                throw new EntityNotFoundException("Не найден счёт пользователя");
+            }
+            AccountTransaction transaction = new AccountTransaction(account);
+            transaction.setSalePayment(v);
+            transaction.setOperationType(OperationType.DEBIT);
+            transaction.setCashType(CashType.SALE_CASH);
+            accountTransactionService.create(transaction);
+        });
+
     }
 
 }
