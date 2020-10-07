@@ -1,5 +1,6 @@
 package com.art.model;
 
+import com.art.model.supporting.enums.CashType;
 import com.art.model.supporting.enums.OperationType;
 import lombok.Data;
 
@@ -24,9 +25,9 @@ public class AccountTransaction {
     private Long id;
 
     @Column(name = "tx_date")
-    private Date txDate;
+    private Date txDate = new Date();
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "operation_type")
     private OperationType operationType;
 
@@ -35,11 +36,18 @@ public class AccountTransaction {
     private Account accountFrom;
 
     @OneToOne
-    @JoinColumn(name = "to_account_id")
-    private Account accountTo;
+    @JoinColumn(name = "owner_account_id")
+    private Account owner;
 
     @OneToOne
-    @JoinColumn(name = "cash_id")
-    private Money cash;
+    @JoinColumn(name = "sale_payment_id")
+    private SalePayment salePayment;
 
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "cash_type_id")
+    private CashType cashType;
+
+    public AccountTransaction(Account owner) {
+        this.owner = owner;
+    }
 }
