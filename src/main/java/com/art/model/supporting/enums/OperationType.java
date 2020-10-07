@@ -7,8 +7,8 @@ package com.art.model.supporting.enums;
 public enum OperationType {
 
     UNDEFINED(0, "Не определено"),
-    DEBIT(1, "Дебет"),
-    CREDIT(2, "Кредит");
+    DEBIT(1, "Приход"),
+    CREDIT(2, "Расход");
 
     private final int id;
 
