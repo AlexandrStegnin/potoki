@@ -433,7 +433,7 @@ function deleteList(cashIdList) {
         .done(function (data) {
             closeLoader();
             showPopup(data.message);
-            window.location.href = 'sale'
+            $('#bth-search').click()
         })
         .fail(function (e) {
             closeLoader();
@@ -568,7 +568,7 @@ function upload() {
             closeLoader();
             showPopup(data.message);
             if (data.status !== 412) {
-                window.location.href = 'sale'
+                $('#bth-search').click()
             } else {
                 $('#file').val('')
             }
