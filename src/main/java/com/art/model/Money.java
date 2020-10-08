@@ -3,6 +3,7 @@ package com.art.model;
 import com.art.model.supporting.dto.CashingMoneyDTO;
 import com.art.model.supporting.dto.RentPaymentDTO;
 import com.art.model.supporting.dto.SalePaymentDTO;
+import com.art.model.supporting.enums.CashType;
 import com.art.model.supporting.enums.MoneyState;
 import com.art.model.supporting.enums.ShareType;
 import lombok.Data;
@@ -10,7 +11,6 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,7 +20,7 @@ import java.util.Date;
 @EqualsAndHashCode
 @Entity
 @Table(name = "money")
-public class Money implements Serializable {
+public class Money implements Cash {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -178,6 +178,21 @@ public class Money implements Serializable {
         this.state = MoneyState.ACTIVE;
     }
 
+    public Money(SalePayment salePayment, Facility facility, UnderFacility underFacility, NewCashDetail newCashDetail, Date dateReinvest, String shareType) {
+        this.givenCash = salePayment.getProfitToReInvest();
+        this.dateGiven = dateReinvest;
+        this.facility = facility;
+        this.investor = salePayment.getInvestor();
+        this.shareType = ShareType.fromTitle(shareType);
+        this.dateReport = salePayment.getDateSale();
+        this.sourceFacility = salePayment.getFacility();
+        this.sourceUnderFacility = salePayment.getUnderFacility();
+        this.sourceFlowsId = String.valueOf(salePayment.getId());
+        this.underFacility = underFacility;
+        this.newCashDetail = newCashDetail;
+        this.state = MoneyState.ACTIVE;
+    }
+
     public Money(AppUser investor, Facility facility, UnderFacility underFacility, CashingMoneyDTO cashingMoneyDTO) {
         this.investor = investor;
         this.facility = facility;
@@ -236,4 +251,18 @@ public class Money implements Serializable {
         this.investorBuyer = investorBuyer;
     }
 
+    @Override
+    public CashType getCashType() {
+        return CashType.INVESTOR_CASH;
+    }
+
+    @Override
+    public String getOwnerName() {
+        return this.investor.getLogin();
+    }
+
+    @Override
+    public String getFromName() {
+        return this.facility.getFullName();
+    }
 }
