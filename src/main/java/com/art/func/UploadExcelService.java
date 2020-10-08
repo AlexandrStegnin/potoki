@@ -449,11 +449,16 @@ public class UploadExcelService {
      */
     private void mergeSalePaymentsToAccount(Map<Long, SalePayment> payments) {
         payments.forEach((k, v) -> {
-            Account account = accountService.findByOwnerId(k, OwnerType.INVESTOR);
-            if (account == null) {
+            Account ownerAccount = accountService.findByOwnerId(k, OwnerType.INVESTOR);
+            Account accountFrom = accountService.findByOwnerId(v.getFacility().getId(), OwnerType.FACILITY);
+            if (ownerAccount == null) {
                 throw new EntityNotFoundException("Не найден счёт пользователя");
             }
-            AccountTransaction transaction = new AccountTransaction(account);
+            if (accountFrom == null) {
+                throw new EntityNotFoundException("Не найден счёт объекта");
+            }
+            AccountTransaction transaction = new AccountTransaction(ownerAccount);
+            transaction.setAccountFrom(accountFrom);
             transaction.setSalePayment(v);
             transaction.setOperationType(OperationType.DEBIT);
             transaction.setCashType(CashType.SALE_CASH);
