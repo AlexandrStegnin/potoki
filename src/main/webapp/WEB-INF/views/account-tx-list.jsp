@@ -194,10 +194,12 @@
                     <c:when test="${not empty tx.salePayment}">
                         <c:set var="givenCash" value="${tx.salePayment.getGivenCash()}" />
                         <c:set var="ownerName" value="${tx.salePayment.getOwnerName()}" />
+                        <c:set var="fromName" value="${tx.salePayment.getFromName()}" />
                     </c:when>
                     <c:otherwise>
                         <c:set var="givenCash" value="0" />
                         <c:set var="ownerName" value="" />
+                        <c:set var="fromName" value="" />
                     </c:otherwise>
                 </c:choose>
                 <td>${ownerName}</td>
@@ -207,24 +209,15 @@
                 </td>
                 <td>${tx.operationType.title}</td>
                 <td>${tx.cashType.title}</td>
-                <c:choose>
-                    <c:when test="${not empty tx.accountFrom}">
-                        <c:set var="accNumber" value="${tx.accountFrom.accountNumber}" />
-                    </c:when>
-                    <c:otherwise>
-                        <c:set var="accNumber" value="" />
-                    </c:otherwise>
-                </c:choose>
-                <td>${accNumber}</td>
-<%--                <td>${tx.owner.accountNumber}</td>--%>
+                <td>${fromName}</td>
                 <td style="text-align: center">
                     <div class="dropdown pull-right" style="margin-right: 10px">
                         <button type="button" data-toggle="dropdown"
                                 class="btn btn-success btn-sm dropdown-toggle pull-right"><span
                                 class="fas fa-cog"></span></button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" id="aDivide"
-                               href="<c:url value='#' />">Разделить</a></div>
+                            <a class="dropdown-item" id="reinvest" data-object-id="${tx.id}"
+                               href="<c:url value='#' />">Реинвестировать</a></div>
                     </div>
                 </td>
             </tr>
@@ -243,16 +236,10 @@
 <script type="text/javascript"
         src="<c:url value='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js' />"></script>
 <script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js' />"></script>
-<script type="text/javascript"
-        src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js' />"></script>
-<script type="text/javascript"
-        src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js' />"></script>
 <script src="<c:url value='https://kit.fontawesome.com/2b84e2f58d.js' />" crossorigin="anonymous"></script>
 <script src="<c:url value='https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js' />"></script>
-<script type="text/javascript" src="<c:url value='/resources/core/js/progress.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
-<script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
-<script type="text/javascript" src="<c:url value='/resources/core/js/jsFunctions.js' />"></script>
-<script type="text/javascript" src="<c:url value='/resources/core/js/sale-payments.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/account-tx.js' />"></script>
+
 </body>
 </html>
