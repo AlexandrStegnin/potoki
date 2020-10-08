@@ -232,6 +232,9 @@ public class Location {
 
     public static final String ROLE_DELETE = ROLES_URL + "/delete";
 
+    //СВОБОДНЫЕ ДЕНЬГИ ИНВЕСТОРОВ
+    public static final String FREE_CASH = MONEY + "/free";
+
     public static final String[] ADMIN_URLS = {
             ADMIN,
             CATALOGUE,
