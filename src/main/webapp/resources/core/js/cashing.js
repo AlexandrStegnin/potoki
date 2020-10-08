@@ -221,7 +221,7 @@ function getUFFromLS(facilityId, ufSelectorId) {
     let option;
 
     let options;
-    if (underFacilities === null) populateStorageUnderFacilities(uFacilitiesId);
+    if (underFacilities === null) populateStorageUnderFacilities(ufSelectorId);
     if (facilityId === '0') {
         options = underFacilities.map(function (item) {
             option = document.createElement('option');
