@@ -2,7 +2,12 @@ package com.art.service;
 
 import com.art.config.exception.EntityNotFoundException;
 import com.art.model.AccountTransaction;
+import com.art.model.supporting.filters.AccountTransactionFilter;
 import com.art.repository.AccountTransactionRepository;
+import com.art.specifications.AccountTransactionSpecification;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,9 +17,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccountTransactionService {
 
+    private final AccountTransactionSpecification transactionSpecification;
+
     private final AccountTransactionRepository accountTransactionRepository;
 
-    public AccountTransactionService(AccountTransactionRepository accountTransactionRepository) {
+    public AccountTransactionService(AccountTransactionSpecification transactionSpecification,
+                                     AccountTransactionRepository accountTransactionRepository) {
+        this.transactionSpecification = transactionSpecification;
         this.accountTransactionRepository = accountTransactionRepository;
     }
 
@@ -43,6 +52,14 @@ public class AccountTransactionService {
             throw new EntityNotFoundException("Не найдена транзакция");
         }
         return tx;
+    }
+
+    public Page<AccountTransaction> findAll(AccountTransactionFilter filter, Pageable pageable) {
+        if (filter.getPageSize() == 0) pageable = new PageRequest(filter.getPageNumber(), filter.getTotal() + 1);
+        return accountTransactionRepository.findAll(
+                transactionSpecification.getFilter(filter),
+                pageable
+        );
     }
 
 }
