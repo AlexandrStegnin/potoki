@@ -32,7 +32,7 @@ public class Account {
     @JoinColumn(name = "parent_id")
     private Account parentAccount;
 
-    @OneToMany(mappedBy = "accountFrom")
+    @OneToMany(mappedBy = "recipient")
     private Set<AccountTransaction> transactions = new HashSet<>();
 
     @Column(name = "account_number")
@@ -40,6 +40,9 @@ public class Account {
 
     @Column(name = "owner_id")
     private Long ownerId;
+
+    @Column(name = "owner_name")
+    private String ownerName;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "owner_type")
