@@ -235,6 +235,8 @@ public class Location {
     //СВОБОДНЫЕ ДЕНЬГИ ИНВЕСТОРОВ
     public static final String FREE_CASH = MONEY + "/free";
 
+    public static final String FREE_CASH_REINVEST = FREE_CASH + "/reinvest";
+
     public static final String[] ADMIN_URLS = {
             ADMIN,
             CATALOGUE,
