@@ -178,9 +178,9 @@
             <th>Владелец счёта</th>
             <th>Сумма</th>
             <th>Вид транзакции</th>
-<%--            <th>№ счёта получателя</th>--%>
             <th>Вид денег</th>
             <th>№ счёта отправителя</th>
+            <th>Заблокирована</th>
             <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                 <th style="text-align: center">Действие</th>
             </sec:authorize>
@@ -193,23 +193,27 @@
                 <c:choose>
                     <c:when test="${not empty tx.salePayment}">
                         <c:set var="givenCash" value="${tx.salePayment.getGivenCash()}" />
-                        <c:set var="ownerName" value="${tx.salePayment.getOwnerName()}" />
-                        <c:set var="fromName" value="${tx.salePayment.getFromName()}" />
+                    </c:when>
+                    <c:when test="${not empty tx.money}">
+                        <c:set var="givenCash" value="${tx.money.getGivenCash()}" />
                     </c:when>
                     <c:otherwise>
                         <c:set var="givenCash" value="0" />
-                        <c:set var="ownerName" value="" />
-                        <c:set var="fromName" value="" />
                     </c:otherwise>
                 </c:choose>
-                <td>${ownerName}</td>
+                <td>${tx.owner.ownerName}</td>
                 <td>
                     <fmt:setLocale value="ru-RU" scope="session"/>
                     <fmt:formatNumber value="${givenCash}" type="currency" minFractionDigits="2"/>
                 </td>
                 <td>${tx.operationType.title}</td>
                 <td>${tx.cashType.title}</td>
-                <td>${fromName}</td>
+                <td>${tx.payer.ownerName}</td>
+                <c:set var="blocked" value="Нет" />
+                <c:if test="${tx.blocked}">
+                    <c:set var="blocked" value="Да" />
+                </c:if>
+                <td>${blocked}</td>
                 <td style="text-align: center">
                     <div class="dropdown pull-right" style="margin-right: 10px">
                         <button type="button" data-toggle="dropdown"
@@ -229,6 +233,8 @@
 <%@include file="popup_modal.jsp" %>
 <%@include file="confirm-delete.jsp" %>
 <%@include file="ddk_loader.jsp" %>
+<%@include file="reinvest-form.jsp" %>
+
 <script type="text/javascript"
         src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' />"></script>
 <script type="text/javascript"
