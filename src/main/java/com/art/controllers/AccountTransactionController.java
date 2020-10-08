@@ -2,16 +2,32 @@ package com.art.controllers;
 
 import com.art.config.application.Location;
 import com.art.model.AccountTransaction;
+import com.art.model.AppUser;
+import com.art.model.Facility;
+import com.art.model.UnderFacility;
+import com.art.model.supporting.ApiResponse;
+import com.art.model.supporting.dto.AccountTxDTO;
+import com.art.model.supporting.enums.ShareType;
 import com.art.model.supporting.filters.AccountTransactionFilter;
 import com.art.service.AccountTransactionService;
+import com.art.service.FacilityService;
+import com.art.service.UnderFacilityService;
+import com.art.service.UserService;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Alexandr Stegnin
@@ -22,10 +38,20 @@ public class AccountTransactionController {
 
     private final AccountTransactionService transactionService;
 
+    private final UnderFacilityService underFacilityService;
+
+    private final UserService userService;
+
+    private final FacilityService facilityService;
+
     private final AccountTransactionFilter filter = new AccountTransactionFilter();
 
-    public AccountTransactionController(AccountTransactionService transactionService) {
+    public AccountTransactionController(AccountTransactionService transactionService, UnderFacilityService underFacilityService,
+                                        UserService userService, FacilityService facilityService) {
         this.transactionService = transactionService;
+        this.underFacilityService = underFacilityService;
+        this.userService = userService;
+        this.facilityService = facilityService;
     }
 
     /**
@@ -39,6 +65,12 @@ public class AccountTransactionController {
         return prepareModel(filter);
     }
 
+    @ResponseBody
+    @PostMapping(path = Location.FREE_CASH_REINVEST)
+    public ApiResponse reinvestFreeMoney(@RequestBody AccountTxDTO dto) {
+        return transactionService.reinvest(dto);
+    }
+
     /**
      * Подготовить модель для страницы
      *
@@ -50,7 +82,35 @@ public class AccountTransactionController {
         Page<AccountTransaction> page = transactionService.findAll(filter, pageable);
         model.addObject("page", page);
         model.addObject("filter", filter);
+        model.addObject("accountTxDTO", new AccountTxDTO());
         return model;
+    }
+
+    @ModelAttribute("facilities")
+    public List<Facility> initializeFacilities() {
+        return facilityService.initializeFacilities();
+    }
+
+    @ModelAttribute("investors")
+    public List<AppUser> initializeInvestors() {
+        return userService.initializeInvestors();
+    }
+
+    @ModelAttribute("underFacilities")
+    public List<UnderFacility> initializeUnderFacilitiesList() {
+        return underFacilityService.initializeUnderFacilities();
+    }
+
+    @ModelAttribute("shareTypes")
+    public List<ShareType> initializeShareTypes() {
+        return Arrays.asList(ShareType.values());
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder webDataBinder) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setLenient(false);
+        webDataBinder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
     }
 
 }
