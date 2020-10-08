@@ -1,5 +1,6 @@
 package com.art.model;
 
+import com.art.model.supporting.enums.CashType;
 import com.art.model.supporting.enums.ShareType;
 import lombok.*;
 
@@ -15,7 +16,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Table(name = "sale_payment")
 @EqualsAndHashCode(exclude = {"facility", "investor", "underFacility"})
-public class SalePayment {
+public class SalePayment implements Cash {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -110,4 +111,18 @@ public class SalePayment {
         this.profitToReInvest = null;
     }
 
+    @Override
+    public BigDecimal getGivenCash() {
+        return this.profitToReInvest;
+    }
+
+    @Override
+    public CashType getCashType() {
+        return CashType.SALE_CASH;
+    }
+
+    @Override
+    public String getOwnerName() {
+        return this.investor.getLogin();
+    }
 }
