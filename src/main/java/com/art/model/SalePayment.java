@@ -125,4 +125,9 @@ public class SalePayment implements Cash {
     public String getOwnerName() {
         return this.investor.getLogin();
     }
+
+    @Override
+    public String getFromName() {
+        return this.facility.getFullName();
+    }
 }

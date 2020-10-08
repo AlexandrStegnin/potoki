@@ -18,4 +18,6 @@ public interface Cash {
 
     String getOwnerName();
 
+    String getFromName();
+
 }
