@@ -16,4 +16,6 @@ public interface Cash {
 
     CashType getCashType();
 
+    String getOwnerName();
+
 }

@@ -3,6 +3,7 @@ package com.art.model;
 import com.art.model.supporting.enums.CashType;
 import com.art.model.supporting.enums.OperationType;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -13,6 +14,7 @@ import java.util.Date;
 
 @Data
 @Entity
+@NoArgsConstructor
 @Table(name = "account_transaction")
 public class AccountTransaction {
 
