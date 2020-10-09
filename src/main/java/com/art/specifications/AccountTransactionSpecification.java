@@ -18,6 +18,7 @@ public class AccountTransactionSpecification extends BaseSpecification<AccountTr
     public Specification<AccountTransaction> getFilter(AccountTransactionFilter filter) {
         return (root, query, cb) -> where(
                 investorEqual(filter.getInvestor()))
+                .or(salePaymentIdEqual(filter.getSalePaymentId()))
                 .toPredicate(root, query, cb);
     }
 
@@ -27,6 +28,16 @@ public class AccountTransactionSpecification extends BaseSpecification<AccountTr
         } else {
             return ((root, criteriaQuery, criteriaBuilder) ->
                     criteriaBuilder.equal(root.get(AccountTransaction_.owner).get(Account_.accountNumber), investor)
+            );
+        }
+    }
+
+    private static Specification<AccountTransaction> salePaymentIdEqual(Long salePaymentId) {
+        if (salePaymentId == null) {
+            return null;
+        } else {
+            return ((root, criteriaQuery, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get(AccountTransaction_.salePayment).get(SalePayment_.id), salePaymentId)
             );
         }
     }

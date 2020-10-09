@@ -36,11 +36,14 @@ public class SalePaymentService {
 
     private final NewCashDetailRepository newCashDetailRepository;
 
+    private final AccountTransactionService accountTransactionService;
+
     @Autowired
     public SalePaymentService(SalePaymentRepository salePaymentRepository,
                               SalePaymentSpecification saleSpecification, FacilityRepository facilityRepository,
                               UnderFacilityRepository underFacilityRepository, MoneyRepository moneyRepository,
-                              TransactionLogService txLogService, NewCashDetailRepository newCashDetailRepository) {
+                              TransactionLogService txLogService, NewCashDetailRepository newCashDetailRepository,
+                              AccountTransactionService accountTransactionService) {
         this.salePaymentRepository = salePaymentRepository;
         this.saleSpecification = saleSpecification;
         this.facilityRepository = facilityRepository;
@@ -48,6 +51,7 @@ public class SalePaymentService {
         this.moneyRepository = moneyRepository;
         this.txLogService = txLogService;
         this.newCashDetailRepository = newCashDetailRepository;
+        this.accountTransactionService = accountTransactionService;
     }
 
 //    @CachePut(Constant.INVESTOR_FLOWS_SALE_CACHE_KEY)
@@ -131,7 +135,9 @@ public class SalePaymentService {
         try {
             List<Long> deletedChildesIds = new ArrayList<>();
             List<SalePayment> listToDelete = findByIdIn(dto.getSalePaymentsId());
+            List<Long> salePaymentsIds = new ArrayList<>();
             listToDelete.forEach(ltd -> {
+                salePaymentsIds.add(ltd.getId());
                 if (!deletedChildesIds.contains(ltd.getId())) {
                     List<SalePayment> childFlows = new ArrayList<>();
                     SalePayment parentFlow = findParentFlow(ltd, childFlows);
@@ -150,6 +156,7 @@ public class SalePaymentService {
                 }
                 List<Money> monies = moneyRepository.findBySourceFlowsId(String.valueOf(ltd.getId()));
                 moneyRepository.delete(monies);
+                accountTransactionService.deleteBySalePaymentId(ltd.getId());
             });
             response = new ApiResponse("Данные по выплатам с продажи успешно удалены");
         } catch (Exception ex) {

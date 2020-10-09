@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @author Alexandr Stegnin
  */
@@ -16,5 +18,7 @@ import org.springframework.stereotype.Repository;
 public interface AccountTransactionRepository extends JpaRepository<AccountTransaction, Long>, JpaSpecificationExecutor<AccountTransaction> {
 
     Page<AccountTransaction> findAll(Specification<AccountTransaction> specification, Pageable pageable);
+
+    List<AccountTransaction> findAll(Specification<AccountTransaction> specification);
 
 }

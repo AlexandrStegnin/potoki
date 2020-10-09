@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Alexandr Stegnin
@@ -159,4 +160,15 @@ public class AccountTransactionService {
         return moneyService.createNew(money);
     }
 
+    /**
+     * Удалить данные о транзакциях, если есть связанные данные с выплатами (продажа)
+     *
+     * @param salePaymentId id выплаты (продажа)
+     */
+    public void deleteBySalePaymentId(Long salePaymentId) {
+        AccountTransactionFilter filter = new AccountTransactionFilter();
+        filter.setSalePaymentId(salePaymentId);
+        List<AccountTransaction> transactions = accountTransactionRepository.findAll(transactionSpecification.getFilter(filter));
+        accountTransactionRepository.delete(transactions);
+    }
 }

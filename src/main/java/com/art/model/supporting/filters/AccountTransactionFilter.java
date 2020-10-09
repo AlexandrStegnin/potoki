@@ -15,4 +15,6 @@ public class AccountTransactionFilter extends AbstractFilter {
 
     private String facility;
 
+    private Long salePaymentId;
+
 }
