@@ -97,7 +97,9 @@ public class MarketingTreeService {
         marketingTreeDTOList.forEach(marketingTreeDTO -> {
             long daysToAdd = (new Double(366 * 1.5)).longValue();
             Date minDate = marketingTreeDTO.getFirstInvestmentDate();
-            LocalDate minDateInLocalDate = minDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(minDate);
+            LocalDate minDateInLocalDate = calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             LocalDate inFuture = minDateInLocalDate.plusDays(daysToAdd);
             LocalDate current = LocalDate.now();
             int diff = (int) DAYS.between(current, inFuture);
