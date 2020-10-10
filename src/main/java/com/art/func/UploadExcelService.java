@@ -421,6 +421,7 @@ public class UploadExcelService {
                             .collect(Collectors.toList());
 
                     if (flowsSaleList.size() == 0) {
+                        salePayment.setIsReinvest(1);
                         salePaymentList.add(salePayment);
                         if (userPayments.containsKey(user.getId())) {
                             SalePayment cash = userPayments.get(user.getId());
@@ -448,9 +449,9 @@ public class UploadExcelService {
      * @param payments список денег с продажи и id пользователей
      */
     private void mergeSalePaymentsToAccount(Map<Long, SalePayment> payments) {
-        payments.forEach((k, v) -> {
-            Account owner = accountService.findByOwnerId(k, OwnerType.INVESTOR);
-            Account payer = accountService.findByOwnerId(v.getFacility().getId(), OwnerType.FACILITY);
+        payments.forEach((userId, salePayment) -> {
+            Account owner = accountService.findByOwnerId(userId, OwnerType.INVESTOR);
+            Account payer = accountService.findByOwnerId(salePayment.getFacility().getId(), OwnerType.FACILITY);
             if (owner == null) {
                 throw new EntityNotFoundException("Не найден счёт пользователя");
             }
@@ -460,7 +461,7 @@ public class UploadExcelService {
             AccountTransaction transaction = new AccountTransaction(owner);
             transaction.setPayer(payer);
             transaction.setRecipient(owner);
-            transaction.setSalePayment(v);
+            transaction.setSalePayment(salePayment);
             transaction.setOperationType(OperationType.DEBIT);
             transaction.setCashType(CashType.SALE_CASH);
             accountTransactionService.create(transaction);
