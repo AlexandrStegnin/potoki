@@ -179,7 +179,7 @@
             <th>Сумма</th>
             <th>Вид транзакции</th>
             <th>Вид денег</th>
-            <th>№ счёта отправителя</th>
+            <th>Отправитель</th>
             <th>Заблокирована</th>
             <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                 <th style="text-align: center">Действие</th>
