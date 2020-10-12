@@ -50,8 +50,6 @@
     <div class="d-flex flex-row justify-content-center" style="margin: 10px;">
         <form:form modelAttribute="filter" action="transactions" method="POST" class="form-inline"
                    id="filter-form">
-        <fmt:formatDate pattern="yyyy-MM-dd" value="${filter.fromDate}" var="fromDate"/>
-        <fmt:formatDate pattern="yyyy-MM-dd" value="${filter.toDate}" var="toDate"/>
         <input type="hidden" id="pageNumber" name="pageNumber" value="0">
         <input type="hidden" id="pageSize" name="pageSize" value="${filter.pageSize}">
         <input type="hidden" id="total" name="total" value="${page.content.size()}">
@@ -111,7 +109,7 @@
     </form:form>
 
     <c:if test="${filter.allRows == false}">
-        <nav class="text-center" aria-label="Выплаты инвесторам - продажа">
+        <nav class="text-center" aria-label="Транзакции по счетам клиентов">
             <ul class="pagination pagination-sm justify-content-center">
                 <c:forEach begin="1" end="${page.totalPages}" varStatus="page">
                     <c:choose>
@@ -193,7 +191,6 @@
 <%@include file="popup_modal.jsp" %>
 <%@include file="confirm-delete.jsp" %>
 <%@include file="ddk_loader.jsp" %>
-<%@include file="reinvest-form.jsp" %>
 
 <script type="text/javascript"
         src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' />"></script>
