@@ -84,13 +84,13 @@
             </form:select>
         </div>
         <div style="padding: 5px;">
-            <form:select path="investors" id="investors" multiple="false" class="selectpicker"
+            <form:select path="investor" id="investors" multiple="false" class="selectpicker"
                          data-size="10" data-live-search="true" data-none-selected-text="Выберите инвестора">
                 <c:forEach var="inv" items="${investors}">
                     <option
                             <c:choose>
                                 <c:when test="${inv.login eq 'Выберите инвестора'}">selected="selected"</c:when>
-                                <c:when test="${inv.login eq filter.investors}">selected="selected"</c:when>
+                                <c:when test="${inv.login eq filter.investor}">selected="selected"</c:when>
                             </c:choose> value="${inv.login}" id="${inv.id}">${inv.login}
                     </option>
                 </c:forEach>

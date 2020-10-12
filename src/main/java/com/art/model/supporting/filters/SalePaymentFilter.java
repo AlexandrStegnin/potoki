@@ -6,4 +6,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class SalePaymentFilter extends AbstractFilter {
+
+    private String investor;
+
 }

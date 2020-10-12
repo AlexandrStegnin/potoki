@@ -21,7 +21,7 @@ public class SalePaymentSpecification extends BaseSpecification<SalePayment, Sal
                 dateGivenCashBetween(filter.getFromDate(), filter.getToDate()))
                 .and(facilityEqual(filter.getFacility()))
                 .and(underFacilityEqual(filter.getUnderFacility()))
-                .and(loginIn(filter.getInvestors()))
+                .and(loginEqual(filter.getInvestor()))
                 .and(facilityIsNotNull())
                 .toPredicate(root, query, cb);
     }
@@ -80,6 +80,17 @@ public class SalePaymentSpecification extends BaseSpecification<SalePayment, Sal
     private static Specification<SalePayment> facilityIsNotNull() {
         return ((root, criteriaQuery, criteriaBuilder) ->
                 root.get(SalePayment_.facility).get(Facility_.name).isNotNull()
+        );
+    }
+
+    private static Specification<SalePayment> loginEqual(String login) {
+        return ((root, criteriaQuery, criteriaBuilder) -> {
+            if (login == null || "Выберите инвестора".equalsIgnoreCase(login)) {
+                return null;
+            } else {
+                return criteriaBuilder.equal(root.get(SalePayment_.investor).get(AppUser_.login), login);
+            }
+        }
         );
     }
 
