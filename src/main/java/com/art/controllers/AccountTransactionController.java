@@ -2,12 +2,8 @@ package com.art.controllers;
 
 import com.art.config.application.Location;
 import com.art.model.AccountTransaction;
-import com.art.model.AppUser;
-import com.art.model.Facility;
-import com.art.model.UnderFacility;
-import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.dto.AccountTxDTO;
-import com.art.model.supporting.enums.ShareType;
+import com.art.model.supporting.enums.CashType;
 import com.art.model.supporting.filters.AccountTransactionFilter;
 import com.art.service.AccountTransactionService;
 import com.art.service.FacilityService;
@@ -21,11 +17,13 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -55,20 +53,25 @@ public class AccountTransactionController {
     }
 
     /**
-     * Получить страницу для отображения списка свободных денег инвесторов
+     * Получить страницу для отображения списка транзакций по счетам клиентов
      *
      * @param pageable для постраничного отображения
      * @return страница
      */
-    @GetMapping(path = Location.FREE_CASH)
+    @GetMapping(path = Location.ACC_TRANSACTIONS)
     public ModelAndView accountTransactions(@PageableDefault(size = 100) @SortDefault Pageable pageable) {
         return prepareModel(filter);
     }
 
-    @ResponseBody
-    @PostMapping(path = Location.FREE_CASH_REINVEST)
-    public ApiResponse reinvestFreeMoney(@RequestBody AccountTxDTO dto) {
-        return transactionService.reinvest(dto);
+    /**
+     * Получить отфильтрованную страницу для отображения списка транзакций по счетам клиентов
+     *
+     * @param filter для фильтрации результата
+     * @return страница
+     */
+    @PostMapping(path = Location.ACC_TRANSACTIONS)
+    public ModelAndView accountTransactionsFiltered(@ModelAttribute(value = "filter") AccountTransactionFilter filter) {
+        return prepareModel(filter);
     }
 
     /**
@@ -86,24 +89,19 @@ public class AccountTransactionController {
         return model;
     }
 
-    @ModelAttribute("facilities")
-    public List<Facility> initializeFacilities() {
-        return facilityService.initializeFacilities();
+    @ModelAttribute("owners")
+    public List<String> initOwners() {
+        return transactionService.initOwners();
     }
 
-    @ModelAttribute("investors")
-    public List<AppUser> initializeInvestors() {
-        return userService.initializeInvestors();
+    @ModelAttribute("recipients")
+    public List<String> initRecipients() {
+        return transactionService.initRecipients();
     }
 
-    @ModelAttribute("underFacilities")
-    public List<UnderFacility> initializeUnderFacilitiesList() {
-        return underFacilityService.initializeUnderFacilities();
-    }
-
-    @ModelAttribute("shareTypes")
-    public List<ShareType> initializeShareTypes() {
-        return Arrays.asList(ShareType.values());
+    @ModelAttribute("cashTypes")
+    public List<CashType> initCashTypes() {
+        return transactionService.initCashTypes();
     }
 
     @InitBinder
