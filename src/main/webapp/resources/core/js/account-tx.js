@@ -1,4 +1,5 @@
-let AccountTxDTO = function () {}
+let AccountTxDTO = function () {
+}
 
 AccountTxDTO.prototype = {
     id: null,
@@ -17,8 +18,12 @@ AccountTxDTO.prototype = {
 
 jQuery(document).ready(function ($) {
     showPageableResult()
+    subscribeCheckAllClick()
 })
 
+/**
+ * Показать результаты при клике на номер страницы
+ */
 function showPageableResult() {
     $(document).on('click', 'a[name*="page_"]', function (e) {
         e.preventDefault();
@@ -29,6 +34,21 @@ function showPageableResult() {
         $('#filter-form').submit();
     });
 }
+
+/**
+ * Выделить/снять выделение со всех чекбоксов на странице
+ */
+function subscribeCheckAllClick() {
+    $(document).on('click', '#checkIt', function () {
+        let checkItBtn = $('#checkIt');
+        const checked = checkItBtn.data('checked');
+        $('table#transactions').find('> tbody').find('> tr').each(function () {
+            $(this).find(':checkbox:not(:disabled)').prop('checked', !checked);
+        });
+        checkItBtn.data('checked', !checked)
+    })
+}
+
 
 /**
  * Показать сообщение

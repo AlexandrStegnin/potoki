@@ -113,7 +113,7 @@
         </nav>
     </c:if>
 
-    <table class="table table-striped w-auto table-hover table-sm" style="table-layout: fixed" id="free-cash">
+    <table class="table table-striped w-auto table-hover table-sm" style="table-layout: fixed" id="transactions">
         <thead>
         <tr>
             <th>Дата транзакции</th>
