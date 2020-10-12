@@ -2,7 +2,7 @@ package com.art.model.supporting.dto;
 
 import lombok.Data;
 
-import java.util.Date;
+import java.util.List;
 
 /**
  * @author Alexandr Stegnin
@@ -11,14 +11,6 @@ import java.util.Date;
 @Data
 public class AccountTxDTO {
 
-    private Long id;
-
-    private Long facilityId;
-
-    private Long underFacilityId;
-
-    private Date dateReinvest;
-
-    private String shareType;
+    private List<Long> txIds;
 
 }
