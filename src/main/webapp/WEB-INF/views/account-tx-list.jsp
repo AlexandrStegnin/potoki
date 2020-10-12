@@ -148,7 +148,7 @@
                 <td>${tx.operationType.title}</td>
                 <td>${tx.cashType.title}</td>
                 <td>${tx.payer.ownerName}</td>
-                <td style="text-align: center"><input type="checkbox">
+                <td style="text-align: center"><input type="checkbox" data-object-id="${tx.id}">
                 </td>
             </tr>
         </c:forEach>

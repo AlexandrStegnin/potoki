@@ -2,6 +2,7 @@ package com.art.controllers;
 
 import com.art.config.application.Location;
 import com.art.model.AccountTransaction;
+import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.dto.AccountTxDTO;
 import com.art.model.supporting.enums.CashType;
 import com.art.model.supporting.filters.AccountTransactionFilter;
@@ -17,10 +18,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.SimpleDateFormat;
@@ -72,6 +70,18 @@ public class AccountTransactionController {
     @PostMapping(path = Location.ACC_TRANSACTIONS)
     public ModelAndView accountTransactionsFiltered(@ModelAttribute(value = "filter") AccountTransactionFilter filter) {
         return prepareModel(filter);
+    }
+
+    /**
+     * Удалить суммы транзакций
+     *
+     * @param dto для удаления
+     * @return ответ
+     */
+    @ResponseBody
+    @PostMapping(path = Location.ACC_TRANSACTIONS_DELETE)
+    public ApiResponse deleteTransactions(@RequestBody AccountTxDTO dto) {
+        return transactionService.delete(dto);
     }
 
     /**

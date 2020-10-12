@@ -2,23 +2,20 @@ let AccountTxDTO = function () {
 }
 
 AccountTxDTO.prototype = {
-    id: null,
-    facilityId: null,
-    underFacilityId: null,
-    dateReinvest: null,
-    shareType: null,
-    build: function (id, facilityId, underFacilityId, dateReinvest, shareType) {
-        this.id = id
-        this.facilityId = facilityId
-        this.underFacilityId = underFacilityId
-        this.dateReinvest = dateReinvest
-        this.shareType = shareType
+    txIds: [],
+    build: function (txIds) {
+        this.txIds = txIds
     }
 }
 
+let confirmDelete;
+
 jQuery(document).ready(function ($) {
+    confirmDelete = $('#confirm-delete');
     showPageableResult()
     subscribeCheckAllClick()
+    showConfirmDelete()
+    acceptDelete()
 })
 
 /**
@@ -49,6 +46,64 @@ function subscribeCheckAllClick() {
     })
 }
 
+/**
+ * Показать форму подтверждения удаления
+ */
+function showConfirmDelete() {
+    $('#delete-list').on('click', function () {
+        confirmDelete.modal('show')
+    })
+}
+
+/**
+ * Подтверждение удаления
+ */
+function acceptDelete() {
+    confirmDelete.find('#accept-delete').on('click', function () {
+        let options = $('table#transactions').find('input:checkbox:checked:not(disabled)')
+        let checked = []
+        $.each(options, function (ind, el) {
+            checked.push($(el).data('object-id'))
+        })
+        let accountTxDTO = new AccountTxDTO()
+        accountTxDTO.build(checked)
+        deleteTransactions(accountTxDTO)
+    })
+}
+
+/**
+ * Удалить выбранные суммы
+ *
+ * @param accountTxDTO {AccountTxDTO} DTO для удаления сумм
+ */
+function deleteTransactions(accountTxDTO) {
+    confirmDelete.modal('hide')
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: "transactions/delete",
+        data: JSON.stringify(accountTxDTO),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        }
+    })
+        .done(function (data) {
+            showPopup(data.message);
+            $('#bth-search').click()
+        })
+        .fail(function (e) {
+            showPopup('Что-то пошло не так [' + e.message + ']');
+        })
+        .always(function () {
+            console.log('Закончили!');
+        });
+
+}
 
 /**
  * Показать сообщение
