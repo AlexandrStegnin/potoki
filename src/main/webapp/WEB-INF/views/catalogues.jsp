@@ -41,7 +41,7 @@
         <a href="<c:url value='/transactions' />" class="btn btn-success btn-block">Лог операций (transaction_log)</a>
         <a href="<c:url value='/tokens' />" class="btn btn-success btn-block">Токены приложений (app_tokens)</a>
         <a href="<c:url value='/roles/list' />" class="btn btn-success btn-block">Роли системы (app_role)</a>
-        <a href="<c:url value='/money/free' />" class="btn btn-success btn-block">Транзакции по счетам клиентов (account_transaction)</a>
+        <a href="<c:url value='/money/transactions' />" class="btn btn-success btn-block">Транзакции по счетам клиентов (account_transaction)</a>
     </sec:authorize>
 </div>
 <script type="text/javascript"
