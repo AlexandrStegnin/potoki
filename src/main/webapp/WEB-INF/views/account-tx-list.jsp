@@ -22,25 +22,9 @@
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
     <link href="<c:url value='/resources/core/css/ddk_loader.css' />" rel="stylesheet"/>
     <style type="text/css">
-        .has-error {
-            color: red;
-            padding: 8px 0 0 8px;
-        }
-    </style>
-    <style type="text/css">
         table, td, th {
             text-align: center;
         }
-
-        .dropdown-menu > .active > a {
-            color: #0c0c0c !important;
-            background-color: transparent !important;
-        }
-
-        .dropdown-menu > .active > a:hover {
-            text-shadow: 1px 1px 1px gray;
-        }
-
     </style>
 </head>
 
@@ -138,10 +122,7 @@
             <th>Вид транзакции</th>
             <th>Вид денег</th>
             <th>Отправитель</th>
-            <th>Заблокирована</th>
-            <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
-                <th style="text-align: center">Действие</th>
-            </sec:authorize>
+            <th style="width: 5%">Выбрать</th>
         </tr>
         </thead>
         <tbody>
@@ -167,20 +148,7 @@
                 <td>${tx.operationType.title}</td>
                 <td>${tx.cashType.title}</td>
                 <td>${tx.payer.ownerName}</td>
-                <c:set var="blocked" value="Нет"/>
-                <c:if test="${tx.blocked}">
-                    <c:set var="blocked" value="Да"/>
-                </c:if>
-                <td>${blocked}</td>
-                <td style="text-align: center">
-                    <div class="dropdown pull-right" style="margin-right: 10px">
-                        <button type="button" data-toggle="dropdown"
-                                class="btn btn-success btn-sm dropdown-toggle pull-right"><span
-                                class="fas fa-cog"></span></button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" id="reinvest" data-object-id="${tx.id}"
-                               href="<c:url value='#' />">Реинвестировать</a></div>
-                    </div>
+                <td style="text-align: center"><input type="checkbox">
                 </td>
             </tr>
         </c:forEach>
