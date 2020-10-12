@@ -5,5 +5,5 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class FlowsSaleFilter extends AbstractFilter {
+public class SalePaymentFilter extends AbstractFilter {
 }

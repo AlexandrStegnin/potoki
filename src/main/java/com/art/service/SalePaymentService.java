@@ -4,7 +4,7 @@ import com.art.model.*;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.dto.SalePaymentDTO;
 import com.art.model.supporting.dto.SalePaymentDivideDTO;
-import com.art.model.supporting.filters.FlowsSaleFilter;
+import com.art.model.supporting.filters.SalePaymentFilter;
 import com.art.repository.*;
 import com.art.specifications.SalePaymentSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,7 +116,7 @@ public class SalePaymentService {
     }
 
 //    @Cacheable(Constant.INVESTOR_FLOWS_SALE_CACHE_KEY)
-    public Page<SalePayment> findAll(FlowsSaleFilter filters, Pageable pageable) {
+    public Page<SalePayment> findAll(SalePaymentFilter filters, Pageable pageable) {
         if (filters.getPageSize() == 0) pageable = new PageRequest(filters.getPageNumber(), filters.getTotal() + 1);
         return salePaymentRepository.findAll(
                 saleSpecification.getFilter(filters),

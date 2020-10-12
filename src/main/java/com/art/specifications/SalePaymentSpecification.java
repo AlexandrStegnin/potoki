@@ -1,7 +1,7 @@
 package com.art.specifications;
 
 import com.art.model.*;
-import com.art.model.supporting.filters.FlowsSaleFilter;
+import com.art.model.supporting.filters.SalePaymentFilter;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -13,10 +13,10 @@ import java.util.Objects;
 import static org.springframework.data.jpa.domain.Specifications.where;
 
 @Component
-public class SalePaymentSpecification extends BaseSpecification<SalePayment, FlowsSaleFilter> {
+public class SalePaymentSpecification extends BaseSpecification<SalePayment, SalePaymentFilter> {
 
     @Override
-    public Specification<SalePayment> getFilter(FlowsSaleFilter filter) {
+    public Specification<SalePayment> getFilter(SalePaymentFilter filter) {
         return (root, query, cb) -> where(
                 dateGivenCashBetween(filter.getFromDate(), filter.getToDate()))
                 .and(facilityEqual(filter.getFacility()))

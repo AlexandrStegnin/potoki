@@ -13,7 +13,7 @@ import com.art.model.supporting.dto.SalePaymentDTO;
 import com.art.model.supporting.dto.SalePaymentDivideDTO;
 import com.art.model.supporting.enums.ShareType;
 import com.art.model.supporting.enums.UploadType;
-import com.art.model.supporting.filters.FlowsSaleFilter;
+import com.art.model.supporting.filters.SalePaymentFilter;
 import com.art.service.FacilityService;
 import com.art.service.SalePaymentService;
 import com.art.service.UnderFacilityService;
@@ -48,7 +48,7 @@ public class SalePaymentController {
 
     private final UserService userService;
 
-    private final FlowsSaleFilter filter = new FlowsSaleFilter();
+    private final SalePaymentFilter filter = new SalePaymentFilter();
 
     public SalePaymentController(UploadExcelService uploadExcelService, FacilityService facilityService,
                                  SalePaymentService salePaymentService, UnderFacilityService underFacilityService,
@@ -78,7 +78,7 @@ public class SalePaymentController {
      * @return страница
      */
     @PostMapping(path = Location.SALE_PAYMENTS)
-    public ModelAndView paymentsSaleFiltered(@ModelAttribute("filter") FlowsSaleFilter filter) {
+    public ModelAndView paymentsSaleFiltered(@ModelAttribute("filter") SalePaymentFilter filter) {
         return prepareModel(filter);
     }
 
@@ -128,7 +128,7 @@ public class SalePaymentController {
      *
      * @param filters фильтры
      */
-    private ModelAndView prepareModel(FlowsSaleFilter filters) {
+    private ModelAndView prepareModel(SalePaymentFilter filters) {
         ModelAndView model = new ModelAndView("sale-payment-list");
         FileBucket fileModel = new FileBucket();
         Pageable pageable = new PageRequest(filters.getPageNumber(), filters.getPageSize());
