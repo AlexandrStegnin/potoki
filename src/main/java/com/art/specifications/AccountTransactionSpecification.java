@@ -17,7 +17,7 @@ public class AccountTransactionSpecification extends BaseSpecification<AccountTr
     @Override
     public Specification<AccountTransaction> getFilter(AccountTransactionFilter filter) {
         return (root, query, cb) -> where(
-                investorEqual(filter.getInvestor()))
+                investorEqual(filter.getOwner()))
                 .or(salePaymentIdEqual(filter.getSalePaymentId()))
                 .toPredicate(root, query, cb);
     }
