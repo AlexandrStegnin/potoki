@@ -1,6 +1,10 @@
 package com.art.specifications;
 
-import com.art.model.*;
+import com.art.model.AccountTransaction;
+import com.art.model.AccountTransaction_;
+import com.art.model.Account_;
+import com.art.model.SalePayment_;
+import com.art.model.supporting.enums.CashType;
 import com.art.model.supporting.filters.AccountTransactionFilter;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
@@ -17,17 +21,40 @@ public class AccountTransactionSpecification extends BaseSpecification<AccountTr
     @Override
     public Specification<AccountTransaction> getFilter(AccountTransactionFilter filter) {
         return (root, query, cb) -> where(
-                investorEqual(filter.getOwner()))
+                ownerEqual(filter.getOwner()))
                 .or(salePaymentIdEqual(filter.getSalePaymentId()))
+                .or(recipientEqual(filter.getRecipient()))
+                .or(cashTypeEqual(filter.getCashType()))
                 .toPredicate(root, query, cb);
     }
 
-    private static Specification<AccountTransaction> investorEqual(String investor) {
-        if (investor == null || "Выберите инвестора".equalsIgnoreCase(investor)) {
+    private static Specification<AccountTransaction> ownerEqual(String ownerName) {
+        if (ownerName == null || "Выберите владельца".equalsIgnoreCase(ownerName)) {
             return null;
         } else {
             return ((root, criteriaQuery, criteriaBuilder) ->
-                    criteriaBuilder.equal(root.get(AccountTransaction_.owner).get(Account_.accountNumber), investor)
+                    criteriaBuilder.equal(root.get(AccountTransaction_.owner).get(Account_.ownerName), ownerName)
+            );
+        }
+    }
+
+    private static Specification<AccountTransaction> recipientEqual(String recipientName) {
+        if (recipientName == null || "Выберите отправителя".equalsIgnoreCase(recipientName)) {
+            return null;
+        } else {
+            return ((root, criteriaQuery, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get(AccountTransaction_.payer).get(Account_.ownerName), recipientName)
+            );
+        }
+    }
+
+    private static Specification<AccountTransaction> cashTypeEqual(String cashTypeTitle) {
+        if (cashTypeTitle == null || "Выберите вид денег".equalsIgnoreCase(cashTypeTitle)) {
+            return null;
+        } else {
+            CashType cashType = CashType.fromTitle(cashTypeTitle);
+            return ((root, criteriaQuery, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get(AccountTransaction_.cashType), cashType)
             );
         }
     }
