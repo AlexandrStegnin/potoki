@@ -147,7 +147,7 @@ function checkDTO(dto) {
         investorErr.removeClass('d-block')
     }
     let commissionErr = cashingForm.find('#commissionError')
-    if (dto.commission.length === 0 || dto.commission === '0') {
+    if (dto.commission.length === 0) {
         commissionErr.addClass('d-block')
         return false
     } else {
