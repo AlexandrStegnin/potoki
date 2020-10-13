@@ -17,6 +17,7 @@ jQuery(document).ready(function ($) {
     showConfirmDelete()
     acceptDelete()
     clearFilters()
+    toggleAllRows()
 })
 
 /**
@@ -116,6 +117,15 @@ function clearFilters() {
         $('#recipients').prop('selectedIndex', -1)
         $('#cashTypes').prop('selectedIndex', -1)
         $('.selectpicker').selectpicker('refresh')
+        $('#bth-search').click()
+    })
+}
+
+/**
+ * Отображать на 1 странице или постранично
+ */
+function toggleAllRows() {
+    $('#all').on('change', function () {
         $('#bth-search').click()
     })
 }
