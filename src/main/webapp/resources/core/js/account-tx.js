@@ -16,6 +16,7 @@ jQuery(document).ready(function ($) {
     subscribeCheckAllClick()
     showConfirmDelete()
     acceptDelete()
+    clearFilters()
 })
 
 /**
@@ -103,6 +104,20 @@ function deleteTransactions(accountTxDTO) {
             console.log('Закончили!');
         });
 
+}
+
+/**
+ * Очистить фильтры
+ */
+function clearFilters() {
+    $(document).on('click', '#btn-clear',function (e) {
+        e.preventDefault()
+        $('#owners').prop('selectedIndex', -1)
+        $('#recipients').prop('selectedIndex', -1)
+        $('#cashTypes').prop('selectedIndex', -1)
+        $('.selectpicker').selectpicker('refresh')
+        $('#bth-search').click()
+    })
 }
 
 /**
