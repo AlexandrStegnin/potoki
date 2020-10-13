@@ -79,7 +79,7 @@
         <button type="submit" id="bth-search" class="btn btn-primary btn-md" style="margin-left: 10px">Фильтр
         </button>
         <div>
-            <button type="submit" id="bth-clear" class="btn btn-warning input-md" style="margin-left: 10px">
+            <button type="button" id="btn-clear" class="btn btn-warning input-md" style="margin-left: 10px">
                 Сбросить фильтры
             </button>
             <button type="button" class="btn btn-primary input-md" id="checkIt" data-checked="false"
