@@ -47,12 +47,12 @@ public class AccountTxSummaryController {
     }
 
     @GetMapping(path = Location.TRANSACTIONS_SUMMARY)
-    public ModelAndView accountsPage(@PageableDefault(size = 100) @SortDefault Pageable pageable) {
+    public ModelAndView accountsTxSummaryPage(@PageableDefault(size = 100) @SortDefault Pageable pageable) {
         return prepareModel(filter);
     }
 
     @PostMapping(path = Location.TRANSACTIONS_SUMMARY)
-    public ModelAndView accountsPageFiltered(@ModelAttribute("filter") AccountTransactionFilter filter) {
+    public ModelAndView accountsTxSummaryPageFiltered(@ModelAttribute("filter") AccountTransactionFilter filter) {
         return prepareModel(filter);
     }
 
