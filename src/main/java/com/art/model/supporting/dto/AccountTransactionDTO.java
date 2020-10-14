@@ -27,10 +27,6 @@ public class AccountTransactionDTO {
 
     private String recipient;
 
-    private BigDecimal salePayment;
-
-    private BigDecimal money;
-
     private BigDecimal cash;
 
     private String cashType;
@@ -43,25 +39,9 @@ public class AccountTransactionDTO {
         this.payer = transaction.getPayer().getOwnerName();
         this.owner = transaction.getOwner().getOwnerName();
         this.recipient = transaction.getRecipient().getOwnerName();
-        this.salePayment = convert(transaction.getSalePayment());
-        this.money = convert(transaction.getMoney());
         this.cashType = transaction.getCashType().getTitle();
         this.cash = convert(transaction.getSalePayment(), transaction.getMoney());
         this.blocked = transaction.isBlocked();
-    }
-
-    private BigDecimal convert(SalePayment salePayment) {
-        if (salePayment == null) {
-            return BigDecimal.ZERO;
-        }
-        return salePayment.getProfitToReInvest();
-    }
-
-    private BigDecimal convert(Money money) {
-        if (money == null) {
-            return BigDecimal.ZERO;
-        }
-        return money.getGivenCash();
     }
 
     private BigDecimal convert(SalePayment salePayment, Money money) {
