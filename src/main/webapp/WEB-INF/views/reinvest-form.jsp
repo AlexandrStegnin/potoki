@@ -12,7 +12,7 @@
             <div class="modal-body">
                 <div class="container">
                     <form:form method="POST" modelAttribute="accountTxDTO" class="form-horizontal"
-                               style="margin: 10px 0 10px 0" id="user-form">
+                               style="margin: 10px 0 10px 0" id="reinvest-form">
                         <form:input type="hidden" path="id" id="acc-tx-id"/>
                         <div class="form-group row" id="dateReinvestRow">
                             <label class="col-md-3 col-form-label" for="dateReinvest">Дата вложения:</label>
