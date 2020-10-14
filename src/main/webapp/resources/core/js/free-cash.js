@@ -8,7 +8,33 @@ AccountSummaryDTO.prototype = {
     }
 }
 
+let AccountTransactionDTO = function () {}
+
+AccountTransactionDTO.prototype = {
+    txDate: null,
+    operationType: null,
+    payer: null,
+    owner: null,
+    recipient: null,
+    cash: null,
+    cashType: null,
+    blocked: null,
+    build: function (txDate, operationType, payer, owner, recipient, cash, cashType, blocked) {
+        this.txDate = txDate
+        this.operationType = operationType
+        this.payer = payer
+        this.owner = owner
+        this.recipient = recipient
+        this.cash = cash
+        this.cashType = cashType
+        this.blocked = blocked
+    }
+}
+
+let popupTable;
+
 jQuery(document).ready(function ($) {
+    popupTable = $('#popup-table')
     showPageableResult()
     subscribeCheckAllClick()
     subscribeCheckboxChange()
@@ -67,7 +93,7 @@ function getDetails(accSummaryDTO) {
         }
     })
         .done(function (data) {
-            console.log(data)
+            createDetailTable(data);
         })
         .fail(function (e) {
             showPopup('Что-то пошло не так [' + e.message + ']');
@@ -158,4 +184,37 @@ function showPopup(message) {
     setTimeout(function () {
         $('#msg-modal').modal('hide');
     }, 3000);
+}
+
+/**
+ * Заполнить таблицу во всплывающей форме по данным с сервера
+ *
+ * @param details {[AccountTransactionDTO]}
+ */
+function createDetailTable(details) {
+    let detailTable = $('#detail-table');
+    let tableBody = detailTable.find('tbody');
+    tableBody.empty();
+    $.each(details, function (ind, el) {
+        let row = createRow(el);
+        tableBody.append(row);
+    });
+    popupTable.modal('show');
+}
+
+/**
+ * Создать строку с суммой
+ *
+ * @param transactionDTO {AccountTransactionDTO} DTO транзакции
+ * @returns строка таблицы
+ */
+function createRow(transactionDTO) {
+    return $('<tr>').append(
+        $('<td>').text(transactionDTO.txDate),
+        $('<td>').text(transactionDTO.owner),
+        $('<td>').text((transactionDTO.cash).toLocaleString()),
+        $('<td>').text(transactionDTO.operationType),
+        $('<td>').text(transactionDTO.cashType),
+        $('<td>').text(transactionDTO.payer)
+    );
 }
