@@ -210,11 +210,21 @@ function createDetailTable(details) {
  */
 function createRow(transactionDTO) {
     return $('<tr>').append(
-        $('<td>').text(transactionDTO.txDate),
+        $('<td>').text(getDate(transactionDTO.txDate).toLocaleDateString()),
         $('<td>').text(transactionDTO.owner),
         $('<td>').text((transactionDTO.cash).toLocaleString()),
         $('<td>').text(transactionDTO.operationType),
         $('<td>').text(transactionDTO.cashType),
         $('<td>').text(transactionDTO.payer)
     );
+}
+
+/**
+ * Получить дату из числа типа long
+ *
+ * @param number {number}
+ */
+function getDate(number) {
+    let dateTime = new Date(number)
+    return new Date(dateTime.getUTCFullYear(), dateTime.getUTCMonth(), dateTime.getUTCDate())
 }
