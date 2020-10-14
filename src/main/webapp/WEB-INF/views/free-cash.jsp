@@ -94,8 +94,8 @@
         <tr>
             <th>Инвестор</th>
             <th>Баланс</th>
-            <th>Подробно</th>
             <th style="width: 5%">Выбрать</th>
+            <th>Подробно</th>
         </tr>
         </thead>
         <tbody>
@@ -104,13 +104,13 @@
                 <td>${acc.owner.ownerName}</td>
                 <td><fmt:setLocale value="ru-RU" scope="session"/>
                     <fmt:formatNumber value="${acc.summary}" type="currency" minFractionDigits="2"/></td>
+                <td style="text-align: center"><input type="checkbox" data-object-id="${acc.owner.id}">
+                </td>
                 <td>
                     <button type="button" class="btn btn-sm btn-success tx-show" data-toggle="tooltip"
                             data-placement="left" title="Посмотреть" data-tx-id="${acc.owner.id}">
                         <i class="fas fa-eye"></i>
                     </button>
-                </td>
-                <td style="text-align: center"><input type="checkbox" data-object-id="${acc.owner.id}">
                 </td>
             </tr>
         </c:forEach>
