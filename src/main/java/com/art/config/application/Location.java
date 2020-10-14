@@ -237,6 +237,9 @@ public class Location {
 
     public static final String ACC_TRANSACTIONS_DELETE = ACC_TRANSACTIONS + "/delete";
 
+    //СВОБОДНЫЕ СРЕДСТВА КЛИЕНТОВ
+    public static final String TRANSACTIONS_SUMMARY = ACC_TRANSACTIONS + "/summary";
+
     public static final String[] ADMIN_URLS = {
             ADMIN,
             CATALOGUE,
