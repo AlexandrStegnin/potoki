@@ -240,6 +240,8 @@ public class Location {
     //СВОБОДНЫЕ СРЕДСТВА КЛИЕНТОВ
     public static final String TRANSACTIONS_SUMMARY = ACC_TRANSACTIONS + "/summary";
 
+    public static final String TRANSACTIONS_DETAILS = ACC_TRANSACTIONS + "/details";
+
     public static final String[] ADMIN_URLS = {
             ADMIN,
             CATALOGUE,
