@@ -14,6 +14,7 @@ jQuery(document).ready(function ($) {
     confirmDelete = $('#confirm-delete');
     showPageableResult()
     subscribeCheckAllClick()
+    subscribeCheckboxChange()
     showConfirmDelete()
     acceptDelete()
     clearFilters()
@@ -43,6 +44,7 @@ function subscribeCheckAllClick() {
         const checked = checkItBtn.data('checked');
         $('table#transactions').find('> tbody').find('> tr').each(function () {
             $(this).find(':checkbox:not(:disabled)').prop('checked', !checked);
+            toggleStateReinvestButton(!checked)
         });
         checkItBtn.data('checked', !checked)
     })
@@ -127,6 +129,41 @@ function toggleAllRows() {
     $('#all').on('change', function () {
         $('#bth-search').click()
     })
+}
+
+/**
+ * Изменение состояния чекбоксов
+ */
+function subscribeCheckboxChange() {
+    $(document).on('change', 'input:checkbox', function () {
+        if ($(this).prop('checked')) {
+            toggleStateReinvestButton(true)
+        } else {
+            let count = countChecked()
+            toggleStateReinvestButton(count > 0)
+        }
+    })
+}
+
+/**
+ * Посчитать кол-во отмеченных чекбоксов
+ * @return {Number} кол-во отмеченных чекбоксов
+ */
+function countChecked() {
+    return $('table#transactions').find('input:checkbox:checked').length
+}
+
+/**
+ * Блокировать/разблокировать кнопку "Реинвестировать"
+ *
+ * @param enable {boolean} признак блокировать или разблокировать
+ */
+function toggleStateReinvestButton(enable) {
+    if (enable) {
+        $('#reinvest').removeClass('disabled')
+    } else {
+        $('#reinvest').addClass('disabled')
+    }
 }
 
 /**

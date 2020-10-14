@@ -63,7 +63,7 @@
                 Сбросить фильтры
             </button>
             <button type="button" class="btn btn-primary input-md" id="checkIt" data-checked="false" style="margin-left: 5px">Выделить всё</button>
-            <button type="button" class="btn btn-warning input-md" id="reinvest" data-checked="false" style="margin-left: 5px">Реинвестировать</button>
+            <button type="button" class="btn btn-warning input-md disabled" id="reinvest" data-checked="false" style="margin-left: 5px">Реинвестировать</button>
         </div>
     </div>
     </form:form>
