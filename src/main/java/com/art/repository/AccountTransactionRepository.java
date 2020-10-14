@@ -1,13 +1,16 @@
 package com.art.repository;
 
 import com.art.model.AccountTransaction;
+import com.art.model.supporting.dto.AccountDTO;
 import com.art.model.supporting.enums.CashType;
+import com.art.model.supporting.enums.OwnerType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -31,5 +34,23 @@ public interface AccountTransactionRepository extends JpaRepository<AccountTrans
 
     @Query("SELECT DISTINCT atx.cashType FROM AccountTransaction atx")
     List<CashType> getAllCashTypes();
+
+    @Query("SELECT DISTINCT atx.owner.ownerName " +
+            "FROM AccountTransaction atx " +
+            "WHERE atx.owner.ownerType = :ownerType " +
+            "ORDER BY atx.owner.ownerName")
+    List<String> getOwners(@Param("ownerType") OwnerType ownerType);
+
+    @Query("SELECT new com.art.model.supporting.dto.AccountDTO(atx.owner, SUM(atx.salePayment.profitToReInvest)) " +
+            "FROM AccountTransaction atx " +
+            "WHERE atx.owner.ownerName = :ownerName AND atx.owner.ownerType = :ownerType " +
+            "GROUP BY atx.owner")
+    Page<AccountDTO> getOwnerSummary(@Param("ownerType") OwnerType ownerType, @Param("ownerName") String ownerName, Pageable pageable);
+
+    @Query("SELECT new com.art.model.supporting.dto.AccountDTO(atx.owner, SUM(atx.salePayment.profitToReInvest)) " +
+            "FROM AccountTransaction atx " +
+            "WHERE atx.owner.ownerType = :ownerType " +
+            "GROUP BY atx.owner")
+    Page<AccountDTO> getSummary(@Param("ownerType") OwnerType ownerType, Pageable pageable);
 
 }

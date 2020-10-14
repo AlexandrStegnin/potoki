@@ -4,8 +4,10 @@ import com.art.config.exception.EntityNotFoundException;
 import com.art.model.AccountTransaction;
 import com.art.model.SalePayment;
 import com.art.model.supporting.ApiResponse;
+import com.art.model.supporting.dto.AccountDTO;
 import com.art.model.supporting.dto.AccountTxDTO;
 import com.art.model.supporting.enums.CashType;
+import com.art.model.supporting.enums.OwnerType;
 import com.art.model.supporting.filters.AccountTransactionFilter;
 import com.art.repository.AccountTransactionRepository;
 import com.art.repository.SalePaymentRepository;
@@ -136,4 +138,34 @@ public class AccountTransactionService {
         salePaymentRepository.delete(salePayments);
         return new ApiResponse("Данные успешно удалены");
     }
+
+    /**
+     * Получить список счетов с итоговым балансом
+     *
+     * @param filter список фильтров
+     * @param pageable для постраничного отображения
+     * @return список счетов с суммарным балансом
+     */
+    public Page<AccountDTO> getSummary(AccountTransactionFilter filter, Pageable pageable) {
+        if (filter.getPageSize() == 0) pageable = new PageRequest(filter.getPageNumber(), filter.getTotal() + 1);
+        String ownerName = filter.getOwner();
+        if (ownerName == null || "Выберите владельца".equalsIgnoreCase(ownerName)) {
+            return accountTransactionRepository.getSummary(OwnerType.INVESTOR, pageable);
+        } else {
+            return accountTransactionRepository.getOwnerSummary(OwnerType.INVESTOR, ownerName, pageable);
+        }
+    }
+
+    /**
+     * Получить список владельцев счетов (ИНВЕСТОРОВ) для фильтрации
+     *
+     * @return список владельцев
+     */
+    public List<String> initInvestorOwners() {
+        List<String> owners = new ArrayList<>();
+        owners.add("Выберите владельца");
+        owners.addAll(accountTransactionRepository.getOwners(OwnerType.INVESTOR));
+        return owners;
+    }
+
 }
