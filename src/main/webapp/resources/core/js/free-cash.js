@@ -33,14 +33,18 @@ AccountTransactionDTO.prototype = {
 
 let popupTable;
 
+let reinvestModal;
+
 jQuery(document).ready(function ($) {
     popupTable = $('#popup-table')
+    reinvestModal = $('#reinvest-form-modal')
     showPageableResult()
     subscribeCheckAllClick()
     subscribeCheckboxChange()
     clearFilters()
     toggleAllRows()
     subscribeTxShowClick()
+    subscribeReinvestClick()
 })
 
 /**
@@ -227,4 +231,13 @@ function createRow(transactionDTO) {
 function getDate(number) {
     let dateTime = new Date(number)
     return new Date(dateTime.getUTCFullYear(), dateTime.getUTCMonth(), dateTime.getUTCDate())
+}
+
+/**
+ * Клик по кнопке "Реинвестировать"
+ */
+function subscribeReinvestClick() {
+    $('#reinvest').on('click', function () {
+        reinvestModal.modal('show')
+    })
 }
