@@ -42,6 +42,7 @@
         <a href="<c:url value='/tokens' />" class="btn btn-success btn-block">Токены приложений (app_tokens)</a>
         <a href="<c:url value='/roles/list' />" class="btn btn-success btn-block">Роли системы (app_role)</a>
         <a href="<c:url value='/money/transactions' />" class="btn btn-success btn-block">Транзакции по счетам клиентов (account_transaction)</a>
+        <a href="<c:url value='/accounts/monies' />" class="btn btn-success btn-block">Свободные средства клиентов</a>
     </sec:authorize>
 </div>
 <script type="text/javascript"
