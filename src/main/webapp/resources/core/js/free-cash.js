@@ -1,24 +1,20 @@
-let AccountTxDTO = function () {
+let AccountSummaryDTO = function () {
 }
 
-AccountTxDTO.prototype = {
-    txIds: [],
-    build: function (txIds) {
-        this.txIds = txIds
+AccountSummaryDTO.prototype = {
+    accountId: null,
+    build: function (accountId) {
+        this.accountId = accountId
     }
 }
 
-let confirmDelete;
-
 jQuery(document).ready(function ($) {
-    confirmDelete = $('#confirm-delete');
     showPageableResult()
     subscribeCheckAllClick()
     subscribeCheckboxChange()
-    showConfirmDelete()
-    acceptDelete()
     clearFilters()
     toggleAllRows()
+    subscribeTxShowClick()
 })
 
 /**
@@ -51,45 +47,19 @@ function subscribeCheckAllClick() {
 }
 
 /**
- * Показать форму подтверждения удаления
- */
-function showConfirmDelete() {
-    $('#delete-list').on('click', function () {
-        confirmDelete.modal('show')
-    })
-}
-
-/**
- * Подтверждение удаления
- */
-function acceptDelete() {
-    confirmDelete.find('#accept-delete').on('click', function () {
-        let options = $('table#transactions').find('input:checkbox:checked:not(disabled)')
-        let checked = []
-        $.each(options, function (ind, el) {
-            checked.push($(el).data('object-id'))
-        })
-        let accountTxDTO = new AccountTxDTO()
-        accountTxDTO.build(checked)
-        deleteTransactions(accountTxDTO)
-    })
-}
-
-/**
- * Удалить выбранные суммы
+ * Получить детализацию по счёту
  *
- * @param accountTxDTO {AccountTxDTO} DTO для удаления сумм
+ * @param accSummaryDTO {AccountSummaryDTO} DTO для удаления сумм
  */
-function deleteTransactions(accountTxDTO) {
-    confirmDelete.modal('hide')
+function getDetails(accSummaryDTO) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
 
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: "transactions/delete",
-        data: JSON.stringify(accountTxDTO),
+        url: "details",
+        data: JSON.stringify(accSummaryDTO),
         dataType: 'json',
         timeout: 100000,
         beforeSend: function (xhr) {
@@ -97,8 +67,7 @@ function deleteTransactions(accountTxDTO) {
         }
     })
         .done(function (data) {
-            showPopup(data.message);
-            $('#bth-search').click()
+            console.log(data)
         })
         .fail(function (e) {
             showPopup('Что-то пошло не так [' + e.message + ']');
@@ -164,6 +133,18 @@ function toggleStateReinvestButton(enable) {
     } else {
         $('#reinvest').addClass('disabled')
     }
+}
+
+/**
+ * Нажатие кнопки "Просмотреть"
+ */
+function subscribeTxShowClick() {
+    $('.tx-show').on('click', function () {
+        let txId = $(this).data('tx-id')
+        let accSummaryDTO = new AccountSummaryDTO()
+        accSummaryDTO.build(txId)
+        getDetails(accSummaryDTO)
+    })
 }
 
 /**

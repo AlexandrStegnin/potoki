@@ -3,6 +3,8 @@ package com.art.controllers;
 import com.art.config.application.Location;
 import com.art.model.Facility;
 import com.art.model.UnderFacility;
+import com.art.model.supporting.dto.AccountSummaryDTO;
+import com.art.model.supporting.dto.AccountTransactionDTO;
 import com.art.model.supporting.dto.AccountTxDTO;
 import com.art.model.supporting.enums.ShareType;
 import com.art.model.supporting.filters.AccountTransactionFilter;
@@ -14,9 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Arrays;
@@ -54,6 +54,12 @@ public class AccountTxSummaryController {
     @PostMapping(path = Location.TRANSACTIONS_SUMMARY)
     public ModelAndView accountsTxSummaryPageFiltered(@ModelAttribute("filter") AccountTransactionFilter filter) {
         return prepareModel(filter);
+    }
+
+    @ResponseBody
+    @PostMapping(path = Location.TRANSACTIONS_DETAILS)
+    public List<AccountTransactionDTO> getTransactionsByAccountId(@RequestBody AccountSummaryDTO dto) {
+        return accountTransactionService.getDetails(dto);
     }
 
     private ModelAndView prepareModel(AccountTransactionFilter filter) {

@@ -53,4 +53,6 @@ public interface AccountTransactionRepository extends JpaRepository<AccountTrans
             "GROUP BY atx.owner")
     Page<AccountDTO> getSummary(@Param("ownerType") OwnerType ownerType, Pageable pageable);
 
+    List<AccountTransaction> findByOwnerId(Long ownerId);
+
 }

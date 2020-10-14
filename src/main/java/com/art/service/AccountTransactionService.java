@@ -5,6 +5,8 @@ import com.art.model.AccountTransaction;
 import com.art.model.SalePayment;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.dto.AccountDTO;
+import com.art.model.supporting.dto.AccountSummaryDTO;
+import com.art.model.supporting.dto.AccountTransactionDTO;
 import com.art.model.supporting.dto.AccountTxDTO;
 import com.art.model.supporting.enums.CashType;
 import com.art.model.supporting.enums.OwnerType;
@@ -166,6 +168,23 @@ public class AccountTransactionService {
         owners.add("Выберите владельца");
         owners.addAll(accountTransactionRepository.getOwners(OwnerType.INVESTOR));
         return owners;
+    }
+
+    /**
+     * Получить список транзакций по определённому счёту
+     *
+     * @param dto DTO для просмотра информации
+     * @return список транзакций по счёту
+     */
+    public List<AccountTransactionDTO> getDetails(AccountSummaryDTO dto) {
+        Long accountId = dto.getAccountId();
+        if (accountId == null) {
+            throw new RuntimeException("Не указан id счёта");
+        }
+        return accountTransactionRepository.findByOwnerId(accountId)
+                .stream()
+                .map(AccountTransactionDTO::new)
+                .collect(Collectors.toList());
     }
 
 }
