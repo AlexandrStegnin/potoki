@@ -19,4 +19,6 @@ public class AccountTransactionFilter extends AbstractFilter {
 
     private String cashType;
 
+    private Long moneyId;
+
 }
