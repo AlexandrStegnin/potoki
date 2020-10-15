@@ -57,7 +57,7 @@
                         </div>
 
                         <div class="modal-footer">
-                            <input type="submit" class="btn btn-primary btn-md" id="accept" value="Реинвестировать"/>
+                            <input type="button" class="btn btn-primary btn-md" id="accept" value="Реинвестировать"/>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
                         </div>
                     </form:form>
