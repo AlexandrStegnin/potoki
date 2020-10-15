@@ -397,8 +397,30 @@ public class AccountTransactionService {
         return null;
     }
 
+    /**
+     * Получить сумму на счетах инвестора
+     *
+     * @param ownerName логин инвестора
+     * @return сумма
+     */
     private AccountDTO getOwnerSummary(String ownerName) {
         return accountTransactionRepository.getOwnerSummary(OwnerType.INVESTOR, ownerName);
+    }
+
+    /**
+     * Получить связанные с суммой в деньгах инвесторов транзакции
+     *
+     * @param moneyId id суммы в деньгах инвесторов
+     */
+    public List<AccountTransaction> findByMoneyId(Long moneyId) {
+        AccountTransactionFilter filter = new AccountTransactionFilter();
+        filter.setMoneyId(moneyId);
+        List<AccountTransaction> transactions = accountTransactionRepository.findAll(transactionSpecification.getFilter(filter));
+        return transactions;
+    }
+
+    public void deleteByMoneyId(Long moneyId) {
+        accountTransactionRepository.delete(findByMoneyId(moneyId));
     }
 
 }
