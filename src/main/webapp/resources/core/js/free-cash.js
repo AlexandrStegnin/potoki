@@ -31,6 +31,21 @@ AccountTransactionDTO.prototype = {
     }
 }
 
+let AccountTXReinvestDTO = function () {}
+
+AccountTXReinvestDTO.prototype = {
+    dateReinvest: null,
+    facilityId: null,
+    underFacilityId: null,
+    shareType: null,
+    build: function (dateReinvest, facilityId, underFacilityId, shareType) {
+        this.dateReinvest = dateReinvest
+        this.facilityId = facilityId
+        this.underFacilityId = underFacilityId
+        this.shareType = shareType
+    }
+}
+
 let popupTable;
 
 let reinvestModal;
@@ -46,6 +61,7 @@ jQuery(document).ready(function ($) {
     subscribeTxShowClick()
     subscribeReinvestClick()
     subscribeFacilitySelectChange()
+    subscribeAcceptReinvest()
 })
 
 /**
@@ -261,7 +277,7 @@ function getUFFromLS(facilityId, ufSelectorId) {
             option = document.createElement('option');
             option.setAttribute('id', item.id);
             option.setAttribute('data-parent-id', item.facilityId);
-            option.setAttribute('value', item.underFacility);
+            option.setAttribute('value', item.id);
             option.innerText = item.underFacility;
             return option;
         });
@@ -272,13 +288,13 @@ function getUFFromLS(facilityId, ufSelectorId) {
             option = document.createElement('option');
             option.setAttribute('id', item.id);
             option.setAttribute('data-parent-id', item.facilityId);
-            option.setAttribute('value', item.underFacility);
+            option.setAttribute('value', item.id);
             option.innerText = item.underFacility;
             return option;
         });
         option = document.createElement('option');
         option.setAttribute('id', "0");
-        option.setAttribute('value', 'Без подобъекта');
+        option.setAttribute('value', '0');
         option.innerText = 'Без подобъекта';
         options.unshift(option);
     }
@@ -299,4 +315,59 @@ function subscribeFacilitySelectChange() {
         let facilityId = $(this).val()
         getUFFromLS(facilityId, 'underFacility')
     })
+}
+
+/**
+ * При подтверждении реивестирования
+ */
+function subscribeAcceptReinvest() {
+    reinvestModal.find('#accept').on('click', function () {
+        let dateReinvest = reinvestModal.find('#dateReinvest').val()
+        let facilityId = reinvestModal.find('#facility').val()
+        let underFacilityId = reinvestModal.find('#underFacility').val()
+        let shareType = reinvestModal.find('#shareType').val()
+        let accTxReinvestDTO = new AccountTXReinvestDTO()
+        accTxReinvestDTO.build(dateReinvest, facilityId, underFacilityId, shareType)
+        if (checkDTO(accTxReinvestDTO)) {
+            console.log(accTxReinvestDTO)
+        }
+    })
+}
+
+/**
+ * Проверить правильность заполнения формы реинвестирования
+ *
+ * @param accTxReinvestDTO {AccountTXReinvestDTO} DTO с формы
+ * @return {boolean} результат проверки
+ */
+function checkDTO(accTxReinvestDTO) {
+    let dateReinvestErr = reinvestModal.find('#dateReinvestErr')
+    if (accTxReinvestDTO.dateReinvest.length === 0) {
+        dateReinvestErr.addClass('d-block')
+        return false
+    } else {
+        dateReinvestErr.removeClass('d-block')
+    }
+    let facilityErr = $('#facilityErr')
+    if (accTxReinvestDTO.facilityId === '0') {
+        facilityErr.addClass('d-block')
+        return false
+    } else {
+        facilityErr.removeClass('d-block')
+    }
+    let underFacilityErr = $('#underFacilityErr')
+    if (accTxReinvestDTO.underFacilityId === '0') {
+        underFacilityErr.addClass('d-block')
+        return false
+    } else {
+        underFacilityErr.removeClass('d-block')
+    }
+    let shareTypeErr = $('#shareTypeErr')
+    if (accTxReinvestDTO.shareType === 'Не определена') {
+        shareTypeErr.addClass('d-block')
+        return false
+    } else {
+        shareTypeErr.removeClass('d-block')
+    }
+    return true
 }
