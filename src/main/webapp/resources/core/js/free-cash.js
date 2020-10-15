@@ -335,8 +335,7 @@ function subscribeAcceptReinvest() {
         accTxReinvestDTO.build(dateReinvest, cash, facilityId, underFacilityId, shareType)
         if (checkDTO(accTxReinvestDTO)) {
             accTxReinvestDTO.accountsIds = getAccountsIds()
-            console.log(accTxReinvestDTO)
-            // reinvest(accTxReinvestDTO)
+            reinvest(accTxReinvestDTO)
         }
     })
 }
