@@ -1,10 +1,7 @@
 package com.art.service;
 
 import com.art.config.application.Constant;
-import com.art.model.Account;
-import com.art.model.AppUser;
-import com.art.model.Facility;
-import com.art.model.Room;
+import com.art.model.*;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.enums.OwnerType;
 import com.art.repository.AccountRepository;
@@ -78,6 +75,7 @@ public class AccountService {
         account.setAccountNumber(accountNumber);
         account.setOwnerId(user.getId());
         account.setOwnerType(OwnerType.INVESTOR);
+        account.setOwnerName(user.getLogin());
         return accountRepository.save(account);
     }
 
@@ -95,6 +93,7 @@ public class AccountService {
         account.setAccountNumber(accountNumber);
         account.setOwnerId(facility.getId());
         account.setOwnerType(OwnerType.FACILITY);
+        account.setOwnerName(facility.getName());
         accountRepository.save(account);
     }
 
@@ -168,17 +167,18 @@ public class AccountService {
 
     /**
      * Создать счёт для подобъекта
-     *  @param underFacilityId id подобъекта
+     * @param underFacility подобъект
      * @param parentAccount счёт объекта родителя
      * @param countUnderFacilities кол-во подобъектов объекта
      */
-    public void createAccount(Long underFacilityId, Account parentAccount, int countUnderFacilities) {
+    public void createAccount(UnderFacility underFacility, Account parentAccount, int countUnderFacilities) {
         String accountNumber = getAccountNumber(parentAccount, countUnderFacilities);
         Account account = new Account();
         account.setAccountNumber(accountNumber);
-        account.setOwnerId(underFacilityId);
+        account.setOwnerId(underFacility.getId());
         account.setOwnerType(OwnerType.UNDER_FACILITY);
         account.setParentAccount(parentAccount);
+        account.setOwnerName(underFacility.getName());
         accountRepository.save(account);
     }
     /**
@@ -194,6 +194,7 @@ public class AccountService {
         account.setOwnerId(room.getId());
         account.setOwnerType(OwnerType.ROOM);
         account.setParentAccount(parentAccount);
+        account.setOwnerName(room.getName());
         accountRepository.save(account);
     }
 

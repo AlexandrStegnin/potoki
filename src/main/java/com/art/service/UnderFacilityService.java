@@ -51,7 +51,7 @@ public class UnderFacilityService {
         Facility facility = underFacility.getFacility();
         Account account = accountService.findByOwnerId(facility.getId(), OwnerType.FACILITY);
         int countUnderFacilities = underFacilityRepository.countByFacilityId(facility.getId());
-        accountService.createAccount(underFacility.getId(), account, countUnderFacilities);
+        accountService.createAccount(underFacility, account, countUnderFacilities);
     }
 
 //    @Cacheable(Constant.UNDER_FACILITIES_CACHE_KEY)
