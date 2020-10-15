@@ -39,12 +39,14 @@ AccountTXReinvestDTO.prototype = {
     facilityId: null,
     underFacilityId: null,
     shareType: null,
-    build: function (dateReinvest, cash, facilityId, underFacilityId, shareType) {
+    accountsIds: [],
+    build: function (dateReinvest, cash, facilityId, underFacilityId, shareType, accountsIds) {
         this.dateReinvest = dateReinvest
         this.cash = cash
         this.facilityId = facilityId
         this.underFacilityId = underFacilityId
         this.shareType = shareType
+        this.accountsIds = accountsIds
     }
 }
 
@@ -332,6 +334,7 @@ function subscribeAcceptReinvest() {
         let accTxReinvestDTO = new AccountTXReinvestDTO()
         accTxReinvestDTO.build(dateReinvest, cash, facilityId, underFacilityId, shareType)
         if (checkDTO(accTxReinvestDTO)) {
+            accTxReinvestDTO.accountsIds = getAccountsIds()
             console.log(accTxReinvestDTO)
             // reinvest(accTxReinvestDTO)
         }
@@ -412,4 +415,18 @@ function reinvest(accTxReinvestDTO) {
             showPopup(e);
         }
     });
+}
+
+/**
+ * Получить список id аккаунтов, с которых реинвестировать
+ *
+ * @return {[]}
+ */
+function getAccountsIds() {
+    let accIds = []
+    let checkedAccounts = $('table#transactions').find('input:checkbox:checked:not(disabled)')
+    $.each(checkedAccounts, function (ind, el) {
+        accIds.push($(el).data('object-id'))
+    })
+    return accIds
 }
