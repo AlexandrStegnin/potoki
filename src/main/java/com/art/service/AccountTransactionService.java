@@ -51,11 +51,14 @@ public class AccountTransactionService {
 
     private final MoneyRepository moneyRepository;
 
+    private final NewCashDetailService newCashDetailService;
+
     public AccountTransactionService(AccountTransactionSpecification transactionSpecification,
                                      AccountTransactionRepository accountTransactionRepository,
                                      SalePaymentRepository salePaymentRepository, FacilityService facilityService,
                                      UnderFacilityService underFacilityService, AccountService accountService,
-                                     UserService userService, MoneyRepository moneyRepository) {
+                                     UserService userService, MoneyRepository moneyRepository,
+                                     NewCashDetailService newCashDetailService) {
         this.transactionSpecification = transactionSpecification;
         this.accountTransactionRepository = accountTransactionRepository;
         this.salePaymentRepository = salePaymentRepository;
@@ -64,6 +67,7 @@ public class AccountTransactionService {
         this.accountService = accountService;
         this.userService = userService;
         this.moneyRepository = moneyRepository;
+        this.newCashDetailService = newCashDetailService;
     }
 
     public AccountTransaction create(AccountTransaction transaction) {
@@ -228,8 +232,14 @@ public class AccountTransactionService {
                 prepareErrorResponse(response, "Не найден счёт инвестора");
                 return response;
             }
-            AccountTransaction creditTx = createCreditTransaction(owner, dto);
-            createDebitTransaction(creditTx, dto);
+            try {
+                AccountTransaction creditTx = createCreditTransaction(owner, dto);
+                createDebitTransaction(creditTx, dto);
+            } catch (Exception e) {
+                prepareErrorResponse(response, e.getLocalizedMessage());
+                return response;
+            }
+
         }
 
         return new ApiResponse("Реинвестирование прошло успешно");
@@ -291,6 +301,10 @@ public class AccountTransactionService {
         if (investor == null) {
             throw new EntityNotFoundException("Не найден инвестор");
         }
+        NewCashDetail newCashDetail = newCashDetailService.findByName("Реинвестирование");
+        if (newCashDetail == null) {
+            throw new EntityNotFoundException("Не найдены детали новых денег [Реинвестирование]");
+        }
         ShareType shareType = ShareType.fromTitle(dto.getShareType());
         Date dateGiven = dto.getDateReinvest();
         BigDecimal cash = dto.getCash();
@@ -301,6 +315,7 @@ public class AccountTransactionService {
         money.setDateGiven(dateGiven);
         money.setGivenCash(cash);
         money.setInvestor(investor);
+        money.setNewCashDetail(newCashDetail);
         return moneyRepository.save(money);
     }
 
