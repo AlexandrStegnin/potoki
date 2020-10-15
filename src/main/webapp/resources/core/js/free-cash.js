@@ -45,6 +45,7 @@ jQuery(document).ready(function ($) {
     toggleAllRows()
     subscribeTxShowClick()
     subscribeReinvestClick()
+    subscribeFacilitySelectChange()
 })
 
 /**
@@ -239,5 +240,63 @@ function getDate(number) {
 function subscribeReinvestClick() {
     $('#reinvest').on('click', function () {
         reinvestModal.modal('show')
+    })
+}
+
+/**
+ * Заполнить выпадающий список подобъектов на основе выбранного объекта
+ *
+ * @param facilityId id объекта
+ * @param ufSelectorId id выпадающего списка
+ */
+function getUFFromLS(facilityId, ufSelectorId) {
+    let underFacilities;
+    underFacilities = JSON.parse(localStorage.getItem('uf'));
+    let option;
+
+    let options;
+    if (underFacilities === null) populateStorageUnderFacilities(ufSelectorId);
+    if (facilityId === '0') {
+        options = underFacilities.map(function (item) {
+            option = document.createElement('option');
+            option.setAttribute('id', item.id);
+            option.setAttribute('data-parent-id', item.facilityId);
+            option.setAttribute('value', item.underFacility);
+            option.innerText = item.underFacility;
+            return option;
+        });
+    } else {
+        options = underFacilities.filter(function (item) {
+            return item.facilityId === parseInt(facilityId);
+        }).map(function (item) {
+            option = document.createElement('option');
+            option.setAttribute('id', item.id);
+            option.setAttribute('data-parent-id', item.facilityId);
+            option.setAttribute('value', item.underFacility);
+            option.innerText = item.underFacility;
+            return option;
+        });
+        option = document.createElement('option');
+        option.setAttribute('id', "0");
+        option.setAttribute('value', 'Без подобъекта');
+        option.innerText = 'Без подобъекта';
+        options.unshift(option);
+    }
+
+    $('#' + ufSelectorId)
+        .find('option')
+        .remove()
+        .end()
+        .append(options)
+        .selectpicker('refresh');
+}
+
+/**
+ * При выборе объекта из выпадающего списка
+ */
+function subscribeFacilitySelectChange() {
+    reinvestModal.find('#facility').on('change', function () {
+        let facilityId = $(this).val()
+        getUFFromLS(facilityId, 'underFacility')
     })
 }
