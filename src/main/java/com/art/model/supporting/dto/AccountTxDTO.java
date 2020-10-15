@@ -2,6 +2,7 @@ package com.art.model.supporting.dto;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -21,5 +22,9 @@ public class AccountTxDTO {
     private Long underFacilityId;
 
     private String shareType;
+
+    private List<Long> accountsIds;
+
+    private BigDecimal cash;
 
 }
