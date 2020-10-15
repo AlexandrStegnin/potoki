@@ -224,6 +224,10 @@ public class AccountTransactionService {
         if (response != null) {
             return response;
         }
+        response = checkAvailableCash(dto);
+        if (response != null) {
+            return response;
+        }
         response = new ApiResponse();
 
         for (Long id : dto.getAccountsIds()) {
@@ -243,6 +247,30 @@ public class AccountTransactionService {
         }
 
         return new ApiResponse("Реинвестирование прошло успешно");
+    }
+
+    /**
+     * Проверить наличие необходимой суммы для реинвестирования
+     *
+     * @param dto DTO для реинвестирования
+     * @return ответ
+     */
+    private ApiResponse checkAvailableCash(AccountTxDTO dto) {
+        ApiResponse response = new ApiResponse();
+        List<Long> accIds = dto.getAccountsIds();
+        for (Long accId : accIds) {
+            AppUser investor = userService.findById(accId);
+            if (investor == null) {
+                prepareErrorResponse(response, "Не найден инвестор");
+                return response;
+            }
+            AccountDTO accountDTO = getOwnerSummary(investor.getLogin());
+            if (accountDTO.getSummary().compareTo(dto.getCash()) < 0) {
+                prepareErrorResponse(response, "У инвестора [" + investor.getLogin() + "] недостаточно средств для реинвестирования");
+                return response;
+            }
+        }
+        return null;
     }
 
     /**
@@ -367,6 +395,10 @@ public class AccountTransactionService {
             return response;
         }
         return null;
+    }
+
+    private AccountDTO getOwnerSummary(String ownerName) {
+        return accountTransactionRepository.getOwnerSummary(OwnerType.INVESTOR, ownerName);
     }
 
 }
