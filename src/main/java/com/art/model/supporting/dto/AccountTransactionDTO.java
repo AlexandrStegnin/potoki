@@ -1,8 +1,6 @@
 package com.art.model.supporting.dto;
 
 import com.art.model.AccountTransaction;
-import com.art.model.Money;
-import com.art.model.SalePayment;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -40,19 +38,8 @@ public class AccountTransactionDTO {
         this.owner = transaction.getOwner().getOwnerName();
         this.recipient = transaction.getRecipient().getOwnerName();
         this.cashType = transaction.getCashType().getTitle();
-        this.cash = convert(transaction.getSalePayment(), transaction.getMoney());
+        this.cash = transaction.getCash();
         this.blocked = transaction.isBlocked();
-    }
-
-    private BigDecimal convert(SalePayment salePayment, Money money) {
-        BigDecimal cash = BigDecimal.ZERO;
-        if (salePayment != null) {
-            cash = cash.add(salePayment.getProfitToReInvest());
-        }
-        if (money != null) {
-            cash = cash.add(money.getGivenCash());
-        }
-        return cash;
     }
 
 }

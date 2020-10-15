@@ -464,6 +464,7 @@ public class UploadExcelService {
             transaction.setSalePayment(salePayment);
             transaction.setOperationType(OperationType.DEBIT);
             transaction.setCashType(CashType.SALE_CASH);
+            transaction.setCash(salePayment.getProfitToReInvest());
             accountTransactionService.create(transaction);
         });
 

@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -53,6 +54,9 @@ public class AccountTransaction extends AbstractEntity {
 
     @Column(name = "blocked")
     private boolean blocked = false;
+
+    @Column(name = "cash")
+    private BigDecimal cash;
 
     public AccountTransaction(Account owner) {
         this.owner = owner;
