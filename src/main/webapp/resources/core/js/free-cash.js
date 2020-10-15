@@ -206,6 +206,7 @@ function subscribeTxShowClick() {
 function showPopup(message) {
     $('#msg').html(message);
     $('#msg-modal').modal('show');
+    closeLoader()
     setTimeout(function () {
         $('#msg-modal').modal('hide');
     }, 3000);
@@ -393,6 +394,7 @@ function checkDTO(accTxReinvestDTO) {
 function reinvest(accTxReinvestDTO) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
+    reinvestModal.modal('hide')
     showLoader();
 
     $.ajax({
@@ -407,11 +409,18 @@ function reinvest(accTxReinvestDTO) {
         },
         success: function (data) {
             closeLoader();
-            showPopup(data.message)
+            if (data.status === 200) {
+                showPopup(data.message)
+            } else {
+                showPopup(data.error)
+            }
         },
         error: function (e) {
             closeLoader()
             showPopup(e);
+        },
+        always: function () {
+            closeLoader()
         }
     });
 }
