@@ -1,25 +1,30 @@
 package com.art.service;
 
 import com.art.config.exception.EntityNotFoundException;
-import com.art.model.AccountTransaction;
-import com.art.model.SalePayment;
+import com.art.model.*;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.dto.AccountDTO;
 import com.art.model.supporting.dto.AccountSummaryDTO;
 import com.art.model.supporting.dto.AccountTransactionDTO;
 import com.art.model.supporting.dto.AccountTxDTO;
 import com.art.model.supporting.enums.CashType;
+import com.art.model.supporting.enums.OperationType;
 import com.art.model.supporting.enums.OwnerType;
+import com.art.model.supporting.enums.ShareType;
 import com.art.model.supporting.filters.AccountTransactionFilter;
 import com.art.repository.AccountTransactionRepository;
+import com.art.repository.MoneyRepository;
 import com.art.repository.SalePaymentRepository;
 import com.art.specifications.AccountTransactionSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,12 +41,29 @@ public class AccountTransactionService {
 
     private final SalePaymentRepository salePaymentRepository;
 
+    private final FacilityService facilityService;
+
+    private final UnderFacilityService underFacilityService;
+
+    private final AccountService accountService;
+
+    private final UserService userService;
+
+    private final MoneyRepository moneyRepository;
+
     public AccountTransactionService(AccountTransactionSpecification transactionSpecification,
                                      AccountTransactionRepository accountTransactionRepository,
-                                     SalePaymentRepository salePaymentRepository) {
+                                     SalePaymentRepository salePaymentRepository, FacilityService facilityService,
+                                     UnderFacilityService underFacilityService, AccountService accountService,
+                                     UserService userService, MoneyRepository moneyRepository) {
         this.transactionSpecification = transactionSpecification;
         this.accountTransactionRepository = accountTransactionRepository;
         this.salePaymentRepository = salePaymentRepository;
+        this.facilityService = facilityService;
+        this.underFacilityService = underFacilityService;
+        this.accountService = accountService;
+        this.userService = userService;
+        this.moneyRepository = moneyRepository;
     }
 
     public AccountTransaction create(AccountTransaction transaction) {
@@ -185,6 +207,151 @@ public class AccountTransactionService {
                 .stream()
                 .map(AccountTransactionDTO::new)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Реинвестировать суммы
+     *
+     * @param dto DTO для реинвестирования
+     * @return ответ об исполнении операции
+     */
+    public ApiResponse reinvest(AccountTxDTO dto) {
+        ApiResponse response = checkDTO(dto);
+        if (response != null) {
+            return response;
+        }
+        response = new ApiResponse();
+
+        for (Long id : dto.getAccountsIds()) {
+            Account owner = accountService.findByOwnerId(id, OwnerType.INVESTOR);
+            if (owner == null) {
+                prepareErrorResponse(response, "Не найден счёт инвестора");
+                return response;
+            }
+            AccountTransaction creditTx = createCreditTransaction(owner, dto);
+            createDebitTransaction(creditTx, dto);
+        }
+
+        return new ApiResponse("Реинвестирование прошло успешно");
+    }
+
+    /**
+     * Создать приходную транзакцию
+     *
+     * @param creditTx расходная транзакция
+     * @param dto DTO для реинвестирования
+     */
+    private void createDebitTransaction(AccountTransaction creditTx, AccountTxDTO dto) {
+        Account recipient = accountService.findByOwnerId(dto.getUnderFacilityId(), OwnerType.UNDER_FACILITY);
+        AccountTransaction debitTx = new AccountTransaction(recipient);
+        debitTx.setOperationType(OperationType.DEBIT);
+        debitTx.setPayer(creditTx.getOwner());
+        debitTx.setRecipient(recipient);
+        debitTx.setMoney(creditTx.getMoney());
+        debitTx.setCashType(CashType.INVESTOR_CASH);
+        debitTx.setCash(creditTx.getMoney().getGivenCash());
+        accountTransactionRepository.save(debitTx);
+    }
+
+    /**
+     * Создать расходную транзакцию по счёту
+     *
+     * @param owner владелец
+     * @param dto DTO
+     */
+    private AccountTransaction createCreditTransaction(Account owner, AccountTxDTO dto) {
+        AccountTransaction creditTx = new AccountTransaction(owner);
+        creditTx.setOperationType(OperationType.CREDIT);
+        creditTx.setPayer(owner);
+        creditTx.setRecipient(owner);
+        Money money = createMoney(owner, dto);
+        creditTx.setMoney(money);
+        creditTx.setCashType(CashType.INVESTOR_CASH);
+        creditTx.setCash(money.getGivenCash().negate());
+        return accountTransactionRepository.save(creditTx);
+    }
+
+    /**
+     * Создать сумму в деньгах инвесторов
+     *
+     * @param owner владелец счёта
+     * @param dto DTO для реинвестирования
+     * @return созданная сумма
+     */
+    private Money createMoney(Account owner, AccountTxDTO dto) {
+        Facility facility = facilityService.findById(dto.getFacilityId());
+        if (facility == null) {
+            throw new EntityNotFoundException("Не найден объект для реинвестирования");
+        }
+        UnderFacility underFacility = underFacilityService.findById(dto.getUnderFacilityId());
+        if (underFacility == null) {
+            throw new EntityNotFoundException("Не найден подобъект для реинвестирования");
+        }
+        AppUser investor = userService.findById(owner.getOwnerId());
+        if (investor == null) {
+            throw new EntityNotFoundException("Не найден инвестор");
+        }
+        ShareType shareType = ShareType.fromTitle(dto.getShareType());
+        Date dateGiven = dto.getDateReinvest();
+        BigDecimal cash = dto.getCash();
+        Money money = new Money();
+        money.setFacility(facility);
+        money.setUnderFacility(underFacility);
+        money.setShareType(shareType);
+        money.setDateGiven(dateGiven);
+        money.setGivenCash(cash);
+        money.setInvestor(investor);
+        return moneyRepository.save(money);
+    }
+
+    /**
+     * Подготовить ответ с ошибкой
+     *
+     * @param response ответ
+     * @param error сообщение
+     */
+    private void prepareErrorResponse(ApiResponse response, String error) {
+        response.setError(error);
+        response.setStatus(HttpStatus.PRECONDITION_FAILED.value());
+    }
+
+    /**
+     * Проверить DTO для реинвестирования
+     *
+     * @param dto DTO для проверки
+     * @return ответ проверки
+     */
+    private ApiResponse checkDTO(AccountTxDTO dto) {
+        ApiResponse response = new ApiResponse();
+        if (dto == null) {
+            prepareErrorResponse(response, "Не указан DTO для реинвестирования");
+            return response;
+        }
+        if (dto.getFacilityId() == null) {
+            prepareErrorResponse(response, "Не указан id объекта");
+            return response;
+        }
+        if (dto.getUnderFacilityId() == null) {
+            prepareErrorResponse(response, "Не указан id подобъекта");
+            return response;
+        }
+        if (dto.getShareType() == null) {
+            prepareErrorResponse(response, "Не указана доля для реинвестирования");
+            return response;
+        }
+        if (dto.getAccountsIds() == null || dto.getAccountsIds().isEmpty()) {
+            prepareErrorResponse(response, "Не указаны счета для реинвестирования");
+            return response;
+        }
+        if (dto.getDateReinvest() == null) {
+            prepareErrorResponse(response, "Не указана дата реивестирования");
+            return response;
+        }
+        if (dto.getCash() == null) {
+            prepareErrorResponse(response, "Не указана сумма для реинвестирования");
+            return response;
+        }
+        return null;
     }
 
 }
