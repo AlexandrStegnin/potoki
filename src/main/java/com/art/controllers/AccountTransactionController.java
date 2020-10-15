@@ -84,6 +84,12 @@ public class AccountTransactionController {
         return transactionService.delete(dto);
     }
 
+    @ResponseBody
+    @PostMapping(path = Location.TRANSACTIONS_REINVEST)
+    public ApiResponse reinvest(@RequestBody AccountTxDTO dto) {
+        return transactionService.reinvest(dto);
+    }
+
     /**
      * Подготовить модель для страницы
      *
