@@ -242,6 +242,8 @@ public class Location {
 
     public static final String TRANSACTIONS_DETAILS = ACC_TRANSACTIONS + "/details";
 
+    public static final String TRANSACTIONS_REINVEST = ACC_TRANSACTIONS + "/reinvest";
+
     public static final String[] ADMIN_URLS = {
             ADMIN,
             CATALOGUE,
