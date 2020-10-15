@@ -54,6 +54,7 @@ public class MoneyService {
     private final CashSourceService cashSourceService;
     private final RentPaymentRepository rentPaymentRepository;
     private final SalePaymentRepository salePaymentRepository;
+    private final AccountTransactionService accountTransactionService;
 
     @Autowired
     public MoneyService(MoneyRepository moneyRepository, MoneySpecification specification,
@@ -61,7 +62,8 @@ public class MoneyService {
                         UnderFacilityService underFacilityService, FacilityService facilityService,
                         StatusService statusService, NewCashDetailService newCashDetailService, UserService userService,
                         TransactionLogService transactionLogService, CashSourceService cashSourceService,
-                        RentPaymentRepository rentPaymentRepository, SalePaymentRepository salePaymentRepository) {
+                        RentPaymentRepository rentPaymentRepository, SalePaymentRepository salePaymentRepository,
+                        AccountTransactionService accountTransactionService) {
         this.moneyRepository = moneyRepository;
         this.specification = specification;
         this.typeClosingService = typeClosingService;
@@ -75,6 +77,7 @@ public class MoneyService {
         this.cashSourceService = cashSourceService;
         this.rentPaymentRepository = rentPaymentRepository;
         this.salePaymentRepository = salePaymentRepository;
+        this.accountTransactionService = accountTransactionService;
     }
 
     public Money findById(Long id) {
@@ -1087,6 +1090,7 @@ public class MoneyService {
                 }
             }
             deleteById(deleting.getId());
+            accountTransactionService.deleteByMoneyId(deleting.getId());
             response.setMessage("Данные успешно удалены");
         });
         sendStatus("OK");
