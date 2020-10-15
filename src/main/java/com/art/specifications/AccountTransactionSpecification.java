@@ -1,9 +1,6 @@
 package com.art.specifications;
 
-import com.art.model.AccountTransaction;
-import com.art.model.AccountTransaction_;
-import com.art.model.Account_;
-import com.art.model.SalePayment_;
+import com.art.model.*;
 import com.art.model.supporting.enums.CashType;
 import com.art.model.supporting.filters.AccountTransactionFilter;
 import org.springframework.data.jpa.domain.Specification;
@@ -25,6 +22,7 @@ public class AccountTransactionSpecification extends BaseSpecification<AccountTr
                 .or(salePaymentIdEqual(filter.getSalePaymentId()))
                 .or(recipientEqual(filter.getRecipient()))
                 .or(cashTypeEqual(filter.getCashType()))
+                .or(moneyIdEqual(filter.getMoneyId()))
                 .toPredicate(root, query, cb);
     }
 
@@ -65,6 +63,16 @@ public class AccountTransactionSpecification extends BaseSpecification<AccountTr
         } else {
             return ((root, criteriaQuery, criteriaBuilder) ->
                     criteriaBuilder.equal(root.get(AccountTransaction_.salePayment).get(SalePayment_.id), salePaymentId)
+            );
+        }
+    }
+
+    private static Specification<AccountTransaction> moneyIdEqual(Long moneyId) {
+        if (moneyId == null) {
+            return null;
+        } else {
+            return ((root, criteriaQuery, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get(AccountTransaction_.money).get(Money_.id), moneyId)
             );
         }
     }
