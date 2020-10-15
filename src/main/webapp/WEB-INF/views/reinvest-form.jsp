@@ -21,6 +21,14 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group row" id="cashRow">
+                            <label class="col-md-3 col-form-label" for="cash">Сумма вложения:</label>
+                            <div class="col-md-9">
+                                <form:input type="number" path="cash" id="cash" class="form-control input-sm"/>
+                                <div id="cashErr" class="has-error col-md-9 d-none">Необходимо указать сумму вложения
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group row" id="facilityRow">
                             <label class="col-md-3 col-form-label" for="facility">Объект:</label>
                             <div class="col-md-9">
