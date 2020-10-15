@@ -35,11 +35,13 @@ let AccountTXReinvestDTO = function () {}
 
 AccountTXReinvestDTO.prototype = {
     dateReinvest: null,
+    cash: null,
     facilityId: null,
     underFacilityId: null,
     shareType: null,
-    build: function (dateReinvest, facilityId, underFacilityId, shareType) {
+    build: function (dateReinvest, cash, facilityId, underFacilityId, shareType) {
         this.dateReinvest = dateReinvest
+        this.cash = cash
         this.facilityId = facilityId
         this.underFacilityId = underFacilityId
         this.shareType = shareType
@@ -323,13 +325,15 @@ function subscribeFacilitySelectChange() {
 function subscribeAcceptReinvest() {
     reinvestModal.find('#accept').on('click', function () {
         let dateReinvest = reinvestModal.find('#dateReinvest').val()
+        let cash = reinvestModal.find('#cash').val()
         let facilityId = reinvestModal.find('#facility').val()
         let underFacilityId = reinvestModal.find('#underFacility').val()
         let shareType = reinvestModal.find('#shareType').val()
         let accTxReinvestDTO = new AccountTXReinvestDTO()
-        accTxReinvestDTO.build(dateReinvest, facilityId, underFacilityId, shareType)
+        accTxReinvestDTO.build(dateReinvest, cash, facilityId, underFacilityId, shareType)
         if (checkDTO(accTxReinvestDTO)) {
             console.log(accTxReinvestDTO)
+            // reinvest(accTxReinvestDTO)
         }
     })
 }
@@ -347,6 +351,13 @@ function checkDTO(accTxReinvestDTO) {
         return false
     } else {
         dateReinvestErr.removeClass('d-block')
+    }
+    let cashErr = $('#cashErr')
+    if (accTxReinvestDTO.cash.length === 0 || accTxReinvestDTO.cash === '0') {
+        cashErr.addClass('d-block')
+        return false
+    } else {
+        cashErr.removeClass('d-block')
     }
     let facilityErr = $('#facilityErr')
     if (accTxReinvestDTO.facilityId === '0') {
@@ -370,4 +381,35 @@ function checkDTO(accTxReinvestDTO) {
         shareTypeErr.removeClass('d-block')
     }
     return true
+}
+
+/**
+ * Реинвестировать суммы
+ *
+ * @param accTxReinvestDTO {AccountTXReinvestDTO} DTO для реинвестирования
+ */
+function reinvest(accTxReinvestDTO) {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+    showLoader();
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: 'reinvest',
+        data: JSON.stringify(accTxReinvestDTO),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (data) {
+            closeLoader();
+            showPopup(data.message)
+        },
+        error: function (e) {
+            closeLoader()
+            showPopup(e);
+        }
+    });
 }
