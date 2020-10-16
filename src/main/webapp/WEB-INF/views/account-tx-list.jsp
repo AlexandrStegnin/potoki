@@ -129,21 +129,10 @@
         <c:forEach items="${page.content}" var="tx">
             <tr id="${tx.id}">
                 <td><fmt:formatDate pattern="dd.MM.yyyy" value="${tx.txDate}"/></td>
-                <c:choose>
-                    <c:when test="${not empty tx.salePayment}">
-                        <c:set var="givenCash" value="${tx.salePayment.getGivenCash()}"/>
-                    </c:when>
-                    <c:when test="${not empty tx.money}">
-                        <c:set var="givenCash" value="${tx.money.getGivenCash()}"/>
-                    </c:when>
-                    <c:otherwise>
-                        <c:set var="givenCash" value="0"/>
-                    </c:otherwise>
-                </c:choose>
                 <td>${tx.owner.ownerName}</td>
                 <td>
                     <fmt:setLocale value="ru-RU" scope="session"/>
-                    <fmt:formatNumber value="${givenCash}" type="currency" minFractionDigits="2"/>
+                    <fmt:formatNumber value="${tx.cash}" type="currency" minFractionDigits="2"/>
                 </td>
                 <td>${tx.operationType.title}</td>
                 <td>${tx.cashType.title}</td>

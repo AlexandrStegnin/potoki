@@ -111,8 +111,7 @@
                     Сбросить фильтры
                 </button>
                 <button data-table-id="rentPayments" type="button" id="unblock_operations"
-                        class="btn btn-danger input-md" style="margin-right: 10px">Разблокировать операции
-                </button>
+                        class="btn btn-danger input-md" style="margin-right: 10px">Разблокировать операции</button>
                 <div class="dropdown pull-right" style="margin-right: 10px">
                     <button id="actions" type="button" data-toggle="dropdown"
                             class="btn btn-success input-md dropdown-toggle pull-right">Действия <span

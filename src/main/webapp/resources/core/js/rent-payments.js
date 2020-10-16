@@ -28,7 +28,7 @@ jQuery(document).ready(function ($) {
         if ($(this).text() === 'Разблокировать операции') {
             releaseOperations(tableId, 'unblock');
         } else {
-            releaseOperations(tableId, 'block');
+            $('#btn-search').click()
         }
     });
 
