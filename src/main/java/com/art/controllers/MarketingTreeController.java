@@ -49,13 +49,13 @@ public class MarketingTreeController {
         model.addAttribute("page", page);
         model.addAttribute("kins", kins);
         model.addAttribute("title", title);
-        return "viewmarketingtree";
+        return "marketing-tree";
     }
 
     @PostMapping(value = "/marketingTree")
     public ModelAndView marketingTreeWithFilter(
             @ModelAttribute("filters") MarketingTreeFilter filters) {
-        ModelAndView modelAndView = new ModelAndView("viewmarketingtree");
+        ModelAndView modelAndView = new ModelAndView("marketing-tree");
         String title = "Маркетинговое дерево";
         List<KinEnum> kins = new ArrayList<>(
                 Arrays.asList(KinEnum.values()));
