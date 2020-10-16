@@ -148,29 +148,30 @@ public class UploadExcelService {
                     AppUser user = users.stream().filter(u -> u.getProfile().getLastName().equalsIgnoreCase(lastName))
                             .findFirst()
                             .orElse(null);
+                    if (user == null) {
+                        return new ApiResponse("Не найден пользователь [" + lastName + "]", HttpStatus.PRECONDITION_FAILED.value());
+                    }
 
                     String underFacilityName = row.getCell(2).getStringCellValue();
                     if (underFacilityName == null || underFacilityName.isEmpty()) {
-                        break;
+                        return new ApiResponse("Не указан подобъект", HttpStatus.PRECONDITION_FAILED.value());
                     }
                     UnderFacility underFacility = underFacilityService.findByName(underFacilityName);
                     if (underFacility == null) {
-                        break;
+                        return new ApiResponse("Не найден подобъект [" + underFacilityName + "]", HttpStatus.PRECONDITION_FAILED.value());
                     }
                     String facilityName = row.getCell(1).getStringCellValue();
                     if (facilityName == null || facilityName.isEmpty()) {
-                        break;
+                        return new ApiResponse("Не указан объект", HttpStatus.PRECONDITION_FAILED.value());
                     }
                     Facility facility = facilityService.findByName(facilityName);
                     if (facility == null) {
-                        break;
+                        return new ApiResponse("Не найден объект [" + facilityName + "]", HttpStatus.PRECONDITION_FAILED.value());
                     }
                     RentPayment rentPayment = new RentPayment();
                     rentPayment.setDateReport(Date.from(cal.atStartOfDay(ZoneId.systemDefault()).toInstant()));
                     rentPayment.setFacility(facility);
-
                     rentPayment.setUnderFacility(underFacility);
-
                     rentPayment.setRoom(rooms.stream()
                             .filter(r -> r.getName().equalsIgnoreCase(row.getCell(3).getStringCellValue()))
                             .findFirst().orElse(null));
@@ -219,10 +220,11 @@ public class UploadExcelService {
                             .collect(Collectors.toList());
 
                     if (flowsList.size() == 0) {
-                        rentPaymentList.add(rentPayment);
+                        rentPayment.setIsReinvest(1);
+                        rentPaymentService.create(rentPayment);
+                        createRentTransaction(user, rentPayment);
                     }
                 }
-
             }
         }
         rentPaymentService.saveList(rentPaymentList);
@@ -242,12 +244,10 @@ public class UploadExcelService {
         List<AppUser> users = userService.findAll();
         List<SalePayment> salePayments = salePaymentService.findAll();
         int cel = 0;
-        List<SalePayment> salePaymentList = new ArrayList<>(0);
 
         List<ShareType> shareKinds = Arrays.asList(ShareType.values());
         Map<String, Facility> facilities = new HashMap<>();
         Map<String, UnderFacility> underFacilities = new HashMap<>();
-        Map<Long, SalePayment> userPayments = new HashMap<>();
         for (Row row : sheet) {
             cel++;
             if (cel > 1) {
@@ -422,52 +422,68 @@ public class UploadExcelService {
 
                     if (flowsSaleList.size() == 0) {
                         salePayment.setIsReinvest(1);
-                        salePaymentList.add(salePayment);
-                        if (userPayments.containsKey(user.getId())) {
-                            SalePayment cash = userPayments.get(user.getId());
-                            cash.setProfitToReInvest(cash.getProfitToReInvest().add(salePayment.getProfitToReInvest()));
-                        } else {
-                            userPayments.put(user.getId(), salePayment);
-                        }
+                        salePaymentService.create(salePayment);
+                        createSaleTransaction(user, salePayment);
                     }
                 }
 
             }
         }
-        salePaymentService.saveAll(salePaymentList);
-        try {
-            mergeSalePaymentsToAccount(userPayments);
-        } catch (Exception e) {
-            return new ApiResponse(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST.value());
-        }
+//        salePaymentService.saveAll(salePaymentList);
         return new ApiResponse("Загрузка файла с данными о продаже завершена");
     }
 
     /**
-     * Переместить деньги с продажи на счёт инвестора
+     * Получить счёт по параметрам
      *
-     * @param payments список денег с продажи и id пользователей
+     * @param ownerId id владельца
+     * @param ownerType вид владельца
+     * @return найденный счёт
      */
-    private void mergeSalePaymentsToAccount(Map<Long, SalePayment> payments) {
-        payments.forEach((userId, salePayment) -> {
-            Account owner = accountService.findByOwnerId(userId, OwnerType.INVESTOR);
-            Account payer = accountService.findByOwnerId(salePayment.getFacility().getId(), OwnerType.FACILITY);
-            if (owner == null) {
-                throw new EntityNotFoundException("Не найден счёт пользователя");
-            }
-            if (payer == null) {
-                throw new EntityNotFoundException("Не найден счёт объекта");
-            }
-            AccountTransaction transaction = new AccountTransaction(owner);
-            transaction.setPayer(payer);
-            transaction.setRecipient(owner);
-            transaction.setSalePayment(salePayment);
-            transaction.setOperationType(OperationType.DEBIT);
-            transaction.setCashType(CashType.SALE_CASH);
-            transaction.setCash(salePayment.getProfitToReInvest());
-            accountTransactionService.create(transaction);
-        });
+    private Account getAccount(Long ownerId, OwnerType ownerType) {
+        Account account = accountService.findByOwnerId(ownerId, ownerType);
+        if (account == null) {
+            throw new EntityNotFoundException("Не найден счёт с id [" + ownerId + "]");
+        }
+        return account;
+    }
 
+    /**
+     * Создать транзакцию по выплате (продажа)
+     *
+     * @param investor инвестор
+     * @param salePayment сумма продажи
+     */
+    private void createSaleTransaction(AppUser investor, SalePayment salePayment) {
+        Account owner = getAccount(investor.getId(), OwnerType.INVESTOR);
+        Account payer = getAccount(salePayment.getFacility().getId(), OwnerType.FACILITY);
+        AccountTransaction transaction = new AccountTransaction(owner);
+        transaction.setPayer(payer);
+        transaction.setRecipient(owner);
+        transaction.setSalePayment(salePayment);
+        transaction.setOperationType(OperationType.DEBIT);
+        transaction.setCashType(CashType.SALE_CASH);
+        transaction.setCash(salePayment.getProfitToReInvest());
+        accountTransactionService.create(transaction);
+    }
+
+    /**
+     * Создать транзакцию по выплате (аренда)
+     *
+     * @param investor инвестор
+     * @param rentPayment сумма аренды
+     */
+    private void createRentTransaction(AppUser investor, RentPayment rentPayment) {
+        Account owner = getAccount(investor.getId(), OwnerType.INVESTOR);
+        Account payer = getAccount(rentPayment.getFacility().getId(), OwnerType.FACILITY);
+        AccountTransaction transaction = new AccountTransaction(owner);
+        transaction.setPayer(payer);
+        transaction.setRecipient(owner);
+        transaction.setRentPayment(rentPayment);
+        transaction.setOperationType(OperationType.DEBIT);
+        transaction.setCashType(CashType.RENT_CASH);
+        transaction.setCash(BigDecimal.valueOf(rentPayment.getAfterCashing()));
+        accountTransactionService.create(transaction);
     }
 
 }
