@@ -60,12 +60,10 @@ jQuery(document).ready(function ($) {
                 })
             });
             deleteList(cashIdList);
-        } else {
-            deleteAll()
         }
     })
 
-    $(document).on('click', '#bth-clear', function (e) {
+    $(document).on('click', '#btn-clear', function (e) {
         e.preventDefault();
         $('#fFacilities').find('option:eq(0)').prop('selected', true);
         $('#uFacilities').find('option:eq(0)').prop('selected', true);
@@ -73,7 +71,8 @@ jQuery(document).ready(function ($) {
         $('#beginPeriod').val('');
         $('#endPeriod').val('');
         populateFilters((window.location.pathname + '').split("/")[1]);
-        window.location.href = window.location.pathname;
+        $('.selectpicker').selectpicker('refresh')
+        $('#btn-search').click()
     });
 
     $('#reinvestAll').prop('disabled', true);

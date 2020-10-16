@@ -88,7 +88,7 @@
             <form:input path="toDate" id="endPeriod" name="endDate" type="date" class="form-control input-sm"
                         value="${toDate}"
                         style="margin-right:5px"/>
-            <button type="submit" id="bth-search" class="btn btn-primary btn-md" style="margin-right:5px">Фильтр
+            <button type="submit" id="btn-search" class="btn btn-primary btn-md" style="margin-right:5px">Фильтр
             </button>
         </form:form>
     </div>
@@ -107,7 +107,7 @@
         </form:form>
         <div class="col-md-6 offset-md-2 p-2">
             <div class="row float-right">
-                <button type="submit" id="bth-clear" class="btn btn-danger input-md" style="margin-right: 10px">
+                <button type="submit" id="btn-clear" class="btn btn-danger input-md" style="margin-right: 10px">
                     Сбросить фильтры
                 </button>
                 <button data-table-id="rentPayments" type="button" id="unblock_operations"
