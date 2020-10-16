@@ -14,6 +14,7 @@ import com.art.model.supporting.enums.ShareType;
 import com.art.model.supporting.filters.AccountTransactionFilter;
 import com.art.repository.AccountTransactionRepository;
 import com.art.repository.MoneyRepository;
+import com.art.repository.RentPaymentRepository;
 import com.art.repository.SalePaymentRepository;
 import com.art.specifications.AccountTransactionSpecification;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -53,12 +55,14 @@ public class AccountTransactionService {
 
     private final NewCashDetailService newCashDetailService;
 
+    private final RentPaymentRepository rentPaymentRepository;
+
     public AccountTransactionService(AccountTransactionSpecification transactionSpecification,
                                      AccountTransactionRepository accountTransactionRepository,
                                      SalePaymentRepository salePaymentRepository, FacilityService facilityService,
                                      UnderFacilityService underFacilityService, AccountService accountService,
                                      UserService userService, MoneyRepository moneyRepository,
-                                     NewCashDetailService newCashDetailService) {
+                                     NewCashDetailService newCashDetailService, RentPaymentRepository rentPaymentRepository) {
         this.transactionSpecification = transactionSpecification;
         this.accountTransactionRepository = accountTransactionRepository;
         this.salePaymentRepository = salePaymentRepository;
@@ -68,6 +72,7 @@ public class AccountTransactionService {
         this.userService = userService;
         this.moneyRepository = moneyRepository;
         this.newCashDetailService = newCashDetailService;
+        this.rentPaymentRepository = rentPaymentRepository;
     }
 
     public AccountTransaction create(AccountTransaction transaction) {
@@ -156,15 +161,44 @@ public class AccountTransactionService {
      * @param dto DTO для удаления
      * @return ответ
      */
+    @Transactional
     public ApiResponse delete(AccountTxDTO dto) {
         List<AccountTransaction> transactions = new ArrayList<>();
         dto.getTxIds().forEach(id -> transactions.add(findById(id)));
-        List<SalePayment> salePayments = transactions.stream()
-                .map(AccountTransaction::getSalePayment)
-                .collect(Collectors.toList());
         accountTransactionRepository.delete(transactions);
-        salePaymentRepository.delete(salePayments);
+        deleteSalePayments(transactions);
+        deleteRentPayments(transactions);
         return new ApiResponse("Данные успешно удалены");
+    }
+
+    /**
+     * Удалить связанные выплаты с продажи
+     *
+     * @param transactions список транзакций
+     */
+    private void deleteSalePayments(List<AccountTransaction> transactions) {
+        List<SalePayment> salePayments = new ArrayList<>();
+        transactions.forEach(tx -> {
+            if (tx.getSalePayment() != null) {
+                salePayments.add(tx.getSalePayment());
+            }
+        });
+        salePaymentRepository.delete(salePayments);
+    }
+
+    /**
+     * Удалить связанные выплаты с аренды
+     *
+     * @param transactions список транзакций
+     */
+    private void deleteRentPayments(List<AccountTransaction> transactions) {
+        List<RentPayment> rentPayments = new ArrayList<>();
+        transactions.forEach(tx -> {
+            if (tx.getRentPayment() != null) {
+                rentPayments.add(tx.getRentPayment());
+            }
+        });
+        rentPaymentRepository.delete(rentPayments);
     }
 
     /**
