@@ -99,7 +99,7 @@
             <div class="p-2" style="margin-left: 10px">
                 <div class="input-group" style="margin-left: 10px">
                     <div class="custom-file">
-                        <input type="file" id="file" name="uploadingFiles" class="form-control-file"/>
+                        <input type="file" id="file" name="uploadingFiles" class="form-control-file" style="overflow: hidden"/>
                     </div>
                     <button type="button" class="btn btn-primary btn-md" id="upload">Загрузить</button>
                 </div>
