@@ -112,4 +112,8 @@ public class RentPaymentService {
         return new ApiResponse("Реинвестирование денег с аренды прошло успешно");
     }
 
+    public void create(RentPayment rentPayment) {
+        rentPaymentRepository.save(rentPayment);
+    }
+
 }
