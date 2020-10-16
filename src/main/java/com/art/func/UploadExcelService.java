@@ -227,7 +227,6 @@ public class UploadExcelService {
                 }
             }
         }
-        rentPaymentService.saveList(rentPaymentList);
         return new ApiResponse("Загрузка файла с данными по аренде завершена");
     }
 
