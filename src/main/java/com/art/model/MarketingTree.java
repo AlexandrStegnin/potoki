@@ -19,6 +19,7 @@ import java.util.Date;
         }
 )
 @NoArgsConstructor
+@Table(name = "marketing_tree")
 public class MarketingTree implements Serializable {
 
     @Id
@@ -27,28 +28,28 @@ public class MarketingTree implements Serializable {
     private Long id;
 
     @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "PartnerId", referencedColumnName = "Id")
+    @JoinColumn(name = "partner_id", referencedColumnName = "id")
     private AppUser partner;
 
     @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "InvestorId", referencedColumnName = "Id")
+    @JoinColumn(name = "investor_id", referencedColumnName = "id")
     private AppUser investor;
 
-    @Column
+    @Column(name = "kin")
     @Enumerated(EnumType.STRING)
     private KinEnum kin;
 
-    @Column
+    @Column(name = "first_investment_date")
     private Date firstInvestmentDate;
 
-    @Column
+    @Column(name = "inv_status")
     @Enumerated(EnumType.STRING)
     private StatusEnum invStatus;
 
-    @Column
+    @Column(name = "days_to_deactivate")
     private int daysToDeactivate;
 
-    @Column
+    @Column(name = "ser_number")
     private int serNumber;
 
 }
