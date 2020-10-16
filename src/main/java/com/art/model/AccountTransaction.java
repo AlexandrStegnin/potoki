@@ -45,6 +45,10 @@ public class AccountTransaction extends AbstractEntity {
     private SalePayment salePayment;
 
     @OneToOne
+    @JoinColumn(name = "rent_payment_id")
+    private RentPayment rentPayment;
+
+    @OneToOne
     @JoinColumn(name = "money_id")
     private Money money;
 
