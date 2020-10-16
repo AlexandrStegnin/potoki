@@ -1,5 +1,6 @@
 package com.art.controllers;
 
+import com.art.config.application.Location;
 import com.art.model.AppUser;
 import com.art.model.MarketingTree;
 import com.art.model.supporting.GenericResponse;
@@ -37,7 +38,7 @@ public class MarketingTreeController {
         this.marketingTreeService = marketingTreeService;
     }
 
-    @GetMapping(value = {"/marketingTree"})
+    @GetMapping(path = Location.MARKETING_TREE)
     public String marketingTreePage(ModelMap model) {
         String title = "Маркетинговое дерево";
         List<KinEnum> kins = new ArrayList<>(
@@ -52,7 +53,7 @@ public class MarketingTreeController {
         return "marketing-tree";
     }
 
-    @PostMapping(value = "/marketingTree")
+    @PostMapping(path = Location.MARKETING_TREE)
     public ModelAndView marketingTreeWithFilter(
             @ModelAttribute("filters") MarketingTreeFilter filters) {
         ModelAndView modelAndView = new ModelAndView("marketing-tree");
