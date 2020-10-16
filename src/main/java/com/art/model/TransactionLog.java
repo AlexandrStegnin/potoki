@@ -21,10 +21,7 @@ import java.util.Set;
 public class TransactionLog {
 
     @Id
-    @TableGenerator(name = "txLogSeqStore", table = "SEQ_STORE",
-            pkColumnName = "SEQ_NAME", pkColumnValue = "TX.LOG.ID.PK",
-            valueColumnName = "SEQ_VALUE", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "txLogSeqStore")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 
