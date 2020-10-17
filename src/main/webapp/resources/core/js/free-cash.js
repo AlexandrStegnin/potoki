@@ -355,13 +355,6 @@ function checkDTO(accTxReinvestDTO) {
     } else {
         dateReinvestErr.removeClass('d-block')
     }
-    let cashErr = $('#cashErr')
-    if (accTxReinvestDTO.cash.length === 0 || accTxReinvestDTO.cash === '0') {
-        cashErr.addClass('d-block')
-        return false
-    } else {
-        cashErr.removeClass('d-block')
-    }
     let facilityErr = $('#facilityErr')
     if (accTxReinvestDTO.facilityId === '0') {
         facilityErr.addClass('d-block')
