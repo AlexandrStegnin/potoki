@@ -285,7 +285,7 @@ public class AccountTransactionService {
             }
             Account recipient = accountService.findByOwnerId(dto.getUnderFacilityId(), OwnerType.UNDER_FACILITY);
             if (recipient == null) {
-                prepareErrorResponse(response, "Не найден счёт gjlj,]trnf");
+                prepareErrorResponse(response, "Не найден счёт подобъекта");
                 return response;
             }
             AccountDTO accountDTO = accountTransactionRepository.getOwnerSummary(OwnerType.INVESTOR, owner.getOwnerName());
