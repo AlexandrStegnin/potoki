@@ -1,9 +1,11 @@
 package com.art.service;
 
+import com.art.model.AccountTransaction;
 import com.art.model.Facility;
 import com.art.model.Money;
 import com.art.model.RentPayment;
 import com.art.model.supporting.ApiResponse;
+import com.art.model.supporting.dto.AccountTxDTO;
 import com.art.model.supporting.dto.RentPaymentDTO;
 import com.art.model.supporting.filters.RentPaymentFilter;
 import com.art.repository.FacilityRepository;
@@ -35,14 +37,18 @@ public class RentPaymentService {
 
     private final TransactionLogService txLogService;
 
+    private final AccountTransactionService accountTransactionService;
+
     @Autowired
     public RentPaymentService(RentPaymentRepository rentPaymentRepository, RentPaymentSpecification specification,
-                              FacilityRepository facilityRepository, MoneyRepository moneyRepository, TransactionLogService txLogService) {
+                              FacilityRepository facilityRepository, MoneyRepository moneyRepository,
+                              TransactionLogService txLogService, AccountTransactionService accountTransactionService) {
         this.rentPaymentRepository = rentPaymentRepository;
         this.specification = specification;
         this.facilityRepository = facilityRepository;
         this.moneyRepository = moneyRepository;
         this.txLogService = txLogService;
+        this.accountTransactionService = accountTransactionService;
     }
 
 //    @Cacheable(Constant.INVESTOR_FLOWS_CACHE_KEY)
@@ -76,11 +82,21 @@ public class RentPaymentService {
 
 //    @CacheEvict(Constant.INVESTOR_FLOWS_CACHE_KEY)
     public void deleteByIdIn(List<Long> idList) {
+        AccountTxDTO accountTxDTO = new AccountTxDTO();
         idList.forEach(id -> {
             List<Money> monies = moneyRepository.findBySourceFlowsId(String.valueOf(id));
+            RentPayment rentPayment = findById(id);
             moneyRepository.delete(monies);
-            rentPaymentRepository.delete(id);
+            AccountTransaction transaction = rentPayment.getTransaction();
+            if (transaction != null) {
+                accountTxDTO.addTxId(transaction.getId());
+            } else {
+                rentPaymentRepository.delete(id);
+            }
         });
+        if (accountTxDTO.getTxIds() != null && !accountTxDTO.getTxIds().isEmpty()) {
+            accountTransactionService.delete(accountTxDTO);
+        }
     }
 
     public Page<RentPayment> findAll(RentPaymentFilter filters, Pageable pageable) {

@@ -124,8 +124,7 @@ public class UploadExcelService {
         List<AppUser> users = userService.findAll();
         List<RentPayment> rentPaymentTmp = rentPaymentService.findAll();
         int cel = 0;
-        List<RentPayment> rentPaymentList = new ArrayList<>(0);
-
+        Map<Long, AccountTransaction> userTransactions = new HashMap<>();
         for (Row row : sheet) {
             cel++;
             if (cel > 1) {
@@ -202,7 +201,8 @@ public class UploadExcelService {
                     rentPayment.setReFacility(reFacility);
 
                     List<RentPayment> flowsList = rentPaymentTmp.stream()
-                            .filter(flows -> globalFunctions.getMonthInt(flows.getDateReport()) ==
+                            .filter(flows -> (flows.getDateReport() != null && rentPayment.getDateReport() != null) &&
+                                    globalFunctions.getMonthInt(flows.getDateReport()) ==
                                     globalFunctions.getMonthInt(rentPayment.getDateReport()) &&
                                     globalFunctions.getYearInt(flows.getDateReport()) ==
                                             globalFunctions.getYearInt(rentPayment.getDateReport()) &&
@@ -222,9 +222,19 @@ public class UploadExcelService {
                     if (flowsList.size() == 0) {
                         rentPayment.setIsReinvest(1);
                         rentPaymentService.create(rentPayment);
-                        createRentTransaction(user, rentPayment);
+                        AccountTransaction transaction = userTransactions.get(user.getId());
+                        if (transaction == null) {
+                            transaction = createRentTransaction(user, rentPayment);
+                        } else {
+                            updateRentTransaction(transaction, rentPayment);
+                        }
+                        userTransactions.put(user.getId(), transaction);
                     }
                 }
+                userTransactions.forEach((k, v) -> {
+                    accountTransactionService.create(v);
+                    v.getRentPayments().forEach(rentPaymentService::update);
+                });
             }
         }
         return new ApiResponse("Загрузка файла с данными по аренде завершена");
@@ -422,7 +432,6 @@ public class UploadExcelService {
 
                     if (flowsSaleList.size() == 0) {
                         salePayment.setIsReinvest(1);
-                        salePaymentService.create(salePayment);
                         AccountTransaction transaction = userTransactions.get(user.getId());
                         if (transaction == null) {
                             transaction = createSaleTransaction(user, salePayment);
@@ -430,6 +439,7 @@ public class UploadExcelService {
                             updateSaleTransaction(transaction, salePayment);
                         }
                         userTransactions.put(user.getId(), transaction);
+                        salePaymentService.create(salePayment);
                     }
                 }
                 userTransactions.forEach((k, v) -> accountTransactionService.create(v));
@@ -470,7 +480,6 @@ public class UploadExcelService {
         transaction.setCashType(CashType.SALE_CASH);
         transaction.setCash(salePayment.getProfitToReInvest());
         return transaction;
-//        accountTransactionService.create(transaction);
     }
 
     /**
@@ -479,7 +488,7 @@ public class UploadExcelService {
      * @param investor инвестор
      * @param rentPayment сумма аренды
      */
-    private void createRentTransaction(AppUser investor, RentPayment rentPayment) {
+    private AccountTransaction createRentTransaction(AppUser investor, RentPayment rentPayment) {
         Account owner = getAccount(investor.getId(), OwnerType.INVESTOR);
         Account payer = getAccount(rentPayment.getFacility().getId(), OwnerType.FACILITY);
         AccountTransaction transaction = new AccountTransaction(owner);
@@ -489,7 +498,7 @@ public class UploadExcelService {
         transaction.setOperationType(OperationType.DEBIT);
         transaction.setCashType(CashType.RENT_CASH);
         transaction.setCash(BigDecimal.valueOf(rentPayment.getAfterCashing()));
-        accountTransactionService.create(transaction);
+        return transaction;
     }
 
     /**
@@ -502,6 +511,18 @@ public class UploadExcelService {
     private void updateSaleTransaction(AccountTransaction transaction, SalePayment salePayment) {
         transaction.addSalePayment(salePayment);
         transaction.setCash(transaction.getCash().add(salePayment.getProfitToReInvest()));
+    }
+
+    /**
+     * Обновить транзакцию
+     *
+     * @param transaction транзакция
+     * @param rentPayment выплата (аренда)
+     * @return транзакция
+     */
+    private void updateRentTransaction(AccountTransaction transaction, RentPayment rentPayment) {
+        transaction.addRentPayment(rentPayment);
+        transaction.setCash(transaction.getCash().add(BigDecimal.valueOf(rentPayment.getAfterCashing())));
     }
 
 }

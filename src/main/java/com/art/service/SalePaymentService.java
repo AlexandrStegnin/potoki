@@ -137,9 +137,7 @@ public class SalePaymentService {
         try {
             List<Long> deletedChildesIds = new ArrayList<>();
             List<SalePayment> listToDelete = findByIdIn(dto.getSalePaymentsId());
-//            List<Long> salePaymentsIds = new ArrayList<>();
             listToDelete.forEach(ltd -> {
-//                salePaymentsIds.add(ltd.getId());
                 if (!deletedChildesIds.contains(ltd.getId())) {
                     List<SalePayment> childFlows = new ArrayList<>();
                     SalePayment parentFlow = findParentFlow(ltd, childFlows);
