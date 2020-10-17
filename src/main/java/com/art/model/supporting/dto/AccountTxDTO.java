@@ -37,4 +37,8 @@ public class AccountTxDTO {
         }
     }
 
+    public boolean isReinvestAll() {
+        return cash == null || cash.compareTo(BigDecimal.ZERO) <= 0;
+    }
+
 }
