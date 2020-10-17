@@ -427,7 +427,7 @@ public class UploadExcelService {
                         if (transaction == null) {
                             transaction = createSaleTransaction(user, salePayment);
                         } else {
-                            updateAccountTransaction(transaction, salePayment);
+                            updateSaleTransaction(transaction, salePayment);
                         }
                         userTransactions.put(user.getId(), transaction);
                     }
@@ -499,7 +499,7 @@ public class UploadExcelService {
      * @param salePayment выплата (продажа)
      * @return транзакция
      */
-    private void updateAccountTransaction(AccountTransaction transaction, SalePayment salePayment) {
+    private void updateSaleTransaction(AccountTransaction transaction, SalePayment salePayment) {
         transaction.addSalePayment(salePayment);
         transaction.setCash(transaction.getCash().add(salePayment.getProfitToReInvest()));
     }
