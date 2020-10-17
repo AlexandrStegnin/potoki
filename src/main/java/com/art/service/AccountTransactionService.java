@@ -178,11 +178,11 @@ public class AccountTransactionService {
      */
     private void deleteSalePayments(List<AccountTransaction> transactions) {
         List<SalePayment> salePayments = new ArrayList<>();
-        transactions.forEach(tx -> {
-            if (tx.getSalePayment() != null) {
-                salePayments.add(tx.getSalePayment());
+        transactions.forEach(tx -> tx.getSalePayments().forEach(salePayment -> {
+            if (salePayment != null) {
+                salePayments.add(salePayment);
             }
-        });
+        }));
         salePaymentRepository.delete(salePayments);
     }
 
@@ -193,11 +193,11 @@ public class AccountTransactionService {
      */
     private void deleteRentPayments(List<AccountTransaction> transactions) {
         List<RentPayment> rentPayments = new ArrayList<>();
-        transactions.forEach(tx -> {
-            if (tx.getRentPayment() != null) {
-                rentPayments.add(tx.getRentPayment());
+        transactions.forEach(tx -> tx.getRentPayments().forEach(rentPayment -> {
+            if (rentPayment != null) {
+                rentPayments.add(rentPayment);
             }
-        });
+        }));
         rentPaymentRepository.delete(rentPayments);
     }
 

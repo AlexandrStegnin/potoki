@@ -15,7 +15,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "sale_payment")
-@EqualsAndHashCode(exclude = {"facility", "investor", "underFacility"})
+@EqualsAndHashCode(exclude = {"facility", "investor", "underFacility", "transaction"})
+@ToString(exclude = "transaction")
 public class SalePayment implements Cash {
 
     @Id
@@ -69,6 +70,10 @@ public class SalePayment implements Cash {
     @Column(name = "source_id")
     private Long sourceId;
 
+    @ManyToOne
+    @JoinColumn(name = "acc_tx_id")
+    private AccountTransaction transaction;
+
     @Transient
     public String getDateGivenToLocalDate() {
         String localDate = "";
@@ -109,6 +114,7 @@ public class SalePayment implements Cash {
         this.isReinvest = 0;
         this.sourceId = null;
         this.profitToReInvest = null;
+        this.transaction = salePayment.getTransaction();
     }
 
     @Override

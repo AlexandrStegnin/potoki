@@ -1,8 +1,6 @@
 package com.art.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
@@ -13,6 +11,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "rent_payment")
+@EqualsAndHashCode(exclude = {"facility", "investor", "underFacility", "transaction"})
+@ToString(exclude = "transaction")
 public class RentPayment {
 
     @Id
@@ -84,6 +84,10 @@ public class RentPayment {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "room_id", referencedColumnName = "id")
     private Room room;
+
+    @ManyToOne
+    @JoinColumn(name = "acc_tx_id")
+    private AccountTransaction transaction;
 
     @Transient
     public String getDateReportFormatted() {

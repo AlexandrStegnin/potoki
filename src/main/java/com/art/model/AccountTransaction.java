@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Alexandr Stegnin
@@ -40,13 +42,11 @@ public class AccountTransaction extends AbstractEntity {
     @JoinColumn(name = "recipient_account_id")
     private Account recipient;
 
-    @OneToOne
-    @JoinColumn(name = "sale_payment_id")
-    private SalePayment salePayment;
+    @OneToMany(mappedBy = "transaction")
+    private Set<SalePayment> salePayments = new HashSet<>();
 
-    @OneToOne
-    @JoinColumn(name = "rent_payment_id")
-    private RentPayment rentPayment;
+    @OneToMany(mappedBy = "transaction")
+    private Set<RentPayment> rentPayments = new HashSet<>();
 
     @OneToOne
     @JoinColumn(name = "money_id")
@@ -61,6 +61,26 @@ public class AccountTransaction extends AbstractEntity {
 
     @Column(name = "cash")
     private BigDecimal cash;
+
+    public void addSalePayment(SalePayment salePayment) {
+        this.salePayments.add(salePayment);
+        salePayment.setTransaction(this);
+    }
+
+    public void removeSalePayment(SalePayment salePayment) {
+        this.salePayments.remove(salePayment);
+        salePayment.setTransaction(null);
+    }
+
+    public void addRentPayment(RentPayment rentPayment) {
+        this.rentPayments.add(rentPayment);
+        rentPayment.setTransaction(this);
+    }
+
+    public void removeRentPayment(RentPayment rentPayment) {
+        this.rentPayments.remove(rentPayment);
+        rentPayment.setTransaction(null);
+    }
 
     public AccountTransaction(Account owner) {
         this.owner = owner;

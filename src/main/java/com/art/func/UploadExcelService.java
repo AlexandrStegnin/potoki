@@ -247,6 +247,7 @@ public class UploadExcelService {
         List<ShareType> shareKinds = Arrays.asList(ShareType.values());
         Map<String, Facility> facilities = new HashMap<>();
         Map<String, UnderFacility> underFacilities = new HashMap<>();
+        Map<Long, AccountTransaction> userTransactions = new HashMap<>();
         for (Row row : sheet) {
             cel++;
             if (cel > 1) {
@@ -422,13 +423,18 @@ public class UploadExcelService {
                     if (flowsSaleList.size() == 0) {
                         salePayment.setIsReinvest(1);
                         salePaymentService.create(salePayment);
-                        createSaleTransaction(user, salePayment);
+                        AccountTransaction transaction = userTransactions.get(user.getId());
+                        if (transaction == null) {
+                            transaction = createSaleTransaction(user, salePayment);
+                        } else {
+                            updateAccountTransaction(transaction, salePayment);
+                        }
+                        userTransactions.put(user.getId(), transaction);
                     }
                 }
-
+                userTransactions.forEach((k, v) -> accountTransactionService.create(v));
             }
         }
-//        salePaymentService.saveAll(salePaymentList);
         return new ApiResponse("Загрузка файла с данными о продаже завершена");
     }
 
@@ -453,17 +459,18 @@ public class UploadExcelService {
      * @param investor инвестор
      * @param salePayment сумма продажи
      */
-    private void createSaleTransaction(AppUser investor, SalePayment salePayment) {
+    private AccountTransaction createSaleTransaction(AppUser investor, SalePayment salePayment) {
         Account owner = getAccount(investor.getId(), OwnerType.INVESTOR);
         Account payer = getAccount(salePayment.getFacility().getId(), OwnerType.FACILITY);
         AccountTransaction transaction = new AccountTransaction(owner);
         transaction.setPayer(payer);
         transaction.setRecipient(owner);
-        transaction.setSalePayment(salePayment);
+        transaction.addSalePayment(salePayment);
         transaction.setOperationType(OperationType.DEBIT);
         transaction.setCashType(CashType.SALE_CASH);
         transaction.setCash(salePayment.getProfitToReInvest());
-        accountTransactionService.create(transaction);
+        return transaction;
+//        accountTransactionService.create(transaction);
     }
 
     /**
@@ -478,11 +485,23 @@ public class UploadExcelService {
         AccountTransaction transaction = new AccountTransaction(owner);
         transaction.setPayer(payer);
         transaction.setRecipient(owner);
-        transaction.setRentPayment(rentPayment);
+        transaction.addRentPayment(rentPayment);
         transaction.setOperationType(OperationType.DEBIT);
         transaction.setCashType(CashType.RENT_CASH);
         transaction.setCash(BigDecimal.valueOf(rentPayment.getAfterCashing()));
         accountTransactionService.create(transaction);
+    }
+
+    /**
+     * Обновить транзакцию
+     *
+     * @param transaction транзакция
+     * @param salePayment выплата (продажа)
+     * @return транзакция
+     */
+    private void updateAccountTransaction(AccountTransaction transaction, SalePayment salePayment) {
+        transaction.addSalePayment(salePayment);
+        transaction.setCash(transaction.getCash().add(salePayment.getProfitToReInvest()));
     }
 
 }

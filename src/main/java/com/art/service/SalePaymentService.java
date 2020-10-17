@@ -2,6 +2,7 @@ package com.art.service;
 
 import com.art.model.*;
 import com.art.model.supporting.ApiResponse;
+import com.art.model.supporting.dto.AccountTxDTO;
 import com.art.model.supporting.dto.SalePaymentDTO;
 import com.art.model.supporting.dto.SalePaymentDivideDTO;
 import com.art.model.supporting.filters.SalePaymentFilter;
@@ -132,12 +133,13 @@ public class SalePaymentService {
      */
     public ApiResponse deleteChecked(SalePaymentDTO dto) {
         ApiResponse response;
+        AccountTxDTO accountTxDTO = new AccountTxDTO();
         try {
             List<Long> deletedChildesIds = new ArrayList<>();
             List<SalePayment> listToDelete = findByIdIn(dto.getSalePaymentsId());
-            List<Long> salePaymentsIds = new ArrayList<>();
+//            List<Long> salePaymentsIds = new ArrayList<>();
             listToDelete.forEach(ltd -> {
-                salePaymentsIds.add(ltd.getId());
+//                salePaymentsIds.add(ltd.getId());
                 if (!deletedChildesIds.contains(ltd.getId())) {
                     List<SalePayment> childFlows = new ArrayList<>();
                     SalePayment parentFlow = findParentFlow(ltd, childFlows);
@@ -156,8 +158,14 @@ public class SalePaymentService {
                 }
                 List<Money> monies = moneyRepository.findBySourceFlowsId(String.valueOf(ltd.getId()));
                 moneyRepository.delete(monies);
-                accountTransactionService.deleteBySalePaymentId(ltd.getId());
+                AccountTransaction transaction = ltd.getTransaction();
+                if (transaction != null) {
+                    accountTxDTO.addTxId(transaction.getId());
+                }
             });
+            if (accountTxDTO.getTxIds() != null && !accountTxDTO.getTxIds().isEmpty()) {
+                accountTransactionService.delete(accountTxDTO);
+            }
             response = new ApiResponse("Данные по выплатам с продажи успешно удалены");
         } catch (Exception ex) {
             response = new ApiResponse(ex.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value());
