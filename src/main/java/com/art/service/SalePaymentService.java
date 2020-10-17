@@ -162,7 +162,7 @@ public class SalePaymentService {
                 }
             });
             if (accountTxDTO.getTxIds() != null && !accountTxDTO.getTxIds().isEmpty()) {
-                accountTransactionService.delete(accountTxDTO);
+                accountTxDTO.getTxIds().forEach(id -> accountTransactionService.delete(accountTransactionService.findById(id)));
             }
             response = new ApiResponse("Данные по выплатам с продажи успешно удалены");
         } catch (Exception ex) {

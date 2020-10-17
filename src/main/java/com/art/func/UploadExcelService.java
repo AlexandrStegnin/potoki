@@ -432,6 +432,7 @@ public class UploadExcelService {
 
                     if (flowsSaleList.size() == 0) {
                         salePayment.setIsReinvest(1);
+                        salePaymentService.create(salePayment);
                         AccountTransaction transaction = userTransactions.get(user.getId());
                         if (transaction == null) {
                             transaction = createSaleTransaction(user, salePayment);
@@ -439,10 +440,12 @@ public class UploadExcelService {
                             updateSaleTransaction(transaction, salePayment);
                         }
                         userTransactions.put(user.getId(), transaction);
-                        salePaymentService.create(salePayment);
                     }
                 }
-                userTransactions.forEach((k, v) -> accountTransactionService.create(v));
+                userTransactions.forEach((k, v) -> {
+                    accountTransactionService.create(v);
+                    v.getSalePayments().forEach(salePaymentService::update);
+                });
             }
         }
         return new ApiResponse("Загрузка файла с данными о продаже завершена");
