@@ -241,7 +241,8 @@ function createRow(transactionDTO) {
         $('<td>').text((transactionDTO.cash).toLocaleString()),
         $('<td>').text(transactionDTO.operationType),
         $('<td>').text(transactionDTO.cashType),
-        $('<td>').text(transactionDTO.payer)
+        $('<td>').text(transactionDTO.payer),
+        $('<td>').text(transactionDTO.recipient)
     );
 }
 

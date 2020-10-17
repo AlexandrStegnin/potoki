@@ -21,6 +21,7 @@
                             <th scope="col" class="text-responsive">Вид транзакции</th>
                             <th scope="col" class="text-responsive">Вид денег</th>
                             <th scope="col" class="text-responsive">Отправитель</th>
+                            <th scope="col" class="text-responsive">Получатель</th>
                         </tr>
                         </thead>
                         <tbody class="text-responsive">
