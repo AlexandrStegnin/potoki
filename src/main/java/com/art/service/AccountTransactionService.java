@@ -258,28 +258,76 @@ public class AccountTransactionService {
         if (response != null) {
             return response;
         }
-        response = checkAvailableCash(dto);
-        if (response != null) {
-            return response;
+        if (dto.isReinvestAll()) {
+            return reinvestAll(dto);
+        } else {
+            response = checkAvailableCash(dto);
+            if (response != null) {
+                return response;
+            }
+            return reinvestPart(dto);
         }
-        response = new ApiResponse();
+    }
 
+    /**
+     * Реинвестировать всю сумму
+     *
+     * @param dto DTO для реинвестирования
+     * @return ответ об исполнении
+     */
+    private ApiResponse reinvestAll(AccountTxDTO dto) {
+        ApiResponse response = new ApiResponse();
         for (Long id : dto.getAccountsIds()) {
             Account owner = accountService.findByOwnerId(id, OwnerType.INVESTOR);
             if (owner == null) {
                 prepareErrorResponse(response, "Не найден счёт инвестора");
                 return response;
             }
+            Account recipient = accountService.findByOwnerId(dto.getUnderFacilityId(), OwnerType.UNDER_FACILITY);
+            if (recipient == null) {
+                prepareErrorResponse(response, "Не найден счёт gjlj,]trnf");
+                return response;
+            }
+            AccountDTO accountDTO = accountTransactionRepository.getOwnerSummary(OwnerType.INVESTOR, owner.getOwnerName());
+            dto.setCash(accountDTO.getSummary());
             try {
-                AccountTransaction creditTx = createCreditTransaction(owner, dto);
+                AccountTransaction creditTx = createCreditTransaction(owner, recipient, dto);
                 createDebitTransaction(creditTx, dto);
             } catch (Exception e) {
                 prepareErrorResponse(response, e.getLocalizedMessage());
                 return response;
             }
-
         }
+        return new ApiResponse("Реинвестирование прошло успешно");
+    }
 
+    /**
+     * Реинвестировать указанную часть суммы
+     *
+     * @param dto DTO для реинвестирования
+     * @return ответ об исполнении
+     */
+    private ApiResponse reinvestPart(AccountTxDTO dto) {
+        ApiResponse response = new ApiResponse();
+        for (Long id : dto.getAccountsIds()) {
+            Account owner = accountService.findByOwnerId(id, OwnerType.INVESTOR);
+            if (owner == null) {
+                prepareErrorResponse(response, "Не найден счёт инвестора");
+                return response;
+            }
+            Account recipient = accountService.findByOwnerId(dto.getUnderFacilityId(), OwnerType.UNDER_FACILITY);
+            if (recipient == null) {
+                prepareErrorResponse(response, "Не найден счёт подобъекта");
+                return response;
+            }
+            try {
+                AccountTransaction creditTx = createCreditTransaction(owner, recipient, dto);
+                createDebitTransaction(creditTx, dto);
+            } catch (Exception e) {
+                prepareErrorResponse(response, e.getLocalizedMessage());
+                return response;
+            }
+        }
         return new ApiResponse("Реинвестирование прошло успешно");
     }
 
@@ -327,15 +375,15 @@ public class AccountTransactionService {
 
     /**
      * Создать расходную транзакцию по счёту
-     *
-     * @param owner владелец
+     *  @param owner владелец
+     * @param recipient получатель
      * @param dto DTO
      */
-    private AccountTransaction createCreditTransaction(Account owner, AccountTxDTO dto) {
+    private AccountTransaction createCreditTransaction(Account owner, Account recipient, AccountTxDTO dto) {
         AccountTransaction creditTx = new AccountTransaction(owner);
         creditTx.setOperationType(OperationType.CREDIT);
         creditTx.setPayer(owner);
-        creditTx.setRecipient(owner);
+        creditTx.setRecipient(recipient);
         Money money = createMoney(owner, dto);
         creditTx.setMoney(money);
         creditTx.setCashType(CashType.INVESTOR_CASH);
@@ -422,10 +470,6 @@ public class AccountTransactionService {
         }
         if (dto.getDateReinvest() == null) {
             prepareErrorResponse(response, "Не указана дата реивестирования");
-            return response;
-        }
-        if (dto.getCash() == null) {
-            prepareErrorResponse(response, "Не указана сумма для реинвестирования");
             return response;
         }
         return null;
