@@ -46,7 +46,7 @@ public class MarketingTreeController {
         Pageable pageable = new PageRequest(filters.getPageNumber(), filters.getPageSize());
         Page<MarketingTree> page = marketingTreeService.findAll(filters, pageable);
 
-        model.addAttribute("filters", filters);
+        model.addAttribute("filter", filters);
         model.addAttribute("page", page);
         model.addAttribute("kins", kins);
         model.addAttribute("title", title);
@@ -65,7 +65,7 @@ public class MarketingTreeController {
         modelAndView.addObject("page", page);
         modelAndView.addObject("kins", kins);
         modelAndView.addObject("title", title);
-        modelAndView.addObject("filters", filters);
+        modelAndView.addObject("filter", filters);
 
         return modelAndView;
     }
