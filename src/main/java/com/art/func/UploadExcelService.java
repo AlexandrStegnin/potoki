@@ -512,7 +512,9 @@ public class UploadExcelService {
         AccountTransaction transaction = createMoneyTransaction(money);
         closedMonies.remove(money);
         closedMonies.forEach(m -> updateMoneyTransaction(transaction, m));
+        closedMonies.add(money);
         accountTransactionService.create(transaction);
+        moneyRepository.save(closedMonies);
     }
 
     /**
