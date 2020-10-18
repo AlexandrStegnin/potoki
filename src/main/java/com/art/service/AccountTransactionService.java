@@ -367,9 +367,11 @@ public class AccountTransactionService {
         debitTx.setOperationType(OperationType.DEBIT);
         debitTx.setPayer(creditTx.getOwner());
         debitTx.setRecipient(recipient);
-        debitTx.setMoney(creditTx.getMoney());
+        debitTx.setMonies(creditTx.getMonies());
         debitTx.setCashType(CashType.INVESTOR_CASH);
-        debitTx.setCash(creditTx.getMoney().getGivenCash());
+        debitTx.setCash(creditTx.getMonies().stream()
+                .map(Money::getGivenCash)
+                .reduce(BigDecimal.ZERO, BigDecimal::add));
         accountTransactionRepository.save(debitTx);
     }
 
@@ -385,7 +387,7 @@ public class AccountTransactionService {
         creditTx.setPayer(owner);
         creditTx.setRecipient(recipient);
         Money money = createMoney(owner, dto);
-        creditTx.setMoney(money);
+        creditTx.addMoney(money);
         creditTx.setCashType(CashType.INVESTOR_CASH);
         creditTx.setCash(money.getGivenCash().negate());
         return accountTransactionRepository.save(creditTx);

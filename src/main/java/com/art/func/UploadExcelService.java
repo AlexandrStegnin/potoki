@@ -4,6 +4,8 @@ import com.art.config.exception.EntityNotFoundException;
 import com.art.model.*;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.enums.*;
+import com.art.repository.MoneyRepository;
+import com.art.repository.TypeClosingRepository;
 import com.art.service.*;
 import com.art.util.ExcelUtils;
 import org.apache.poi.ss.usermodel.CellType;
@@ -22,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -55,10 +58,15 @@ public class UploadExcelService {
 
     private final AccountTransactionService accountTransactionService;
 
+    private final MoneyRepository moneyRepository;
+
+    private final TypeClosingRepository typeClosingRepository;
+
     public UploadExcelService(UserService userService, RoomService roomService, FacilityService facilityService,
                               UnderFacilityService underFacilityService, RentPaymentService rentPaymentService,
                               SalePaymentService salePaymentService, GlobalFunctions globalFunctions,
-                              AccountService accountService, AccountTransactionService accountTransactionService) {
+                              AccountService accountService, AccountTransactionService accountTransactionService,
+                              MoneyRepository moneyRepository, TypeClosingRepository typeClosingRepository) {
         this.userService = userService;
         this.roomService = roomService;
         this.facilityService = facilityService;
@@ -68,6 +76,8 @@ public class UploadExcelService {
         this.globalFunctions = globalFunctions;
         this.accountService = accountService;
         this.accountTransactionService = accountTransactionService;
+        this.moneyRepository = moneyRepository;
+        this.typeClosingRepository = typeClosingRepository;
     }
 
     public ApiResponse upload(MultipartHttpServletRequest request, UploadType type) {
@@ -258,6 +268,8 @@ public class UploadExcelService {
         Map<String, Facility> facilities = new HashMap<>();
         Map<String, UnderFacility> underFacilities = new HashMap<>();
         Map<Long, AccountTransaction> userTransactions = new HashMap<>();
+        Map<Long, List<Long>> investorsUnderFacilities = new HashMap<>();
+        LocalDate reportDate = null;
         for (Row row : sheet) {
             cel++;
             if (cel > 1) {
@@ -440,6 +452,17 @@ public class UploadExcelService {
                             updateSaleTransaction(transaction, salePayment);
                         }
                         userTransactions.put(user.getId(), transaction);
+                        reportDate = calSale;
+                        if (investorsUnderFacilities.containsKey(user.getId())) {
+                            List<Long> ufIds = investorsUnderFacilities.get(user.getId());
+                            if (ufIds == null) {
+                                ufIds = new ArrayList<>();
+                                ufIds.add(underFacility.getId());
+                                investorsUnderFacilities.get(user.getId()).add(underFacility.getId());
+                            }
+                        } else {
+                            investorsUnderFacilities.put(user.getId(), Collections.singletonList(underFacility.getId()));
+                        }
                     }
                 }
                 userTransactions.forEach((k, v) -> {
@@ -448,7 +471,48 @@ public class UploadExcelService {
                 });
             }
         }
+        closeOpenedMonies(investorsUnderFacilities, reportDate);
         return new ApiResponse("Загрузка файла с данными о продаже завершена");
+    }
+
+    /**
+     * Закрыть суммы, которые были инвестированы в проданный подобъект
+     *
+     * @param investorsUnderFacilities список пользователей и их подобъектов
+     * @param reportDate дата продажи
+     */
+    private void closeOpenedMonies(Map<Long, List<Long>> investorsUnderFacilities, LocalDate reportDate) {
+        TypeClosing typeClosing = typeClosingRepository.findByName("Продажа");
+        if (typeClosing == null) {
+            throw new EntityNotFoundException("Не найден вид закрытия [Продажа]");
+        }
+        Date dateClosing = Date.from(reportDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        investorsUnderFacilities.forEach((k, v) -> v.forEach(ufId -> {
+            List<Money> monies = moneyRepository.getOpenedMonies(ufId, k);
+            monies.forEach(money -> {
+                money.setDateClosing(dateClosing);
+                money.setTypeClosing(typeClosing);
+                money.setIsReinvest(1);
+                moneyRepository.save(money);
+            });
+            moveMoniesToAccount(monies);
+        }));
+    }
+
+    /**
+     * Переместить суммы на счёт инвестора
+     *
+     * @param closedMonies список денег
+     */
+    private void moveMoniesToAccount(List<Money> closedMonies) {
+        if (closedMonies.isEmpty()) {
+            return;
+        }
+        Money money = closedMonies.get(0);
+        AccountTransaction transaction = createMoneyTransaction(money);
+        closedMonies.remove(money);
+        closedMonies.forEach(m -> updateMoneyTransaction(transaction, m));
+        accountTransactionService.create(transaction);
     }
 
     /**
@@ -505,11 +569,28 @@ public class UploadExcelService {
     }
 
     /**
+     * Создать транзакцию по деньгам инвесторов
+     *
+     * @param money сумма инвестора
+     */
+    private AccountTransaction createMoneyTransaction(Money money) {
+        Account owner = getAccount(money.getInvestor().getId(), OwnerType.INVESTOR);
+        Account payer = getAccount(money.getUnderFacility().getId(), OwnerType.UNDER_FACILITY);
+        AccountTransaction transaction = new AccountTransaction(owner);
+        transaction.setPayer(payer);
+        transaction.setRecipient(owner);
+        transaction.addMoney(money);
+        transaction.setOperationType(OperationType.DEBIT);
+        transaction.setCashType(CashType.INVESTMENT_BODY);
+        transaction.setCash(money.getGivenCash());
+        return transaction;
+    }
+
+    /**
      * Обновить транзакцию
      *
      * @param transaction транзакция
      * @param salePayment выплата (продажа)
-     * @return транзакция
      */
     private void updateSaleTransaction(AccountTransaction transaction, SalePayment salePayment) {
         transaction.addSalePayment(salePayment);
@@ -521,11 +602,21 @@ public class UploadExcelService {
      *
      * @param transaction транзакция
      * @param rentPayment выплата (аренда)
-     * @return транзакция
      */
     private void updateRentTransaction(AccountTransaction transaction, RentPayment rentPayment) {
         transaction.addRentPayment(rentPayment);
         transaction.setCash(transaction.getCash().add(BigDecimal.valueOf(rentPayment.getAfterCashing())));
+    }
+
+    /**
+     * Обновить транзакцию
+     *
+     * @param transaction транзакция
+     * @param money сумма инвестиций
+     */
+    private void updateMoneyTransaction(AccountTransaction transaction, Money money) {
+        transaction.addMoney(money);
+        transaction.setCash(transaction.getCash().add(money.getGivenCash()));
     }
 
 }
