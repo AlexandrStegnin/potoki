@@ -22,7 +22,7 @@ public class AccountTransactionSpecification extends BaseSpecification<AccountTr
 //                .or(salePaymentIdEqual(filter.getSalePaymentId()))
                 .or(recipientEqual(filter.getRecipient()))
                 .or(cashTypeEqual(filter.getCashType()))
-                .or(moneyIdEqual(filter.getMoneyId()))
+//                .or(moneyIdEqual(filter.getMoneyId()))
                 .toPredicate(root, query, cb);
     }
 
@@ -67,14 +67,14 @@ public class AccountTransactionSpecification extends BaseSpecification<AccountTr
 //        }
 //    }
 
-    private static Specification<AccountTransaction> moneyIdEqual(Long moneyId) {
-        if (moneyId == null) {
-            return null;
-        } else {
-            return ((root, criteriaQuery, criteriaBuilder) ->
-                    criteriaBuilder.equal(root.get(AccountTransaction_.money).get(Money_.id), moneyId)
-            );
-        }
-    }
+//    private static Specification<AccountTransaction> moneyIdEqual(Long moneyId) {
+//        if (moneyId == null) {
+//            return null;
+//        } else {
+//            return ((root, criteriaQuery, criteriaBuilder) ->
+//                    criteriaBuilder.equal(root.get(AccountTransaction_.money).get(Money_.id), moneyId)
+//            );
+//        }
+//    }
 
 }
