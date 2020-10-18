@@ -1114,4 +1114,16 @@ public class MoneyService {
                 });
         return new ApiResponse("Суммы успешно согласованы");
     }
+
+    /**
+     * Получить список открытых сумм инвестора в подобъекте
+     *
+     * @param underFacilityId id подобъекта
+     * @param investorId id инвестора
+     * @return список сумм
+     */
+    public List<Money> getOpenedMonies(Long underFacilityId, Long investorId) {
+        return moneyRepository.getOpenedMonies(underFacilityId, investorId);
+    }
+
 }

@@ -36,4 +36,8 @@ public interface MoneyRepository extends JpaRepository<Money, Long>, JpaSpecific
 
     List<Money> findBySourceFlowsId(String sourceId);
 
+    @Query("SELECT m FROM Money m WHERE m.underFacility.id = :underFacilityId AND m.investor.id = :investorId " +
+            "AND m.givenCash > 0 AND m.dateClosing IS NULL AND m.typeClosing IS NULL")
+    List<Money> getOpenedMonies(@Param("underFacilityId") Long underFacilityId, @Param("investorId") Long investorId);
+
 }
