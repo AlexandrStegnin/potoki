@@ -168,6 +168,7 @@ public class AccountTransactionService {
         accountTransactionRepository.delete(transactions);
         deleteSalePayments(transactions);
         deleteRentPayments(transactions);
+        releaseMonies(transactions);
         return new ApiResponse("Данные успешно удалены");
     }
 
@@ -199,6 +200,27 @@ public class AccountTransactionService {
             }
         }));
         rentPaymentRepository.delete(rentPayments);
+    }
+
+    /**
+     * Открыть закрытые суммы, если удаляется связанные транзакции
+     *
+     * @param transactions список транзакций
+     */
+    private void releaseMonies(List<AccountTransaction> transactions) {
+        List<Money> monies = new ArrayList<>();
+        transactions.forEach(tx -> tx.getMonies().forEach(money -> {
+            if (money != null) {
+                monies.add(money);
+            }
+        }));
+        monies.forEach(money -> {
+            money.setDateClosing(null);
+            money.setTypeClosing(null);
+            money.setIsReinvest(0);
+            money.setTransaction(null);
+        });
+        moneyRepository.save(monies);
     }
 
     /**
