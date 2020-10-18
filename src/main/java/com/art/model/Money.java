@@ -16,10 +16,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Data
-@ToString(exclude = {"investor", "facility"})
-@EqualsAndHashCode
 @Entity
 @Table(name = "money")
+@ToString(exclude = {"investor", "facility", "transaction"})
+@EqualsAndHashCode(exclude = {"investor", "facility", "transaction"})
 public class Money implements Cash {
 
     @Id
@@ -106,6 +106,10 @@ public class Money implements Cash {
     @Enumerated(EnumType.STRING)
     @Column(name = "state")
     private MoneyState state = MoneyState.ACTIVE;
+
+    @ManyToOne
+    @JoinColumn(name = "acc_tx_id")
+    private AccountTransaction transaction;
 
     public Money() {
     }
