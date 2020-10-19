@@ -32,7 +32,7 @@
 
 <div class="container-fluid">
     <div class="d-flex flex-row justify-content-center" style="margin: 10px;">
-        <form:form modelAttribute="filter" action="marketingTree" method="POST" class="form-inline"
+        <form:form modelAttribute="filter" action="marketing-tree" method="POST" class="form-inline"
                    id="filter-form">
         <input type="hidden" id="pageNumber" name="pageNumber" value="0">
         <input type="hidden" id="pageSize" name="pageSize" value="${filter.pageSize}">
@@ -77,19 +77,17 @@
                                 </c:otherwise>
                             </c:choose>
                             <c:choose>
-                                <c:when test="${kinName eq filter.kin}">selected="selected"</c:when>
+                                <c:when test="${kin.name() eq filter.kin}">selected="selected"</c:when>
                             </c:choose>
                             value="${kin.name()}" id="${kin.ordinal()}">${kinName}
                     </option>
                 </c:forEach>
             </form:select>
         </div>
-        <label for="beginPeriod" style="margin-left:10px; margin-right:5px; font-size:14px">Период
-            с:</label>
-        <input id="beginPeriod" name="fromDate" type="date" class="form-control input-sm" value="">
+        <label for="beginPeriod" style="margin-left:10px; margin-right:5px; font-size:14px">Период с:</label>
+        <form:input path="fromDate" id="beginPeriod" name="fromDate" type="date" class="form-control input-sm" />
         <label for="endPeriod" style="margin-left:10px; margin-right:5px; font-size:14px">по:</label>
-        <input id="endPeriod" name="toDate" type="date" class="form-control input-md" value=""
-               style="margin-right:5px">
+        <form:input path="toDate" id="endPeriod" name="toDate" type="date" class="form-control input-md" style="margin-right:5px" />
         <input id="all" name="allRows" type="checkbox"
         <c:if test="${filter.allRows == true}"> checked="checked" </c:if> data-toggle="toggle"
                data-on="На одной" data-off="По страницам" data-onstyle="success" data-offstyle="danger"
