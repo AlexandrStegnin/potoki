@@ -247,6 +247,8 @@ public class Location {
     //МАРКЕТИНГОВОЕ ДЕРЕВО
     public static final String MARKETING_TREE = "/marketing-tree";
 
+    public static final String MARKETING_TREE_UPDATE = MARKETING_TREE + "/update";
+
     public static final String[] ADMIN_URLS = {
             ADMIN,
             CATALOGUE,
