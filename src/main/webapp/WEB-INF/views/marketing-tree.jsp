@@ -34,138 +34,136 @@
     <div class="d-flex flex-row justify-content-center" style="margin: 10px;">
         <form:form modelAttribute="filter" action="marketingTree" method="POST" class="form-inline"
                    id="filter-form">
-            <input type="hidden" id="pageNumber" name="pageNumber" value="0">
-            <input type="hidden" id="pageSize" name="pageSize" value="${filter.pageSize}">
-            <input type="hidden" id="total" name="total" value="${page.content.size()}">
-            <div style="padding: 5px;">
-                <form:select path="investor" id="investors" multiple="false" class="selectpicker"
-                             data-size="10" data-live-search="true" data-none-selected-text="Выберите инвестора">
-                    <c:forEach var="inv" items="${investors}">
-                        <option
-                                <c:choose>
-                                    <c:when test="${inv.login eq filter.investor}">selected="selected"</c:when>
-                                </c:choose>
-                                value="${inv.login}" id="${inv.id}">${inv.login}
-                        </option>
-                    </c:forEach>
-                </form:select>
-            </div>
-            <div style="padding: 5px;">
-                <form:select path="partner" id="partners" multiple="false" class="selectpicker"
-                             data-size="10" data-live-search="true" data-none-selected-text="Выберите партнёра">
-                    <c:forEach var="p" items="${partners}">
-                        <option
-                                <c:choose>
-                                    <c:when test="${p.login eq filter.partner}">selected="selected"</c:when>
-                                </c:choose>
-                                value="${p.login}" id="${p.id}">${p.login}
-                        </option>
-                    </c:forEach>
-                </form:select>
-            </div>
-            <div style="padding: 5px;">
-                <form:select path="kin" id="kins" multiple="false" class="selectpicker"
-                             data-size="10" data-live-search="true" data-none-selected-text="Выберите родство">
-                    <c:forEach var="kin" items="${kins}">
-                        <option
-                                <c:choose>
-                                    <c:when test="${kin.name() eq 'EMPTY'}">
-                                        <c:set var="kinName" value="Выберите родство"/>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <c:set var="kinName" value="${kin.val}"/>
-                                    </c:otherwise>
-                                </c:choose>
-                                <c:choose>
-                                    <c:when test="${kinName eq filter.kin}">selected="selected"</c:when>
-                                </c:choose>
-                                value="${kin.name()}" id="${kin.ordinal()}">${kinName}
-                        </option>
-                    </c:forEach>
-                </form:select>
-            </div>
-            <label for="beginPeriod" style="margin-left:10px; margin-right:5px; font-size:14px">Период
-                с:</label>
-            <input id="beginPeriod" name="fromDate" type="date" class="form-control input-sm" value="">
-            <label for="endPeriod" style="margin-left:10px; margin-right:5px; font-size:14px">по:</label>
-            <input id="endPeriod" name="toDate" type="date" class="form-control input-md" value=""
-                   style="margin-right:5px">
-            <button type="submit" id="bth-search" class="btn btn-primary btn-md">Фильтр</button>
-
-            <div class="d-flex flex-row justify-content-center" style="margin: 0 10px 10px 10px">
-                <div class="p-2">
-                    <button type="submit" id="bth-clear" class="btn btn-danger input-sm">Сбросить фильтры</button>
-                </div>
-                <div class="p-2">
-                    <input id="all" name="allRows" type="checkbox"
-                    <c:if test="${filter.allRows == true}"> checked="checked" </c:if> data-toggle="toggle"
-                           data-on="На одной" data-off="По страницам" data-onstyle="success" data-offstyle="danger"
-                           data-size="input-sm">
-                </div>
-                <div class="p-2">
-                <sec:authorize access="isFullyAuthenticated()">
-                    <sec:authorize access="hasRole('ADMIN')">
-                        <a id="updateMarketingTree" href="<c:url value='updateMarketingTree' />"
-                           class="btn btn-success btn-sm pull-right" style="margin-top: 2px; margin-bottom: 2px">Обновить
-                            маркетинговое дерево</a>
-                    </sec:authorize>
-                </sec:authorize>
-                </div>
-            </div>
-
-
-
-        </form:form>
-    </div>
-
-    <c:if test="${filter.allRows == false}">
-        <nav class="text-center" aria-label="Маркетинговое дерево">
-            <ul class="pagination pagination-sm justify-content-center">
-                <c:forEach begin="1" end="${page.totalPages}" varStatus="page">
-                    <c:choose>
-                        <c:when test="${filter.pageNumber == page.index - 1}">
-                            <c:set var="active" value="active"/>
-                        </c:when>
-                        <c:otherwise>
-                            <c:set var="active" value=""/>
-                        </c:otherwise>
-                    </c:choose>
-                    <li class="page-item ${active}" data-page="${page.index}">
-                        <a id="${page.index}" name="page_${page.index}" class="page-link"
-                           href="#">${page.index}</a>
-                    </li>
+        <input type="hidden" id="pageNumber" name="pageNumber" value="0">
+        <input type="hidden" id="pageSize" name="pageSize" value="${filter.pageSize}">
+        <input type="hidden" id="total" name="total" value="${page.content.size()}">
+        <div style="padding: 5px;">
+            <form:select path="investor" id="investors" multiple="false" class="selectpicker"
+                         data-size="10" data-live-search="true" data-none-selected-text="Выберите инвестора">
+                <c:forEach var="inv" items="${investors}">
+                    <option
+                            <c:choose>
+                                <c:when test="${inv.login eq filter.investor}">selected="selected"</c:when>
+                            </c:choose>
+                            value="${inv.login}" id="${inv.id}">${inv.login}
+                    </option>
                 </c:forEach>
-            </ul>
-        </nav>
-    </c:if>
+            </form:select>
+        </div>
+        <div style="padding: 5px;">
+            <form:select path="partner" id="partners" multiple="false" class="selectpicker"
+                         data-size="10" data-live-search="true" data-none-selected-text="Выберите партнёра">
+                <c:forEach var="p" items="${partners}">
+                    <option
+                            <c:choose>
+                                <c:when test="${p.login eq filter.partner}">selected="selected"</c:when>
+                            </c:choose>
+                            value="${p.login}" id="${p.id}">${p.login}
+                    </option>
+                </c:forEach>
+            </form:select>
+        </div>
+        <div style="padding: 5px;">
+            <form:select path="kin" id="kins" multiple="false" class="selectpicker"
+                         data-size="10" data-live-search="true" data-none-selected-text="Выберите родство">
+                <c:forEach var="kin" items="${kins}">
+                    <option
+                            <c:choose>
+                                <c:when test="${kin.name() eq 'EMPTY'}">
+                                    <c:set var="kinName" value="Выберите родство"/>
+                                </c:when>
+                                <c:otherwise>
+                                    <c:set var="kinName" value="${kin.val}"/>
+                                </c:otherwise>
+                            </c:choose>
+                            <c:choose>
+                                <c:when test="${kinName eq filter.kin}">selected="selected"</c:when>
+                            </c:choose>
+                            value="${kin.name()}" id="${kin.ordinal()}">${kinName}
+                    </option>
+                </c:forEach>
+            </form:select>
+        </div>
+        <label for="beginPeriod" style="margin-left:10px; margin-right:5px; font-size:14px">Период
+            с:</label>
+        <input id="beginPeriod" name="fromDate" type="date" class="form-control input-sm" value="">
+        <label for="endPeriod" style="margin-left:10px; margin-right:5px; font-size:14px">по:</label>
+        <input id="endPeriod" name="toDate" type="date" class="form-control input-md" value=""
+               style="margin-right:5px">
+        <input id="all" name="allRows" type="checkbox"
+        <c:if test="${filter.allRows == true}"> checked="checked" </c:if> data-toggle="toggle"
+               data-on="На одной" data-off="По страницам" data-onstyle="success" data-offstyle="danger"
+               data-size="input-sm">
+        <button type="submit" id="bth-search" class="btn btn-primary btn-md" style="margin-left: 5px">Фильтр</button>
+    </div>
+    <div class="d-flex flex-row justify-content-center align-center">
+        <div class="p-2">
+            <button type="button" id="bth-clear" class="btn btn-danger btn-md" style="margin-left: 5px">Сбросить
+                фильтры
+            </button>
+        </div>
+        <div class="p-2">
+            <sec:authorize access="isFullyAuthenticated()">
+                <sec:authorize access="hasRole('ADMIN')">
+                    <a id="updateMarketingTree" href="<c:url value='updateMarketingTree' />"
+                       class="btn btn-success btn-md pull-right">Обновить
+                        маркетинговое дерево</a>
+                </sec:authorize>
+            </sec:authorize>
+        </div>
+    </div>
+</div>
+</form:form>
+</div>
 
-    <table class="table table-hover" id="marketingTree">
-        <thead>
+<c:if test="${filter.allRows == false}">
+    <nav class="text-center" aria-label="Маркетинговое дерево">
+        <ul class="pagination pagination-sm justify-content-center">
+            <c:forEach begin="1" end="${page.totalPages}" varStatus="page">
+                <c:choose>
+                    <c:when test="${filter.pageNumber == page.index - 1}">
+                        <c:set var="active" value="active"/>
+                    </c:when>
+                    <c:otherwise>
+                        <c:set var="active" value=""/>
+                    </c:otherwise>
+                </c:choose>
+                <li class="page-item ${active}" data-page="${page.index}">
+                    <a id="${page.index}" name="page_${page.index}" class="page-link"
+                       href="#">${page.index}</a>
+                </li>
+            </c:forEach>
+        </ul>
+    </nav>
+</c:if>
+
+<table class="table table-hover" id="marketingTree">
+    <thead>
+    <tr>
+        <th>№ п/п</th>
+        <th>Инвестор</th>
+        <th>Партнёр</th>
+        <th>Родство</th>
+        <th>Дата первого вложения</th>
+        <th>Дней до окончания статуса активен</th>
+        <th>Статус инвестора</th>
+    </tr>
+    </thead>
+    <tbody>
+    <c:forEach items="${page.content}" var="tree">
         <tr>
-            <th>№ п/п</th>
-            <th>Инвестор</th>
-            <th>Партнёр</th>
-            <th>Родство</th>
-            <th>Дата первого вложения</th>
-            <th>Дней до окончания статуса активен</th>
-            <th>Статус инвестора</th>
+            <td>${tree.id}</td>
+            <td>${tree.investor.login}</td>
+            <td>${tree.partner.login}</td>
+            <td>${tree.kin.val}</td>
+            <td><fmt:formatDate pattern="dd.MM.yyyy"
+                                value="${tree.firstInvestmentDate}"/></td>
+            <td>${tree.daysToDeactivate}</td>
+            <td>${tree.invStatus.val}</td>
         </tr>
-        </thead>
-        <tbody>
-        <c:forEach items="${page.content}" var="tree">
-            <tr>
-                <td>${tree.id}</td>
-                <td>${tree.investor.login}</td>
-                <td>${tree.partner.login}</td>
-                <td>${tree.kin.val}</td>
-                <td><fmt:formatDate pattern="dd.MM.yyyy"
-                                    value="${tree.firstInvestmentDate}"/></td>
-                <td>${tree.daysToDeactivate}</td>
-                <td>${tree.invStatus.val}</td>
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table>
+    </c:forEach>
+    </tbody>
+</table>
 </div>
 <script type="text/javascript"
         src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' />"></script>
