@@ -278,4 +278,8 @@ public class UserService {
         );
     }
 
+    public List<AppUser> getInvestors() {
+        return userRepository.getInvestors();
+    }
+
 }

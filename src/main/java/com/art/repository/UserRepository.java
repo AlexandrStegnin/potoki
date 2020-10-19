@@ -25,4 +25,7 @@ public interface UserRepository extends JpaRepository<AppUser, Long> {
 
     Page<AppUser> findAll(Specification<AppUser> specification, Pageable pageable);
 
+    @Query("SELECT au FROM AppUser au WHERE au.role.name = 'ROLE_INVESTOR'")
+    List<AppUser> getInvestors();
+
 }
