@@ -219,11 +219,10 @@ function updateMarketingTree() {
             xhr.setRequestHeader(header, token);
         },
         success: function (data) {
-            slideBox(data.message);
             showPopup(data.message)
         },
         error: function (e) {
-            slideBox(e);
+            showPopup(e)
         }
     });
 }
