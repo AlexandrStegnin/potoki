@@ -1,5 +1,4 @@
 jQuery(document).ready(function ($) {
-    getFiltersFromLS((window.location.pathname + '').split("/")[1]);
 
     $(document).on('click', 'a[name*="page_"]', function (e) {
         e.preventDefault();
@@ -10,13 +9,7 @@ jQuery(document).ready(function ($) {
         $('#filter-form').submit();
     });
 
-    $("#filter-form").submit(function () {
-        enableSearchButton(false);
-        populateFilters((window.location.pathname + '').split("/")[1]);
-        enableSearchButton(true);
-    });
-
-    $(document).on('click', '#bth-clear', function (e) {
+    $(document).on('click', '#btn-clear', function (e) {
         e.preventDefault();
         $('#investors').find('option:eq(0)').prop('selected', true);
         $('#partners').find('option:eq(0)').prop('selected', true);
@@ -24,7 +17,15 @@ jQuery(document).ready(function ($) {
         $('.selectpicker').selectpicker('refresh');
         $('#beginPeriod').val('');
         $('#endPeriod').val('');
-        populateFilters((window.location.pathname + '').split("/")[1]);
-        window.location.href = window.location.pathname;
+        $('#btn-search').click()
     });
+
+    toggleAllRows()
+
 });
+
+function toggleAllRows() {
+    $('#all').on('change', function () {
+        $('#btn-search').click()
+    })
+}
