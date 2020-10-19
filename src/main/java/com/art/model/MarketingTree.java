@@ -24,7 +24,7 @@ public class MarketingTree implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column
+    @Column(name = "id")
     private Long id;
 
     @OneToOne(cascade = CascadeType.PERSIST)
