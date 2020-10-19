@@ -92,18 +92,18 @@
         <c:if test="${filter.allRows == true}"> checked="checked" </c:if> data-toggle="toggle"
                data-on="На одной" data-off="По страницам" data-onstyle="success" data-offstyle="danger"
                data-size="input-sm">
-        <button type="submit" id="bth-search" class="btn btn-primary btn-md" style="margin-left: 5px">Фильтр</button>
+        <button type="submit" id="btn-search" class="btn btn-primary btn-md" style="margin-left: 5px">Фильтр</button>
     </div>
     <div class="d-flex flex-row justify-content-center align-center">
         <div class="p-2">
-            <button type="button" id="bth-clear" class="btn btn-danger btn-md" style="margin-left: 5px">Сбросить
+            <button type="button" id="btn-clear" class="btn btn-danger btn-md" style="margin-left: 5px">Сбросить
                 фильтры
             </button>
         </div>
         <div class="p-2">
             <sec:authorize access="isFullyAuthenticated()">
                 <sec:authorize access="hasRole('ADMIN')">
-                    <a id="updateMarketingTree" href="<c:url value='updateMarketingTree' />"
+                    <a id="updateMarketingTree" href="<c:url value='#' />"
                        class="btn btn-success btn-md pull-right">Обновить
                         маркетинговое дерево</a>
                 </sec:authorize>
@@ -163,6 +163,7 @@
     </tbody>
 </table>
 </div>
+<%@include file="popup_modal.jsp" %>
 <script type="text/javascript"
         src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' />"></script>
 <script type="text/javascript"
@@ -174,6 +175,7 @@
 <script src="<c:url value='https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/marketing-tree.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
 
 </body>
 </html>
