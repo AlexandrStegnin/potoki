@@ -260,7 +260,7 @@ public class UploadExcelService {
         if (!ExcelUtils.isCorrect(sheet)) {
             return new ApiResponse("Проверьте кол-во столбцов в файле. Должно быть 36", HttpStatus.BAD_REQUEST.value());
         }
-        List<AppUser> users = userService.findAll();
+        List<AppUser> users = userService.getInvestors();
         List<SalePayment> salePayments = salePaymentService.findAll();
         int cel = 0;
 
