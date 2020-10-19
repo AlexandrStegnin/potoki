@@ -13,8 +13,10 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -30,7 +32,7 @@ public class MarketingTreeController {
 
     private final UserService userService;
     private final MarketingTreeService marketingTreeService;
-    private MarketingTreeFilter filters = new MarketingTreeFilter();
+    private final MarketingTreeFilter filter = new MarketingTreeFilter();
 
     @Autowired
     public MarketingTreeController(MarketingTreeService marketingTreeService, UserService userService) {
@@ -39,40 +41,32 @@ public class MarketingTreeController {
     }
 
     @GetMapping(path = Location.MARKETING_TREE)
-    public String marketingTreePage(ModelMap model) {
-        String title = "Маркетинговое дерево";
-        List<KinEnum> kins = new ArrayList<>(
-                Arrays.asList(KinEnum.values()));
-        Pageable pageable = new PageRequest(filters.getPageNumber(), filters.getPageSize());
-        Page<MarketingTree> page = marketingTreeService.findAll(filters, pageable);
-
-        model.addAttribute("filter", filters);
-        model.addAttribute("page", page);
-        model.addAttribute("kins", kins);
-        model.addAttribute("title", title);
-        return "marketing-tree";
+    public ModelAndView marketingTreePage(@PageableDefault(size = 100) @SortDefault Pageable pageable) {
+        return prepareModel(filter);
     }
 
     @PostMapping(path = Location.MARKETING_TREE)
-    public ModelAndView marketingTreeWithFilter(
-            @ModelAttribute("filters") MarketingTreeFilter filters) {
-        ModelAndView modelAndView = new ModelAndView("marketing-tree");
-        String title = "Маркетинговое дерево";
-        List<KinEnum> kins = new ArrayList<>(
-                Arrays.asList(KinEnum.values()));
-        Pageable pageable = new PageRequest(filters.getPageNumber(), filters.getPageSize());
-        Page<MarketingTree> page = marketingTreeService.findAll(filters, pageable);
-        modelAndView.addObject("page", page);
-        modelAndView.addObject("kins", kins);
-        modelAndView.addObject("title", title);
-        modelAndView.addObject("filter", filters);
-
-        return modelAndView;
+    public ModelAndView marketingTreeWithFilter(@ModelAttribute("filter") MarketingTreeFilter filter) {
+        return prepareModel(filter);
     }
 
-    @PostMapping(value = {"/updateMarketingTree"}, produces = "application/json;charset=UTF-8")
-    public @ResponseBody
-    GenericResponse updateMarketingTree() {
+    /**
+     * Подготовить модель для страницы
+     *
+     * @param filter фильтры
+     */
+    private ModelAndView prepareModel(MarketingTreeFilter filter) {
+        ModelAndView model = new ModelAndView("marketing-tree");
+        Pageable pageable = new PageRequest(filter.getPageNumber(), filter.getPageSize());
+        Page<MarketingTree> page = marketingTreeService.findAll(filter, pageable);
+        model.addObject("page", page);
+        model.addObject("filter", filter);
+        return model;
+    }
+
+    @ResponseBody
+    @PostMapping(path = Location.MARKETING_TREE_UPDATE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public GenericResponse updateMarketingTree() {
         GenericResponse response = new GenericResponse();
         response.setMessage(marketingTreeService.updateMarketingTreeFromApp());
         return response;
@@ -86,6 +80,12 @@ public class MarketingTreeController {
     @ModelAttribute("partners")
     public List<AppUser> initializePartners() {
         return userService.initializePartners();
+    }
+
+    @ModelAttribute("kins")
+    public List<KinEnum> initKins() {
+        return new ArrayList<>(
+                Arrays.asList(KinEnum.values()));
     }
 
     @InitBinder
