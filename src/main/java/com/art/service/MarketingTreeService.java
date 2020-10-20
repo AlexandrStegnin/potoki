@@ -136,7 +136,7 @@ public class MarketingTreeService {
         EntityManager entityManager = emf.createEntityManager();
         EntityTransaction tx = entityManager.getTransaction();
         Query query = entityManager.createNativeQuery(
-                "TRUNCATE TABLE MarketingTree;");
+                "TRUNCATE TABLE marketing_tree;");
         tx.begin();
         query.executeUpdate();
         tx.commit();
@@ -148,8 +148,8 @@ public class MarketingTreeService {
         EntityTransaction tx = entityManager.getTransaction();
         marketingTreeDTOList.forEach(marketingTreeDTO -> {
             Query query = entityManager.createNativeQuery(
-                    "INSERT INTO MarketingTree (InvestorId, PartnerId, Kin, FirstInvestmentDate, " +
-                            "InvStatus, DaysToDeactivate, SerNumber, ParentPartnerId) " +
+                    "INSERT INTO marketing_tree (investor_id, partner_id, kin, first_investment_date, " +
+                            "inv_status, days_to_deactivate, ser_number, parent_partner_id) " +
                             "VALUES (:investorId, :partnerId, :kin, :firstInvestmentDate, :invStatus, :daysToDeactivate, " +
                             ":serNumber, :parentPartnerId)");
             tx.begin();

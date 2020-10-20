@@ -211,7 +211,7 @@ function updateMarketingTree() {
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: "updateMarketingTree",
+        url: "marketing-tree/update",
         data: "",
         dataType: 'json',
         timeout: 100000,
@@ -219,10 +219,10 @@ function updateMarketingTree() {
             xhr.setRequestHeader(header, token);
         },
         success: function (data) {
-            slideBox(data.message);
+            showPopup(data.message)
         },
         error: function (e) {
-            slideBox(e);
+            showPopup(e)
         }
     });
 }
@@ -471,4 +471,17 @@ function getFilters(pageName, lastFilters) {
     if (filtered === '0') {
         $('#bth-search').click();
     }
+}
+
+/**
+ * Показать сообщение
+ *
+ * @param message {String}
+ */
+function showPopup(message) {
+    $('#msg').html(message);
+    $('#msg-modal').modal('show');
+    setTimeout(function () {
+        $('#msg-modal').modal('hide');
+    }, 3000);
 }

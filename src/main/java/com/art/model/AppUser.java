@@ -30,7 +30,7 @@ public class AppUser implements Serializable {
     @Column(name = "password", nullable = false, length = 100)
     private String password;
 
-    @Column
+    @Column(name = "partner_id")
     private Long partnerId;
 
     @Column(name = "confirmed")
