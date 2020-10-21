@@ -105,7 +105,10 @@ public class AccountTransactionService {
                 transactions.add(transaction);
             }
         });
-        transactions.forEach(this::deleteByParent);
+        transactions.forEach(transaction -> {
+            releaseMonies(new ArrayList<>(transaction.getChild()));
+            deleteByParent(transaction);
+        });
     }
 
     /**
