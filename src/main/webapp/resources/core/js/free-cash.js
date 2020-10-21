@@ -17,6 +17,7 @@ AccountSummaryDTO.prototype = {
 let AccountTransactionDTO = function () {}
 
 AccountTransactionDTO.prototype = {
+    id: null,
     txDate: null,
     operationType: null,
     payer: null,
@@ -25,7 +26,8 @@ AccountTransactionDTO.prototype = {
     cash: null,
     cashType: null,
     blocked: null,
-    build: function (txDate, operationType, payer, owner, recipient, cash, cashType, blocked) {
+    build: function (id, txDate, operationType, payer, owner, recipient, cash, cashType, blocked) {
+        this.id = id
         this.txDate = txDate
         this.operationType = operationType
         this.payer = payer
@@ -539,7 +541,7 @@ function createTxTable(txs) {
  * @returns строка таблицы
  */
 function createTxRow(transactionDTO) {
-    return $('<tr>').append(
+    return $('<tr id="' + transactionDTO.id + '">').append(
         $('<td>').text(getDate(transactionDTO.txDate).toLocaleDateString()),
         $('<td>').text(transactionDTO.owner),
         $('<td>').text((transactionDTO.cash).toLocaleString()),

@@ -16,6 +16,8 @@ import java.util.Date;
 @Data
 public class AccountTransactionDTO {
 
+    private Long id;
+
     private Date txDate;
 
     private String operationType;
@@ -33,6 +35,7 @@ public class AccountTransactionDTO {
     private boolean blocked;
 
     public AccountTransactionDTO(AccountTransaction transaction) {
+        this.id = transaction.getId();
         this.txDate = transaction.getTxDate();
         this.operationType = transaction.getOperationType().getTitle();
         this.payer = getName(transaction.getPayer());
