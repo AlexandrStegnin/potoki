@@ -71,16 +71,29 @@ AccFilter.prototype = {
     }
 }
 
+let AccountTxDTO = function () {
+}
+
+AccountTxDTO.prototype = {
+    txIds: [],
+    build: function (txIds) {
+        this.txIds = txIds
+    }
+}
+
 let popupTable;
 
 let reinvestModal;
 
 let txModalTable;
 
+let confirmDelete;
+
 jQuery(document).ready(function ($) {
     popupTable = $('#popup-table')
     reinvestModal = $('#reinvest-form-modal')
     txModalTable = $('#tx-popup-table')
+    confirmDelete = $('#confirm-delete');
     showPageableResult()
     subscribeCheckAllClick()
     subscribeCheckboxChange()
@@ -91,6 +104,8 @@ jQuery(document).ready(function ($) {
     subscribeFacilitySelectChange()
     subscribeAcceptReinvest()
     subscribeShowTxs()
+    showConfirmDelete()
+    acceptDelete()
 })
 
 /**
@@ -548,6 +563,67 @@ function createTxRow(transactionDTO) {
         $('<td>').text(transactionDTO.operationType),
         $('<td>').text(transactionDTO.cashType),
         $('<td>').text(transactionDTO.payer),
-        $('<td><input type="checkbox"/></td>')
+        $('<td><input type="checkbox" data-object-id="' + transactionDTO.id + '"/></td>')
     );
+}
+
+/**
+ * Показать форму подтверждения удаления
+ */
+function showConfirmDelete() {
+    $('#delete-list').on('click', function () {
+        confirmDelete.css('z-index', '1000001')
+        txModalTable.css('z-index', '1000000')
+        confirmDelete.modal('show')
+    })
+}
+
+/**
+ * Подтверждение удаления
+ */
+function acceptDelete() {
+    confirmDelete.find('#accept-delete').on('click', function () {
+        let options = $('table#tx-table').find('input:checkbox:checked:not(disabled)')
+        let checked = []
+        $.each(options, function (ind, el) {
+            checked.push($(el).data('object-id'))
+        })
+        let accountTxDTO = new AccountTxDTO()
+        accountTxDTO.build(checked)
+        deleteTransactions(accountTxDTO)
+    })
+}
+
+/**
+ * Удалить выбранные суммы
+ *
+ * @param accountTxDTO {AccountTxDTO} DTO для удаления сумм
+ */
+function deleteTransactions(accountTxDTO) {
+    confirmDelete.modal('hide')
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: "delete",
+        data: JSON.stringify(accountTxDTO),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        }
+    })
+        .done(function (data) {
+            showPopup(data.message);
+            $('#bth-search').click()
+        })
+        .fail(function (e) {
+            showPopup('Что-то пошло не так [' + e.message + ']');
+        })
+        .always(function () {
+            console.log('Закончили!');
+        });
+
 }
