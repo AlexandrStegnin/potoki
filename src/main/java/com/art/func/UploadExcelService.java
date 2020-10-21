@@ -444,7 +444,6 @@ public class UploadExcelService {
 
                     if (flowsSaleList.size() == 0) {
                         salePayment.setIsReinvest(1);
-                        salePaymentService.create(salePayment);
                         AccountTransaction transaction = userTransactions.get(user.getId());
                         if (transaction == null) {
                             transaction = createSaleTransaction(user, salePayment);
@@ -464,12 +463,9 @@ public class UploadExcelService {
                             ufIds.add(underFacility.getId());
                             investorsUnderFacilities.put(user.getId(), ufIds);
                         }
+                        salePaymentService.create(salePayment);
                     }
                 }
-                userTransactions.forEach((k, v) -> {
-                    accountTransactionService.create(v);
-                    v.getSalePayments().forEach(salePaymentService::update);
-                });
             }
         }
         closeOpenedMonies(investorsUnderFacilities, reportDate);
@@ -512,9 +508,11 @@ public class UploadExcelService {
         Money money = closedMonies.get(0);
         AccountTransaction transaction = createMoneyTransaction(money);
         closedMonies.remove(money);
-        closedMonies.forEach(m -> updateMoneyTransaction(transaction, m));
+        closedMonies.forEach(m -> {
+            m.setTransaction(transaction);
+            updateMoneyTransaction(transaction, m);
+        });
         closedMonies.add(money);
-        accountTransactionService.create(transaction);
         moneyRepository.save(closedMonies);
     }
 
@@ -545,11 +543,11 @@ public class UploadExcelService {
         AccountTransaction transaction = new AccountTransaction(owner);
         transaction.setPayer(payer);
         transaction.setRecipient(owner);
-        transaction.addSalePayment(salePayment);
         transaction.setOperationType(OperationType.DEBIT);
         transaction.setCashType(CashType.SALE_CASH);
         transaction.setCash(salePayment.getProfitToReInvest());
-        return transaction;
+        salePayment.setTransaction(transaction);
+        return accountTransactionService.create(transaction);
     }
 
     /**
@@ -585,7 +583,7 @@ public class UploadExcelService {
         transaction.setOperationType(OperationType.DEBIT);
         transaction.setCashType(CashType.INVESTMENT_BODY);
         transaction.setCash(money.getGivenCash());
-        return transaction;
+        return accountTransactionService.create(transaction);
     }
 
     /**
@@ -595,7 +593,7 @@ public class UploadExcelService {
      * @param salePayment выплата (продажа)
      */
     private void updateSaleTransaction(AccountTransaction transaction, SalePayment salePayment) {
-        transaction.addSalePayment(salePayment);
+        salePayment.setTransaction(transaction);
         transaction.setCash(transaction.getCash().add(salePayment.getProfitToReInvest()));
     }
 
