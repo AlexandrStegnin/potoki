@@ -315,21 +315,29 @@ public class AccountTransactionService {
     public Page<AccountDTO> getSummary(AccountTransactionFilter filter, Pageable pageable) {
         if (filter.getPageSize() == 0) pageable = new PageRequest(filter.getPageNumber(), filter.getTotal() + 1);
         String ownerName = filter.getOwner();
-        String payer = filter.getPayer();
+        String payerName = filter.getPayer();
         String parentPayer = filter.getParentPayer();
-        if (filter.isClear()) {
-            return accountTransactionRepository.getSummary(OwnerType.INVESTOR, pageable);
+
+        switch (filter.getFilterType()) {
+            case IS_CLEAR:
+                return accountTransactionRepository.getSummary(OwnerType.INVESTOR, pageable);
+            case BY_OWNER:
+                return accountTransactionRepository.fetchSummaryByOwner(OwnerType.INVESTOR, ownerName, pageable);
+            case BY_PAYER:
+                return accountTransactionRepository.fetchSummaryByPayer(OwnerType.INVESTOR, payerName, pageable);
+            case BY_PARENT_PAYER:
+                return accountTransactionRepository.fetchSummaryByParentPayer(OwnerType.INVESTOR, parentPayer, pageable);
+            case BY_OWNER_AND_PAYER:
+                return accountTransactionRepository.fetchSummaryByOwnerAndPayer(OwnerType.INVESTOR, ownerName, payerName, pageable);
+            case BY_OWNER_AND_PARENT_PAYER:
+                return accountTransactionRepository.fetchSummaryByOwnerAndParentPayer(OwnerType.INVESTOR, ownerName, parentPayer, pageable);
+            case BY_PAYER_AND_PARENT_PAYER:
+                return accountTransactionRepository.fetchSummaryByPayerAndParentPayer(OwnerType.INVESTOR, payerName, parentPayer, pageable);
+            case BY_OWNER_AND_PAYER_AND_PARENT_PAYER:
+
+                break;
         }
-        if (filter.isFilterByOwner()) {
-            return accountTransactionRepository.getOwnerSummary(OwnerType.INVESTOR, ownerName, pageable);
-        }
-        if (filter.isFilterByPayer()) {
-            return accountTransactionRepository.fetchSummaryByPayer(OwnerType.INVESTOR, payer, pageable);
-        }
-        if (filter.isFilterByParentPayer()) {
-            return accountTransactionRepository.fetchGroupedByFacility(OwnerType.INVESTOR, parentPayer, pageable);
-        }
-        return accountTransactionRepository.fetchSummaryByOwnerAndPayer(OwnerType.INVESTOR, ownerName, payer, pageable);
+        return accountTransactionRepository.getSummary(OwnerType.INVESTOR, pageable);
     }
 
     /**
@@ -402,7 +410,7 @@ public class AccountTransactionService {
                 prepareErrorResponse(response, "Не найден счёт подобъекта");
                 return response;
             }
-            AccountDTO accountDTO = accountTransactionRepository.getOwnerSummary(OwnerType.INVESTOR, owner.getOwnerName());
+            AccountDTO accountDTO = accountTransactionRepository.fetchSummaryByOwner(OwnerType.INVESTOR, owner.getOwnerName());
             dto.setCash(accountDTO.getSummary());
             try {
                 AccountTransaction creditTx = createCreditTransaction(owner, recipient, dto);
@@ -600,7 +608,7 @@ public class AccountTransactionService {
      * @return сумма
      */
     private AccountDTO getOwnerSummary(String ownerName) {
-        return accountTransactionRepository.getOwnerSummary(OwnerType.INVESTOR, ownerName);
+        return accountTransactionRepository.fetchSummaryByOwner(OwnerType.INVESTOR, ownerName);
     }
 
     /**
