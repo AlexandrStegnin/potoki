@@ -541,7 +541,7 @@ public class UploadExcelService {
      */
     private AccountTransaction createSaleTransaction(AppUser investor, SalePayment salePayment) {
         Account owner = getAccount(investor.getId(), OwnerType.INVESTOR);
-        Account payer = getAccount(salePayment.getFacility().getId(), OwnerType.FACILITY);
+        Account payer = getAccount(salePayment.getUnderFacility().getId(), OwnerType.UNDER_FACILITY);
         AccountTransaction transaction = new AccountTransaction(owner);
         transaction.setPayer(payer);
         transaction.setRecipient(owner);
