@@ -1,5 +1,6 @@
 package com.art.model.supporting.dto;
 
+import com.art.model.Account;
 import com.art.model.AccountTransaction;
 import lombok.Data;
 
@@ -34,12 +35,20 @@ public class AccountTransactionDTO {
     public AccountTransactionDTO(AccountTransaction transaction) {
         this.txDate = transaction.getTxDate();
         this.operationType = transaction.getOperationType().getTitle();
-        this.payer = transaction.getPayer().getOwnerName();
-        this.owner = transaction.getOwner().getOwnerName();
-        this.recipient = transaction.getRecipient().getOwnerName();
+        this.payer = getName(transaction.getPayer());
+        this.owner = getName(transaction.getOwner());
+        this.recipient = getName(transaction.getRecipient());
         this.cashType = transaction.getCashType().getTitle();
         this.cash = transaction.getCash();
         this.blocked = transaction.isBlocked();
+    }
+
+    private String getName(Account account) {
+        String name = "";
+        if (account != null) {
+            name = account.getOwnerName();
+        }
+        return name;
     }
 
 }
