@@ -12,7 +12,7 @@
             </div>
             <div class="modal-body">
                 <div class="table-responsive">
-                    <table id="detail-table" class="table table-striped table-hover">
+                    <table id="tx-table" class="table table-striped table-hover">
                         <thead style="text-align: center">
                         <tr>
                             <th>Дата транзакции</th>
