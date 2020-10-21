@@ -5,6 +5,7 @@ import com.art.model.supporting.enums.OperationType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -19,9 +20,17 @@ import java.util.Set;
 @Data
 @Entity
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@ToString(exclude = {"parent", "child"})
+@EqualsAndHashCode(callSuper = true, exclude = {"parent", "child"})
 @Table(name = "account_transaction")
 public class AccountTransaction extends AbstractEntity {
+
+    @ManyToOne
+    @JoinColumn(name = "parent_acc_tx_id")
+    private AccountTransaction parent;
+
+    @OneToMany(mappedBy = "parent", orphanRemoval = true)
+    private Set<AccountTransaction> child;
 
     @Column(name = "tx_date")
     private Date txDate = new Date();
