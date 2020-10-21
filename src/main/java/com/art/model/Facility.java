@@ -2,6 +2,7 @@ package com.art.model;
 
 import com.art.model.supporting.dto.FacilityDTO;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,6 +10,7 @@ import java.io.Serializable;
 @Data
 @Entity
 @Table(name = "facility", schema = "pss_projects")
+@EqualsAndHashCode(of = {"id", "name", "fullName"})
 public class Facility implements Serializable {
 
     private Long id;
