@@ -56,6 +56,19 @@ AccountTXReinvestDTO.prototype = {
     }
 }
 
+let AccFilter = function () {}
+
+AccFilter.prototype = {
+    ownerName: null,
+    payerName: null,
+    parentPayer: null,
+    build: function (ownerName, payerName, parentPayer) {
+        this.ownerName = ownerName
+        this.payerName = payerName
+        this.parentPayer = parentPayer
+    }
+}
+
 let popupTable;
 
 let reinvestModal;
@@ -203,10 +216,8 @@ function subscribeTxShowClick() {
     $('.tx-show').on('click', function () {
         let txId = $(this).data('tx-id')
         let accSummaryDTO = new AccountSummaryDTO()
-        let ownerName = $('#owners').find('option:selected').val()
-        let payerName = $('#payers').find('option:selected').val()
-        let parentPayer = $('#parentPayers').find('option:selected').val()
-        accSummaryDTO.build(txId, ownerName, payerName, parentPayer)
+        let accFilter = getFilter()
+        accSummaryDTO.build(txId, accFilter.ownerName, accFilter.payerName, accFilter.parentPayer)
         getDetails(accSummaryDTO)
     })
 }
@@ -451,6 +462,22 @@ function getAccountsIds() {
  */
 function subscribeShowTxs() {
     $('#show-txs').on('click', function () {
-        txModalTable.modal('show')
+        let filter = getFilter()
+        console.log(filter)
+        // txModalTable.modal('show')
     })
+}
+
+/**
+ * Собрать фильтр со страницы
+ *
+ * @return {AccFilter} собранный фильтр
+ */
+function getFilter() {
+    let accFilter = new AccFilter()
+    let ownerName = $('#owners').find('option:selected').val()
+    let payerName = $('#payers').find('option:selected').val()
+    let parentPayer = $('#parentPayers').find('option:selected').val()
+    accFilter.build(ownerName, payerName, parentPayer)
+    return accFilter
 }
