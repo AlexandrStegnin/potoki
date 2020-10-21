@@ -87,6 +87,21 @@ public class AccountTransactionSpecification extends BaseSpecification<AccountTr
         }
     }
 
+    private static Specification<AccountTransaction> cashNotNull() {
+        return ((root, criteriaQuery, criteriaBuilder) ->
+                criteriaBuilder.isNotNull(root.get(AccountTransaction_.cash))
+        );
+    }
+
+    public Specification<AccountTransaction> getTxDetailsFilter(AccountTransactionFilter filter) {
+        return (root, query, cb) -> where(
+                accIdEqual(filter.getAccountId()))
+                .and(parentPayerEqual(filter.getParentPayer()))
+                .and(payerEqual(filter.getPayer()))
+                .and(cashNotNull())
+                .toPredicate(root, query, cb);
+    }
+
     public Specification<AccountTransaction> getDetailsFilter(AccountTransactionFilter filter) {
         return (root, query, cb) -> where(
                 accIdEqual(filter.getAccountId()))

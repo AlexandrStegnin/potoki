@@ -648,12 +648,12 @@ public class AccountTransactionService {
     /**
      * Получить данные для всплывающей таблицы с инфо о транзакциях
      *
-     * @param dto
-     * @return
+     * @param dto DTO с параметрами фильтров
+     * @return список транзакций
      */
     public List<AccountTransactionDTO> fetch(AccountSummaryDTO dto) {
         AccountTransactionFilter filter = getFilter(dto);
-        return accountTransactionRepository.findAll(transactionSpecification.getFilter(filter))
+        return accountTransactionRepository.findAll(transactionSpecification.getTxDetailsFilter(filter))
                 .stream()
                 .map(AccountTransactionDTO::new)
                 .collect(Collectors.toList());
