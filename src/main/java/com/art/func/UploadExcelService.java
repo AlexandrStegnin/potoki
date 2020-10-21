@@ -274,6 +274,7 @@ public class UploadExcelService {
             cel++;
             if (cel > 1) {
                 if (row.getCell(0) != null && row.getCell(0).getCellTypeEnum() != CellType.BLANK) {
+                    AccountTransaction parentTransaction = new AccountTransaction();
                     Calendar calendar = Calendar.getInstance();
                     try {
                         calendar.setTime(FORMAT.parse(row.getCell(4).getDateCellValue().toString()));
@@ -446,7 +447,7 @@ public class UploadExcelService {
                         salePayment.setIsReinvest(1);
                         AccountTransaction transaction = userTransactions.get(user.getId());
                         if (transaction == null) {
-                            transaction = createSaleTransaction(user, salePayment);
+                            transaction = createSaleTransaction(user, salePayment, parentTransaction);
                         } else {
                             updateSaleTransaction(transaction, salePayment);
                         }
@@ -465,10 +466,10 @@ public class UploadExcelService {
                         }
                         salePaymentService.create(salePayment);
                     }
+                    closeOpenedMonies(investorsUnderFacilities, reportDate, parentTransaction);
                 }
             }
         }
-        closeOpenedMonies(investorsUnderFacilities, reportDate);
         return new ApiResponse("Загрузка файла с данными о продаже завершена");
     }
 
@@ -478,7 +479,7 @@ public class UploadExcelService {
      * @param investorsUnderFacilities список пользователей и их подобъектов
      * @param reportDate дата продажи
      */
-    private void closeOpenedMonies(Map<Long, List<Long>> investorsUnderFacilities, LocalDate reportDate) {
+    private void closeOpenedMonies(Map<Long, List<Long>> investorsUnderFacilities, LocalDate reportDate, AccountTransaction parent) {
         TypeClosing typeClosing = typeClosingRepository.findByName("Продажа");
         if (typeClosing == null) {
             throw new EntityNotFoundException("Не найден вид закрытия [Продажа]");
@@ -491,7 +492,7 @@ public class UploadExcelService {
                 money.setTypeClosing(typeClosing);
                 money.setIsReinvest(1);
             });
-            moveMoniesToAccount(monies);
+            moveMoniesToAccount(monies, parent);
         }));
     }
 
@@ -500,15 +501,16 @@ public class UploadExcelService {
      *
      * @param closedMonies список денег
      */
-    private void moveMoniesToAccount(List<Money> closedMonies) {
+    private void moveMoniesToAccount(List<Money> closedMonies, AccountTransaction parent) {
         if (closedMonies.isEmpty()) {
             return;
         }
         Money money = closedMonies.get(0);
-        AccountTransaction transaction = createMoneyTransaction(money);
+        AccountTransaction transaction = createMoneyTransaction(money, parent);
         closedMonies.remove(money);
         closedMonies.forEach(m -> updateMoneyTransaction(transaction, m));
         closedMonies.add(money);
+        accountTransactionService.create(transaction);
         moneyRepository.save(closedMonies);
     }
 
@@ -533,15 +535,22 @@ public class UploadExcelService {
      * @param investor инвестор
      * @param salePayment сумма продажи
      */
-    private AccountTransaction createSaleTransaction(AppUser investor, SalePayment salePayment) {
+    private AccountTransaction createSaleTransaction(AppUser investor, SalePayment salePayment, AccountTransaction parent) {
         Account owner = getAccount(investor.getId(), OwnerType.INVESTOR);
         Account payer = getAccount(salePayment.getUnderFacility().getId(), OwnerType.UNDER_FACILITY);
+        if (parent.getOwner() == null) {
+            parent.setOwner(payer);
+            parent.setOperationType(OperationType.DEBIT);
+            parent.setCashType(CashType.SALE_CASH);
+            accountTransactionService.create(parent);
+        }
         AccountTransaction transaction = new AccountTransaction(owner);
         transaction.setPayer(payer);
         transaction.setRecipient(owner);
         transaction.setOperationType(OperationType.DEBIT);
         transaction.setCashType(CashType.SALE_CASH);
         transaction.setCash(salePayment.getProfitToReInvest());
+        transaction.setParent(parent);
         salePayment.setTransaction(transaction);
         return accountTransactionService.create(transaction);
     }
@@ -570,7 +579,7 @@ public class UploadExcelService {
      *
      * @param money сумма инвестора
      */
-    private AccountTransaction createMoneyTransaction(Money money) {
+    private AccountTransaction createMoneyTransaction(Money money, AccountTransaction parent) {
         Account owner = getAccount(money.getInvestor().getId(), OwnerType.INVESTOR);
         Account payer = getAccount(money.getUnderFacility().getId(), OwnerType.UNDER_FACILITY);
         AccountTransaction transaction = new AccountTransaction(owner);
@@ -579,8 +588,9 @@ public class UploadExcelService {
         transaction.setOperationType(OperationType.DEBIT);
         transaction.setCashType(CashType.INVESTMENT_BODY);
         transaction.setCash(money.getGivenCash());
+        transaction.setParent(parent);
         money.setTransaction(transaction);
-        return accountTransactionService.create(transaction);
+        return transaction;
     }
 
     /**
