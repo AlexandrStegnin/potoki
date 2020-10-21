@@ -291,8 +291,11 @@ public class AccountTransactionService {
     public Page<AccountDTO> getSummary(AccountTransactionFilter filter, Pageable pageable) {
         if (filter.getPageSize() == 0) pageable = new PageRequest(filter.getPageNumber(), filter.getTotal() + 1);
         String ownerName = filter.getOwner();
+        String payer = filter.getPayer();
         if (ownerName == null || "Выберите владельца".equalsIgnoreCase(ownerName)) {
             return accountTransactionRepository.getSummary(OwnerType.INVESTOR, pageable);
+        } else  if ("Выберите объект".equalsIgnoreCase(payer)) {
+            return accountTransactionRepository.getSummaryByFacility(OwnerType.INVESTOR, ownerName, payer, pageable);
         } else {
             return accountTransactionRepository.getOwnerSummary(OwnerType.INVESTOR, ownerName, pageable);
         }

@@ -21,4 +21,6 @@ public class AccountTransactionFilter extends AbstractFilter {
 
     private Long moneyId;
 
+    private String payer;
+
 }
