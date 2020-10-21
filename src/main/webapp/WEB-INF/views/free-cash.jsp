@@ -161,6 +161,7 @@
 <%@include file="ddk_loader.jsp" %>
 <%@include file="reinvest-form.jsp" %>
 <%@include file="table-popup.jsp" %>
+<%@include file="tx-popup-table.jsp" %>
 
 <script type="text/javascript"
         src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' />"></script>
