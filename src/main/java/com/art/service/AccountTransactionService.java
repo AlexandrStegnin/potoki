@@ -17,7 +17,9 @@ import com.art.repository.MoneyRepository;
 import com.art.repository.RentPaymentRepository;
 import com.art.repository.SalePaymentRepository;
 import com.art.specifications.AccountTransactionSpecification;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -641,6 +643,20 @@ public class AccountTransactionService {
 
     public void deleteByMoneyId(Long moneyId) {
         accountTransactionRepository.delete(findByMoneyId(moneyId));
+    }
+
+    /**
+     * Получить данные для всплывающей таблицы с инфо о транзакциях
+     *
+     * @param dto
+     * @return
+     */
+    public List<AccountTransactionDTO> fetch(AccountSummaryDTO dto) {
+        AccountTransactionFilter filter = getFilter(dto);
+        return accountTransactionRepository.findAll(transactionSpecification.getFilter(filter))
+                .stream()
+                .map(AccountTransactionDTO::new)
+                .collect(Collectors.toList());
     }
 
 }

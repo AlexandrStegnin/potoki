@@ -3,6 +3,8 @@ package com.art.controllers;
 import com.art.config.application.Location;
 import com.art.model.AccountTransaction;
 import com.art.model.supporting.ApiResponse;
+import com.art.model.supporting.dto.AccountSummaryDTO;
+import com.art.model.supporting.dto.AccountTransactionDTO;
 import com.art.model.supporting.dto.AccountTxDTO;
 import com.art.model.supporting.enums.CashType;
 import com.art.model.supporting.filters.AccountTransactionFilter;
@@ -70,6 +72,18 @@ public class AccountTransactionController {
     @PostMapping(path = Location.ACC_TRANSACTIONS)
     public ModelAndView accountTransactionsFiltered(@ModelAttribute(value = "filter") AccountTransactionFilter filter) {
         return prepareModel(filter);
+    }
+
+    /**
+     * Получить отфильтрованную страницу для отображения списка транзакций по счетам клиентов
+     *
+     * @param dto для фильтрации результата
+     * @return страница
+     */
+    @ResponseBody
+    @PostMapping(path = Location.ACC_TRANSACTIONS_POPUP)
+    public List<AccountTransactionDTO> accountTransactionsPopup(@RequestBody AccountSummaryDTO dto) {
+        return transactionService.fetch(dto);
     }
 
     /**
