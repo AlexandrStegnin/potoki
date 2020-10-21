@@ -11,6 +11,9 @@
                 </button>
             </div>
             <div class="modal-body">
+                <div class="d-flex flex-row justify-content-end">
+                    <button type="button" class="btn btn-danger pull-right" style="margin-bottom: 10px" >Удалить выбранные</button>
+                </div>
                 <div class="table-responsive">
                     <table id="tx-table" class="table table-striped table-hover">
                         <thead style="text-align: center">
