@@ -334,8 +334,7 @@ public class AccountTransactionService {
             case BY_PAYER_AND_PARENT_PAYER:
                 return accountTransactionRepository.fetchSummaryByPayerAndParentPayer(OwnerType.INVESTOR, payerName, parentPayer, pageable);
             case BY_OWNER_AND_PAYER_AND_PARENT_PAYER:
-
-                break;
+                return accountTransactionRepository.fetchSummaryByOwnerAndPayerAndParentPayer(OwnerType.INVESTOR, ownerName, payerName, parentPayer, pageable);
         }
         return accountTransactionRepository.getSummary(OwnerType.INVESTOR, pageable);
     }
