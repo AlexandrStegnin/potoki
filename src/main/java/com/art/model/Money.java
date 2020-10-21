@@ -138,6 +138,7 @@ public class Money implements Cash {
         this.realDateGiven = null;
         this.transactionUUID = null;
         this.state = MoneyState.ACTIVE;
+        this.transaction = cash.getTransaction();
     }
 
     public Money(Facility facility, UnderFacility underFacility, AppUser investor,
