@@ -457,11 +457,12 @@ public class UploadExcelService {
                             List<Long> ufIds = investorsUnderFacilities.get(user.getId());
                             if (ufIds == null) {
                                 ufIds = new ArrayList<>();
-                                ufIds.add(underFacility.getId());
-                                investorsUnderFacilities.get(user.getId()).add(underFacility.getId());
                             }
+                            ufIds.add(underFacility.getId());
                         } else {
-                            investorsUnderFacilities.put(user.getId(), Collections.singletonList(underFacility.getId()));
+                            List<Long> ufIds = new ArrayList<>();
+                            ufIds.add(underFacility.getId());
+                            investorsUnderFacilities.put(user.getId(), ufIds);
                         }
                     }
                 }
@@ -581,7 +582,6 @@ public class UploadExcelService {
         AccountTransaction transaction = new AccountTransaction(owner);
         transaction.setPayer(payer);
         transaction.setRecipient(owner);
-        transaction.addMoney(money);
         transaction.setOperationType(OperationType.DEBIT);
         transaction.setCashType(CashType.INVESTMENT_BODY);
         transaction.setCash(money.getGivenCash());
@@ -617,7 +617,6 @@ public class UploadExcelService {
      * @param money сумма инвестиций
      */
     private void updateMoneyTransaction(AccountTransaction transaction, Money money) {
-        transaction.addMoney(money);
         transaction.setCash(transaction.getCash().add(money.getGivenCash()));
     }
 
