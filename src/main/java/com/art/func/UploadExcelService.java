@@ -484,6 +484,9 @@ public class UploadExcelService {
         if (typeClosing == null) {
             throw new EntityNotFoundException("Не найден вид закрытия [Продажа]");
         }
+        if (reportDate == null) {
+            reportDate = LocalDate.now();
+        }
         Date dateClosing = Date.from(reportDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         investorsUnderFacilities.forEach((k, v) -> v.forEach(ufId -> {
             List<Money> monies = moneyRepository.getOpenedMonies(ufId, k);
