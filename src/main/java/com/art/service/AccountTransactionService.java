@@ -245,12 +245,19 @@ public class AccountTransactionService {
      */
     @Transactional
     public ApiResponse delete(AccountTxDTO dto) {
-        List<AccountTransaction> transactions = new ArrayList<>();
-        dto.getTxIds().forEach(id -> transactions.add(findById(id)));
-        accountTransactionRepository.delete(transactions);
-        deleteSalePayments(transactions);
-        deleteRentPayments(transactions);
-        releaseMonies(transactions);
+        Set<AccountTransaction> transactions = new HashSet<>();
+        dto.getTxIds().forEach(id -> {
+            AccountTransaction transaction = findParent(id);
+            if (transaction != null) {
+                transactions.add(transaction);
+            }
+        });
+        transactions.forEach(transaction -> {
+            releaseMonies(new ArrayList<>(transaction.getChild()));
+            deleteSalePayments(new ArrayList<>(transaction.getChild()));
+            deleteRentPayments(new ArrayList<>(transaction.getChild()));
+            deleteByParent(transaction);
+        });
         return new ApiResponse("Данные успешно удалены");
     }
 
