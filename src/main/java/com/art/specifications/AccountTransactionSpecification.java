@@ -99,6 +99,7 @@ public class AccountTransactionSpecification extends BaseSpecification<AccountTr
                 .and(parentPayerEqual(filter.getParentPayer()))
                 .and(payerEqual(filter.getPayer()))
                 .and(cashNotNull())
+                .and(ownerEqual(filter.getOwner()))
                 .toPredicate(root, query, cb);
     }
 
