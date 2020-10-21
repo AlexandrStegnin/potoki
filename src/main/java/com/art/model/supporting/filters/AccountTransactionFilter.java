@@ -23,4 +23,23 @@ public class AccountTransactionFilter extends AbstractFilter {
 
     private String payer;
 
+    public boolean isClear() {
+        return (owner == null || owner.startsWith("Выберите"))
+                && (payer == null || payer.startsWith("Выберите"));
+    }
+
+    public boolean isFilterByOwner() {
+        return (owner != null && !owner.startsWith("Выберите"))
+                && (payer == null || payer.startsWith("Выберите"));
+    }
+
+    public boolean isFilterByPayer() {
+        return (payer != null && !payer.startsWith("Выберите"))
+                && (owner == null || owner.startsWith("Выберите"));
+    }
+
+    public boolean isFilterByOwnerAndPayer() {
+        return isFilterByOwner() && isFilterByPayer();
+    }
+
 }
