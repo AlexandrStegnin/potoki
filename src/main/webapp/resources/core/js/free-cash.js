@@ -60,9 +60,12 @@ let popupTable;
 
 let reinvestModal;
 
+let txModalTable;
+
 jQuery(document).ready(function ($) {
     popupTable = $('#popup-table')
     reinvestModal = $('#reinvest-form-modal')
+    txModalTable = $('#tx-popup-table')
     showPageableResult()
     subscribeCheckAllClick()
     subscribeCheckboxChange()
@@ -72,6 +75,7 @@ jQuery(document).ready(function ($) {
     subscribeReinvestClick()
     subscribeFacilitySelectChange()
     subscribeAcceptReinvest()
+    subscribeShowTxs()
 })
 
 /**
@@ -440,4 +444,13 @@ function getAccountsIds() {
         accIds.push($(el).data('object-id'))
     })
     return accIds
+}
+
+/**
+ * При клике на кнопке "Посмотреть транзакции"
+ */
+function subscribeShowTxs() {
+    $('#show-txs').on('click', function () {
+        txModalTable.modal('show')
+    })
 }
