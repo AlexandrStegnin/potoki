@@ -25,6 +25,7 @@
         table, td, th {
             text-align: center;
         }
+
         .has-error {
             color: red;
             padding: 8px 0 0 8px;
@@ -56,6 +57,20 @@
                 </c:forEach>
             </form:select>
         </div>
+        <div style="padding: 5px;">
+            <form:select path="payer" id="payers" multiple="false" class="selectpicker"
+                         data-size="10" data-live-search="true" data-none-selected-text="Выберите объект">
+                <c:forEach var="payer" items="${payers}">
+                    <option
+                            <c:choose>
+                                <c:when test="${payer eq 'Выберите объект'}">selected="selected"</c:when>
+                                <c:when test="${payer eq filter.payer}">selected="selected"</c:when>
+                            </c:choose>
+                            value="${payer}" id="${payer}">${payer}
+                    </option>
+                </c:forEach>
+            </form:select>
+        </div>
 
         <input id="all" name="allRows" type="checkbox"
         <c:if test="${filter.allRows == true}"> checked="checked" </c:if> data-toggle="toggle"
@@ -67,8 +82,12 @@
             <button type="button" id="btn-clear" class="btn btn-warning input-md" style="margin-left: 10px">
                 Сбросить фильтры
             </button>
-            <button type="button" class="btn btn-primary input-md" id="checkIt" data-checked="false" style="margin-left: 5px">Выделить всё</button>
-            <button type="button" class="btn btn-warning input-md disabled" id="reinvest" data-checked="false" style="margin-left: 5px">Реинвестировать</button>
+            <button type="button" class="btn btn-primary input-md" id="checkIt" data-checked="false"
+                    style="margin-left: 5px">Выделить всё
+            </button>
+            <button type="button" class="btn btn-warning input-md disabled" id="reinvest" data-checked="false"
+                    style="margin-left: 5px">Реинвестировать
+            </button>
         </div>
     </div>
     </form:form>
