@@ -370,6 +370,12 @@ public class AccountTransactionService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Составить фильтр из DTO
+     *
+     * @param dto DTO
+     * @return фильтр
+     */
     private AccountTransactionFilter getFilter(AccountSummaryDTO dto) {
         AccountTransactionFilter filter = new AccountTransactionFilter();
         filter.setOwner(dto.getOwnerName());
