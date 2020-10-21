@@ -413,10 +413,12 @@ public class AccountTransactionService {
         creditTx.setPayer(owner);
         creditTx.setRecipient(recipient);
         Money money = createMoney(owner, dto);
-        creditTx.addMoney(money);
         creditTx.setCashType(CashType.INVESTOR_CASH);
         creditTx.setCash(money.getGivenCash().negate());
-        return accountTransactionRepository.save(creditTx);
+        accountTransactionRepository.save(creditTx);
+        money.setTransaction(creditTx);
+        moneyRepository.save(money);
+        return creditTx;
     }
 
     /**

@@ -81,16 +81,6 @@ public class AccountTransaction extends AbstractEntity {
         rentPayment.setTransaction(null);
     }
 
-    public void addMoney(Money money) {
-        this.monies.add(money);
-        money.setTransaction(this);
-    }
-
-    public void removeMoney(Money money) {
-        this.monies.remove(money);
-        money.setTransaction(null);
-    }
-
     public AccountTransaction(Account owner) {
         this.owner = owner;
     }
