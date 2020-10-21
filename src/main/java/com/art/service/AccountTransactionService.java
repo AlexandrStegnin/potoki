@@ -94,6 +94,10 @@ public class AccountTransactionService {
         accountTransactionRepository.delete(transaction);
     }
 
+    public void deleteById(Long accTxId) {
+        accountTransactionRepository.delete(accTxId);
+    }
+
     public AccountTransaction findById(Long id) {
         AccountTransaction tx = accountTransactionRepository.findOne(id);
         if (tx == null) {
