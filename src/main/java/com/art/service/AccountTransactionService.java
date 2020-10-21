@@ -25,9 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -94,8 +92,61 @@ public class AccountTransactionService {
         accountTransactionRepository.delete(transaction);
     }
 
+    /**
+     * Удалить списком транзакции
+     *
+     * @param dto DTO со списком id транзакций
+     */
+    public void deleteByDTO(AccountTxDTO dto) {
+        Set<AccountTransaction> transactions = new HashSet<>();
+        dto.getTxIds().forEach(id -> {
+            AccountTransaction transaction = findParent(id);
+            if (transaction != null) {
+                transactions.add(transaction);
+            }
+        });
+        transactions.forEach(this::deleteByParent);
+    }
+
+    /**
+     * Найти родительскую транзакцию
+     *
+     * @param id id
+     * @return родительская транзакция
+     */
+    private AccountTransaction findParent(Long id) {
+        AccountTransaction parent = findById(id);
+        if (parent == null) {
+            return null;
+        }
+        if (parent.getParent() == null) {
+            return parent;
+        }
+        return findParent(parent.getParent().getId());
+    }
+
+    /**
+     * Удалить транзакции связанные с родителем
+     *
+     * @param parent родитель
+     */
+    private void deleteByParent(AccountTransaction parent) {
+        accountTransactionRepository.delete(parent);
+    }
+
+    /**
+     * Удалить по id
+     *
+     * @param accTxId id транзакции
+     */
     public void deleteById(Long accTxId) {
-        accountTransactionRepository.delete(accTxId);
+        AccountTransaction transaction = findById(accTxId);
+        if (transaction.getParent() != null) {
+            AccountTransaction parent = transaction.getParent();
+            Set<AccountTransaction> children = parent.getChild();
+            releaseMonies(new ArrayList<>(children));
+        }
+        delete(transaction);
     }
 
     public AccountTransaction findById(Long id) {
