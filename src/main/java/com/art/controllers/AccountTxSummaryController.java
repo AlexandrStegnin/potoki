@@ -95,4 +95,10 @@ public class AccountTxSummaryController {
     public List<String> initPayers() {
         return accountTransactionService.initPayers();
     }
+
+    @ModelAttribute("parentPayers")
+    public List<String> initParentPayers() {
+        return accountTransactionService.initParentPayers();
+    }
+
 }

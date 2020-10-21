@@ -57,13 +57,27 @@
                 </c:forEach>
             </form:select>
         </div>
+            <div style="padding: 5px;">
+                <form:select path="parentPayer" id="parentPayers" multiple="false" class="selectpicker"
+                             data-size="10" data-live-search="true" data-none-selected-text="Выберите объект">
+                    <c:forEach var="parentPayer" items="${parentPayers}">
+                        <option
+                                <c:choose>
+                                    <c:when test="${parentPayer eq 'Выберите объект'}">selected="selected"</c:when>
+                                    <c:when test="${parentPayer eq filter.parentPayer}">selected="selected"</c:when>
+                                </c:choose>
+                                value="${parentPayer}" id="${parentPayer}">${parentPayer}
+                        </option>
+                    </c:forEach>
+                </form:select>
+            </div>
         <div style="padding: 5px;">
             <form:select path="payer" id="payers" multiple="false" class="selectpicker"
-                         data-size="10" data-live-search="true" data-none-selected-text="Выберите объект">
+                         data-size="10" data-live-search="true" data-none-selected-text="Выберите подобъект">
                 <c:forEach var="payer" items="${payers}">
                     <option
                             <c:choose>
-                                <c:when test="${payer eq 'Выберите объект'}">selected="selected"</c:when>
+                                <c:when test="${payer eq 'Выберите подобъект'}">selected="selected"</c:when>
                                 <c:when test="${payer eq filter.payer}">selected="selected"</c:when>
                             </c:choose>
                             value="${payer}" id="${payer}">${payer}

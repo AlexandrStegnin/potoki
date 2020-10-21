@@ -205,14 +205,26 @@ public class AccountTransactionService {
     }
 
     /**
-     * Получить список плательщиков для фильтрации
+     * Получить список плательщиков (ПОДОБЪЕКТОВ) для фильтрации
      *
      * @return список плательщиков
      */
     public List<String> initPayers() {
         List<String> payers = new ArrayList<>();
-        payers.add("Выберите объект");
+        payers.add("Выберите подобъект");
         payers.addAll(accountTransactionRepository.getAllPayers());
+        return payers;
+    }
+
+    /**
+     * Получить список плательщиков (ОБЪЕКТОВ) для фильтрации
+     *
+     * @return список плательщиков
+     */
+    public List<String> initParentPayers() {
+        List<String> payers = new ArrayList<>();
+        payers.add("Выберите объект");
+        payers.addAll(accountTransactionRepository.getAllParentPayers());
         return payers;
     }
 
@@ -304,6 +316,7 @@ public class AccountTransactionService {
         if (filter.getPageSize() == 0) pageable = new PageRequest(filter.getPageNumber(), filter.getTotal() + 1);
         String ownerName = filter.getOwner();
         String payer = filter.getPayer();
+        String parentPayer = filter.getParentPayer();
         if (filter.isClear()) {
             return accountTransactionRepository.getSummary(OwnerType.INVESTOR, pageable);
         }
@@ -311,9 +324,12 @@ public class AccountTransactionService {
             return accountTransactionRepository.getOwnerSummary(OwnerType.INVESTOR, ownerName, pageable);
         }
         if (filter.isFilterByPayer()) {
-            return accountTransactionRepository.getSummaryByPayer(OwnerType.INVESTOR, payer, pageable);
+            return accountTransactionRepository.fetchSummaryByPayer(OwnerType.INVESTOR, payer, pageable);
         }
-        return accountTransactionRepository.getSummaryByOwnerAndPayer(OwnerType.INVESTOR, ownerName, payer, pageable);
+        if (filter.isFilterByParentPayer()) {
+            return accountTransactionRepository.fetchGroupedByFacility(OwnerType.INVESTOR, parentPayer, pageable);
+        }
+        return accountTransactionRepository.fetchSummaryByOwnerAndPayer(OwnerType.INVESTOR, ownerName, payer, pageable);
     }
 
     /**

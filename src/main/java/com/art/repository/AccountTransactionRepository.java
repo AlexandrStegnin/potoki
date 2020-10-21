@@ -35,6 +35,9 @@ public interface AccountTransactionRepository extends JpaRepository<AccountTrans
     @Query("SELECT DISTINCT atx.payer.ownerName FROM AccountTransaction atx ORDER BY atx.payer.ownerName")
     List<String> getAllPayers();
 
+    @Query("SELECT DISTINCT atx.payer.parentAccount.ownerName FROM AccountTransaction atx ORDER BY atx.payer.parentAccount.ownerName")
+    List<String> getAllParentPayers();
+
     @Query("SELECT DISTINCT atx.cashType FROM AccountTransaction atx")
     List<CashType> getAllCashTypes();
 
@@ -55,16 +58,16 @@ public interface AccountTransactionRepository extends JpaRepository<AccountTrans
             "WHERE atx.owner.ownerType = :ownerType " +
             "AND atx.payer.ownerName = :facilityName " +
             "GROUP BY atx.owner")
-    Page<AccountDTO> getSummaryByPayer(@Param("ownerType") OwnerType ownerType,
-                                       @Param("facilityName") String facilityName, Pageable pageable);
+    Page<AccountDTO> fetchSummaryByPayer(@Param("ownerType") OwnerType ownerType,
+                                         @Param("facilityName") String facilityName, Pageable pageable);
 
     @Query("SELECT new com.art.model.supporting.dto.AccountDTO(atx.owner, SUM(atx.cash)) " +
             "FROM AccountTransaction atx " +
             "WHERE atx.owner.ownerName = :ownerName AND atx.owner.ownerType = :ownerType " +
             "AND atx.payer.ownerName = :facilityName " +
             "GROUP BY atx.owner")
-    Page<AccountDTO> getSummaryByOwnerAndPayer(@Param("ownerType") OwnerType ownerType, @Param("ownerName") String ownerName,
-                                       @Param("facilityName") String facilityName, Pageable pageable);
+    Page<AccountDTO> fetchSummaryByOwnerAndPayer(@Param("ownerType") OwnerType ownerType, @Param("ownerName") String ownerName,
+                                                 @Param("facilityName") String facilityName, Pageable pageable);
 
     @Query("SELECT new com.art.model.supporting.dto.AccountDTO(atx.owner, SUM(atx.cash)) " +
             "FROM AccountTransaction atx " +
@@ -79,5 +82,11 @@ public interface AccountTransactionRepository extends JpaRepository<AccountTrans
     AccountDTO getOwnerSummary(@Param("ownerType") OwnerType ownerType, @Param("ownerName") String ownerName);
 
     List<AccountTransaction> findByOwnerId(Long ownerId);
+
+    @Query("SELECT new com.art.model.supporting.dto.AccountDTO(atx.owner, SUM(atx.cash)) " +
+            "FROM AccountTransaction atx " +
+            "WHERE atx.owner.ownerType = :ownerType AND atx.payer.parentAccount.ownerName = :facilityName " +
+            "GROUP BY atx.owner")
+    Page<AccountDTO> fetchGroupedByFacility(@Param("ownerType") OwnerType ownerType, @Param("facilityName") String facilityName, Pageable pageable);
 
 }
