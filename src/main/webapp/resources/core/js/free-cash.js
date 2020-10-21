@@ -463,7 +463,7 @@ function getAccountsIds() {
 function subscribeShowTxs() {
     $('#show-txs').on('click', function () {
         let filter = getFilter()
-        console.log(filter)
+        showTxs(filter)
         // txModalTable.modal('show')
     })
 }
@@ -480,4 +480,72 @@ function getFilter() {
     let parentPayer = $('#parentPayers').find('option:selected').val()
     accFilter.build(ownerName, payerName, parentPayer)
     return accFilter
+}
+
+/**
+ * Показать список отфильтрованных транзакций
+ *
+ * @param filter {AccFilter} фильтр
+ */
+function showTxs(filter) {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+    showLoader();
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: 'popup',
+        data: JSON.stringify(filter),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (data) {
+            closeLoader();
+            createTxTable(data)
+        },
+        error: function (e) {
+            closeLoader()
+            showPopup(e);
+        },
+        always: function () {
+            closeLoader()
+        }
+    });
+}
+
+/**
+ * Заполнить таблицу во всплывающей форме по данным с сервера
+ *
+ * @param txs {[AccountTransactionDTO]}
+ */
+function createTxTable(txs) {
+    let txTable = $('#tx-table');
+    let tableBody = txTable.find('tbody');
+    tableBody.empty();
+    $.each(txs, function (ind, el) {
+        let row = createTxRow(el);
+        tableBody.append(row);
+    });
+    txModalTable.modal('show');
+}
+
+/**
+ * Создать строку с суммой
+ *
+ * @param transactionDTO {AccountTransactionDTO} DTO транзакции
+ * @returns строка таблицы
+ */
+function createTxRow(transactionDTO) {
+    return $('<tr>').append(
+        $('<td>').text(getDate(transactionDTO.txDate).toLocaleDateString()),
+        $('<td>').text(transactionDTO.owner),
+        $('<td>').text((transactionDTO.cash).toLocaleString()),
+        $('<td>').text(transactionDTO.operationType),
+        $('<td>').text(transactionDTO.cashType),
+        $('<td>').text(transactionDTO.payer),
+        $('<td><input type="checkbox"/></td>')
+    );
 }
