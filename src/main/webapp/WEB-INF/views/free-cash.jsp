@@ -96,13 +96,18 @@
             <button type="button" id="btn-clear" class="btn btn-warning input-md" style="margin-left: 10px">
                 Сбросить фильтры
             </button>
-            <button type="button" class="btn btn-primary input-md" id="checkIt" data-checked="false"
-                    style="margin-left: 5px">Выделить всё
-            </button>
-            <button type="button" class="btn btn-warning input-md disabled" id="reinvest" data-checked="false"
-                    style="margin-left: 5px">Реинвестировать
-            </button>
         </div>
+    </div>
+    <div class="d-flex flex-row justify-content-center" style="margin: 10px;">
+        <button type="button" class="btn btn-primary input-md" id="checkIt" data-checked="false"
+                style="margin-left: 5px">Выделить всё
+        </button>
+        <button type="button" class="btn btn-warning input-md disabled" id="reinvest" data-checked="false"
+                style="margin-left: 5px">Реинвестировать
+        </button>
+        <button type="button" class="btn btn-success input-md" id="show-txs"
+                style="margin-left: 5px">Посмотреть транзакции
+        </button>
     </div>
     </form:form>
 
