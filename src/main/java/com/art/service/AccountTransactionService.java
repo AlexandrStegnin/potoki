@@ -17,9 +17,7 @@ import com.art.repository.MoneyRepository;
 import com.art.repository.RentPaymentRepository;
 import com.art.repository.SalePaymentRepository;
 import com.art.specifications.AccountTransactionSpecification;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -363,10 +361,22 @@ public class AccountTransactionService {
         if (accountId == null) {
             throw new RuntimeException("Не указан id счёта");
         }
-        return accountTransactionRepository.findByOwnerId(accountId)
+        AccountTransactionFilter filter = getFilter(dto);
+        List<AccountTransaction> transactions = accountTransactionRepository.findAll(transactionSpecification.getDetailsFilter(filter));
+
+        return transactions
                 .stream()
                 .map(AccountTransactionDTO::new)
                 .collect(Collectors.toList());
+    }
+
+    private AccountTransactionFilter getFilter(AccountSummaryDTO dto) {
+        AccountTransactionFilter filter = new AccountTransactionFilter();
+        filter.setOwner(dto.getOwnerName());
+        filter.setPayer(dto.getPayerName());
+        filter.setParentPayer(dto.getParentPayer());
+        filter.setAccountId(dto.getAccountId());
+        return filter;
     }
 
     /**

@@ -11,6 +11,8 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class AccountTransactionFilter extends AbstractFilter {
 
+    private Long accountId;
+
     private String owner;
 
     private String recipient;

@@ -11,4 +11,10 @@ public class AccountSummaryDTO {
 
     private Long accountId;
 
+    private String ownerName;
+
+    private String payerName;
+
+    private String parentPayer;
+
 }

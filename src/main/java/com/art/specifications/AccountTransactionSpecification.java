@@ -36,6 +36,16 @@ public class AccountTransactionSpecification extends BaseSpecification<AccountTr
         }
     }
 
+    private static Specification<AccountTransaction> accIdEqual(Long accId) {
+        if (accId == null) {
+            return null;
+        } else {
+            return ((root, criteriaQuery, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get(AccountTransaction_.owner).get(Account_.id), accId)
+            );
+        }
+    }
+
     private static Specification<AccountTransaction> recipientEqual(String recipientName) {
         if (recipientName == null || "Выберите отправителя".equalsIgnoreCase(recipientName)) {
             return null;
@@ -57,24 +67,32 @@ public class AccountTransactionSpecification extends BaseSpecification<AccountTr
         }
     }
 
-//    private static Specification<AccountTransaction> salePaymentIdEqual(Long salePaymentId) {
-//        if (salePaymentId == null) {
-//            return null;
-//        } else {
-//            return ((root, criteriaQuery, criteriaBuilder) ->
-//                    criteriaBuilder.equal(root.get(AccountTransaction_.salePayment).get(SalePayment_.id), salePaymentId)
-//            );
-//        }
-//    }
+    private static Specification<AccountTransaction> parentPayerEqual(String parentPayer) {
+        if (parentPayer == null || parentPayer.startsWith("Выберите")) {
+            return null;
+        } else {
+            return ((root, criteriaQuery, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get(AccountTransaction_.payer).get(Account_.parentAccount).get(Account_.ownerName), parentPayer)
+            );
+        }
+    }
 
-//    private static Specification<AccountTransaction> moneyIdEqual(Long moneyId) {
-//        if (moneyId == null) {
-//            return null;
-//        } else {
-//            return ((root, criteriaQuery, criteriaBuilder) ->
-//                    criteriaBuilder.equal(root.get(AccountTransaction_.money).get(Money_.id), moneyId)
-//            );
-//        }
-//    }
+    private static Specification<AccountTransaction> payerEqual(String payerName) {
+        if (payerName == null ||payerName.startsWith("Выберите")) {
+            return null;
+        } else {
+            return ((root, criteriaQuery, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get(AccountTransaction_.payer).get(Account_.ownerName), payerName)
+            );
+        }
+    }
+
+    public Specification<AccountTransaction> getDetailsFilter(AccountTransactionFilter filter) {
+        return (root, query, cb) -> where(
+                accIdEqual(filter.getAccountId()))
+                .and(parentPayerEqual(filter.getParentPayer()))
+                .and(payerEqual(filter.getPayer()))
+                .toPredicate(root, query, cb);
+    }
 
 }

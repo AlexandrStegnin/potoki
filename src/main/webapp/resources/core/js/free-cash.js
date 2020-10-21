@@ -3,8 +3,14 @@ let AccountSummaryDTO = function () {
 
 AccountSummaryDTO.prototype = {
     accountId: null,
-    build: function (accountId) {
+    ownerName: null,
+    payerName: null,
+    parentPayer: null,
+    build: function (accountId, ownerName, payerName, parentPayer) {
         this.accountId = accountId
+        this.ownerName = ownerName
+        this.payerName = payerName
+        this.parentPayer = parentPayer
     }
 }
 
@@ -193,7 +199,10 @@ function subscribeTxShowClick() {
     $('.tx-show').on('click', function () {
         let txId = $(this).data('tx-id')
         let accSummaryDTO = new AccountSummaryDTO()
-        accSummaryDTO.build(txId)
+        let ownerName = $('#owners').find('option:selected').val()
+        let payerName = $('#payers').find('option:selected').val()
+        let parentPayer = $('#parentPayers').find('option:selected').val()
+        accSummaryDTO.build(txId, ownerName, payerName, parentPayer)
         getDetails(accSummaryDTO)
     })
 }
