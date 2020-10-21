@@ -490,7 +490,6 @@ public class UploadExcelService {
                 money.setDateClosing(dateClosing);
                 money.setTypeClosing(typeClosing);
                 money.setIsReinvest(1);
-                moneyRepository.save(money);
             });
             moveMoniesToAccount(monies);
         }));
@@ -508,10 +507,7 @@ public class UploadExcelService {
         Money money = closedMonies.get(0);
         AccountTransaction transaction = createMoneyTransaction(money);
         closedMonies.remove(money);
-        closedMonies.forEach(m -> {
-            m.setTransaction(transaction);
-            updateMoneyTransaction(transaction, m);
-        });
+        closedMonies.forEach(m -> updateMoneyTransaction(transaction, m));
         closedMonies.add(money);
         moneyRepository.save(closedMonies);
     }
@@ -562,11 +558,11 @@ public class UploadExcelService {
         AccountTransaction transaction = new AccountTransaction(owner);
         transaction.setPayer(payer);
         transaction.setRecipient(owner);
-        transaction.addRentPayment(rentPayment);
         transaction.setOperationType(OperationType.DEBIT);
         transaction.setCashType(CashType.RENT_CASH);
         transaction.setCash(BigDecimal.valueOf(rentPayment.getAfterCashing()));
-        return transaction;
+        rentPayment.setTransaction(transaction);
+        return accountTransactionService.create(transaction);
     }
 
     /**
@@ -583,6 +579,7 @@ public class UploadExcelService {
         transaction.setOperationType(OperationType.DEBIT);
         transaction.setCashType(CashType.INVESTMENT_BODY);
         transaction.setCash(money.getGivenCash());
+        money.setTransaction(transaction);
         return accountTransactionService.create(transaction);
     }
 
@@ -604,7 +601,7 @@ public class UploadExcelService {
      * @param rentPayment выплата (аренда)
      */
     private void updateRentTransaction(AccountTransaction transaction, RentPayment rentPayment) {
-        transaction.addRentPayment(rentPayment);
+        rentPayment.setTransaction(transaction);
         transaction.setCash(transaction.getCash().add(BigDecimal.valueOf(rentPayment.getAfterCashing())));
     }
 
@@ -615,6 +612,7 @@ public class UploadExcelService {
      * @param money сумма инвестиций
      */
     private void updateMoneyTransaction(AccountTransaction transaction, Money money) {
+        money.setTransaction(transaction);
         transaction.setCash(transaction.getCash().add(money.getGivenCash()));
     }
 
