@@ -90,4 +90,9 @@ public class AccountTxSummaryController {
     public List<ShareType> initializeShareTypes() {
         return Arrays.asList(ShareType.values());
     }
+
+    @ModelAttribute("payers")
+    public List<String> initPayers() {
+        return accountTransactionService.initPayers();
+    }
 }

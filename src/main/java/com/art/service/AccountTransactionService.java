@@ -304,13 +304,16 @@ public class AccountTransactionService {
         if (filter.getPageSize() == 0) pageable = new PageRequest(filter.getPageNumber(), filter.getTotal() + 1);
         String ownerName = filter.getOwner();
         String payer = filter.getPayer();
-        if (ownerName == null || "Выберите владельца".equalsIgnoreCase(ownerName)) {
+        if (filter.isClear()) {
             return accountTransactionRepository.getSummary(OwnerType.INVESTOR, pageable);
-        } else  if ("Выберите объект".equalsIgnoreCase(payer)) {
-            return accountTransactionRepository.getSummaryByFacility(OwnerType.INVESTOR, ownerName, payer, pageable);
-        } else {
+        }
+        if (filter.isFilterByOwner()) {
             return accountTransactionRepository.getOwnerSummary(OwnerType.INVESTOR, ownerName, pageable);
         }
+        if (filter.isFilterByPayer()) {
+            return accountTransactionRepository.getSummaryByPayer(OwnerType.INVESTOR, payer, pageable);
+        }
+        return accountTransactionRepository.getSummaryByOwnerAndPayer(OwnerType.INVESTOR, ownerName, payer, pageable);
     }
 
     /**
