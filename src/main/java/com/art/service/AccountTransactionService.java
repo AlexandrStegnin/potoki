@@ -205,6 +205,18 @@ public class AccountTransactionService {
     }
 
     /**
+     * Получить список плательщиков для фильтрации
+     *
+     * @return список плательщиков
+     */
+    public List<String> initPayers() {
+        List<String> payers = new ArrayList<>();
+        payers.add("Выберите объект");
+        payers.addAll(accountTransactionRepository.getAllPayers());
+        return payers;
+    }
+
+    /**
      * Получить список видов денег
      *
      * @return список видов денег

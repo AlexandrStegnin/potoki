@@ -32,6 +32,9 @@ public interface AccountTransactionRepository extends JpaRepository<AccountTrans
     @Query("SELECT DISTINCT atx.recipient.ownerName FROM AccountTransaction atx ORDER BY atx.recipient.ownerName")
     List<String> getAllRecipients();
 
+    @Query("SELECT DISTINCT atx.payer.ownerName FROM AccountTransaction atx ORDER BY atx.payer.ownerName")
+    List<String> getAllPayers();
+
     @Query("SELECT DISTINCT atx.cashType FROM AccountTransaction atx")
     List<CashType> getAllCashTypes();
 
