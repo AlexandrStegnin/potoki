@@ -61,16 +61,6 @@ public class AccountTransaction extends AbstractEntity {
     @Column(name = "cash")
     private BigDecimal cash;
 
-    public void addRentPayment(RentPayment rentPayment) {
-        this.rentPayments.add(rentPayment);
-        rentPayment.setTransaction(this);
-    }
-
-    public void removeRentPayment(RentPayment rentPayment) {
-        this.rentPayments.remove(rentPayment);
-        rentPayment.setTransaction(null);
-    }
-
     public AccountTransaction(Account owner) {
         this.owner = owner;
     }
