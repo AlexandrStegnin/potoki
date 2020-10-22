@@ -119,6 +119,16 @@ public class AccountTransactionController {
         return transactionService.initCashTypes();
     }
 
+    @ModelAttribute("payers")
+    public List<String> initPayers() {
+        return transactionService.initPayers();
+    }
+
+    @ModelAttribute("parentPayers")
+    public List<String> initParentPayers() {
+        return transactionService.initParentPayers();
+    }
+
     @InitBinder
     public void initBinder(WebDataBinder webDataBinder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
