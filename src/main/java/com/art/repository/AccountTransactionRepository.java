@@ -116,7 +116,7 @@ public interface AccountTransactionRepository extends JpaRepository<AccountTrans
 
     @Query("SELECT new com.art.model.supporting.dto.AccountDTO(atx.owner, SUM(atx.cash)) " +
             "FROM AccountTransaction atx " +
-            "WHERE atx.owner.ownerType = :ownerType AND atx.id = :ownerId " +
+            "WHERE atx.owner.ownerType = :ownerType AND atx.owner.id = :ownerId " +
             "GROUP BY atx.owner")
     AccountDTO fetchBalance(@Param("ownerType") OwnerType ownerType, @Param("ownerId") Long ownerId);
 
