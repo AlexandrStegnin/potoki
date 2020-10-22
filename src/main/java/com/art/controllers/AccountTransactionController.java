@@ -9,9 +9,6 @@ import com.art.model.supporting.dto.AccountTxDTO;
 import com.art.model.supporting.enums.CashType;
 import com.art.model.supporting.filters.AccountTransactionFilter;
 import com.art.service.AccountTransactionService;
-import com.art.service.FacilityService;
-import com.art.service.UnderFacilityService;
-import com.art.service.UserService;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,20 +33,10 @@ public class AccountTransactionController {
 
     private final AccountTransactionService transactionService;
 
-    private final UnderFacilityService underFacilityService;
-
-    private final UserService userService;
-
-    private final FacilityService facilityService;
-
     private final AccountTransactionFilter filter = new AccountTransactionFilter();
 
-    public AccountTransactionController(AccountTransactionService transactionService, UnderFacilityService underFacilityService,
-                                        UserService userService, FacilityService facilityService) {
+    public AccountTransactionController(AccountTransactionService transactionService) {
         this.transactionService = transactionService;
-        this.underFacilityService = underFacilityService;
-        this.userService = userService;
-        this.facilityService = facilityService;
     }
 
     /**
