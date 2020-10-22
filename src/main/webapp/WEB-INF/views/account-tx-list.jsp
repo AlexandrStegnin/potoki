@@ -186,6 +186,7 @@
 <%@include file="confirm-delete.jsp" %>
 <%@include file="ddk_loader.jsp" %>
 <%@include file="balance-popup.jsp" %>
+<%@include file="reinvest-form.jsp" %>
 
 <script type="text/javascript"
         src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' />"></script>
