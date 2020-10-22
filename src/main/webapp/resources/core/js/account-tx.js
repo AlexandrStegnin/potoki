@@ -158,7 +158,7 @@ function showPopup(message) {
     }, 3000);
 }
 
-function subscribeTxShowClick() {
+function subscribeBalanceShowClick() {
     $('.show-balance').on('click', function () {
         let txId = $(this).data('owner-id')
         let accSummaryDTO = new AccountSummaryDTO()

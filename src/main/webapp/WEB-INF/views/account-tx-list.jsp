@@ -160,8 +160,8 @@
                 <td style="text-align: center"><input type="checkbox" data-object-id="${tx.id}">
                 </td>
                 <td>
-                    <button type="button" class="btn btn-sm btn-success tx-show" data-toggle="tooltip"
-                            data-placement="left" title="Посмотреть" data-tx-id="${tx.owner.id}">
+                    <button type="button" class="btn btn-sm btn-success show-balance" data-toggle="tooltip"
+                            data-placement="left" title="Посмотреть" data-owner-id="${tx.owner.id}">
                         <i class="fas fa-coins"></i>
                     </button>
                 </td>
