@@ -32,7 +32,12 @@ public class FormattersConfig extends WebMvcConfigurerAdapter {
 
     private final AppTokenService appTokenService;
 
-    public FormattersConfig(RoleService roleService, UserService userService, FacilityService facilityService, UnderFacilityService underFacilityService, CashSourceService cashSourceService, NewCashDetailService newCashDetailService, TypeClosingService typeClosingService, RoomService roomService, AppTokenService appTokenService) {
+    private final AccountService accountService;
+
+    public FormattersConfig(RoleService roleService, UserService userService, FacilityService facilityService,
+                            UnderFacilityService underFacilityService, CashSourceService cashSourceService,
+                            NewCashDetailService newCashDetailService, TypeClosingService typeClosingService,
+                            RoomService roomService, AppTokenService appTokenService, AccountService accountService) {
         this.roleService = roleService;
         this.userService = userService;
         this.facilityService = facilityService;
@@ -42,6 +47,7 @@ public class FormattersConfig extends WebMvcConfigurerAdapter {
         this.typeClosingService = typeClosingService;
         this.roomService = roomService;
         this.appTokenService = appTokenService;
+        this.accountService = accountService;
     }
 
     @Override
@@ -57,5 +63,6 @@ public class FormattersConfig extends WebMvcConfigurerAdapter {
         registry.addConverter(new RoomConverter(roomService));
         registry.addConverter(new TokenConverter(appTokenService));
         registry.addConverter(new ShareTypeConverter());
+        registry.addConverter(new AccountConverter(accountService));
     }
 }
