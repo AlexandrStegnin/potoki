@@ -1,16 +1,11 @@
 package com.art.controllers;
 
 import com.art.config.application.Location;
-import com.art.model.Facility;
-import com.art.model.UnderFacility;
 import com.art.model.supporting.dto.AccountSummaryDTO;
 import com.art.model.supporting.dto.AccountTransactionDTO;
 import com.art.model.supporting.dto.AccountTxDTO;
-import com.art.model.supporting.enums.ShareType;
 import com.art.model.supporting.filters.AccountTransactionFilter;
 import com.art.service.AccountTransactionService;
-import com.art.service.FacilityService;
-import com.art.service.UnderFacilityService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -19,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -34,16 +28,13 @@ public class AccountTxSummaryController {
     private final AccountTransactionService accountTransactionService;
 
     private final AccountTransactionFilter filter = new AccountTransactionFilter();
+//
+//    private final FacilityService facilityService;
+//
+//    private final UnderFacilityService underFacilityService;
 
-    private final FacilityService facilityService;
-
-    private final UnderFacilityService underFacilityService;
-
-    public AccountTxSummaryController(AccountTransactionService accountTransactionService, FacilityService facilityService,
-                                      UnderFacilityService underFacilityService) {
+    public AccountTxSummaryController(AccountTransactionService accountTransactionService) {
         this.accountTransactionService = accountTransactionService;
-        this.facilityService = facilityService;
-        this.underFacilityService = underFacilityService;
     }
 
     @GetMapping(path = Location.TRANSACTIONS_SUMMARY)
@@ -76,29 +67,29 @@ public class AccountTxSummaryController {
         return accountTransactionService.initOwners();
     }
 
-    @ModelAttribute("facilities")
-    public List<Facility> initializeFacilities() {
-        return facilityService.initializeFacilities();
-    }
-
-    @ModelAttribute("underFacilities")
-    public List<UnderFacility> initializeUnderFacilities() {
-        return underFacilityService.initializeUnderFacilities();
-    }
-
-    @ModelAttribute("shareTypes")
-    public List<ShareType> initializeShareTypes() {
-        return Arrays.asList(ShareType.values());
-    }
+//    @ModelAttribute("facilities")
+//    public List<Facility> initializeFacilities() {
+//        return facilityService.initializeFacilities();
+//    }
+//
+//    @ModelAttribute("underFacilities")
+//    public List<UnderFacility> initializeUnderFacilities() {
+//        return underFacilityService.initializeUnderFacilities();
+//    }
+//
+//    @ModelAttribute("shareTypes")
+//    public List<ShareType> initializeShareTypes() {
+//        return Arrays.asList(ShareType.values());
+//    }
 
     @ModelAttribute("payers")
     public List<String> initPayers() {
         return accountTransactionService.initPayers();
     }
-
-    @ModelAttribute("parentPayers")
-    public List<String> initParentPayers() {
-        return accountTransactionService.initParentPayers();
-    }
+//
+//    @ModelAttribute("parentPayers")
+//    public List<String> initParentPayers() {
+//        return accountTransactionService.initParentPayers();
+//    }
 
 }
