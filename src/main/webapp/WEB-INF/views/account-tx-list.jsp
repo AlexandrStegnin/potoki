@@ -38,38 +38,41 @@
         <input type="hidden" id="pageSize" name="pageSize" value="${filter.pageSize}">
         <input type="hidden" id="total" name="total" value="${page.content.size()}">
         <div style="padding: 5px;">
-            <form:select path="owner" id="owners" multiple="true" class="selectpicker"
+            <form:select path="owners" id="owners" multiple="true" class="selectpicker"
                          data-size="10" data-live-search="true" data-none-selected-text="Выберите владельца"
                          data-actions-box="true" data-select-all-text="Выбрать всё"
                          data-deselect-all-text="Очистить">
                 <c:forEach var="owner" items="${owners}">
                     <option
-                            <c:choose>
-                                <c:when test="${owner eq 'Выберите владельца'}">selected="selected"</c:when>
-                                <c:when test="${owner eq filter.owner}">selected="selected"</c:when>
-                            </c:choose>
-                            value="${owner}" id="${owner}">${owner}
+                            <c:forEach var="ownerName" items="${filter.owners}">
+                                <c:choose>
+                                    <c:when test="${owner.ownerName eq ownerName.ownerName}">selected="selected"</c:when>
+                                </c:choose>
+                            </c:forEach>
+                            value="${owner.id}" id="${owner.ownerName}">${owner.ownerName}
                     </option>
                 </c:forEach>
             </form:select>
         </div>
         <div style="padding: 5px;">
-            <form:select path="parentPayer" id="parentPayers" multiple="true" class="selectpicker"
+            <form:select path="parentPayerNames" id="parentPayers" multiple="true" class="selectpicker"
                          data-size="10" data-live-search="true" data-none-selected-text="Выберите объект"
                          data-actions-box="true" data-select-all-text="Выбрать всё"
                          data-deselect-all-text="Очистить">
                 <c:forEach var="parentPayer" items="${parentPayers}">
                     <option
-                            <c:choose>
-                                <c:when test="${parentPayer eq 'Выберите объект'}">selected="selected"</c:when>
-                                <c:when test="${parentPayer eq filter.parentPayer}">selected="selected"</c:when>
-                            </c:choose> value="${parentPayer}" id="${parentPayer}">${parentPayer}
+                            <c:forEach var="parentPayerName" items="${filter.parentPayerNames}">
+                                <c:choose>
+                                    <c:when test="${parentPayer eq parentPayerName}">selected="selected"</c:when>
+                                </c:choose>
+                            </c:forEach>
+                            value="${parentPayer}" id="${parentPayer}">${parentPayer}
                     </option>
                 </c:forEach>
             </form:select>
         </div>
         <div style="padding: 5px;">
-            <form:select path="payer" id="payers" multiple="true" class="selectpicker"
+            <form:select path="payerNames" id="payers" multiple="true" class="selectpicker"
                          data-size="10" data-live-search="true" data-none-selected-text="Выберите подобъект"
                          data-actions-box="true" data-select-all-text="Выбрать всё"
                          data-deselect-all-text="Очистить">
@@ -85,7 +88,7 @@
             </form:select>
         </div>
         <div style="padding: 5px;">
-            <form:select path="cashType" id="cashTypes" multiple="false" class="selectpicker"
+            <form:select path="cashTypes" id="cashTypes" multiple="false" class="selectpicker"
                          data-size="10" data-live-search="true" data-none-selected-text="Выберите вид денег">
                 <form:option value="Выберите вид денег"/>
                 <form:options items="${cashTypes}" itemValue="title" itemLabel="title"/>
