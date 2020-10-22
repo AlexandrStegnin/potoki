@@ -246,6 +246,8 @@ public class Location {
 
     public static final String TRANSACTIONS_REINVEST = ACC_TRANSACTIONS + "/reinvest";
 
+    public static final String TRANSACTIONS_BALANCE = ACC_TRANSACTIONS + "/balance";
+
     //МАРКЕТИНГОВОЕ ДЕРЕВО
     public static final String MARKETING_TREE = "/marketing-tree";
 
