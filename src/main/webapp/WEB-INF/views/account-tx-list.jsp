@@ -168,7 +168,7 @@
                 <td>${tx.operationType.title}</td>
                 <td>${tx.cashType.title}</td>
                 <td>${tx.payer.ownerName}</td>
-                <td style="text-align: center"><input type="checkbox" data-object-id="${tx.id}">
+                <td style="text-align: center"><input type="checkbox" data-object-id="${tx.owner.id}">
                 </td>
                 <td>
                     <button type="button" class="btn btn-sm btn-success show-balance" data-toggle="tooltip"
