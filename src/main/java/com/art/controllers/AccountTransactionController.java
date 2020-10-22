@@ -3,8 +3,8 @@ package com.art.controllers;
 import com.art.config.application.Location;
 import com.art.model.AccountTransaction;
 import com.art.model.supporting.ApiResponse;
-import com.art.model.supporting.dto.AccountDTO;
 import com.art.model.supporting.dto.AccountTxDTO;
+import com.art.model.supporting.dto.BalanceDTO;
 import com.art.model.supporting.enums.CashType;
 import com.art.model.supporting.filters.AccountTransactionFilter;
 import com.art.service.AccountTransactionService;
@@ -92,8 +92,8 @@ public class AccountTransactionController {
 
     @ResponseBody
     @PostMapping(path = Location.TRANSACTIONS_BALANCE)
-    public AccountDTO getBalance(@RequestBody AccountDTO dto) {
-        return transactionService.getBalance(dto.getOwner().getId());
+    public BalanceDTO getBalance(@RequestBody BalanceDTO dto) {
+        return transactionService.getBalance(dto.getAccountId());
     }
 
     /**

@@ -3,10 +3,7 @@ package com.art.service;
 import com.art.config.exception.EntityNotFoundException;
 import com.art.model.*;
 import com.art.model.supporting.ApiResponse;
-import com.art.model.supporting.dto.AccountDTO;
-import com.art.model.supporting.dto.AccountSummaryDTO;
-import com.art.model.supporting.dto.AccountTransactionDTO;
-import com.art.model.supporting.dto.AccountTxDTO;
+import com.art.model.supporting.dto.*;
 import com.art.model.supporting.enums.CashType;
 import com.art.model.supporting.enums.OperationType;
 import com.art.model.supporting.enums.OwnerType;
@@ -643,16 +640,15 @@ public class AccountTransactionService {
     public List<AccountTransaction> findByMoneyId(Long moneyId) {
         AccountTransactionFilter filter = new AccountTransactionFilter();
         filter.setMoneyId(moneyId);
-        List<AccountTransaction> transactions = accountTransactionRepository.findAll(transactionSpecification.getFilter(filter));
-        return transactions;
+        return accountTransactionRepository.findAll(transactionSpecification.getFilter(filter));
     }
 
     public void deleteByMoneyId(Long moneyId) {
         accountTransactionRepository.delete(findByMoneyId(moneyId));
     }
 
-    public AccountDTO getBalance(Long ownerId) {
-        return accountTransactionRepository.fetchBalance(OwnerType.INVESTOR, ownerId);
+    public BalanceDTO getBalance(Long ownerId) {
+        return new BalanceDTO(accountTransactionRepository.fetchBalance(OwnerType.INVESTOR, ownerId));
     }
 
 }
