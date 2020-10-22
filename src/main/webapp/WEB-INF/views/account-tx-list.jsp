@@ -38,8 +38,10 @@
         <input type="hidden" id="pageSize" name="pageSize" value="${filter.pageSize}">
         <input type="hidden" id="total" name="total" value="${page.content.size()}">
         <div style="padding: 5px;">
-            <form:select path="owner" id="owners" multiple="false" class="selectpicker"
-                         data-size="10" data-live-search="true" data-none-selected-text="Выберите владельца">
+            <form:select path="owner" id="owners" multiple="true" class="selectpicker"
+                         data-size="10" data-live-search="true" data-none-selected-text="Выберите владельца"
+                         data-actions-box="true" data-select-all-text="Выбрать всё"
+                         data-deselect-all-text="Очистить">
                 <c:forEach var="owner" items="${owners}">
                     <option
                             <c:choose>
@@ -52,8 +54,10 @@
             </form:select>
         </div>
         <div style="padding: 5px;">
-            <form:select path="parentPayer" id="parentPayers" multiple="false" class="selectpicker"
-                         data-size="10" data-live-search="true" data-none-selected-text="Выберите объект">
+            <form:select path="parentPayer" id="parentPayers" multiple="true" class="selectpicker"
+                         data-size="10" data-live-search="true" data-none-selected-text="Выберите объект"
+                         data-actions-box="true" data-select-all-text="Выбрать всё"
+                         data-deselect-all-text="Очистить">
                 <c:forEach var="parentPayer" items="${parentPayers}">
                     <option
                             <c:choose>
@@ -65,8 +69,10 @@
             </form:select>
         </div>
         <div style="padding: 5px;">
-            <form:select path="payer" id="payers" multiple="false" class="selectpicker"
-                         data-size="10" data-live-search="true" data-none-selected-text="Выберите подобъект">
+            <form:select path="payer" id="payers" multiple="true" class="selectpicker"
+                         data-size="10" data-live-search="true" data-none-selected-text="Выберите подобъект"
+                         data-actions-box="true" data-select-all-text="Выбрать всё"
+                         data-deselect-all-text="Очистить">
                 <c:forEach var="payer" items="${payers}">
                     <option
                             <c:choose>
