@@ -75,6 +75,7 @@ jQuery(document).ready(function ($) {
     subscribeReinvestClick()
     subscribeFacilitySelectChange()
     subscribeAcceptReinvest()
+    subscribeCheckboxChange()
 })
 
 /**
