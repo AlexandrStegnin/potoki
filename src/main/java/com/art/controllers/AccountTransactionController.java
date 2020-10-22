@@ -116,11 +116,6 @@ public class AccountTransactionController {
         return transactionService.initOwners();
     }
 
-    @ModelAttribute("recipients")
-    public List<String> initRecipients() {
-        return transactionService.initRecipients();
-    }
-
     @ModelAttribute("cashTypes")
     public List<CashType> initCashTypes() {
         return transactionService.initCashTypes();
