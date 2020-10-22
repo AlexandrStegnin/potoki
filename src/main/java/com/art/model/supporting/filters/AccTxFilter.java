@@ -16,9 +16,9 @@ public class AccTxFilter extends AccountTransactionFilter {
 
     private List<Account> owners;
 
-    private List<String> payerNames;
+    private List<Account> payers;
 
-    private List<String> parentPayerNames;
+    private List<Account> parentPayers;
 
     private List<String> cashTypes;
 

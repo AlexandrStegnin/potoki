@@ -84,7 +84,7 @@ public class AccountTxSummaryController {
 //    }
 
     @ModelAttribute("payers")
-    public List<String> initPayers() {
+    public List<Account> initPayers() {
         return accountTransactionService.initPayers();
     }
 //

@@ -55,34 +55,35 @@
             </form:select>
         </div>
         <div style="padding: 5px;">
-            <form:select path="parentPayerNames" id="parentPayers" multiple="true" class="selectpicker"
+            <form:select path="parentPayers" id="parentPayers" multiple="true" class="selectpicker"
                          data-size="10" data-live-search="true" data-none-selected-text="Выберите объект"
                          data-actions-box="true" data-select-all-text="Выбрать всё"
                          data-deselect-all-text="Очистить">
                 <c:forEach var="parentPayer" items="${parentPayers}">
                     <option
-                            <c:forEach var="parentPayerName" items="${filter.parentPayerNames}">
+                            <c:forEach var="parentPayerName" items="${filter.parentPayers}">
                                 <c:choose>
-                                    <c:when test="${parentPayer eq parentPayerName}">selected="selected"</c:when>
+                                    <c:when test="${parentPayer.ownerName eq parentPayerName.ownerName}">selected="selected"</c:when>
                                 </c:choose>
                             </c:forEach>
-                            value="${parentPayer}" id="${parentPayer}">${parentPayer}
+                            value="${parentPayer.id}" id="${parentPayer.ownerName}">${parentPayer.ownerName}
                     </option>
                 </c:forEach>
             </form:select>
         </div>
         <div style="padding: 5px;">
-            <form:select path="payerNames" id="payers" multiple="true" class="selectpicker"
+            <form:select path="payers" id="payers" multiple="true" class="selectpicker"
                          data-size="10" data-live-search="true" data-none-selected-text="Выберите подобъект"
                          data-actions-box="true" data-select-all-text="Выбрать всё"
                          data-deselect-all-text="Очистить">
                 <c:forEach var="payer" items="${payers}">
                     <option
-                            <c:choose>
-                                <c:when test="${payer eq 'Выберите подобъект'}">selected="selected"</c:when>
-                                <c:when test="${payer eq filter.payer}">selected="selected"</c:when>
-                            </c:choose>
-                            value="${payer}" id="${payer}">${payer}
+                            <c:forEach var="payerName" items="${filter.payers}">
+                                <c:choose>
+                                    <c:when test="${payer.ownerName eq payerName.ownerName}">selected="selected"</c:when>
+                                </c:choose>
+                            </c:forEach>
+                            value="${payer.id}" id="${payer.ownerName}">${payer.ownerName}
                     </option>
                 </c:forEach>
             </form:select>

@@ -27,8 +27,8 @@ public class AccountTransactionSpecification extends BaseSpecification<AccountTr
     public Specification<AccountTransaction> getFilter(AccTxFilter filter) {
         return (root, query, cb) -> where(
                 ownersIn(filter.getOwners()))
-                .and(parentPayerNameIn(filter.getParentPayerNames()))
-                .and(payerNameIn(filter.getPayerNames()))
+                .and(parentPayersIn(filter.getParentPayers()))
+                .and(payersIn(filter.getPayers()))
                 .and(cashTypesIn(filter.getCashTypes()))
                 .and(cashNotNull())
                 .toPredicate(root, query, cb);
@@ -119,22 +119,22 @@ public class AccountTransactionSpecification extends BaseSpecification<AccountTr
         }
     }
 
-    private static Specification<AccountTransaction> parentPayerNameIn(List<String> parentPayerNames) {
-        if (parentPayerNames == null || parentPayerNames.size() == 0 || parentPayerNames.get(0).trim().startsWith(Constant.CHOOSE_FILTER_PREFIX)) {
+    private static Specification<AccountTransaction> parentPayersIn(List<Account> parentPayers) {
+        if (parentPayers == null || parentPayers.size() == 0) {
             return null;
         } else {
             return ((root, criteriaQuery, criteriaBuilder) ->
-                    root.get(AccountTransaction_.payer).get(Account_.parentAccount).get(Account_.ownerName).in(parentPayerNames)
+                    root.get(AccountTransaction_.payer).get(Account_.parentAccount).in(parentPayers)
             );
         }
     }
 
-    private static Specification<AccountTransaction> payerNameIn(List<String> payerNames) {
-        if (payerNames == null || payerNames.size() == 0 || payerNames.get(0).trim().startsWith(Constant.CHOOSE_FILTER_PREFIX)) {
+    private static Specification<AccountTransaction> payersIn(List<Account> payers) {
+        if (payers == null || payers.size() == 0) {
             return null;
         } else {
             return ((root, criteriaQuery, criteriaBuilder) ->
-                    root.get(AccountTransaction_.payer).get(Account_.ownerName).in(payerNames)
+                    root.get(AccountTransaction_.payer).in(payers)
             );
         }
     }

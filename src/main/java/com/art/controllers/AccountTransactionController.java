@@ -123,12 +123,12 @@ public class AccountTransactionController {
     }
 
     @ModelAttribute("payers")
-    public List<String> initPayers() {
+    public List<Account> initPayers() {
         return transactionService.initPayers();
     }
 
     @ModelAttribute("parentPayers")
-    public List<String> initParentPayers() {
+    public List<Account> initParentPayers() {
         return transactionService.initParentPayers();
     }
 

@@ -180,7 +180,7 @@ public class AccountTransactionService {
      *
      * @return список плательщиков
      */
-    public List<String> initPayers() {
+    public List<Account> initPayers() {
         return accountTransactionRepository.getAllPayers();
     }
 
@@ -189,7 +189,7 @@ public class AccountTransactionService {
      *
      * @return список плательщиков
      */
-    public List<String> initParentPayers() {
+    public List<Account> initParentPayers() {
         return accountTransactionRepository.getAllParentPayers();
     }
 
