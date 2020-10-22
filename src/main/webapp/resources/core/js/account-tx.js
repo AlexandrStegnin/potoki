@@ -127,7 +127,7 @@ function deleteTransactions(accountTxDTO) {
     })
         .done(function (data) {
             showPopup(data.message);
-            $('#bth-search').click()
+            $('#btn-search').click()
         })
         .fail(function (e) {
             showPopup('Что-то пошло не так [' + e.message + ']');
@@ -149,7 +149,7 @@ function clearFilters() {
         $('#payers').prop('selectedIndex', -1)
         $('#cashTypes').prop('selectedIndex', -1)
         $('.selectpicker').selectpicker('refresh')
-        $('#bth-search').click()
+        $('#btn-search').click()
     })
 }
 
@@ -158,7 +158,7 @@ function clearFilters() {
  */
 function toggleAllRows() {
     $('#all').on('change', function () {
-        $('#bth-search').click()
+        $('#btn-search').click()
     })
 }
 
