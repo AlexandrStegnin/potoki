@@ -34,43 +34,12 @@ public class AccountTransactionSpecification extends BaseSpecification<AccountTr
                 .toPredicate(root, query, cb);
     }
 
-    private static Specification<AccountTransaction> ownerEqual(String ownerName) {
-        if (ownerName == null || ownerName.startsWith(Constant.CHOOSE_FILTER_PREFIX)) {
-            return null;
-        } else {
-            return ((root, criteriaQuery, criteriaBuilder) ->
-                    criteriaBuilder.equal(root.get(AccountTransaction_.owner).get(Account_.ownerName), ownerName)
-            );
-        }
-    }
-
     private static Specification<AccountTransaction> accIdEqual(Long accId) {
         if (accId == null) {
             return null;
         } else {
             return ((root, criteriaQuery, criteriaBuilder) ->
                     criteriaBuilder.equal(root.get(AccountTransaction_.owner).get(Account_.id), accId)
-            );
-        }
-    }
-
-    private static Specification<AccountTransaction> recipientEqual(String recipientName) {
-        if (recipientName == null || recipientName.startsWith(Constant.CHOOSE_FILTER_PREFIX)) {
-            return null;
-        } else {
-            return ((root, criteriaQuery, criteriaBuilder) ->
-                    criteriaBuilder.equal(root.get(AccountTransaction_.payer).get(Account_.ownerName), recipientName)
-            );
-        }
-    }
-
-    private static Specification<AccountTransaction> cashTypeEqual(String cashTypeTitle) {
-        if (cashTypeTitle == null || cashTypeTitle.startsWith(Constant.CHOOSE_FILTER_PREFIX)) {
-            return null;
-        } else {
-            CashType cashType = CashType.fromTitle(cashTypeTitle);
-            return ((root, criteriaQuery, criteriaBuilder) ->
-                    criteriaBuilder.equal(root.get(AccountTransaction_.cashType), cashType)
             );
         }
     }
