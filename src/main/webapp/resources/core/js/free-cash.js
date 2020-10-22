@@ -38,25 +38,6 @@ AccountTransactionDTO.prototype = {
         this.blocked = blocked
     }
 }
-//
-// let AccountTXReinvestDTO = function () {}
-//
-// AccountTXReinvestDTO.prototype = {
-//     dateReinvest: null,
-//     cash: null,
-//     facilityId: null,
-//     underFacilityId: null,
-//     shareType: null,
-//     accountsIds: [],
-//     build: function (dateReinvest, cash, facilityId, underFacilityId, shareType, accountsIds) {
-//         this.dateReinvest = dateReinvest
-//         this.cash = cash
-//         this.facilityId = facilityId
-//         this.underFacilityId = underFacilityId
-//         this.shareType = shareType
-//         this.accountsIds = accountsIds
-//     }
-// }
 
 let AccFilter = function () {}
 
@@ -83,29 +64,12 @@ AccountTxDTO.prototype = {
 
 let popupTable;
 
-// let reinvestModal;
-
-// let txModalTable;
-
-// let confirmDelete;
-
 jQuery(document).ready(function ($) {
     popupTable = $('#popup-table')
-    // reinvestModal = $('#reinvest-form-modal')
-    // txModalTable = $('#tx-popup-table')
-    // confirmDelete = $('#confirm-delete');
     showPageableResult()
-    // subscribeCheckAllClick()
-    // subscribeCheckboxChange()
     clearFilters()
     toggleAllRows()
     subscribeTxShowClick()
-    // subscribeReinvestClick()
-    // subscribeFacilitySelectChange()
-    // subscribeAcceptReinvest()
-    // subscribeShowTxs()
-    // showConfirmDelete()
-    // acceptDelete()
 })
 
 /**
@@ -121,21 +85,6 @@ function showPageableResult() {
         $('#filter-form').submit();
     });
 }
-
-/**
- * Выделить/снять выделение со всех чекбоксов на странице
- */
-// function subscribeCheckAllClick() {
-//     $(document).on('click', '#checkIt', function () {
-//         let checkItBtn = $('#checkIt');
-//         const checked = checkItBtn.data('checked');
-//         $('table#transactions').find('> tbody').find('> tr').each(function () {
-//             $(this).find(':checkbox:not(:disabled)').prop('checked', !checked);
-//             toggleStateReinvestButton(!checked)
-//         });
-//         checkItBtn.data('checked', !checked)
-//     })
-// }
 
 /**
  * Получить детализацию по счёту
@@ -191,41 +140,6 @@ function toggleAllRows() {
         $('#bth-search').click()
     })
 }
-
-/**
- * Изменение состояния чекбоксов
- */
-// function subscribeCheckboxChange() {
-//     $(document).on('change', 'input:checkbox', function () {
-//         if ($(this).prop('checked')) {
-//             toggleStateReinvestButton(true)
-//         } else {
-//             let count = countChecked()
-//             toggleStateReinvestButton(count > 0)
-//         }
-//     })
-// }
-
-/**
- * Посчитать кол-во отмеченных чекбоксов
- * @return {Number} кол-во отмеченных чекбоксов
- */
-// function countChecked() {
-//     return $('table#transactions').find('input:checkbox:checked').length
-// }
-
-/**
- * Блокировать/разблокировать кнопку "Реинвестировать"
- *
- * @param enable {boolean} признак блокировать или разблокировать
- */
-// function toggleStateReinvestButton(enable) {
-//     if (enable) {
-//         $('#reinvest').removeClass('disabled')
-//     } else {
-//         $('#reinvest').addClass('disabled')
-//     }
-// }
 
 /**
  * Нажатие кнопки "Просмотреть"
@@ -296,183 +210,6 @@ function createRow(transactionDTO) {
 function getDate(number) {
     let dateTime = new Date(number)
     return new Date(dateTime.getUTCFullYear(), dateTime.getUTCMonth(), dateTime.getUTCDate())
-}
-
-/**
- * Клик по кнопке "Реинвестировать"
- */
-// function subscribeReinvestClick() {
-//     $('#reinvest').on('click', function () {
-//         reinvestModal.modal('show')
-//     })
-// }
-
-/**
- * Заполнить выпадающий список подобъектов на основе выбранного объекта
- *
- * @param facilityId id объекта
- * @param ufSelectorId id выпадающего списка
- */
-// function getUFFromLS(facilityId, ufSelectorId) {
-//     let underFacilities;
-//     underFacilities = JSON.parse(localStorage.getItem('uf'));
-//     let option;
-//
-//     let options;
-//     if (underFacilities === null) populateStorageUnderFacilities(ufSelectorId);
-//     if (facilityId === '0') {
-//         options = underFacilities.map(function (item) {
-//             option = document.createElement('option');
-//             option.setAttribute('id', item.id);
-//             option.setAttribute('data-parent-id', item.facilityId);
-//             option.setAttribute('value', item.id);
-//             option.innerText = item.underFacility;
-//             return option;
-//         });
-//     } else {
-//         options = underFacilities.filter(function (item) {
-//             return item.facilityId === parseInt(facilityId);
-//         }).map(function (item) {
-//             option = document.createElement('option');
-//             option.setAttribute('id', item.id);
-//             option.setAttribute('data-parent-id', item.facilityId);
-//             option.setAttribute('value', item.id);
-//             option.innerText = item.underFacility;
-//             return option;
-//         });
-//         option = document.createElement('option');
-//         option.setAttribute('id', "0");
-//         option.setAttribute('value', '0');
-//         option.innerText = 'Без подобъекта';
-//         options.unshift(option);
-//     }
-//
-//     $('#' + ufSelectorId)
-//         .find('option')
-//         .remove()
-//         .end()
-//         .append(options)
-//         .selectpicker('refresh');
-// }
-
-/**
- * При выборе объекта из выпадающего списка
- */
-// function subscribeFacilitySelectChange() {
-//     reinvestModal.find('#facility').on('change', function () {
-//         let facilityId = $(this).val()
-//         getUFFromLS(facilityId, 'underFacility')
-//     })
-// }
-
-/**
- * При подтверждении реивестирования
- */
-// function subscribeAcceptReinvest() {
-//     reinvestModal.find('#accept').on('click', function () {
-//         let dateReinvest = reinvestModal.find('#dateReinvest').val()
-//         let cash = reinvestModal.find('#cash').val()
-//         let facilityId = reinvestModal.find('#facility').val()
-//         let underFacilityId = reinvestModal.find('#underFacility').val()
-//         let shareType = reinvestModal.find('#shareType').val()
-//         let accTxReinvestDTO = new AccountTXReinvestDTO()
-//         accTxReinvestDTO.build(dateReinvest, cash, facilityId, underFacilityId, shareType)
-//         if (checkDTO(accTxReinvestDTO)) {
-//             accTxReinvestDTO.accountsIds = getAccountsIds()
-//             reinvest(accTxReinvestDTO)
-//         }
-//     })
-// }
-
-/**
- * Проверить правильность заполнения формы реинвестирования
- *
- * @param accTxReinvestDTO {AccountTXReinvestDTO} DTO с формы
- * @return {boolean} результат проверки
- */
-// function checkDTO(accTxReinvestDTO) {
-//     let dateReinvestErr = reinvestModal.find('#dateReinvestErr')
-//     if (accTxReinvestDTO.dateReinvest.length === 0) {
-//         dateReinvestErr.addClass('d-block')
-//         return false
-//     } else {
-//         dateReinvestErr.removeClass('d-block')
-//     }
-//     let facilityErr = $('#facilityErr')
-//     if (accTxReinvestDTO.facilityId === '0') {
-//         facilityErr.addClass('d-block')
-//         return false
-//     } else {
-//         facilityErr.removeClass('d-block')
-//     }
-//     let underFacilityErr = $('#underFacilityErr')
-//     if (accTxReinvestDTO.underFacilityId === '0') {
-//         underFacilityErr.addClass('d-block')
-//         return false
-//     } else {
-//         underFacilityErr.removeClass('d-block')
-//     }
-//     let shareTypeErr = $('#shareTypeErr')
-//     if (accTxReinvestDTO.shareType === 'Не определена') {
-//         shareTypeErr.addClass('d-block')
-//         return false
-//     } else {
-//         shareTypeErr.removeClass('d-block')
-//     }
-//     return true
-// }
-
-/**
- * Реинвестировать суммы
- *
- * @param accTxReinvestDTO {AccountTXReinvestDTO} DTO для реинвестирования
- */
-// function reinvest(accTxReinvestDTO) {
-//     let token = $("meta[name='_csrf']").attr("content");
-//     let header = $("meta[name='_csrf_header']").attr("content");
-//     reinvestModal.modal('hide')
-//     showLoader();
-//
-//     $.ajax({
-//         type: "POST",
-//         contentType: "application/json;charset=utf-8",
-//         url: 'reinvest',
-//         data: JSON.stringify(accTxReinvestDTO),
-//         dataType: 'json',
-//         timeout: 100000,
-//         beforeSend: function (xhr) {
-//             xhr.setRequestHeader(header, token);
-//         },
-//         success: function (data) {
-//             closeLoader();
-//             if (data.status === 200) {
-//                 showPopup(data.message)
-//             } else {
-//                 showPopup(data.error)
-//             }
-//         },
-//         error: function (e) {
-//             closeLoader()
-//             showPopup(e);
-//         },
-//         always: function () {
-//             closeLoader()
-//         }
-//     });
-// }
-
-/**
- * Получить список id аккаунтов, с которых реинвестировать
- *
- * @return {[]}
- */
-function getAccountsIds() {
-    let accIds = []
-    let checkedAccounts = $('table#transactions').find('input:checkbox:checked:not(disabled)')
-    $.each(checkedAccounts, function (ind, el) {
-        accIds.push($(el).data('object-id'))
-    })
-    return accIds
 }
 
 /**
