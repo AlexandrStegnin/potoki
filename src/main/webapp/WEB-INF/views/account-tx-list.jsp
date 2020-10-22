@@ -142,6 +142,7 @@
             <th>Вид денег</th>
             <th>Отправитель</th>
             <th style="width: 5%">Выбрать</th>
+            <th>Баланс</th>
         </tr>
         </thead>
         <tbody>
@@ -157,6 +158,12 @@
                 <td>${tx.cashType.title}</td>
                 <td>${tx.payer.ownerName}</td>
                 <td style="text-align: center"><input type="checkbox" data-object-id="${tx.id}">
+                </td>
+                <td>
+                    <button type="button" class="btn btn-sm btn-success tx-show" data-toggle="tooltip"
+                            data-placement="left" title="Посмотреть" data-tx-id="${tx.owner.id}">
+                        <i class="fas fa-coins"></i>
+                    </button>
                 </td>
             </tr>
         </c:forEach>
