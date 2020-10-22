@@ -19,10 +19,9 @@ public class AccountTransactionSpecification extends BaseSpecification<AccountTr
     public Specification<AccountTransaction> getFilter(AccountTransactionFilter filter) {
         return (root, query, cb) -> where(
                 ownerEqual(filter.getOwner()))
-//                .or(salePaymentIdEqual(filter.getSalePaymentId()))
-                .or(recipientEqual(filter.getRecipient()))
-                .or(cashTypeEqual(filter.getCashType()))
-//                .or(moneyIdEqual(filter.getMoneyId()))
+                .and(recipientEqual(filter.getRecipient()))
+                .and(cashTypeEqual(filter.getCashType()))
+                .and(cashNotNull())
                 .toPredicate(root, query, cb);
     }
 
