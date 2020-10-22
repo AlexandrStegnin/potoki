@@ -651,4 +651,8 @@ public class AccountTransactionService {
         accountTransactionRepository.delete(findByMoneyId(moneyId));
     }
 
+    public AccountDTO getBalance(Long ownerId) {
+        return accountTransactionRepository.fetchBalance(OwnerType.INVESTOR, ownerId);
+    }
+
 }
