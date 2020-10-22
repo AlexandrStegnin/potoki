@@ -2,7 +2,7 @@
 <%@ taglib prefix="xlink" uri="http://jakarta.apache.org/taglibs/standard/scriptfree" %>
 
 <div class="modal fade" id="balance-popup-table" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document" style="min-width: 75%">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title text-responsive" style="font-weight: 600; color: #11325b;" id="header">Баланс инвестора</h5>
