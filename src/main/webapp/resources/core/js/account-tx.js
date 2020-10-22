@@ -159,12 +159,51 @@ function showPopup(message) {
     }, 3000);
 }
 
+/**
+ * При клике посмотреть баланс
+ */
 function subscribeBalanceShowClick() {
     $('.show-balance').on('click', function () {
-        let txId = $(this).data('owner-id')
-        let accSummaryDTO = new AccountSummaryDTO()
-        let accFilter = getFilter()
-        accSummaryDTO.build(txId, accFilter.ownerName, accFilter.payerName, accFilter.parentPayer)
-        getDetails(accSummaryDTO)
+        let ownerId = $(this).data('owner-id')
+        getBalance(ownerId)
     })
+}
+
+/**
+ * Получить баланс по инвестору
+ *
+ * @param ownerId
+ */
+function getBalance(ownerId) {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+
+    let accDTO = {
+        account: {
+            owner: {
+                id: ownerId
+            }
+        }
+    }
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: "balance",
+        data: JSON.stringify(accDTO),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        }
+    })
+        .done(function (data) {
+            createDetailTable(data);
+        })
+        .fail(function (e) {
+            showPopup('Что-то пошло не так [' + e.message + ']');
+        })
+        .always(function () {
+            console.log('Закончили!');
+        });
 }
