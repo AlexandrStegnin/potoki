@@ -1,6 +1,9 @@
 package com.art.specifications;
 
-import com.art.model.*;
+import com.art.config.application.Constant;
+import com.art.model.AccountTransaction;
+import com.art.model.AccountTransaction_;
+import com.art.model.Account_;
 import com.art.model.supporting.enums.CashType;
 import com.art.model.supporting.filters.AccountTransactionFilter;
 import org.springframework.data.jpa.domain.Specification;
@@ -19,14 +22,14 @@ public class AccountTransactionSpecification extends BaseSpecification<AccountTr
     public Specification<AccountTransaction> getFilter(AccountTransactionFilter filter) {
         return (root, query, cb) -> where(
                 ownerEqual(filter.getOwner()))
-                .and(recipientEqual(filter.getRecipient()))
+                .and(parentPayerEqual(filter.getParentPayer()))
                 .and(cashTypeEqual(filter.getCashType()))
                 .and(cashNotNull())
                 .toPredicate(root, query, cb);
     }
 
     private static Specification<AccountTransaction> ownerEqual(String ownerName) {
-        if (ownerName == null || "Выберите владельца".equalsIgnoreCase(ownerName)) {
+        if (ownerName == null || ownerName.startsWith(Constant.CHOOSE_FILTER_PREFIX)) {
             return null;
         } else {
             return ((root, criteriaQuery, criteriaBuilder) ->
@@ -46,7 +49,7 @@ public class AccountTransactionSpecification extends BaseSpecification<AccountTr
     }
 
     private static Specification<AccountTransaction> recipientEqual(String recipientName) {
-        if (recipientName == null || "Выберите отправителя".equalsIgnoreCase(recipientName)) {
+        if (recipientName == null || recipientName.startsWith(Constant.CHOOSE_FILTER_PREFIX)) {
             return null;
         } else {
             return ((root, criteriaQuery, criteriaBuilder) ->
@@ -56,7 +59,7 @@ public class AccountTransactionSpecification extends BaseSpecification<AccountTr
     }
 
     private static Specification<AccountTransaction> cashTypeEqual(String cashTypeTitle) {
-        if (cashTypeTitle == null || "Выберите вид денег".equalsIgnoreCase(cashTypeTitle)) {
+        if (cashTypeTitle == null || cashTypeTitle.startsWith(Constant.CHOOSE_FILTER_PREFIX)) {
             return null;
         } else {
             CashType cashType = CashType.fromTitle(cashTypeTitle);
@@ -67,7 +70,7 @@ public class AccountTransactionSpecification extends BaseSpecification<AccountTr
     }
 
     private static Specification<AccountTransaction> parentPayerEqual(String parentPayer) {
-        if (parentPayer == null || parentPayer.startsWith("Выберите")) {
+        if (parentPayer == null || parentPayer.startsWith(Constant.CHOOSE_FILTER_PREFIX)) {
             return null;
         } else {
             return ((root, criteriaQuery, criteriaBuilder) ->
@@ -77,7 +80,7 @@ public class AccountTransactionSpecification extends BaseSpecification<AccountTr
     }
 
     private static Specification<AccountTransaction> payerEqual(String payerName) {
-        if (payerName == null ||payerName.startsWith("Выберите")) {
+        if (payerName == null ||payerName.startsWith(Constant.CHOOSE_FILTER_PREFIX)) {
             return null;
         } else {
             return ((root, criteriaQuery, criteriaBuilder) ->
@@ -90,16 +93,6 @@ public class AccountTransactionSpecification extends BaseSpecification<AccountTr
         return ((root, criteriaQuery, criteriaBuilder) ->
                 criteriaBuilder.isNotNull(root.get(AccountTransaction_.cash))
         );
-    }
-
-    public Specification<AccountTransaction> getTxDetailsFilter(AccountTransactionFilter filter) {
-        return (root, query, cb) -> where(
-                accIdEqual(filter.getAccountId()))
-                .and(parentPayerEqual(filter.getParentPayer()))
-                .and(payerEqual(filter.getPayer()))
-                .and(cashNotNull())
-                .and(ownerEqual(filter.getOwner()))
-                .toPredicate(root, query, cb);
     }
 
     public Specification<AccountTransaction> getDetailsFilter(AccountTransactionFilter filter) {
