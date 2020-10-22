@@ -1,5 +1,6 @@
 package com.art.repository;
 
+import com.art.model.Account;
 import com.art.model.AccountTransaction;
 import com.art.model.supporting.dto.AccountDTO;
 import com.art.model.supporting.enums.CashType;
@@ -26,8 +27,9 @@ public interface AccountTransactionRepository extends JpaRepository<AccountTrans
 
     List<AccountTransaction> findAll(Specification<AccountTransaction> specification);
 
-    @Query("SELECT DISTINCT atx.owner.ownerName FROM AccountTransaction atx ORDER BY atx.owner.ownerName")
-    List<String> getAllOwners();
+    @Query("SELECT DISTINCT atx.owner FROM AccountTransaction atx " +
+            "WHERE atx.owner.ownerType = :ownerType")
+    List<Account> getAllOwners(@Param("ownerType") OwnerType ownerType);
 
     @Query("SELECT DISTINCT atx.recipient.ownerName FROM AccountTransaction atx ORDER BY atx.recipient.ownerName")
     List<String> getAllRecipients();

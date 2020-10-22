@@ -1,13 +1,18 @@
 package com.art.specifications;
 
 import com.art.config.application.Constant;
+import com.art.model.Account;
 import com.art.model.AccountTransaction;
 import com.art.model.AccountTransaction_;
 import com.art.model.Account_;
 import com.art.model.supporting.enums.CashType;
+import com.art.model.supporting.filters.AccTxFilter;
 import com.art.model.supporting.filters.AccountTransactionFilter;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.springframework.data.jpa.domain.Specifications.where;
 
@@ -16,15 +21,15 @@ import static org.springframework.data.jpa.domain.Specifications.where;
  */
 
 @Component
-public class AccountTransactionSpecification extends BaseSpecification<AccountTransaction, AccountTransactionFilter> {
+public class AccountTransactionSpecification extends BaseSpecification<AccountTransaction, AccTxFilter> {
 
     @Override
-    public Specification<AccountTransaction> getFilter(AccountTransactionFilter filter) {
+    public Specification<AccountTransaction> getFilter(AccTxFilter filter) {
         return (root, query, cb) -> where(
-                ownerEqual(filter.getOwner()))
-                .and(parentPayerEqual(filter.getParentPayer()))
-                .and(payerEqual(filter.getPayer()))
-                .and(cashTypeEqual(filter.getCashType()))
+                ownersIn(filter.getOwners()))
+                .and(parentPayerNameIn(filter.getParentPayerNames()))
+                .and(payerNameIn(filter.getPayerNames()))
+                .and(cashTypesIn(filter.getCashTypes()))
                 .and(cashNotNull())
                 .toPredicate(root, query, cb);
     }
@@ -102,6 +107,48 @@ public class AccountTransactionSpecification extends BaseSpecification<AccountTr
                 .and(parentPayerEqual(filter.getParentPayer()))
                 .and(payerEqual(filter.getPayer()))
                 .toPredicate(root, query, cb);
+    }
+
+    private static Specification<AccountTransaction> ownersIn(List<Account> owners) {
+        if (owners == null || owners.size() == 0) {
+            return null;
+        } else {
+            return ((root, criteriaQuery, criteriaBuilder) ->
+                    root.get(AccountTransaction_.owner).in(owners)
+            );
+        }
+    }
+
+    private static Specification<AccountTransaction> parentPayerNameIn(List<String> parentPayerNames) {
+        if (parentPayerNames == null || parentPayerNames.size() == 0 || parentPayerNames.get(0).trim().startsWith(Constant.CHOOSE_FILTER_PREFIX)) {
+            return null;
+        } else {
+            return ((root, criteriaQuery, criteriaBuilder) ->
+                    root.get(AccountTransaction_.payer).get(Account_.parentAccount).get(Account_.ownerName).in(parentPayerNames)
+            );
+        }
+    }
+
+    private static Specification<AccountTransaction> payerNameIn(List<String> payerNames) {
+        if (payerNames == null || payerNames.size() == 0 || payerNames.get(0).trim().startsWith(Constant.CHOOSE_FILTER_PREFIX)) {
+            return null;
+        } else {
+            return ((root, criteriaQuery, criteriaBuilder) ->
+                    root.get(AccountTransaction_.payer).get(Account_.ownerName).in(payerNames)
+            );
+        }
+    }
+
+    private static Specification<AccountTransaction> cashTypesIn(List<String> cashTypeTitles) {
+        if (cashTypeTitles == null || cashTypeTitles.size() == 0 || cashTypeTitles.get(0).trim().startsWith(Constant.CHOOSE_FILTER_PREFIX)) {
+            return null;
+        } else {
+            List<CashType> cashTypes = new ArrayList<>();
+            cashTypeTitles.forEach(title -> cashTypes.add(CashType.fromTitle(title)));
+            return ((root, criteriaQuery, criteriaBuilder) ->
+                    root.get(AccountTransaction_.cashType).in(cashTypes)
+            );
+        }
     }
 
 }

@@ -1,6 +1,7 @@
 package com.art.controllers;
 
 import com.art.config.application.Location;
+import com.art.model.Account;
 import com.art.model.supporting.dto.AccountSummaryDTO;
 import com.art.model.supporting.dto.AccountTransactionDTO;
 import com.art.model.supporting.dto.AccountTxDTO;
@@ -63,7 +64,7 @@ public class AccountTxSummaryController {
     }
 
     @ModelAttribute("owners")
-    public List<String> initOwners() {
+    public List<Account> initOwners() {
         return accountTransactionService.initOwners();
     }
 

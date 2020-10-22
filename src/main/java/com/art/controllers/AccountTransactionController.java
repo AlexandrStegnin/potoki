@@ -1,12 +1,13 @@
 package com.art.controllers;
 
 import com.art.config.application.Location;
+import com.art.model.Account;
 import com.art.model.AccountTransaction;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.dto.AccountTxDTO;
 import com.art.model.supporting.dto.BalanceDTO;
 import com.art.model.supporting.enums.CashType;
-import com.art.model.supporting.filters.AccountTransactionFilter;
+import com.art.model.supporting.filters.AccTxFilter;
 import com.art.service.AccountTransactionService;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
@@ -32,7 +33,7 @@ public class AccountTransactionController {
 
     private final AccountTransactionService transactionService;
 
-    private final AccountTransactionFilter filter = new AccountTransactionFilter();
+    private final AccTxFilter filter = new AccTxFilter();
 
     public AccountTransactionController(AccountTransactionService transactionService) {
         this.transactionService = transactionService;
@@ -56,7 +57,7 @@ public class AccountTransactionController {
      * @return страница
      */
     @PostMapping(path = Location.ACC_TRANSACTIONS)
-    public ModelAndView accountTransactionsFiltered(@ModelAttribute(value = "filter") AccountTransactionFilter filter) {
+    public ModelAndView accountTransactionsFiltered(@ModelAttribute(value = "filter") AccTxFilter filter) {
         return prepareModel(filter);
     }
 
@@ -101,7 +102,7 @@ public class AccountTransactionController {
      *
      * @param filter фильтры
      */
-    private ModelAndView prepareModel(AccountTransactionFilter filter) {
+    private ModelAndView prepareModel(AccTxFilter filter) {
         ModelAndView model = new ModelAndView("account-tx-list");
         Pageable pageable = new PageRequest(filter.getPageNumber(), filter.getPageSize());
         Page<AccountTransaction> page = transactionService.findAll(filter, pageable);
@@ -112,7 +113,7 @@ public class AccountTransactionController {
     }
 
     @ModelAttribute("owners")
-    public List<String> initOwners() {
+    public List<Account> initOwners() {
         return transactionService.initOwners();
     }
 

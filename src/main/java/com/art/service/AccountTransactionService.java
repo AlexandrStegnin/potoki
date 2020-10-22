@@ -8,6 +8,7 @@ import com.art.model.supporting.enums.CashType;
 import com.art.model.supporting.enums.OperationType;
 import com.art.model.supporting.enums.OwnerType;
 import com.art.model.supporting.enums.ShareType;
+import com.art.model.supporting.filters.AccTxFilter;
 import com.art.model.supporting.filters.AccountTransactionFilter;
 import com.art.repository.AccountTransactionRepository;
 import com.art.repository.MoneyRepository;
@@ -157,7 +158,7 @@ public class AccountTransactionService {
         return tx;
     }
 
-    public Page<AccountTransaction> findAll(AccountTransactionFilter filter, Pageable pageable) {
+    public Page<AccountTransaction> findAll(AccTxFilter filter, Pageable pageable) {
         if (filter.getPageSize() == 0) pageable = new PageRequest(filter.getPageNumber(), filter.getTotal() + 1);
         return accountTransactionRepository.findAll(
                 transactionSpecification.getFilter(filter),
@@ -166,24 +167,12 @@ public class AccountTransactionService {
     }
 
     /**
-     * Удалить данные о транзакциях, если есть связанные данные с выплатами (продажа)
-     *
-     * @param salePaymentId id выплаты (продажа)
-     */
-    public void deleteBySalePaymentId(Long salePaymentId) {
-        AccountTransactionFilter filter = new AccountTransactionFilter();
-        filter.setSalePaymentId(salePaymentId);
-        List<AccountTransaction> transactions = accountTransactionRepository.findAll(transactionSpecification.getFilter(filter));
-        accountTransactionRepository.delete(transactions);
-    }
-
-    /**
      * Получить список владельцев счетов для фильтрации
      *
      * @return список владельцев
      */
-    public List<String> initOwners() {
-        return accountTransactionRepository.getAllOwners();
+    public List<Account> initOwners() {
+        return accountTransactionRepository.getAllOwners(OwnerType.INVESTOR);
     }
 
     /**
@@ -617,7 +606,7 @@ public class AccountTransactionService {
      * @param moneyId id суммы в деньгах инвесторов
      */
     public List<AccountTransaction> findByMoneyId(Long moneyId) {
-        AccountTransactionFilter filter = new AccountTransactionFilter();
+        AccTxFilter filter = new AccTxFilter();
         filter.setMoneyId(moneyId);
         return accountTransactionRepository.findAll(transactionSpecification.getFilter(filter));
     }
