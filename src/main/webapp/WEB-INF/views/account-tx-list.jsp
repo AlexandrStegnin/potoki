@@ -89,9 +89,10 @@
             </form:select>
         </div>
         <div style="padding: 5px;">
-            <form:select path="cashTypes" id="cashTypes" multiple="false" class="selectpicker"
-                         data-size="10" data-live-search="true" data-none-selected-text="Выберите вид денег">
-                <form:option value="Выберите вид денег"/>
+            <form:select path="cashTypes" id="cashTypes" multiple="true" class="selectpicker"
+                         data-size="10" data-live-search="true" data-none-selected-text="Выберите вид денег"
+                         data-actions-box="true" data-select-all-text="Выбрать всё"
+                         data-deselect-all-text="Очистить">
                 <form:options items="${cashTypes}" itemValue="title" itemLabel="title"/>
             </form:select>
         </div>
