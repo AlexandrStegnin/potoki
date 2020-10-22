@@ -183,22 +183,7 @@ public class AccountTransactionService {
      * @return список владельцев
      */
     public List<String> initOwners() {
-        List<String> owners = new ArrayList<>();
-        owners.add("Выберите владельца");
-        owners.addAll(accountTransactionRepository.getAllOwners());
-        return owners;
-    }
-
-    /**
-     * Получить список владельцев счетов для фильтрации
-     *
-     * @return список владельцев
-     */
-    public List<String> initRecipients() {
-        List<String> owners = new ArrayList<>();
-        owners.add("Выберите отправителя");
-        owners.addAll(accountTransactionRepository.getAllRecipients());
-        return owners;
+        return accountTransactionRepository.getAllOwners();
     }
 
     /**
@@ -207,10 +192,7 @@ public class AccountTransactionService {
      * @return список плательщиков
      */
     public List<String> initPayers() {
-        List<String> payers = new ArrayList<>();
-        payers.add("Выберите подобъект");
-        payers.addAll(accountTransactionRepository.getAllPayers());
-        return payers;
+        return accountTransactionRepository.getAllPayers();
     }
 
     /**
@@ -219,10 +201,7 @@ public class AccountTransactionService {
      * @return список плательщиков
      */
     public List<String> initParentPayers() {
-        List<String> payers = new ArrayList<>();
-        payers.add("Выберите объект");
-        payers.addAll(accountTransactionRepository.getAllParentPayers());
-        return payers;
+        return accountTransactionRepository.getAllParentPayers();
     }
 
     /**
