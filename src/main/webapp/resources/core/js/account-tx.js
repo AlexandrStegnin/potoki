@@ -22,10 +22,26 @@ AccountSummaryDTO.prototype = {
     }
 }
 
+let BalanceDTO = function () {}
+
+BalanceDTO.prototype = {
+    accountId: null,
+    ownerName: null,
+    summary: 0,
+    build: function (accountId, ownerName, summary) {
+        this.accountId = accountId
+        this.ownerName = ownerName
+        this.summary = summary
+    }
+}
+
 let confirmDelete;
+
+let balancePopup;
 
 jQuery(document).ready(function ($) {
     confirmDelete = $('#confirm-delete');
+    balancePopup = $('#balance-popup-table')
     showPageableResult()
     subscribeCheckAllClick()
     showConfirmDelete()
@@ -178,19 +194,15 @@ function getBalance(ownerId) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
 
-    let accDTO = {
-        account: {
-            owner: {
-                id: ownerId
-            }
-        }
+    let balanceDTO = {
+        accountId: ownerId
     }
 
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: "balance",
-        data: JSON.stringify(accDTO),
+        url: "transactions/balance",
+        data: JSON.stringify(balanceDTO),
         dataType: 'json',
         timeout: 100000,
         beforeSend: function (xhr) {
@@ -198,7 +210,7 @@ function getBalance(ownerId) {
         }
     })
         .done(function (data) {
-            createDetailTable(data);
+            createBalanceTable(data);
         })
         .fail(function (e) {
             showPopup('Что-то пошло не так [' + e.message + ']');
@@ -206,4 +218,31 @@ function getBalance(ownerId) {
         .always(function () {
             console.log('Закончили!');
         });
+}
+
+/**
+ * Заполнить таблицу во всплывающей форме по данным с сервера
+ *
+ * @param balance {BalanceDTO}
+ */
+function createBalanceTable(balance) {
+    let balanceTable = $('#balance-table');
+    let tableBody = balanceTable.find('tbody');
+    tableBody.empty();
+    let row = createRow(balance);
+    tableBody.append(row);
+    balancePopup.modal('show');
+}
+
+/**
+ * Создать строку с суммой
+ *
+ * @param balanceDTO {BalanceDTO} DTO транзакции
+ * @returns строка таблицы
+ */
+function createRow(balanceDTO) {
+    return $('<tr>').append(
+        $('<td>').text(balanceDTO.ownerName),
+        $('<td>').text((balanceDTO.summary).toLocaleString())
+    );
 }
