@@ -450,7 +450,7 @@ function reinvest(accTxReinvestDTO) {
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: 'reinvest',
+        url: 'transactions/reinvest',
         data: JSON.stringify(accTxReinvestDTO),
         dataType: 'json',
         timeout: 100000,
