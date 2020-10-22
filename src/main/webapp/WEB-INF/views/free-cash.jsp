@@ -25,12 +25,6 @@
         table, td, th {
             text-align: center;
         }
-
-        .has-error {
-            color: red;
-            padding: 8px 0 0 8px;
-            font-size: 12px;
-        }
     </style>
 </head>
 
@@ -44,45 +38,35 @@
         <input type="hidden" id="pageSize" name="pageSize" value="${filter.pageSize}">
         <input type="hidden" id="total" name="total" value="${page.content.size()}">
         <div style="padding: 5px;">
-            <form:select path="owner" id="owners" multiple="false" class="selectpicker"
-                         data-size="10" data-live-search="true" data-none-selected-text="Выберите владельца">
+            <form:select path="owners" id="owners" multiple="true" class="selectpicker"
+                         data-size="10" data-live-search="true" data-none-selected-text="Выберите владельца"
+                         data-actions-box="true" data-select-all-text="Выбрать всё"
+                         data-deselect-all-text="Очистить">
                 <c:forEach var="owner" items="${owners}">
                     <option
-                            <c:choose>
-                                <c:when test="${owner eq 'Выберите владельца'}">selected="selected"</c:when>
-                                <c:when test="${owner eq filter.owner}">selected="selected"</c:when>
-                            </c:choose>
-                            value="${owner}" id="${owner}">${owner}
+                            <c:forEach var="ownerName" items="${filter.owners}">
+                                <c:choose>
+                                    <c:when test="${owner.ownerName eq ownerName.ownerName}">selected="selected"</c:when>
+                                </c:choose>
+                            </c:forEach>
+                            value="${owner.id}" id="${owner.ownerName}">${owner.ownerName}
                     </option>
                 </c:forEach>
             </form:select>
         </div>
-<%--            <div style="padding: 5px;">--%>
-<%--                <form:select path="parentPayer" id="parentPayers" multiple="true" class="selectpicker"--%>
-<%--                             data-size="10" data-live-search="true" data-none-selected-text="Выберите объект"--%>
-<%--                             data-actions-box="true" data-select-all-text="Выбрать всё"--%>
-<%--                             data-deselect-all-text="Очистить">--%>
-<%--                    <c:forEach var="parentPayer" items="${parentPayers}">--%>
-<%--                        <option--%>
-<%--                                <c:choose>--%>
-<%--                                    <c:when test="${parentPayer eq 'Выберите объект'}">selected="selected"</c:when>--%>
-<%--                                    <c:when test="${parentPayer eq filter.parentPayer}">selected="selected"</c:when>--%>
-<%--                                </c:choose>--%>
-<%--                                value="${parentPayer}" id="${parentPayer}">${parentPayer}--%>
-<%--                        </option>--%>
-<%--                    </c:forEach>--%>
-<%--                </form:select>--%>
-<%--            </div>--%>
         <div style="padding: 5px;">
-            <form:select path="payer" id="payers" multiple="false" class="selectpicker"
-                         data-size="10" data-live-search="true" data-none-selected-text="Выберите подобъект">
+            <form:select path="payers" id="payers" multiple="true" class="selectpicker"
+                         data-size="10" data-live-search="true" data-none-selected-text="Выберите подобъект"
+                         data-actions-box="true" data-select-all-text="Выбрать всё"
+                         data-deselect-all-text="Очистить">
                 <c:forEach var="payer" items="${payers}">
                     <option
-                            <c:choose>
-                                <c:when test="${payer eq 'Выберите подобъект'}">selected="selected"</c:when>
-                                <c:when test="${payer eq filter.payer}">selected="selected"</c:when>
-                            </c:choose>
-                            value="${payer}" id="${payer}">${payer}
+                            <c:forEach var="payerName" items="${filter.payers}">
+                                <c:choose>
+                                    <c:when test="${payer.ownerName eq payerName.ownerName}">selected="selected"</c:when>
+                                </c:choose>
+                            </c:forEach>
+                            value="${payer.id}" id="${payer.ownerName}">${payer.ownerName}
                     </option>
                 </c:forEach>
             </form:select>
@@ -100,17 +84,6 @@
             </button>
         </div>
     </div>
-<%--    <div class="d-flex flex-row justify-content-center" style="margin: 10px;">--%>
-<%--        <button type="button" class="btn btn-primary input-md" id="checkIt" data-checked="false"--%>
-<%--                style="margin-left: 5px">Выделить всё--%>
-<%--        </button>--%>
-<%--        <button type="button" class="btn btn-warning input-md disabled" id="reinvest" data-checked="false"--%>
-<%--                style="margin-left: 5px">Реинвестировать--%>
-<%--        </button>--%>
-<%--        <button type="button" class="btn btn-success input-md" id="show-txs"--%>
-<%--                style="margin-left: 5px">Посмотреть транзакции--%>
-<%--        </button>--%>
-<%--    </div>--%>
     </form:form>
 
     <c:if test="${filter.allRows == false}">
@@ -139,7 +112,6 @@
         <tr>
             <th>Инвестор</th>
             <th>Баланс</th>
-<%--            <th style="width: 5%">Выбрать</th>--%>
             <th>Подробно</th>
         </tr>
         </thead>
@@ -149,8 +121,6 @@
                 <td>${acc.owner.ownerName}</td>
                 <td><fmt:setLocale value="ru-RU" scope="session"/>
                     <fmt:formatNumber value="${acc.summary}" type="currency" minFractionDigits="2"/></td>
-<%--                <td style="text-align: center"><input type="checkbox" data-object-id="${acc.owner.id}">--%>
-<%--                </td>--%>
                 <td>
                     <button type="button" class="btn btn-sm btn-success tx-show" data-toggle="tooltip"
                             data-placement="left" title="Посмотреть" data-tx-id="${acc.owner.id}">
@@ -164,11 +134,8 @@
 </div>
 
 <%@include file="popup_modal.jsp" %>
-<%--<%@include file="confirm-delete.jsp" %>--%>
 <%@include file="ddk_loader.jsp" %>
-<%--<%@include file="reinvest-form.jsp" %>--%>
 <%@include file="table-popup.jsp" %>
-<%--<%@include file="tx-popup-table.jsp" %>--%>
 
 <script type="text/javascript"
         src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' />"></script>

@@ -4,8 +4,7 @@ import com.art.config.application.Location;
 import com.art.model.Account;
 import com.art.model.supporting.dto.AccountSummaryDTO;
 import com.art.model.supporting.dto.AccountTransactionDTO;
-import com.art.model.supporting.dto.AccountTxDTO;
-import com.art.model.supporting.filters.AccountTransactionFilter;
+import com.art.model.supporting.filters.AccTxFilter;
 import com.art.service.AccountTransactionService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,11 +27,7 @@ public class AccountTxSummaryController {
 
     private final AccountTransactionService accountTransactionService;
 
-    private final AccountTransactionFilter filter = new AccountTransactionFilter();
-//
-//    private final FacilityService facilityService;
-//
-//    private final UnderFacilityService underFacilityService;
+    private final AccTxFilter filter = new AccTxFilter();
 
     public AccountTxSummaryController(AccountTransactionService accountTransactionService) {
         this.accountTransactionService = accountTransactionService;
@@ -44,7 +39,7 @@ public class AccountTxSummaryController {
     }
 
     @PostMapping(path = Location.TRANSACTIONS_SUMMARY)
-    public ModelAndView accountsTxSummaryPageFiltered(@ModelAttribute("filter") AccountTransactionFilter filter) {
+    public ModelAndView accountsTxSummaryPageFiltered(@ModelAttribute("filter") AccTxFilter filter) {
         return prepareModel(filter);
     }
 
@@ -54,12 +49,11 @@ public class AccountTxSummaryController {
         return accountTransactionService.getDetails(dto);
     }
 
-    private ModelAndView prepareModel(AccountTransactionFilter filter) {
+    private ModelAndView prepareModel(AccTxFilter filter) {
         ModelAndView model = new ModelAndView("free-cash");
         Pageable pageable = new PageRequest(filter.getPageNumber(), filter.getPageSize());
         model.addObject("page", accountTransactionService.getSummary(filter, pageable));
         model.addObject("filter", filter);
-        model.addObject("accountTxDTO", new AccountTxDTO());
         return model;
     }
 
@@ -68,29 +62,9 @@ public class AccountTxSummaryController {
         return accountTransactionService.initOwners();
     }
 
-//    @ModelAttribute("facilities")
-//    public List<Facility> initializeFacilities() {
-//        return facilityService.initializeFacilities();
-//    }
-//
-//    @ModelAttribute("underFacilities")
-//    public List<UnderFacility> initializeUnderFacilities() {
-//        return underFacilityService.initializeUnderFacilities();
-//    }
-//
-//    @ModelAttribute("shareTypes")
-//    public List<ShareType> initializeShareTypes() {
-//        return Arrays.asList(ShareType.values());
-//    }
-
     @ModelAttribute("payers")
     public List<Account> initPayers() {
         return accountTransactionService.initPayers();
     }
-//
-//    @ModelAttribute("parentPayers")
-//    public List<String> initParentPayers() {
-//        return accountTransactionService.initParentPayers();
-//    }
 
 }

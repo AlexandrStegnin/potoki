@@ -14,6 +14,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -51,50 +52,51 @@ public interface AccountTransactionRepository extends JpaRepository<AccountTrans
 
     @Query("SELECT new com.art.model.supporting.dto.AccountDTO(atx.owner, SUM(atx.cash)) " +
             "FROM AccountTransaction atx " +
-            "WHERE atx.owner.ownerName = :ownerName AND atx.owner.ownerType = :ownerType " +
+            "WHERE atx.owner IN :owners AND atx.owner.ownerType = :ownerType " +
             "GROUP BY atx.owner")
-    Page<AccountDTO> fetchSummaryByOwner(@Param("ownerType") OwnerType ownerType, @Param("ownerName") String ownerName, Pageable pageable);
+    Page<AccountDTO> fetchSummaryByOwners(@Param("ownerType") OwnerType ownerType, @Param("owners") Collection<Account> owners, Pageable pageable);
 
     @Query("SELECT new com.art.model.supporting.dto.AccountDTO(atx.owner, SUM(atx.cash)) " +
             "FROM AccountTransaction atx " +
-            "WHERE atx.owner.ownerName = :ownerName AND atx.owner.ownerType = :ownerType " +
-            "AND atx.owner.parentAccount.ownerName = :parentPayer " +
+            "WHERE atx.owner IN :owners AND atx.owner.ownerType = :ownerType " +
+            "AND atx.owner.parentAccount IN :parentPayers " +
             "GROUP BY atx.owner")
-    Page<AccountDTO> fetchSummaryByOwnerAndParentPayer(@Param("ownerType") OwnerType ownerType, @Param("ownerName") String ownerName,
-                                                       @Param("parentPayer") String parentPayer, Pageable pageable);
-
-    @Query("SELECT new com.art.model.supporting.dto.AccountDTO(atx.owner, SUM(atx.cash)) " +
-            "FROM AccountTransaction atx " +
-            "WHERE atx.owner.ownerType = :ownerType " +
-            "AND atx.payer.ownerName = :payerName AND atx.payer.parentAccount.ownerName = :parentPayer " +
-            "GROUP BY atx.owner")
-    Page<AccountDTO> fetchSummaryByPayerAndParentPayer(@Param("ownerType") OwnerType ownerType, @Param("payerName") String payerName,
-                                                       @Param("parentPayer") String parentPayer, Pageable pageable);
-
+    Page<AccountDTO> fetchSummaryByOwnersAndParentPayers(@Param("ownerType") OwnerType ownerType, @Param("owners") Collection<Account> owners,
+                                                         @Param("parentPayers") Collection<Account> parentPayers, Pageable pageable);
 
     @Query("SELECT new com.art.model.supporting.dto.AccountDTO(atx.owner, SUM(atx.cash)) " +
             "FROM AccountTransaction atx " +
             "WHERE atx.owner.ownerType = :ownerType " +
-            "AND atx.payer.ownerName = :payerName " +
+            "AND atx.payer IN :payers AND atx.payer.parentAccount IN :parentPayers " +
             "GROUP BY atx.owner")
-    Page<AccountDTO> fetchSummaryByPayer(@Param("ownerType") OwnerType ownerType,
-                                         @Param("payerName") String payerName, Pageable pageable);
+    Page<AccountDTO> fetchSummaryByPayersAndParentPayers(@Param("ownerType") OwnerType ownerType, @Param("payers") Collection<Account> payers,
+                                                         @Param("parentPayers") Collection<Account> parentPayers, Pageable pageable);
+
 
     @Query("SELECT new com.art.model.supporting.dto.AccountDTO(atx.owner, SUM(atx.cash)) " +
             "FROM AccountTransaction atx " +
-            "WHERE atx.owner.ownerName = :ownerName AND atx.owner.ownerType = :ownerType " +
-            "AND atx.payer.ownerName = :payerName " +
+            "WHERE atx.owner.ownerType = :ownerType " +
+            "AND atx.payer IN :payers " +
             "GROUP BY atx.owner")
-    Page<AccountDTO> fetchSummaryByOwnerAndPayer(@Param("ownerType") OwnerType ownerType, @Param("ownerName") String ownerName,
-                                                 @Param("payerName") String payerName, Pageable pageable);
+    Page<AccountDTO> fetchSummaryByPayers(@Param("ownerType") OwnerType ownerType,
+                                          @Param("payers") Collection<Account> payers, Pageable pageable);
 
     @Query("SELECT new com.art.model.supporting.dto.AccountDTO(atx.owner, SUM(atx.cash)) " +
             "FROM AccountTransaction atx " +
-            "WHERE atx.owner.ownerName = :ownerName AND atx.owner.ownerType = :ownerType " +
-            "AND atx.payer.ownerName = :payerName AND atx.payer.parentAccount.ownerName = :parentPayer " +
+            "WHERE atx.owner IN :owners AND atx.owner.ownerType = :ownerType " +
+            "AND atx.payer IN :payers " +
             "GROUP BY atx.owner")
-    Page<AccountDTO> fetchSummaryByOwnerAndPayerAndParentPayer(@Param("ownerType") OwnerType ownerType, @Param("ownerName") String ownerName,
-                                                               @Param("payerName") String payerName, @Param("parentPayer") String parentPayer, Pageable pageable);
+    Page<AccountDTO> fetchSummaryByOwnersAndPayers(@Param("ownerType") OwnerType ownerType, @Param("owners") Collection<Account> owners,
+                                                   @Param("payers") Collection<Account> payers, Pageable pageable);
+
+    @Query("SELECT new com.art.model.supporting.dto.AccountDTO(atx.owner, SUM(atx.cash)) " +
+            "FROM AccountTransaction atx " +
+            "WHERE atx.owner IN :owners AND atx.owner.ownerType = :ownerType " +
+            "AND atx.payer IN :payers AND atx.payer.parentAccount IN :parentPayers " +
+            "GROUP BY atx.owner")
+    Page<AccountDTO> fetchSummaryByOwnersAndPayersAndParentPayers(@Param("ownerType") OwnerType ownerType, @Param("owners") Collection<Account> owners,
+                                                                  @Param("payers") Collection<Account> payers,
+                                                                  @Param("parentPayers") Collection<Account> parentPayers, Pageable pageable);
 
     @Query("SELECT new com.art.model.supporting.dto.AccountDTO(atx.owner, SUM(atx.cash)) " +
             "FROM AccountTransaction atx " +
@@ -106,15 +108,15 @@ public interface AccountTransactionRepository extends JpaRepository<AccountTrans
             "FROM AccountTransaction atx " +
             "WHERE atx.owner.ownerName = :ownerName AND atx.owner.ownerType = :ownerType " +
             "GROUP BY atx.owner")
-    AccountDTO fetchSummaryByOwner(@Param("ownerType") OwnerType ownerType, @Param("ownerName") String ownerName);
+    AccountDTO fetchSummaryByOwners(@Param("ownerType") OwnerType ownerType, @Param("ownerName") String ownerName);
 
     List<AccountTransaction> findByOwnerId(Long ownerId);
 
     @Query("SELECT new com.art.model.supporting.dto.AccountDTO(atx.owner, SUM(atx.cash)) " +
             "FROM AccountTransaction atx " +
-            "WHERE atx.owner.ownerType = :ownerType AND atx.payer.parentAccount.ownerName = :facilityName " +
+            "WHERE atx.owner.ownerType = :ownerType AND atx.payer.parentAccount IN :parentPayers " +
             "GROUP BY atx.owner")
-    Page<AccountDTO> fetchSummaryByParentPayer(@Param("ownerType") OwnerType ownerType, @Param("facilityName") String facilityName, Pageable pageable);
+    Page<AccountDTO> fetchSummaryByParentPayers(@Param("ownerType") OwnerType ownerType, @Param("parentPayers") Collection<Account> parentPayers, Pageable pageable);
 
     @Query("SELECT new com.art.model.supporting.dto.AccountDTO(atx.owner, SUM(atx.cash)) " +
             "FROM AccountTransaction atx " +

@@ -284,29 +284,29 @@ public class AccountTransactionService {
      * @param pageable для постраничного отображения
      * @return список счетов с суммарным балансом
      */
-    public Page<AccountDTO> getSummary(AccountTransactionFilter filter, Pageable pageable) {
+    public Page<AccountDTO> getSummary(AccTxFilter filter, Pageable pageable) {
         if (filter.getPageSize() == 0) pageable = new PageRequest(filter.getPageNumber(), filter.getTotal() + 1);
-        String ownerName = filter.getOwner();
-        String payerName = filter.getPayer();
-        String parentPayer = filter.getParentPayer();
+        List<Account> owners = filter.getOwners();
+        List<Account> payers = filter.getPayers();
+        List<Account> parentPayers = filter.getParentPayers();
 
-        switch (filter.getFilterType()) {
+        switch (filter.getType()) {
             case IS_CLEAR:
                 return accountTransactionRepository.getSummary(OwnerType.INVESTOR, pageable);
-            case BY_OWNER:
-                return accountTransactionRepository.fetchSummaryByOwner(OwnerType.INVESTOR, ownerName, pageable);
-            case BY_PAYER:
-                return accountTransactionRepository.fetchSummaryByPayer(OwnerType.INVESTOR, payerName, pageable);
-            case BY_PARENT_PAYER:
-                return accountTransactionRepository.fetchSummaryByParentPayer(OwnerType.INVESTOR, parentPayer, pageable);
-            case BY_OWNER_AND_PAYER:
-                return accountTransactionRepository.fetchSummaryByOwnerAndPayer(OwnerType.INVESTOR, ownerName, payerName, pageable);
-            case BY_OWNER_AND_PARENT_PAYER:
-                return accountTransactionRepository.fetchSummaryByOwnerAndParentPayer(OwnerType.INVESTOR, ownerName, parentPayer, pageable);
-            case BY_PAYER_AND_PARENT_PAYER:
-                return accountTransactionRepository.fetchSummaryByPayerAndParentPayer(OwnerType.INVESTOR, payerName, parentPayer, pageable);
-            case BY_OWNER_AND_PAYER_AND_PARENT_PAYER:
-                return accountTransactionRepository.fetchSummaryByOwnerAndPayerAndParentPayer(OwnerType.INVESTOR, ownerName, payerName, parentPayer, pageable);
+            case BY_OWNERS:
+                return accountTransactionRepository.fetchSummaryByOwners(OwnerType.INVESTOR, owners, pageable);
+            case BY_PAYERS:
+                return accountTransactionRepository.fetchSummaryByPayers(OwnerType.INVESTOR, payers, pageable);
+            case BY_PARENT_PAYERS:
+                return accountTransactionRepository.fetchSummaryByParentPayers(OwnerType.INVESTOR, parentPayers, pageable);
+            case BY_OWNERS_AND_PAYERS:
+                return accountTransactionRepository.fetchSummaryByOwnersAndPayers(OwnerType.INVESTOR, owners, payers, pageable);
+            case BY_OWNERS_AND_PARENT_PAYERS:
+                return accountTransactionRepository.fetchSummaryByOwnersAndParentPayers(OwnerType.INVESTOR, owners, parentPayers, pageable);
+            case BY_PAYERS_AND_PARENT_PAYERS:
+                return accountTransactionRepository.fetchSummaryByPayersAndParentPayers(OwnerType.INVESTOR, payers, parentPayers, pageable);
+            case BY_OWNERS_AND_PAYERS_AND_PARENT_PAYERS:
+                return accountTransactionRepository.fetchSummaryByOwnersAndPayersAndParentPayers(OwnerType.INVESTOR, owners, payers, parentPayers, pageable);
         }
         return accountTransactionRepository.getSummary(OwnerType.INVESTOR, pageable);
     }
@@ -399,7 +399,7 @@ public class AccountTransactionService {
                 prepareErrorResponse(response, "Не найден счёт подобъекта");
                 return response;
             }
-            AccountDTO accountDTO = accountTransactionRepository.fetchSummaryByOwner(OwnerType.INVESTOR, owner.getOwnerName());
+            AccountDTO accountDTO = accountTransactionRepository.fetchSummaryByOwners(OwnerType.INVESTOR, owner.getOwnerName());
             dto.setCash(accountDTO.getSummary());
             try {
                 AccountTransaction creditTx = createCreditTransaction(owner, recipient, dto);
@@ -597,7 +597,7 @@ public class AccountTransactionService {
      * @return сумма
      */
     private AccountDTO getOwnerSummary(String ownerName) {
-        return accountTransactionRepository.fetchSummaryByOwner(OwnerType.INVESTOR, ownerName);
+        return accountTransactionRepository.fetchSummaryByOwners(OwnerType.INVESTOR, ownerName);
     }
 
     /**
