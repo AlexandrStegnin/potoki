@@ -13,31 +13,31 @@ AccountSummaryDTO.prototype = {
         this.parentPayer = parentPayer
     }
 }
-//
-// let AccountTransactionDTO = function () {}
-//
-// AccountTransactionDTO.prototype = {
-//     id: null,
-//     txDate: null,
-//     operationType: null,
-//     payer: null,
-//     owner: null,
-//     recipient: null,
-//     cash: null,
-//     cashType: null,
-//     blocked: null,
-//     build: function (id, txDate, operationType, payer, owner, recipient, cash, cashType, blocked) {
-//         this.id = id
-//         this.txDate = txDate
-//         this.operationType = operationType
-//         this.payer = payer
-//         this.owner = owner
-//         this.recipient = recipient
-//         this.cash = cash
-//         this.cashType = cashType
-//         this.blocked = blocked
-//     }
-// }
+
+let AccountTransactionDTO = function () {}
+
+AccountTransactionDTO.prototype = {
+    id: null,
+    txDate: null,
+    operationType: null,
+    payer: null,
+    owner: null,
+    recipient: null,
+    cash: null,
+    cashType: null,
+    blocked: null,
+    build: function (id, txDate, operationType, payer, owner, recipient, cash, cashType, blocked) {
+        this.id = id
+        this.txDate = txDate
+        this.operationType = operationType
+        this.payer = payer
+        this.owner = owner
+        this.recipient = recipient
+        this.cash = cash
+        this.cashType = cashType
+        this.blocked = blocked
+    }
+}
 //
 // let AccountTXReinvestDTO = function () {}
 //

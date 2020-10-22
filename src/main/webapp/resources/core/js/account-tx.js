@@ -8,6 +8,20 @@ AccountTxDTO.prototype = {
     }
 }
 
+let AccountSummaryDTO = function () {
+}
+
+AccountSummaryDTO.prototype = {
+    accountId: null,
+    ownerName: null,
+    summary: null,
+    build: function (accountId, ownerName, summary) {
+        this.accountId = accountId
+        this.ownerName = ownerName
+        this.summary = summary
+    }
+}
+
 let confirmDelete;
 
 jQuery(document).ready(function ($) {
@@ -142,4 +156,14 @@ function showPopup(message) {
     setTimeout(function () {
         $('#msg-modal').modal('hide');
     }, 3000);
+}
+
+function subscribeTxShowClick() {
+    $('.show-balance').on('click', function () {
+        let txId = $(this).data('owner-id')
+        let accSummaryDTO = new AccountSummaryDTO()
+        let accFilter = getFilter()
+        accSummaryDTO.build(txId, accFilter.ownerName, accFilter.payerName, accFilter.parentPayer)
+        getDetails(accSummaryDTO)
+    })
 }
