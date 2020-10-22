@@ -52,14 +52,14 @@
             </form:select>
         </div>
         <div style="padding: 5px;">
-            <form:select path="recipient" id="recipients" multiple="false" class="selectpicker"
-                         data-size="10" data-live-search="true" data-none-selected-text="Выберите отправителя">
-                <c:forEach var="payer" items="${recipients}">
+            <form:select path="parentPayer" id="parentPayers" multiple="false" class="selectpicker"
+                         data-size="10" data-live-search="true" data-none-selected-text="Выберите объект">
+                <c:forEach var="parentPayer" items="${parentPayers}">
                     <option
                             <c:choose>
-                                <c:when test="${payer eq 'Выберите отправителя'}">selected="selected"</c:when>
-                                <c:when test="${payer eq filter.recipient}">selected="selected"</c:when>
-                            </c:choose> value="${payer}" id="${payer}">${payer}
+                                <c:when test="${parentPayer eq 'Выберите объект'}">selected="selected"</c:when>
+                                <c:when test="${parentPayer eq filter.parentPayer}">selected="selected"</c:when>
+                            </c:choose> value="${parentPayer}" id="${parentPayer}">${parentPayer}
                     </option>
                 </c:forEach>
             </form:select>
@@ -82,13 +82,18 @@
             <button type="button" id="btn-clear" class="btn btn-warning input-md" style="margin-left: 10px">
                 Сбросить фильтры
             </button>
-            <button type="button" class="btn btn-primary input-md" id="checkIt" data-checked="false"
-                    style="margin-left: 10px">Выделить всё
-            </button>
-            <button type="button" class="btn btn-danger input-md" id="delete-list"
-                    style="margin-left: 10px">Удалить выбранные суммы
-            </button>
         </div>
+    </div>
+    <div class="d-flex flex-row justify-content-center" style="margin: 10px;">
+        <button type="button" class="btn btn-primary input-md" id="checkIt" data-checked="false"
+                style="margin-left: 10px">Выделить всё
+        </button>
+        <button type="button" class="btn btn-danger input-md" id="delete-list"
+                style="margin-left: 10px">Удалить выбранные суммы
+        </button>
+        <button type="button" class="btn btn-warning input-md disabled" id="reinvest" data-checked="false"
+                style="margin-left: 10px">Реинвестировать
+        </button>
     </div>
     </form:form>
 
