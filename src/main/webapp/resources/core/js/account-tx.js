@@ -32,6 +32,7 @@ jQuery(document).ready(function ($) {
     acceptDelete()
     clearFilters()
     toggleAllRows()
+    subscribeBalanceShowClick()
 })
 
 /**
