@@ -96,7 +96,7 @@
         <c:if test="${filter.allRows == true}"> checked="checked" </c:if> data-toggle="toggle"
                data-on="На одной" data-off="По страницам" data-onstyle="success" data-offstyle="danger"
                data-size="input-sm">
-        <button type="submit" id="bth-search" class="btn btn-primary btn-md" style="margin-left: 10px">Фильтр
+        <button type="submit" id="btn-search" class="btn btn-primary btn-md" style="margin-left: 10px">Фильтр
         </button>
         <div>
             <button type="button" id="btn-clear" class="btn btn-warning input-md" style="margin-left: 10px">
