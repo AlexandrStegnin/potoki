@@ -34,4 +34,6 @@ public class Constant {
 
     public static final String INVESTOR_FLOWS_SALE_CACHE_KEY = "investorFlowsSale";
 
+    public static final String CHOOSE_FILTER_PREFIX = "Выберите";
+
 }
