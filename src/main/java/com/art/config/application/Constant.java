@@ -36,4 +36,6 @@ public class Constant {
 
     public static final String CHOOSE_FILTER_PREFIX = "Выберите";
 
+    public static final String NEW_CASH_DETAIL_REINVEST = "Реинвестирование";
+
 }

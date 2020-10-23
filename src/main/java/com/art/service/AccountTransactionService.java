@@ -25,6 +25,8 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.art.config.application.Constant.NEW_CASH_DETAIL_REINVEST;
+
 /**
  * @author Alexandr Stegnin
  */
@@ -294,7 +296,7 @@ public class AccountTransactionService {
             if (money != null) {
                 NewCashDetail newCashDetail = money.getNewCashDetail();
                 if (newCashDetail != null) {
-                    if (newCashDetail.getName().equalsIgnoreCase("Реинвестирование")) {
+                    if (newCashDetail.getName().equalsIgnoreCase(NEW_CASH_DETAIL_REINVEST)) {
                         tx.removeMoney(money);
                         toDelete.add(money);
                     }
@@ -563,7 +565,7 @@ public class AccountTransactionService {
         if (investor == null) {
             throw new EntityNotFoundException("Не найден инвестор");
         }
-        NewCashDetail newCashDetail = newCashDetailService.findByName("Реинвестирование");
+        NewCashDetail newCashDetail = newCashDetailService.findByName(NEW_CASH_DETAIL_REINVEST);
         if (newCashDetail == null) {
             throw new EntityNotFoundException("Не найдены детали новых денег [Реинвестирование]");
         }

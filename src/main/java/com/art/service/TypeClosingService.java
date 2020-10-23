@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.art.config.application.Constant.NEW_CASH_DETAIL_REINVEST;
+
 @Service
 @Transactional
 public class TypeClosingService {
@@ -58,7 +60,7 @@ public class TypeClosingService {
         List<TypeClosing> typeClosings = findAll();
         typeClosingList.addAll(typeClosings.stream()
                 .filter(tc -> !tc.getName().equalsIgnoreCase("Вывод_комиссия") &&
-                        !tc.getName().equalsIgnoreCase("Реинвестирование"))
+                        !tc.getName().equalsIgnoreCase(NEW_CASH_DETAIL_REINVEST))
                 .collect(Collectors.toList()));
         return typeClosingList;
     }

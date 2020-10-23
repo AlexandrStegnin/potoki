@@ -36,6 +36,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static com.art.config.application.Constant.NEW_CASH_DETAIL_REINVEST;
+
 @Service
 @Transactional
 public class MoneyService {
@@ -844,7 +846,7 @@ public class MoneyService {
         List<Money> oldCashList = findByIdIn(investorCashIdList);
         List<Money> reinvestedCash = prepareCashToReinvest(oldCashList, facilityToReinvestId, underFacilityToReinvestId, shareTypeId, dateClose);
         final NewCashDetail newCashDetail = newCashDetailService.findByName("Реинвестирование с продажи (сохранение)");
-        final TypeClosing typeClosing = typeClosingService.findByName("Реинвестирование");
+        final TypeClosing typeClosing = typeClosingService.findByName(NEW_CASH_DETAIL_REINVEST);
         final Map<String, Money> map = groupInvestorsCash(reinvestedCash, "");
 
         map.forEach((key, value) -> {
