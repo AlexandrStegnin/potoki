@@ -123,7 +123,7 @@
                     <fmt:formatNumber value="${acc.summary}" type="currency" minFractionDigits="2"/></td>
                 <td>
                     <button type="button" class="btn btn-sm btn-success tx-show" data-toggle="tooltip"
-                            data-placement="left" title="Посмотреть" data-tx-id="${acc.owner.id}">
+                            data-placement="left" title="Посмотреть" data-owner-id="${acc.owner.id}">
                         <i class="fas fa-eye"></i>
                     </button>
                 </td>
