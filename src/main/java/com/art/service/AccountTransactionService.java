@@ -9,7 +9,6 @@ import com.art.model.supporting.enums.OperationType;
 import com.art.model.supporting.enums.OwnerType;
 import com.art.model.supporting.enums.ShareType;
 import com.art.model.supporting.filters.AccTxFilter;
-import com.art.model.supporting.filters.AccountTransactionFilter;
 import com.art.repository.AccountTransactionRepository;
 import com.art.repository.MoneyRepository;
 import com.art.repository.RentPaymentRepository;
@@ -334,7 +333,7 @@ public class AccountTransactionService {
         if (accountId == null) {
             throw new RuntimeException("Не указан id счёта");
         }
-        AccountTransactionFilter filter = getFilter(dto);
+        AccTxFilter filter = getFilter(dto);
         List<AccountTransaction> transactions = accountTransactionRepository.findAll(transactionSpecification.getDetailsFilter(filter));
 
         return transactions
@@ -349,10 +348,10 @@ public class AccountTransactionService {
      * @param dto DTO
      * @return фильтр
      */
-    private AccountTransactionFilter getFilter(AccountSummaryDTO dto) {
-        AccountTransactionFilter filter = new AccountTransactionFilter();
-        filter.setOwner(dto.getOwnerName());
-        filter.setPayer(dto.getPayerName());
+    private AccTxFilter getFilter(AccountSummaryDTO dto) {
+        AccTxFilter filter = new AccTxFilter();
+        filter.setOwners(dto.getOwners());
+        filter.setPayers(dto.getPayers());
         filter.setParentPayer(dto.getParentPayer());
         filter.setAccountId(dto.getAccountId());
         return filter;
