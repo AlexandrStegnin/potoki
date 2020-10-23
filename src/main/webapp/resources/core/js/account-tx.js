@@ -271,7 +271,7 @@ function createBalanceTable(balance) {
 function createRow(balanceDTO) {
     return $('<tr>').append(
         $('<td>').text(balanceDTO.ownerName),
-        $('<td>').text((balanceDTO.summary).toLocaleString())
+        $('<td>').text(parseFloat(balanceDTO.summary).toFixed(2).toLocaleString())
     );
 }
 
