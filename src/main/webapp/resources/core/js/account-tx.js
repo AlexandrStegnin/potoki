@@ -484,7 +484,7 @@ function getAccountsIds() {
     let accIds = []
     let checkedAccounts = $('table#transactions').find('input:checkbox:checked:not(disabled)')
     $.each(checkedAccounts, function (ind, el) {
-        accIds.push($(el).data('object-id'))
+        accIds.push($(el).data('owner-id'))
     })
     return accIds
 }
