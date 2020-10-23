@@ -210,18 +210,22 @@ public class AccountTransactionService {
     @Transactional
     public ApiResponse delete(AccountTxDTO dto) {
         Set<AccountTransaction> transactions = new HashSet<>();
-        dto.getTxIds().forEach(id -> {
-            AccountTransaction transaction = findParent(id);
-            if (transaction != null) {
-                transactions.add(transaction);
-            }
-        });
-        transactions.forEach(transaction -> {
-            releaseMonies(new ArrayList<>(transaction.getChild()));
-            deleteSalePayments(new ArrayList<>(transaction.getChild()));
-            deleteRentPayments(new ArrayList<>(transaction.getChild()));
-            deleteByParent(transaction);
-        });
+        try {
+            dto.getTxIds().forEach(id -> {
+                AccountTransaction transaction = findParent(id);
+                if (transaction != null) {
+                    transactions.add(transaction);
+                }
+            });
+            transactions.forEach(transaction -> {
+                releaseMonies(new ArrayList<>(transaction.getChild()));
+                deleteSalePayments(new ArrayList<>(transaction.getChild()));
+                deleteRentPayments(new ArrayList<>(transaction.getChild()));
+                deleteByParent(transaction);
+            });
+        } catch (Exception e) {
+            return new ApiResponse(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST.value());
+        }
         return new ApiResponse("Данные успешно удалены");
     }
 
