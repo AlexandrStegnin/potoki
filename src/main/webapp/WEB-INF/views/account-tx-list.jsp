@@ -113,8 +113,8 @@
         <button type="button" class="btn btn-primary input-md" id="checkIt" data-checked="false"
                 style="margin-left: 10px">Выделить всё
         </button>
-        <button type="button" class="btn btn-danger input-md" id="delete-list"
-                style="margin-left: 10px">Удалить выбранные суммы
+        <button type="button" class="btn btn-danger input-md disabled" id="delete-list"
+                style="margin-left: 10px">Удалить выбранное
         </button>
         <button type="button" class="btn btn-warning input-md disabled" id="reinvest" data-checked="false"
                 style="margin-left: 10px">Реинвестировать

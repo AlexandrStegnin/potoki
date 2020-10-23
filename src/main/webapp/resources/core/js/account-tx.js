@@ -102,6 +102,7 @@ function subscribeCheckAllClick() {
         $('table#transactions').find('> tbody').find('> tr').each(function () {
             $(this).find(':checkbox:not(:disabled)').prop('checked', !checked);
             toggleStateReinvestButton(!checked)
+            toggleStateDeleteButton(!checked)
         });
         checkItBtn.data('checked', !checked)
     })
@@ -289,15 +290,30 @@ function toggleStateReinvestButton(enable) {
 }
 
 /**
+ * Блокировать/разблокировать кнопку "Удалить выбранное"
+ *
+ * @param enable {boolean} признак блокировать или разблокировать
+ */
+function toggleStateDeleteButton(enable) {
+    if (enable) {
+        $('#delete-list').removeClass('disabled')
+    } else {
+        $('#delete-list').addClass('disabled')
+    }
+}
+
+/**
  * Изменение состояния чекбоксов
  */
 function subscribeCheckboxChange() {
     $(document).on('change', 'input:checkbox', function () {
         if ($(this).prop('checked')) {
             toggleStateReinvestButton(true)
+            toggleStateDeleteButton(true)
         } else {
             let count = countChecked()
             toggleStateReinvestButton(count > 0)
+            toggleStateDeleteButton(count > 0)
         }
     })
 }
@@ -461,6 +477,7 @@ function reinvest(accTxReinvestDTO) {
             closeLoader();
             if (data.status === 200) {
                 showPopup(data.message)
+                $('#btn-search').click()
             } else {
                 showPopup(data.error)
             }
