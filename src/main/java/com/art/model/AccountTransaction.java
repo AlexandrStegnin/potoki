@@ -73,4 +73,11 @@ public class AccountTransaction extends AbstractEntity {
     public AccountTransaction(Account owner) {
         this.owner = owner;
     }
+
+    public void removeMoney(Money money) {
+        if (this.monies != null) {
+            this.monies.remove(money);
+            money.setTransaction(null);
+        }
+    }
 }

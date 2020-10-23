@@ -218,9 +218,12 @@ public class AccountTransactionService {
                 }
             });
             transactions.forEach(transaction -> {
-                releaseMonies(new ArrayList<>(transaction.getChild()));
-                deleteSalePayments(new ArrayList<>(transaction.getChild()));
-                deleteRentPayments(new ArrayList<>(transaction.getChild()));
+                List<AccountTransaction> allTx = new ArrayList<>(getAllChild(transaction));
+                allTx.add(transaction);
+                deleteMonies(allTx);
+                releaseMonies(allTx);
+                deleteSalePayments(allTx);
+                deleteRentPayments(allTx);
                 deleteByParent(transaction);
             });
         } catch (Exception e) {
@@ -278,6 +281,37 @@ public class AccountTransactionService {
             money.setTransaction(null);
         });
         moneyRepository.save(monies);
+    }
+
+    /**
+     * Удалить суммы из денег инвесторов, если они были реинвестированы
+     *
+     * @param transactions список транзакций
+     */
+    private void deleteMonies(List<AccountTransaction> transactions) {
+        List<Money> toDelete = new ArrayList<>();
+        transactions.forEach(tx -> tx.getMonies().forEach(money -> {
+            if (money != null) {
+                NewCashDetail newCashDetail = money.getNewCashDetail();
+                if (newCashDetail != null) {
+                    if (newCashDetail.getName().equalsIgnoreCase("Реинвестирование")) {
+                        tx.removeMoney(money);
+                        toDelete.add(money);
+                    }
+                }
+            }
+        }));
+        moneyRepository.delete(toDelete);
+    }
+
+    private Set<AccountTransaction> getAllChild(AccountTransaction transaction) {
+        Set<AccountTransaction> transactions = transaction.getChild();
+        if (transactions != null && !transactions.isEmpty()) {
+            for (AccountTransaction tx : transactions) {
+                transactions.addAll(getAllChild(tx));
+            }
+        }
+        return transactions;
     }
 
     /**
