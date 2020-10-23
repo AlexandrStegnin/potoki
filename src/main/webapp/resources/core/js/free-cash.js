@@ -3,14 +3,10 @@ let AccountSummaryDTO = function () {
 
 AccountSummaryDTO.prototype = {
     accountId: null,
-    ownerName: null,
-    payerName: null,
-    parentPayer: null,
-    build: function (accountId, ownerName, payerName, parentPayer) {
+    payers: [],
+    build: function (accountId, payers) {
         this.accountId = accountId
-        this.ownerName = ownerName
-        this.payerName = payerName
-        this.parentPayer = parentPayer
+        this.payers = payers
     }
 }
 
@@ -42,13 +38,11 @@ AccountTransactionDTO.prototype = {
 let AccFilter = function () {}
 
 AccFilter.prototype = {
-    ownerName: null,
-    payerName: null,
-    parentPayer: null,
-    build: function (ownerName, payerName, parentPayer) {
-        this.ownerName = ownerName
-        this.payerName = payerName
-        this.parentPayer = parentPayer
+    accountId: null,
+    payers: [],
+    build: function (accountId, payers) {
+        this.accountId = accountId
+        this.payers = payers
     }
 }
 
@@ -146,10 +140,10 @@ function toggleAllRows() {
  */
 function subscribeTxShowClick() {
     $('.tx-show').on('click', function () {
-        let txId = $(this).data('tx-id')
+        let ownerId = $(this).data('owner-id')
         let accSummaryDTO = new AccountSummaryDTO()
-        let accFilter = getFilter()
-        accSummaryDTO.build(txId, accFilter.ownerName, accFilter.payerName, accFilter.parentPayer)
+        let accFilter = getFilter(ownerId)
+        accSummaryDTO.build(ownerId, accFilter.payers)
         getDetails(accSummaryDTO)
     })
 }
@@ -215,13 +209,18 @@ function getDate(number) {
 /**
  * Собрать фильтр со страницы
  *
+ * @param accountId {number} id аккаунта
  * @return {AccFilter} собранный фильтр
  */
-function getFilter() {
+function getFilter(accountId) {
     let accFilter = new AccFilter()
-    let ownerName = $('#owners').find('option:selected').val()
-    let payerName = $('#payers').find('option:selected').val()
-    let parentPayer = $('#parentPayers').find('option:selected').val()
-    accFilter.build(ownerName, payerName, parentPayer)
+    let payerSel = $('#payers')
+    let payers = []
+    $.each(payerSel.find('option:selected'), function (ind, el) {
+        payers.push({
+            id: el.value
+        })
+    })
+    accFilter.build(accountId, payers)
     return accFilter
 }
