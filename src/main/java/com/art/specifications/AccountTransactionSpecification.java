@@ -7,7 +7,6 @@ import com.art.model.AccountTransaction_;
 import com.art.model.Account_;
 import com.art.model.supporting.enums.CashType;
 import com.art.model.supporting.filters.AccTxFilter;
-import com.art.model.supporting.filters.AccountTransactionFilter;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
@@ -44,37 +43,17 @@ public class AccountTransactionSpecification extends BaseSpecification<AccountTr
         }
     }
 
-    private static Specification<AccountTransaction> parentPayerEqual(String parentPayer) {
-        if (parentPayer == null || parentPayer.startsWith(Constant.CHOOSE_FILTER_PREFIX)) {
-            return null;
-        } else {
-            return ((root, criteriaQuery, criteriaBuilder) ->
-                    criteriaBuilder.equal(root.get(AccountTransaction_.payer).get(Account_.parentAccount).get(Account_.ownerName), parentPayer)
-            );
-        }
-    }
-
-    private static Specification<AccountTransaction> payerEqual(String payerName) {
-        if (payerName == null ||payerName.startsWith(Constant.CHOOSE_FILTER_PREFIX)) {
-            return null;
-        } else {
-            return ((root, criteriaQuery, criteriaBuilder) ->
-                    criteriaBuilder.equal(root.get(AccountTransaction_.payer).get(Account_.ownerName), payerName)
-            );
-        }
-    }
-
     private static Specification<AccountTransaction> cashNotNull() {
         return ((root, criteriaQuery, criteriaBuilder) ->
                 criteriaBuilder.isNotNull(root.get(AccountTransaction_.cash))
         );
     }
 
-    public Specification<AccountTransaction> getDetailsFilter(AccountTransactionFilter filter) {
+    public Specification<AccountTransaction> getDetailsFilter(AccTxFilter filter) {
         return (root, query, cb) -> where(
                 accIdEqual(filter.getAccountId()))
-                .and(parentPayerEqual(filter.getParentPayer()))
-                .and(payerEqual(filter.getPayer()))
+                .and(ownersIn(filter.getOwners()))
+                .and(payersIn(filter.getPayers()))
                 .toPredicate(root, query, cb);
     }
 
