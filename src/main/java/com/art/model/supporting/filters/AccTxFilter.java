@@ -30,21 +30,15 @@ public class AccTxFilter extends AccountTransactionFilter {
     }
 
     public boolean isFilterByOwners() {
-        return (owners != null && owners.size() > 0)
-                && (payers == null || payers.isEmpty())
-                && (parentPayers == null || parentPayers.isEmpty());
+        return (owners != null && owners.size() > 0);
     }
 
     public boolean isFilterByPayers() {
-        return (payers != null && payers.size() > 0)
-                && (owners == null || owners.isEmpty())
-                && (parentPayers == null || parentPayers.isEmpty());
+        return (payers != null && payers.size() > 0);
     }
 
     public boolean isFilterByParentPayers() {
-        return (parentPayers != null && parentPayers.size() > 0)
-                && (owners == null || owners.isEmpty())
-                && (payers == null || payers.isEmpty());
+        return (parentPayers != null && parentPayers.size() > 0);
     }
 
     public boolean isFilterByOwnersAndPayers() {
@@ -59,38 +53,31 @@ public class AccTxFilter extends AccountTransactionFilter {
         return isFilterByOwners() && isFilterByPayers() && isFilterByParentPayers();
     }
 
-    public boolean isFilterByPayerAndParentPayer() {
-        return isFilterByPayers() && isFilterByParentPayers();
-    }
-
     public boolean isFilterByPayersAndParentPayers() {
         return isFilterByPayers() && isFilterByParentPayers();
     }
 
     public Type getType() {
-        if (isClear()) {
-            return Type.IS_CLEAR;
-        }
-        if (isFilterByOwners()) {
-            return Type.BY_OWNERS;
-        }
-        if (isFilterByPayers()) {
-            return Type.BY_PAYERS;
-        }
-        if (isFilterByParentPayers()) {
-            return Type.BY_PARENT_PAYERS;
-        }
-        if (isFilterByOwnersAndPayers()) {
-            return Type.BY_OWNERS_AND_PAYERS;
-        }
-        if (isFilterByOwnersAndParentPayers()) {
-            return Type.BY_OWNERS_AND_PARENT_PAYERS;
-        }
         if (isFilterByOwnersAndPayersAndParentPayers()) {
             return Type.BY_OWNERS_AND_PAYERS_AND_PARENT_PAYERS;
         }
         if (isFilterByPayersAndParentPayers()) {
             return Type.BY_PAYERS_AND_PARENT_PAYERS;
+        }
+        if (isFilterByOwnersAndParentPayers()) {
+            return Type.BY_OWNERS_AND_PARENT_PAYERS;
+        }
+        if (isFilterByOwnersAndPayers()) {
+            return Type.BY_OWNERS_AND_PAYERS;
+        }
+        if (isFilterByParentPayers()) {
+            return Type.BY_PARENT_PAYERS;
+        }
+        if (isFilterByPayers()) {
+            return Type.BY_PAYERS;
+        }
+        if (isFilterByOwners()) {
+            return Type.BY_OWNERS;
         }
         return Type.IS_CLEAR;
     }
