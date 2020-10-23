@@ -142,7 +142,7 @@ function deleteTransactions(accountTxDTO) {
     confirmDelete.modal('hide')
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
-
+    showLoader()
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
@@ -162,7 +162,7 @@ function deleteTransactions(accountTxDTO) {
             showPopup('Что-то пошло не так [' + e.message + ']');
         })
         .always(function () {
-            console.log('Закончили!');
+            closeLoader()
         });
 
 }
