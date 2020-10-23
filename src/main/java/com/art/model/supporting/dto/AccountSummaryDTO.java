@@ -1,6 +1,9 @@
 package com.art.model.supporting.dto;
 
+import com.art.model.Account;
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * @author Alexandr Stegnin
@@ -11,9 +14,9 @@ public class AccountSummaryDTO {
 
     private Long accountId;
 
-    private String ownerName;
+    private List<Account> owners;
 
-    private String payerName;
+    private List<Account> payers;
 
     private String parentPayer;
 
