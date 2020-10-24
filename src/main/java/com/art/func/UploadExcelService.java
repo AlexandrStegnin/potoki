@@ -554,8 +554,9 @@ public class UploadExcelService {
         transaction.setCashType(CashType.SALE_CASH);
         transaction.setCash(salePayment.getProfitToReInvest());
         transaction.setParent(parent);
+        accountTransactionService.create(transaction);
         salePayment.setAccTxId(transaction.getId());
-        return accountTransactionService.create(transaction);
+        return transaction;
     }
 
     /**
