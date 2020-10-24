@@ -51,7 +51,8 @@ public class AccountTransaction extends AbstractEntity {
     @JoinColumn(name = "recipient_account_id")
     private Account recipient;
 
-    @OneToMany(mappedBy = "transaction")
+    @OneToMany
+    @JoinColumn(name = "acc_tx_id", referencedColumnName = "id")
     private Set<SalePayment> salePayments = new HashSet<>();
 
     @OneToMany(mappedBy = "transaction")

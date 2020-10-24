@@ -156,9 +156,8 @@ public class SalePaymentService {
                 }
                 List<Money> monies = moneyRepository.findBySourceFlowsId(String.valueOf(ltd.getId()));
                 moneyRepository.delete(monies);
-                AccountTransaction transaction = ltd.getTransaction();
-                if (transaction != null) {
-                    accountTxDTO.addTxId(transaction.getId());
+                if (ltd.getAccTxId() != null) {
+                    accountTxDTO.addTxId(ltd.getAccTxId());
                 }
             });
             if (accountTxDTO.getTxIds() != null && !accountTxDTO.getTxIds().isEmpty()) {

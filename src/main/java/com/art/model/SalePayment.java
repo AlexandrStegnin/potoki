@@ -12,11 +12,11 @@ import java.util.Date;
 
 @Data
 @Entity
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "sale_payment")
-@EqualsAndHashCode(exclude = {"facility", "investor", "underFacility", "transaction"})
-@ToString(exclude = "transaction")
+@EqualsAndHashCode(exclude = {"facility", "investor", "underFacility"})
 public class SalePayment implements Cash {
 
     @Id
@@ -70,9 +70,8 @@ public class SalePayment implements Cash {
     @Column(name = "source_id")
     private Long sourceId;
 
-    @ManyToOne
-    @JoinColumn(name = "acc_tx_id")
-    private AccountTransaction transaction;
+    @Column(name = "acc_tx_id")
+    private Long accTxId;
 
     @Transient
     public String getDateGivenToLocalDate() {
@@ -114,7 +113,7 @@ public class SalePayment implements Cash {
         this.isReinvest = 0;
         this.sourceId = null;
         this.profitToReInvest = null;
-        this.transaction = salePayment.getTransaction();
+        this.accTxId = salePayment.getAccTxId();
     }
 
     @Override
