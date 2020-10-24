@@ -80,10 +80,6 @@ public class AccountTransactionService {
         if (transaction.getId() == null) {
             throw new RuntimeException("Не задан id транзакции");
         }
-        AccountTransaction tx = accountTransactionRepository.findOne(transaction.getId());
-        if (tx == null) {
-            throw new EntityNotFoundException("Не найдена транзакция");
-        }
         return accountTransactionRepository.save(transaction);
     }
 
