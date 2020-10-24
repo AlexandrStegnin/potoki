@@ -449,7 +449,7 @@ public class UploadExcelService {
                         if (transaction == null) {
                             transaction = createSaleTransaction(user, salePayment, parentTransaction);
                         } else {
-                            updateSaleTransaction(transaction, salePayment);
+                            transaction = updateSaleTransaction(transaction, salePayment);
                         }
                         userTransactions.put(user.getId(), transaction);
                         reportDate = calSale;
@@ -602,9 +602,10 @@ public class UploadExcelService {
      * @param transaction транзакция
      * @param salePayment выплата (продажа)
      */
-    private void updateSaleTransaction(AccountTransaction transaction, SalePayment salePayment) {
+    private AccountTransaction updateSaleTransaction(AccountTransaction transaction, SalePayment salePayment) {
+        BigDecimal newCash = transaction.getCash().add(salePayment.getProfitToReInvest());
         salePayment.setAccTxId(transaction.getId());
-        transaction.setCash(transaction.getCash().add(salePayment.getProfitToReInvest()));
+        return accountTransactionService.updateCash(transaction, newCash);
     }
 
     /**
