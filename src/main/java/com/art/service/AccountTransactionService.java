@@ -654,4 +654,16 @@ public class AccountTransactionService {
         return new BalanceDTO(accountTransactionRepository.fetchBalance(OwnerType.INVESTOR, ownerId));
     }
 
+    /**
+     * Обновить сумму транзакции
+     *
+     * @param transaction транзакция
+     * @param newCash новая сумма
+     * @return транзакция
+     */
+    public AccountTransaction updateCash(AccountTransaction transaction, BigDecimal newCash) {
+        AccountTransaction tx = findById(transaction.getId());
+        tx.setCash(newCash);
+        return accountTransactionRepository.saveAndFlush(tx);
+    }
 }
