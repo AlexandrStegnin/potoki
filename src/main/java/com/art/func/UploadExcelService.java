@@ -110,10 +110,10 @@ public class UploadExcelService {
         } catch (IOException ex) {
             return new ApiResponse(ex.getMessage(), HttpStatus.BAD_REQUEST.value());
         }
+        HttpSession session = request.getSession(true);
+        session.setMaxInactiveInterval(30 * 60);
         switch (type) {
             case RENT:
-                HttpSession session = request.getSession(true);
-                session.setMaxInactiveInterval(30 * 60);
                 response = uploadRent(sheet);
                 break;
             case SALE:
