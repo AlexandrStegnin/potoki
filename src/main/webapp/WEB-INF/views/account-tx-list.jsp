@@ -152,6 +152,7 @@
             <th>Вид транзакции</th>
             <th>Вид денег</th>
             <th>Отправитель</th>
+            <th>Получатель</th>
             <th style="width: 5%">Выбрать</th>
             <th>Баланс</th>
         </tr>
@@ -168,6 +169,7 @@
                 <td>${tx.operationType.title}</td>
                 <td>${tx.cashType.title}</td>
                 <td>${tx.payer.ownerName}</td>
+                <td>${tx.recipient.ownerName}</td>
                 <td style="text-align: center"><input type="checkbox" data-object-id="${tx.id}" data-owner-id="${tx.owner.id}">
                 </td>
                 <td>

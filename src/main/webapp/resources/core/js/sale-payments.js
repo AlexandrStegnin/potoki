@@ -560,7 +560,7 @@ function upload() {
         url: "sale/upload",
         data: data,
         dataType: 'json',
-        timeout: 0,
+        timeout: 1000000,
         beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         },
