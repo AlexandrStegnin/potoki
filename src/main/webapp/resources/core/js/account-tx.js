@@ -272,8 +272,23 @@ function createBalanceTable(balance) {
 function createRow(balanceDTO) {
     return $('<tr>').append(
         $('<td>').text(balanceDTO.ownerName),
-        $('<td>').text(parseFloat(balanceDTO.summary).toFixed(2).toLocaleString())
+        $('<td>').text(getFormatter().format(balanceDTO.summary))
     );
+}
+
+/**
+ * Получить форматтер для форматирования суммы денег
+ *
+ * @return {Intl.NumberFormat}
+ */
+function getFormatter() {
+    return new Intl.NumberFormat('ru-RU', {
+        style: 'currency',
+        currency: 'RUB',
+        // These options are needed to round to whole numbers if that's what you want.
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    })
 }
 
 /**

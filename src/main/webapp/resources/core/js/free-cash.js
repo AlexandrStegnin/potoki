@@ -188,12 +188,27 @@ function createRow(transactionDTO) {
     return $('<tr>').append(
         $('<td>').text(getDate(transactionDTO.txDate).toLocaleDateString()),
         $('<td>').text(transactionDTO.owner),
-        $('<td>').text((transactionDTO.cash).toLocaleString()),
+        $('<td>').text(getFormatter().format(transactionDTO.cash)),
         $('<td>').text(transactionDTO.operationType),
         $('<td>').text(transactionDTO.cashType),
         $('<td>').text(transactionDTO.payer),
         $('<td>').text(transactionDTO.recipient)
     );
+}
+
+/**
+ * Получить форматтер для форматирования суммы денег
+ *
+ * @return {Intl.NumberFormat}
+ */
+function getFormatter() {
+    return new Intl.NumberFormat('ru-RU', {
+        style: 'currency',
+        currency: 'RUB',
+        // These options are needed to round to whole numbers if that's what you want.
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    })
 }
 
 /**
