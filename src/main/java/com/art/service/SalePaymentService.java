@@ -157,11 +157,13 @@ public class SalePaymentService {
                 List<Money> monies = moneyRepository.findBySourceFlowsId(String.valueOf(ltd.getId()));
                 moneyRepository.delete(monies);
                 if (ltd.getAccTxId() != null) {
+                    AccountTransaction transaction = accountTransactionService.findById(ltd.getAccTxId());
                     accountTxDTO.addTxId(ltd.getAccTxId());
+                    transaction.removeSalePayment(ltd);
                 }
             });
             if (accountTxDTO.getTxIds() != null && !accountTxDTO.getTxIds().isEmpty()) {
-                accountTransactionService.deleteByDTO(accountTxDTO);
+                accountTransactionService.delete(accountTxDTO);
             }
             response = new ApiResponse("Данные по выплатам с продажи успешно удалены");
         } catch (Exception ex) {
