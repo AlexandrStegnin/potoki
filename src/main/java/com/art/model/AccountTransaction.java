@@ -81,4 +81,11 @@ public class AccountTransaction extends AbstractEntity {
             money.setTransaction(null);
         }
     }
+
+    public void removeSalePayment(SalePayment salePayment) {
+        if (this.salePayments != null) {
+            this.salePayments.remove(salePayment);
+            salePayment.setAccTxId(null);
+        }
+    }
 }
