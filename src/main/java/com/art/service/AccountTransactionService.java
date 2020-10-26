@@ -423,7 +423,8 @@ public class AccountTransactionService {
      */
     private ApiResponse reinvestAll(AccountTxDTO dto) {
         ApiResponse response = new ApiResponse();
-        for (Long id : dto.getAccountsIds()) {
+        List<Long> accIds = dto.getAccountsIds().stream().distinct().collect(Collectors.toList());
+        for (Long id : accIds) {
             Account owner = accountService.findByOwnerId(id, OwnerType.INVESTOR);
             if (owner == null) {
                 prepareErrorResponse(response, "Не найден счёт инвестора");
@@ -454,8 +455,9 @@ public class AccountTransactionService {
      * @return ответ об исполнении
      */
     private ApiResponse reinvestPart(AccountTxDTO dto) {
+        List<Long> accIds = dto.getAccountsIds().stream().distinct().collect(Collectors.toList());
         ApiResponse response = new ApiResponse();
-        for (Long id : dto.getAccountsIds()) {
+        for (Long id : accIds) {
             Account owner = accountService.findByOwnerId(id, OwnerType.INVESTOR);
             if (owner == null) {
                 prepareErrorResponse(response, "Не найден счёт инвестора");
@@ -515,9 +517,7 @@ public class AccountTransactionService {
         debitTx.setRecipient(recipient);
         debitTx.setMonies(creditTx.getMonies());
         debitTx.setCashType(CashType.INVESTOR_CASH);
-        debitTx.setCash(creditTx.getMonies().stream()
-                .map(Money::getGivenCash)
-                .reduce(BigDecimal.ZERO, BigDecimal::add));
+        debitTx.setCash(creditTx.getCash().negate());
         accountTransactionRepository.save(debitTx);
     }
 
