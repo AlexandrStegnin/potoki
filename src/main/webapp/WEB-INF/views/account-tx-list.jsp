@@ -172,8 +172,12 @@
                 <td>${tx.recipient.ownerName}</td>
                 <td style="text-align: center"><input type="checkbox" data-object-id="${tx.id}" data-owner-id="${tx.owner.id}">
                 </td>
+                <c:set var="enabled" value="disabled" />
+                <c:if test="${tx.owner.ownerType.title eq 'Инвестор'}">
+                    <c:set var="enabled" value=" " />
+                </c:if>
                 <td>
-                    <button type="button" class="btn btn-sm btn-success show-balance" data-toggle="tooltip"
+                    <button type="button" class="btn btn-sm btn-success show-balance ${enabled}" data-toggle="tooltip"
                             data-placement="left" title="Посмотреть" data-owner-id="${tx.owner.id}">
                         <i class="fas fa-coins"></i>
                     </button>
