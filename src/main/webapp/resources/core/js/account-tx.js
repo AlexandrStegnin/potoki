@@ -209,6 +209,7 @@ function showPopup(message) {
  */
 function subscribeBalanceShowClick() {
     $('.show-balance').on('click', function () {
+        if (linkHasClass($(this))) return false;
         let ownerId = $(this).data('owner-id')
         getBalance(ownerId)
     })
@@ -519,4 +520,14 @@ function getAccountsIds() {
         accIds.push($(el).data('owner-id'))
     })
     return accIds
+}
+
+/**
+ * Проверить наличие класса у элемента
+ *
+ * @param link элемент
+ * @return {boolean} результат
+ */
+function linkHasClass(link) {
+    if (link.hasClass('disabled')) return true;
 }
