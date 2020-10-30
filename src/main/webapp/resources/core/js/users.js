@@ -94,7 +94,7 @@ jQuery(document).ready(function ($) {
         userForm.modal('show')
     })
 
-    $('#edit-user').on('click', function (e) {
+    $('.edit-user').on('click', function (e) {
         e.preventDefault()
         userForm.find('#title').html('Обновить пользователя')
         userForm.find('#accept').html('Обновить')
