@@ -231,20 +231,16 @@ public class UploadExcelService {
 
                     if (flowsList.size() == 0) {
                         rentPayment.setIsReinvest(1);
-                        rentPaymentService.create(rentPayment);
                         AccountTransaction transaction = userTransactions.get(user.getId());
                         if (transaction == null) {
                             transaction = createRentTransaction(user, rentPayment);
                         } else {
-                            updateRentTransaction(transaction, rentPayment);
+                            transaction = updateRentTransaction(transaction, rentPayment);
                         }
                         userTransactions.put(user.getId(), transaction);
+                        rentPaymentService.create(rentPayment);
                     }
                 }
-                userTransactions.forEach((k, v) -> {
-                    accountTransactionService.create(v);
-                    v.getRentPayments().forEach(rentPaymentService::update);
-                });
             }
         }
         return new ApiResponse("Загрузка файла с данными по аренде завершена");
@@ -574,8 +570,9 @@ public class UploadExcelService {
         transaction.setOperationType(OperationType.DEBIT);
         transaction.setCashType(CashType.RENT_CASH);
         transaction.setCash(BigDecimal.valueOf(rentPayment.getAfterCashing()));
-        rentPayment.setTransaction(transaction);
-        return accountTransactionService.create(transaction);
+        accountTransactionService.create(transaction);
+        rentPayment.setAccTxId(transaction.getId());
+        return transaction;
     }
 
     /**
@@ -615,9 +612,10 @@ public class UploadExcelService {
      * @param transaction транзакция
      * @param rentPayment выплата (аренда)
      */
-    private void updateRentTransaction(AccountTransaction transaction, RentPayment rentPayment) {
-        rentPayment.setTransaction(transaction);
-        transaction.setCash(transaction.getCash().add(BigDecimal.valueOf(rentPayment.getAfterCashing())));
+    private AccountTransaction updateRentTransaction(AccountTransaction transaction, RentPayment rentPayment) {
+        BigDecimal newCash = transaction.getCash().add(BigDecimal.valueOf(rentPayment.getAfterCashing()));
+        rentPayment.setAccTxId(transaction.getId());
+        return accountTransactionService.updateCash(transaction, newCash);
     }
 
     /**

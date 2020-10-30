@@ -55,7 +55,8 @@ public class AccountTransaction extends AbstractEntity {
     @JoinColumn(name = "acc_tx_id", referencedColumnName = "id")
     private Set<SalePayment> salePayments = new HashSet<>();
 
-    @OneToMany(mappedBy = "transaction")
+    @OneToMany
+    @JoinColumn(name = "acc_tx_id", referencedColumnName = "id")
     private Set<RentPayment> rentPayments = new HashSet<>();
 
     @OneToMany(mappedBy = "transaction")
@@ -88,4 +89,12 @@ public class AccountTransaction extends AbstractEntity {
             salePayment.setAccTxId(null);
         }
     }
+
+    public void removeRentPayment(RentPayment rentPayment) {
+        if (this.rentPayments != null) {
+            this.rentPayments.remove(rentPayment);
+            rentPayment.setAccTxId(null);
+        }
+    }
+
 }

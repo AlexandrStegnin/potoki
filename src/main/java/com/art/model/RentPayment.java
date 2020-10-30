@@ -85,9 +85,8 @@ public class RentPayment {
     @JoinColumn(name = "room_id", referencedColumnName = "id")
     private Room room;
 
-    @ManyToOne
-    @JoinColumn(name = "acc_tx_id")
-    private AccountTransaction transaction;
+    @Column(name = "acc_tx_id")
+    private Long accTxId;
 
     @Transient
     public String getDateReportFormatted() {

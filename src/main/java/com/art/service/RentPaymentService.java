@@ -87,12 +87,13 @@ public class RentPaymentService {
             List<Money> monies = moneyRepository.findBySourceFlowsId(String.valueOf(id));
             RentPayment rentPayment = findById(id);
             moneyRepository.delete(monies);
-            AccountTransaction transaction = rentPayment.getTransaction();
-            if (transaction != null) {
-                accountTxDTO.addTxId(transaction.getId());
-            } else {
-                rentPaymentRepository.delete(id);
+            Long accTxId = rentPayment.getAccTxId();
+            if (accTxId != null) {
+                AccountTransaction transaction = accountTransactionService.findById(accTxId);
+                accountTxDTO.addTxId(accTxId);
+                transaction.removeRentPayment(rentPayment);
             }
+            rentPaymentRepository.delete(id);
         });
         if (accountTxDTO.getTxIds() != null && !accountTxDTO.getTxIds().isEmpty()) {
             accountTransactionService.delete(accountTxDTO);
