@@ -973,7 +973,13 @@ public class MoneyService {
         afterCashingList.sort(comparator.reversed());
         final int[] counter = {0};
         int count = listToDelete.size();
+        AccountTxDTO accountTxDTO = new AccountTxDTO();
         listToDelete.forEach(deleting -> {
+            AccountTransaction transaction = deleting.getTransaction();
+            if (transaction != null) {
+                accountTxDTO.addTxId(transaction.getId());
+                transaction.removeMoney(deleting);
+            }
             counter[0]++;
             sendStatus(String.format("Удаляем %d из %d сумм", counter[0], count));
             if (deleting.getSourceFlowsId() != null) {
@@ -1092,7 +1098,9 @@ public class MoneyService {
                 }
             }
             deleteById(deleting.getId());
-            accountTransactionService.deleteByMoneyId(deleting.getId());
+            if (accountTxDTO.getTxIds() != null && !accountTxDTO.getTxIds().isEmpty()) {
+                accountTransactionService.delete(accountTxDTO);
+            }
             response.setMessage("Данные успешно удалены");
         });
         sendStatus("OK");

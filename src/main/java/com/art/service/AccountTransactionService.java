@@ -635,21 +635,6 @@ public class AccountTransactionService {
         return accountTransactionRepository.fetchSummaryByOwners(OwnerType.INVESTOR, ownerName);
     }
 
-    /**
-     * Получить связанные с суммой в деньгах инвесторов транзакции
-     *
-     * @param moneyId id суммы в деньгах инвесторов
-     */
-    public List<AccountTransaction> findByMoneyId(Long moneyId) {
-        AccTxFilter filter = new AccTxFilter();
-        filter.setMoneyId(moneyId);
-        return accountTransactionRepository.findAll(transactionSpecification.getFilter(filter));
-    }
-
-    public void deleteByMoneyId(Long moneyId) {
-        accountTransactionRepository.delete(findByMoneyId(moneyId));
-    }
-
     public BalanceDTO getBalance(Long ownerId) {
         return new BalanceDTO(accountTransactionRepository.fetchBalance(OwnerType.INVESTOR, ownerId));
     }
