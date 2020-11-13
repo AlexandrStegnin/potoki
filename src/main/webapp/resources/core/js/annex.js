@@ -22,6 +22,12 @@ jQuery(document).ready(function ($) {
     $('#look').on('click', function () {
         $('#readAnnex').css('display', 'none');
     });
+
+    $('#closed-projects').on('click', function () {
+        getAnnexes(null)
+        $('#readAnnexTable').modal('show');
+    });
+
     $("#readAnnexTable").on("hidden.bs.modal", function () {
         if ($('#readAnnex').css('z-index') !== '-1000001') {
             $('#readAnnex').css('display', 'block');

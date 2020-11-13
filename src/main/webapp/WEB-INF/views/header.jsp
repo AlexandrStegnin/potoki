@@ -36,6 +36,12 @@
                 </a>
             </li>
             <li class="nav-item mr-2">
+                <a id="closed-projects" href="<c:url value='/#' />" class="nav-link" style="color: #0D345D;">
+                    <span class="fas fa-archive" style="color: #0D345D;"></span>
+                    Реализованные проекты
+                </a>
+            </li>
+            <li class="nav-item mr-2">
                 <a id="home" href="<c:url value='/' />" class="nav-link ${disabled}" style="color: #0D345D;">
                     <span class="fas fa-home" style="color: #0D345D;"></span>
                     На главную
