@@ -23,7 +23,8 @@ jQuery(document).ready(function ($) {
         $('#readAnnex').css('display', 'none');
     });
 
-    $('#closed-projects').on('click', function () {
+    $('#closed-projects').on('click', function (e) {
+        e.preventDefault()
         getAnnexes(null)
         $('#readAnnexTable').modal('show');
     });
@@ -103,7 +104,10 @@ function checkAnnexes(login) {
         })
         .fail(function (e) {
             console.log(e);
-        });
+        })
+        .always(function (e) {
+            closeLoader();
+        })
 }
 
 /**
@@ -135,7 +139,10 @@ function getAnnexes(login) {
         })
         .fail(function (e) {
             console.log(e);
-        });
+        })
+        .always(function (e) {
+            closeLoader();
+        })
 }
 
 /**
@@ -215,6 +222,9 @@ function markAnnexRead(id) {
         error: function (e) {
             closeLoader();
             console.log('Произошла ошибка - ' + e.toString());
+        },
+        always: function () {
+            closeLoader()
         }
     });
 }

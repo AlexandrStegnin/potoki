@@ -4,7 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<html lang="en-RU">
+<!DOCTYPE html>
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -12,9 +12,11 @@
     <title>Профиль</title>
     <sec:csrfMetaTags/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="<c:url value='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' />"
+    <link href="<c:url value='https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css' />"
           rel="stylesheet"/>
-<%--    <link href="<c:url value='/resources/core/css/ddk_loader.css' />" rel="stylesheet"/>--%>
+    <link href="<c:url value='/resources/core/css/ddk_loader.css' />" rel="stylesheet"/>
+    <link rel="stylesheet"
+          href="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.14/css/bootstrap-select.min.css' />">
     <link href="<c:url value='/resources/core/css/annex.css' />" rel="stylesheet"/>
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
 </head>
@@ -25,18 +27,12 @@
 <div class="container-fluid">
     <c:choose>
         <c:when test="${annexCnt > 0}">
-            <c:set var="annexTitle" value="Не прочитанные приложения"/>
             <c:set var="errTitle"
                    value="Чтобы продолжить пользоваться сайтом, необходимо ознакомиться со всеми приложениями"/>
-            <c:set var="btnClass" value="btn-warning"/>
-            <c:set var="aCnt" value="${annexCnt}"/>
             <c:set var="disabledSubmit" value="disabled"/>
         </c:when>
         <c:otherwise>
-            <c:set var="annexTitle" value="Приложения"/>
             <c:set var="errTitle" value=""/>
-            <c:set var="btnClass" value="btn-success"/>
-            <c:set var="aCnt" value="${totalAnnex}"/>
             <c:set var="disabledSubmit" value=""/>
         </c:otherwise>
     </c:choose>
@@ -51,15 +47,13 @@
                                  data-live-search="true" data-size="7">
                         <form:options items="${investors}" itemValue="login" itemLabel="login"/>
                     </form:select>
-                    <form:button type="submit" class="btn btn-success btn-sm" id="viewInvestorData"
+                    <form:button type="submit" class="btn btn-success btn-md" id="viewInvestorData"
                             style="margin-right: 5px" disabled="true">
-                        <c:out value="Посмотреть кабинет"/></form:button>
+                        <c:out value="Посмотреть кабинет"/>
+                    </form:button>
                 </form:form>
             </sec:authorize>
         </sec:authorize>
-        <button type="button" class="btn ${btnClass} btn-md" id="unread" style="margin-left: 5px">
-            <c:out value="${annexTitle}"/> <span id="annexCnt" class="badge">${aCnt}</span></button>
-
         <button type="button" class="btn btn-warning btn-md pull-right" id="clearLS" style="margin-left: 5px">
             <c:out value="Очистить local storage"/>
         </button>
@@ -73,14 +67,14 @@
         <sec:authorize access="isFullyAuthenticated()">
             <sec:authorize access="hasRole('ADMIN')">
                 <a id="updateMarketingTree" href="<c:url value='updateMarketingTree' />"
-                   class="btn btn-success btn-md pull-right" style="margin-right: 5px">Обновить
+                   class="btn btn-success btn-md pull-right" style="margin-left: 5px">Обновить
                     маркетинговое дерево</a>
             </sec:authorize>
         </sec:authorize>
     </div>
-    <div style="text-align: center; padding-bottom: 20px; color: red"><span id="errUnread">${errTitle}</span></div>
-
-
+    <div style="text-align: center; padding-bottom: 20px; color: red">
+        <span id="errUnread">${errTitle}</span>
+    </div>
     <form:form method="POST" modelAttribute="user" class="form-horizontal">
         <form:input type="hidden" path="id" id="id"/>
 
@@ -116,18 +110,15 @@
 
 </div>
 
-<%--<%@include file="ddk_loader.jsp" %>--%>
+<%@include file="ddk_loader.jsp" %>
 <script type="text/javascript"
         src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' />"></script>
-<script src="<c:url value='https://kit.fontawesome.com/2b84e2f58d.js' />" crossorigin="anonymous"></script>
-<link rel="stylesheet"
-      href="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/css/bootstrap-select.css' />">
-<script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js' />"></script>
 <script type="text/javascript"
-        src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js' />"></script>
+        src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js' />"></script>
 <script type="text/javascript"
-        src="<c:url value='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js' />"></script>
-<%--<script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>--%>
+        src="<c:url value='https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js' />"></script>
+<script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.14/js/bootstrap-select.min.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/annex.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/profiles.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/bitrix-contacts.js' />"></script>
