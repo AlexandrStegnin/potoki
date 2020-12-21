@@ -84,7 +84,7 @@ jQuery(document).ready(function ($) {
  * @param kinds
  */
 function prepareBarChart(kinds) {
-    if (kinds.length === 0) {
+    if (kinds.length === 0 || (kinds.length === 1 && kinds[0].facility === 'Свободные средства')) {
         $('#barChartContainer').css('display', 'none');
         return;
     } else {
@@ -98,13 +98,15 @@ function prepareBarChart(kinds) {
     let myCash = [];
     let maxProjectCoast = 0;
     $.each(kinds, function (ind, el) {
-        let kind = new KindOnProject();
-        kind.build(el.facility, el.login, el.givenCash, el.projectCoast, el.percent);
-        labels.push(kind.facility);
-        projectCoasts.push(kind.projectCoast);
-        myCash.push(kind.givenCash);
-        if (maxProjectCoast < kind.projectCoast) {
-            maxProjectCoast = kind.projectCoast;
+        if (el.facility !== 'Свободные средства') {
+            let kind = new KindOnProject();
+            kind.build(el.facility, el.login, el.givenCash, el.projectCoast, el.percent);
+            labels.push(kind.facility);
+            projectCoasts.push(kind.projectCoast);
+            myCash.push(kind.givenCash);
+            if (maxProjectCoast < kind.projectCoast) {
+                maxProjectCoast = kind.projectCoast;
+            }
         }
     });
     maxProjectCoast = maxProjectCoast + (maxProjectCoast * 0.15);
