@@ -278,7 +278,7 @@ function prepareInvestedBarChart(kinds) {
                 afterFit: function(scale) {
                     let chartWidth = scale.chart.width;
                     if (kinds.length === 1) {
-                        scale.width = chartWidth * 0.1 / kinds.length;
+                        scale.width = chartWidth * 0.16 / kinds.length;
                     } else {
                         scale.width = chartWidth * 0.2;
                     }
