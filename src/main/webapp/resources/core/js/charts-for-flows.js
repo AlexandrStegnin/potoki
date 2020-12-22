@@ -316,13 +316,18 @@ function prepareInvestedBarChart(kinds) {
     };
 
     let ctx = document.getElementById('investedBarChart').getContext('2d');
+    let colors = []
+    colors.push("#28a745")
+    for (let i = 0; i < myCash.length - 1; i++) {
+        colors.push("#0D345D")
+    }
     myChart = new Chart(ctx, {
         type: 'horizontalBar',
         data: {
             labels: labels,
             datasets: [{
                 data: myCash,
-                backgroundColor: "#0D345D"
+                backgroundColor: colors
             }]
         },
         options: options,
