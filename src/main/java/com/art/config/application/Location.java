@@ -138,7 +138,7 @@ public class Location {
 
     public static final String MONEY_DIVIDE = "/divide-cash";
 
-    public static final String MONEY_DIVIDE_MULTIPLE = "/divide-multiple";
+    public static final String MONEY_DIVIDE_MULTIPLE = MONEY + "/divide-multiple";
 
     public static final String MONEY_CLOSE = MONEY + "/close";
 
