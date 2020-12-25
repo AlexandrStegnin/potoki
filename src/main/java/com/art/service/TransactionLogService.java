@@ -38,19 +38,23 @@ public class TransactionLogService {
 
     private final RentPaymentRepository rentPaymentRepository;
 
+    private final AccountTransactionService accountTransactionService;
+
     @Autowired
     public TransactionLogService(TransactionLogSpecification specification,
                                  TransactionLogRepository transactionLogRepository,
                                  InvestorCashLogService investorCashLogService,
                                  MoneyRepository moneyRepository,
                                  SalePaymentRepository salePaymentRepository,
-                                 RentPaymentRepository rentPaymentRepository) {
+                                 RentPaymentRepository rentPaymentRepository,
+                                 AccountTransactionService accountTransactionService) {
         this.specification = specification;
         this.transactionLogRepository = transactionLogRepository;
         this.investorCashLogService = investorCashLogService;
         this.moneyRepository = moneyRepository;
         this.salePaymentRepository = salePaymentRepository;
         this.rentPaymentRepository = rentPaymentRepository;
+        this.accountTransactionService = accountTransactionService;
     }
 
     /**
@@ -262,6 +266,7 @@ public class TransactionLogService {
         Set<Money> cashes = log.getMonies();
         try {
             cashes.forEach(cash -> {
+                accountTransactionService.delete(cash.getTransaction());
                 investorCashLogService.delete(cash);
                 moneyRepository.deleteById(cash.getId());
             });
