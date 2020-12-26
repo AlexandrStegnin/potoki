@@ -66,7 +66,7 @@
         </sec:authorize>
         <sec:authorize access="isFullyAuthenticated()">
             <sec:authorize access="hasRole('ADMIN')">
-                <a id="updateMarketingTree" href="<c:url value='updateMarketingTree' />"
+                <a id="updateMarketingTree" href="<c:url value='/#' />"
                    class="btn btn-success btn-md pull-right" style="margin-left: 5px">Обновить
                     маркетинговое дерево</a>
             </sec:authorize>
@@ -111,6 +111,7 @@
 </div>
 
 <%@include file="ddk_loader.jsp" %>
+<%@include file="popup_modal.jsp"%>
 <script type="text/javascript"
         src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' />"></script>
 <script type="text/javascript"
@@ -118,6 +119,7 @@
 <script type="text/javascript"
         src="<c:url value='https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js' />"></script>
 <script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.14/js/bootstrap-select.min.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/annex.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/profiles.js' />"></script>
