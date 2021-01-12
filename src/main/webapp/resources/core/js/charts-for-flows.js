@@ -317,8 +317,10 @@ function prepareInvestedBarChart(kinds) {
 
     let ctx = document.getElementById('investedBarChart').getContext('2d');
     let colors = []
-    colors.push("#28a745")
-    for (let i = 0; i < myCash.length - 1; i++) {
+    if (labels.includes('Свободные средства')) {
+        colors.push("#28a745")
+    }
+    for (let i = 0; i < myCash.length; i++) {
         colors.push("#0D345D")
     }
     myChart = new Chart(ctx, {
