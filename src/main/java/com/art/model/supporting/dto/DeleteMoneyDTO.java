@@ -3,6 +3,7 @@ package com.art.model.supporting.dto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,6 +14,6 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class DeleteMoneyDTO extends MoneyDTO {
 
-    private List<Long> moneyIds;
+    private List<Long> moneyIds = new ArrayList<>();
 
 }
