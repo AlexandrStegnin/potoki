@@ -1098,11 +1098,11 @@ public class MoneyService {
                 }
             }
             deleteById(deleting.getId());
-            if (accountTxDTO.getTxIds() != null && !accountTxDTO.getTxIds().isEmpty()) {
-                accountTransactionService.delete(accountTxDTO);
-            }
             response.setMessage("Данные успешно удалены");
         });
+        if (!accountTxDTO.getTxIds().isEmpty()) {
+            accountTransactionService.delete(accountTxDTO);
+        }
         sendStatus("OK");
         return response;
     }
