@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -101,28 +102,26 @@ public class AnnexController {
         return response;
     }
 
-    @RequestMapping("/annexToContract/{fileName}")
-    void getFile(HttpServletResponse response, @PathVariable String fileName) throws IOException {
+    @RequestMapping("/annexes/{annexId}")
+    public void getFile(HttpServletResponse response, @PathVariable BigInteger annexId) throws IOException {
         AppUser currentUser = userService.findByLogin(SecurityUtils.getUsername());
         if (null == currentUser) {
             throw new SecurityException("Пользователь не найден");
         }
-        List<UsersAnnexToContracts> annexes = usersAnnexToContractsService.findByUserAndAnnexName(currentUser.getId(), fileName);
-        if (annexes.size() == 0) {
-            throw new RuntimeException("Приложение [" + fileName + "] не найдено");
+        UsersAnnexToContracts annex = usersAnnexToContractsService.findById(annexId);
+        if (annex == null) {
+            throw new RuntimeException("Приложение не найдено");
         }
-        String path = System.getProperty("catalina.home") + "/pdfFiles";
-
-        if (!fileName.contains(".pdf")) {
-            fileName = fileName + ".pdf";
+        if (!annex.getUserId().equals(SecurityUtils.getUserId())) {
+            throw new SecurityException("Доступ к файлу запрещён");
         }
-        path = path + File.separator + fileName;
+        String path = annex.getAnnex().getFilePath() + annex.getAnnex().getAnnexName();
         File file = new File(path);
         FileInputStream inputStream = new FileInputStream(file);
 
         response.setContentType("application/pdf");
         response.setContentLength((int) file.length());
-        response.setHeader("Content-Disposition", "inline;filename=\"" + fileName + "\"");
+        response.setHeader("Content-Disposition", "inline;filename=\"" + annex.getAnnex().getAnnexName() + "\"");
         FileCopyUtils.copy(inputStream, response.getOutputStream());
 
     }

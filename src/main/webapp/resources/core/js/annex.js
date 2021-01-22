@@ -166,7 +166,7 @@ function createAnnexesTbl(annexes) {
         td = $('<td></td>');
         td.data('annexName', annex.annexName);
         a = $('<a>' + annex.annexName + '</a>');
-        a.attr('href', '/annexToContract/' + annex.annexName)
+        a.attr('href', '/annexes/' + annex.id)
             .attr('target', '_blank');
         a.appendTo(td);
         td.appendTo(tr);
