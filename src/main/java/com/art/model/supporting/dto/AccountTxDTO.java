@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 public class AccountTxDTO {
 
-    private List<Long> txIds;
+    private List<Long> txIds = new ArrayList<>();
 
     private Date dateReinvest;
 
@@ -24,7 +24,7 @@ public class AccountTxDTO {
 
     private String shareType;
 
-    private List<Long> accountsIds;
+    private List<Long> accountsIds = new ArrayList<>();
 
     private BigDecimal cash;
 
