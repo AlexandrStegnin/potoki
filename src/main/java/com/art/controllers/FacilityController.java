@@ -67,9 +67,10 @@ public class FacilityController {
     }
 
     @GetMapping(path = Location.FACILITIES_LIST)
-    public String adminFacility(ModelMap model) {
+    public String getFacilities(ModelMap model) {
         List<Facility> facilities = facilityService.findAll();
         model.addAttribute("facilities", facilities);
+        model.addAttribute("facilityDTO", new FacilityDTO());
         return "facility-list";
     }
 
@@ -132,6 +133,12 @@ public class FacilityController {
             response.setError("При удалении объекта " + facility.getName() + " произошла ошибка.");
         }
         return response;
+    }
+
+    @ResponseBody
+    @PostMapping(path = Location.FACILITY_FIND)
+    public FacilityDTO findFacility(@RequestBody FacilityDTO dto) {
+        return new FacilityDTO(facilityService.findById(dto.getId()));
     }
 
 }
