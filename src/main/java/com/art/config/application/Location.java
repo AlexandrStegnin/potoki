@@ -48,6 +48,9 @@ public class Location {
 
     public static final String FACILITIES_EDIT = FACILITIES + "/edit/{id}";
 
+    public static final String FACILITY_FIND = FACILITIES + "/find";
+
+
     // Помещения
     public static final String ROOMS = "/rooms";
 
