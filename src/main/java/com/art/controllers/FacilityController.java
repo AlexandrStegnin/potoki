@@ -3,10 +3,7 @@ package com.art.controllers;
 import com.art.config.application.Location;
 import com.art.model.Account;
 import com.art.model.Facility;
-import com.art.model.Money;
-import com.art.model.UnderFacility;
 import com.art.model.supporting.ApiResponse;
-import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.dto.FacilityDTO;
 import com.art.model.supporting.enums.OwnerType;
 import com.art.service.AccountService;
@@ -115,23 +112,8 @@ public class FacilityController {
 
     @PostMapping(path = Location.FACILITIES_DELETE, produces = "application/json;charset=UTF-8")
     public @ResponseBody
-    GenericResponse deleteFacility(@RequestBody FacilityDTO facilityDTO) {
-        GenericResponse response = new GenericResponse();
-        Facility facility = facilityService.findById(facilityDTO.getId());
-        List<Money> monies = moneyService.findByFacilityId(facility.getId());
-        if (monies.size() > 0) {
-            response.setMessage(String.format("В объект [%s] вложены деньги, необходимо перераспределить их", facility.getName()));
-            return response;
-        }
-        try {
-            List<UnderFacility> underFacilities = underFacilityService.findByFacilityId(facility.getId());
-            underFacilities.forEach(underFacility -> underFacilityService.deleteById(underFacility.getId()));
-            facilityService.deleteById(facility.getId());
-            response.setMessage("Объект " + facility.getName() + " успешно удалён.");
-        } catch (Exception e) {
-            response.setError("При удалении объекта " + facility.getName() + " произошла ошибка.");
-        }
-        return response;
+    ApiResponse deleteFacility(@RequestBody FacilityDTO facilityDTO) {
+        return facilityService.delete(facilityDTO);
     }
 
     @ResponseBody

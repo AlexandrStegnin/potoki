@@ -2,9 +2,14 @@ package com.art.service;
 
 import com.art.model.Facility;
 import com.art.model.Facility_;
+import com.art.model.Money;
+import com.art.model.UnderFacility;
 import com.art.model.supporting.ApiResponse;
+import com.art.model.supporting.dto.FacilityDTO;
 import com.art.model.supporting.enums.OwnerType;
 import com.art.repository.FacilityRepository;
+import com.art.repository.MoneyRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +22,7 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @Transactional
 public class FacilityService {
@@ -25,9 +31,16 @@ public class FacilityService {
 
     private final AccountService accountService;
 
-    public FacilityService(FacilityRepository facilityRepository, AccountService accountService) {
+    private final MoneyRepository moneyRepository;
+
+    private final UnderFacilityService underFacilityService;
+
+    public FacilityService(FacilityRepository facilityRepository, AccountService accountService,
+                           MoneyRepository moneyRepository, UnderFacilityService underFacilityService) {
         this.facilityRepository = facilityRepository;
         this.accountService = accountService;
+        this.moneyRepository = moneyRepository;
+        this.underFacilityService = underFacilityService;
     }
 
 //    @Cacheable(Constant.FACILITIES_CACHE_KEY)
@@ -94,6 +107,32 @@ public class FacilityService {
         accountService.createAccount(facility);
         apiResponse = new ApiResponse("Объект " + facility.getName() + " успешно добавлен.", HttpStatus.OK.value());
         return apiResponse;
+    }
+
+    /**
+     * Удалить объект на основании DTO
+     *
+     * @param dto DTO для удаления
+     * @return ответ
+     */
+    public ApiResponse delete(FacilityDTO dto) {
+        Facility facility = findById(dto.getId());
+        if (facility == null) {
+            throw new RuntimeException("Не найден объект для удаления");
+        }
+        List<Money> monies = moneyRepository.findByFacilityId(facility.getId());
+        if (monies.size() > 0) {
+            return new ApiResponse(String.format("В объект [%s] вложены деньги, необходимо перераспределить их", facility.getName()), HttpStatus.BAD_REQUEST.value());
+        }
+        try {
+            List<UnderFacility> underFacilities = underFacilityService.findByFacilityId(facility.getId());
+            underFacilities.forEach(underFacility -> underFacilityService.deleteById(underFacility.getId()));
+            deleteById(facility.getId());
+            return new ApiResponse("Объект " + facility.getName() + " успешно удалён.");
+        } catch (Exception e) {
+            log.error("Произошла ошибка: {}", e.getLocalizedMessage());
+            return new ApiResponse("При удалении объекта " + facility.getName() + " произошла ошибка.", HttpStatus.BAD_REQUEST.value());
+        }
     }
 
 }
