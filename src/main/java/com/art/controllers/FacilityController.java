@@ -7,7 +7,6 @@ import com.art.model.Money;
 import com.art.model.UnderFacility;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.GenericResponse;
-import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.dto.FacilityDTO;
 import com.art.model.supporting.enums.OwnerType;
 import com.art.service.AccountService;
@@ -116,9 +115,9 @@ public class FacilityController {
 
     @PostMapping(path = Location.FACILITIES_DELETE, produces = "application/json;charset=UTF-8")
     public @ResponseBody
-    GenericResponse deleteFacility(@RequestBody SearchSummary searchSummary) {
+    GenericResponse deleteFacility(@RequestBody FacilityDTO facilityDTO) {
         GenericResponse response = new GenericResponse();
-        Facility facility = facilityService.findById(Long.valueOf(searchSummary.getFacilityStr()));
+        Facility facility = facilityService.findById(facilityDTO.getId());
         List<Money> monies = moneyService.findByFacilityId(facility.getId());
         if (monies.size() > 0) {
             response.setMessage(String.format("В объект [%s] вложены деньги, необходимо перераспределить их", facility.getName()));
