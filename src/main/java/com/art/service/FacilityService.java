@@ -135,4 +135,16 @@ public class FacilityService {
         }
     }
 
+    /**
+     * Обновить объект на основе DTO
+     *
+     * @param dto DTO объекта
+     * @return ответ
+     */
+    public ApiResponse update(FacilityDTO dto) {
+        Facility facility = new Facility(dto);
+        facilityRepository.save(facility);
+        return new ApiResponse("Объект успешно обновлён");
+    }
+
 }
