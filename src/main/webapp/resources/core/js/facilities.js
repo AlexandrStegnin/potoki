@@ -23,8 +23,11 @@ jQuery(document).ready(function ($) {
     });
     $('#create').click(function (event) {
         showLoader();
-        event.preventDefault();
-        create();
+        let action = $(this).data('action')
+        if (action === 'create') {
+            event.preventDefault();
+            create();
+        }
         closeLoader();
     })
 });
