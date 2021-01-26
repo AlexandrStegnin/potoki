@@ -233,14 +233,6 @@
                     <c:set var="active" value="Нет"/>
                 </c:if>
                 <td>${active}</td>
-                <c:choose>
-                    <c:when test="${money.typeClosing == null}">
-                        <c:set var="isDisabledClass" value="isEnabled"/>
-                    </c:when>
-                    <c:otherwise>
-                        <c:set var="isDisabledClass" value="isDisabled"/>
-                    </c:otherwise>
-                </c:choose>
 
                 <sec:authorize access="isFullyAuthenticated()">
                     <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
