@@ -54,6 +54,8 @@ public class FacilityController {
         model.addAttribute("newFacility", facility);
         model.addAttribute("accountNumber", accountNumber);
         model.addAttribute("edit", false);
+        model.addAttribute("title", "Создание объекта");
+        model.addAttribute("action", "create");
         return "facility-add";
     }
 
@@ -85,6 +87,8 @@ public class FacilityController {
         model.addAttribute("newFacility", facility);
         model.addAttribute("accountNumber", accountNumber);
         model.addAttribute("edit", true);
+        model.addAttribute("title", "Обновление объекта");
+        model.addAttribute("action", "update");
         return "facility-add";
     }
 
