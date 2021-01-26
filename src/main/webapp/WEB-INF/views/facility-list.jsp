@@ -70,9 +70,9 @@
                                         class="btn btn-success btn-sm dropdown-toggle pull-right"><span
                                         class="fas fa-cog"></span></button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item edit-facility" data-facility-id="${facility.id}"
-                                       href="<c:url value='edit/${facility.id}' />">Изменить</a>
-                                    <a class="dropdown-item" id="delete" href="<c:url value='/facilities/delete' />"
+                                    <a class="dropdown-item" id="edit-facility" data-facility-id="${facility.id}"
+                                       href="<c:url value='#' />">Изменить</a>
+                                    <a class="dropdown-item" id="delete-facility" href="<c:url value='#' />"
                                        data-facility-id="${facility.id}" style="color: red">Удалить</a>
                                 </div>
                             </div>
