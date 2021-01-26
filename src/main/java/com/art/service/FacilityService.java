@@ -147,4 +147,15 @@ public class FacilityService {
         return new ApiResponse("Объект успешно обновлён");
     }
 
+    /**
+     * Создать объект на основе DTO
+     *
+     * @param dto DTO объекта
+     * @return ответ
+     */
+    public ApiResponse create(FacilityDTO dto) {
+        Facility facility = new Facility(dto);
+        return create(facility);
+    }
+
 }

@@ -25,26 +25,10 @@ public class FacilityController {
         this.facilityService = facilityService;
     }
 
-    /**
-     * Создание объекта
-     */
-    @GetMapping(path = Location.FACILITIES_CREATE)
-    public String newFacility(ModelMap model) {
-        Facility facility = new Facility();
-        String accountNumber = "";
-        model.addAttribute("newFacility", facility);
-        model.addAttribute("accountNumber", accountNumber);
-        model.addAttribute("edit", false);
-        model.addAttribute("title", "Создание объекта");
-        model.addAttribute("action", "create");
-        return "facility-add";
-    }
-
     @PostMapping(path = Location.FACILITIES_CREATE)
     @ResponseBody
     public ApiResponse createFacility(@RequestBody FacilityDTO facilityDTO) {
-        Facility newFacility = new Facility(facilityDTO);
-        return facilityService.create(newFacility);
+        return facilityService.create(facilityDTO);
     }
 
     @GetMapping(path = Location.FACILITIES_LIST)
