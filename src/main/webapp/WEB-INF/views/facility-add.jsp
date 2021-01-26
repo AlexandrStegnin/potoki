@@ -25,7 +25,7 @@
 <body>
 <div class="generic-container">
     <%@include file="old_authheader.jsp" %>
-    <div class="well lead">Создание нового объекта</div>
+    <div class="well lead">${title}</div>
     <form:form method="POST" modelAttribute="newFacility" class="form-horizontal">
         <form:input type="hidden" path="id" id="id"/>
 
@@ -84,7 +84,7 @@
                         <c:set var="title" value="Создать" />
                     </c:otherwise>
                 </c:choose>
-                <input type="submit" id="create" value="${title}" class="btn btn-primary btn-sm"/> или <a href="<c:url value='/facilities/list' />">Отмена</a>
+                <input type="submit" id="create" data-action="${action}" value="${title}" class="btn btn-primary btn-sm"/> или <a href="<c:url value='/facilities/list' />">Отмена</a>
             </div>
         </div>
     </form:form>
