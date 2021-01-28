@@ -256,6 +256,19 @@ public class Location {
 
     public static final String MARKETING_TREE_UPDATE = MARKETING_TREE + "/update";
 
+    //С КЕМ ЗАКЛЮЧЁН ДОГОВОР
+    public static final String USER_AGREEMENTS = "/agreements";
+
+    public static final String USER_AGREEMENTS_LIST = USER_AGREEMENTS + "/list";
+
+    public static final String USER_AGREEMENTS_ID = USER_AGREEMENTS + "/{id}";
+
+    public static final String USER_AGREEMENTS_CREATE = USER_AGREEMENTS + "/create";
+
+    public static final String USER_AGREEMENTS_UPDATE = USER_AGREEMENTS + "/update";
+
+    public static final String USER_AGREEMENTS_DELETE = USER_AGREEMENTS + "/delete";
+
     public static final String[] ADMIN_URLS = {
             ADMIN,
             CATALOGUE,
