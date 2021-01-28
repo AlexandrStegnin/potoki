@@ -18,4 +18,12 @@ public class UserAgreementFilter {
 
     List<Long> facilitiesId;
 
+    boolean allRows = false;
+
+    int pageNumber = 0;
+
+    int pageSize = 100;
+
+    int total;
+
 }
