@@ -62,10 +62,10 @@ public class UserAgreementService {
      * @return созданная запись
      */
     private UserAgreement create(UserAgreementDTO dto) {
-        Facility facility = facilityRepository.findByName(dto.getFacility());
-        AppUser investor = userRepository.findByLogin(dto.getConcludedFrom());
+        Facility facility = facilityRepository.findOne(dto.getFacilityId());
+        AppUser investor = userRepository.findOne(dto.getConcludedFrom());
         if (investor == null) {
-            throw new EntityNotFoundException("Пользователь [" + dto.getConcludedFrom() + "] не найден");
+            throw new EntityNotFoundException("Пользователь не найден");
         }
         UserAgreement userAgreement = new UserAgreement();
         userAgreement.setFacility(facility);
@@ -82,11 +82,11 @@ public class UserAgreementService {
      * @return обновлённая информация
      */
     public UserAgreement update(UserAgreementDTO dto) {
-        Facility facility = facilityRepository.findByName(dto.getFacility());
+        Facility facility = facilityRepository.findOne(dto.getFacilityId());
         dto.setConcludedFrom(dto.getConcludedFrom());
-        AppUser investor = userRepository.findByLogin(dto.getConcludedFrom());
+        AppUser investor = userRepository.findOne(dto.getConcludedFrom());
         if (investor == null) {
-            throw new EntityNotFoundException("Пользователь [" + dto.getConcludedFrom() + "] не найден");
+            throw new EntityNotFoundException("Пользователь не найден");
         }
         UserAgreement userAgreement = userAgreementRepository.findByFacilityIdAndConcludedFrom(facility.getId(), investor.getId());
         if (userAgreement == null) {

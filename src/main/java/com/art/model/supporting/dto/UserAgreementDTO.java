@@ -18,13 +18,13 @@ import javax.validation.constraints.NotNull;
 public class UserAgreementDTO {
 
     @NotBlank(message = "Название объекта должно быть указано")
-    String facility;
+    Long facilityId;
 
     @NotBlank(message = "С кем заключён договор должно быть заполнено")
     String concludedWith;
 
     @NotBlank(message = "От кого заключён договор должно быть заполнено")
-    String concludedFrom;
+    Long concludedFrom;
 
     @NotNull(message = "Налоговая ставка должна быть заполнена")
     Double taxRate;
