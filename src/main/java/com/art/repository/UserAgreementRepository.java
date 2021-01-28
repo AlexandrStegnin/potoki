@@ -11,7 +11,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserAgreementRepository extends JpaRepository<UserAgreement, Long>, JpaSpecificationExecutor<UserAgreement> {
-
-    UserAgreement findByFacilityIdAndConcludedFrom(Long facilityId, Long investorId);
-
 }
