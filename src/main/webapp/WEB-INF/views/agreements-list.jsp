@@ -84,14 +84,6 @@
             </button>
         </div>
     </div>
-    <div class="d-flex flex-row justify-content-center" style="margin: 10px;">
-        <button type="button" class="btn btn-primary input-md" id="checkIt" data-checked="false"
-                style="margin-left: 10px">Выделить всё
-        </button>
-        <button type="button" class="btn btn-danger input-md disabled" id="delete-list"
-                style="margin-left: 10px">Удалить выбранное
-        </button>
-    </div>
     </form:form>
 
     <c:if test="${filter.allRows == false}">
@@ -122,7 +114,6 @@
             <th>С кем заключён договор</th>
             <th>От кого заключён договор</th>
             <th>Налоговая ставка</th>
-            <th style="width: 5%">Выбрать</th>
         </tr>
         </thead>
         <tbody>
@@ -132,8 +123,6 @@
                 <td>${agr.concludedFrom.login}</td>
                 <td>${agr.concludedWith}</td>
                 <td>${agr.taxRate}</td>
-                <td style="text-align: center"><input type="checkbox" data-object-id="${agr.id}">
-                </td>
             </tr>
         </c:forEach>
         </tbody>
