@@ -34,9 +34,9 @@
     <div class="d-flex flex-row justify-content-center" style="margin: 10px;">
         <form:form modelAttribute="filter" method="POST" class="form-inline"
                    id="filter-form">
-<%--        <input type="hidden" id="pageNumber" name="pageNumber" value="0">--%>
-<%--        <input type="hidden" id="pageSize" name="pageSize" value="${filter.pageSize}">--%>
-<%--        <input type="hidden" id="total" name="total" value="${page.content.size()}">--%>
+        <input type="hidden" id="pageNumber" name="pageNumber" value="0">
+        <input type="hidden" id="pageSize" name="pageSize" value="${filter.pageSize}">
+        <input type="hidden" id="total" name="total" value="${page.content.size()}">
         <div style="padding: 5px;">
             <form:select path="investorsId" id="investors" multiple="true" class="selectpicker"
                          data-size="10" data-live-search="true" data-none-selected-text="Выберите инвестора"
@@ -72,10 +72,10 @@
             </form:select>
         </div>
 
-<%--        <input id="all" name="allRows" type="checkbox"--%>
-<%--        <c:if test="${filter.allRows == true}"> checked="checked" </c:if> data-toggle="toggle"--%>
-<%--               data-on="На одной" data-off="По страницам" data-onstyle="success" data-offstyle="danger"--%>
-<%--               data-size="input-sm">--%>
+        <input id="all" name="allRows" type="checkbox"
+        <c:if test="${filter.allRows == true}"> checked="checked" </c:if> data-toggle="toggle"
+               data-on="На одной" data-off="По страницам" data-onstyle="success" data-offstyle="danger"
+               data-size="input-sm">
         <button type="submit" id="btn-search" class="btn btn-primary btn-md" style="margin-left: 10px">Фильтр
         </button>
         <div>
@@ -94,26 +94,26 @@
     </div>
     </form:form>
 
-<%--    <c:if test="${filter.allRows == false}">--%>
-<%--        <nav class="text-center" aria-label="Транзакции по счетам клиентов">--%>
-<%--            <ul class="pagination pagination-sm justify-content-center">--%>
-<%--                <c:forEach begin="1" end="${page.totalPages}" varStatus="page">--%>
-<%--                    <c:choose>--%>
-<%--                        <c:when test="${filter.pageNumber == page.index - 1}">--%>
-<%--                            <c:set var="active" value="active"/>--%>
-<%--                        </c:when>--%>
-<%--                        <c:otherwise>--%>
-<%--                            <c:set var="active" value=""/>--%>
-<%--                        </c:otherwise>--%>
-<%--                    </c:choose>--%>
-<%--                    <li class="page-item ${active}" data-page="${page.index}">--%>
-<%--                        <a id="${page.index}" name="page_${page.index}" class="page-link"--%>
-<%--                           href="#">${page.index}</a>--%>
-<%--                    </li>--%>
-<%--                </c:forEach>--%>
-<%--            </ul>--%>
-<%--        </nav>--%>
-<%--    </c:if>--%>
+    <c:if test="${filter.allRows == false}">
+        <nav class="text-center" aria-label="Транзакции по счетам клиентов">
+            <ul class="pagination pagination-sm justify-content-center">
+                <c:forEach begin="1" end="${page.totalPages}" varStatus="page">
+                    <c:choose>
+                        <c:when test="${filter.pageNumber == page.index - 1}">
+                            <c:set var="active" value="active"/>
+                        </c:when>
+                        <c:otherwise>
+                            <c:set var="active" value=""/>
+                        </c:otherwise>
+                    </c:choose>
+                    <li class="page-item ${active}" data-page="${page.index}">
+                        <a id="${page.index}" name="page_${page.index}" class="page-link"
+                           href="#">${page.index}</a>
+                    </li>
+                </c:forEach>
+            </ul>
+        </nav>
+    </c:if>
 
     <table class="table table-striped w-auto table-hover table-sm" style="table-layout: fixed" id="transactions">
         <thead>
