@@ -53,7 +53,11 @@ public class UserAgreementController {
     @PostMapping(path = Location.USER_AGREEMENTS_LIST)
     public ModelAndView moneyPageable(@ModelAttribute(value = "filter") UserAgreementFilter filter) {
         Pageable pageable;
-        pageable = new PageRequest(0, Integer.MAX_VALUE);
+        if (filter.isAllRows()) {
+            pageable = new PageRequest(0, Integer.MAX_VALUE);
+        } else {
+            pageable = new PageRequest(filter.getPageNumber(), filter.getPageSize());
+        }
         ModelAndView modelAndView = new ModelAndView("agreements-list");
         Page<UserAgreement> page = userAgreementService.findAll(filter, pageable);
         modelAndView.addObject("page", page);
