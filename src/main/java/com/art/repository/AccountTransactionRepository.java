@@ -50,7 +50,12 @@ public interface AccountTransactionRepository extends JpaRepository<AccountTrans
             "ORDER BY atx.owner.ownerName")
     List<String> getOwners(@Param("ownerType") OwnerType ownerType);
 
-    @Query("SELECT new com.art.model.supporting.dto.AccountDTO(atx.owner, SUM(atx.cash)) " +
+    @Query("SELECT new com.art.model.supporting.dto.AccountDTO(atx.owner, " +
+            "CASE " +
+            "   WHEN SUM(atx.cash) BETWEEN -1.0 AND 1.0 " +
+            "       THEN 0.0 " +
+            "   ELSE SUM(atx.cash) " +
+            "END)  " +
             "FROM AccountTransaction atx " +
             "WHERE atx.owner IN :owners AND atx.owner.ownerType = :ownerType " +
             "GROUP BY atx.owner")
@@ -98,7 +103,12 @@ public interface AccountTransactionRepository extends JpaRepository<AccountTrans
                                                                   @Param("payers") Collection<Account> payers,
                                                                   @Param("parentPayers") Collection<Account> parentPayers, Pageable pageable);
 
-    @Query("SELECT new com.art.model.supporting.dto.AccountDTO(atx.owner, SUM(atx.cash)) " +
+    @Query("SELECT new com.art.model.supporting.dto.AccountDTO(atx.owner, " +
+            "CASE " +
+            "   WHEN SUM(atx.cash) BETWEEN -1.0 AND 1.0 " +
+            "       THEN 0.0 " +
+            "   ELSE SUM(atx.cash) " +
+            "END)  " +
             "FROM AccountTransaction atx " +
             "WHERE atx.owner.ownerType = :ownerType " +
             "GROUP BY atx.owner")
