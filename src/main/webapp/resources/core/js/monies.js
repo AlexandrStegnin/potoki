@@ -1360,14 +1360,6 @@ function check(operation) {
             } else {
                 $('#dateGivenError').addClass('d-none')
             }
-            let cashSourceSelect = $('#cashSrc')
-            let cashSourceId = cashSourceSelect.find(':selected').val();
-            if (cashSourceId === '0') {
-                $('#cashSourceError').removeClass('d-none')
-                return false
-            } else {
-                $('#cashSourceError').addClass('d-none')
-            }
             let shareTypeSelect = $('#shareType')
             let shareTypeId = shareTypeSelect.find(':selected').val()
             if (shareTypeId === '0') {
