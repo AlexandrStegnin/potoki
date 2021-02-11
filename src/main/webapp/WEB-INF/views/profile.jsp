@@ -78,7 +78,7 @@
     </div>
     <ul class="nav nav-tabs justify-content-center">
         <c:set var="disabled" value="" />
-        <c:if test="${page == null}">
+        <c:if test="${accountPage == null}">
             <c:set var="disabled" value=" disabled" />
         </c:if>
         <li class="nav-item">
@@ -133,7 +133,7 @@
                 </tr>
                 </thead>
                 <tbody style="text-align: center">
-                <c:forEach items="${page.content}" var="acc">
+                <c:forEach items="${accountPage.content}" var="acc">
                     <tr>
                         <td>${acc.owner.accountNumber}</td>
                         <td><fmt:setLocale value="ru-RU" scope="session"/>

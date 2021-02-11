@@ -7,9 +7,11 @@ import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.FileBucket;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
+import com.art.model.supporting.dto.AccountDTO;
 import com.art.model.supporting.dto.UserDTO;
 import com.art.model.supporting.enums.KinEnum;
 import com.art.model.supporting.enums.OwnerType;
+import com.art.model.supporting.filters.AccTxFilter;
 import com.art.model.supporting.filters.AppUserFilter;
 import com.art.service.*;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -52,15 +54,19 @@ public class UserController {
 
     private final AppUserFilter filter = new AppUserFilter();
 
+    private final AccountTransactionService accountTransactionService;
+
     public UserController(UserService userService, RoleService roleService,
                           FacilityService facilityService, MoneyService moneyService,
-                          UsersAnnexToContractsService usersAnnexToContractsService, AccountService accountService) {
+                          UsersAnnexToContractsService usersAnnexToContractsService, AccountService accountService,
+                          AccountTransactionService accountTransactionService) {
         this.userService = userService;
         this.roleService = roleService;
         this.facilityService = facilityService;
         this.moneyService = moneyService;
         this.usersAnnexToContractsService = usersAnnexToContractsService;
         this.accountService = accountService;
+        this.accountTransactionService = accountTransactionService;
     }
 
     @Secured("ROLE_ADMIN")
@@ -128,6 +134,15 @@ public class UserController {
         modelAndView.addObject("title", title);
         modelAndView.addObject("search", new SearchSummary());
         modelAndView.addObject("accountNumber", accountNumber);
+        Page<AccountDTO> page = null;
+        if (account != null) {
+            AccTxFilter filter = new AccTxFilter();
+            filter.getOwners().add(account);
+            Pageable pageable = new PageRequest(filter.getPageNumber(), filter.getPageSize());
+            page = accountTransactionService.getSummary(filter, pageable);
+            modelAndView.addObject("accountPage", page);
+        }
+        modelAndView.addObject("accountPage", page);
         return modelAndView;
     }
 
