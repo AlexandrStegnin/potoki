@@ -4,6 +4,7 @@ import com.art.model.Account;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,13 +15,13 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class AccTxFilter extends AccountTransactionFilter {
 
-    private List<Account> owners;
+    private List<Account> owners = new ArrayList<>();
 
-    private List<Account> payers;
+    private List<Account> payers = new ArrayList<>();
 
-    private List<Account> parentPayers;
+    private List<Account> parentPayers = new ArrayList<>();
 
-    private List<String> cashTypes;
+    private List<String> cashTypes = new ArrayList<>();
 
     public boolean isClear() {
         return (owners == null || owners.isEmpty()) &&
