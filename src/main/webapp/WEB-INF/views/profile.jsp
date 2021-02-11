@@ -3,6 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 
@@ -75,54 +76,93 @@
     <div style="text-align: center; padding-bottom: 20px; color: red">
         <span id="errUnread">${errTitle}</span>
     </div>
-    <form:form method="POST" modelAttribute="user" class="form-horizontal">
-        <form:input type="hidden" path="id" id="id"/>
+    <ul class="nav nav-tabs justify-content-center">
+        <c:set var="disabled" value="" />
+        <c:if test="${page == null}">
+            <c:set var="disabled" value=" disabled" />
+        </c:if>
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#settings">Профиль</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link ${disabled}" data-toggle="tab" href="#free-monies">Свободные средства</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane fade show active" id="settings">
+            <form:form method="POST" modelAttribute="user" class="form-horizontal" cssStyle="padding-top: 10px">
+                <form:input type="hidden" path="id" id="id"/>
 
-        <div class="form-group row">
-            <label class="col-md-2 offset-md-2 col-form-label-md" for="password">Пароль:</label>
-            <div class="col-md-6">
-                <form:input type="password" path="password" id="password" class="form-control form-control-md"/>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="col-md-2 offset-md-2 col-form-label-md" for="email">Email</label>
-            <div class="col-md-6">
-                <form:input type="email" path="profile.email" id="email" class="form-control form-control-md"/>
-                <div class="has-error">
-                    <form:errors path="profile.email" class="help-inline"/>
+                <div class="form-group row">
+                    <label class="col-md-2 offset-md-2 col-form-label-md" for="password">Пароль:</label>
+                    <div class="col-md-6">
+                        <form:input type="password" path="password" id="password" class="form-control form-control-md"/>
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="form-group row">
-            <label class="col-md-2 offset-md-2 col-form-label-md" for="acc-number">№ счёта</label>
-            <div class="col-md-6">
-                <input type="text" id="acc-number" class="form-control input-sm" value="${accountNumber}" readonly />
-            </div>
-        </div>
+                <div class="form-group row">
+                    <label class="col-md-2 offset-md-2 col-form-label-md" for="email">Email</label>
+                    <div class="col-md-6">
+                        <form:input type="email" path="profile.email" id="email" class="form-control form-control-md"/>
+                        <div class="has-error">
+                            <form:errors path="profile.email" class="help-inline"/>
+                        </div>
+                    </div>
+                </div>
 
-        <div class="form-group row justify-content-end col-md-8 offset-md-2" style="padding-right: 5px">
-            <button type="submit" class="btn btn-primary btn-md" id="submit">СОХРАНИТЬ</button>
-            <a href="<c:url value='/welcome' />" class="btn btn-md btn-danger" style="margin-left: 5px;" role="button">ОТМЕНА</a>
+                <div class="form-group row">
+                    <label class="col-md-2 offset-md-2 col-form-label-md" for="acc-number">№ счёта</label>
+                    <div class="col-md-6">
+                        <input type="text" id="acc-number" class="form-control input-sm" value="${accountNumber}" readonly />
+                    </div>
+                </div>
+
+                <div class="form-group row justify-content-end col-md-8 offset-md-2" style="padding-right: 5px">
+                    <button type="submit" class="btn btn-primary btn-md" id="submit">СОХРАНИТЬ</button>
+                    <a href="<c:url value='/welcome' />" class="btn btn-md btn-danger" style="margin-left: 5px;" role="button">ОТМЕНА</a>
+                </div>
+            </form:form>
         </div>
-    </form:form>
+        <div class="tab-pane fade" id="free-monies">
+            <table class="table table-striped table-hover table-sm" style="table-layout: fixed" id="transactions">
+                <thead style="text-align: center;">
+                <tr>
+                    <th>Счёт</th>
+                    <th>Баланс</th>
+                    <th>Подробно</th>
+                </tr>
+                </thead>
+                <tbody style="text-align: center">
+                <c:forEach items="${page.content}" var="acc">
+                    <tr>
+                        <td>${acc.owner.accountNumber}</td>
+                        <td><fmt:setLocale value="ru-RU" scope="session"/>
+                            <fmt:formatNumber value="${acc.summary}" type="currency" minFractionDigits="2"/></td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-success tx-show" data-toggle="tooltip"
+                                    data-placement="left" title="Посмотреть" data-owner-id="${acc.owner.id}">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
 </div>
 
 <%@include file="ddk_loader.jsp" %>
 <%@include file="popup_modal.jsp"%>
-<script type="text/javascript"
-        src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' />"></script>
-<script type="text/javascript"
-        src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js' />"></script>
-<script type="text/javascript"
-        src="<c:url value='https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js' />"></script>
+<script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' />"></script>
+<script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js' />"></script>
+<script src="<c:url value='https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js' />"></script>
 <script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.14/js/bootstrap-select.min.js' />"></script>
-<script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
-<script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
-<script type="text/javascript" src="<c:url value='/resources/core/js/annex.js' />"></script>
-<script type="text/javascript" src="<c:url value='/resources/core/js/profiles.js' />"></script>
-<script type="text/javascript" src="<c:url value='/resources/core/js/bitrix-contacts.js' />"></script>
+<script src="<c:url value='/resources/core/js/scripts.js' />"></script>
+<script src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
+<script src="<c:url value='/resources/core/js/annex.js' />"></script>
+<script src="<c:url value='/resources/core/js/profiles.js' />"></script>
+<script src="<c:url value='/resources/core/js/bitrix-contacts.js' />"></script>
 </body>
 </html>
