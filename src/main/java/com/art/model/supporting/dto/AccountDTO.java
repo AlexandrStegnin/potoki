@@ -18,4 +18,8 @@ public class AccountDTO {
 
     private BigDecimal summary;
 
+    public AccountDTO(Account owner, Double summary) {
+        this(owner, new BigDecimal(String.valueOf(summary)));
+    }
+
 }
