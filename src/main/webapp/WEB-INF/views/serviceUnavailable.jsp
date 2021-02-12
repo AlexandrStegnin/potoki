@@ -17,7 +17,7 @@
     <link href="<c:url value='/resources/core/css/old_bootstrap.min.css' />" rel="stylesheet" />
     <link href="<c:url value='/resources/core/css/app.css' />" rel="stylesheet" />
     <script type="text/javascript" src="<c:url value='/resources/core/js/jquery-3.2.1.js' />" ></script>
-    <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
+    <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon/favicon.ico?v=eEY755nn99' />">
 </head>
 <body>
 <div id="mainWrapper">

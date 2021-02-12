@@ -14,7 +14,7 @@
           href="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css' />">
     <link href="<c:url value='/resources/core/css/ddk_loader.css' />"
           rel="stylesheet"/>
-    <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
+    <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon/favicon.ico?v=eEY755nn99' />">
 </head>
 <body>
 <%@include file="header.jsp" %>

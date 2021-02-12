@@ -18,6 +18,7 @@
     <script type="text/javascript"
             src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js' />"></script>
     <script type="text/javascript" src="<c:url value='https://www.gstatic.com/charts/loader.js' />"></script>
+<%--    <script src="<c:url value='https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0' />"></script>--%>
     <script type="text/javascript" src="<c:url value='/resources/core/js/charts-for-flows.js' />"></script>
     <link href="<c:url value='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' />"
           rel="stylesheet"/>

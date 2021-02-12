@@ -1,10 +1,20 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html lang="en-RU">
 <head>
+    <link rel="apple-touch-icon" sizes="180x180" href="<c:url value='/resources/core/img/favicon/apple-touch-icon.png?v=eEY755nn99' />">
+    <link rel="icon" type="image/png" sizes="32x32" href="<c:url value='/resources/core/img/favicon/favicon-32x32.png?v=eEY755nn99' />">
+    <link rel="icon" type="image/png" sizes="16x16" href="<c:url value='/resources/core/img/favicon/favicon-16x16.png?v=eEY755nn99' />">
+    <link rel="manifest" href="<c:url value='/resources/core/img/favicon/site.webmanifest?v=eEY755nn99' />">
+    <link rel="mask-icon" href="<c:url value='/resources/core/img/favicon/safari-pinned-tab.svg?v=eEY755nn99' />" color="#4f004b">
+    <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon/favicon.ico?v=eEY755nn99' />">
+    <meta name="apple-mobile-web-app-title" content="Колесникъ">
+    <meta name="application-name" content="Колесникъ">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Страница входа</title>
     <sec:csrfMetaTags />
@@ -12,11 +22,10 @@
     <link href="<c:url value='/resources/core/css/applic.css' />" rel="stylesheet" />
     <link href="<c:url value='/resources/core/css/popup.css' />" rel="stylesheet" />
     <link href="<c:url value='/resources/core/css/ddk_loader.css' />" rel="stylesheet" />
-    <script type="text/javascript" src="<c:url value='/resources/core/js/jquery-3.2.1.js' />" ></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min_old.js' />" ></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />" ></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />" ></script>
-    <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
+    <script src="<c:url value='/resources/core/js/jquery-3.2.1.js' />" ></script>
+    <script src="<c:url value='/resources/core/js/bootstrap.min_old.js' />" ></script>
+    <script src="<c:url value='/resources/core/js/scripts.js' />" ></script>
+    <script src="<c:url value='/resources/core/js/ddk_loader.js' />" ></script>
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.css" />
 </head>
 

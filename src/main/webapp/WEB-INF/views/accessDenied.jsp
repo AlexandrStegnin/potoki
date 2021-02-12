@@ -14,7 +14,7 @@
     <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min_old.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />" ></script>
     <script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />" ></script>
-    <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon.ico' />" type="image/x-icon">
+    <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon/favicon.ico?v=eEY755nn99' />">
 </head>
 <body>
 Уважаемый, <strong>${loggedinuser}</strong>, Вы не авторизованы для просмотра данной страницы.
