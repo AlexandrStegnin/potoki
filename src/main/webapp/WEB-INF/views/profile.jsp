@@ -76,7 +76,7 @@
     <div style="text-align: center; padding-bottom: 20px; color: red">
         <span id="errUnread">${errTitle}</span>
     </div>
-    <ul class="nav nav-tabs justify-content-center">
+    <ul class="nav nav-tabs nav-justified">
         <c:set var="disabled" value="" />
         <c:if test="${accountPage == null}">
             <c:set var="disabled" value=" disabled" />
@@ -124,12 +124,13 @@
             </form:form>
         </div>
         <div class="tab-pane fade" id="free-monies">
-            <table class="table table-striped table-hover table-sm" style="table-layout: fixed" id="transactions">
+            <table class="table table-striped table-hover table-sm" style="table-layout: fixed;" id="transactions">
                 <thead style="text-align: center;">
                 <tr>
-                    <th>Счёт</th>
-                    <th>Баланс</th>
-                    <th>Подробно</th>
+                    <th style="border-top: none">Счёт</th>
+                    <th style="border-top: none">Баланс</th>
+                    <th style="border-top: none">Подробно</th>
+                    <th style="border-top: none">Распорядиться</th>
                 </tr>
                 </thead>
                 <tbody style="text-align: center">
@@ -144,6 +145,12 @@
                                 <i class="fas fa-eye"></i>
                             </button>
                         </td>
+                        <td>
+                            <button id="disposeOfFunds" type="button" class="btn btn-sm btn-success" data-toggle="tooltip"
+                                    data-placement="left" title="Функционал в разработке (;" data-owner-id="${acc.owner.id}">
+                                <i class="fas fa-coins"></i>
+                            </button>
+                        </td>
                     </tr>
                 </c:forEach>
                 </tbody>
@@ -155,6 +162,7 @@
 
 <%@include file="ddk_loader.jsp" %>
 <%@include file="popup_modal.jsp"%>
+<%@include file="table-popup.jsp" %>
 <script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' />"></script>
 <script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js' />"></script>
 <script src="<c:url value='https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js' />"></script>
