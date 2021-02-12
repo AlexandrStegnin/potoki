@@ -85,7 +85,7 @@
             <a class="nav-link active" data-toggle="tab" href="#settings">Профиль</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link ${disabled}" data-toggle="tab" href="#free-monies">Свободные средства</a>
+            <a class="nav-link ${disabled}" data-toggle="tab" href="#free-monies">Свободный капитал</a>
         </li>
     </ul>
     <div class="tab-content">
