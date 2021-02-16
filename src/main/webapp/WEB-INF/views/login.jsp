@@ -5,17 +5,16 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html lang="en-RU">
 <head>
-    <link rel="apple-touch-icon" sizes="180x180" href="<c:url value='/resources/core/img/favicon/apple-touch-icon.png?v=eEY755nn99' />">
-    <link rel="icon" type="image/png" sizes="32x32" href="<c:url value='/resources/core/img/favicon/favicon-32x32.png?v=eEY755nn99' />">
-    <link rel="icon" type="image/png" sizes="16x16" href="<c:url value='/resources/core/img/favicon/favicon-16x16.png?v=eEY755nn99' />">
-    <link rel="manifest" href="<c:url value='/resources/core/img/favicon/site.webmanifest?v=eEY755nn99' />">
-    <link rel="mask-icon" href="<c:url value='/resources/core/img/favicon/safari-pinned-tab.svg?v=eEY755nn99' />" color="#4f004b">
-    <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon/favicon.ico?v=eEY755nn99' />">
+    <link rel="apple-touch-icon" sizes="180x180" href="<c:url value='/resources/core/img/favicon/apple-touch-icon.png?v=lkv88RWlAB' />">
+    <link rel="icon" type="image/png" sizes="32x32" href="<c:url value='/resources/core/img/favicon/favicon-32x32.png?v=lkv88RWlAB' />">
+    <link rel="icon" type="image/png" sizes="16x16" href="<c:url value='/resources/core/img/favicon/favicon-16x16.png?v=lkv88RWlAB' />">
+    <link rel="manifest" href="<c:url value='/resources/core/img/favicon/site.webmanifest?v=lkv88RWlAB' />">
+    <link rel="mask-icon" href="<c:url value='/resources/core/img/favicon/safari-pinned-tab.svg?v=lkv88RWlAB' />" color="#4f004b">
+    <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon/favicon.ico?v=lkv88RWlAB' />">
     <meta name="apple-mobile-web-app-title" content="Колесникъ">
     <meta name="application-name" content="Колесникъ">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Страница входа</title>
     <sec:csrfMetaTags />
     <link href="<c:url value='/resources/core/css/old_bootstrap.min.css' />" rel="stylesheet" />

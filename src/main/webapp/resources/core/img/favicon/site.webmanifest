@@ -3,13 +3,13 @@
     "short_name": "\u041a\u043e\u043b\u0435\u0441\u043d\u0438\u043a\u044a",
     "icons": [
         {
-            "src": "/android-chrome-192x192.png?v=eEY755nn99",
+            "src": "/android-chrome-192x192.png?v=lkv88RWlAB",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "/android-chrome-256x256.png?v=eEY755nn99",
-            "sizes": "256x256",
+            "src": "/android-chrome-512x512.png?v=lkv88RWlAB",
+            "sizes": "512x512",
             "type": "image/png"
         }
     ],
