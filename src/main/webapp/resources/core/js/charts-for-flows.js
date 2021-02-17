@@ -70,12 +70,28 @@ Profit.prototype = {
     }
 }
 
+let AccountSummaryDTO = function () {
+}
+
+AccountSummaryDTO.prototype = {
+    accountId: null,
+    payers: [],
+    build: function (accountId, payers) {
+        this.accountId = accountId
+        this.payers = payers
+    }
+}
+
+let popupTable;
+
 jQuery(document).ready(function ($) {
+    popupTable = $('#popup-table')
     let login = $('#investorLogin').val();
     if (login === '') login = null;
     getUnionProfit(login);
     getKindOnProject(login);
     clearOldLocalStorageData();
+    subscribeTxShowClick()
 });
 
 /**
@@ -513,4 +529,120 @@ function clearOldLocalStorageData() {
     if (window.localStorage && localStorage.getItem('investedMoneyDb')) {
         localStorage.setItem('investedMoneyDb', '');
     }
+}
+
+/**
+ * Показать сообщение
+ *
+ * @param message {String}
+ */
+function showPopup(message) {
+    $('#msg').html(message);
+    $('#msg-modal').modal('show');
+    setTimeout(function () {
+        $('#msg-modal').modal('hide');
+    }, 3000);
+}
+
+/**
+ * Нажатие кнопки "Просмотреть"
+ */
+function subscribeTxShowClick() {
+    $('#free-cash').on('click', function () {
+        let ownerId = $(this).data('owner-id')
+        let accSummaryDTO = new AccountSummaryDTO()
+        accSummaryDTO.build(ownerId, null)
+        getDetails(accSummaryDTO)
+    })
+}
+
+/**
+ * Получить детализацию по счёту
+ *
+ * @param accSummaryDTO {AccountSummaryDTO} DTO
+ */
+function getDetails(accSummaryDTO) {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: "money/transactions/details",
+        data: JSON.stringify(accSummaryDTO),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        }
+    })
+        .done(function (data) {
+            createDetailTable(data);
+        })
+        .fail(function (e) {
+            showPopup('Что-то пошло не так [' + e.message + ']');
+        })
+        .always(function () {
+            console.log('Закончили!');
+        });
+}
+
+/**
+ * Заполнить таблицу во всплывающей форме по данным с сервера
+ *
+ * @param details {[AccountTransactionDTO]}
+ */
+function createDetailTable(details) {
+    let detailTable = $('#detail-table');
+    detailTable.addClass('table-sm')
+    let tableBody = detailTable.find('tbody');
+    tableBody.empty();
+    $.each(details, function (ind, el) {
+        let row = createRow(el);
+        tableBody.append(row);
+    });
+    popupTable.modal('show');
+}
+
+/**
+ * Создать строку с суммой
+ *
+ * @param transactionDTO {AccountTransactionDTO} DTO транзакции
+ * @returns строка таблицы
+ */
+function createRow(transactionDTO) {
+    return $('<tr>').append(
+        $('<td>').text(getDate(transactionDTO.txDate).toLocaleDateString()),
+        $('<td>').text(transactionDTO.owner),
+        $('<td>').text(getFormatter().format(transactionDTO.cash)),
+        $('<td>').text(transactionDTO.operationType),
+        $('<td>').text(transactionDTO.cashType),
+        $('<td>').text(transactionDTO.payer),
+        $('<td>').text(transactionDTO.recipient)
+    );
+}
+
+/**
+ * Получить дату из числа типа long
+ *
+ * @param number {number}
+ */
+function getDate(number) {
+    let dateTime = new Date(number)
+    return new Date(dateTime.getUTCFullYear(), dateTime.getUTCMonth(), dateTime.getUTCDate())
+}
+
+/**
+ * Получить форматтер для форматирования суммы денег
+ *
+ * @return {Intl.NumberFormat}
+ */
+function getFormatter() {
+    return new Intl.NumberFormat('ru-RU', {
+        style: 'currency',
+        currency: 'RUB',
+        // These options are needed to round to whole numbers if that's what you want.
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    })
 }

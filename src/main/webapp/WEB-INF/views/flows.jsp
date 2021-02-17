@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -34,10 +35,7 @@
         <div><img src="https://mc.yandex.ru/watch/53797528" style="position:absolute; left:-9999px;" alt=""/></div>
     </noscript>
     <!-- /Yandex.Metrika counter -->
-    <script type="text/javascript" src="<c:url value='/resources/core/js/annex.js' />"></script>
     <link href="<c:url value='/resources/core/css/annex.css' />" rel="stylesheet"/>
-    <script type="text/javascript"
-            src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
 </head>
 <body>
 <%@include file="annex_popup.jsp" %>
@@ -66,7 +64,9 @@
         </div>
     </div>
 </div>
-<%@include file="loader.jsp" %>
+<%@include file="ddk_loader.jsp" %>
+<%@include file="popup_modal.jsp" %>
+<%@include file="table-popup.jsp" %>
 </body>
 <script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' />"></script>
 <script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js' />"></script>
@@ -76,4 +76,6 @@
 <script type="text/javascript" src="<c:url value='https://www.gstatic.com/charts/loader.js' />"></script>
 <%--    <script src="<c:url value='https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0' />"></script>--%>
 <script type="text/javascript" src="<c:url value='/resources/core/js/charts-for-flows.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/annex.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
 </html>

@@ -2,6 +2,8 @@ package com.art.controllers;
 
 import com.art.config.SecurityUtils;
 import com.art.config.application.Location;
+import com.art.model.supporting.dto.BalanceDTO;
+import com.art.service.AccountTransactionService;
 import com.art.service.UserService;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,8 +28,11 @@ public class AppController {
 
     private final UserService userService;
 
-    public AppController(UserService userService) {
+    private final AccountTransactionService accountTransactionService;
+
+    public AppController(UserService userService, AccountTransactionService accountTransactionService) {
         this.userService = userService;
+        this.accountTransactionService = accountTransactionService;
     }
 
     @GetMapping(path = {Location.HOME, Location.WELCOME, Location.INVESTMENTS})
@@ -36,6 +41,10 @@ public class AppController {
         userService.confirm(SecurityUtils.getUserId());
         if (request.isUserInRole("ROLE_INVESTOR") &&
                 (!admin && !request.isUserInRole("ROLE_DBA") && !request.isUserInRole("ROLE_BIGDADDY"))) {
+            Long ownerId = SecurityUtils.getUserId();
+            BalanceDTO balance = accountTransactionService.getBalance(ownerId);
+            model.addAttribute("ownerId", ownerId);
+            model.addAttribute("balance", balance.getSummary());
             model.addAttribute("investorLogin", SecurityUtils.getUsername());
             return "flows";
         } else {
