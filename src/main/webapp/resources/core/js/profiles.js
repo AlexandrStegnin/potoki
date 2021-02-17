@@ -48,7 +48,7 @@ jQuery(document).ready(function ($) {
  * Нажатие кнопки "Просмотреть"
  */
 function subscribeTxShowClick() {
-    $('.tx-show').on('click', function () {
+    $('#free-cash').on('click', function () {
         let ownerId = $(this).data('owner-id')
         let accSummaryDTO = new AccountSummaryDTO()
         accSummaryDTO.build(ownerId, null)

@@ -28,6 +28,15 @@
                         Баланс: <span id="balanceText">0</span>
                     </a>
                 </li>
+                <li class="nav-item mr-2">
+                    <a id="free-cash" href="#" class="nav-link" data-owner-id="${ownerId}" style="color: #0D345D;">
+                        <span class="fas fa-coins" style="color: #0D345D;"></span>
+                        Свободный капитал: <span id="free-cash-text">
+                        <fmt:setLocale value="ru-RU" scope="session"/>
+                            <fmt:formatNumber value="${balance}" type="currency" minFractionDigits="2"/>
+                    </span>
+                    </a>
+                </li>
             </sec:authorize>
             <li class="nav-item mr-2">
                 <a id="profile" href="<c:url value='/profile' />" class="nav-link ${disabled}" style="color: #0D345D;">
