@@ -7,12 +7,10 @@ import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.FileBucket;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
-import com.art.model.supporting.dto.AccountDTO;
 import com.art.model.supporting.dto.BalanceDTO;
 import com.art.model.supporting.dto.UserDTO;
 import com.art.model.supporting.enums.KinEnum;
 import com.art.model.supporting.enums.OwnerType;
-import com.art.model.supporting.filters.AccTxFilter;
 import com.art.model.supporting.filters.AppUserFilter;
 import com.art.service.*;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -136,17 +134,10 @@ public class UserController {
         modelAndView.addObject("search", new SearchSummary());
         modelAndView.addObject("accountNumber", accountNumber);
         modelAndView.addObject("ownerId", user.getId());
-        Page<AccountDTO> page = null;
         if (account != null) {
-            AccTxFilter filter = new AccTxFilter();
-            filter.getOwners().add(account);
-            Pageable pageable = new PageRequest(filter.getPageNumber(), filter.getPageSize());
-            page = accountTransactionService.getSummary(filter, pageable);
-            modelAndView.addObject("accountPage", page);
             BalanceDTO balance = accountTransactionService.getBalance(user.getId());
             modelAndView.addObject("balance", balance.getSummary());
         }
-        modelAndView.addObject("accountPage", page);
         return modelAndView;
     }
 
