@@ -28,6 +28,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
@@ -135,8 +136,12 @@ public class UserController {
         modelAndView.addObject("accountNumber", accountNumber);
         modelAndView.addObject("ownerId", user.getId());
         if (account != null) {
-            BalanceDTO balance = accountTransactionService.getBalance(user.getId());
-            modelAndView.addObject("balance", balance.getSummary());
+            BalanceDTO balanceDTO = accountTransactionService.getBalance(user.getId());
+            BigDecimal balance = balanceDTO.getSummary();
+            if (balance.compareTo(BigDecimal.valueOf(-1)) > 0 && balance.compareTo(BigDecimal.ONE) < 0) {
+                balance = BigDecimal.ZERO;
+            }
+            modelAndView.addObject("balance", balance);
         }
         return modelAndView;
     }

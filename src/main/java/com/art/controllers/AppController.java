@@ -21,6 +21,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Controller
@@ -42,9 +43,13 @@ public class AppController {
         if (request.isUserInRole("ROLE_INVESTOR") &&
                 (!admin && !request.isUserInRole("ROLE_DBA") && !request.isUserInRole("ROLE_BIGDADDY"))) {
             Long ownerId = SecurityUtils.getUserId();
-            BalanceDTO balance = accountTransactionService.getBalance(ownerId);
+            BalanceDTO balanceDTO = accountTransactionService.getBalance(ownerId);
+            BigDecimal balance = balanceDTO.getSummary();
+            if (balance.compareTo(BigDecimal.valueOf(-1)) > 0 && balance.compareTo(BigDecimal.ONE) < 0) {
+                balance = BigDecimal.ZERO;
+            }
             model.addAttribute("ownerId", ownerId);
-            model.addAttribute("balance", balance.getSummary());
+            model.addAttribute("balance", balance);
             model.addAttribute("investorLogin", SecurityUtils.getUsername());
             return "flows";
         } else {
