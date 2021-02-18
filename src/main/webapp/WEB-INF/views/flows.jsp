@@ -13,6 +13,11 @@
           rel="stylesheet"/>
     <script src="<c:url value='https://kit.fontawesome.com/2b84e2f58d.js' />" crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon/favicon.ico?v=eEY755nn99' />">
+    <style type="text/css">
+        table, td, th {
+            text-align: center;
+        }
+    </style>
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript">
         (function (m, e, t, r, i, k, a) {

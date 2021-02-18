@@ -20,7 +20,7 @@
                             <th scope="col" class="text-responsive">Дата</th>
                         </tr>
                         </thead>
-                        <tbody class="text-responsive">
+                        <tbody class="text-responsive-annex">
 
                         </tbody>
                     </table>
