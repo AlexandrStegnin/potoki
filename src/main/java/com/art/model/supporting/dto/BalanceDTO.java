@@ -17,7 +17,7 @@ public class BalanceDTO {
 
     private String ownerName;
 
-    private BigDecimal summary;
+    private BigDecimal summary = BigDecimal.ZERO;
 
     public BalanceDTO(AccountDTO accountDTO) {
         this.accountId = accountDTO.getOwner().getId();

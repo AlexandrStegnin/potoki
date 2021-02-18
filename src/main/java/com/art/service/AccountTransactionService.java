@@ -636,7 +636,11 @@ public class AccountTransactionService {
     }
 
     public BalanceDTO getBalance(Long ownerId) {
-        return new BalanceDTO(accountTransactionRepository.fetchBalance(OwnerType.INVESTOR, ownerId));
+        AccountDTO accountDTO = accountTransactionRepository.fetchBalance(OwnerType.INVESTOR, ownerId);
+        if (accountDTO != null) {
+            return new BalanceDTO(accountDTO);
+        }
+        return new BalanceDTO();
     }
 
     /**
