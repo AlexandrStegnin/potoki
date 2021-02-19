@@ -31,4 +31,6 @@ public abstract class MoneyDTO {
     
     private MoneyOperation operation;
 
+    private Date realDateGiven;
+
 }

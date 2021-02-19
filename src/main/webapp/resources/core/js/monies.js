@@ -1233,6 +1233,20 @@ MoneyDTO.prototype = {
         this.sourceFacilityId = sourceFacilityId
         this.sourceUnderFacilityId = sourceUnderFacilityId
         this.operation = OperationEnum.REINVEST
+    },
+    update: function (id, facilityId, underFacilityId, investorId, cash, dateGiven, cashSourceId,
+                      newCashDetailId, shareTypeId, realDateGiven) {
+        this.id = id;
+        this.facilityId = facilityId;
+        this.underFacilityId = underFacilityId;
+        this.investorId = investorId;
+        this.cash = cash;
+        this.dateGiven = dateGiven;
+        this.cashSourceId = cashSourceId;
+        this.newCashDetailId = newCashDetailId;
+        this.shareTypeId = shareTypeId;
+        this.realDateGiven = realDateGiven;
+        this.operation = OperationEnum.UPDATE
     }
 }
 
@@ -1425,10 +1439,8 @@ function getMoneyDTO(operation) {
             moneyDTO.operation = OperationEnum.CREATE
             return moneyDTO
         case OperationEnum.UPDATE:
-            moneyDTO.build(facilityId, underFacilityId, investorId, cashSum, dateGiven,
-                cashSourceId, newCashDetailId, shareTypeId)
-            moneyDTO.setId(cashId)
-            moneyDTO.operation = OperationEnum.UPDATE
+            moneyDTO.update(cashId, facilityId, underFacilityId, investorId, cashSum, dateGiven,
+                cashSourceId, newCashDetailId, shareTypeId, realDateGiven)
             return moneyDTO
         case OperationEnum.CLOSE:
             let buyerId = $('#investorBuyer').find(':selected').val()

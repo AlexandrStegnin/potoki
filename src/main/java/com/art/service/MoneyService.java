@@ -171,6 +171,7 @@ public class MoneyService {
         money.setShareType(shareType);
         money.setGivenCash(cash);
         money.setDateGiven(dateGiven);
+        money.setRealDateGiven(moneyDTO.getRealDateGiven());
         return update(money);
     }
 
