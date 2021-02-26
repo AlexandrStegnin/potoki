@@ -28,6 +28,7 @@ public class CashSource {
     public CashSource(CashSourceDTO dto) {
         this.id = dto.getId();
         this.name = dto.getName();
+        this.organizationId = dto.getOrganizationId();
     }
 
 }
