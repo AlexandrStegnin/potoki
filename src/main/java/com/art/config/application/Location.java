@@ -78,11 +78,13 @@ public class Location {
 
     public static final String CASH_SOURCES_LIST = CASH_SOURCES + "/list";
 
-    public static final String CASH_SOURCES_EDIT = CASH_SOURCES + "/edit/{id}";
+    public static final String CASH_SOURCES_UPDATE = CASH_SOURCES + "/update";
 
     public static final String CASH_SOURCES_DELETE = CASH_SOURCES + "/delete";
 
     public static final String CASH_SOURCES_CREATE = CASH_SOURCES + "/create";
+
+    public static final String CASH_SOURCES_FIND = CASH_SOURCES + "/find";
 
     // Приложения к договорам инвесторов
     public static final String INVESTOR_ANNEXES = "/investor/annexes";

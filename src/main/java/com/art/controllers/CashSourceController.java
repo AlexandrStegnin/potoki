@@ -9,7 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -26,17 +29,8 @@ public class CashSourceController {
     public String cashSourcesPage(ModelMap model) {
         List<CashSource> cashSources = cashSourceService.findAll();
         model.addAttribute("cashSources", cashSources);
+        model.addAttribute("cashSourceDTO", new CashSourceDTO());
         return "cash-source-list";
-    }
-
-    @GetMapping(path = Location.CASH_SOURCES_CREATE)
-    public String newCashSource(ModelMap model) {
-        String title = "Добавление источника денег";
-        CashSource cashSource = new CashSource();
-        model.addAttribute("cashSource", cashSource);
-        model.addAttribute("edit", false);
-        model.addAttribute("title", title);
-        return "cash-source-add";
     }
 
     @PostMapping(path = Location.CASH_SOURCES_CREATE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -44,33 +38,40 @@ public class CashSourceController {
     ApiResponse saveCashSource(@RequestBody CashSourceDTO cashSourceDTO) {
         CashSource cashSource = new CashSource(cashSourceDTO);
         cashSourceService.create(cashSource);
-        return new ApiResponse("Источник денег " + cashSource.getName() + " успешно добавлен.", HttpStatus.OK.value());
+        return new ApiResponse(getMessage(cashSource.getName(), "добавлен"), HttpStatus.OK.value());
     }
 
-
-    @GetMapping(path = Location.CASH_SOURCES_EDIT)
-    public String editCashSource(@PathVariable Long id, ModelMap model) {
-        String title = "Обновление источника получения денег";
-        CashSource cashSource = cashSourceService.findById(id);
-
-        model.addAttribute("cashSource", cashSource);
-        model.addAttribute("edit", true);
-        model.addAttribute("title", title);
-        return "cash-source-add";
-    }
-
-    @PostMapping(path = Location.CASH_SOURCES_EDIT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = Location.CASH_SOURCES_UPDATE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
     ApiResponse updateSource(@RequestBody CashSourceDTO cashSourceDTO) {
         CashSource cashSource = new CashSource(cashSourceDTO);
         cashSourceService.update(cashSource);
-        return new ApiResponse("Источник денег " + cashSource.getName() + " успешно изменён.", HttpStatus.OK.value());
+        return new ApiResponse(getMessage(cashSource.getName(), "изменён"), HttpStatus.OK.value());
     }
 
-    @PostMapping(path = Location.CASH_SOURCES_DELETE, produces = "application/json;charset=UTF-8")
+    @PostMapping(path = Location.CASH_SOURCES_DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
     ApiResponse deleteSource(@RequestBody CashSourceDTO dto) {
         cashSourceService.deleteById(dto.getId());
-        return new ApiResponse("Источник успешно удалён.", HttpStatus.OK.value());
+        return new ApiResponse(getMessage("", "удалён"), HttpStatus.OK.value());
     }
+
+    @ResponseBody
+    @PostMapping(path = Location.CASH_SOURCES_FIND)
+    public CashSourceDTO findFacility(@RequestBody CashSourceDTO dto) {
+        return new CashSourceDTO(cashSourceService.findById(dto.getId()));
+    }
+
+    /**
+     * Сформировать сообщение
+     *
+     * @param sourceName название источника денег
+     * @param action действие
+     * @return сформированное сообщение
+     */
+    private String getMessage(String sourceName, String action) {
+        String template = "Источник денег %s успешно %s";
+        return String.format(template, sourceName, action);
+    }
+
 }

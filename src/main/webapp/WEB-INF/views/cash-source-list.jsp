@@ -26,6 +26,13 @@
             text-align: center;
         }
     </style>
+    <style type="text/css">
+        .has-error {
+            color: red;
+            padding: 8px 0 0 8px;
+            font-size: 12px;
+        }
+    </style>
 </head>
 
 <body>
@@ -87,6 +94,8 @@
 <%@include file="popup_modal.jsp" %>
 <%@include file="confirm-delete.jsp" %>
 <%@include file="ddk_loader.jsp" %>
+<%@include file="cash-source-form.jsp" %>
+<%@include file="confirm-form.jsp" %>
 
 <script type="text/javascript"
         src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' />"></script>
