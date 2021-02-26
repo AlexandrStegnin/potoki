@@ -39,6 +39,7 @@
             <tr>
                 <th>№ п/п</th>
                 <th>Источник получения денег</th>
+                <th>Источник в 1С</th>
                 <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                     <th style="text-align: center">Действие</th>
                 </sec:authorize>
@@ -49,6 +50,7 @@
                 <tr id="${cashSource.id}">
                     <td>${cashSource.id}</td>
                     <td>${cashSource.name}</td>
+                    <td>${cashSource.organizationId}</td>
                     <sec:authorize access="isFullyAuthenticated()">
                         <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                             <td style="text-align: center">

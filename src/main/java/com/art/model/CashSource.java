@@ -1,43 +1,29 @@
 package com.art.model;
 
 import com.art.model.supporting.dto.CashSourceDTO;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
-@ToString
-@EqualsAndHashCode
-@Getter
-@Setter
-@AllArgsConstructor
+@Data
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "cash_source")
-public class CashSource implements Serializable {
-    private Long id;
-    private String name;
+public class CashSource {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private Long id;
 
     @Column(name = "name")
-    public String getName() {
-        return name;
-    }
+    private String name;
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public CashSource() {}
+    @Column(name = "organization_id")
+    private String organizationId;
 
     public CashSource(CashSourceDTO dto) {
         this.id = dto.getId();
