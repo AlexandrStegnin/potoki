@@ -13,4 +13,6 @@ public class CashSourceDTO {
 
     private String name;
 
+    private String organizationId;
+
 }
