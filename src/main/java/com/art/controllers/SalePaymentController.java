@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -91,6 +92,8 @@ public class SalePaymentController {
     @PostMapping(path = Location.SALE_PAYMENTS_UPLOAD)
     @ResponseBody
     public ApiResponse uploadSalePayments(MultipartHttpServletRequest request) {
+        HttpSession session = request.getSession(true);
+        session.setMaxInactiveInterval(10 * 60);
         return uploadExcelService.upload(request, UploadType.SALE);
     }
 
