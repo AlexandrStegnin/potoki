@@ -183,6 +183,7 @@
             <th>Сколько прибыли реинвест</th>
             <th>Подобъект</th>
             <th>Дата продажи</th>
+            <th>Дата реальной передачи</th>
             <th>Выделить</th>
             <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                 <th style="text-align: center">Действие</th>
@@ -199,7 +200,9 @@
                     <fmt:setLocale value="ru-RU" scope="session"/>
                     <fmt:formatNumber value="${flows.cashInFacility}" type="currency" minFractionDigits="2"/>
                 </td>
-                <td data-date-gived="${flows.dateGiven.time}">${flows.dateGivenToLocalDate}</td>
+                <td data-date-gived="${flows.dateGiven.time}">
+                        <fmt:formatDate value="${flows.dateGiven}" pattern="dd.MM.yyyy" />
+                </td>
                 <td>
                     <fmt:formatNumber value="${flows.cashInUnderFacility}" type="currency" minFractionDigits="2"/>
                 </td>
@@ -207,7 +210,12 @@
                     <fmt:formatNumber value="${flows.profitToReInvest}" type="currency" minFractionDigits="2"/>
                 </td>
                 <td data-under-facility-id="${flows.underFacility.id}">${flows.underFacility.name}</td>
-                <td data-date-sale="${flows.dateSale.time}">${flows.dateSaleToLocalDate}</td>
+                <td data-date-sale="${flows.dateSale.time}">
+                    <fmt:formatDate value="${flows.dateSale}" pattern="dd.MM.yyyy" />
+                </td>
+                <td data-real-date-given="${flows.realDateGiven.time}">
+                    <fmt:formatDate value="${flows.realDateGiven}" pattern="dd.MM.yyyy" />
+                </td>
                 <td>
                     <c:choose>
                         <c:when test="${flows.isReinvest == 1}">

@@ -37,7 +37,7 @@ public class ExcelUtils {
             }
             break;
         }
-        return colCount == 36;
+        return colCount == 37;
     }
 
 }

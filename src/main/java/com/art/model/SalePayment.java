@@ -6,7 +6,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
@@ -73,29 +72,8 @@ public class SalePayment implements Cash {
     @Column(name = "acc_tx_id")
     private Long accTxId;
 
-    @Transient
-    public String getDateGivenToLocalDate() {
-        String localDate = "";
-        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        try {
-            localDate = format.format(dateGiven);
-        } catch (Exception ignored) {
-        }
-
-        return localDate;
-    }
-
-    @Transient
-    public String getDateSaleToLocalDate() {
-        String localDate = "";
-        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        try {
-            localDate = format.format(dateSale);
-        } catch (Exception ignored) {
-        }
-
-        return localDate;
-    }
+    @Column(name = "real_date_given")
+    private Date realDateGiven;
 
     public SalePayment(SalePayment salePayment) {
         this.id = null;
@@ -114,6 +92,7 @@ public class SalePayment implements Cash {
         this.sourceId = null;
         this.profitToReInvest = null;
         this.accTxId = salePayment.getAccTxId();
+        this.realDateGiven = salePayment.getRealDateGiven();
     }
 
     @Override

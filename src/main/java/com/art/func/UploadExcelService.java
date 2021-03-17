@@ -8,10 +8,8 @@ import com.art.repository.MoneyRepository;
 import com.art.repository.TypeClosingRepository;
 import com.art.service.*;
 import com.art.util.ExcelUtils;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,6 +33,7 @@ import java.util.stream.Collectors;
  * @author Alexandr Stegnin
  */
 
+@Slf4j
 @Service
 public class UploadExcelService {
 
@@ -254,7 +253,7 @@ public class UploadExcelService {
      */
     private ApiResponse uploadSale(Sheet sheet) {
         if (!ExcelUtils.isCorrect(sheet)) {
-            return new ApiResponse("Проверьте кол-во столбцов в файле. Должно быть 36", HttpStatus.BAD_REQUEST.value());
+            return new ApiResponse("Проверьте кол-во столбцов в файле. Должно быть 37", HttpStatus.BAD_REQUEST.value());
         }
         List<AppUser> users = userService.getInvestors();
         List<SalePayment> salePayments = salePaymentService.findAll();
@@ -290,6 +289,21 @@ public class UploadExcelService {
                     }
 
                     java.time.LocalDate calSale = dateSale.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    String realDateGivenStr = "";
+                    Date realDateGiven = null;
+                    Cell cell = row.getCell(36);
+                    CellType cellType = cell.getCellTypeEnum();
+                    switch (cellType) {
+                        case STRING:
+                            realDateGivenStr = cell.getStringCellValue();
+                            try {
+                                realDateGiven = FORMAT.parse(realDateGivenStr);
+                            } catch (Exception ignored) {}
+                            break;
+                        case NUMERIC:
+                            realDateGiven = cell.getDateCellValue();
+                            break;
+                    }
 
                     try {
                         for (int i = 0; i < row.getLastCellNum(); i++) {
@@ -303,7 +317,10 @@ public class UploadExcelService {
                         return new ApiResponse(String.format("Не указан инвестор! Строка %d, столбец 2", cel),
                                 HttpStatus.PRECONDITION_FAILED.value());
                     }
-                    AppUser user = users.stream().filter(u -> u.getProfile().getLastName().equalsIgnoreCase(lastName))
+                    AppUser user = users.stream()
+                            .filter(u -> u.getProfile() != null)
+                            .filter(u -> u.getProfile().getLastName() != null)
+                            .filter(u -> u.getProfile().getLastName().equalsIgnoreCase(lastName))
                             .findFirst()
                             .orElse(null);
                     if (user == null) {
@@ -317,6 +334,7 @@ public class UploadExcelService {
                                 HttpStatus.PRECONDITION_FAILED.value());
                     }
                     SalePayment salePayment = new SalePayment();
+                    salePayment.setRealDateGiven(realDateGiven);
                     Facility facility = facilities.get(facilityName);
                     if (facility == null) {
                         facility = facilityService.findByName(facilityName);
