@@ -36,7 +36,7 @@ public class AppController {
         this.accountTransactionService = accountTransactionService;
     }
 
-    @GetMapping(path = {Location.HOME, Location.WELCOME, Location.INVESTMENTS})
+    @GetMapping(path = {Location.WELCOME, Location.INVESTMENTS})
     public String welcomePage(SecurityContextHolderAwareRequestWrapper request, ModelMap model) {
         boolean admin = request.isUserInRole("ROLE_ADMIN");
         userService.confirm(SecurityUtils.getUserId());
