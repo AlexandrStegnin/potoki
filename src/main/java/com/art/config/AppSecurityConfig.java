@@ -110,7 +110,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                .antMatchers(Location.HOME).permitAll()
+                .antMatchers(Location.HOME).anonymous()
                 .antMatchers(Location.PERMIT_ALL_URLS).permitAll()
                 .antMatchers(Location.WEBSOCKET_PATHS).permitAll()
                 .anyRequest().authenticated()
