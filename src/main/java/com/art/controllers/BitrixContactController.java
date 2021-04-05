@@ -14,24 +14,24 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 @RestController
 public class BitrixContactController {
-    //TODO доставать ключ из базы
-    private static String BITRIX_API_KEY;
 
-    @Value("${bitrix.api.key}")
-    public void setBitrixApiKey(String value) {
-        BITRIX_API_KEY = value;
+    private static String BITRIX_UPDATE_URL;
+
+    @Value("${bitrix.update.url}")
+    public void setBitrixUpdateUrl(String value) {
+        BITRIX_UPDATE_URL = value;
     }
 
     @PostMapping(path = Location.BITRIX_MERGE)
     public String mergeContacts() {
-        final String[] message = {""};
+        String message;
         RestTemplate restTemplate = new RestTemplate();
-        message[0] = restTemplate
-                .getForObject("http://api.ddkolesnik.com/v1/" + BITRIX_API_KEY + "/bitrix/merge", String.class);
-        if (message[0].equalsIgnoreCase("\"OK\"")) {
-            message[0] = "Синхронизация контактов завершена";
+        message = restTemplate
+                .getForObject(BITRIX_UPDATE_URL, String.class);
+        if (message.contains("Saved contacts list size:")) {
+            message = "Синхронизация контактов завершена";
         }
-        return message[0];
+        return message;
     }
 
 }
