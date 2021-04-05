@@ -299,6 +299,7 @@ public class Location {
     };
 
     public static final String[] PERMIT_ALL_URLS = {
+            HOME,
             FORGOT_PASSWORD,
             SAVE_PASSWORD,
             SW_JS, LOGIN, LOGOUT,

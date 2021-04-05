@@ -110,7 +110,6 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                .antMatchers(Location.HOME).anonymous()
                 .antMatchers(Location.PERMIT_ALL_URLS).permitAll()
                 .antMatchers(Location.WEBSOCKET_PATHS).permitAll()
                 .anyRequest().authenticated()
@@ -121,7 +120,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().formLogin().loginPage(Location.LOGIN).permitAll()
                 .loginProcessingUrl(Location.LOGIN)
                 .usernameParameter("login").passwordParameter("password")
-                .defaultSuccessUrl(Location.INVESTMENTS)
+                .defaultSuccessUrl(Location.HOME)
                 .and()
                 .rememberMe().rememberMeParameter("remember-me").tokenRepository(tokenRepository)
                 .tokenValiditySeconds(86400)
