@@ -15,7 +15,7 @@ public class ScheduledService {
         this.marketingTreeService = marketingTreeService;
     }
 
-    @Scheduled(cron = "0 0 1 * * ?")
+    @Scheduled(cron = "30 * * * * ?")
     @SchedulerLock(name = "ScheduledService_calculateMarketingTree",// уникальное имя задачи
             lockAtLeastFor = "PT29M", // запускать не чаще, чем раз в 29 мин
             lockAtMostFor = "PT29M") // если нода "умерла" и не отпустила локу, то держит её не более 29 мин
