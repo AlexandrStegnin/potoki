@@ -11,6 +11,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Data
 @Entity
@@ -66,7 +67,7 @@ public class AppUser implements Serializable {
     }
 
     private AppRole convertRole(AppRoleDTO dto) {
-        if (null == dto) {
+        if (Objects.isNull(dto)) {
             return null;
         }
         return new AppRole(dto);
