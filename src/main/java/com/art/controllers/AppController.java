@@ -38,10 +38,8 @@ public class AppController {
 
     @GetMapping(path = { Location.HOME, Location.WELCOME, Location.INVESTMENTS})
     public String welcomePage(SecurityContextHolderAwareRequestWrapper request, ModelMap model) {
-        boolean admin = request.isUserInRole("ROLE_ADMIN");
         userService.confirm(SecurityUtils.getUserId());
-        if (request.isUserInRole("ROLE_INVESTOR") &&
-                (!admin && !request.isUserInRole("ROLE_DBA") && !request.isUserInRole("ROLE_BIGDADDY"))) {
+        if (request.isUserInRole("ROLE_INVESTOR") && !request.isUserInRole("ROLE_ADMIN")) {
             Long ownerId = SecurityUtils.getUserId();
             BalanceDTO balanceDTO = accountTransactionService.getBalance(ownerId);
             BigDecimal balance = balanceDTO.getSummary();
