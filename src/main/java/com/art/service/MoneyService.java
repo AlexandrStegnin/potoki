@@ -726,6 +726,7 @@ public class MoneyService {
             cash.setSourceFacility(f.getSourceFacility());
             cash.setSourceUnderFacility(f.getSourceUnderFacility());
             cash.setRoom(f.getRoom());
+            cash.setRealDateGiven(f.getDateGiven());
             f.setGivenCash(sumRemainder);
             if (f.getGivenCash().signum() == 0) {
                 f.setIsDivide(1);
