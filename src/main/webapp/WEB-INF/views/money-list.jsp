@@ -192,15 +192,15 @@
             <th>Объект</th>
             <th>Подобъект</th>
             <th>Инвестор</th>
-            <th>Переданная сумма</th>
-            <th>Дата передачи денег</th>
-            <th>Источник денег</th>
-            <th>Детали новых денег</th>
-            <th>Дата закрытия вложения</th>
-            <th>Вид закрытия вложения</th>
+            <th>Сумма</th>
+            <th>Дата передачи</th>
+            <th>Источник</th>
+            <th>Детали</th>
+            <th>Дата закрытия</th>
+            <th>Вид закрытия</th>
             <th>Подобъект источник</th>
-            <th>Из 1С</th>
-            <th>Согласована</th>
+            <th style="width: 50px">Из 1С</th>
+            <th style="width: 50px">Согласована</th>
             <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                 <th style="text-align: center">Действие</th>
             </sec:authorize>
