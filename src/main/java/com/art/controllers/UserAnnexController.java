@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Alexandr Stegnin
@@ -37,7 +38,7 @@ public class UserAnnexController {
     @PostMapping(value = "/get-annexes", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<UsersAnnexToContracts> getAnnexes(@RequestBody AppUser user) {
         String login = user.getLogin();
-        if (null == login) {
+        if (Objects.isNull(login)) {
             login = SecurityUtils.getUsername();
         }
         return annexService.findByLogin(login);
