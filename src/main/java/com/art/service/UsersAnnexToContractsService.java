@@ -65,14 +65,12 @@ public class UsersAnnexToContractsService {
 //    @Cacheable(Constant.USERS_ANNEXES_CACHE_KEY)
     public List<UsersAnnexToContracts> findByUserId(Long userId) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-
-        CriteriaQuery<UsersAnnexToContracts> usersAnnexToContractsCriteriaQuery = cb.createQuery(UsersAnnexToContracts.class);
-        Root<UsersAnnexToContracts> usersAnnexToContractsRoot = usersAnnexToContractsCriteriaQuery.from(UsersAnnexToContracts.class);
-        usersAnnexToContractsCriteriaQuery.select(usersAnnexToContractsRoot);
-        usersAnnexToContractsCriteriaQuery.where(cb.equal(usersAnnexToContractsRoot.get(UsersAnnexToContracts_.userId), userId));
-
-        return em.createQuery(usersAnnexToContractsCriteriaQuery).getResultList();
-
+        CriteriaQuery<UsersAnnexToContracts> query = cb.createQuery(UsersAnnexToContracts.class);
+        Root<UsersAnnexToContracts> root = query.from(UsersAnnexToContracts.class);
+        query.select(root);
+        query.where(cb.equal(root.get(UsersAnnexToContracts_.userId), userId));
+        query.orderBy(cb.desc(root.get(UsersAnnexToContracts_.id)));
+        return em.createQuery(query).getResultList();
     }
 
 //    @Cacheable(Constant.USERS_ANNEXES_CACHE_KEY)
