@@ -44,8 +44,10 @@ public class AccountTransactionSpecification extends BaseSpecification<AccountTr
     }
 
     private static Specification<AccountTransaction> cashNotNull() {
-        return ((root, criteriaQuery, criteriaBuilder) ->
-                criteriaBuilder.isNotNull(root.get(AccountTransaction_.cash))
+        return ((root, criteriaQuery, criteriaBuilder) -> {
+            criteriaQuery.orderBy(criteriaBuilder.desc(root.get(AccountTransaction_.txDate)));
+            return criteriaBuilder.isNotNull(root.get(AccountTransaction_.cash));
+        }
         );
     }
 
@@ -54,7 +56,6 @@ public class AccountTransactionSpecification extends BaseSpecification<AccountTr
                 accIdEqual(filter.getAccountId()))
                 .and(ownersIn(filter.getOwners()))
                 .and(payersIn(filter.getPayers()))
-                .and(orderByTxDateDesc())
                 .toPredicate(root, query, cb);
     }
 
@@ -98,13 +99,6 @@ public class AccountTransactionSpecification extends BaseSpecification<AccountTr
                     root.get(AccountTransaction_.cashType).in(cashTypes)
             );
         }
-    }
-
-    private static Specification<AccountTransaction> orderByTxDateDesc() {
-        return (root, criteriaQuery, criteriaBuilder) -> {
-            criteriaQuery.orderBy(criteriaBuilder.desc(root.get(AccountTransaction_.txDate)));
-            return null;
-        };
     }
 
 }
