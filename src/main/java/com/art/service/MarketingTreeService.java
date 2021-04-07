@@ -168,21 +168,6 @@ public class MarketingTreeService {
         entityManager.close();
     }
 
-    private void findParentPartner(Long investorId, List<AppUser> users) {
-        Map<Long, Set<Long>> result =
-                users.stream().collect(
-                        Collectors.groupingBy(AppUser::getPartnerId,
-                                Collectors.mapping(AppUser::getId, Collectors.toSet())
-                        )
-                );
-        result.forEach((k, v) -> {
-            if (v.contains(investorId)) {
-                parentPartnerId.set(k);
-                findParentPartner(k, users);
-            }
-        });
-    }
-
     private void findPartnerChild(Long partnerId, List<AppUser> availableUsers) {
         Queue<Long> queue = new LinkedList<>();
         queue.add(partnerId);
@@ -191,10 +176,10 @@ public class MarketingTreeService {
             if (partnerId == null) break;
             Long finalPartnerId = partnerId;
             List<AppUser> users = availableUsers.stream()
-                    .filter(user -> user.getPartnerId().equals(finalPartnerId))
+                    .filter(user -> user.getPartner().getId().equals(finalPartnerId))
                     .filter(user -> !queue.contains(user.getId()))
                     .filter(user -> !partnerChild.contains(user.getId()))
-                    .filter(user -> !user.getPartnerId().equals(pantyaId))
+                    .filter(user -> !user.getPartner().getId().equals(pantyaId))
                     .collect(Collectors.toList());
             if (users.size() > 0) {
                 queue.addAll(users.stream().map(AppUser::getId).collect(Collectors.toList()));

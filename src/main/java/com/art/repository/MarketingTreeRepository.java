@@ -21,12 +21,12 @@ public interface MarketingTreeRepository extends JpaRepository<MarketingTree, Bi
     Page<MarketingTree> findAll(Specification<MarketingTree> specification, Pageable pageable);
 
     @Query(value = "SELECT new com.art.model.supporting.dto.MarketingTreeDTO(" +
-            "inv.partnerId, inv.id, inv.kin, MIN(ic.dateGiven), 'NO_ACTIVE', 0, 0) " +
+            "inv.partner.id, inv.id, inv.kin, MIN(ic.dateGiven), 'NO_ACTIVE', 0, 0) " +
             "FROM Money ic " +
             "JOIN ic.investor inv " +
-            "WHERE inv.login <> 'investor-demo' AND inv.partnerId IS NOT NULL AND (ic.newCashDetail.id IS NULL OR ic.newCashDetail.id <> 4)" +
+            "WHERE inv.login <> 'investor-demo' AND inv.partner IS NOT NULL AND (ic.newCashDetail.id IS NULL OR ic.newCashDetail.id <> 4)" +
             "GROUP BY ic.investor " +
-            "ORDER BY inv.partnerId, MIN(ic.dateGiven), inv.id")
+            "ORDER BY inv.partner.id, MIN(ic.dateGiven), inv.id")
     List<MarketingTreeDTO> findGroupedCash();
 
     void deleteByInvestorId(Long investorId);

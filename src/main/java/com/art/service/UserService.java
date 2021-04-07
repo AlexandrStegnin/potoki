@@ -179,7 +179,7 @@ public class UserService {
 //    @CachePut(value = Constant.USERS_CACHE_KEY, key = "#user?.id")
     public ApiResponse update(AppUser user) {
         AppUser dbUser = findById(user.getId());
-        dbUser.setPartnerId(user.getPartnerId());
+        dbUser.setPartner(user.getPartner());
         dbUser.setKin(user.getKin());
         dbUser.setRole(user.getRole());
         UserProfile profile = dbUser.getProfile();
@@ -264,7 +264,7 @@ public class UserService {
         }
         user.setConfirmed(false);
         user.setKin(KinEnum.EMPTY);
-        user.setPartnerId(null);
+        user.setPartner(null);
         user.getProfile().setLocked(true);
         update(user);
         marketingTreeRepository.deleteByInvestorId(user.getId());

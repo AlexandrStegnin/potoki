@@ -37,7 +37,7 @@ public class UserDTO {
         this.login = entity.getLogin();
         this.role = convertRole(entity.getRole());
         this.kin = convertKin(entity.getKin());
-        this.partnerId = entity.getPartnerId();
+        this.partnerId = entity.getPartner().getId();
         this.profile = convertProfile(entity.getProfile());
     }
 

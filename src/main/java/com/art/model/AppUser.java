@@ -31,8 +31,9 @@ public class AppUser implements Serializable {
     @Column(name = "password", nullable = false, length = 100)
     private String password;
 
-    @Column(name = "partner_id")
-    private Long partnerId;
+    @OneToOne
+    @JoinColumn(name = "partner_id")
+    private AppUser partner;
 
     @Column(name = "confirmed")
     private boolean confirmed;
@@ -51,9 +52,9 @@ public class AppUser implements Serializable {
     public AppUser() {
     }
 
-    public AppUser(Long id, Long partnerId) {
+    public AppUser(Long id, AppUser partner) {
         this.id = id;
-        this.partnerId = partnerId;
+        this.partner = partner;
     }
 
     public AppUser(UserDTO userDTO) {
@@ -62,7 +63,8 @@ public class AppUser implements Serializable {
         this.login = userDTO.getLogin();
         this.role = convertRole(userDTO.getRole());
         this.kin = userDTO.getKin() == null ? null : KinEnum.fromValue(userDTO.getKin());
-        this.partnerId = userDTO.getPartnerId();
+        this.partner = new AppUser();
+        this.partner.id = userDTO.getPartnerId();
         this.password = userDTO.getPassword();
     }
 

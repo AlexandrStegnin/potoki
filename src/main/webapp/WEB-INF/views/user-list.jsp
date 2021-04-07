@@ -131,6 +131,7 @@
             <th>Подтверждён</th>
             <th>Деактивирован</th>
             <th>Роль</th>
+            <th>Партнёр</th>
             <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                 <th style="text-align: center">Действие</th>
             </sec:authorize>
@@ -159,6 +160,7 @@
                     </c:otherwise>
                 </c:choose>
                 <td>${user.role.humanized}</td>
+                <td>${user.partner.login}</td>
                 <sec:authorize access="isFullyAuthenticated()">
                     <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                         <td style="text-align: center">
