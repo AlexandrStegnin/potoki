@@ -42,7 +42,6 @@ import static com.art.config.application.Constant.NEW_CASH_DETAIL_REINVEST;
 @Transactional
 public class MoneyService {
 
-    private static final String RESALE_SHARE = "Перепродажа доли";
     private final MoneyRepository moneyRepository;
     private final MoneySpecification specification;
     private final TypeClosingService typeClosingService;
@@ -84,10 +83,6 @@ public class MoneyService {
 
     public Money findById(Long id) {
         return moneyRepository.findById(id);
-    }
-
-    public List<Money> findByFacilityId(Long facilityId) {
-        return moneyRepository.findByFacilityId(facilityId);
     }
 
     @Transactional
@@ -282,10 +277,6 @@ public class MoneyService {
         );
         page.getContent().forEach(money -> Hibernate.initialize(money.getSourceUnderFacility()));
         return page;
-    }
-
-    public String cashingAllMoney(final SearchSummary searchSummary) {
-        return cashing(searchSummary, true);
     }
 
     public String cashingMoney(final SearchSummary searchSummary) {
@@ -640,11 +631,6 @@ public class MoneyService {
         return moneyRepository.findAll(
                 specification.getFilterForCashing(filter), pageable).getContent();
 
-    }
-
-    public List<Money> getInvestedMoney() {
-        TypeClosing typeClosing = typeClosingService.findByName(RESALE_SHARE);
-        return moneyRepository.findAll(specification.getInvestedMoney(typeClosing.getId()));
     }
 
     /**
@@ -1125,17 +1111,6 @@ public class MoneyService {
                     }
                 });
         return new ApiResponse("Суммы успешно согласованы");
-    }
-
-    /**
-     * Получить список открытых сумм инвестора в подобъекте
-     *
-     * @param underFacilityId id подобъекта
-     * @param investorId id инвестора
-     * @return список сумм
-     */
-    public List<Money> getOpenedMonies(Long underFacilityId, Long investorId) {
-        return moneyRepository.getOpenedMonies(underFacilityId, investorId);
     }
 
 }
