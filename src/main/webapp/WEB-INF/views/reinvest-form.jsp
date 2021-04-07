@@ -56,9 +56,19 @@
                         <div class="form-group row" id="shareTypeNameRow">
                             <label class="col-md-3 col-form-label" for="shareType">Вид доли:</label>
                             <div class="col-md-9">
-                                <form:select path="shareType" id="shareType" items="${shareTypes}" multiple="false"
-                                             itemValue="title" itemLabel="title"
-                                             class="selectpicker form-control input-sm"/>
+                                <form:select path="shareType" id="shareType" multiple="false"
+                                             class="selectpicker form-control input-sm">
+                                    <c:forEach items="${shareTypes}" var="share">
+                                        <c:choose>
+                                            <c:when test="${share.title eq 'Основная доля'}">
+                                                <form:option value="${share.title}" selected="selected">${share.title}</form:option>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <form:option value="${share.title}">${share.title}</form:option>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+                                </form:select>
                                 <div id="shareTypeErr" class="has-error col-md-9 d-none">Необходимо выбрать вид доли
                                 </div>
                             </div>
