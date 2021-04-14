@@ -13,6 +13,12 @@
                     <form:form method="POST" modelAttribute="reBuyShareDTO" class="form-horizontal"
                                style="margin: 10px 0 10px 0" id="re-buy-share-form">
                         <input type="hidden" id="buyerId" value="">
+                        <div class="form-group row" id="buyerIdRow">
+                            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="buyerLogin">Покупатель:</label>
+                            <div class="col-sm-6">
+                                <input type="text" id="buyerLogin" class="form-control form-control-sm" readonly="readonly"/>
+                            </div>
+                        </div>
                         <div class="form-group row" id="sellerRow">
                             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="seller">Продавец:</label>
                             <div class="col-sm-6">

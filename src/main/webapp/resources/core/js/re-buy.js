@@ -55,16 +55,24 @@ function subscribeReBuyClick() {
         if (linkHasClass($(this))) return false;
         let txTable = $('#transactions')
         let checkBoxesChecked = txTable.find('td').find('input[type=checkbox]:checked')
-        let dataOwners = $.map(checkBoxesChecked, function (item, i) {
-            return $(item).data('owner-id')
+        let ownersIds = []
+        let ownersNames = []
+        $.each(checkBoxesChecked, function (ind, el) {
+            ownersIds.push($(el).data('owner-id'))
+            ownersNames.push($(el).data('owner-name'))
         })
-        let owners = unique(dataOwners)
-        if (owners.length > 1) {
+        let idOwners = unique(ownersIds)
+        let nameOwners = unique(ownersNames)
+        if (idOwners.length > 1) {
             $('#toManyOwnersErr').addClass('d-block')
             $('button#accept').attr('disabled', true)
         } else {
             $('#toManyOwnersErr').removeClass('d-block')
             $('button#accept').removeAttr('disabled')
+            if (idOwners.length === 1) {
+                reBuyModal.find('#buyerId').val(idOwners[0])
+                reBuyModal.find('#buyerLogin').val(nameOwners[0])
+            }
         }
         reBuyModal.modal('show')
     })
@@ -123,7 +131,8 @@ function checkReBuyDTO(reBuyDTO) {
  */
 function subscribeAcceptReBuy() {
     reBuyModal.find('#accept').on('click', function () {
-        // let buyerId = reBuyModal.find('#seller').val()
+        let buyerId = reBuyModal.find('#buyerId').val()
+        console.log('buyerId =' + buyerId)
         // let buyerCash = reBuyModal.find('#seller').val()
 
         let sellerId = reBuyModal.find('#seller').val()

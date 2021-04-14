@@ -180,7 +180,10 @@
                 <td>${tx.cashType.title}</td>
                 <td>${tx.payer.ownerName}</td>
                 <td>${tx.recipient.ownerName}</td>
-                <td style="text-align: center"><input type="checkbox" data-object-id="${tx.id}" data-owner-id="${tx.owner.ownerId}">
+                <td style="text-align: center"><input type="checkbox"
+                                                      data-object-id="${tx.id}"
+                                                      data-owner-id="${tx.owner.ownerId}"
+                                                      data-owner-name="${tx.owner.ownerName}">
                 </td>
                 <c:set var="enabled" value="disabled" />
                 <c:if test="${tx.owner.ownerType.title eq 'Инвестор'}">
