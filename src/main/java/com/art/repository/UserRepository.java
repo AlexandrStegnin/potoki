@@ -31,8 +31,7 @@ public interface UserRepository extends JpaRepository<AppUser, Long> {
     @Query("SELECT DISTINCT(m.investor) FROM Money m " +
             "WHERE m.givenCash > 0 " +
             "AND m.dateClosing IS NULL " +
-            "AND m.typeClosing IS NULL " +
-            "ORDER BY m.investor.id")
+            "AND m.typeClosing IS NULL")
     List<AppUser> getSellers();
 
 }
