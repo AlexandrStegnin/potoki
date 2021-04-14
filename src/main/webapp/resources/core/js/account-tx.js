@@ -118,6 +118,7 @@ function subscribeCheckAllClick() {
  */
 function showConfirmDelete() {
     $('#delete-list').on('click', function () {
+        if (linkHasClass($(this))) return false;
         confirmDelete.modal('show')
     })
 }
@@ -367,6 +368,7 @@ function countChecked() {
  */
 function subscribeReinvestClick() {
     $('#reinvest').on('click', function () {
+        if (linkHasClass($(this))) return false;
         reinvestModal.modal('show')
     })
 }
