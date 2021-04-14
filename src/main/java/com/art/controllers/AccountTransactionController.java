@@ -1,10 +1,7 @@
 package com.art.controllers;
 
 import com.art.config.application.Location;
-import com.art.model.Account;
-import com.art.model.AccountTransaction;
-import com.art.model.Facility;
-import com.art.model.UnderFacility;
+import com.art.model.*;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.dto.AccountTxDTO;
 import com.art.model.supporting.dto.BalanceDTO;
@@ -15,6 +12,7 @@ import com.art.model.supporting.filters.AccTxFilter;
 import com.art.service.AccountTransactionService;
 import com.art.service.FacilityService;
 import com.art.service.UnderFacilityService;
+import com.art.service.UserService;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -46,11 +44,15 @@ public class AccountTransactionController {
 
     private final UnderFacilityService underFacilityService;
 
+    private final UserService userService;
+
     public AccountTransactionController(AccountTransactionService transactionService,
-                                        FacilityService facilityService, UnderFacilityService underFacilityService) {
+                                        FacilityService facilityService, UnderFacilityService underFacilityService,
+                                        UserService userService) {
         this.transactionService = transactionService;
         this.facilityService = facilityService;
         this.underFacilityService = underFacilityService;
+        this.userService = userService;
     }
 
     /**
@@ -155,6 +157,11 @@ public class AccountTransactionController {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setLenient(false);
         webDataBinder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+    }
+
+    @ModelAttribute("sellers")
+    public List<AppUser> initSellers() {
+        return userService.getSellers();
     }
 
 }
