@@ -8,6 +8,7 @@ import com.art.model.UnderFacility;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.dto.AccountTxDTO;
 import com.art.model.supporting.dto.BalanceDTO;
+import com.art.model.supporting.dto.ReBuyShareDTO;
 import com.art.model.supporting.enums.CashType;
 import com.art.model.supporting.enums.ShareType;
 import com.art.model.supporting.filters.AccTxFilter;
@@ -110,6 +111,7 @@ public class AccountTransactionController {
         model.addObject("page", page);
         model.addObject("filter", filter);
         model.addObject("accountTxDTO", new AccountTxDTO());
+        model.addObject("reBuyShareDTO", new ReBuyShareDTO());
         return model;
     }
 
