@@ -60,4 +60,10 @@ public class FacilityController {
         return facilityService.update(dto);
     }
 
+    @ResponseBody
+    @PostMapping(path = Location.FACILITIES_OPENED)
+    public List<Facility> getOpenedProjects(@RequestBody Long investorId) {
+        return facilityService.findOpenedProjects(investorId);
+    }
+
 }

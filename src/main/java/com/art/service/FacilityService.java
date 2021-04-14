@@ -158,4 +158,14 @@ public class FacilityService {
         return create(facility);
     }
 
+    /**
+     * Найти объекты, в которых у инвестора есть незакрытые суммы
+     *
+     * @param investorId id инвестора
+     * @return
+     */
+    public List<Facility> findOpenedProjects(Long investorId) {
+        return facilityRepository.findOpenedProjects(investorId);
+    }
+
 }
