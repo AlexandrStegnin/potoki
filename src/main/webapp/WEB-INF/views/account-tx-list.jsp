@@ -183,7 +183,8 @@
                 <td style="text-align: center"><input type="checkbox"
                                                       data-object-id="${tx.id}"
                                                       data-owner-id="${tx.owner.ownerId}"
-                                                      data-owner-name="${tx.owner.ownerName}">
+                                                      data-owner-name="${tx.owner.ownerName}"
+                                                      data-owner-acc-id="${tx.owner.id}">
                 </td>
                 <c:set var="enabled" value="disabled" />
                 <c:if test="${tx.owner.ownerType.title eq 'Инвестор'}">

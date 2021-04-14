@@ -57,9 +57,11 @@ function subscribeReBuyClick() {
         let checkBoxesChecked = txTable.find('td').find('input[type=checkbox]:checked')
         let ownersIds = []
         let ownersNames = []
+        let ownersAccIds = []
         $.each(checkBoxesChecked, function (ind, el) {
             ownersIds.push($(el).data('owner-id'))
             ownersNames.push($(el).data('owner-name'))
+            ownersAccIds.push($(el).data('owner-acc-id'))
         })
         let idOwners = unique(ownersIds)
         let nameOwners = unique(ownersNames)
@@ -67,10 +69,13 @@ function subscribeReBuyClick() {
             $('#toManyOwnersErr').addClass('d-block')
             $('button#accept').attr('disabled', true)
         } else {
+            let ownerId = idOwners[0]
+            let accId = ownersAccIds[0]
+            getAccBalance(accId)
             $('#toManyOwnersErr').removeClass('d-block')
             $('button#accept').removeAttr('disabled')
             if (idOwners.length === 1) {
-                reBuyModal.find('#buyerId').val(idOwners[0])
+                reBuyModal.find('#buyerId').val(ownerId)
                 reBuyModal.find('#buyerLogin').val(nameOwners[0])
             }
         }
@@ -326,4 +331,42 @@ function unique(array) {
     return $.grep(array, function (el, index) {
         return index === $.inArray(el, array);
     });
+}
+
+/**
+ * Получить баланс по инвестору
+ *
+ * @param ownerId
+ */
+function getAccBalance(ownerId) {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+    showLoader()
+    let balanceDTO = {
+        accountId: ownerId
+    }
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: "transactions/balance",
+        data: JSON.stringify(balanceDTO),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        }
+    })
+        .done(function (data) {
+            reBuyModal.find('#buyerCash').val(Intl.NumberFormat('ru', {
+                style: "currency",
+                currency: "RUB"
+            }).format(data.summary));
+        })
+        .fail(function (e) {
+            showPopup('Что-то пошло не так [' + e.message + ']');
+        })
+        .always(function () {
+            closeLoader()
+        });
 }

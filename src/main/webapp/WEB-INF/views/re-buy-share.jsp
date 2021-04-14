@@ -19,6 +19,12 @@
                                 <input type="text" id="buyerLogin" class="form-control form-control-sm" readonly="readonly"/>
                             </div>
                         </div>
+                        <div class="form-group row" id="buyerCashRow">
+                            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="buyerCash">Сумма покупателя:</label>
+                            <div class="col-sm-6">
+                                <input type="text" id="buyerCash" class="form-control form-control-sm" readonly="readonly"/>
+                            </div>
+                        </div>
                         <div class="form-group row" id="sellerRow">
                             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="seller">Продавец:</label>
                             <div class="col-sm-6">
