@@ -22,4 +22,8 @@ public class AccountDTO {
         this(owner, new BigDecimal(String.valueOf(summary)));
     }
 
+    public AccountDTO(Account owner, Integer summary) {
+        this(owner, new BigDecimal(String.valueOf(summary)));
+    }
+
 }
