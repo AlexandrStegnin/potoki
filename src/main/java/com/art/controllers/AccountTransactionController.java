@@ -161,7 +161,7 @@ public class AccountTransactionController {
 
     @ModelAttribute("sellers")
     public List<AppUser> initSellers() {
-        return userService.getSellers();
+        return userService.initializeSellers();
     }
 
 }

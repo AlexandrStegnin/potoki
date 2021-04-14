@@ -285,4 +285,14 @@ public class UserService {
     public List<AppUser> getSellers() {
         return userRepository.getSellers();
     }
+
+    public List<AppUser> initializeSellers() {
+        List<AppUser> appUsers = new ArrayList<>(200);
+        AppUser appUser = new AppUser();
+        appUser.setId(0L);
+        appUser.setLogin("Выберите продавца");
+        appUsers.add(appUser);
+        appUsers.addAll(getSellers());
+        return appUsers;
+    }
 }
