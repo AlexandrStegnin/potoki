@@ -16,7 +16,7 @@
                             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="seller">Продавец:</label>
                             <div class="col-sm-6">
                                 <form:select path="sellerId" id="seller" items="${sellers}" multiple="false"
-                                             itemValue="id" itemLabel="name" class="form-control form-control-sm selectpicker"
+                                             itemValue="id" itemLabel="login" class="form-control form-control-sm selectpicker"
                                              data-size="10" data-live-search="true" data-none-selected-text="Выберите продавца"/>
                                 <div class="has-error d-none" id="sellerError">
                                     Необходимо выбрать продавца
