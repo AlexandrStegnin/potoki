@@ -50,6 +50,8 @@ public class Location {
 
     public static final String FACILITY_FIND = FACILITIES + "/find";
 
+    public static final String FACILITIES_OPENED = FACILITIES + "/opened";
+
 
     // Помещения
     public static final String ROOMS = "/rooms";
