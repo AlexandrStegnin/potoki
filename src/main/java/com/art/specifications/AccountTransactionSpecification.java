@@ -34,13 +34,10 @@ public class AccountTransactionSpecification extends BaseSpecification<AccountTr
     }
 
     private static Specification<AccountTransaction> accIdEqual(Long accId) {
-        if (accId == null) {
-            return null;
-        } else {
-            return ((root, criteriaQuery, criteriaBuilder) ->
-                    criteriaBuilder.equal(root.get(AccountTransaction_.owner).get(Account_.id), accId)
-            );
-        }
+        return ((root, criteriaQuery, criteriaBuilder) -> {
+            criteriaQuery.orderBy(criteriaBuilder.desc(root.get(AccountTransaction_.txDate)));
+            return criteriaBuilder.equal(root.get(AccountTransaction_.owner).get(Account_.id), accId);
+        });
     }
 
     private static Specification<AccountTransaction> cashNotNull() {
