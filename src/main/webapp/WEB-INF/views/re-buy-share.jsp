@@ -25,9 +25,9 @@
                         </div>
 
                         <div class="form-group row" id="facilityRow">
-                            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="facility">Объект:</label>
+                            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="projects">Объект:</label>
                             <div class="col-sm-6">
-                                <form:select path="facilityId" id="facility" items="${facilities}" multiple="false"
+                                <form:select path="facilityId" id="projects" items="${projects}" multiple="false"
                                              itemValue="id" itemLabel="name" class="form-control form-control-sm selectpicker"
                                              data-size="10" data-live-search="true" data-none-selected-text="Выберите объект"/>
                                 <div class="has-error d-none" id="facilityError">
