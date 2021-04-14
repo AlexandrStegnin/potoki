@@ -26,6 +26,13 @@
             text-align: center;
         }
     </style>
+    <style>
+        .has-error {
+            color: red;
+            padding: 8px 0 0 8px;
+            font-size: 12px;
+        }
+    </style>
 </head>
 
 <body>
