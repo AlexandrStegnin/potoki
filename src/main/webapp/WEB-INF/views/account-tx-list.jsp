@@ -196,6 +196,7 @@
 <%@include file="ddk_loader.jsp" %>
 <%@include file="balance-popup.jsp" %>
 <%@include file="reinvest-form.jsp" %>
+<%@include file="re-buy-share.jsp" %>
 
 <script type="text/javascript"
         src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' />"></script>
