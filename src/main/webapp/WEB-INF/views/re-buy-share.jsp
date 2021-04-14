@@ -39,12 +39,12 @@
                         <div class="form-group row" id="openedCashRow">
                             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="openedCash">Открытые суммы:</label>
                             <div class="col-sm-6">
-                                <form:select path="openedCash" id="openedCash" items="${openedCashes}" multiple="true"
+                                <form:select data-prefix="Выбрано: " path="openedCash" id="openedCash" items="${openedCashes}" multiple="true"
                                              itemValue="id" itemLabel="givenCash"
                                              class="form-control form-control-sm selectpicker"
-                                             data-size="10" data-live-search="true" data-none-selected-text="Выберите сумму"/>
+                                             data-size="10" data-live-search="true" data-none-selected-text="Выбрано: 0,00 &#8381;"/>
                                 <div class="has-error d-none" id="openedCashError">
-                                    Необходимо выбрать сумму перепокупки
+                                    Необходимо выбрать суммы перепокупки
                                 </div>
                             </div>
                         </div>
