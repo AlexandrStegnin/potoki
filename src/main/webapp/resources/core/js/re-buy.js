@@ -1,9 +1,50 @@
 let reBuyModal;
 
+let ReBuyDTO = function () {
+}
+
+ReBuyDTO.prototype = {
+    buyerId: null,
+    buyerCash: 0.0,
+    sellerId: null,
+    facilityId: null,
+    openedCash: null,
+    realDateGiven: null,
+    build: function (buyerId, buyerCash, sellerId, facilityId, openedCash, realDateGiven) {
+        this.buyerId = buyerId
+        this.buyerCash = buyerCash
+        this.sellerId = sellerId
+        this.facilityId = facilityId
+        this.openedCash = openedCash
+        this.realDateGiven = realDateGiven
+    }
+}
+
+let InvestorCashDTO = function () {}
+
+InvestorCashDTO.prototype = {
+    id: null,
+    givenCash: 0.0
+}
+
+let FacilityDTO = function () {}
+
+FacilityDTO.prototype = {
+    id: 0,
+    name: '',
+    build: function (id, name) {
+        this.id = id
+        this.name = name
+    }
+}
+
 jQuery(document).ready(function ($) {
     reBuyModal = $('#re-buy-share-form-modal')
     subscribeAcceptReBuy()
     subscribeReBuyClick()
+    subscribeSellerChange()
+    subscribeProjectChange()
+    openedCashChange()
 })
 
 /**
@@ -12,6 +53,19 @@ jQuery(document).ready(function ($) {
 function subscribeReBuyClick() {
     $('#re-buy-share').on('click', function () {
         if (linkHasClass($(this))) return false;
+        let txTable = $('#transactions')
+        let checkBoxesChecked = txTable.find('td').find('input[type=checkbox]:checked')
+        let dataOwners = $.map(checkBoxesChecked, function (item, i) {
+            return $(item).data('owner-id')
+        })
+        let owners = unique(dataOwners)
+        if (owners.length > 1) {
+            $('#toManyOwnersErr').addClass('d-block')
+            $('button#accept').attr('disabled', true)
+        } else {
+            $('#toManyOwnersErr').removeClass('d-block')
+            $('button#accept').removeAttr('disabled')
+        }
         reBuyModal.modal('show')
     })
 }
@@ -29,37 +83,37 @@ function linkHasClass(link) {
 /**
  * Проверить правильность заполнения формы реинвестирования
  *
- * @param accTxReinvestDTO {AccountTXReinvestDTO} DTO с формы
+ * @param reBuyDTO {ReBuyDTO} DTO с формы
  * @return {boolean} результат проверки
  */
-function checkReBuyDTO(accTxReinvestDTO) {
-    let dateReinvestErr = reinvestModal.find('#dateReinvestErr')
-    if (accTxReinvestDTO.dateReinvest.length === 0) {
-        dateReinvestErr.addClass('d-block')
+function checkReBuyDTO(reBuyDTO) {
+    let sellerError = reBuyModal.find('#sellerError')
+    if (reBuyDTO.sellerId === "0") {
+        sellerError.addClass('d-block')
         return false
     } else {
-        dateReinvestErr.removeClass('d-block')
+        sellerError.removeClass('d-block')
     }
-    let facilityErr = $('#facilityErr')
-    if (accTxReinvestDTO.facilityId === '0') {
+    let facilityErr = $('#facilityError')
+    if (reBuyDTO.facilityId === "0") {
         facilityErr.addClass('d-block')
         return false
     } else {
         facilityErr.removeClass('d-block')
     }
-    let underFacilityErr = $('#underFacilityErr')
-    if (accTxReinvestDTO.underFacilityId === '0') {
-        underFacilityErr.addClass('d-block')
+    let openedCashError = $('#openedCashError')
+    if (reBuyDTO.openedCash.length === 0) {
+        openedCashError.addClass('d-block')
         return false
     } else {
-        underFacilityErr.removeClass('d-block')
+        openedCashError.removeClass('d-block')
     }
-    let shareTypeErr = $('#shareTypeErr')
-    if (accTxReinvestDTO.shareType === 'Не определена') {
-        shareTypeErr.addClass('d-block')
+    let realDateGivenError = $('#realDateError')
+    if (reBuyDTO.realDateGiven.length === 0) {
+        realDateGivenError.addClass('d-block')
         return false
     } else {
-        shareTypeErr.removeClass('d-block')
+        realDateGivenError.removeClass('d-block')
     }
     return true
 }
@@ -69,16 +123,198 @@ function checkReBuyDTO(accTxReinvestDTO) {
  */
 function subscribeAcceptReBuy() {
     reBuyModal.find('#accept').on('click', function () {
-        let dateReinvest = reinvestModal.find('#dateReinvest').val()
-        let cash = reinvestModal.find('#cash').val()
-        let facilityId = reinvestModal.find('#facility').val()
-        let underFacilityId = reinvestModal.find('#underFacility').val()
-        let shareType = reinvestModal.find('#shareType').val()
-        let accTxReinvestDTO = new AccountTXReinvestDTO()
-        accTxReinvestDTO.build(dateReinvest, cash, facilityId, underFacilityId, shareType)
-        if (checkDTO(accTxReinvestDTO)) {
-            accTxReinvestDTO.accountsIds = getAccountsIds()
-            reinvest(accTxReinvestDTO)
+        // let buyerId = reBuyModal.find('#seller').val()
+        // let buyerCash = reBuyModal.find('#seller').val()
+
+        let sellerId = reBuyModal.find('#seller').val()
+        let facilityId = reBuyModal.find('#projects').val()
+        let openedCash = reBuyModal.find('#openedCash').val()
+        let realDateGiven = reBuyModal.find('#realDate').val()
+
+        let reBuyDTO = new ReBuyDTO()
+        reBuyDTO.build(null, 0.0, sellerId, facilityId, openedCash, realDateGiven)
+        if (checkReBuyDTO(reBuyDTO)) {
+            console.log('ACCEPTED')
         }
     })
+}
+
+/**
+ * Событие изменения/выбора продавца из выпадающего списка
+ */
+function subscribeSellerChange() {
+    reBuyModal.find('#seller').on('change', function () {
+        let sellerId = $(this).find('option:selected').val()
+        getOpenedProjects(sellerId)
+    })
+}
+
+/**
+ * Найти проекты, в которых у продавца есть открытые суммы
+ *
+ * @param sellerId {number} id продавца
+ */
+function getOpenedProjects(sellerId) {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+    showLoader();
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: '/facilities/opened',
+        data: JSON.stringify(sellerId),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (data) {
+            closeLoader();
+            fillFacilitiesSelect(data)
+        },
+        error: function (e) {
+            closeLoader()
+            showPopup(e);
+        },
+        always: function () {
+            closeLoader()
+        }
+    });
+}
+
+/**
+ * Показать сообщение
+ *
+ * @param message {String}
+ */
+function showPopup(message) {
+    $('#msg').html(message);
+    $('#msg-modal').modal('show');
+    setTimeout(function () {
+        $('#msg-modal').modal('hide');
+    }, 3000);
+}
+
+/**
+ * Заполнить выпадающий список объектами продавца
+ * @param facilities {[FacilityDTO]} DTO объектов
+ */
+function fillFacilitiesSelect(facilities) {
+    closeLoader();
+    let option
+    let options = facilities.map(function (facility) {
+        option = document.createElement('option');
+        option.setAttribute('id', facility.id);
+        option.setAttribute('value', facility.id);
+        option.innerText = facility.name;
+        return option;
+    });
+    option = document.createElement('option');
+    option.setAttribute('id', "0");
+    option.setAttribute('value', '0');
+    option.innerText = 'Выберите объект';
+    options.unshift(option);
+    $('#projects')
+        .find('option')
+        .remove()
+        .end()
+        .append(options)
+        .selectpicker('refresh');
+}
+
+/**
+ * Событие изменения/выбора продавца из выпадающего списка
+ */
+function subscribeProjectChange() {
+    reBuyModal.find('#projects').on('change', function () {
+        let projectId = $(this).find('option:selected').val()
+        let sellerId = reBuyModal.find('#seller').find('option:selected').val()
+        getOpenedMonies(projectId, sellerId)
+    })
+}
+
+/**
+ * Найти открытые суммы по конкретному проекту
+ *
+ * @param projectId {number} id объекта/проекта
+ * @param sellerId {number} id инвестора продавца
+ */
+function getOpenedMonies(projectId, sellerId) {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+    showLoader();
+
+    let reBuyDTO = new ReBuyDTO()
+    reBuyDTO.sellerId = sellerId
+    reBuyDTO.facilityId = projectId
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: '/money/opened',
+        data: JSON.stringify(reBuyDTO),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (data) {
+            closeLoader();
+            fillOpenedMoniesSelect(data)
+        },
+        error: function (e) {
+            closeLoader()
+            showPopup(e);
+        },
+        always: function () {
+            closeLoader()
+        }
+    });
+}
+
+/**
+ * Заполнить выпадающий список с открытыми суммами в проекте
+ *
+ * @param reBuyDTOs {[InvestorCashDTO]}
+ */
+function fillOpenedMoniesSelect(reBuyDTOs) {
+    closeLoader();
+    let option
+    let options = reBuyDTOs.map(function (money) {
+        option = document.createElement('option');
+        option.setAttribute('id', money.id);
+        option.setAttribute('value', money.givenCash);
+        option.innerText = Intl.NumberFormat('ru', {
+            style: "currency",
+            currency: "RUB"
+        }).format(money.givenCash);
+        return option;
+    });
+    options.unshift(option);
+    $('#openedCash')
+        .find('option')
+        .remove()
+        .end()
+        .append(options)
+        .selectpicker('refresh');
+}
+
+function openedCashChange() {
+    let oCashSelPicker = reBuyModal.find('#openedCash')
+    oCashSelPicker.on('changed.bs.select', function () {
+        let $title = $(this).parent().find('.filter-option-inner-inner')
+        let values = $(this).val()
+        let total = 0
+        $.each(values, function (ind, el) {
+            total += parseFloat(el)
+        })
+        $title.text($(this).data('prefix') + Intl.NumberFormat('ru', { style: "currency", currency: "RUB" }).format(total));
+    });
+}
+
+function unique(array) {
+    return $.grep(array, function (el, index) {
+        return index === $.inArray(el, array);
+    });
 }
