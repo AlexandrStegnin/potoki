@@ -209,6 +209,7 @@
 <script src="<c:url value='https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/account-tx.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/re-buy.js' />"></script>
 
 </body>
 </html>

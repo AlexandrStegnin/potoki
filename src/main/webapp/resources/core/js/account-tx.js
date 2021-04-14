@@ -61,13 +61,10 @@ let balancePopup;
 
 let reinvestModal;
 
-let reBuyModal;
-
 jQuery(document).ready(function ($) {
     confirmDelete = $('#confirm-delete');
     balancePopup = $('#balance-popup-table')
     reinvestModal = $('#reinvest-form-modal')
-    reBuyModal = $('#re-buy-share-form-modal')
     showPageableResult()
     subscribeCheckAllClick()
     showConfirmDelete()
@@ -552,14 +549,4 @@ function getAccountsIds() {
  */
 function linkHasClass(link) {
     if (link.hasClass('disabled')) return true;
-}
-
-/**
- * Клик по кнопке "Перепокупка доли"
- */
-function subscribeReBuyClick() {
-    $('#re-buy-share').on('click', function () {
-        if (linkHasClass($(this))) return false;
-        reBuyModal.modal('show')
-    })
 }
