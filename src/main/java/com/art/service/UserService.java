@@ -282,4 +282,7 @@ public class UserService {
         return userRepository.getInvestors();
     }
 
+    public List<AppUser> getSellers() {
+        return userRepository.getSellers();
+    }
 }

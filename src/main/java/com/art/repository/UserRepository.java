@@ -28,4 +28,11 @@ public interface UserRepository extends JpaRepository<AppUser, Long> {
     @Query("SELECT au FROM AppUser au WHERE au.role.name = 'ROLE_INVESTOR'")
     List<AppUser> getInvestors();
 
+    @Query("SELECT DISTINCT(m.investor) FROM Money m " +
+            "WHERE m.givenCash > 0 " +
+            "AND m.dateClosing IS NULL " +
+            "AND m.typeClosing IS NULL " +
+            "ORDER BY m.investor.id")
+    List<AppUser> getSellers();
+
 }
