@@ -61,10 +61,13 @@ let balancePopup;
 
 let reinvestModal;
 
+let reBuyModal;
+
 jQuery(document).ready(function ($) {
     confirmDelete = $('#confirm-delete');
     balancePopup = $('#balance-popup-table')
     reinvestModal = $('#reinvest-form-modal')
+    reBuyModal = $('#re-buy-share-form-modal')
     showPageableResult()
     subscribeCheckAllClick()
     showConfirmDelete()
@@ -76,6 +79,7 @@ jQuery(document).ready(function ($) {
     subscribeFacilitySelectChange()
     subscribeAcceptReinvest()
     subscribeCheckboxChange()
+    subscribeReBuyClick()
 })
 
 /**
@@ -103,6 +107,7 @@ function subscribeCheckAllClick() {
             $(this).find(':checkbox:not(:disabled)').prop('checked', !checked);
             toggleStateReinvestButton(!checked)
             toggleStateDeleteButton(!checked)
+            toggleStateReBuyButton(!checked)
         });
         checkItBtn.data('checked', !checked)
     })
@@ -319,6 +324,19 @@ function toggleStateDeleteButton(enable) {
 }
 
 /**
+ * Блокировать/разблокировать кнопку "Перепокупка доли"
+ *
+ * @param enable {boolean} признак блокировать или разблокировать
+ */
+function toggleStateReBuyButton(enable) {
+    if (enable) {
+        $('#re-buy-share').removeClass('disabled')
+    } else {
+        $('#re-buy-share').addClass('disabled')
+    }
+}
+
+/**
  * Изменение состояния чекбоксов
  */
 function subscribeCheckboxChange() {
@@ -326,10 +344,12 @@ function subscribeCheckboxChange() {
         if ($(this).prop('checked')) {
             toggleStateReinvestButton(true)
             toggleStateDeleteButton(true)
+            toggleStateReBuyButton(true)
         } else {
             let count = countChecked()
             toggleStateReinvestButton(count > 0)
             toggleStateDeleteButton(count > 0)
+            toggleStateReBuyButton(count > 0)
         }
     })
 }
@@ -530,4 +550,14 @@ function getAccountsIds() {
  */
 function linkHasClass(link) {
     if (link.hasClass('disabled')) return true;
+}
+
+/**
+ * Клик по кнопке "Перепокупка доли"
+ */
+function subscribeReBuyClick() {
+    $('#re-buy-share').on('click', function () {
+        if (linkHasClass($(this))) return false;
+        reBuyModal.modal('show')
+    })
 }
