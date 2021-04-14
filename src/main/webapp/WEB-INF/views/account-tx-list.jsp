@@ -119,6 +119,9 @@
         <button type="button" class="btn btn-warning input-md disabled" id="reinvest" data-checked="false"
                 style="margin-left: 10px">Реинвестировать
         </button>
+        <button type="button" class="btn btn-warning input-md" id="re-buy-share" data-checked="false"
+                style="margin-left: 10px">Перепокупка доли
+        </button>
     </div>
     </form:form>
 
