@@ -1113,4 +1113,18 @@ public class MoneyService {
         return new ApiResponse("Суммы успешно согласованы");
     }
 
+    /**
+     * Получить список открытых сумм в конкретном проекте у конкретного инвестора
+     *
+     * @param dto DTO для перепродажи
+     * @return список открытых сумм
+     */
+    public List<InvestorCashDTO> getOpenedMonies(ReBuyShareDTO dto) {
+        List<Money> monies = moneyRepository.getOpenedMoniesByFacility(dto.getFacilityId(), dto.getSellerId());
+        return monies
+                .stream()
+                .map(InvestorCashDTO::new)
+                .collect(Collectors.toList());
+    }
+
 }

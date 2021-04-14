@@ -453,6 +453,12 @@ public class MoneyController {
         return moneyService.accept(dto);
     }
 
+    @ResponseBody
+    @PostMapping(path = Location.MONEY_OPENED, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public List<InvestorCashDTO> openedMonies(@RequestBody ReBuyShareDTO dto) {
+        return moneyService.getOpenedMonies(dto);
+    }
+
     @ModelAttribute("facilities")
     public List<Facility> initializeFacilities() {
         return facilityService.initializeFacilities();
