@@ -358,10 +358,12 @@ function getAccBalance(ownerId) {
         }
     })
         .done(function (data) {
-            reBuyModal.find('#buyerCash').val(Intl.NumberFormat('ru', {
+            let buyerCashInp = reBuyModal.find('#buyerCash')
+            buyerCashInp.val(Intl.NumberFormat('ru', {
                 style: "currency",
                 currency: "RUB"
-            }).format(data.summary));
+            }).format(data.summary))
+            $(buyerCashInp).data('cash', data.summary)
         })
         .fail(function (e) {
             showPopup('Что-то пошло не так [' + e.message + ']');

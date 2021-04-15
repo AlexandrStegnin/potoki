@@ -22,7 +22,7 @@
                         <div class="form-group row" id="buyerCashRow">
                             <label class="col-sm-4 offset-sm-1 col-form-label-sm" for="buyerCash">Свободно у покупателя:</label>
                             <div class="col-sm-6">
-                                <input type="text" id="buyerCash" class="form-control form-control-sm" readonly="readonly"/>
+                                <input data-cash="0" type="text" id="buyerCash" class="form-control form-control-sm" readonly="readonly"/>
                             </div>
                         </div>
                         <div class="form-group row" id="sellerRow">
