@@ -352,7 +352,6 @@ function unique(array) {
 function getAccBalance(ownerId) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
-    showLoader()
     let balanceDTO = {
         accountId: ownerId
     }
@@ -379,7 +378,4 @@ function getAccBalance(ownerId) {
         .fail(function (e) {
             showPopup('Что-то пошло не так [' + e.message + ']');
         })
-        .always(function () {
-            closeLoader()
-        });
 }
