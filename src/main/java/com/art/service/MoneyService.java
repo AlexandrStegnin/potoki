@@ -1127,4 +1127,15 @@ public class MoneyService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Перекупить долю в объекте
+     *
+     * @param dto DTO для перекупки
+     * @return ответ о выполнении
+     */
+    public ApiResponse reBuyShare(ReBuyShareDTO dto) {
+
+        return null;
+    }
+
 }

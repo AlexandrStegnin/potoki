@@ -459,6 +459,12 @@ public class MoneyController {
         return moneyService.getOpenedMonies(dto);
     }
 
+    @ResponseBody
+    @PostMapping(path = Location.MONEY_RE_BUY, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ApiResponse reBuyShare(@RequestBody ReBuyShareDTO dto) {
+        return moneyService.reBuyShare(dto);
+    }
+
     @ModelAttribute("facilities")
     public List<Facility> initializeFacilities() {
         return facilityService.initializeFacilities();
