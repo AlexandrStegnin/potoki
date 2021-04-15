@@ -128,7 +128,7 @@ public class Money implements Cash {
         this.shareType = cash.getShareType();
         this.dateReport = cash.getDateReport();
         this.sourceFacility = cash.getSourceFacility();
-        this.sourceUnderFacility = cash.sourceUnderFacility;
+        this.sourceUnderFacility = cash.getSourceUnderFacility();
         this.sourceFlowsId = cash.getSourceFlowsId();
         this.room = cash.getRoom();
         this.isReinvest = cash.getIsReinvest();
