@@ -149,7 +149,7 @@ function checkReBuyDTO(reBuyDTO) {
 function subscribeAcceptReBuy() {
     reBuyModal.find('#accept').on('click', function () {
         let buyerId = reBuyModal.find('#buyerId').val()
-        // let buyerCash = reBuyModal.find('#seller').val()
+        let buyerCash = parseFloat($(reBuyModal.find('#buyerCash')).data('cash')) | 0
 
         let sellerId = reBuyModal.find('#seller').val()
         let facilityId = reBuyModal.find('#projects').val()
@@ -157,7 +157,7 @@ function subscribeAcceptReBuy() {
         let realDateGiven = reBuyModal.find('#realDate').val()
 
         let reBuyDTO = new ReBuyDTO()
-        reBuyDTO.build(null, 0.0, sellerId, facilityId, openedCash, realDateGiven)
+        reBuyDTO.build(buyerId, buyerCash, sellerId, facilityId, openedCash, realDateGiven)
         if (checkReBuyDTO(reBuyDTO)) {
             console.log('ACCEPTED')
         }
