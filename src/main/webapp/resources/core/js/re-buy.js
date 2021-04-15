@@ -128,6 +128,18 @@ function checkReBuyDTO(reBuyDTO) {
     } else {
         realDateGivenError.removeClass('d-block')
     }
+    let veryBigSumToBuy = $('#veryBigSumToBuy')
+    let openedCashSum = 0
+    $.each(reBuyDTO.openedCash, function (ind, el) {
+        openedCashSum += parseFloat(el)
+    })
+    let sellerSum = $(reBuyModal.find('#buyerCash')).data('cash')
+    if (openedCashSum > parseFloat(sellerSum)) {
+        veryBigSumToBuy.addClass('d-block')
+        return false
+    } else {
+        veryBigSumToBuy.removeClass('d-block')
+    }
     return true
 }
 
@@ -137,7 +149,6 @@ function checkReBuyDTO(reBuyDTO) {
 function subscribeAcceptReBuy() {
     reBuyModal.find('#accept').on('click', function () {
         let buyerId = reBuyModal.find('#buyerId').val()
-        console.log('buyerId =' + buyerId)
         // let buyerCash = reBuyModal.find('#seller').val()
 
         let sellerId = reBuyModal.find('#seller').val()
