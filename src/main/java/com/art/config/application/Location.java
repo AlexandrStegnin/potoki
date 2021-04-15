@@ -159,6 +159,9 @@ public class Location {
 
     public static final String MONEY_OPENED = MONEY + "/opened";
 
+    public static final String MONEY_RE_BUY = MONEY + "/buy-share";
+
+
     // Детали новых денег
     public static final String NEW_CASH_DETAILS = "/new-cash-details";
 
