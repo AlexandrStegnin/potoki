@@ -47,4 +47,13 @@ public enum CashType {
         return UNDEFINED;
     }
 
+    public static CashType fromId(Long id) {
+        for (CashType value : values()) {
+            if (value.getId() == id) {
+                return value;
+            }
+        }
+        return UNDEFINED;
+    }
+
 }
