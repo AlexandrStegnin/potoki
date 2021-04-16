@@ -134,4 +134,5 @@ public interface AccountTransactionRepository extends JpaRepository<AccountTrans
             "GROUP BY atx.owner")
     AccountDTO fetchBalance(@Param("ownerType") OwnerType ownerType, @Param("ownerId") Long ownerId);
 
+    AccountTransaction findByParentId(Long parentId);
 }
