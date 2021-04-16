@@ -1136,8 +1136,12 @@ public class MoneyService {
      */
     public ApiResponse reBuyShare(ReBuyShareDTO dto) {
         checkDTO(dto);
+        AppUser investor = userService.findById(dto.getBuyerId());
+        if (Objects.isNull(investor)) {
+            throw new ApiException("Инвестор не найден", HttpStatus.NOT_FOUND);
+        }
         List<Money> sellerMonies = closeSellerMonies(dto);
-        List<Money> buyerMonies = openBuyerMonies(sellerMonies);
+        List<Money> buyerMonies = openBuyerMonies(sellerMonies, investor);
         AccountTransaction transaction = accountTransactionService.reBuy(dto, buyerMonies);
         accountTransactionService.resale(dto, sellerMonies, transaction);
         return new ApiResponse("Перепродажа доли прошла успешно", HttpStatus.OK.value());
@@ -1170,11 +1174,13 @@ public class MoneyService {
      * Создать суммы инвестору покупателю в деньгах инвесторов
      *
      * @param sellerMonies закрытые суммы инвестора продавца
+     * @param investor инвестор покупатель
      */
-    private List<Money> openBuyerMonies(List<Money> sellerMonies) {
+    private List<Money> openBuyerMonies(List<Money> sellerMonies, AppUser investor) {
         List<Money> buyerMonies = new ArrayList<>();
         sellerMonies.forEach(money -> {
             Money cash = new Money(money);
+            cash.setInvestor(investor);
             cash.setTypeClosing(null);
             cash.setDateClosing(null);
             cash.setSourceFacility(null);
