@@ -57,6 +57,10 @@ public class AccountService {
         return accountRepository.findByOwnerIdAndOwnerType(ownerId, ownerType);
     }
 
+    public Account findByInvestorId(Long ownerId) {
+        return accountRepository.findByOwnerIdAndOwnerType(ownerId, OwnerType.INVESTOR);
+    }
+
     public void deleteByOwnerId(Long ownerId, OwnerType ownerType) {
         accountRepository.deleteByOwnerIdAndOwnerType(ownerId, ownerType);
     }
