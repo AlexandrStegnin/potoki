@@ -677,13 +677,59 @@ public class AccountTransactionService {
         transaction.setPayer(owner);
         transaction.setRecipient(recipient);
         transaction.setCashType(CashType.RE_BUY_SHARE);
-        BigDecimal summa = buyerMonies
-                .stream()
-                .map(Money::getGivenCash)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal summa = reduceSum(buyerMonies);
         transaction.setCash(summa);
         accountTransactionRepository.save(transaction);
         buyerMonies.forEach(money -> money.setTransaction(transaction));
         moneyRepository.save(buyerMonies);
     }
+
+    /**
+     * Создать приходную транзакцию по счёта инвестора продавца доли
+     *
+     * @param dto DTO для перепродажи доли
+     * @param sellerMonies деньги инвестора продавца
+     */
+    public void resale(ReBuyShareDTO dto, List<Money> sellerMonies) {
+        Account owner = getInvestorOwner(dto.getSellerId());
+        Account payer = getInvestorOwner(dto.getBuyerId());
+        AccountTransaction transaction = new AccountTransaction(owner);
+        transaction.setOperationType(OperationType.DEBIT);
+        transaction.setPayer(payer);
+        transaction.setRecipient(owner);
+        transaction.setCashType(CashType.RESALE_SHARE);
+        BigDecimal summa = reduceSum(sellerMonies);
+        transaction.setCash(summa);
+        accountTransactionRepository.save(transaction);
+        sellerMonies.forEach(money -> money.setTransaction(transaction));
+        moneyRepository.save(sellerMonies);
+    }
+
+    /**
+     * Получить счёт инвестора
+     *
+     * @param ownerId id инвестора
+     * @return найденный счёт
+     */
+    private Account getInvestorOwner(Long ownerId) {
+        Account owner = accountService.findByInvestorId(ownerId);
+        if (Objects.isNull(owner)) {
+            throw new ApiException("Не найден счёт покупателя", HttpStatus.NOT_FOUND);
+        }
+        return owner;
+    }
+
+    /**
+     * Посчитать общую сумму денег
+     *
+     * @param monies деньги
+     * @return сумма
+     */
+    private BigDecimal reduceSum(List<Money> monies) {
+        return monies
+                .stream()
+                .map(Money::getGivenCash)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
 }

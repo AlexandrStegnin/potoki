@@ -1139,6 +1139,7 @@ public class MoneyService {
         List<Money> sellerMonies = closeSellerMonies(dto);
         List<Money> buyerMonies = openBuyerMonies(sellerMonies);
         accountTransactionService.reBuy(dto, buyerMonies);
+        accountTransactionService.resale(dto, sellerMonies);
         return new ApiResponse("Перепродажа доли прошла успешно", HttpStatus.OK.value());
     }
 
