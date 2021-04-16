@@ -63,8 +63,7 @@ public class AppUser implements Serializable {
         this.login = userDTO.getLogin();
         this.role = convertRole(userDTO.getRole());
         this.kin = userDTO.getKin() == null ? null : KinEnum.fromValue(userDTO.getKin());
-        this.partner = new AppUser();
-        this.partner.id = userDTO.getPartnerId();
+        this.partner = makePartner(userDTO.getPartnerId());
         this.password = userDTO.getPassword();
     }
 
@@ -73,6 +72,15 @@ public class AppUser implements Serializable {
             return null;
         }
         return new AppRole(dto);
+    }
+
+    private AppUser makePartner(Long partnerId) {
+        if (Objects.nonNull(partnerId) && partnerId != 0) {
+            AppUser partner = new AppUser();
+            partner.setId(partnerId);
+            return partner;
+        }
+        return null;
     }
 
 }

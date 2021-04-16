@@ -41,7 +41,7 @@ UserDTO.prototype = {
     login: '',
     facilities: [],
     role: null,
-    partnerId: 0,
+    partnerId: null,
     profile: null,
     kin: null,
     build: function (id, login, role, partnerId, kin) {
@@ -257,11 +257,15 @@ function getUserDTO() {
     let login = $('#user-login').val()
     let role = getRole();
     let partner = getPartner();
+    let partnerId = null
+    if (partner !== null) {
+        partnerId = partner.id
+    }
     let kin = $('#kins').val();
     let userId = $('#id').val();
 
     let userDTO = new UserDTO()
-    userDTO.build(userId, login, role, partner.id, kin)
+    userDTO.build(userId, login, role, partnerId, kin)
     userDTO.profile = createProfile(userId, $('#lastName').val(), $('#firstName').val(), $('#patronymic').val(), $('#email').val());
 
     return userDTO
@@ -295,8 +299,13 @@ function getRole() {
  */
 function getPartner() {
     let saleChanel = $('#saleChanel');
+    let partnerId = saleChanel.find(':selected').val()
+    if (typeof partnerId === 'undefined' || partnerId === '0') {
+        return null
+    }
     let partnerDTO = new UserDTO();
-    partnerDTO.buildPartner(saleChanel.find(':selected').val(), saleChanel.find(':selected').text());
+    let partnerLogin = saleChanel.find(':selected').text()
+    partnerDTO.buildPartner(partnerId, partnerLogin);
     if (partnerDTO.partnerId === 0) {
         partnerDTO.partnerId = null;
     }
