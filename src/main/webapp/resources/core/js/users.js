@@ -29,10 +29,10 @@ let UserProfileDTO = function () {}
 
 RoleDTO.prototype = {
     id: 0,
-    name: '',
-    build: function (id, name) {
+    humanized: '',
+    build: function (id, humanized) {
         this.id = id;
-        this.name = name;
+        this.humanized = humanized;
     }
 }
 

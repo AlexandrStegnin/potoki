@@ -33,7 +33,7 @@ public final class SecurityUtils {
 
     public static boolean isUserInRole(AppUser user, UserRole userRole) {
         AppRole role = user.getRole();
-        return role.getName().equalsIgnoreCase(userRole.name());
+        return role.getHumanized().equalsIgnoreCase(userRole.getTitle());
     }
 
     public static Long getUserId() {
