@@ -1,5 +1,6 @@
 package com.art.service;
 
+import com.art.config.exception.ApiException;
 import com.art.model.*;
 import com.art.model.supporting.AfterCashing;
 import com.art.model.supporting.ApiResponse;
@@ -1134,8 +1135,93 @@ public class MoneyService {
      * @return ответ о выполнении
      */
     public ApiResponse reBuyShare(ReBuyShareDTO dto) {
+        checkDTO(dto);
+        checkSums(dto);
+        List<Money> sellerMonies = closeSellerMonies(dto);
+        List<Money> buyerMonies = openBuyerMonies(sellerMonies);
+        accountTransactionService.reBuy(dto, buyerMonies);
+        return new ApiResponse("Перепродажа доли прошла успешно", HttpStatus.OK.value());
+    }
 
-        return null;
+    /**
+     * Закрыть деньги инвестора продавца
+     *
+     * @param dto DTO для закрытия
+     * @return список закрытых сумм
+     */
+    private List<Money> closeSellerMonies(ReBuyShareDTO dto) {
+        TypeClosing typeClosing = typeClosingService.findByName("Перепродажа доли");
+        if (Objects.isNull(typeClosing)) {
+            throw new ApiException("Не удалось найти вид закрытия \"Перепродажа доли\"", HttpStatus.NOT_FOUND);
+        }
+        List<Long> openedCash = dto.getOpenedCash()
+                .stream()
+                .map(InvestorCashDTO::getId)
+                .collect(Collectors.toList());
+        List<Money> sellerMonies = new ArrayList<>(moneyRepository.findByIdIn(openedCash));
+        sellerMonies.forEach(money -> {
+            money.setTypeClosing(typeClosing);
+            money.setDateClosing(dto.getRealDateGiven());
+        });
+        return moneyRepository.save(sellerMonies);
+    }
+
+    /**
+     * Создать суммы инвестору покупателю в деньгах инвесторов
+     *
+     * @param sellerMonies закрытые суммы инвестора продавца
+     */
+    private List<Money> openBuyerMonies(List<Money> sellerMonies) {
+        List<Money> buyerMonies = new ArrayList<>();
+        sellerMonies.forEach(money -> {
+            Money cash = new Money(money);
+            cash.setTypeClosing(null);
+            cash.setDateClosing(null);
+            cash.setSourceFacility(null);
+            cash.setSourceUnderFacility(null);
+            cash.setSourceFlowsId(null);
+            cash.setIsReinvest(0);
+            cash.setSourceId(null);
+            cash.setSource(null);
+            cash.setIsDivide(0);
+            cash.setRealDateGiven(money.getDateClosing());
+            cash.setTransaction(null);
+            buyerMonies.add(cash);
+        });
+        return moneyRepository.save(buyerMonies);
+    }
+
+    /**
+     * Проверить DTO
+     *
+     * @param dto DTO для проверки
+     */
+    private void checkDTO(ReBuyShareDTO dto) {
+        if (dto.getOpenedCash().isEmpty()) {
+            throw new ApiException("Не указаны суммы для перепродажи", HttpStatus.PRECONDITION_FAILED);
+        }
+        if (Objects.isNull(dto.getBuyerId())) {
+            throw new ApiException("Не указан покупатель доли", HttpStatus.PRECONDITION_FAILED);
+        }
+        if (Objects.isNull(dto.getRealDateGiven())) {
+            throw new ApiException("Не указана дата реальной передачи денег", HttpStatus.PRECONDITION_FAILED);
+        }
+    }
+
+    /**
+     * Проверить суммы
+     *
+     * @param dto DTO для проверки
+     */
+    private void checkSums(ReBuyShareDTO dto) {
+        BigDecimal shareSum = dto.getOpenedCash()
+                .stream()
+                .map(InvestorCashDTO::getGivenCash)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal buyerSum = accountTransactionService.getBalance(dto.getBuyerId()).getSummary();
+        if (shareSum.compareTo(buyerSum) > 0) {
+            throw new ApiException("Недостаточно денег для перепокупки доли", HttpStatus.PRECONDITION_FAILED);
+        }
     }
 
 }
