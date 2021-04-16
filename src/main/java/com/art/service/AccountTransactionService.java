@@ -664,7 +664,7 @@ public class AccountTransactionService {
      * @param dto DTO для перепокупки
      * @param buyerMonies открытые суммы инвестора покупателя
      */
-    public void reBuy(ReBuyShareDTO dto, List<Money> buyerMonies) {
+    public AccountTransaction reBuy(ReBuyShareDTO dto, List<Money> buyerMonies) {
         Account owner = accountService.findByInvestorId(dto.getBuyerId());
         if (Objects.isNull(owner)) {
             throw new ApiException("Не найден счёт покупателя", HttpStatus.NOT_FOUND);
@@ -683,15 +683,16 @@ public class AccountTransactionService {
         accountTransactionRepository.save(transaction);
         buyerMonies.forEach(money -> money.setTransaction(transaction));
         moneyRepository.save(buyerMonies);
+        return transaction;
     }
 
     /**
      * Создать приходную транзакцию по счёта инвестора продавца доли
-     *
-     * @param dto DTO для перепродажи доли
+     *  @param dto DTO для перепродажи доли
      * @param sellerMonies деньги инвестора продавца
+     * @param parentTx связанная транзакция
      */
-    public void resale(ReBuyShareDTO dto, List<Money> sellerMonies) {
+    public void resale(ReBuyShareDTO dto, List<Money> sellerMonies, AccountTransaction parentTx) {
         Account owner = getInvestorOwner(dto.getSellerId());
         Account payer = getInvestorOwner(dto.getBuyerId());
         AccountTransaction transaction = new AccountTransaction(owner);
@@ -701,6 +702,7 @@ public class AccountTransactionService {
         transaction.setCashType(CashType.RESALE_SHARE);
         BigDecimal summa = reduceSum(sellerMonies);
         transaction.setCash(summa);
+        transaction.setParent(parentTx);
         accountTransactionRepository.save(transaction);
         sellerMonies.forEach(money -> money.setTransaction(transaction));
         moneyRepository.save(sellerMonies);
