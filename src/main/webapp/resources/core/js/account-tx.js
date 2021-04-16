@@ -3,8 +3,10 @@ let AccountTxDTO = function () {
 
 AccountTxDTO.prototype = {
     txIds: [],
-    build: function (txIds) {
+    cashTypeIds: [],
+    build: function (txIds, cashTypeIds) {
         this.txIds = txIds
+        this.cashTypeIds = cashTypeIds
     }
 }
 
@@ -127,11 +129,13 @@ function acceptDelete() {
     confirmDelete.find('#accept-delete').on('click', function () {
         let options = $('table#transactions').find('input:checkbox:checked:not(disabled)')
         let checked = []
+        let cashTypeIds = []
         $.each(options, function (ind, el) {
             checked.push($(el).data('object-id'))
+            cashTypeIds.push($(el).data('cash-type'))
         })
         let accountTxDTO = new AccountTxDTO()
-        accountTxDTO.build(checked)
+        accountTxDTO.build(checked, cashTypeIds)
         deleteTransactions(accountTxDTO)
     })
 }

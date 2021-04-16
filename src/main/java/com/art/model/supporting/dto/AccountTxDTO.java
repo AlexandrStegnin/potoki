@@ -28,6 +28,8 @@ public class AccountTxDTO {
 
     private BigDecimal cash;
 
+    private List<Long> cashTypeIds = new ArrayList<>();
+
     public void addTxId(Long txId) {
         if (this.txIds == null) {
             this.txIds = new ArrayList<>();
