@@ -289,17 +289,18 @@ public class AccountTransactionService {
      */
     private void deleteMonies(List<AccountTransaction> transactions) {
         List<Money> toDelete = new ArrayList<>();
-        transactions.forEach(tx -> tx.getMonies().forEach(money -> {
-            if (money != null) {
-                NewCashDetail newCashDetail = money.getNewCashDetail();
-                if (newCashDetail != null) {
-                    if (newCashDetail.getName().equalsIgnoreCase(NEW_CASH_DETAIL_REINVEST)) {
-                        tx.removeMoney(money);
-                        toDelete.add(money);
+        transactions.forEach(tx -> tx.getMonies()
+                .stream()
+                .filter(Objects::nonNull)
+                .forEach(money -> {
+                    NewCashDetail newCashDetail = money.getNewCashDetail();
+                    if (Objects.nonNull(newCashDetail)) {
+                        if (newCashDetail.getName().equalsIgnoreCase(NEW_CASH_DETAIL_REINVEST)) {
+                            tx.removeMoney(money);
+                            toDelete.add(money);
+                        }
                     }
-                }
-            }
-        }));
+                }));
         moneyRepository.delete(toDelete);
     }
 
