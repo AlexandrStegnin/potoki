@@ -679,7 +679,7 @@ public class AccountTransactionService {
         transaction.setRecipient(recipient);
         transaction.setCashType(CashType.RE_BUY_SHARE);
         BigDecimal summa = reduceSum(buyerMonies);
-        transaction.setCash(summa);
+        transaction.setCash(summa.negate());
         accountTransactionRepository.save(transaction);
         buyerMonies.forEach(money -> money.setTransaction(transaction));
         moneyRepository.save(buyerMonies);
