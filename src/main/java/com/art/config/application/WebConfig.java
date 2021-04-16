@@ -20,18 +20,15 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
-import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 import javax.sql.DataSource;
 import java.util.List;
-import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
@@ -70,26 +67,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         //Here we add our custom-configured HttpMessageConverter
         converters.add(jacksonMessageConverter());
         super.configureMessageConverters(converters);
-    }
-
-    @Bean
-    HandlerExceptionResolver errorHandler() {
-        SimpleMappingExceptionResolver s =
-                new SimpleMappingExceptionResolver();
-
-        //exception to view name mapping
-        Properties p = new Properties();
-        p.setProperty(NullPointerException.class.getName(), "npeView");
-        s.setExceptionMappings(p);
-        //mapping status code with view response.
-        s.addStatusCode("npeView", 404);
-
-        //setting default error view
-        s.setDefaultErrorView("defaultErrorView");
-        //setting default status code
-        s.setDefaultStatusCode(400);
-
-        return s;
     }
 
     @Bean
