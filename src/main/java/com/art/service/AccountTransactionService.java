@@ -89,25 +89,6 @@ public class AccountTransactionService {
     }
 
     /**
-     * Удалить списком транзакции
-     *
-     * @param dto DTO со списком id транзакций
-     */
-    public void deleteByDTO(AccountTxDTO dto) {
-        Set<AccountTransaction> transactions = new HashSet<>();
-        dto.getTxIds().forEach(id -> {
-            AccountTransaction transaction = findParent(id);
-            if (transaction != null) {
-                transactions.add(transaction);
-            }
-        });
-        transactions.forEach(transaction -> {
-            releaseMonies(new ArrayList<>(transaction.getChild()));
-            deleteByParent(transaction);
-        });
-    }
-
-    /**
      * Найти родительскую транзакцию
      *
      * @param id id
@@ -208,6 +189,18 @@ public class AccountTransactionService {
      */
     @Transactional
     public ApiResponse delete(AccountTxDTO dto) {
+        if (!dto.getCashTypeIds().isEmpty()) {
+            CashType cashType = CashType.fromId(dto.getCashTypeIds().get(0));
+            if (cashType == CashType.RE_BUY_SHARE) {
+                rollbackResale(dto);
+            } else {
+                rollbackOther(dto);
+            }
+        }
+        return new ApiResponse("Данные успешно удалены");
+    }
+
+    public void rollbackOther(AccountTxDTO dto) {
         Set<AccountTransaction> transactions = new HashSet<>();
         try {
             dto.getTxIds().forEach(id -> {
@@ -226,9 +219,8 @@ public class AccountTransactionService {
                 deleteByParent(transaction);
             });
         } catch (Exception e) {
-            return new ApiResponse(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST.value());
+            throw new ApiException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
         }
-        return new ApiResponse("Данные успешно удалены");
     }
 
     /**
@@ -317,7 +309,7 @@ public class AccountTransactionService {
     /**
      * Получить список счетов с итоговым балансом
      *
-     * @param filter список фильтров
+     * @param filter   список фильтров
      * @param pageable для постраничного отображения
      * @return список счетов с суммарным балансом
      */
@@ -509,7 +501,7 @@ public class AccountTransactionService {
      * Создать приходную транзакцию
      *
      * @param creditTx расходная транзакция
-     * @param dto DTO для реинвестирования
+     * @param dto      DTO для реинвестирования
      */
     private void createDebitTransaction(AccountTransaction creditTx, AccountTxDTO dto) {
         Account recipient = accountService.findByOwnerId(dto.getUnderFacilityId(), OwnerType.UNDER_FACILITY);
@@ -525,9 +517,10 @@ public class AccountTransactionService {
 
     /**
      * Создать расходную транзакцию по счёту
-     *  @param owner владелец
+     *
+     * @param owner     владелец
      * @param recipient получатель
-     * @param dto DTO
+     * @param dto       DTO
      */
     private AccountTransaction createCreditTransaction(Account owner, Account recipient, AccountTxDTO dto) {
         AccountTransaction creditTx = new AccountTransaction(owner);
@@ -547,7 +540,7 @@ public class AccountTransactionService {
      * Создать сумму в деньгах инвесторов
      *
      * @param owner владелец счёта
-     * @param dto DTO для реинвестирования
+     * @param dto   DTO для реинвестирования
      * @return созданная сумма
      */
     private Money createMoney(Account owner, AccountTxDTO dto) {
@@ -585,7 +578,7 @@ public class AccountTransactionService {
      * Подготовить ответ с ошибкой
      *
      * @param response ответ
-     * @param error сообщение
+     * @param error    сообщение
      */
     private void prepareErrorResponse(ApiResponse response, String error) {
         response.setError(error);
@@ -649,7 +642,7 @@ public class AccountTransactionService {
      * Обновить сумму транзакции
      *
      * @param transaction транзакция
-     * @param newCash новая сумма
+     * @param newCash     новая сумма
      * @return транзакция
      */
     public AccountTransaction updateCash(AccountTransaction transaction, BigDecimal newCash) {
@@ -661,7 +654,7 @@ public class AccountTransactionService {
     /**
      * Создать расходную транзакцию по счёту инвестора покупателя доли
      *
-     * @param dto DTO для перепокупки
+     * @param dto         DTO для перепокупки
      * @param buyerMonies открытые суммы инвестора покупателя
      */
     public AccountTransaction reBuy(ReBuyShareDTO dto, List<Money> buyerMonies) {
@@ -688,9 +681,10 @@ public class AccountTransactionService {
 
     /**
      * Создать приходную транзакцию по счёта инвестора продавца доли
-     *  @param dto DTO для перепродажи доли
+     *
+     * @param dto          DTO для перепродажи доли
      * @param sellerMonies деньги инвестора продавца
-     * @param parentTx связанная транзакция
+     * @param parentTx     связанная транзакция
      */
     public void resale(ReBuyShareDTO dto, List<Money> sellerMonies, AccountTransaction parentTx) {
         Account owner = getInvestorOwner(dto.getSellerId());
@@ -743,4 +737,46 @@ public class AccountTransactionService {
         return getBalance(investorAccount.getId()).getSummary();
     }
 
+    public void rollbackResale(AccountTxDTO dto) {
+        List<Long> accTxIds = dto.getTxIds();
+        List<AccountTransaction> transactions = new ArrayList<>();
+        accTxIds.forEach(txId -> {
+            transactions.add(findParent(txId));
+            transactions.add(findByParentId(txId));
+        });
+        List<Long> toDeleteIds = new ArrayList<>();
+        List<Long> toReleaseIds = new ArrayList<>();
+
+        transactions.forEach(tx -> tx.getMonies()
+                .stream()
+                .filter(Objects::nonNull)
+                .forEach(money -> {
+                    tx.removeMoney(money);
+                    if (tx.getOperationType() == OperationType.CREDIT) {
+                        toDeleteIds.add(money.getId());
+                    } else {
+                        toReleaseIds.add(money.getId());
+                    }
+                }));
+        transactions.stream()
+                .filter(tx -> tx.getParent() == null)
+                .forEach(accountTransactionRepository::delete);
+        rollbackMonies(toDeleteIds, toReleaseIds);
+    }
+
+    private void rollbackMonies(List<Long> toDeleteIds, List<Long> toReleaseIds) {
+        toDeleteIds.forEach(moneyRepository::delete);
+        List<Money> toRelease = moneyRepository.findByIdIn(toReleaseIds);
+        toRelease.forEach(money -> {
+            money.setTypeClosing(null);
+            money.setDateClosing(null);
+            money.setIsReinvest(0);
+            money.setTransaction(null);
+        });
+        moneyRepository.save(toRelease);
+    }
+
+    private AccountTransaction findByParentId(Long parentId) {
+        return accountTransactionRepository.findByParentId(parentId);
+    }
 }
