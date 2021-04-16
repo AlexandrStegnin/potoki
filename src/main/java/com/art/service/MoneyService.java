@@ -1136,7 +1136,6 @@ public class MoneyService {
      */
     public ApiResponse reBuyShare(ReBuyShareDTO dto) {
         checkDTO(dto);
-        checkSums(dto);
         List<Money> sellerMonies = closeSellerMonies(dto);
         List<Money> buyerMonies = openBuyerMonies(sellerMonies);
         accountTransactionService.reBuy(dto, buyerMonies);
@@ -1206,6 +1205,7 @@ public class MoneyService {
         if (Objects.isNull(dto.getRealDateGiven())) {
             throw new ApiException("Не указана дата реальной передачи денег", HttpStatus.PRECONDITION_FAILED);
         }
+        checkSums(dto);
     }
 
     /**
