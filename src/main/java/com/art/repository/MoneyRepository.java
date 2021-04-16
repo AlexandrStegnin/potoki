@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -43,4 +44,6 @@ public interface MoneyRepository extends JpaRepository<Money, Long>, JpaSpecific
     @Query("SELECT m FROM Money m WHERE m.facility.id = :facilityId AND m.investor.id = :investorId " +
             "AND m.givenCash > 0 AND m.dateClosing IS NULL AND m.typeClosing IS NULL")
     List<Money> getOpenedMoniesByFacility(@Param("facilityId") Long facilityId, @Param("investorId") Long investorId);
+
+    List<Money> findByIdIn(Collection<Long> ids);
 }
