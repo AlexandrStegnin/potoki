@@ -412,9 +412,9 @@ function resaleShare(reBuyDTO) {
         .done(function (data) {
             showPopup(data.message)
         })
-        .fail(function (e) {
+        .fail(function (jqXHR) {
             reBuyModal.modal('hide')
-            showPopup('Что-то пошло не так [' + e.message + ']');
+            showPopup(jqXHR.responseText);
         })
         .always(function () {
             closeLoader()
