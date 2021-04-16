@@ -655,4 +655,39 @@ public class AccountTransactionService {
         tx.setCash(newCash);
         return accountTransactionRepository.saveAndFlush(tx);
     }
+
+    /**
+     * Создать расходную транзакцию по счёту инвестора покупателя доли
+     *
+     * @param dto DTO для перепокупки
+     * @param buyerMonies открытые суммы инвестора покупателя
+     * @return ответ
+     */
+    public ApiResponse reBuy(ReBuyShareDTO dto, List<Money> buyerMonies) {
+        ApiResponse response = new ApiResponse();
+        Account owner = accountService.findByInvestorId(dto.getBuyerId());
+        if (Objects.isNull(owner)) {
+            prepareErrorResponse(response, "Не найден счёт покупателя");
+            return response;
+        }
+        Account recipient = accountService.findByOwnerId(dto.getFacilityId(), OwnerType.FACILITY);
+        if (Objects.isNull(recipient)) {
+            prepareErrorResponse(response, "Не найден счёт объекта");
+            return response;
+        }
+        AccountTransaction transaction = new AccountTransaction(owner);
+        transaction.setOperationType(OperationType.CREDIT);
+        transaction.setPayer(owner);
+        transaction.setRecipient(recipient);
+        transaction.setCashType(CashType.RE_BUY_SHARE);
+        BigDecimal summa = buyerMonies
+                .stream()
+                .map(Money::getGivenCash)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        transaction.setCash(summa);
+        accountTransactionRepository.save(transaction);
+        buyerMonies.forEach(money -> money.setTransaction(transaction));
+        moneyRepository.save(buyerMonies);
+        return null;
+    }
 }
