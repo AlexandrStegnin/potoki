@@ -735,4 +735,12 @@ public class AccountTransactionService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+    public BigDecimal getInvestorBalance(Long investorId) {
+        Account investorAccount = accountService.findByInvestorId(investorId);
+        if (Objects.isNull(investorAccount)) {
+            throw new ApiException("Не найден счёт инвестора", HttpStatus.NOT_FOUND);
+        }
+        return getBalance(investorAccount.getId()).getSummary();
+    }
+
 }

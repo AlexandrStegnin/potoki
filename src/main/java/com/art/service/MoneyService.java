@@ -1219,7 +1219,7 @@ public class MoneyService {
                 .stream()
                 .map(InvestorCashDTO::getGivenCash)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        BigDecimal buyerSum = accountTransactionService.getBalance(dto.getBuyerId()).getSummary();
+        BigDecimal buyerSum = accountTransactionService.getInvestorBalance(dto.getBuyerId());
         if (shareSum.compareTo(buyerSum) > 0) {
             throw new ApiException("Недостаточно денег для перепокупки доли", HttpStatus.PRECONDITION_FAILED);
         }
