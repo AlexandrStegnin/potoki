@@ -153,13 +153,21 @@ function subscribeAcceptReBuy() {
 
         let sellerId = reBuyModal.find('#seller').val()
         let facilityId = reBuyModal.find('#projects').val()
-        let openedCash = reBuyModal.find('#openedCash').val()
+        let selectedCash = $('#re-buy-share-form-modal').find('#openedCash').find('option:selected')
+        let openCash = []
+        $.each(selectedCash, function(ind, el) {
+            let cashDTO = new InvestorCashDTO()
+            cashDTO.id = el.id
+            cashDTO.givenCash = el.value
+            openCash.push(cashDTO)
+        })
+
         let realDateGiven = reBuyModal.find('#realDate').val()
 
         let reBuyDTO = new ReBuyDTO()
-        reBuyDTO.build(buyerId, buyerCash, sellerId, facilityId, openedCash, realDateGiven)
+        reBuyDTO.build(buyerId, buyerCash, sellerId, facilityId, openCash, realDateGiven)
         if (checkReBuyDTO(reBuyDTO)) {
-            console.log('ACCEPTED')
+            resaleShare(reBuyDTO)
         }
     })
 }
@@ -377,5 +385,38 @@ function getAccBalance(ownerId) {
         })
         .fail(function (e) {
             showPopup('Что-то пошло не так [' + e.message + ']');
+        })
+}
+
+/**
+ * Перепродать долю
+ *
+ * @param reBuyDTO {ReBuyDTO} DTO для перепродажи
+ */
+function resaleShare(reBuyDTO) {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+    showLoader()
+    reBuyModal.modal('hide')
+    $.ajax({
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: "buy-share",
+        data: JSON.stringify(reBuyDTO),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        }
+    })
+        .done(function (data) {
+            showPopup(data.message)
+        })
+        .fail(function (e) {
+            reBuyModal.modal('hide')
+            showPopup('Что-то пошло не так [' + e.message + ']');
+        })
+        .always(function () {
+            closeLoader()
         })
 }
