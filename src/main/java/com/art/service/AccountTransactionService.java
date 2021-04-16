@@ -1,5 +1,6 @@
 package com.art.service;
 
+import com.art.config.exception.ApiException;
 import com.art.config.exception.EntityNotFoundException;
 import com.art.model.*;
 import com.art.model.supporting.ApiResponse;
@@ -661,19 +662,15 @@ public class AccountTransactionService {
      *
      * @param dto DTO для перепокупки
      * @param buyerMonies открытые суммы инвестора покупателя
-     * @return ответ
      */
-    public ApiResponse reBuy(ReBuyShareDTO dto, List<Money> buyerMonies) {
-        ApiResponse response = new ApiResponse();
+    public void reBuy(ReBuyShareDTO dto, List<Money> buyerMonies) {
         Account owner = accountService.findByInvestorId(dto.getBuyerId());
         if (Objects.isNull(owner)) {
-            prepareErrorResponse(response, "Не найден счёт покупателя");
-            return response;
+            throw new ApiException("Не найден счёт покупателя", HttpStatus.NOT_FOUND);
         }
         Account recipient = accountService.findByOwnerId(dto.getFacilityId(), OwnerType.FACILITY);
         if (Objects.isNull(recipient)) {
-            prepareErrorResponse(response, "Не найден счёт объекта");
-            return response;
+            throw new ApiException("Не найден счёт объекта", HttpStatus.NOT_FOUND);
         }
         AccountTransaction transaction = new AccountTransaction(owner);
         transaction.setOperationType(OperationType.CREDIT);
@@ -688,6 +685,5 @@ public class AccountTransactionService {
         accountTransactionRepository.save(transaction);
         buyerMonies.forEach(money -> money.setTransaction(transaction));
         moneyRepository.save(buyerMonies);
-        return null;
     }
 }
