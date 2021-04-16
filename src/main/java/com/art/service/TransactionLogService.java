@@ -164,11 +164,8 @@ public class TransactionLogService {
             case REINVESTMENT_RENT:
                 return rollbackReinvestmentRent(log);
 
-            case UNDEFINED:
-                return "Операция [UNDEFINED] не реализована";
-
             default:
-                return "Что-то не то выбрали: " + log.getType().name();
+                return "Не реализовано: " + log.getType().name();
         }
     }
 

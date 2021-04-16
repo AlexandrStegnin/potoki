@@ -129,7 +129,7 @@ public class InvestorCashLog {
     }
 
     public InvestorCashLog(SalePayment flowsSale, TransactionLog log, CashType instanceOf) {
-        this.cashId = flowsSale.getId().longValue();
+        this.cashId = flowsSale.getId();
         this.investor = flowsSale.getInvestor();
         this.facility = flowsSale.getFacility();
         this.dateGivenCash = flowsSale.getDateGiven();
