@@ -189,13 +189,21 @@ public class AccountTransactionService {
      */
     @Transactional
     public ApiResponse delete(AccountTxDTO dto) {
-        if (!dto.getCashTypeIds().isEmpty()) {
-            CashType cashType = CashType.fromId(dto.getCashTypeIds().get(0));
-            if (cashType == CashType.RE_BUY_SHARE) {
-                rollbackResale(dto);
-            } else {
-                rollbackOther(dto);
+        if (dto.getCashTypeIds().isEmpty()) {
+            throw new ApiException("Не указаны виды денег для отката операций", HttpStatus.BAD_REQUEST);
+        }
+        Set<CashType> cashTypes = dto.getCashTypeIds()
+                .stream()
+                .map(CashType::fromId)
+                .collect(Collectors.toSet());
+        if (cashTypes.contains(CashType.RE_BUY_SHARE)) {
+            if (cashTypes.size() > 1) {
+                throw new ApiException("Откат перепродажи возможен только при удалении расходной транзакции 'Перепокупка доли'",
+                        HttpStatus.BAD_REQUEST);
             }
+            rollbackResale(dto);
+        } else {
+            rollbackOther(dto);
         }
         return new ApiResponse("Данные успешно удалены");
     }
