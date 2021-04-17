@@ -198,7 +198,7 @@ public class AccountTransactionService {
                 .collect(Collectors.toSet());
         if (cashTypes.contains(CashType.RE_BUY_SHARE)) {
             if (cashTypes.size() > 1) {
-                throw new ApiException("Откат перепродажи возможен только при удалении расходной транзакции 'Перепокупка доли'",
+                throw new ApiException("Для отката перепродажи удалите расходную транзакцию 'Перепокупка доли'",
                         HttpStatus.BAD_REQUEST);
             }
             rollbackResale(dto);
