@@ -165,8 +165,8 @@ function deleteTransactions(accountTxDTO) {
             showPopup(data.message);
             $('#btn-search').click()
         })
-        .fail(function (e) {
-            showPopup('Что-то пошло не так [' + e.message + ']');
+        .fail(function (jqXHR) {
+            showPopup(jqXHR.responseText);
         })
         .always(function () {
             closeLoader()
