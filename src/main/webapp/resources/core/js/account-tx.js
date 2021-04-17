@@ -63,10 +63,13 @@ let balancePopup;
 
 let reinvestModal;
 
+let msgModal;
+
 jQuery(document).ready(function ($) {
     confirmDelete = $('#confirm-delete');
     balancePopup = $('#balance-popup-table')
     reinvestModal = $('#reinvest-form-modal')
+    msgModal = $('msg-modal')
     showPageableResult()
     subscribeCheckAllClick()
     showConfirmDelete()
@@ -166,6 +169,7 @@ function deleteTransactions(accountTxDTO) {
             $('#btn-search').click()
         })
         .fail(function (jqXHR) {
+            $('#content').addClass('bg-warning')
             showPopup(jqXHR.responseText);
         })
         .always(function () {
@@ -208,6 +212,7 @@ function showPopup(message) {
     $('#msg-modal').modal('show');
     setTimeout(function () {
         $('#msg-modal').modal('hide');
+        $('#content').removeClass('bg-warning')
     }, 3000);
 }
 
