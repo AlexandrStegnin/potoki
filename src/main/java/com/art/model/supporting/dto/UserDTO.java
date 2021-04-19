@@ -7,6 +7,8 @@ import com.art.model.supporting.enums.KinEnum;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Objects;
+
 /**
  * @author Alexandr Stegnin
  */
@@ -37,7 +39,9 @@ public class UserDTO {
         this.login = entity.getLogin();
         this.role = convertRole(entity.getRole());
         this.kin = convertKin(entity.getKin());
-        this.partnerId = entity.getPartner().getId();
+        if (Objects.nonNull(entity.getPartner())) {
+            this.partnerId = entity.getPartner().getId();
+        }
         this.profile = convertProfile(entity.getProfile());
     }
 
