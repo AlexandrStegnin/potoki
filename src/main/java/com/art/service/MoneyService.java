@@ -1177,6 +1177,10 @@ public class MoneyService {
      * @param investor инвестор покупатель
      */
     private List<Money> openBuyerMonies(List<Money> sellerMonies, AppUser investor) {
+        NewCashDetail newCashDetail = newCashDetailService.findByName("Перепокупка доли");
+        if (Objects.isNull(newCashDetail)) {
+            throw new ApiException("Не найдены детали новых денег \"Перепокупка доли\"", HttpStatus.NOT_FOUND);
+        }
         List<Money> buyerMonies = new ArrayList<>();
         sellerMonies.forEach(money -> {
             Money cash = new Money(money);
@@ -1192,6 +1196,7 @@ public class MoneyService {
             cash.setIsDivide(0);
             cash.setRealDateGiven(money.getDateClosing());
             cash.setTransaction(null);
+            cash.setNewCashDetail(newCashDetail);
             buyerMonies.add(cash);
         });
         return moneyRepository.save(buyerMonies);
