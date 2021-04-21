@@ -1,5 +1,6 @@
 package com.art.model.supporting;
 
+import com.art.model.supporting.enums.AppPage;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -33,5 +34,9 @@ public class AppFilter {
 
     @Column(name = "text")
     String text;
+
+    public void setPageId(AppPage page) {
+        this.pageId = page.getId();
+    }
 
 }
