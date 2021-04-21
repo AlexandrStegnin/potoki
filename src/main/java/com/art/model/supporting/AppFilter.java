@@ -28,8 +28,8 @@ public class AppFilter {
     @Column(name = "user_id")
     Long userId;
 
-    @Column(name = "page_name")
-    String pageName;
+    @Column(name = "page_id")
+    Integer pageId;
 
     @Column(name = "text")
     String text;
