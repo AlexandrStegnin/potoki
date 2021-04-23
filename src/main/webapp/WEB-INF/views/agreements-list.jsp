@@ -113,6 +113,7 @@
             <th>Наименование объекта</th>
             <th>Инвестор</th>
             <th>С кем заключён договор</th>
+            <th>От кого заключен договор</th>
             <th>Налоговая ставка</th>
         </tr>
         </thead>
@@ -122,6 +123,7 @@
                 <td>${agr.facility.name}</td>
                 <td>${agr.concludedFrom.login}</td>
                 <td>${agr.concludedWith}</td>
+                <td>${agr.organization}</td>
                 <td>${agr.taxRate}</td>
             </tr>
         </c:forEach>

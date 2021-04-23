@@ -36,7 +36,7 @@ public class UserAgreement {
     String concludedWith;
 
     /**
-     * От кого заключён договор (id инвестора)
+     * Инвестор
      */
     @ManyToOne
     @JoinColumn(name = "concluded_from")
@@ -47,5 +47,11 @@ public class UserAgreement {
      */
     @Column(name = "tax_rate")
     Double taxRate;
+
+    /**
+     * От кого заключен договор
+     */
+    @Column(name = "organization")
+    String organization;
 
 }
