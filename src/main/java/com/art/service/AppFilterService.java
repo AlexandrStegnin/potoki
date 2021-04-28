@@ -57,4 +57,26 @@ public class AppFilterService {
         }
         return oldFilter;
     }
+
+    /**
+     * Обновить инфо о фильтрах в базе данных
+     *
+     * @param filter фильтры
+     */
+    public void updateFilter(AbstractFilter filter, AppPage page) {
+        Long curUserId = SecurityUtils.getUserId();
+        AppFilter appFilter = findFilter(curUserId, page.getId());
+        if (Objects.isNull(appFilter)) {
+            appFilter = new AppFilter();
+            appFilter.setUserId(curUserId);
+            appFilter.setPageId(page);
+        }
+        try {
+            appFilter.setText(objectMapper.writeValueAsString(filter));
+        } catch (JsonProcessingException e) {
+            log.error("Не удалось распарсить фильтр в строку");
+        }
+        save(appFilter);
+    }
+
 }
