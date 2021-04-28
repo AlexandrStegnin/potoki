@@ -967,6 +967,7 @@ public class MoneyService {
             AccountTransaction transaction = deleting.getTransaction();
             if (transaction != null) {
                 accountTxDTO.addTxId(transaction.getId());
+                accountTxDTO.addCashTypeId(transaction.getCashType());
                 transaction.removeMoney(deleting);
             }
             counter[0]++;
