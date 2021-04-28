@@ -116,7 +116,7 @@ jQuery(document).ready(function ($) {
     })
 
     $('#confirm').on('change', function () {
-        $('#confirmed').val(!$(this).prop('checked'))
+        $('#confirmed').val($(this).prop('checked'))
         $('#search-form').submit()
     })
 
