@@ -69,7 +69,6 @@ jQuery(document).ready(function ($) {
     })
 
     blockActions();
-    getFiltersFromLS((window.location.pathname + '').split("/")[1]);
     $(document).on('mousedown', '#underFacilitiesList > option', function (e) {
         e.preventDefault();
         this.selected = !this.selected;
