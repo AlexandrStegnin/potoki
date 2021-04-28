@@ -120,6 +120,11 @@ jQuery(document).ready(function ($) {
         $('#search-form').submit()
     })
 
+    $('#all').on('change', function () {
+        $('#allRows').val($(this).prop('checked'))
+        $('#search-form').submit()
+    })
+
     $('.deactivate').on('click', function (e) {
         e.preventDefault()
         let userId = $(this).data('user-id')
