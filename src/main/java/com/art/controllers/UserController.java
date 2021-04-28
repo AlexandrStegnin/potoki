@@ -9,6 +9,7 @@ import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.dto.BalanceDTO;
 import com.art.model.supporting.dto.UserDTO;
+import com.art.model.supporting.enums.AppPage;
 import com.art.model.supporting.enums.KinEnum;
 import com.art.model.supporting.enums.OwnerType;
 import com.art.model.supporting.filters.AppUserFilter;
@@ -52,14 +53,16 @@ public class UserController {
 
     private final AccountService accountService;
 
-    private final AppUserFilter filter = new AppUserFilter();
+    private AppUserFilter filter = new AppUserFilter();
 
     private final AccountTransactionService accountTransactionService;
+
+    private final AppFilterService appFilterService;
 
     public UserController(UserService userService, RoleService roleService,
                           FacilityService facilityService, MoneyService moneyService,
                           UsersAnnexToContractsService usersAnnexToContractsService, AccountService accountService,
-                          AccountTransactionService accountTransactionService) {
+                          AccountTransactionService accountTransactionService, AppFilterService appFilterService) {
         this.userService = userService;
         this.roleService = roleService;
         this.facilityService = facilityService;
@@ -67,17 +70,20 @@ public class UserController {
         this.usersAnnexToContractsService = usersAnnexToContractsService;
         this.accountService = accountService;
         this.accountTransactionService = accountTransactionService;
+        this.appFilterService = appFilterService;
     }
 
     @Secured("ROLE_ADMIN")
     @GetMapping(path = Location.USERS_LIST)
     public ModelAndView usersList(@PageableDefault(size = 1000) @SortDefault Pageable pageable) {
+        filter = (AppUserFilter) appFilterService.getFilter(filter, AppUserFilter.class, AppPage.USERS);
         return prepareModel(filter);
     }
 
     @Secured("ROLE_ADMIN")
     @PostMapping(path = Location.USERS_LIST)
     public ModelAndView usersListFiltered(@ModelAttribute("filter") AppUserFilter filter) {
+        appFilterService.updateFilter(filter, AppPage.USERS);
         return prepareModel(filter);
     }
 
