@@ -23,6 +23,7 @@ public class AppUserSpecification extends BaseSpecification<AppUser, AppUserFilt
                 loginEqual(filter.getLogin()))
                 .and(isDeactivated(filter.isDeactivated()))
                 .and(roleEqual(filter.getRole()))
+                .and(notConfirmed(filter.isConfirmed()))
                 .toPredicate(root, query, cb);
     }
 
@@ -53,6 +54,15 @@ public class AppUserSpecification extends BaseSpecification<AppUser, AppUserFilt
                     criteriaBuilder.equal(root.get(AppUser_.role).get(AppRole_.humanized), role)
             );
         }
+    }
+
+    private static Specification<AppUser> notConfirmed(boolean confirmed) {
+        if (confirmed) {
+            return null;
+        }
+        return ((root, criteriaQuery, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get(AppUser_.confirmed), false)
+        );
     }
 
 }
