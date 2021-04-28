@@ -22,4 +22,7 @@ public class AppFilterService {
         return appFilterRepository.findByUserIdAndPageId(userId, pageId);
     }
 
+    public void save(AppFilter appFilter) {
+        appFilterRepository.save(appFilter);
+    }
 }
