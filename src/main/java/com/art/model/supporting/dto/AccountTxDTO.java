@@ -1,5 +1,6 @@
 package com.art.model.supporting.dto;
 
+import com.art.model.supporting.enums.CashType;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -37,6 +38,10 @@ public class AccountTxDTO {
         if (!this.txIds.contains(txId)) {
             this.txIds.add(txId);
         }
+    }
+
+    public void addCashTypeId(CashType cashType) {
+        this.cashTypeIds.add((long) cashType.getId());
     }
 
     public boolean isReinvestAll() {
