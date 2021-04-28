@@ -37,6 +37,14 @@ public class AppFilterService {
         appFilterRepository.save(appFilter);
     }
 
+    /**
+     * Получить подготовленный фильтр из базы данных
+     *
+     * @param oldFilter старый фильтр
+     * @param clazz класс, в который надо прочитать фильтр
+     * @param page страница для которой запрашивается фильтр
+     * @return полученный или старый фильтр
+     */
     public AbstractFilter getFilter(AbstractFilter oldFilter, Class<? extends AbstractFilter> clazz, AppPage page) {
         Long curUserId = SecurityUtils.getUserId();
         AppFilter appFilter = findFilter(curUserId, page.getId());
