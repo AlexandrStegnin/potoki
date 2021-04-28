@@ -11,7 +11,8 @@ import java.util.Objects;
 @Getter
 public enum AppPage {
 
-    MONEY(1, "Деньги инвесторов", "money");
+    MONEY(1, "Деньги инвесторов", "money"),
+    USERS(2, "Пользователи", "user-list");
 
     private final int id;
 
