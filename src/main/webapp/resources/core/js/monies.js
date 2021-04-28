@@ -1044,8 +1044,9 @@ function deleteCash(cashIdList) {
         .done(function (data) {
             showPopup(data.message);
         })
-        .fail(function (e) {
-            showPopup('Что-то пошло не так [' + e.error + ']');
+        .fail(function (jqXHR) {
+            $('#content').addClass('bg-warning')
+            showPopup(jqXHR.responseText);
         })
         .always(function () {
             console.log('Закончили!');
