@@ -92,21 +92,8 @@ public class MoneyController {
      */
     @GetMapping(path = Location.MONEY_LIST)
     public ModelAndView moneyByPageNumber(@PageableDefault(size = 100) @SortDefault Pageable pageable) {
-        ModelAndView modelAndView = new ModelAndView("money-list");
-        AppFilter appFilter = appFilterService.findFilter(SecurityUtils.getUserId(), AppPage.MONEY.getId());
-        if (Objects.nonNull(appFilter)) {
-            try {
-                cashFilters = objectMapper.readValue(appFilter.getText(), CashFilter.class);
-            } catch (Exception e) {
-                log.error("Не удалось получить фильтр: {}", appFilter);
-            }
-        }
-        Page<Money> page = moneyService.findAll(cashFilters, pageable);
-        modelAndView.addObject("page", page);
-        modelAndView.addObject("cashFilters", cashFilters);
-        modelAndView.addObject("searchSummary", filters);
-        modelAndView.addObject("cashingDTO", new CashingMoneyDTO());
-        return modelAndView;
+        cashFilters = (CashFilter) appFilterService.getFilter(cashFilters, CashFilter.class, AppPage.MONEY);
+        return prepareModel(pageable, cashFilters);
     }
 
     /**
@@ -117,7 +104,6 @@ public class MoneyController {
      */
     @PostMapping(path = Location.MONEY_LIST)
     public ModelAndView moneyPageable(@ModelAttribute(value = "cashFilters") CashFilter cashFilters) {
-        Long curUserId = SecurityUtils.getUserId();
         Pageable pageable;
         if (cashFilters.getFiltered() == 0) {
             cashFilters.setFiltered(1);
@@ -127,8 +113,12 @@ public class MoneyController {
         } else {
             pageable = new PageRequest(cashFilters.getPageNumber(), cashFilters.getPageSize());
         }
+        updateFilter(cashFilters);
+        return prepareModel(pageable, cashFilters);
+    }
+
+    private ModelAndView prepareModel(Pageable pageable, CashFilter cashFilters) {
         ModelAndView modelAndView = new ModelAndView("money-list");
-        updateFilter(cashFilters, curUserId);
         Page<Money> page = moneyService.findAll(cashFilters, pageable);
         modelAndView.addObject("page", page);
         modelAndView.addObject("cashFilters", cashFilters);
@@ -141,9 +131,9 @@ public class MoneyController {
      * Обновить инфо о фильтрах в базе данных
      *
      * @param cashFilters фильтры
-     * @param curUserId id текущего пользователя
      */
-    private void updateFilter(CashFilter cashFilters, Long curUserId) {
+    private void updateFilter(CashFilter cashFilters) {
+        Long curUserId = SecurityUtils.getUserId();
         AppFilter appFilter = appFilterService.findFilter(curUserId, AppPage.MONEY.getId());
         if (Objects.isNull(appFilter)) {
             appFilter = new AppFilter();
@@ -155,6 +145,12 @@ public class MoneyController {
                 log.error("Не удалось распарсить фильтр в строку");
             }
             appFilterService.save(appFilter);
+        } else {
+            try {
+                appFilter.setText(objectMapper.writeValueAsString(cashFilters));
+            } catch (JsonProcessingException e) {
+                log.error("Не удалось распарсить фильтр в строку");
+            }
         }
     }
 
