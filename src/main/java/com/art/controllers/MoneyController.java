@@ -1,10 +1,8 @@
 package com.art.controllers;
 
-import com.art.config.SecurityUtils;
 import com.art.config.application.Location;
 import com.art.model.*;
 import com.art.model.supporting.ApiResponse;
-import com.art.model.supporting.AppFilter;
 import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.dto.*;
 import com.art.model.supporting.enums.AppPage;
@@ -12,8 +10,6 @@ import com.art.model.supporting.enums.MoneyOperation;
 import com.art.model.supporting.enums.ShareType;
 import com.art.model.supporting.filters.CashFilter;
 import com.art.service.*;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Hibernate;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -65,13 +61,11 @@ public class MoneyController {
 
     private final AppFilterService appFilterService;
 
-    private final ObjectMapper objectMapper;
-
     public MoneyController(MoneyService moneyService,
                            StatusService statusService, FacilityService facilityService, UserService userService,
                            CashSourceService cashSourceService, NewCashDetailService newCashDetailService,
                            UnderFacilityService underFacilityService, TypeClosingService typeClosingService,
-                           AppFilterService appFilterService, ObjectMapper objectMapper) {
+                           AppFilterService appFilterService) {
         this.moneyService = moneyService;
         this.statusService = statusService;
         this.facilityService = facilityService;
@@ -81,7 +75,6 @@ public class MoneyController {
         this.underFacilityService = underFacilityService;
         this.typeClosingService = typeClosingService;
         this.appFilterService = appFilterService;
-        this.objectMapper = objectMapper;
     }
 
     /**
@@ -113,7 +106,7 @@ public class MoneyController {
         } else {
             pageable = new PageRequest(cashFilters.getPageNumber(), cashFilters.getPageSize());
         }
-        updateFilter(cashFilters);
+        appFilterService.updateFilter(cashFilters, AppPage.MONEY);
         return prepareModel(pageable, cashFilters);
     }
 
@@ -125,33 +118,6 @@ public class MoneyController {
         modelAndView.addObject("searchSummary", filters);
         modelAndView.addObject("cashingDTO", new CashingMoneyDTO());
         return modelAndView;
-    }
-
-    /**
-     * Обновить инфо о фильтрах в базе данных
-     *
-     * @param cashFilters фильтры
-     */
-    private void updateFilter(CashFilter cashFilters) {
-        Long curUserId = SecurityUtils.getUserId();
-        AppFilter appFilter = appFilterService.findFilter(curUserId, AppPage.MONEY.getId());
-        if (Objects.isNull(appFilter)) {
-            appFilter = new AppFilter();
-            appFilter.setUserId(curUserId);
-            appFilter.setPageId(AppPage.MONEY);
-            try {
-                appFilter.setText(objectMapper.writeValueAsString(cashFilters));
-            } catch (JsonProcessingException e) {
-                log.error("Не удалось распарсить фильтр в строку");
-            }
-            appFilterService.save(appFilter);
-        } else {
-            try {
-                appFilter.setText(objectMapper.writeValueAsString(cashFilters));
-            } catch (JsonProcessingException e) {
-                log.error("Не удалось распарсить фильтр в строку");
-            }
-        }
     }
 
     /**
