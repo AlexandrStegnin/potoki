@@ -149,8 +149,8 @@ function showUpdateUnderFacilityForm(data) {
     ufForm.find('#name').val(ufDTO.name)
     bindFacility(ufDTO.facility)
     ufForm.find('#action').attr("data-action", Action.UPDATE)
-    showForm(Action.UPDATE)
     closeLoader()
+    showForm(Action.UPDATE)
 }
 
 /**
