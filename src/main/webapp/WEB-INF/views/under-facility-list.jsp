@@ -34,8 +34,8 @@
         <sec:authorize access="isFullyAuthenticated()">
             <sec:authorize access="hasRole('ADMIN')">
                 <div style="padding: 5px; margin-left: auto">
-                    <a href="<c:url value='/facilities/child/create' />" class="btn btn-success btn-sm pull-right">Добавить
-                        подобъект</a>
+                    <a href="<c:url value='/#' />" id="create-uf"
+                       class="btn btn-success btn-sm pull-right">Добавить подобъект</a>
                 </div>
             </sec:authorize>
         </sec:authorize>
@@ -98,6 +98,6 @@
 <script src="<c:url value='https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
-<script type="text/javascript" src="<c:url value='/resources/core/js/facilities.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/u-facilities.js' />"></script>
 </body>
 </html>
