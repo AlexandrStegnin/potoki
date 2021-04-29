@@ -13,7 +13,8 @@ public enum AppPage {
 
     MONEY(1, "Деньги инвесторов", "money"),
     USERS(2, "Пользователи", "user-list"),
-    SALE_PAYMENTS(3, "Выплаты с продажи", "sale-payment-list");
+    SALE_PAYMENTS(3, "Выплаты с продажи", "sale-payment-list"),
+    RENT_PAYMENTS(4, "Выплаты с аренды", "rent-payment-list");
 
     private final int id;
 
