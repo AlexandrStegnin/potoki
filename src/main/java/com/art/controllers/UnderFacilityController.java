@@ -5,6 +5,7 @@ import com.art.model.Account;
 import com.art.model.Facility;
 import com.art.model.Room;
 import com.art.model.UnderFacility;
+import com.art.model.supporting.dto.UnderFacilityDTO;
 import com.art.model.supporting.enums.OwnerType;
 import com.art.service.AccountService;
 import com.art.service.FacilityService;
@@ -48,6 +49,7 @@ public class UnderFacilityController {
     public String underFacilityPage(ModelMap model) {
         List<UnderFacility> underFacilities = underFacilityService.findAll();
         model.addAttribute("underFacilities", underFacilities);
+        model.addAttribute("underFacilityDTO", new UnderFacilityDTO());
         return "under-facility-list";
     }
 
