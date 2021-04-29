@@ -11,13 +11,11 @@ import com.art.model.supporting.FileBucket;
 import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.dto.SalePaymentDTO;
 import com.art.model.supporting.dto.SalePaymentDivideDTO;
+import com.art.model.supporting.enums.AppPage;
 import com.art.model.supporting.enums.ShareType;
 import com.art.model.supporting.enums.UploadType;
 import com.art.model.supporting.filters.SalePaymentFilter;
-import com.art.service.FacilityService;
-import com.art.service.SalePaymentService;
-import com.art.service.UnderFacilityService;
-import com.art.service.UserService;
+import com.art.service.*;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -49,16 +47,19 @@ public class SalePaymentController {
 
     private final UserService userService;
 
-    private final SalePaymentFilter filter = new SalePaymentFilter();
+    private SalePaymentFilter filter = new SalePaymentFilter();
+
+    private final AppFilterService appFilterService;
 
     public SalePaymentController(UploadExcelService uploadExcelService, FacilityService facilityService,
                                  SalePaymentService salePaymentService, UnderFacilityService underFacilityService,
-                                 UserService userService) {
+                                 UserService userService, AppFilterService appFilterService) {
         this.uploadExcelService = uploadExcelService;
         this.facilityService = facilityService;
         this.salePaymentService = salePaymentService;
         this.underFacilityService = underFacilityService;
         this.userService = userService;
+        this.appFilterService = appFilterService;
     }
 
     /**
@@ -69,6 +70,7 @@ public class SalePaymentController {
      */
     @GetMapping(path = Location.SALE_PAYMENTS)
     public ModelAndView paymentsSale(@PageableDefault(size = 100) @SortDefault Pageable pageable) {
+        filter = (SalePaymentFilter) appFilterService.getFilter(filter, SalePaymentFilter.class, AppPage.SALE_PAYMENTS);
         return prepareModel(filter);
     }
 
@@ -80,6 +82,7 @@ public class SalePaymentController {
      */
     @PostMapping(path = Location.SALE_PAYMENTS)
     public ModelAndView paymentsSaleFiltered(@ModelAttribute("filter") SalePaymentFilter filter) {
+        appFilterService.updateFilter(filter, AppPage.SALE_PAYMENTS);
         return prepareModel(filter);
     }
 

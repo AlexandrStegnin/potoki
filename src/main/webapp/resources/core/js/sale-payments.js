@@ -35,7 +35,6 @@ jQuery(document).ready(function ($) {
 
     blockUnblockDropdownMenus('block', false);
     blockUnblockDivide();
-    getFiltersFromLS((window.location.pathname + '').split("/")[1]);
 
     $('#delete-list').on('click', function (event) {
         let confirm = $('#confirm-delete');
