@@ -6,6 +6,7 @@ import com.art.model.*;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.FileBucket;
 import com.art.model.supporting.dto.RentPaymentDTO;
+import com.art.model.supporting.enums.AppPage;
 import com.art.model.supporting.enums.ShareType;
 import com.art.model.supporting.enums.UploadType;
 import com.art.model.supporting.filters.RentPaymentFilter;
@@ -42,18 +43,21 @@ public class RentPaymentController {
 
     private final RoomService roomService;
 
-    private final RentPaymentFilter filters = new RentPaymentFilter();
+    private RentPaymentFilter filters = new RentPaymentFilter();
 
+    private final AppFilterService appFilterService;
 
     public RentPaymentController(FacilityService facilityService, UploadExcelService uploadExcelService,
                                  UserService userService, RentPaymentService rentPaymentService,
-                                 UnderFacilityService underFacilityService, RoomService roomService) {
+                                 UnderFacilityService underFacilityService, RoomService roomService,
+                                 AppFilterService appFilterService) {
         this.facilityService = facilityService;
         this.uploadExcelService = uploadExcelService;
         this.userService = userService;
         this.rentPaymentService = rentPaymentService;
         this.underFacilityService = underFacilityService;
         this.roomService = roomService;
+        this.appFilterService = appFilterService;
     }
 
     /**
@@ -64,6 +68,7 @@ public class RentPaymentController {
      */
     @GetMapping(path = Location.RENT_PAYMENTS)
     public ModelAndView rentPayments(@PageableDefault(size = 100) @SortDefault Pageable pageable) {
+        filters = (RentPaymentFilter) appFilterService.getFilter(filters, RentPaymentFilter.class, AppPage.RENT_PAYMENTS);
         return prepareModel(filters);
     }
 
@@ -75,6 +80,7 @@ public class RentPaymentController {
      */
     @PostMapping(path = Location.RENT_PAYMENTS)
     public ModelAndView rentPaymentsWithFilter(@ModelAttribute("filter") RentPaymentFilter filters) {
+        appFilterService.updateFilter(filters, AppPage.RENT_PAYMENTS);
         return prepareModel(filters);
     }
 

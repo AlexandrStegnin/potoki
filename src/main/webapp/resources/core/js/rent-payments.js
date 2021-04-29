@@ -21,7 +21,6 @@ RentPaymentDTO.prototype = {
 jQuery(document).ready(function ($) {
 
     blockUnblockDropdownMenus('block');
-    getFiltersFromLS((window.location.pathname + '').split("/")[1]);
 
     $(document).on('click', '#unblock_operations', function () {
         let tableId = $(this).data('table-id');
