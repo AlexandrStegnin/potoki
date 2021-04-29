@@ -5,10 +5,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Класс для хранения в базе фильтров,
@@ -24,6 +21,7 @@ import javax.persistence.Table;
 public class AppFilter {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     @Column(name = "user_id")
