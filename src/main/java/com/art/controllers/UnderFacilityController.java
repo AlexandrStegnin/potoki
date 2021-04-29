@@ -115,6 +115,12 @@ public class UnderFacilityController {
         return "registration-success";
     }
 
+    @ResponseBody
+    @PostMapping(path = Location.UNDER_FACILITIES_FIND)
+    public UnderFacilityDTO findUnderFacility(@RequestBody UnderFacilityDTO ufDTO) {
+        return new UnderFacilityDTO(underFacilityService.findById(ufDTO.getId()));
+    }
+
     @ModelAttribute("facilities")
     public List<Facility> initializeFacilities() {
         return facilityService.findAll();

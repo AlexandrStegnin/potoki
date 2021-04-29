@@ -1,7 +1,9 @@
 package com.art.model.supporting.dto;
 
+import com.art.model.UnderFacility;
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 /**
@@ -9,6 +11,7 @@ import lombok.experimental.FieldDefaults;
  */
 
 @Data
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UnderFacilityDTO {
 
@@ -17,5 +20,11 @@ public class UnderFacilityDTO {
     String name;
 
     FacilityDTO facility;
+
+    public UnderFacilityDTO(UnderFacility entity) {
+        this.id = entity.getId();
+        this.name = entity.getName();
+        this.facility = new FacilityDTO(entity.getFacility());
+    }
 
 }

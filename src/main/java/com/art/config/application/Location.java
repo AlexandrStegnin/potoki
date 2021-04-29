@@ -75,6 +75,8 @@ public class Location {
 
     public static final String UNDER_FACILITIES_CREATE = UNDER_FACILITIES + "/create";
 
+    public static final String UNDER_FACILITIES_FIND = UNDER_FACILITIES + "/find";
+
     // Источники денег
     public static final String CASH_SOURCES = "/cash-sources";
 
