@@ -69,7 +69,6 @@ jQuery(document).ready(function ($) {
         $('#investors').find('option:eq(0)').prop('selected', true);
         $('#beginPeriod').val('');
         $('#endPeriod').val('');
-        populateFilters((window.location.pathname + '').split("/")[1]);
         $('.selectpicker').selectpicker('refresh')
         $('#btn-search').click()
     });

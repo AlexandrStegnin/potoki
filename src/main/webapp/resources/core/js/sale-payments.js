@@ -88,7 +88,6 @@ jQuery(document).ready(function ($) {
         $('#investors').find('option:eq(0)').prop('selected', true);
         $('#beginPeriod').val('');
         $('#endPeriod').val('');
-        populateFilters((window.location.pathname + '').split("/")[1]);
         window.location.href = window.location.pathname;
     });
 
@@ -151,12 +150,6 @@ jQuery(document).ready(function ($) {
         if ($('#all').prop('checked')) pageSize = 0;
         $('#pageSize').val(pageSize);
         $('#filter-form').submit();
-    });
-
-    $("#filter-form").submit(function () {
-        enableSearchButton(false);
-        populateFilters((window.location.pathname + '').split("/")[1]);
-        enableSearchButton(true);
     });
 
     $('table#salePayments').find('> tbody').find('> tr').each(function (i) {

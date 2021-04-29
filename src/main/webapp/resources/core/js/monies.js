@@ -96,7 +96,6 @@ jQuery(document).ready(function ($) {
         $('.selectpicker').selectpicker('refresh');
         $('#beginPeriod').val('');
         $('#endPeriod').val('');
-        populateFilters((window.location.pathname + '').split("/")[1]);
         window.location.href = window.location.pathname;
     });
 
@@ -319,7 +318,6 @@ jQuery(document).ready(function ($) {
         let action = $('input#action').attr('data-action');
         switch (action) {
             case 'reinvest':
-                populateFilters((window.location.pathname + '').split("/")[1]);
                 prepareReinvestCash();
                 break
             case 'divide':
@@ -452,12 +450,6 @@ jQuery(document).ready(function ($) {
             }
         }
     };
-
-    $("#search-form").submit(function () {
-        enableSearchButton(false);
-        populateFilters((window.location.pathname + '').split('/')[1]);
-        enableSearchButton(true);
-    });
 
     $('#facilities').change(function () {
         let facilities = [];
