@@ -1,13 +1,10 @@
 package com.art.controllers;
 
 import com.art.config.application.Location;
-import com.art.model.Account;
 import com.art.model.Facility;
 import com.art.model.Room;
 import com.art.model.UnderFacility;
 import com.art.model.supporting.dto.UnderFacilityDTO;
-import com.art.model.supporting.enums.OwnerType;
-import com.art.service.AccountService;
 import com.art.service.FacilityService;
 import com.art.service.RoomService;
 import com.art.service.UnderFacilityService;
@@ -35,14 +32,11 @@ public class UnderFacilityController {
 
     private final RoomService roomService;
 
-    private final AccountService accountService;
-
     public UnderFacilityController(UnderFacilityService underFacilityService, FacilityService facilityService,
-                                   RoomService roomService, AccountService accountService) {
+                                   RoomService roomService) {
         this.underFacilityService = underFacilityService;
         this.facilityService = facilityService;
         this.roomService = roomService;
-        this.accountService = accountService;
     }
 
     @GetMapping(path = Location.UNDER_FACILITIES_LIST)
@@ -51,22 +45,6 @@ public class UnderFacilityController {
         model.addAttribute("underFacilities", underFacilities);
         model.addAttribute("underFacilityDTO", new UnderFacilityDTO());
         return "under-facility-list";
-    }
-
-    @GetMapping(path = Location.UNDER_FACILITIES_EDIT)
-    public String editUnderFacility(@PathVariable Long id, ModelMap model) {
-        String title = "Обновление данных по подобъекту";
-        UnderFacility underFacility = underFacilityService.findById(id);
-        Account account = accountService.findByOwnerId(id, OwnerType.UNDER_FACILITY);
-        String accountNumber = "";
-        if (account != null) {
-            accountNumber = account.getAccountNumber();
-        }
-        model.addAttribute("underFacility", underFacility);
-        model.addAttribute("edit", true);
-        model.addAttribute("title", title);
-        model.addAttribute("accountNumber", accountNumber);
-        return "under-facility-add";
     }
 
     @PostMapping(path = Location.UNDER_FACILITIES_EDIT)
@@ -88,16 +66,6 @@ public class UnderFacilityController {
     public String deleteUnderFacility(@PathVariable Long id) {
         underFacilityService.deleteById(id);
         return "redirect:" + REDIRECT_URL;
-    }
-
-    @GetMapping(path = Location.UNDER_FACILITIES_CREATE)
-    public String newUnderFacility(ModelMap model) {
-        String title = "Добавление подобъекта";
-        UnderFacility underFacility = new UnderFacility();
-        model.addAttribute("underFacility", underFacility);
-        model.addAttribute("edit", false);
-        model.addAttribute("title", title);
-        return "under-facility-add";
     }
 
     @PostMapping(path = Location.UNDER_FACILITIES_CREATE)
