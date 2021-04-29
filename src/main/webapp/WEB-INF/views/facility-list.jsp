@@ -84,7 +84,6 @@
         </tbody>
     </table>
 </div>
-</div>
 <%@include file="popup_modal.jsp" %>
 <%@include file="ddk_loader.jsp" %>
 <%@include file="confirm-form.jsp" %>
