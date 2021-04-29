@@ -12,7 +12,8 @@ import java.util.Objects;
 public enum AppPage {
 
     MONEY(1, "Деньги инвесторов", "money"),
-    USERS(2, "Пользователи", "user-list");
+    USERS(2, "Пользователи", "user-list"),
+    SALE_PAYMENTS(3, "Выплаты с продажи", "sale-payment-list");
 
     private final int id;
 
