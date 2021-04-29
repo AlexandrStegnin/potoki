@@ -4,8 +4,10 @@ import com.art.config.application.Location;
 import com.art.model.AppUser;
 import com.art.model.MarketingTree;
 import com.art.model.supporting.GenericResponse;
+import com.art.model.supporting.enums.AppPage;
 import com.art.model.supporting.enums.KinEnum;
 import com.art.model.supporting.filters.MarketingTreeFilter;
+import com.art.service.AppFilterService;
 import com.art.service.MarketingTreeService;
 import com.art.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,21 +34,26 @@ public class MarketingTreeController {
 
     private final UserService userService;
     private final MarketingTreeService marketingTreeService;
-    private final MarketingTreeFilter filter = new MarketingTreeFilter();
+    private MarketingTreeFilter filter = new MarketingTreeFilter();
+    private final AppFilterService appFilterService;
 
     @Autowired
-    public MarketingTreeController(MarketingTreeService marketingTreeService, UserService userService) {
+    public MarketingTreeController(MarketingTreeService marketingTreeService, UserService userService,
+                                   AppFilterService appFilterService) {
         this.userService = userService;
         this.marketingTreeService = marketingTreeService;
+        this.appFilterService = appFilterService;
     }
 
     @GetMapping(path = Location.MARKETING_TREE)
     public ModelAndView marketingTreePage(@PageableDefault(size = 100) @SortDefault Pageable pageable) {
+        filter = (MarketingTreeFilter) appFilterService.getFilter(filter, MarketingTreeFilter.class, AppPage.MARKETING_TREE);
         return prepareModel(filter);
     }
 
     @PostMapping(path = Location.MARKETING_TREE)
     public ModelAndView marketingTreeWithFilter(@ModelAttribute("filter") MarketingTreeFilter filter) {
+        appFilterService.updateFilter(filter, AppPage.MARKETING_TREE);
         return prepareModel(filter);
     }
 
