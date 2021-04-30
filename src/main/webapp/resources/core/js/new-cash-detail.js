@@ -285,7 +285,7 @@ function acceptConfirm() {
         let detailId = confirmForm.find('#accept').attr('data-object-id')
         confirmForm.modal('hide')
         deleteDetail(detailId)
-        $('#facilities-table').find('tr#' + detailId).remove();
+        $('#cash-details-table').find('tr#' + detailId).remove();
     })
 }
 
