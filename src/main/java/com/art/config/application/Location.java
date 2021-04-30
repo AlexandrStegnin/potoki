@@ -69,9 +69,9 @@ public class Location {
 
     public static final String UNDER_FACILITIES_LIST = UNDER_FACILITIES + "/list";
 
-    public static final String UNDER_FACILITIES_EDIT = UNDER_FACILITIES + "/edit/{id}";
+    public static final String UNDER_FACILITIES_UPDATE = UNDER_FACILITIES + "/update";
 
-    public static final String UNDER_FACILITIES_DELETE = UNDER_FACILITIES + "/delete/{id}";
+    public static final String UNDER_FACILITIES_DELETE = UNDER_FACILITIES + "/delete";
 
     public static final String UNDER_FACILITIES_CREATE = UNDER_FACILITIES + "/create";
 

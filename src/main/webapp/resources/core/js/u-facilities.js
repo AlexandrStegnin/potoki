@@ -34,6 +34,17 @@ UnderFacilityDTO.prototype = {
     }
 }
 
+let FacilityDTO = function () {}
+
+FacilityDTO.prototype = {
+    id: null,
+    name: null,
+    build: function (id, name) {
+        this.id = id
+        this.name = name
+    }
+}
+
 let confirmForm;
 let ufForm;
 
@@ -42,7 +53,7 @@ jQuery(document).ready(function ($) {
     ufForm = $('#uf-modal-form');
     onCreateUnderFacilityEvent()
     onUpdateUnderFacilityEvent()
-    onDeleteFacilityEvent()
+    onDeleteUnderFacilityEvent()
     onAcceptFormEvent()
     $('#create').click(function (event) {
         showLoader();
@@ -165,4 +176,173 @@ function bindFacility(facility) {
         }
     })
     ufForm.find('#facility').selectpicker('refresh')
+}
+
+function onAcceptFormEvent() {
+    ufForm.find('#accept').on('click',function (e) {
+        e.preventDefault()
+        let ufDTO = getUnderFacilityDTO()
+        if (check(ufDTO)) {
+            let action = ufForm.find('#accept').attr('data-action')
+            ufForm.modal('hide')
+            save(ufDTO, action)
+        }
+    })
+    acceptConfirm()
+}
+
+/**
+ * Собрать DTO с формы
+ *
+ * @return {UnderFacilityDTO}
+ */
+function getUnderFacilityDTO() {
+    let ufDTO = new UnderFacilityDTO()
+    let ufId = ufForm.find('#uf-id').val()
+    let name = ufForm.find('#name').val()
+    let facilityId = ufForm.find('#facility option:selected').val()
+    let facilityName = ufForm.find('#facility option:selected').text()
+    let facilityDTO = new FacilityDTO()
+    facilityDTO.build(facilityId, facilityName)
+    ufDTO.build(ufId, name, facilityDTO)
+    return ufDTO
+}
+
+/**
+ * Проверить заполнение полей формы
+ *
+ * @param ufDTO {UnderFacilityDTO} DTO для проверки
+ * @return {boolean} результат проверки
+ */
+function check(ufDTO) {
+    let facilityError = ufForm.find('#facilityError')
+    if (ufDTO.facility.id === '0') {
+        facilityError.addClass('d-block')
+        return false
+    } else {
+        facilityError.removeClass('d-block')
+    }
+    let ufNameError = ufForm.find('#ufNameError');
+    if (ufDTO.name.length === 0) {
+        ufNameError.addClass('d-block')
+        return false
+    } else {
+        ufNameError.removeClass('d-block')
+    }
+    return true
+}
+
+/**
+ * Создать/обновить подобъект
+ *
+ * @param ufDTO {UnderFacilityDTO} DTO подобъекта
+ * @param action {Action} действие
+ */
+function save(ufDTO, action) {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+
+    showLoader();
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: Action.properties[action].url,
+        data: JSON.stringify(ufDTO),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        }})
+        .done(function (data) {
+            closeLoader()
+            showPopup(data.message);
+            window.location.href = 'list'
+        })
+        .fail(function (jqXHR) {
+            $('#content').addClass('bg-warning')
+            showPopup(jqXHR.responseText);
+        })
+        .always(function () {
+            closeLoader()
+        });
+}
+
+/**
+ * Подтверждение с формы
+ *
+ */
+function acceptConfirm() {
+    confirmForm.find('#accept').on('click', function () {
+        let ufId = confirmForm.find('#accept').attr('data-object-id')
+        confirmForm.modal('hide')
+        deleteUnderFacility(ufId)
+        $('#u-facilities-table').find('tr#' + ufId).remove();
+    })
+}
+
+/**
+ * Удалить объект
+ *
+ * @param ufId {number} id объекта
+ */
+function deleteUnderFacility(ufId) {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+
+    showLoader()
+
+    let ufDto = {
+        id: ufId
+    }
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: Action.properties[Action.DELETE].url,
+        data: JSON.stringify(ufDto),
+        dataType: 'json',
+        timeout: 100000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        }})
+        .done(function (data) {
+            closeLoader()
+            showPopup(data.message);
+            window.location.href = 'list'
+        })
+        .fail(function (jqXHR) {
+            $('#content').addClass('bg-warning')
+            showPopup(jqXHR.responseText);
+        })
+        .always(function () {
+            closeLoader()
+        });
+}
+
+/**
+ * Событие при удалении подобъекта
+ */
+function onDeleteUnderFacilityEvent() {
+    $(document).on('click', '#delete-uf',function (e) {
+        e.preventDefault()
+        let ufId = $(this).attr('data-uf-id')
+        showConfirmForm('Удаление подобъекта', 'Действительно хотите удалить подобъект?', ufId, Action.DELETE)
+    })
+}
+
+/**
+ * Отобразить форму подтверждения
+ *
+ * @param title {String} заголовок формы
+ * @param message {String} сообщение
+ * @param objectId {String} идентификатор объекта
+ * @param action {Action} действие
+ */
+function showConfirmForm(title, message, objectId, action) {
+    confirmForm.find('#title').html(title)
+    confirmForm.find('#message').html(message)
+    confirmForm.find('#accept').attr('data-object-id', objectId)
+    confirmForm.find('#accept').attr('data-action', action)
+    confirmForm.modal('show')
 }

@@ -3,6 +3,8 @@ package com.art.service;
 import com.art.model.Account;
 import com.art.model.Facility;
 import com.art.model.UnderFacility;
+import com.art.model.supporting.ApiResponse;
+import com.art.model.supporting.dto.UnderFacilityDTO;
 import com.art.model.supporting.enums.OwnerType;
 import com.art.repository.UnderFacilityRepository;
 import org.springframework.stereotype.Service;
@@ -45,6 +47,12 @@ public class UnderFacilityService {
         accountService.deleteByOwnerId(id, OwnerType.UNDER_FACILITY);
     }
 
+    public ApiResponse delete(UnderFacilityDTO dto) {
+        underFacilityRepository.delete(dto.getId());
+        accountService.deleteByOwnerId(dto.getId(), OwnerType.UNDER_FACILITY);
+        return new ApiResponse("Подобъект успешно удалён");
+    }
+
 //    @CachePut(Constant.UNDER_FACILITIES_CACHE_KEY)
     public void create(UnderFacility underFacility) {
         underFacilityRepository.saveAndFlush(underFacility);
@@ -74,7 +82,21 @@ public class UnderFacilityService {
     }
 
 //    @CachePut(value = Constant.UNDER_FACILITIES_CACHE_KEY, key = "#underFacility.id")
-    public void update(UnderFacility underFacility) {
+    public ApiResponse update(UnderFacilityDTO dto) {
+        UnderFacility underFacility = new UnderFacility(dto);
         underFacilityRepository.save(underFacility);
+        return new ApiResponse("Подобъект успешно обновлён");
+    }
+
+    /**
+     * Создать подобъект на основе DTO
+     *
+     * @param dto DTO подобъекта
+     * @return ответ
+     */
+    public ApiResponse create(UnderFacilityDTO dto) {
+        UnderFacility underFacility = new UnderFacility(dto);
+        underFacilityRepository.save(underFacility);
+        return new ApiResponse("Подобъект успешно создан");
     }
 }

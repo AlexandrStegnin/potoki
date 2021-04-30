@@ -4,6 +4,7 @@ import com.art.config.application.Location;
 import com.art.model.Facility;
 import com.art.model.Room;
 import com.art.model.UnderFacility;
+import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.dto.UnderFacilityDTO;
 import com.art.service.FacilityService;
 import com.art.service.RoomService;
@@ -12,7 +13,6 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +23,6 @@ import java.util.List;
 @Controller
 @Transactional
 public class UnderFacilityController {
-
-    private static final String REDIRECT_URL = Location.UNDER_FACILITIES_LIST;
 
     private final UnderFacilityService underFacilityService;
 
@@ -47,40 +45,22 @@ public class UnderFacilityController {
         return "under-facility-list";
     }
 
-    @PostMapping(path = Location.UNDER_FACILITIES_EDIT)
-    public String updateUnderFacility(@ModelAttribute("underFacility") UnderFacility underFacility,
-                                      BindingResult result, ModelMap model) {
-        String ret = "списку подобъектов.";
-        if (result.hasErrors()) {
-            return "under-facility-add";
-        }
-        underFacilityService.update(underFacility);
-        model.addAttribute("success", "Данные по подобъекту " + underFacility.getName() +
-                " успешно обновлены.");
-        model.addAttribute("redirectUrl", REDIRECT_URL);
-        model.addAttribute("ret", ret);
-        return "registration-success";
+    @ResponseBody
+    @PostMapping(path = Location.UNDER_FACILITIES_DELETE)
+    public ApiResponse deleteUnderFacility(@RequestBody UnderFacilityDTO dto) {
+        return underFacilityService.delete(dto);
     }
 
-    @GetMapping(path = Location.UNDER_FACILITIES_DELETE)
-    public String deleteUnderFacility(@PathVariable Long id) {
-        underFacilityService.deleteById(id);
-        return "redirect:" + REDIRECT_URL;
-    }
-
+    @ResponseBody
     @PostMapping(path = Location.UNDER_FACILITIES_CREATE)
-    public String saveUnderFacility(@ModelAttribute("underFacility") UnderFacility underFacility,
-                                    BindingResult result, ModelMap model) {
-        if (result.hasErrors()) {
-            return "under-facility-add";
-        }
-        String ret = "списку подобъектов";
-        underFacilityService.create(underFacility);
-        model.addAttribute("success", "Подобъект " + underFacility.getName() +
-                " успешно добавлен.");
-        model.addAttribute("redirectUrl", REDIRECT_URL);
-        model.addAttribute("ret", ret);
-        return "registration-success";
+    public ApiResponse createUnderFacility(@RequestBody UnderFacilityDTO dto) {
+        return underFacilityService.create(dto);
+    }
+
+    @ResponseBody
+    @PostMapping(path = Location.UNDER_FACILITIES_UPDATE)
+    public ApiResponse updateUnderFacility(@RequestBody UnderFacilityDTO dto) {
+        return underFacilityService.update(dto);
     }
 
     @ResponseBody
@@ -91,7 +71,7 @@ public class UnderFacilityController {
 
     @ModelAttribute("facilities")
     public List<Facility> initializeFacilities() {
-        return facilityService.findAll();
+        return facilityService.initializeFacilities();
     }
 
     @ModelAttribute("rooms")
