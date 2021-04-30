@@ -44,16 +44,6 @@ jQuery(document).ready(function ($) {
     onUpdateDetailEvent()
     onDeleteDetailEvent()
     onAcceptFormEvent()
-    // $('#create').click(function (event) {
-    //     showLoader();
-    //     let action = $(this).data('action')
-    //     if (action === 'create') {
-    //         event.preventDefault();
-    //         create();
-    //     }
-    //     closeLoader();
-    // })
-
 
     $('a#delete').click(function (event) {
         event.preventDefault();
@@ -61,17 +51,6 @@ jQuery(document).ready(function ($) {
 
         deleteDetail(newCashDetailId);
         $('#tblNewCashDetails').find('tr#' + newCashDetailId).remove();
-    });
-
-    $("#newCashDetails").submit(function (event) {
-        enableSearchButton(false);
-        event.preventDefault();
-        let modelAttributeValue = $('#edit').val();
-        if(modelAttributeValue === "true"){
-            update();
-        }else{
-            create();
-        }
     });
 });
 
