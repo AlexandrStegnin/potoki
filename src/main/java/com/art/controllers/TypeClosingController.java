@@ -7,8 +7,10 @@ import com.art.model.supporting.dto.TypeClosingDTO;
 import com.art.service.TypeClosingService;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -28,51 +30,31 @@ public class TypeClosingController {
         modelAndView.setViewName("type-closing-list");
         List<TypeClosing> typeClosingInvestsList = typeClosingService.findAll();
         modelAndView.addObject("typeClosingInvestsList", typeClosingInvestsList);
+        modelAndView.addObject("typeClosingDTO", new TypeClosingDTO());
         return modelAndView;
     }
 
-    @GetMapping(path = Location.TYPE_CLOSING_CREATE)
-    public String newTypeClosing(ModelMap model) {
-        String title = "Добавление вида закрытия";
-        TypeClosing typeClosing = new TypeClosing();
-        model.addAttribute("typeClosing", typeClosing);
-        model.addAttribute("edit", false);
-        model.addAttribute("title", title);
-        return "type-closing-add";
-    }
-
+    @ResponseBody
     @PostMapping(path = Location.TYPE_CLOSING_CREATE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public @ResponseBody
-    ApiResponse saveTypeClosing(@RequestBody TypeClosingDTO typeClosingDTO) {
-        TypeClosing typeClosing = new TypeClosing(typeClosingDTO);
-        typeClosingService.create(typeClosing);
-        return new ApiResponse("Вид закрытия [" + typeClosing.getName() + "] успешно добавлен.");
+    public ApiResponse createType(@RequestBody TypeClosingDTO dto) {
+        return typeClosingService.create(dto);
     }
 
-
-    @GetMapping(path = Location.TYPE_CLOSING_EDIT)
-    public String editTypeClosing(@PathVariable Long id, ModelMap model) {
-        String title = "Обновление вида закрытия";
-        TypeClosing typeClosing = typeClosingService.findById(id);
-        model.addAttribute("typeClosing", typeClosing);
-        model.addAttribute("edit", true);
-        model.addAttribute("title", title);
-        return "type-closing-add";
+    @ResponseBody
+    @PostMapping(path = Location.TYPE_CLOSING_UPDATE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ApiResponse updateType(@RequestBody TypeClosingDTO dto) {
+        return typeClosingService.update(dto);
     }
 
-    @PostMapping(path = Location.TYPE_CLOSING_EDIT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public @ResponseBody
-    ApiResponse updateTypeClosing(@RequestBody TypeClosingDTO typeClosingDTO) {
-        TypeClosing typeClosing = typeClosingService.findById(typeClosingDTO.getId());
-        typeClosing.setName(typeClosingDTO.getName());
-        typeClosingService.update(typeClosing);
-        return new ApiResponse("Вид закрытия [" + typeClosing.getName() + "] успешно изменён.");
-    }
-
+    @ResponseBody
     @PostMapping(path = Location.TYPE_CLOSING_DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public @ResponseBody
-    ApiResponse deleteTypeClosing(@RequestBody TypeClosingDTO typeClosingDTO) {
-        typeClosingService.deleteById(typeClosingDTO.getId());
-        return new ApiResponse("Вид закрытия успешно удалён.");
+    public ApiResponse deleteType(@RequestBody TypeClosingDTO dto) {
+        return typeClosingService.deleteById(dto.getId());
+    }
+
+    @ResponseBody
+    @PostMapping(path = Location.TYPE_CLOSING_FIND)
+    public TypeClosingDTO findType(@RequestBody TypeClosingDTO dto) {
+        return new TypeClosingDTO(typeClosingService.findById(dto.getId()));
     }
 }

@@ -1,6 +1,8 @@
 package com.art.service;
 
 import com.art.model.TypeClosing;
+import com.art.model.supporting.ApiResponse;
+import com.art.model.supporting.dto.TypeClosingDTO;
 import com.art.repository.TypeClosingRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,8 +39,9 @@ public class TypeClosingService {
     }
 
 //    @CacheEvict(Constant.TYPES_CLOSING_CACHE_KEY)
-    public void deleteById(Long id) {
+    public ApiResponse deleteById(Long id) {
         typeClosingRepository.delete(id);
+        return new ApiResponse("Детали новых денег успешно удалены.");
     }
 
 //    @CachePut(value = Constant.TYPES_CLOSING_CACHE_KEY, key = "#typeClosing.id")
@@ -63,5 +66,17 @@ public class TypeClosingService {
                         !tc.getName().equalsIgnoreCase(NEW_CASH_DETAIL_REINVEST))
                 .collect(Collectors.toList()));
         return typeClosingList;
+    }
+
+    public ApiResponse create(TypeClosingDTO dto) {
+        TypeClosing typeClosing = new TypeClosing(dto);
+        typeClosingRepository.save(typeClosing);
+        return new ApiResponse("Вид закрытия успешно создан");
+    }
+
+    public ApiResponse update(TypeClosingDTO dto) {
+        TypeClosing typeClosing = new TypeClosing(dto);
+        typeClosingRepository.save(typeClosing);
+        return new ApiResponse("Вид закрытия успешно обновлён");
     }
 }

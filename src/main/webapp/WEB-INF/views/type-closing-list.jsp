@@ -75,7 +75,7 @@
                                     <a class="dropdown-item" id="edit-type" data-type-id="${type.id}"
                                        href="<c:url value='#' />">Изменить</a>
                                     <a class="dropdown-item" id="delete-type" href="<c:url value='#' />"
-                                       data-detail-id="${type.id}" style="color: red">Удалить</a>
+                                       data-type-id="${type.id}" style="color: red">Удалить</a>
                                 </div>
                             </div>
                         </td>

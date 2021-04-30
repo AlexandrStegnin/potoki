@@ -182,11 +182,13 @@ public class Location {
 
     public static final String TYPE_CLOSING_LIST = TYPE_CLOSING + "/list";
 
-    public static final String TYPE_CLOSING_EDIT = TYPE_CLOSING + "/edit/{id}";
+    public static final String TYPE_CLOSING_UPDATE = TYPE_CLOSING + "/update";
 
     public static final String TYPE_CLOSING_DELETE = TYPE_CLOSING + "/delete";
 
     public static final String TYPE_CLOSING_CREATE = TYPE_CLOSING + "/create";
+
+    public static final String TYPE_CLOSING_FIND = TYPE_CLOSING + "/find";
 
     // Восстановление пароля
     public static final String FORGOT_PASSWORD = "/forgotPassword";
