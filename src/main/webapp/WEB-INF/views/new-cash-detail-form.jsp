@@ -19,7 +19,7 @@
                             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="name">Название:</label>
                             <div class="col-sm-6">
                                 <form:input type="text" path="name" id="name" class="form-control input-sm"/>
-                                <div class="has-error d-none" id="facilityNameError">
+                                <div class="has-error d-none" id="detailNameError">
                                     Название должно быть более 3 символов
                                 </div>
                             </div>
