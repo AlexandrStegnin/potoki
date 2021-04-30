@@ -169,11 +169,13 @@ public class Location {
 
     public static final String NEW_CASH_DETAILS_LIST = NEW_CASH_DETAILS + "/list";
 
-    public static final String NEW_CASH_DETAILS_EDIT = NEW_CASH_DETAILS + "/edit/{id}";
+    public static final String NEW_CASH_DETAILS_UPDATE = NEW_CASH_DETAILS + "/update";
 
     public static final String NEW_CASH_DETAILS_DELETE = NEW_CASH_DETAILS + "/delete";
 
     public static final String NEW_CASH_DETAILS_CREATE = NEW_CASH_DETAILS + "/create";
+
+    public static final String NEW_CASH_DETAILS_FIND = NEW_CASH_DETAILS + "/find";
 
     // Виды закрытия
     public static final String TYPE_CLOSING = "/type-closing";

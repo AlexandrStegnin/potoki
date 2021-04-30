@@ -1,6 +1,8 @@
 package com.art.service;
 
 import com.art.model.NewCashDetail;
+import com.art.model.supporting.ApiResponse;
+import com.art.model.supporting.dto.NewCashDetailDTO;
 import com.art.repository.NewCashDetailRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,5 +58,17 @@ public class NewCashDetailService {
         newCashDetailList.add(newCashDetail);
         newCashDetailList.addAll(findAll());
         return newCashDetailList;
+    }
+
+    public ApiResponse create(NewCashDetailDTO dto) {
+        NewCashDetail entity = new NewCashDetail(dto);
+        newCashDetailRepository.save(entity);
+        return new ApiResponse("Детали новых денег успешно созданы");
+    }
+
+    public ApiResponse update(NewCashDetailDTO dto) {
+        NewCashDetail detail = new NewCashDetail(dto);
+        newCashDetailRepository.save(detail);
+        return new ApiResponse("Детали новых денег успешно обновлены");
     }
 }

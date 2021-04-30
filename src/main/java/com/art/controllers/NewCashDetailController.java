@@ -29,42 +29,16 @@ public class NewCashDetailController {
         return "new-cash-detail-list";
     }
 
-    @GetMapping(path = Location.NEW_CASH_DETAILS_CREATE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public String newCashDetail(ModelMap model) {
-        String title = "Добавление деталей новых денег";
-        NewCashDetail newCashDetail = new NewCashDetail();
-        model.addAttribute("newCashDetail", newCashDetail);
-        model.addAttribute("edit", false);
-        model.addAttribute("title", title);
-        return "new-cash-detail-add";
-    }
-
+    @ResponseBody
     @PostMapping(path = Location.NEW_CASH_DETAILS_CREATE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public @ResponseBody
-    ApiResponse saveNewCashDetail(@RequestBody NewCashDetailDTO newCashDetailDTO) {
-        NewCashDetail newCashDetail = new NewCashDetail(newCashDetailDTO);
-        newCashDetailService.create(newCashDetail);
-        return new ApiResponse("Детали новых денег [" + newCashDetail.getName() + "] успешно добавлены.");
+    public ApiResponse createDetail(@RequestBody NewCashDetailDTO dto) {
+        return newCashDetailService.create(dto);
     }
 
-
-    @GetMapping(path = Location.NEW_CASH_DETAILS_EDIT)
-    public String editNewCashDetail(@PathVariable Long id, ModelMap model) {
-        String title = "Обновление деталей новых денег";
-        NewCashDetail newCashDetail = newCashDetailService.findById(id);
-        model.addAttribute("newCashDetail", newCashDetail);
-        model.addAttribute("edit", true);
-        model.addAttribute("title", title);
-        return "new-cash-detail-add";
-    }
-
-    @PostMapping(path = Location.NEW_CASH_DETAILS_EDIT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public @ResponseBody
-    ApiResponse updateNewCashDetail(@RequestBody NewCashDetailDTO newCashDetailDTO) {
-        NewCashDetail newCashDetail = newCashDetailService.findById(newCashDetailDTO.getId());
-        newCashDetail.setName(newCashDetailDTO.getName());
-        newCashDetailService.update(newCashDetail);
-        return new ApiResponse("Детали новых денег [" + newCashDetail.getName() + "] успешно изменены.");
+    @ResponseBody
+    @PostMapping(path = Location.NEW_CASH_DETAILS_UPDATE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ApiResponse updateDetail(@RequestBody NewCashDetailDTO dto) {
+        return newCashDetailService.update(dto);
     }
 
     @PostMapping(path = Location.NEW_CASH_DETAILS_DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -73,4 +47,11 @@ public class NewCashDetailController {
         newCashDetailService.deleteById(newCashDetailDTO.getId());
         return new ApiResponse("Детали новых денег успешно удалены.");
     }
+
+    @ResponseBody
+    @PostMapping(path = Location.NEW_CASH_DETAILS_FIND)
+    public NewCashDetailDTO findDetail(@RequestBody NewCashDetailDTO dto) {
+        return new NewCashDetailDTO(newCashDetailService.findById(dto.getId()));
+    }
+
 }
