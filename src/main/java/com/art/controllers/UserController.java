@@ -24,7 +24,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -197,20 +196,6 @@ public class UserController {
             response.setError("При удалении пользователя <b>" + user.getLogin() + "</b> произошла ошибка.");
         }
         return response;
-    }
-
-    /**
-     * Страница создания пользователя
-     */
-    @GetMapping(path = Location.USERS_CREATE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public String createUser(ModelMap model) {
-        String title = "Создание пользователя";
-        List<KinEnum> kins = new ArrayList<>(Arrays.asList(KinEnum.values()));
-        AppUser user = new AppUser();
-        model.addAttribute("user", user);
-        model.addAttribute("kins", kins);
-        model.addAttribute("title", title);
-        return "user-add";
     }
 
     /**
