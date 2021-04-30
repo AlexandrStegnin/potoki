@@ -49,7 +49,7 @@
 </div>
 <div class="container-fluid">
     <table class="table table-striped w-auto table-hover table-sm" style="table-layout: fixed"
-           id="cash-details-table">
+           id="type-closing-table">
         <thead style="text-align: center">
         <tr>
             <th>ID</th>
