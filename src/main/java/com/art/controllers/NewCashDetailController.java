@@ -25,6 +25,7 @@ public class NewCashDetailController {
     public String newCashDetailsPage(ModelMap model) {
         List<NewCashDetail> newCashDetails = newCashDetailService.findAll();
         model.addAttribute("newCashDetails", newCashDetails);
+        model.addAttribute("newCashDetailDTO", new NewCashDetailDTO());
         return "new-cash-detail-list";
     }
 
