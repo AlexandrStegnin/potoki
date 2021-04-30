@@ -1,6 +1,8 @@
 package com.art.model;
 
+import com.art.model.supporting.dto.UnderFacilityDTO;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -8,6 +10,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 @Entity
+@NoArgsConstructor
 @Table(name = "under_facility")
 @ToString(exclude = {"facility", "rooms"})
 @EqualsAndHashCode(exclude = {"facility", "rooms"})
@@ -59,4 +62,8 @@ public class UnderFacility implements Serializable {
         this.rooms = rooms;
     }
 
+    public UnderFacility(UnderFacilityDTO dto) {
+        this.name = dto.getName();
+        this.facility = new Facility(dto.getFacility());
+    }
 }
