@@ -96,7 +96,7 @@ jQuery(document).ready(function ($) {
         $('.selectpicker').selectpicker('refresh');
         $('#beginPeriod').val('');
         $('#endPeriod').val('');
-        window.location.href = window.location.pathname;
+        $('#bth-search').click()
     });
 
     $(document).on('click', '.disabled', function (e) {
