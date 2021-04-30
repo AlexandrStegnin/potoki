@@ -50,7 +50,7 @@ jQuery(document).ready(function ($) {
         let newCashDetailId = $(this).attr('data-cash-detail-id');
 
         deleteDetail(newCashDetailId);
-        $('#tblNewCashDetails').find('tr#' + newCashDetailId).remove();
+        $('#cash-details-table').find('tr#' + newCashDetailId).remove();
     });
 });
 
