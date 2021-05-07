@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 
 import javax.transaction.Transactional;
 import java.math.BigInteger;
@@ -30,4 +31,7 @@ public interface MarketingTreeRepository extends JpaRepository<MarketingTree, Bi
     List<MarketingTreeDTO> findGroupedCash();
 
     void deleteByInvestorId(Long investorId);
+
+    @Procedure(procedureName = "calculate_marketing_tree")
+    void calculateMarketingTree();
 }

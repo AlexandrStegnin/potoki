@@ -208,6 +208,7 @@ function savePass() {
 function updateMarketingTree() {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
+    showLoader()
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
@@ -219,10 +220,15 @@ function updateMarketingTree() {
             xhr.setRequestHeader(header, token);
         },
         success: function (data) {
+            closeLoader()
             showPopup(data.message)
         },
         error: function (e) {
             showPopup(e)
+            closeLoader()
+        },
+        always: function () {
+            closeLoader()
         }
     });
 }

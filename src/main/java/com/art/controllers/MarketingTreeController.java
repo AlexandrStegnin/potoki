@@ -3,7 +3,7 @@ package com.art.controllers;
 import com.art.config.application.Location;
 import com.art.model.AppUser;
 import com.art.model.MarketingTree;
-import com.art.model.supporting.GenericResponse;
+import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.enums.AppPage;
 import com.art.model.supporting.enums.KinEnum;
 import com.art.model.supporting.filters.MarketingTreeFilter;
@@ -73,10 +73,8 @@ public class MarketingTreeController {
 
     @ResponseBody
     @PostMapping(path = Location.MARKETING_TREE_UPDATE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public GenericResponse updateMarketingTree() {
-        GenericResponse response = new GenericResponse();
-        response.setMessage(marketingTreeService.updateMarketingTreeFromApp());
-        return response;
+    public ApiResponse updateMarketingTree() {
+        return marketingTreeService.calculate();
     }
 
     @ModelAttribute("investors")

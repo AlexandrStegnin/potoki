@@ -20,6 +20,6 @@ public class ScheduledService {
             lockAtLeastFor = "PT29M", // запускать не чаще, чем раз в 29 мин
             lockAtMostFor = "PT29M") // если нода "умерла" и не отпустила локу, то держит её не более 29 мин
     public void calculateMarketingTree() {
-        marketingTreeService.updateMarketingTreeFromApp();
+        marketingTreeService.calculate();
     }
 }
