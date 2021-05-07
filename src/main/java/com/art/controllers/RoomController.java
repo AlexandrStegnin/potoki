@@ -4,6 +4,7 @@ import com.art.config.application.Location;
 import com.art.model.Account;
 import com.art.model.Room;
 import com.art.model.UnderFacility;
+import com.art.model.supporting.dto.RoomDTO;
 import com.art.model.supporting.enums.OwnerType;
 import com.art.service.AccountService;
 import com.art.service.RoomService;
@@ -41,6 +42,7 @@ public class RoomController {
     public String roomsPage(ModelMap model) {
         List<Room> rooms = roomService.findAll();
         model.addAttribute("rooms", rooms);
+        model.addAttribute("roomDTO", new RoomDTO());
         return "room-list";
     }
 
