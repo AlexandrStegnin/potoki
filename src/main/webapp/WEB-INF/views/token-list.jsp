@@ -1,88 +1,111 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<html lang="en-RU">
+<!DOCTYPE html>
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Список токенов</title>
-    <sec:csrfMetaTags />
-    <link href="<c:url value='/resources/core/css/old_bootstrap.min.css' />" rel="stylesheet" />
-    <link href="<c:url value='/resources/core/css/applic.css' />" rel="stylesheet" />
-    <link href="<c:url value='/resources/core/css/popup.css' />" rel="stylesheet" />
-    <link href="<c:url value='/resources/core/css/ddk_loader.css' />" rel="stylesheet" />
-    <script type="text/javascript" src="<c:url value='/resources/core/js/jquery-3.2.1.js' />" ></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/bootstrap.min_old.js' />" ></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />" ></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />" ></script>
-    <script type="text/javascript" src="<c:url value='/resources/core/js/popupScripts.js' />" ></script>
+    <sec:csrfMetaTags/>
+    <link rel="stylesheet"
+          href="<c:url value='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' />"/>
+    <link rel="stylesheet"
+          href="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css' />">
+    <link href="<c:url value='https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css' />"
+          rel="stylesheet">
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon/favicon.ico?v=eEY755nn99' />">
+    <link href="<c:url value='/resources/core/css/ddk_loader.css' />" rel="stylesheet"/>
+    <style>
+        .bootstrap-select > select {
+            margin: 10px !important;
+        }
+
+        .has-error {
+            color: red;
+            padding: 8px 0 0 8px;
+            font-size: 12px;
+        }
+    </style>
 </head>
 
 <body>
-<div class="generic-container">
-    <%@include file="old_authheader.jsp" %>
-    <div class="panel panel-default">
-        <!-- Default panel contents -->
-        <div class="panel-heading"><span class="lead">Список токенов:</span></div>
-        <table class="table table-hover" id="tblFacilities">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Название приложения</th>
-                <th>Токен</th>
-                <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
-                    <th width="100"></th>
-                </sec:authorize>
-                <sec:authorize access="hasRole('ADMIN')">
-                    <th width="100"></th>
-                </sec:authorize>
-
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach items="${tokens}" var="token">
-                <tr id="${token.id}">
-                    <td>${token.id}</td>
-                    <td>${token.appName}</td>
-                    <td>${token.token}</td>
-                    <sec:authorize access="isFullyAuthenticated()">
-                        <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
-                            <td><a href="<c:url value='/edit-token-${token.id}' />" class="btn btn-success custom-width">Изменить</a></td>
-                        </sec:authorize>
-                        <sec:authorize access="hasRole('ADMIN')">
-                            <td><a href="<c:url value='/delete-token-${token.id}' />" class="btn btn-danger custom-width"
-                                   id="delete" name="${token.id}">Удалить</a></td>
-                        </sec:authorize>
-                    </sec:authorize>
-                </tr>
-            </c:forEach>
-            </tbody>
-        </table>
-    </div>
-
-
-    <sec:authorize access="isRememberMe()">
-        <p>Вы вошли с помощью функции "Запомнить меня".
-            Чтобы иметь все права на данную страницу, Вам необходимо снова
-            <a href="<c:url value='/login' />">ВОЙТИ</a> в систему используя логин/пароль.
-        </p>
-
-    </sec:authorize>
-
-    <sec:authorize access="isFullyAuthenticated()">
-        <sec:authorize access="hasRole('ADMIN')">
-            <div class="well">
-                <a href="<c:url value='/generate' />">Добавить токен</a>
-            </div>
+<%@include file="header.jsp" %>
+<div class="container-fluid">
+    <div class="d-flex flex-row justify-content-between" style="margin: 10px;">
+        <sec:authorize access="isFullyAuthenticated()">
+            <sec:authorize access="hasRole('ADMIN')">
+                <div style="padding: 5px; margin-left: auto">
+                    <a href="<c:url value='/#' />" id="create-token"
+                       class="btn btn-success btn-md pull-right">Создать</a>
+                </div>
+            </sec:authorize>
         </sec:authorize>
-    </sec:authorize>
+    </div>
 </div>
 
-<%@include file="loader.jsp" %>
-<%@include file="popup.jsp" %>
-<%@include file="slideDiv.jsp" %>
+<div class="container-fluid">
+    <table class="table table-striped w-auto table-hover table-sm" style="table-layout: fixed"
+           id="token-table">
+        <thead style="text-align: center">
+        <tr>
+            <th>ID</th>
+            <th>Название приложения</th>
+            <th>Токен</th>
+            <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
+                <th>Действие</th>
+            </sec:authorize>
+        </tr>
+        </thead>
+        <tbody style="text-align: center">
+        <c:forEach items="${tokens}" var="token">
+            <tr id="${token.id}">
+                <td>${token.id}</td>
+                <td>${token.appName}</td>
+                <td>${token.token}</td>
+                <sec:authorize access="isFullyAuthenticated()">
+                    <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
+                        <td style="text-align: center">
+                            <div class="dropdown pull-right" style="margin-right: 10px">
+                                <button type="button" data-toggle="dropdown"
+                                        class="btn btn-success btn-sm dropdown-toggle pull-right"><span
+                                        class="fas fa-cog"></span></button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" id="edit-token" data-token-id="${token.id}"
+                                       href="<c:url value='#' />">Изменить</a>
+                                    <a class="dropdown-item" id="delete-token" href="<c:url value='#' />"
+                                       data-token-id="${token.id}" style="color: red">Удалить</a>
+                                </div>
+                            </div>
+                        </td>
+                    </sec:authorize>
+                </sec:authorize>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+</div>
+
+<%@include file="popup_modal.jsp" %>
+<%@include file="ddk_loader.jsp" %>
+<%@include file="confirm-form.jsp" %>
+<%@include file="token-form.jsp" %>
+
+<script type="text/javascript"
+        src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' />"></script>
+<script type="text/javascript"
+        src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js' />"></script>
+<script type="text/javascript"
+        src="<c:url value='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js' />"></script>
+<script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js' />"></script>
+<script src="<c:url value='https://kit.fontawesome.com/2b84e2f58d.js' />" crossorigin="anonymous"></script>
+<script src="<c:url value='https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/jsFunctions.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/core/js/tokens.js' />"></script>
+
 </body>
 </html>

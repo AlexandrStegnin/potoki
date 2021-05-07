@@ -1,6 +1,8 @@
 package com.art.service;
 
 import com.art.model.AppToken;
+import com.art.model.supporting.ApiResponse;
+import com.art.model.supporting.dto.TokenDTO;
 import com.art.repository.AppTokenRepository;
 import org.springframework.stereotype.Service;
 
@@ -35,16 +37,21 @@ public class AppTokenService {
         appTokenRepository.delete(token);
     }
 
-    public void delete(Long id) {
+    public ApiResponse delete(Long id) {
         appTokenRepository.delete(id);
+        return new ApiResponse("Токен успешно удалён");
     }
 
-    public AppToken update(AppToken token) {
-        return appTokenRepository.save(token);
+    public ApiResponse update(TokenDTO dto) {
+        AppToken token = new AppToken(dto);
+        appTokenRepository.save(token);
+        return new ApiResponse("Токен успешно обновлён");
     }
 
-    public AppToken create(AppToken token) {
-        return appTokenRepository.save(token);
+    public ApiResponse create(TokenDTO dto) {
+        AppToken token = new AppToken(dto);
+        appTokenRepository.save(token);
+        return new ApiResponse("Токен успешно создан");
     }
 
 }

@@ -102,11 +102,13 @@ public class Location {
     // Токены приложений
     public static final String TOKENS = "/tokens";
 
-    public static final String TOKENS_EDIT_ID = "/edit-token-{id}";
+    public static final String TOKENS_CREATE = TOKENS + "/create";
 
-    public static final String TOKENS_DELETE_ID = "/delete-token-{id}";
+    public static final String TOKENS_UPDATE = TOKENS + "/update";
 
-    public static final String TOKENS_GENERATE = "/generate";
+    public static final String TOKENS_DELETE = TOKENS + "/delete";
+
+    public static final String TOKENS_FIND = TOKENS + "/find";
 
     // Битрикс
     public static final String BITRIX_MERGE = "/bitrix/merge";
@@ -295,7 +297,6 @@ public class Location {
             INVESTOR_ANNEXES + WILD_CARD,
             HOME, WELCOME, INVESTMENTS,
             TOKENS + WILD_CARD,
-            TOKENS_GENERATE,
             BITRIX_MERGE,
             MONEY + WILD_CARD,
             NEW_CASH_DETAILS + WILD_CARD,

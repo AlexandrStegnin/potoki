@@ -1,5 +1,7 @@
 package com.art.model;
 
+import com.art.model.supporting.dto.TokenDTO;
+
 import javax.persistence.*;
 import java.util.UUID;
 
@@ -27,6 +29,15 @@ public class AppToken {
 
     public AppToken() {
         this.token = generateToken();
+    }
+
+    public AppToken(TokenDTO dto) {
+        this.id = dto.getId();
+        this.appName = dto.getAppName();
+        this.token = dto.getToken();
+        if (this.token == null) {
+            this.token = generateToken();
+        }
     }
 
     public Long getId() {
