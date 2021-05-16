@@ -15,105 +15,91 @@
                                style="margin: 10px 0 10px 0" id="room-form">
                         <form:input type="hidden" path="id" id="room-id"/>
                         <input type="hidden" id="edit" value="false">
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <label class="col-md-3 control-lable" for="underFacility">Подобъект:</label>
-                                <div class="col-md-7">
-                                    <form:select path="underFacility" id="underFacility" items="${underFacilities}" multiple="false"
-                                                 itemValue="id" itemLabel="name" class="form-control input-sm"/>
+                        <div class="form-group row">
+                            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="underFacility">Подобъект:</label>
+                            <div class="col-sm-6">
+                                <form:select path="underFacilityId" id="underFacility" items="${underFacilities}" multiple="false"
+                                             itemValue="id" itemLabel="name"
+                                             class="form-control form-control-sm selectpicker"
+                                             data-live-search="true" data-size="10"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="room">Помещение:</label>
+                            <div class="col-sm-6">
+                                <form:input type="text" path="name" id="room" class="form-control form-control-sm"/>
+                                <div class="has-error d-none" id="nameError">
+                                    Название помещения должно быть более 3 символов
                                 </div>
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <label class="col-md-3 control-lable" for="room">Помещение:</label>
-                                <div class="col-md-7">
-                                    <form:input type="text" path="name" id="room" class="form-control input-sm"/>
+                        <div class="form-group row">
+                            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="roomSize">Квадратура:</label>
+                            <div class="col-sm-6">
+                                <form:input type="number" path="roomSize" id="roomSize" class="form-control form-control-sm"
+                                            min="0.0" step="0.01"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="cost">Стоимость:</label>
+                            <div class="col-sm-6">
+                                <form:input type="number" path="cost" id="cost" class="form-control form-control-sm"
+                                            min="0.0" step="0.01"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="dateBuy">Дата покупки:</label>
+                            <div class="col-sm-6">
+                                <form:input type="date" path="dateBuy" id="dateBuy" class="form-control form-control-sm"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="sold">Продано:</label>
+                            <div class="col-sm-6">
+                                <select id="sold" class="form-control form-control-sm">
+                                    <option <c:if test="${room.sold == true}"> selected="selected" </c:if> value="Нет" id="0">Нет</option>
+                                    <option <c:if test="${room.sold == true}"> selected="selected" </c:if> value="Да" id="1">Да</option>
+                                </select>
+                                <label for="soldHid" style="display: none;"></label>
+                                <form:checkbox path="sold" id="soldHid" style="display: none;" />
+                            </div>
+                        </div>
+
+                        <div class="form-group row" id="dateSaleRow">
+                            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="dateSale">Дата продажи:</label>
+                            <div class="col-sm-6">
+                                <form:input type="date" path="dateSale" id="dateSale" class="form-control form-control-sm"/>
+                                <div class="has-error d-none" id="dateSaleError">
+                                    Необходимо указать дату продажи
                                 </div>
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <label class="col-md-3 control-lable" for="roomSize">Квадратура:</label>
-                                <div class="col-md-7">
-                                    <form:input type="number" path="roomSize" id="roomSize" class="form-control input-sm"
-                                                min="0.0" step="0.01"/>
-                                </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="salePrice">Цена продажи:</label>
+                            <div class="col-sm-6">
+                                <form:input type="number" path="salePrice" id="salePrice" class="form-control form-control-sm"
+                                            min="0.0" step="0.01"/>
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <label class="col-md-3 control-lable" for="cost">Стоимость:</label>
-                                <div class="col-md-7">
-                                    <form:input type="number" path="cost" id="cost" class="form-control input-sm"
-                                                min="0.0" step="0.01"/>
-                                </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="yearProfit">Годовая доходность:</label>
+                            <div class="col-sm-6">
+                                <form:input type="number" path="totalYearProfit" id="yearProfit" class="form-control form-control-sm"
+                                            min="0.0" step="0.01"/>
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <label class="col-md-3 control-lable" for="dateBuy">Дата покупки:</label>
-                                <div class="col-md-7">
-                                    <form:input type="date" path="dateBuy" id="dateBuy" class="form-control input-sm"/>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <label class="col-md-3 control-lable" for="sold">Продано:</label>
-                                <div class="col-md-7">
-                                    <select id="sold" class="form-control input-sm">
-                                        <option <c:if test="${room.sold == true}"> selected="selected" </c:if> value="Нет" id="0">Нет</option>
-                                        <option <c:if test="${room.sold == true}"> selected="selected" </c:if> value="Да" id="1">Да</option>
-                                    </select>
-                                    <label for="soldHid" style="display: none;"></label>
-                                    <form:checkbox path="sold" id="soldHid" style="display: none;" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row" id="dateSaleRow">
-                            <div class="form-group col-md-12">
-                                <label class="col-md-3 control-lable" for="dateSale">Дата продажи:</label>
-                                <div class="col-md-7">
-                                    <form:input type="date" path="dateSale" id="dateSale" class="form-control input-sm"/>
-                                </div>
-                                <div id="dateSaleErr" style="color: red; display: none" class="col-md-2 input-sm">
-                                    Необходимо ввести дату продажи
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <label class="col-md-3 control-lable" for="salePrice">Цена продажи:</label>
-                                <div class="col-md-7">
-                                    <form:input type="number" path="salePrice" id="salePrice" class="form-control input-sm"
-                                                min="0.0" step="0.01"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <label class="col-md-3 control-lable" for="yearProfit">Годовая доходность:</label>
-                                <div class="col-md-7">
-                                    <form:input type="number" path="totalYearProfit" id="yearProfit" class="form-control input-sm"
-                                                min="0.0" step="0.01"/>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <label class="col-md-3 control-lable" for="accountNumber">№ счёта:</label>
-                                <div class="col-md-7">
-                                    <input type="text" id="accountNumber" class="form-control input-sm" value="${accountNumber}" readonly/>
-                                </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="accountNumber">№ счёта:</label>
+                            <div class="col-sm-6">
+                                <input type="text" id="accountNumber" class="form-control form-control-sm" value="${accountNumber}" readonly/>
                             </div>
                         </div>
                     </form:form>
