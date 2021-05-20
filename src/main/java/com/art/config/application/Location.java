@@ -58,11 +58,13 @@ public class Location {
 
     public static final String ROOMS_LIST = ROOMS + "/list";
 
-    public static final String ROOMS_EDIT = ROOMS + "/edit/{id}";
+    public static final String ROOMS_UPDATE = ROOMS + "/update";
 
-    public static final String ROOMS_DELETE = ROOMS + "/delete/{id}";
+    public static final String ROOMS_DELETE = ROOMS + "/delete";
 
     public static final String ROOMS_CREATE = ROOMS + "/create";
+
+    public static final String ROOMS_FIND = ROOMS + "/find";
 
     // Подобъекты
     public static final String UNDER_FACILITIES = "/facilities/child";

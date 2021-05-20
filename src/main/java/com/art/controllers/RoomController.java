@@ -4,26 +4,28 @@ import com.art.config.application.Location;
 import com.art.model.Account;
 import com.art.model.Room;
 import com.art.model.UnderFacility;
+import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.dto.RoomDTO;
 import com.art.model.supporting.enums.OwnerType;
 import com.art.service.AccountService;
 import com.art.service.RoomService;
 import com.art.service.UnderFacilityService;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
+@Transactional
 public class RoomController {
-
-    private static final String REDIRECT_URL = Location.ROOMS_LIST;
 
     private final RoomService roomService;
 
@@ -46,66 +48,33 @@ public class RoomController {
         return "room-list";
     }
 
-    @GetMapping(path = Location.ROOMS_EDIT)
-    public String editRoom(@PathVariable Long id, ModelMap model) {
-        String title = "Обновление данных по помещению";
-        Room room = roomService.findByIdWithUnderFacility(id);
-        Account account = accountService.findByOwnerId(id, OwnerType.ROOM);
-        String accountNumber = "";
-        if (account != null) {
-            accountNumber = account.getAccountNumber();
-        }
-        model.addAttribute("room", room);
-        model.addAttribute("edit", true);
-        model.addAttribute("title", title);
-        model.addAttribute("accountNumber", accountNumber);
-        return "room-add";
-    }
-
-    @PostMapping(path = Location.ROOMS_EDIT)
-    public String updateRoom(@ModelAttribute("rooms") Room room,
-                             BindingResult result, ModelMap model) {
-        String ret = "списку помещений.";
-        if (result.hasErrors()) {
-            return "room-add";
-        }
-        roomService.update(room);
-        model.addAttribute("success", "Данные по помещению " + room.getName() +
-                " успешно обновлены.");
-        model.addAttribute("redirectUrl", REDIRECT_URL);
-        model.addAttribute("ret", ret);
-        return "registration-success";
-    }
-
-    @GetMapping(path = Location.ROOMS_DELETE)
-    public String deleteRoom(@PathVariable Long id) {
-        roomService.deleteById(id);
-        return "redirect:" + REDIRECT_URL;
-    }
-
-    @GetMapping(path = Location.ROOMS_CREATE)
-    public String newRoom(ModelMap model) {
-        String title = "Добавление помещения";
-        Room room = new Room();
-        model.addAttribute("room", room);
-        model.addAttribute("edit", false);
-        model.addAttribute("title", title);
-        return "room-add";
-    }
-
+    @ResponseBody
     @PostMapping(path = Location.ROOMS_CREATE)
-    public String saveRoom(@ModelAttribute("room") Room room,
-                           BindingResult result, ModelMap model) {
-        if (result.hasErrors()) {
-            return "room-add";
+    public ApiResponse createRoom(@RequestBody RoomDTO dto) {
+        return roomService.create(dto);
+    }
+
+    @ResponseBody
+    @PostMapping(path = Location.ROOMS_UPDATE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ApiResponse updateRoom(@RequestBody RoomDTO dto) {
+        return roomService.update(dto);
+    }
+
+    @ResponseBody
+    @PostMapping(path = Location.ROOMS_DELETE)
+    public ApiResponse deleteRoom(@RequestBody RoomDTO dto) {
+        return roomService.deleteById(dto.getId());
+    }
+
+    @ResponseBody
+    @PostMapping(path = Location.ROOMS_FIND)
+    public RoomDTO findRoom(@RequestBody RoomDTO dto) {
+        RoomDTO roomDTO = new RoomDTO(roomService.findById(dto.getId()));
+        Account account = accountService.findByOwnerId(roomDTO.getId(), OwnerType.ROOM);
+        if (Objects.nonNull(account)) {
+            roomDTO.setAccountNumber(account.getAccountNumber());
         }
-        String ret = "списку помещений";
-        roomService.create(room);
-        model.addAttribute("success", "Помещение " + room.getName() +
-                " успешно добавлено.");
-        model.addAttribute("redirectUrl", REDIRECT_URL);
-        model.addAttribute("ret", ret);
-        return "registration-success";
+        return roomDTO;
     }
 
     @ModelAttribute("underFacilities")

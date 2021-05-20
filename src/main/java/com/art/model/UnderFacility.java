@@ -65,6 +65,8 @@ public class UnderFacility implements Serializable {
     public UnderFacility(UnderFacilityDTO dto) {
         this.id = dto.getId();
         this.name = dto.getName();
-        this.facility = new Facility(dto.getFacility());
+        if (dto.getFacility() != null) {
+            this.facility = new Facility(dto.getFacility());
+        }
     }
 }

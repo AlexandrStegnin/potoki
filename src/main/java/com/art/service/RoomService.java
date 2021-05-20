@@ -1,14 +1,18 @@
 package com.art.service;
 
 import com.art.model.*;
+import com.art.model.supporting.ApiResponse;
+import com.art.model.supporting.dto.RoomDTO;
 import com.art.model.supporting.enums.OwnerType;
 import com.art.repository.RoomRepository;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -42,7 +46,11 @@ public class RoomService {
 
 //    @Cacheable(Constant.ROOMS_CACHE_KEY)
     public Room findById(Long id) {
-        return roomRepository.findOne(id);
+        Room room = roomRepository.findOne(id);
+        if (Objects.isNull(room)) {
+            throw new EntityNotFoundException("Не найдено помещение");
+        }
+        return room;
     }
 
     public Room findByIdWithUnderFacility(Long id) {
@@ -57,7 +65,7 @@ public class RoomService {
     }
 
 //    @CacheEvict(value = Constant.ROOMS_CACHE_KEY)
-    public void deleteById(Long id) {
+    public ApiResponse deleteById(Long id) {
         List<RentPayment> flows = flowsService.findByRoomId(id);
         flows.forEach(f -> f.setRoom(null));
         flowsService.saveList(flows);
@@ -67,12 +75,15 @@ public class RoomService {
             cashService.update(c);
         });
         roomRepository.delete(id);
-        accountService.deleteByOwnerId(id, OwnerType.UNDER_FACILITY);
+        accountService.deleteByOwnerId(id, OwnerType.ROOM);
+        return new ApiResponse("Помещение успешно удалено");
     }
 
 //    @CachePut(value = Constant.ROOMS_CACHE_KEY, key = "#room.id")
-    public void update(Room room) {
+    public ApiResponse update(RoomDTO dto) {
+        Room room = new Room(dto);
         roomRepository.saveAndFlush(room);
+        return new ApiResponse("Помещение успешно обновлено");
     }
 
 //    @CachePut(Constant.ROOMS_CACHE_KEY)
@@ -82,6 +93,12 @@ public class RoomService {
         Account account = accountService.findByOwnerId(underFacility.getId(), OwnerType.UNDER_FACILITY);
         int countRooms = roomRepository.countByUnderFacilityId(underFacility.getId());
         accountService.createAccount(room, account, countRooms);
+    }
+
+    public ApiResponse create(RoomDTO dto) {
+        Room room = new Room(dto);
+        roomRepository.save(room);
+        return new ApiResponse("Помещение успешно создано");
     }
 
     public List<Room> init() {

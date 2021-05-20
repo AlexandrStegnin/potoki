@@ -18,10 +18,13 @@
                         <div class="form-group row">
                             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="underFacility">Подобъект:</label>
                             <div class="col-sm-6">
-                                <form:select path="underFacilityId" id="underFacility" items="${underFacilities}" multiple="false"
+                                <form:select path="underFacility" id="underFacility" items="${underFacilities}" multiple="false"
                                              itemValue="id" itemLabel="name"
                                              class="form-control form-control-sm selectpicker"
                                              data-live-search="true" data-size="10"/>
+                                <div class="has-error d-none" id="underFacilityError">
+                                    Необходимо выбрать подобъект
+                                </div>
                             </div>
                         </div>
 
@@ -48,6 +51,9 @@
                             <div class="col-sm-6">
                                 <form:input type="number" path="cost" id="cost" class="form-control form-control-sm"
                                             min="0.0" step="0.01"/>
+                                <div class="has-error d-none" id="costError">
+                                    Необходимо указать стоимость
+                                </div>
                             </div>
                         </div>
 

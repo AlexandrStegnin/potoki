@@ -30,13 +30,15 @@ public class RoomDTO {
 
     Date dateSale;
 
-    Long underFacilityId;
+    UnderFacilityDTO underFacility;
 
     Date dateBuy;
 
     BigDecimal salePrice;
 
     BigDecimal totalYearProfit;
+
+    String accountNumber;
 
     public RoomDTO(Room room) {
         this.id = room.getId();
@@ -45,7 +47,7 @@ public class RoomDTO {
         this.roomSize = room.getRoomSize();
         this.sold = room.isSold();
         this.dateSale = room.getDateSale();
-        this.underFacilityId = room.getUnderFacility().getId();
+        this.underFacility = new UnderFacilityDTO(room.getUnderFacility());
         this.dateBuy = room.getDateBuy();
         this.salePrice = room.getSalePrice();
         this.totalYearProfit = room.getTotalYearProfit();

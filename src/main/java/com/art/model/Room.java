@@ -1,9 +1,7 @@
 package com.art.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import com.art.model.supporting.dto.RoomDTO;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,6 +11,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Table(name = "room")
 @ToString(exclude = "underFacility")
 @EqualsAndHashCode(exclude = "underFacility")
@@ -37,7 +36,7 @@ public class Room implements Serializable {
     @Column(name = "date_sale")
     private Date dateSale;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "under_facility_id", referencedColumnName = "id")
     private UnderFacility underFacility;
 
@@ -49,5 +48,18 @@ public class Room implements Serializable {
 
     @Column(name = "total_year_profit")
     private BigDecimal totalYearProfit;
+
+    public Room(RoomDTO dto) {
+        this.id = dto.getId();
+        this.name = dto.getName();
+        this.cost = dto.getCost();
+        this.roomSize = dto.getRoomSize();
+        this.sold = dto.isSold();
+        this.dateSale = dto.getDateSale();
+        this.dateBuy = dto.getDateBuy();
+        this.salePrice = dto.getSalePrice();
+        this.totalYearProfit = dto.getTotalYearProfit();
+        this.underFacility = new UnderFacility(dto.getUnderFacility());
+    }
 
 }
