@@ -21,7 +21,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav ml-auto">
-            <sec:authorize access="(hasRole('INVESTOR') OR hasRole('ANONYMOUS')) AND !hasRole('ADMIN')">
+            <sec:authorize access="(hasRole('INVESTOR') OR hasRole('ANONYMOUS'))">
                 <li class="nav-item mr-2">
                     <a id="balance" href="#" class="nav-link disabled" style="color: #0D345D;">
                         <span class="fas fa-ruble-sign" style="color: #0D345D;"></span>
@@ -44,7 +44,7 @@
                     Личный кабинет / <b>${username}</b>
                 </a>
             </li>
-            <sec:authorize access="(hasRole('INVESTOR') OR hasRole('ANONYMOUS')) AND !hasRole('ADMIN')">
+            <sec:authorize access="(hasRole('INVESTOR') OR hasRole('ANONYMOUS'))">
                 <li class="nav-item mr-2">
                     <a id="closed-projects" href="<c:url value='/#' />" class="nav-link" style="color: #0D345D;">
                         <span class="fas fa-archive" style="color: #0D345D;"></span>
@@ -59,26 +59,6 @@
                 </a>
             </li>
 
-            <sec:authorize access="hasRole('ADMIN')">
-                <li class="nav-item dropdown mr-2">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #0D345D;">
-                        <span class="fas fa-cogs" style="color: #0D345D;"></span> Администрирование<span class="caret"
-                                                                                                         style="color: #0D345D;"></span>
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a href="<c:url value='/catalogue' />" class="dropdown-item">
-                            <span style="color: #0D345D;" class="fas fa-book"></span> Справочники
-                        </a>
-                        <a href="<c:url value='/users/create' />" class="dropdown-item">
-                            <span style="color: #0D345D;" class="fas fa-plus"></span> Добавить пользователя
-                        </a>
-                        <a href="<c:url value='/facilities/create' />" class="dropdown-item">
-                            <span style="color: #0D345D;" class="fas fa-plus"></span> Добавить объект
-                        </a>
-                    </div>
-                </li>
-            </sec:authorize>
             <li class="nav-item mr-2">
                 <a id="exit" href="<c:url value='/logout' />" class="nav-link" style="color: #0D345D;">
                     <span class="fas fa-sign-out-alt" style="color: #0D345D;"></span>
