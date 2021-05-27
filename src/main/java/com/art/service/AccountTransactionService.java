@@ -432,9 +432,9 @@ public class AccountTransactionService {
                 prepareErrorResponse(response, "Не найден счёт инвестора");
                 return response;
             }
-            Account recipient = accountService.findByOwnerId(dto.getUnderFacilityId(), OwnerType.UNDER_FACILITY);
+            Account recipient = accountService.findByOwnerId(dto.getFacilityId(), OwnerType.FACILITY);
             if (recipient == null) {
-                prepareErrorResponse(response, "Не найден счёт подобъекта");
+                prepareErrorResponse(response, "Не найден счёт объекта");
                 return response;
             }
             AccountDTO accountDTO = accountTransactionRepository.fetchSummaryByOwners(OwnerType.INVESTOR, owner.getOwnerName());
@@ -465,9 +465,9 @@ public class AccountTransactionService {
                 prepareErrorResponse(response, "Не найден счёт инвестора");
                 return response;
             }
-            Account recipient = accountService.findByOwnerId(dto.getUnderFacilityId(), OwnerType.UNDER_FACILITY);
+            Account recipient = accountService.findByOwnerId(dto.getFacilityId(), OwnerType.FACILITY);
             if (recipient == null) {
-                prepareErrorResponse(response, "Не найден счёт подобъекта");
+                prepareErrorResponse(response, "Не найден счёт объекта");
                 return response;
             }
             try {
