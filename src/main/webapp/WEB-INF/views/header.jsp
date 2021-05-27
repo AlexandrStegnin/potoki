@@ -21,7 +21,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav ml-auto">
-            <sec:authorize access="(hasRole('INVESTOR') OR hasRole('ANONYMOUS'))">
+            <sec:authorize access="(hasRole('INVESTOR') OR hasRole('ADMIN')) AND ${pageContext.request.servletPath.endsWith('flows.jsp')}">
                 <li class="nav-item mr-2">
                     <a id="balance" href="#" class="nav-link disabled" style="color: #0D345D;">
                         <span class="fas fa-ruble-sign" style="color: #0D345D;"></span>
@@ -44,7 +44,7 @@
                     Личный кабинет / <b>${username}</b>
                 </a>
             </li>
-            <sec:authorize access="(hasRole('INVESTOR') OR hasRole('ANONYMOUS'))">
+            <sec:authorize access="(hasRole('INVESTOR') OR hasRole('ADMIN')) AND ${pageContext.request.servletPath.endsWith('flows.jsp')}">
                 <li class="nav-item mr-2">
                     <a id="closed-projects" href="<c:url value='/#' />" class="nav-link" style="color: #0D345D;">
                         <span class="fas fa-archive" style="color: #0D345D;"></span>
