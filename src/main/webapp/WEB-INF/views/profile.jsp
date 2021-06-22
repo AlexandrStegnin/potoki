@@ -60,6 +60,13 @@
                 </form:form>
             </sec:authorize>
         </sec:authorize>
+        <sec:authorize access="isFullyAuthenticated()">
+            <sec:authorize access="hasRole('ADMIN')">
+                <button type="button" class="btn btn-warning btn-md pull-right" id="send-email" style="margin-left: 5px">
+                    <c:out value="Отправить пригласительный email"/>
+                </button>
+            </sec:authorize>
+        </sec:authorize>
         <button type="button" class="btn btn-warning btn-md pull-right" id="clearLS" style="margin-left: 5px">
             <c:out value="Очистить local storage"/>
         </button>
@@ -67,7 +74,7 @@
             <sec:authorize access="hasAnyRole('BIGDADDY', 'ADMIN')">
                 <button type="button" class="btn btn-success btn-md" id="updateBitrixContact"
                         style="margin-left: 5px">
-                    <c:out value="Обновить контакты из Битрикс"/></button>
+                    <c:out value="Обновить контакты из Б24"/></button>
             </sec:authorize>
         </sec:authorize>
         <sec:authorize access="isFullyAuthenticated()">
@@ -118,6 +125,7 @@
 <%@include file="ddk_loader.jsp" %>
 <%@include file="popup_modal.jsp" %>
 <%@include file="table-popup.jsp" %>
+<%@include file="send-email.jsp" %>
 <script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' />"></script>
 <script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js' />"></script>
 <script src="<c:url value='https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js' />"></script>

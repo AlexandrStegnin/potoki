@@ -2,11 +2,13 @@ package com.art.service;
 
 import com.art.config.AppSecurityConfig;
 import com.art.config.SecurityUtils;
+import com.art.config.exception.ApiException;
 import com.art.config.exception.EntityNotFoundException;
 import com.art.func.PersonalMailService;
 import com.art.model.*;
 import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.SendingMail;
+import com.art.model.supporting.dto.EmailDTO;
 import com.art.model.supporting.dto.UserDTO;
 import com.art.model.supporting.enums.KinEnum;
 import com.art.model.supporting.enums.UserRole;
@@ -28,10 +30,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Transactional
@@ -230,10 +229,6 @@ public class UserService {
         return prop;
     }
 
-    public List<AppUser> getForFindPartnerChild() {
-        return userRepository.getForFindPartnerChild();
-    }
-
     private String generatePassword() {
         return UUID.randomUUID().toString().substring(0, 8);
     }
@@ -294,5 +289,20 @@ public class UserService {
         appUsers.add(appUser);
         appUsers.addAll(getSellers());
         return appUsers;
+    }
+
+    public ApiResponse sendWelcomeMessage(EmailDTO emailDTO) {
+        if (Objects.isNull(emailDTO)
+                || Objects.isNull(emailDTO.getUser())
+                || Objects.isNull(emailDTO.getUser().getId())) {
+            throw new ApiException("Для отправки email не указан пользователь", HttpStatus.BAD_REQUEST);
+        }
+        AppUser user = findById(emailDTO.getUser().getId());
+        if (Objects.isNull(user)) {
+            throw new ApiException("Пользователь не найден", HttpStatus.NOT_FOUND);
+        }
+        String password = generatePassword();
+        sendWelcomeMessage(user, password);
+        return new ApiResponse("Письмо успешно отправлено пользователю " + user.getProfile().getEmail());
     }
 }

@@ -8,6 +8,7 @@ import com.art.model.supporting.FileBucket;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SearchSummary;
 import com.art.model.supporting.dto.BalanceDTO;
+import com.art.model.supporting.dto.EmailDTO;
 import com.art.model.supporting.dto.UserDTO;
 import com.art.model.supporting.enums.AppPage;
 import com.art.model.supporting.enums.KinEnum;
@@ -140,6 +141,7 @@ public class UserController {
         modelAndView.addObject("search", new SearchSummary());
         modelAndView.addObject("accountNumber", accountNumber);
         modelAndView.addObject("ownerId", user.getId());
+        modelAndView.addObject("emailDTO", new EmailDTO());
         if (account != null) {
             BalanceDTO balanceDTO = accountTransactionService.getBalance(user.getId());
             BigDecimal balance = balanceDTO.getSummary();
@@ -236,6 +238,12 @@ public class UserController {
     @PostMapping(path = Location.USERS_FIND_BY_ID)
     public UserDTO findUser(@RequestBody UserDTO dto) {
         return userService.find(dto);
+    }
+
+    @ResponseBody
+    @PostMapping(path = Location.SEND_WELCOME)
+    public ApiResponse sendWelcomeMessage(@RequestBody EmailDTO emailDTO) {
+        return userService.sendWelcomeMessage(emailDTO);
     }
 
     @InitBinder

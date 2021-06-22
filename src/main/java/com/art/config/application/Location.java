@@ -288,6 +288,8 @@ public class Location {
 
     public static final String USER_AGREEMENTS_DELETE = USER_AGREEMENTS + "/delete";
 
+    public static final String SEND_WELCOME = "/send/welcome";
+
     public static final String[] ADMIN_URLS = {
             ADMIN,
             CATALOGUE,
@@ -307,7 +309,8 @@ public class Location {
             MONEY_DIVIDE_MULTIPLE,
             MONEY + WILD_CARD,
             PAYMENTS_URL + WILD_CARD,
-            USERS_URL + WILD_CARD
+            USERS_URL + WILD_CARD,
+            SEND_WELCOME
     };
 
     public static final String[] INVESTOR_URLS = {
