@@ -97,6 +97,10 @@ public class UnderFacilityService {
     public ApiResponse create(UnderFacilityDTO dto) {
         UnderFacility underFacility = new UnderFacility(dto);
         underFacilityRepository.save(underFacility);
+        Facility facility = underFacility.getFacility();
+        Account account = accountService.findByOwnerId(facility.getId(), OwnerType.FACILITY);
+        int countUnderFacilities = underFacilityRepository.countByFacilityId(facility.getId());
+        accountService.createAccount(underFacility, account, countUnderFacilities);
         return new ApiResponse("Подобъект успешно создан");
     }
 }
