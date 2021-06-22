@@ -51,7 +51,8 @@
                             <div class="col-md-6">
                                 <form:select path="partnerId" id="saleChanel" items="${investors}" multiple="false"
                                              itemValue="id" itemLabel="login" class="form-control form-control-sm selectpicker"
-                                             data-size="10" data-live-search="true" data-none-selected-text="Выберите инвестора"/>
+                                             data-size="10" data-live-search="true" data-none-selected-text="Выберите инвестора"
+                                             disabled="true"/>
                             </div>
                         </div>
 
@@ -61,7 +62,7 @@
                                 <form:select path="kin" id="kins" items="${kins}" multiple="false"
                                              itemLabel="val" itemValue="val" class="form-control form-control-sm selectpicker"
                                              data-size="10" data-live-search="true" data-none-selected-text="Степень родства"
-                                />
+                                             disabled="true"/>
                             </div>
                         </div>
 
