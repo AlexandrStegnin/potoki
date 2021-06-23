@@ -269,8 +269,9 @@ public class AccountTransactionService {
     private void releaseMonies(List<AccountTransaction> transactions) {
         List<Money> monies = new ArrayList<>();
         transactions.forEach(tx -> tx.getMonies().forEach(money -> {
-            if (money != null) {
-                monies.add(money);
+            Money m = moneyRepository.findById(money.getId());
+            if (m != null) {
+                monies.add(m);
             }
         }));
         monies.forEach(money -> {
@@ -296,11 +297,16 @@ public class AccountTransactionService {
                     NewCashDetail newCashDetail = money.getNewCashDetail();
                     if (Objects.nonNull(newCashDetail)) {
                         if (newCashDetail.getName().equalsIgnoreCase(NEW_CASH_DETAIL_REINVEST)) {
-                            tx.removeMoney(money);
+//                            tx.removeMoney(money);
                             toDelete.add(money);
                         }
                     }
                 }));
+        for (Money money : toDelete) {
+            for (AccountTransaction tx : transactions) {
+                tx.removeMoney(money);
+            }
+        }
         moneyRepository.delete(toDelete);
     }
 
