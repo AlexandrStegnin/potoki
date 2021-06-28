@@ -1227,12 +1227,13 @@ public class MoneyService {
      * @param dto DTO для проверки
      */
     private void checkSums(ReBuyShareDTO dto) {
-        BigDecimal shareSum = dto.getOpenedCash()
+        BigDecimal sellerSum = dto.getOpenedCash()
                 .stream()
                 .map(InvestorCashDTO::getGivenCash)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         BigDecimal buyerSum = accountTransactionService.getInvestorBalance(dto.getBuyerId());
-        if (shareSum.compareTo(buyerSum) > 0) {
+        buyerSum = buyerSum.add(new BigDecimal("0.50"));
+        if (sellerSum.compareTo(buyerSum) > 0) {
             throw new ApiException("Недостаточно денег для перепокупки доли", HttpStatus.PRECONDITION_FAILED);
         }
     }
