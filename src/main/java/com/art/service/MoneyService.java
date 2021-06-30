@@ -685,11 +685,12 @@ public class MoneyService {
         BigDecimal divided = coastUnderFacility.divide(coastFacility, 20, BigDecimal.ROUND_CEILING);
         monies = monies
                 .stream()
-                .filter(f -> null != f.getGivenCash())
+                .filter(f -> Objects.nonNull(f.getGivenCash()))
                 .collect(Collectors.toList());
         int sumsCnt = monies.size();
         sendStatus("Начинаем разделять суммы");
         final int[] counter = {0};
+        Set<Money> newMonies = new HashSet<>();
         monies.forEach(f -> {
             counter[0]++;
             sendStatus(String.format("Разделеляем %d из %d сумм", counter[0], sumsCnt));
@@ -723,7 +724,10 @@ public class MoneyService {
                 create(f);
             }
             create(cash);
+            newMonies.add(cash);
+            newMonies.add(f);
         });
+        transactionLogService.createDivideCashLog(newMonies);
         return new ApiResponse("Разделение сумм прошло успешно");
     }
 

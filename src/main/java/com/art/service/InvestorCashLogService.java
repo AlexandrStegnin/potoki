@@ -137,4 +137,16 @@ public class InvestorCashLogService {
         investorCashLogRepository.delete(cashLog);
     }
 
+    /**
+     * Создать суммы в истории и в логе на основании сумм с разделения
+     *
+     * @param monies суммы с разделения
+     * @param log        лог
+     */
+    public void divideCash(Set<Money> monies, TransactionLog log) {
+        monies.forEach(money -> {
+            InvestorCashLog cashLog = new InvestorCashLog(money, log, CashType.INVESTOR_CASH);
+            investorCashLogRepository.save(cashLog);
+        });
+    }
 }

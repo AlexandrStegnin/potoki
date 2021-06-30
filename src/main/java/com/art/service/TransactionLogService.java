@@ -156,7 +156,7 @@ public class TransactionLogService {
                 return rollbackResale(log);
 
             case DIVIDE:
-                return "Операция [DIVIDE] не реализована";
+                return rollbackDivide(log);
 
             case REINVESTMENT_SALE:
                 return rollbackReinvestmentSale(log);
@@ -256,6 +256,15 @@ public class TransactionLogService {
         log.setRollbackEnabled(true);
         create(log);
         investorCashLogService.reinvestmentRent(rentPayments, log);
+    }
+
+    public void createDivideCashLog(Set<Money> monies) {
+        TransactionLog log = new TransactionLog();
+        log.setMonies(monies);
+        log.setType(TransactionType.DIVIDE);
+        log.setRollbackEnabled(true);
+        create(log);
+        investorCashLogService.divideCash(monies, log);
     }
 
     @Transactional
@@ -372,6 +381,30 @@ public class TransactionLogService {
         }
     }
 
+    @Transactional
+    public String rollbackDivide(TransactionLog log) {
+        Map<String, Set<Money>> cashes = groupCash(log.getMonies());
+        List<Money> toDelete = new ArrayList<>();
+        List<InvestorCashLog> cashLogs = investorCashLogService.findByTxId(log.getId());
+        for (Set<Money> monies : cashes.values()) {
+            Money firstSum = monies.iterator().next();
+            for (Money money : monies) {
+                if (!firstSum.getId().equals(money.getId())) {
+                    firstSum.setGivenCash(firstSum.getGivenCash().add(money.getGivenCash()));
+                    toDelete.add(money);
+                }
+            }
+        }
+        try {
+            moneyRepository.delete(toDelete);
+            cashLogs.forEach(investorCashLogService::delete);
+            transactionLogRepository.delete(log);
+            return "Откат операции прошёл успешно";
+        } catch (Exception e) {
+            return String.format("При удалении транзакции произошла ошибка [%s]", e.getLocalizedMessage());
+        }
+    }
+
     /**
      * Изменяем значения суммы на значения суммы из лога
      *
@@ -459,6 +492,21 @@ public class TransactionLogService {
                 .sorted()
                 .collect(Collectors.toList()));
         return creators;
+    }
+
+    private Map<String, Set<Money>> groupCash(Set<Money> monies) {
+        Map<String, Set<Money>> groupedCash = new HashMap<>();
+        for (Money money : monies) {
+            String login = money.getInvestor().getLogin();
+            if (groupedCash.containsKey(login)) {
+                groupedCash.get(login).add(money);
+            } else {
+                Set<Money> m = new HashSet<>();
+                m.add(money);
+                groupedCash.put(login, m);
+            }
+        }
+        return groupedCash;
     }
 
 }
