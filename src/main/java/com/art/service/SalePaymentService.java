@@ -159,6 +159,7 @@ public class SalePaymentService {
                 if (ltd.getAccTxId() != null) {
                     AccountTransaction transaction = accountTransactionService.findById(ltd.getAccTxId());
                     accountTxDTO.addTxId(ltd.getAccTxId());
+                    accountTxDTO.addCashTypeId(transaction.getCashType());
                     transaction.removeSalePayment(ltd);
                 }
             });
