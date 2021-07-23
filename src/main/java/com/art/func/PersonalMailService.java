@@ -2,7 +2,6 @@ package com.art.func;
 
 import com.art.config.AppSecurityConfig;
 import com.art.model.AppUser;
-import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.SendingMail;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -24,9 +23,8 @@ import java.util.Properties;
 public class PersonalMailService {
     private static final String ENCODING = StandardCharsets.UTF_8.name();
 
-    public GenericResponse sendEmails(AppUser user, SendingMail sendingMail, String username, String pwd,
-                                      String who, List<MultipartFile> file) {
-        GenericResponse response = new GenericResponse();
+    public void sendEmails(AppUser user, SendingMail sendingMail, String username, String pwd,
+                           String who, List<MultipartFile> file) {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 
         String fileName = "mail.ru.properties";
@@ -79,21 +77,17 @@ public class PersonalMailService {
                     if (!attachName[0].equals("")) {
                         try {
                             messageHelper.addAttachment(attachName[0], f);
-                            response.setMessage("Письма успешно отправлены.");
-                        } catch (MessagingException e) {
-                            response.setError("При отправке писем что-то пошло не так.");
+                        } catch (MessagingException ignored) {
                         }
                     }
                 });
             }
-            response.setMessage("Письма успешно отправлены.");
         });
-        return response;
     }
 
-    class MyAuthenticator extends Authenticator {
-        private String user;
-        private String password;
+    static class MyAuthenticator extends Authenticator {
+        private final String user;
+        private final String password;
 
         MyAuthenticator(String user, String password) {
             this.user = user;

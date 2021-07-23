@@ -148,7 +148,7 @@ public class UserService {
             return response;
         }
         String password = generatePassword();
-        user.setPassword(password);
+        user.setPassword(passwordEncoder.encode(password));
         user.getProfile().setUser(user);
         user.getProfile().setEmail(user.getProfile().getEmail().toLowerCase());
         user.setLogin(user.getLogin().toLowerCase());
@@ -302,7 +302,9 @@ public class UserService {
             throw new ApiException("Пользователь не найден", HttpStatus.NOT_FOUND);
         }
         String password = generatePassword();
+        user.setPassword(passwordEncoder.encode(password));
         sendWelcomeMessage(user, password);
+        userRepository.save(user);
         return new ApiResponse("Письмо успешно отправлено пользователю " + user.getProfile().getEmail());
     }
 }
