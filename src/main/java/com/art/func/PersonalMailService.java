@@ -63,20 +63,17 @@ public class PersonalMailService {
 
         mailSender.setJavaMailProperties(javaMailProperties);
         mailSender.setSession(session);
-        final String[] attachName = {""};
         mailSender.send(mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, ENCODING);
             messageHelper.setTo(user.getProfile().getEmail());
             messageHelper.setSubject(sendingMail.getSubject());
             messageHelper.setText(sendingMail.getBody(), true);
             messageHelper.setFrom(new InternetAddress(username, who));
-            if (!Objects.equals(file, null)) {
+            if (Objects.nonNull(file)) {
                 file.forEach(f -> {
-                    attachName[0] = f.getOriginalFilename();
-
-                    if (!attachName[0].equals("")) {
+                    if (!f.getOriginalFilename().isEmpty()) {
                         try {
-                            messageHelper.addAttachment(attachName[0], f);
+                            messageHelper.addAttachment(f.getOriginalFilename(), f);
                         } catch (MessagingException ignored) {
                         }
                     }
