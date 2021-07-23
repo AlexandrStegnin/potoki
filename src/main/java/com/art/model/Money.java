@@ -1,5 +1,6 @@
 package com.art.model;
 
+import com.art.config.SecurityUtils;
 import com.art.model.supporting.dto.CashingMoneyDTO;
 import com.art.model.supporting.dto.RentPaymentDTO;
 import com.art.model.supporting.dto.SalePaymentDTO;
@@ -110,6 +111,30 @@ public class Money implements Cash {
     @ManyToOne
     @JoinColumn(name = "acc_tx_id")
     private AccountTransaction transaction;
+
+    @Column(name = "creation_time")
+    private Date creationTime;
+
+    @Column(name = "modified_time")
+    private Date modifiedTime;
+
+    @Column(name = "created_by")
+    private String createdBy;
+
+    @Column(name = "modified_by")
+    private String modifiedBy;
+
+    @PrePersist
+    public void prePersist() {
+        this.creationTime = new Date();
+        this.createdBy = SecurityUtils.getUsername();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.modifiedTime = new Date();
+        this.modifiedBy = SecurityUtils.getUsername();
+    }
 
     public Money() {
     }
