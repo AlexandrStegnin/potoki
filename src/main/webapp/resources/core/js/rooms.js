@@ -405,12 +405,8 @@ function bindUnderFacility(ufId) {
  * @param isSale 0/1
  */
 function bindSold(isSale) {
-    let saleId = isSale ? 1 : 0
-    $.each(roomForm.find('#sold option'), function (ind, el) {
-        if (el.id === (saleId + '')) {
-            $(el).attr('selected', 'selected')
-        }
-    })
+    let saleId = isSale ? 'Да' : 'Нет'
+    $('#sold option[value="' + saleId + '"]').prop('selected', true);
     roomForm.find('#sold').selectpicker('refresh')
 }
 
