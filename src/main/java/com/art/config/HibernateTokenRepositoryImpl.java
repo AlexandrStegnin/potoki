@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 @Repository("TokenRepository")
 @Transactional
@@ -41,9 +43,9 @@ public class HibernateTokenRepositoryImpl implements PersistentTokenRepository {
 
     @Override
     public void removeUserTokens(String username) {
-        PersistentLogin persistentLogin = tokenRepository.findByUsername(username);
-        if (persistentLogin != null) {
-            tokenRepository.delete(persistentLogin);
+        List<PersistentLogin> persistentLogins = tokenRepository.findByUsername(username);
+        if (Objects.nonNull(persistentLogins) && persistentLogins.size() > 0) {
+            tokenRepository.delete(persistentLogins);
         }
 
     }
