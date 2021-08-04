@@ -31,7 +31,6 @@
         <a href="<c:url value='/facilities/child/list' />" class="btn btn-success btn-block">Подобъекы (under_facility)</a>
         <a href="<c:url value='/rooms/list' />" class="btn btn-success btn-block">Помещения (room)</a>
         <a href="<c:url value='/money/list' />" class="btn btn-success btn-block">Деньги инвесторов (money)</a>
-        <a href="<c:url value='/payments/rent' />" class="btn btn-success btn-block">Выплаты инвесторам (аренда) (rent_payment)</a>
         <a href="<c:url value='/payments/sale' />" class="btn btn-success btn-block">Выплаты инвесторам (продажа) (sale_payment)</a>
         <a href="<c:url value='/cash-sources/list' />" class="btn btn-success btn-block">Источники получения денег (cash_source)</a>
         <a href="<c:url value='/new-cash-details/list' />" class="btn btn-success btn-block">Детали новых денег (new_cash_detail)</a>
@@ -39,8 +38,6 @@
         <a href="<c:url value='/marketing-tree' />" class="btn btn-success btn-block">Маркетинговое дерево (marketing_tree)</a>
         <a href="<c:url value='/investor/annexes' />" class="btn btn-success btn-block">Приложения к договорам инвесторов (UsersAnnexToContracts)</a>
         <a href="<c:url value='/transactions' />" class="btn btn-success btn-block">Лог операций (transaction_log)</a>
-        <a href="<c:url value='/tokens' />" class="btn btn-success btn-block">Токены приложений (app_tokens)</a>
-        <a href="<c:url value='/roles/list' />" class="btn btn-success btn-block">Роли системы (app_role)</a>
         <a href="<c:url value='/money/transactions' />" class="btn btn-success btn-block">Транзакции по счетам клиентов (account_transaction)</a>
         <a href="<c:url value='/money/transactions/summary' />" class="btn btn-success btn-block">Свободные средства клиентов</a>
         <a href="<c:url value='/agreements/list' />" class="btn btn-success btn-block">Инфо с кем заключён договор (user_agreement)</a>
