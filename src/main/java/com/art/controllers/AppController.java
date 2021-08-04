@@ -7,6 +7,7 @@ import com.art.service.AccountTransactionService;
 import com.art.service.UserService;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
@@ -78,18 +79,21 @@ public class AppController {
 
     @GetMapping(path = Location.LOGOUT)
     public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null) {
-            new SecurityContextLogoutHandler().logout(request, response, auth);
-            HttpSession session = request.getSession(false);
-            if (session != null) {
-                session.invalidate();
-            }
+        SecurityContext context = SecurityContextHolder.getContext();
+        if (Objects.nonNull(context)) {
+            Authentication auth = context.getAuthentication();
+            if (Objects.nonNull(auth)) {
+                new SecurityContextLogoutHandler().logout(request, response, auth);
+                HttpSession session = request.getSession(false);
+                if (Objects.nonNull(session)) {
+                    session.invalidate();
+                }
 
-            for (Cookie cookie : request.getCookies()) {
-                cookie.setMaxAge(0);
-            }
+                for (Cookie cookie : request.getCookies()) {
+                    cookie.setMaxAge(0);
+                }
 
+            }
         }
         return "redirect:/login?logout";
     }
