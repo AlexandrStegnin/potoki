@@ -761,7 +761,10 @@ public class AccountTransactionService {
         List<Long> toDeleteIds = new ArrayList<>();
         List<Long> toReleaseIds = new ArrayList<>();
 
-        transactions.forEach(tx -> tx.getMonies()
+        transactions
+                .stream()
+                .filter(Objects::nonNull)
+                .forEach(tx -> tx.getMonies()
                 .stream()
                 .filter(Objects::nonNull)
                 .forEach(money -> {
@@ -773,7 +776,8 @@ public class AccountTransactionService {
                     }
                 }));
         transactions.stream()
-                .filter(tx -> tx.getParent() == null)
+                .filter(Objects::nonNull)
+                .filter(tx -> Objects.isNull(tx.getParent()))
                 .forEach(accountTransactionRepository::delete);
         rollbackMonies(toDeleteIds, toReleaseIds);
     }
