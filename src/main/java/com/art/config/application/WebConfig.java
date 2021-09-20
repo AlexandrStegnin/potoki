@@ -102,7 +102,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public LockProvider lockProvider(@Qualifier("schedulerLockDataSource")
                                              DataSource dataSource) {
-        return new JdbcTemplateLockProvider(dataSource, "pss_projects.shedlock");
+        return new JdbcTemplateLockProvider(dataSource, "investments.shedlock");
     }
 
     @Bean

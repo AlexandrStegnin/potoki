@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 @Data
 @Entity
-@Table(name = "facility", schema = "pss_projects")
+@Table(name = "facility")
 @EqualsAndHashCode(of = {"id", "name", "fullName"})
 public class Facility implements Serializable {
 

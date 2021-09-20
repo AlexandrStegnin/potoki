@@ -155,11 +155,12 @@ public class AccountService {
         /*
             5 или более цифр до пробела (если есть)
         */
-        Pattern pattern = Pattern.compile("\\d{5,}\\s*");
+        Pattern pattern = Pattern.compile("\\d{5,}[\\s_]*");
         Matcher matcher = pattern.matcher(facility.getFullName());
         String accountNumber = "";
-        if (matcher.matches()) {
-            return matcher.group(0);
+        if (matcher.find()) {
+            accountNumber = matcher.group(0);
+            return accountNumber.substring(0, accountNumber.length() - 1);
         }
         return accountNumber;
     }

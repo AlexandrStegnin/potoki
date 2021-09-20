@@ -19,5 +19,5 @@ public interface MarketingTreeRepository extends JpaRepository<MarketingTree, Bi
     void deleteByInvestorId(Long investorId);
 
     @Procedure(procedureName = "calculate_marketing_tree")
-    void calculateMarketingTree();
+    void callCalculateMarketingTree();
 }

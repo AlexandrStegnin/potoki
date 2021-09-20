@@ -39,6 +39,8 @@ public class UploadExcelService {
 
     private static final SimpleDateFormat FORMAT = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy", Locale.ENGLISH);
 
+    private static final SimpleDateFormat DDMMYYYY_FORMAT = new SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH);
+
     private final UserService userService;
 
     private final RoomService roomService;
@@ -282,7 +284,14 @@ public class UploadExcelService {
 
                     Calendar dateSale = Calendar.getInstance();
                     try {
-                        dateSale.setTime(FORMAT.parse(row.getCell(35).getDateCellValue().toString()));
+                        switch (row.getCell(35).getCellTypeEnum()) {
+                            case NUMERIC:
+                                dateSale.setTime(FORMAT.parse(row.getCell(35).getDateCellValue().toString()));
+                                break;
+                            case STRING:
+                                dateSale.setTime(DDMMYYYY_FORMAT.parse(row.getCell(35).getStringCellValue()));
+                                break;
+                        }
                     } catch (Exception ex) {
                         return new ApiResponse(String.format("Неудачная попытка конвертировать строку в дату. Строка %d, столбец 36", cel),
                                 HttpStatus.PRECONDITION_FAILED.value());

@@ -31,7 +31,7 @@ public class MarketingTreeService {
     }
 
     public ApiResponse calculate() {
-        marketingTreeRepository.calculateMarketingTree();
+        marketingTreeRepository.callCalculateMarketingTree();
         return new ApiResponse("Обновление маркетингового дерева завершено");
     }
 
