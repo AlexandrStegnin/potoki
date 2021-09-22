@@ -21,7 +21,7 @@ public class Emails implements Serializable {
     private AppUser user;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id")
     public BigInteger getId() {
         return id;

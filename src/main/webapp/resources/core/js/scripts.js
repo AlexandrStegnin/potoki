@@ -16,7 +16,7 @@ jQuery(document).ready(function ($) {
 
     $('a#go').click(function (event) { // лoвим клик пo ссылки с id="go"
 
-        var facility = $(this).attr('name');
+        let facility = $(this).attr('name');
         showDetails(facility);
 
         event.preventDefault(); // выключaем стaндaртную рoль элементa
@@ -73,15 +73,15 @@ function enableSearchButton(flag) {
 }
 
 function display(data) {
-    var json = JSON.stringify(data, null, 4);
+    let json = JSON.stringify(data, null, 4);
     $('#investorsSummary').html(json);
 }
 
 /**/
 function showDetails(facility) {
-    var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
-    var search = ({"facility": facility});
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+    let search = ({"facility": facility});
 
     $.ajax({
         type: "POST",
@@ -106,14 +106,14 @@ function showDetails(facility) {
 }
 
 function show(data) {
-    var json = JSON.stringify(data, null, 4);
+    let json = JSON.stringify(data, null, 4);
     $('#sum-details').append(json);
 }
 
 function resetPass(email, login) {
-    var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
-    var search = (
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+    let search = (
         {
             "email": email,
             "login": login
@@ -125,7 +125,7 @@ function resetPass(email, login) {
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: "resetPassword",
+        url: "/resetPassword",
         data: JSON.stringify(search),
         dataType: 'json',
         timeout: 100000,
@@ -135,7 +135,7 @@ function resetPass(email, login) {
         success: function (data) {
             closeLoader();
             if (data.message !== null) {
-                var msg = data.message;
+                let msg = data.message;
                 $('#message').html(data.message);
                 $('#message').removeClass("alert alert-danger").addClass("alert alert-success");
                 $('#message').show();
@@ -165,16 +165,16 @@ function resetPass(email, login) {
 }
 
 function savePass() {
-    var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
-    var search = ({"password": $('#password').val()});
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+    let search = ({"password": $('#password').val()});
 
     showLoader();
 
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        url: "savePassword",
+        url: "/savePassword",
         data: JSON.stringify(search),
         dataType: 'json',
         timeout: 100000,
@@ -184,7 +184,7 @@ function savePass() {
         success: function (data) {
             closeLoader();
             if (data.message !== null) {
-                var msg = data.message;
+                let msg = data.message;
                 $('#message').html(data.message);
                 $('#message').removeClass("alert alert-danger").addClass("alert alert-success");
                 $('#message').show();

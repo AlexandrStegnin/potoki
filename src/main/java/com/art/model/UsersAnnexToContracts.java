@@ -18,7 +18,7 @@ public class UsersAnnexToContracts implements Serializable {
     private BigInteger id;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public BigInteger getId() {
         return id;
     }
