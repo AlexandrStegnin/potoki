@@ -194,14 +194,12 @@ public class UserService {
         SendingMail mail = new SendingMail();
         mail.setSubject("Добро пожаловать в Доходный Дом КолесникЪ!");
         mail.setBody("Здравствуйте, уважаемый Инвестор!<br/>" +
-                "Вам предоставлен доступ в личный кабинет Доходного Дома &#171;Колесникъ&#187; (https://www.lk.ddkolesnik.com)<br/>" +
-                "Наша видео инструкция поможет сориентироваться (https://youtu.be/nWtQdlP5GDU)<br/>" +
+                "Вам предоставлен доступ в личный кабинет Доходного Дома &#171;КолесникЪ&#187; (https://www.lk.ddkolesnik.com)<br/>" +
                 "Данные для входа:<br/>" +
                 "login: " + user.getLogin() + "<br/>" +
                 "Пароль: " + password + "<br/>" +
-                "С уважением,<br/>" +
-                "Сергей Колесник.");
-        String who = "ДД Колесникъ";
+                "С уважением, Колесник.Инвестиции");
+        String who = "ДД КолесникЪ";
         Properties prop = getProp();
         personalMailService.sendEmails(user, mail, prop.getProperty("mail.kolesnik"), prop.getProperty("mail.kolesnikpwd"), who, null);
     }
