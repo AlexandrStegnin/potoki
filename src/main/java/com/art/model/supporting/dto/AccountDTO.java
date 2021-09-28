@@ -18,12 +18,14 @@ public class AccountDTO {
 
     private BigDecimal summary;
 
-    public AccountDTO(Account owner, Double summary) {
-        this(owner, new BigDecimal(String.valueOf(summary)));
+    private String ownerName;
+
+    public AccountDTO(Account owner, Double summary, String ownerName) {
+        this(owner, new BigDecimal(String.valueOf(summary)), ownerName);
     }
 
-    public AccountDTO(Account owner, Integer summary) {
-        this(owner, new BigDecimal(String.valueOf(summary)));
+    public AccountDTO(Account owner, Integer summary, String ownerName) {
+        this(owner, new BigDecimal(String.valueOf(summary)), ownerName);
     }
 
 }

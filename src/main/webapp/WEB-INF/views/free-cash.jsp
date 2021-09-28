@@ -56,7 +56,7 @@
         </div>
         <div style="padding: 5px;">
             <form:select path="payers" id="payers" multiple="true" class="selectpicker"
-                         data-size="10" data-live-search="true" data-none-selected-text="Выберите подобъект"
+                         data-size="10" data-live-search="true" data-none-selected-text="Выберите отправителя"
                          data-actions-box="true" data-select-all-text="Выбрать всё"
                          data-deselect-all-text="Очистить">
                 <c:forEach var="payer" items="${payers}">

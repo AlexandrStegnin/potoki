@@ -328,7 +328,9 @@ public class AccountTransactionService {
      * @return список счетов с суммарным балансом
      */
     public Page<AccountDTO> getSummary(AccTxFilter filter, Pageable pageable) {
-        if (filter.getPageSize() == 0) pageable = new PageRequest(filter.getPageNumber(), filter.getTotal() + 1);
+        if (filter.getPageSize() == 0) {
+            pageable = new PageRequest(filter.getPageNumber(), filter.getTotal() + 1);
+        }
         List<Account> owners = filter.getOwners();
         List<Account> payers = filter.getPayers();
         List<Account> parentPayers = filter.getParentPayers();
