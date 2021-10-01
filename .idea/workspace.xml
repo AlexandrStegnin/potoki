@@ -6,145 +6,237 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="251e4d15-74eb-4e9a-8105-51151090c1ed" name="Выплаты инвесторам. Продажа. Разделение строк, как в деньгах инвесторов." comment="Выплаты инвесторам. Продажа. Разделение строк, как в деньгах инвесторов. Откат при удалении сумм.">
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/potoki_war.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/potoki_war.xml" afterDir="false" />
+    <list default="true" id="7a6f4bb5-47a8-4ceb-b2dc-38f18b3a613b" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/art/config/application/testPackage/testClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/art/config/application/testPackage/testClass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/art/controllers/InvestorsCashController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/art/controllers/InvestorsCashController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/META-INF/MANIFEST.MF" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/classes/logback.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/classes/logback.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/accessDenied.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/accessDenied.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addallowanceip.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addallowanceip.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addalphaextract.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addalphaextract.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addalphatags.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addalphatags.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addbonuses.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addbonuses.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addbonustypes.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addbonustypes.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addcashpayments.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addcashpayments.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/adddetails.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/adddetails.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addfacilitiesbuysales.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addfacilitiesbuysales.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addfacilitiesreserves.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addfacilitiesreserves.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addfacilitiesservicecontracts.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addfacilitiesservicecontracts.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addinvestorscash.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addinvestorscash.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addinvestorsexp.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addinvestorsexp.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addinvestorshare.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addinvestorshare.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addpayments.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addpayments.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addtoshltags.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addtoshltags.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addtypeexp.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addtypeexp.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addunderfacility.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addunderfacility.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/admin_facility.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/admin_facility.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/authheader.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/authheader.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/changepass.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/changepass.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/createmail.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/createmail.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/defaultErrorView.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/defaultErrorView.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/facility_edit.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/facility_edit.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/forgotPassword.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/forgotPassword.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/investorsCashSums.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/investorsCashSums.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/investorsplansales.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/investorsplansales.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/investorssummary.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/investorssummary.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/investorstotalsums.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/investorstotalsums.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/loader.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/loader.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/login.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/login.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/mailingGroups.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/mailingGroups.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/popup.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/popup.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/profile.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/profile.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/registrationsuccess.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/registrationsuccess.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/serviceUnavailable.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/serviceUnavailable.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/success.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/success.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/uploadexcel.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/uploadexcel.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewallowanceip.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewallowanceip.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewalphacorrecttags.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewalphacorrecttags.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewalphaextract.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewalphaextract.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewbonuses.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewbonuses.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewbonustypes.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewbonustypes.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewcashpayments.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewcashpayments.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewfacilitiesbuysales.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewfacilitiesbuysales.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewfacilitiesreserves.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewfacilitiesreserves.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewfacilitiesservicecontracts.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewfacilitiesservicecontracts.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewinvestorsexp.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewinvestorsexp.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewinvestorsshare.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewinvestorsshare.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewmainflows.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewmainflows.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewmainflowsinv.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewmainflowsinv.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewmainflowsinv2.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewmainflowsinv2.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewpayments.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewpayments.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewrentorsdetails.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewrentorsdetails.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewtoshlcorrecttags.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewtoshlcorrecttags.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewtoshlextract.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewtoshlextract.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewtypeexp.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewtypeexp.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewunderfacilities.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewunderfacilities.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/welcome.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/welcome.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/css/ajaxLoader.css" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/css/ajaxLoader.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/css/applic.css" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/css/applic.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/css/bootstrap.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/css/bootstrap.css.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/css/bootstrap.min.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/css/bootstrap.min.css.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/css/common.css" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/css/common.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/css/datatables.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/css/datatables.min.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/css/login_style.css" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/css/login_style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/css/popup.css" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/css/popup.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansBold/OpenSansBold.eot" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansBold/OpenSansBold.eot" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansBold/OpenSansBold.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansBold/OpenSansBold.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansBold/OpenSansBold.woff" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansBold/OpenSansBold.woff" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansLight/OpenSansLight.eot" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansLight/OpenSansLight.eot" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansLight/OpenSansLight.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansLight/OpenSansLight.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansLight/OpenSansLight.woff" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansLight/OpenSansLight.woff" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansRegular/OpenSansRegular.eot" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansRegular/OpenSansRegular.eot" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansRegular/OpenSansRegular.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansRegular/OpenSansRegular.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansRegular/OpenSansRegular.woff" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansRegular/OpenSansRegular.woff" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansSemiBold/OpenSansSemiBold.eot" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansSemiBold/OpenSansSemiBold.eot" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansSemiBold/OpenSansSemiBold.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansSemiBold/OpenSansSemiBold.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansSemiBold/OpenSansSemiBold.woff" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansSemiBold/OpenSansSemiBold.woff" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/glyphicons-halflings-regular.eot" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/glyphicons-halflings-regular.eot" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/glyphicons-halflings-regular.svg" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/glyphicons-halflings-regular.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/glyphicons-halflings-regular.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/glyphicons-halflings-regular.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/glyphicons-halflings-regular.woff" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/glyphicons-halflings-regular.woff" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/glyphicons-halflings-regular.woff2" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/glyphicons-halflings-regular.woff2" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/img/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/img/favicon.ico" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/img/kolesnik_logo_cmyk.png" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/img/kolesnik_logo_cmyk.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/AjaxLoader.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/AjaxLoader.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/alphaExtractScripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/alphaExtractScripts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/applic.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/applic.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/bootstrap.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/bootstrap.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/checkService.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/checkService.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/datatables.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/datatables.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/jquery-3.2.1.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/jquery-3.2.1.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/jquery.selectric.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/jquery.selectric.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/mailingScripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/mailingScripts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/popupScripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/popupScripts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/scriptsForFacilities.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/scriptsForFacilities.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/socketScripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/socketScripts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/sockjs-0.3.4.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/sockjs-0.3.4.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/stomp.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/stomp.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/tagsScripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/tagsScripts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/logback.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/logback.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/InvestorsFlowsSale_.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/InvestorsFlowsSale_.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/art/config/application/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/art/config/application/WebConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/art/controllers/MoneyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/art/controllers/MoneyController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/money-list.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/money-list.jsp" afterDir="false" />
     </list>
-    <list id="7a6f4bb5-47a8-4ceb-b2dc-38f18b3a613b" name="Default" comment="Удалено поле &quot;вид инвестора&quot; из &quot;выплаты с аренды&quot; и &quot;выплаты с продажи&quot;&#10;исправление: исправлена блокировка нажатия на ссылку, если она не активна&#10;Мелкий рефакторинг.">
+    <list id="0739fc4c-aad2-45ff-9ba8-653f857d299a" name="Wrong" comment="Wrong">
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/potoki_war.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/potoki_war.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/artifacts/potoki_war_exploded.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/potoki_war_exploded.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_annotations_2_6_3.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_core_2_6_3.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_databind_2_6_3.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__mysql_mysql_connector_java_5_1_31.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_projectlombok_lombok_1_16_14.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_aop_4_3_4_RELEASE.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_beans_4_3_4_RELEASE.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_context_4_3_4_RELEASE.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_context_support_4_3_4_RELEASE.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_core_4_3_4_RELEASE.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_expression_4_3_4_RELEASE.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_jdbc_4_3_4_RELEASE.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_orm_4_3_4_RELEASE.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_test_4_3_4_RELEASE.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_tx_4_3_4_RELEASE.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_web_4_3_4_RELEASE.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_webmvc_4_3_4_RELEASE.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_webjars_npm_http_parser_js_0_4_13.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_webjars_npm_websocket_driver_0_7_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_webjars_npm_websocket_extensions_0_1_3.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/potoki.iml" beforeDir="false" afterPath="$PROJECT_DIR$/potoki.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/PSS Project/resources/core/js/flowsVisualization.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/admin.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/admin.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/META-INF/MANIFEST.MF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/accessDenied.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/accessDenied.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addRooms.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addTypeClosingInvest.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addallowanceip.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addalphaextract.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addalphatags.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addbonuses.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addbonustypes.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addcashsource.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addcashtypes.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/adddetails.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addfacilitiesbuysales.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addfacilitiesreserves.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addfacilitiesservicecontracts.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addinvestorscash.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addinvestorsexp.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addinvestorshare.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addinvestorstype.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addnewcashdetail.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addpayments.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addtoshltags.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addtypeexp.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/addunderfacility.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/admin.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/admin_facility.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/authheader.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/bootstrapModal.jsp" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/catalogues.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/catalogues.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/paysInvestors.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/paysInvestors.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/registration.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/registration.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewInvestorsFlowsSale.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewInvestorsFlowsSale.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewinvestorscash.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewinvestorscash.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewinvestorsflows.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewinvestorsflows.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/changepass.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/changepass.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/createmail.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/defaultErrorView.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/defaultErrorView.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/editMailingGroups.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/facility_edit.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/forgotPassword.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/forgotPassword.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/getInvestorsCash.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/investorsCashSums.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/investorsplansales.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/investorssummary.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/investorstotalsums.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/loader.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/login.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/login.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/mailingGroups.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/old_authheader.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/old_authheader.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/paysInvestors.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/popup.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/profile.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/profile.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/registration.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/registrationsuccess.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/serviceUnavailable.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/success.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/success.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/uploadImages.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/uploadexcel.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewFlows.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewFlows.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewInvestorsFlowsSale.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewRooms.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewSaleOfFacilities.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewShareKinds.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewTypesClosingInvest.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewallowanceip.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewalphacorrecttags.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewalphaextract.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewbonuses.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewbonustypes.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewcashpayments.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewcashsources.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewcashtypes.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewfacilitiesbuysales.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewfacilitiesreserves.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewfacilitiesservicecontracts.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewinvestorscash.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewinvestorsexp.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewinvestorsflows.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewinvestorsshare.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewinvestorstypes.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewmainflows.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewmainflowsinv.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewmainflowsinv2.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewnewcashdetails.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewpayments.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewrentorsdetails.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewtoshlcorrecttags.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewtoshlextract.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewtypeexp.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/viewunderfacilities.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/WEB-INF/views/welcome.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/css/ajaxLoader.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/css/applic.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/css/bootstrap.css.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/css/bootstrap.min.css.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/css/common.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/css/datatables.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/css/login_style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/css/popup.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansBold/OpenSansBold.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansBold/OpenSansBold.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansBold/OpenSansBold.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansLight/OpenSansLight.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansLight/OpenSansLight.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansLight/OpenSansLight.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansRegular/OpenSansRegular.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansRegular/OpenSansRegular.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansRegular/OpenSansRegular.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansSemiBold/OpenSansSemiBold.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansSemiBold/OpenSansSemiBold.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/OpenSansSemiBold/OpenSansSemiBold.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/glyphicons-halflings-regular.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/glyphicons-halflings-regular.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/glyphicons-halflings-regular.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/glyphicons-halflings-regular.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/fonts/glyphicons-halflings-regular.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/img/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/img/kolesnik_logo_cmyk.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/AjaxLoader.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/alphaExtractScripts.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/app.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/applic.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/bootstrap.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/checkService.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/datatables.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/flowsVisualization.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/flowsVisualization.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/flowsVisualization_new.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/flowsVisualization_new.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/forCashSources.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/forCashTypes.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/forInvTypes.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/forLoadPdfFiles.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/forLoadPdfFiles.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/forNewCashDetails.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/forShareKind.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/forTypeClosingInvest.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/jquery-3.2.1.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/jquery.selectric.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/jsFunctions.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/jsFunctions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/mailingScripts.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/popupScripts.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/report.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/rowPosition.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/scripts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/scriptsForFlows.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/scriptsForFlows.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/scriptsForFlowsSale.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/scriptsForFlowsSale.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/scriptsForInvestorsCash.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/scriptsForInvestorsCash.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/scriptsForUsers.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/Potoki/resources/core/js/scriptsForUsers.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/Rooms_.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/Rooms_.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/Users_.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/Users_.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/scriptsForFacilities.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/scriptsForFlows.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/scriptsForFlowsSale.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/scriptsForInvestorsCash.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/scriptsForSaleOfFacilities.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/scriptsForUsers.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/socketScripts.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/sockjs-0.3.4.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/stomp.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Potoki/resources/core/js/tagsScripts.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/AllowanceIp_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/AlphaCorrectTags_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/AlphaExtract_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/AnnexToContracts_.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/AnnexToContracts_.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/BonusTypes_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/Bonuses_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/CashPayments_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/CashSources_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/CashTypes_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/Discounts_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/Emails_.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/Emails_.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/FacilitiesBuySales_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/FacilitiesReserves_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/FacilitiesServiceContracts_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/Facilities_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/HistoryRelationships_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/InvestorsCash_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/InvestorsExpenses_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/InvestorsFlowsSale_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/InvestorsFlows_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/InvestorsLoad_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/InvestorsShare_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/InvestorsTypes_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/MailingGroups_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/MainFlows_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/NewCashDetails_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/PasswordResetToken_.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/PasswordResetToken_.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/PaymentsMethod_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/PaymentsType_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/RentorsDetails_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/Roles_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/Rooms_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/SaleOfFacilities_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/ShareKind_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/Stuffs_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/ToshlCorrectTags_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/ToshlExtract_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/TypeClosingInvest_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/TypeExpenses_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/UnderFacilities_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/UsersAnnexToContracts_.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/UsersAnnexToContracts_.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/Users_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/supporting/AfterCashing_.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/supporting/AfterCashing_.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/supporting/PaysToInvestors_.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/art/model/supporting/ServiceUnavailable_.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
     </list>
-    <list id="5d2ca7a4-18ec-4eae-b42c-9a7c4a92d346" name="Выплаты инвесторам. Показ по 100 записей" comment="Выплаты инвесторам. Показ по 100 записей" />
-    <ignored path="$PROJECT_DIR$/target/" />
-    <ignored mask=".properties" />
-    <ignored mask=".iml" />
-    <ignored path="$PROJECT_DIR$/.idea/shelf/" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <list id="11666248-68ea-4fe2-9688-1537f99df4b0" name="Последние использованные фильтры." comment="" />
+    <list id="81ae018e-46d2-43ca-9117-82c2ba5a48de" name="Ранее использованные фильтры" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -156,238 +248,59 @@
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
-  <component name="DatabaseView">
-    <option name="SHOW_INTERMEDIATE" value="true" />
-    <option name="GROUP_DATA_SOURCES" value="true" />
-    <option name="GROUP_SCHEMA" value="true" />
-    <option name="GROUP_CONTENTS" value="false" />
-    <option name="SORT_POSITIONED" value="false" />
-    <option name="SHOW_EMPTY_GROUPS" value="false" />
-    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
-    <option name="HIDDEN_KINDS">
-      <set />
-    </option>
-    <expand>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="@DDK" type="feb32156:DbDataSourceImpl" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="@DDK" type="feb32156:DbDataSourceImpl" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="@DDK" type="feb32156:DbDataSourceImpl" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="pss_projects: schema" type="c314c289:MysqlImplModel$Schema" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="@DDK" type="feb32156:DbDataSourceImpl" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="pss_projects: schema" type="c314c289:MysqlImplModel$Schema" />
-        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
-      </path>
-    </expand>
-    <select />
-  </component>
-  <component name="FavoritesManager">
-    <favorites_list name="potoki" />
-  </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/art/controllers/InvestorsFlowsSaleController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1155">
-              <caret line="101" column="36" selection-start-line="101" selection-start-column="36" selection-end-line="101" selection-end-column="36" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/art/controllers/InvestorsFlowsController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4635">
-              <caret line="331" selection-start-line="331" selection-end-line="331" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/art/service/InvestorsFlowsSaleService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1845">
-              <caret line="140" column="5" selection-start-line="117" selection-start-column="4" selection-end-line="140" selection-end-column="5" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/art/controllers/InvestorsCashController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="474">
-              <caret line="259" column="25" selection-start-line="259" selection-start-column="25" selection-end-line="259" selection-end-column="25" />
-              <folding>
-                <element signature="e#56090#56091#0" expanded="true" />
-                <element signature="e#56247#56248#0" expanded="true" />
-                <element signature="e#56384#56385#0" expanded="true" />
-                <element signature="e#56540#56541#0" expanded="true" />
-                <element signature="e#56686#56687#0" expanded="true" />
-                <element signature="e#56857#56858#0" expanded="true" />
-                <element signature="e#57028#57029#0" expanded="true" />
-                <element signature="e#57551#57552#0" expanded="true" />
-                <element signature="e#57683#57684#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/art/service/InvestorsCashService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="244" column="5" selection-start-line="244" selection-start-column="5" selection-end-line="244" selection-end-column="5" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="39" selection-start-line="4" selection-start-column="39" selection-end-line="7" selection-end-column="25" />
-              <folding>
-                <marker date="1543054200952" expanded="true" signature="170:306" ph="..." />
-                <marker date="1543054200952" expanded="true" signature="376:385" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
-  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="CSS File" />
         <option value="jsf" />
-        <option value="JavaScript File" />
+        <option value="Enum" />
         <option value="Interface" />
+        <option value="JavaScript File" />
         <option value="Jsp File" />
         <option value="Class" />
-        <option value="Enum" />
       </list>
     </option>
   </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>edit-</find>
-      <find>UPDATE_</find>
-      <find>/updateMa</find>
-      <find>/newi</find>
-      <find>mysql</find>
-      <find>checkAll</find>
-      <find>divi</find>
-      <find>/getInvestorsCash</find>
-      <find>/dele</find>
-      <find>:che</find>
-      <find>checkI</find>
-      <find>doubl</find>
-      <find>form:in</find>
-      <find>parent</find>
-      <find>form:inp</find>
-      <find>reinvest</find>
-      <find>double-ca</find>
-      <find>liDivide</find>
-      <find>data</find>
-      <find>eq</find>
-      <find>linkHas</find>
-      <find>comission</find>
-      <find>#deleteAll</find>
-      <find>deleteFlowsList</find>
-      <find>deleteC</find>
-      <find>cashing</find>
-      <find>sumdetails</find>
-      <find>#del</find>
-      <find>investorsCashes</find>
-      <find>delete</find>
-    </findStrings>
-    <replaceStrings>
-      <replace>/old_bootstrap.min.css</replace>
-      <replace>&quot;old_authheader.jsp&quot;</replace>
-      <replace>bootstrap.min_old.js</replace>
-      <replace>investorscash/{pageNumber}</replace>
-    </replaceStrings>
-    <dirStrings>
-      <dir>C:\Users\Александр\IdeaProjects\potoki</dir>
-      <dir>$PROJECT_DIR$/src/main/java/com/art/controllers</dir>
-      <dir>$PROJECT_DIR$/src/main/webapp/resources/core/js</dir>
-      <dir>$PROJECT_DIR$</dir>
-    </dirStrings>
-  </component>
   <component name="Git.Settings">
-    <option name="ROOT_SYNC" value="DONT_SYNC" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="develop" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
     <option name="WARN_ABOUT_CRLF" value="false" />
   </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/src/main/webapp/resources/core/js/mailingScripts.js" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewFlows.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/resources/core/js/app.js" />
-        <option value="$PROJECT_DIR$/src/main/webapp/resources/core/css/app.css" />
-        <option value="$PROJECT_DIR$/src/main/webapp/resources/core/js/flowsVisualization.js" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/model/UnderFacilities.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/repository/InvestorsCashRepository.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/service/RoomsService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/model/Rooms.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/service/AlphaCorrectTagsService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/config/application/WebConfig.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/model/supporting/StatusEnum.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/func/GetPrincipalFunc.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/model/SecurityUser.java" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewmarketingtree.jsp" />
-        <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/paysInvestors.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewinvestorsflows.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/catalogues.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/resources/core/js/scriptsForFlows.js" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/registration.jsp" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/model/supporting/KinEnum.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/controllers/UserController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/model/MarketingTree.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/controllers/MarketingTreeController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/service/ScheduledService.java" />
-        <option value="$PROJECT_DIR$/src/main/webapp/resources/core/js/scripts.js" />
-        <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/repository/MarketingTreeRepository.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/service/MarketingTreeService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/service/UserService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/model/Users.java" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/admin.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewinvestorscash.jsp" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/func/UploadExcelFunc.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/controllers/InvestorsSummaryController.java" />
-        <option value="$PROJECT_DIR$/src/main/webapp/resources/core/js/scriptsForUsers.js" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/service/InvestorsFlowsService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/repository/InvestorsFlowsRepository.java" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/viewInvestorsFlowsSale.jsp" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/model/supporting/SearchSummary.java" />
-        <option value="$PROJECT_DIR$/src/main/webapp/resources/core/js/scriptsForFlowsSale.js" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/controllers/InvestorsFlowsSaleController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/config/application/testPackage/testClass.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/service/InvestorsFlowsSaleService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/model/InvestorsFlowsSale.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/controllers/InvestorsFlowsController.java" />
-        <option value="$PROJECT_DIR$/src/main/webapp/resources/core/js/scriptsForInvestorsCash.js" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/service/InvestorsCashService.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
-        <option value="$PROJECT_DIR$/src/main/java/com/art/controllers/InvestorsCashController.java" />
-      </list>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-orm/4.3.4.RELEASE/spring-orm-4.3.4.RELEASE.jar!/org/springframework/orm/jpa/EntityManagerFactoryUtils.class" root0="FORCE_HIGHLIGHTING" />
+    <setting file="jar://$MAVEN_REPOSITORY$/javax/servlet/javax.servlet-api/3.0.1/javax.servlet-api-3.0.1.jar!/javax/servlet/ServletRequest.class" root0="FORCE_HIGHLIGHTING" />
+    <setting file="jar://$MAVEN_REPOSITORY$/org/springframework/data/spring-data-commons/1.13.0.RELEASE/spring-data-commons-1.13.0.RELEASE.jar!/org/springframework/data/repository/CrudRepository.class" root0="FORCE_HIGHLIGHTING" />
+    <setting file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-aop/4.3.4.RELEASE/spring-aop-4.3.4.RELEASE.jar!/org/springframework/aop/framework/CglibAopProxy.class" root0="FORCE_HIGHLIGHTING" />
+    <setting file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/4.3.4.RELEASE/spring-web-4.3.4.RELEASE.jar!/org/springframework/web/method/support/InvocableHandlerMethod.class" root0="FORCE_HIGHLIGHTING" />
+    <setting file="jar://$MAVEN_REPOSITORY$/javax/servlet/javax.servlet-api/3.0.1/javax.servlet-api-3.0.1.jar!/javax/servlet/ServletRequestWrapper.class" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="JpbToolWindowState">
+    <option name="myId2FirstActivated">
+      <map>
+        <entry key="JPA Inspector" value="true" />
+        <entry key="JPA Palette" value="true" />
+        <entry key="JPA Structure" value="true" />
+      </map>
+    </option>
+    <option name="myId2Visible">
+      <map>
+        <entry key="JPA Inspector" value="true" />
+        <entry key="JPA Palette" value="true" />
+        <entry key="JPA Structure" value="true" />
+      </map>
     </option>
   </component>
   <component name="JsFlowSettings">
@@ -396,6 +309,177 @@
     <other-services-enabled>true</other-services-enabled>
     <auto-save>true</auto-save>
   </component>
+  <component name="LineStatusTrackerManager">
+    <file path="$PROJECT_DIR$/.idea/workspace.xml">
+      <ranges>
+        <range start1="7" end1="7" start2="7" end2="28" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="8" end1="9" start2="29" end2="35" changelist="7a6f4bb5-47a8-4ceb-b2dc-38f18b3a613b" />
+        <range start1="10" end1="10" start2="36" end2="59" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="11" end1="13" start2="60" end2="62" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="14" end1="15" start2="63" end2="63" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="16" end1="35" start2="64" end2="91" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="36" end1="37" start2="92" end2="93" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="38" end1="39" start2="94" end2="96" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="40" end1="45" start2="97" end2="103" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="46" end1="48" start2="104" end2="108" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="49" end1="51" start2="109" end2="112" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="52" end1="131" start2="113" end2="198" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="132" end1="138" start2="199" end2="254" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="141" end1="147" start2="257" end2="259" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="157" end1="270" start2="269" end2="269" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="276" end1="277" start2="275" end2="276" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="278" end1="278" start2="277" end2="278" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="280" end1="281" start2="280" end2="280" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="284" end1="330" start2="283" end2="283" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="331" end1="332" start2="284" end2="289" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="333" end1="333" start2="290" end2="291" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="335" end1="390" start2="293" end2="323" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="405" end1="432" start2="338" end2="340" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="433" end1="433" start2="341" end2="342" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="452" end1="614" start2="361" end2="367" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="616" end1="617" start2="369" end2="371" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="618" end1="618" start2="372" end2="374" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="619" end1="619" start2="375" end2="376" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="626" end1="627" start2="383" end2="384" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="628" end1="628" start2="385" end2="390" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="629" end1="629" start2="391" end2="392" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="632" end1="633" start2="395" end2="395" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="634" end1="635" start2="396" end2="397" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="637" end1="640" start2="399" end2="399" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="641" end1="641" start2="400" end2="401" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="643" end1="644" start2="403" end2="403" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="647" end1="653" start2="406" end2="408" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="661" end1="661" start2="416" end2="423" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="662" end1="672" start2="424" end2="427" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="700" end1="716" start2="455" end2="455" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="720" end1="768" start2="459" end2="459" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="826" end1="826" start2="517" end2="537" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="827" end1="827" start2="538" end2="539" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="832" end1="833" start2="544" end2="545" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="834" end1="862" start2="546" end2="546" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="891" end1="909" start2="575" end2="575" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="911" end1="911" start2="577" end2="578" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="923" end1="923" start2="590" end2="591" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="939" end1="939" start2="607" end2="617" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="940" end1="941" start2="618" end2="619" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1032" end1="1035" start2="710" end2="711" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1036" end1="1037" start2="712" end2="712" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1041" end1="1044" start2="716" end2="717" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1050" end1="1054" start2="723" end2="724" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1060" end1="1062" start2="730" end2="730" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1600" end1="1600" start2="1268" end2="1496" changelist="7a6f4bb5-47a8-4ceb-b2dc-38f18b3a613b" />
+        <range start1="1601" end1="1605" start2="1497" end2="1501" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1606" end1="1607" start2="1502" end2="1503" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1608" end1="1612" start2="1504" end2="1508" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1613" end1="1614" start2="1509" end2="1510" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1615" end1="1619" start2="1511" end2="1515" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1620" end1="1621" start2="1516" end2="1517" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1622" end1="1626" start2="1518" end2="1522" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1627" end1="1628" start2="1523" end2="1524" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1629" end1="1633" start2="1525" end2="1529" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1634" end1="1635" start2="1530" end2="1531" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1636" end1="1640" start2="1532" end2="1536" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1641" end1="1642" start2="1537" end2="1538" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1643" end1="1647" start2="1539" end2="1543" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1648" end1="1649" start2="1544" end2="1545" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1650" end1="1654" start2="1546" end2="1550" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1655" end1="1656" start2="1551" end2="1552" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1657" end1="1661" start2="1553" end2="1557" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1662" end1="1663" start2="1558" end2="1559" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1664" end1="1668" start2="1560" end2="1564" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1669" end1="1670" start2="1565" end2="1566" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1671" end1="1675" start2="1567" end2="1571" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1676" end1="1677" start2="1572" end2="1573" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1678" end1="1682" start2="1574" end2="1578" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1683" end1="1684" start2="1579" end2="1580" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1685" end1="1689" start2="1581" end2="1585" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1690" end1="1691" start2="1586" end2="1587" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1692" end1="1696" start2="1588" end2="1592" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1697" end1="1698" start2="1593" end2="1594" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1699" end1="1703" start2="1595" end2="1599" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1704" end1="1705" start2="1600" end2="1601" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1706" end1="1710" start2="1602" end2="1606" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1711" end1="1712" start2="1607" end2="1608" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1713" end1="1717" start2="1609" end2="1613" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1718" end1="1719" start2="1614" end2="1615" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1720" end1="1724" start2="1616" end2="1620" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1725" end1="1726" start2="1621" end2="1622" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1727" end1="1731" start2="1623" end2="1627" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1732" end1="1733" start2="1628" end2="1629" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1734" end1="1738" start2="1630" end2="1634" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1739" end1="1740" start2="1635" end2="1636" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1741" end1="1745" start2="1637" end2="1641" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1746" end1="1747" start2="1642" end2="1643" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1748" end1="1752" start2="1644" end2="1648" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1753" end1="1754" start2="1649" end2="1650" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1755" end1="1759" start2="1651" end2="1655" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1760" end1="1761" start2="1656" end2="1657" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1762" end1="1766" start2="1658" end2="1662" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1767" end1="1768" start2="1663" end2="1664" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1769" end1="1773" start2="1665" end2="1669" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1774" end1="1775" start2="1670" end2="1671" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1776" end1="1780" start2="1672" end2="1676" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1781" end1="1782" start2="1677" end2="1678" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1783" end1="1787" start2="1679" end2="1683" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1788" end1="1789" start2="1684" end2="1685" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1790" end1="1794" start2="1686" end2="1690" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1795" end1="1796" start2="1691" end2="1692" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1797" end1="1801" start2="1693" end2="1697" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1802" end1="1803" start2="1698" end2="1699" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1804" end1="1808" start2="1700" end2="1704" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1809" end1="1810" start2="1705" end2="1706" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1811" end1="1815" start2="1707" end2="1711" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1816" end1="1817" start2="1712" end2="1713" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1818" end1="1822" start2="1714" end2="1718" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1823" end1="1824" start2="1719" end2="1720" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1825" end1="1829" start2="1721" end2="1725" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1830" end1="1831" start2="1726" end2="1727" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1832" end1="1836" start2="1728" end2="1732" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1837" end1="1838" start2="1733" end2="1734" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1839" end1="1843" start2="1735" end2="1739" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1844" end1="1845" start2="1740" end2="1741" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1846" end1="1850" start2="1742" end2="1746" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1851" end1="1852" start2="1747" end2="1748" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1853" end1="1857" start2="1749" end2="1753" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1858" end1="1859" start2="1754" end2="1755" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1860" end1="1864" start2="1756" end2="1760" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1865" end1="1866" start2="1761" end2="1762" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1867" end1="1871" start2="1763" end2="1767" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1872" end1="1873" start2="1768" end2="1769" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1874" end1="1878" start2="1770" end2="1774" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1879" end1="1880" start2="1775" end2="1776" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1881" end1="1885" start2="1777" end2="1781" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1886" end1="1887" start2="1782" end2="1783" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1888" end1="1892" start2="1784" end2="1788" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1893" end1="1894" start2="1789" end2="1790" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1895" end1="1899" start2="1791" end2="1795" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1900" end1="1901" start2="1796" end2="1797" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1902" end1="1906" start2="1798" end2="1802" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1907" end1="1908" start2="1803" end2="1804" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1909" end1="1913" start2="1805" end2="1809" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1914" end1="1915" start2="1810" end2="1811" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1916" end1="1920" start2="1812" end2="1816" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1921" end1="1922" start2="1817" end2="1818" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1923" end1="1927" start2="1819" end2="1823" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1928" end1="1929" start2="1824" end2="1825" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1930" end1="1931" start2="1826" end2="1827" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1932" end1="1935" start2="1828" end2="1828" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="1945" end1="2034" start2="1838" end2="1838" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="2035" end1="2036" start2="1839" end2="1840" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="2042" end1="2058" start2="1846" end2="1847" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="2076" end1="2076" start2="1865" end2="1866" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="2079" end1="2079" start2="1869" end2="1871" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="2082" end1="2108" start2="1874" end2="1900" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="2109" end1="2109" start2="1901" end2="1902" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="2114" end1="2118" start2="1907" end2="1910" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="2119" end1="2123" start2="1911" end2="1915" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="2124" end1="2128" start2="1916" end2="1925" changelist="7a6f4bb5-47a8-4ceb-b2dc-38f18b3a613b" />
+        <range start1="2131" end1="2131" start2="1928" end2="1937" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="2156" end1="2211" start2="1962" end2="1962" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+        <range start1="2215" end1="2536" start2="1966" end2="1966" changelist="0739fc4c-aad2-45ff-9ba8-653f857d299a" />
+      </ranges>
+    </file>
+  </component>
   <component name="LogFilters">
     <option name="FILTER_ERRORS" value="false" />
     <option name="FILTER_WARNINGS" value="false" />
@@ -403,34 +487,10 @@
     <option name="FILTER_DEBUG" value="true" />
     <option name="CUSTOM_FILTER" />
   </component>
-  <component name="MavenImportPreferences">
-    <option name="importingSettings">
-      <MavenImportingSettings>
-        <option name="importAutomatically" value="true" />
-      </MavenImportingSettings>
-    </option>
+  <component name="MavenRunner">
+    <option name="skipTests" value="true" />
   </component>
-  <component name="MavenProjectNavigator">
-    <treeState>
-      <expand>
-        <path>
-          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
-          <item name="potoki" type="9519ce18:MavenProjectsStructure$ProjectNode" />
-        </path>
-        <path>
-          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
-          <item name="potoki" type="9519ce18:MavenProjectsStructure$ProjectNode" />
-          <item name="Lifecycle" type="58874e2:MavenProjectsStructure$LifecycleNode" />
-        </path>
-      </expand>
-      <select />
-    </treeState>
-  </component>
-  <component name="ProjectFrameBounds" extendedState="6" fullScreen="true">
-    <option name="y" value="504" />
-    <option name="width" value="80" />
-    <option name="height" value="22" />
-  </component>
+  <component name="ProjectId" id="1huJKT9XhQYJes8p1oPWZeiP2if" />
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
       <profile-state>
@@ -450,173 +510,21 @@
       </profile-state>
     </entry>
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="potoki" type="b2602c69:ProjectViewProjectNode" />
-              <item name="potoki" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="potoki" type="b2602c69:ProjectViewProjectNode" />
-              <item name="potoki" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="potoki" type="b2602c69:ProjectViewProjectNode" />
-              <item name="potoki" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="potoki" type="b2602c69:ProjectViewProjectNode" />
-              <item name="potoki" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="potoki" type="b2602c69:ProjectViewProjectNode" />
-              <item name="potoki" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="art" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="potoki" type="b2602c69:ProjectViewProjectNode" />
-              <item name="potoki" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="art" type="462c0819:PsiDirectoryNode" />
-              <item name="config" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="potoki" type="b2602c69:ProjectViewProjectNode" />
-              <item name="potoki" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="art" type="462c0819:PsiDirectoryNode" />
-              <item name="config" type="462c0819:PsiDirectoryNode" />
-              <item name="application" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="potoki" type="b2602c69:ProjectViewProjectNode" />
-              <item name="potoki" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="art" type="462c0819:PsiDirectoryNode" />
-              <item name="config" type="462c0819:PsiDirectoryNode" />
-              <item name="application" type="462c0819:PsiDirectoryNode" />
-              <item name="testPackage" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="potoki" type="b2602c69:ProjectViewProjectNode" />
-              <item name="potoki" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="art" type="462c0819:PsiDirectoryNode" />
-              <item name="controllers" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="potoki" type="b2602c69:ProjectViewProjectNode" />
-              <item name="potoki" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="art" type="462c0819:PsiDirectoryNode" />
-              <item name="service" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="potoki" type="b2602c69:ProjectViewProjectNode" />
-              <item name="potoki" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="potoki" type="b2602c69:ProjectViewProjectNode" />
-              <item name="potoki" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="webapp" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="potoki" type="b2602c69:ProjectViewProjectNode" />
-              <item name="potoki" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="webapp" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="potoki" type="b2602c69:ProjectViewProjectNode" />
-              <item name="potoki" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="webapp" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="core" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="potoki" type="b2602c69:ProjectViewProjectNode" />
-              <item name="potoki" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="webapp" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="core" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="potoki" type="b2602c69:ProjectViewProjectNode" />
-              <item name="potoki" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="webapp" type="462c0819:PsiDirectoryNode" />
-              <item name="WEB-INF" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="potoki" type="b2602c69:ProjectViewProjectNode" />
-              <item name="potoki" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="webapp" type="462c0819:PsiDirectoryNode" />
-              <item name="WEB-INF" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="PackagesPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="potoki" type="58d84e3e:PackageViewProjectNode" />
-              <item name="potoki" type="616d4139:PackageViewModuleNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-    </panes>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="DatabaseDriversLRU" value="mysql" />
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="DatabaseDriversLRU" value="mysql&#10;postgresql" />
     <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="add_unversioned_files" value="$PROJECT_DIR$/src/main/resources/application.properties" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542859677230" />
     <property name="database.console.LAST_STATE" value="false" />
@@ -624,33 +532,31 @@
     <property name="findjar.last.used.dir" value="$PROJECT_DIR$" />
     <property name="js.eslint.eslintPackage" value="" />
     <property name="last.edited.regexp" value="за 01,01,2017" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path" value="node" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="restartRequiresConfirmation" value="false" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Console Font" />
   </component>
   <component name="RecentsManager">
-    <key name="OPEN_URL_DIALOG">
-      <recent name="https://github.com/vitaly-chibrikov/homework_tester/tree/master/HWTester" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/webapp/WEB-INF/views" />
       <recent name="$PROJECT_DIR$/src/main/webapp/resources/core/css" />
       <recent name="$PROJECT_DIR$/src/main/webapp/resources/core/js" />
-      <recent name="$PROJECT_DIR$/src/main/webapp/WEB-INF/views" />
       <recent name="$PROJECT_DIR$/src/main/webapp/resources/core/img" />
       <recent name="$PROJECT_DIR$/src/main/webapp/resources/core/fonts" />
     </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.art.model.supporting" />
-      <recent name="com.art.config.application.viewresolver" />
-      <recent name="com.art.service" />
-      <recent name="com.art.repository" />
-      <recent name="com.art.model" />
+    <key name="OPEN_URL_DIALOG">
+      <recent name="https://github.com/vitaly-chibrikov/homework_tester/tree/master/HWTester" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/webapp/resources/core/css" />
@@ -659,17 +565,17 @@
       <recent name="C:\Users\Александр\IdeaProjects\potoki\src\main\webapp\resources\core\img" />
       <recent name="C:\Users\Александр\IdeaProjects\potoki\src\main\webapp\resources\core" />
     </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.art.model.supporting.dto" />
+      <recent name="com.art.service" />
+      <recent name="com.art.repository" />
+      <recent name="com.art.model" />
+      <recent name="com.art.model.supporting" />
+    </key>
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn clean package" />
     </option>
   </component>
   <component name="RunManager" selected="Tomcat Server.Tomcat deploy">
@@ -700,72 +606,8 @@
       </Profilers>
       <method />
     </configuration>
-    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" working-dir="">
-      <method />
-    </configuration>
-    <configuration default="true" type="mocha-javascript-test-runner" factoryName="Mocha">
-      <node-interpreter>project</node-interpreter>
-      <node-options />
-      <working-directory />
-      <pass-parent-env>true</pass-parent-env>
-      <envs />
-      <ui />
-      <extra-mocha-options />
-      <test-kind>DIRECTORY</test-kind>
-      <test-directory />
-      <recursive>false</recursive>
-      <method />
-    </configuration>
     <configuration default="true" type="Applet">
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="AppMailSender" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.art.func.AppMailSender" />
-      <module name="potoki" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.art.func.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TlsEmail" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.art.config.application.testPackage.TlsEmail" />
-      <module name="potoki" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.art.config.application.testPackage.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="Application" factoryName="Application">
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="testClass" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.art.config.application.testPackage.testClass" />
-      <module name="potoki" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.art.config.application.testPackage.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -824,42 +666,35 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="TestCase" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.art.TestCase" />
+      <module name="potoki" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.art.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
+      <option name="TEST_OBJECT" value="class" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType" factoryName="Kotlin script">
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
       <option name="filePath" />
-      <option name="vmParameters" />
-      <option name="alternativeJrePath" />
-      <option name="programParameters" />
-      <option name="passParentEnvs" value="true" />
-      <option name="workingDirectory" />
-      <option name="isAlternativeJrePathEnabled" value="false" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="WORKING_DIRECTORY" />
-      <module name="" />
-      <option name="filePath" />
-      <option name="vmParameters" />
-      <option name="alternativeJrePath" />
-      <option name="programParameters" />
-      <option name="passParentEnvs" value="true" />
-      <option name="workingDirectory" />
-      <option name="isAlternativeJrePathEnabled" value="false" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="WORKING_DIRECTORY" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -890,25 +725,8 @@
       </MavenSettings>
       <method v="2" />
     </configuration>
-    <configuration name="1gb.ru" type="Remote">
-      <module name="potoki" />
-      <option name="USE_SOCKET_TRANSPORT" value="true" />
-      <option name="SERVER_MODE" value="false" />
-      <option name="SHMEM_ADDRESS" value="javadebug" />
-      <option name="HOST" value="ftp.ipcashflows-ru.1gb.ru" />
-      <option name="PORT" value="2222" />
-      <option name="AUTO_RESTART" value="false" />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="2222" />
-        <option name="LOCAL" value="false" />
-      </RunnerSettings>
-      <method v="2">
-        <option name="BuildArtifacts" enabled="true">
-          <artifact name="potoki:war" />
-        </option>
-      </method>
-    </configuration>
     <configuration default="true" type="TestNG">
+      <option name="TEST_OBJECT" value="CLASS" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
       <properties />
       <listeners />
@@ -921,6 +739,7 @@
       <option name="BROWSER_ID" value="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" />
       <option name="START_JAVASCRIPT_DEBUGGER" value="true" />
       <option name="SHOW_DIALOG_ON_UPDATE" value="false" />
+      <option name="UPDATING_POLICY" value="redeploy-artifacts" />
       <deployment>
         <artifact name="potoki:war exploded">
           <settings>
@@ -937,8 +756,18 @@
       <predefined_log_file id="Tomcat Manager" />
       <predefined_log_file id="Tomcat Host Manager" />
       <predefined_log_file id="Tomcat Localhost Access" />
+      <extension name="net.ashald.envfile">
+        <option name="IS_ENABLED" value="false" />
+        <option name="IS_SUBST" value="false" />
+        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+        <option name="IS_IGNORE_MISSING_FILES" value="false" />
+        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+        <ENTRIES>
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" />
+        </ENTRIES>
+      </extension>
       <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="35551" />
+        <option name="DEBUG_PORT" value="35552" />
       </RunnerSettings>
       <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
         <option name="USE_ENV_VARIABLES" value="true" />
@@ -1030,36 +859,26 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Application.testClass" />
-      <item itemvalue="Application.AppMailSender" />
-      <item itemvalue="Application.TlsEmail" />
+      <item itemvalue="Application.TestCase" />
       <item itemvalue="Maven.Maven build" />
-      <item itemvalue="Remote.1gb.ru" />
       <item itemvalue="Tomcat Server.Tomcat deploy" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.testClass" />
-        <item itemvalue="Application.TlsEmail" />
-        <item itemvalue="Application.AppMailSender" />
+        <item itemvalue="Application.TestCase" />
       </list>
     </recent_temporary>
   </component>
   <component name="ShelveChangesManager">
     <option name="remove_strategy" value="true" />
   </component>
-  <component name="StructureViewFactory">
-    <option name="AUTOSCROLL_FROM_SOURCE" value="true" />
-    <option name="ACTIVE_ACTIONS" value=",SHOW_FIELDS" />
-  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="project-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration>$USER_HOME$/.subversion</configuration>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="7a6f4bb5-47a8-4ceb-b2dc-38f18b3a613b" name="Default" comment="" />
-      <changelist id="5d2ca7a4-18ec-4eae-b42c-9a7c4a92d346" name="Выплаты инвесторам. Показ по 100 записей" comment="" />
-      <changelist id="251e4d15-74eb-4e9a-8105-51151090c1ed" name="Выплаты инвесторам. Продажа. Разделение строк, как в деньгах инвесторов." comment="" />
       <created>1484724381163</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -1598,341 +1417,566 @@
       <workItem from="1542907835263" duration="403000" />
       <workItem from="1542945443515" duration="2000" />
       <workItem from="1542973941772" duration="6625000" />
+      <workItem from="1600854980957" duration="237000" />
+      <workItem from="1600855315221" duration="11192000" />
+      <workItem from="1600883444967" duration="4879000" />
+      <workItem from="1600945909027" duration="867000" />
+      <workItem from="1600947461369" duration="1822000" />
+      <workItem from="1600965213519" duration="8062000" />
+      <workItem from="1601021625359" duration="1780000" />
+      <workItem from="1601032291392" duration="10593000" />
+      <workItem from="1601116944024" duration="396000" />
+      <workItem from="1601137583373" duration="6106000" />
+      <workItem from="1601267693480" duration="9760000" />
+      <workItem from="1601286147062" duration="10514000" />
+      <workItem from="1601351916966" duration="386000" />
+      <workItem from="1601379551190" duration="2598000" />
+      <workItem from="1601464768350" duration="1274000" />
+      <workItem from="1601466291440" duration="3706000" />
+      <workItem from="1601476379214" duration="8778000" />
+      <workItem from="1601526678842" duration="10566000" />
+      <workItem from="1601553099166" duration="8964000" />
+      <workItem from="1601616429502" duration="13918000" />
+      <workItem from="1601888047401" duration="1190000" />
+      <workItem from="1601906108031" duration="3630000" />
+      <workItem from="1602065219180" duration="15003000" />
+      <workItem from="1602145789701" duration="12134000" />
+      <workItem from="1602231841208" duration="2472000" />
+      <workItem from="1602251441893" duration="5154000" />
+      <workItem from="1602496641049" duration="1219000" />
+      <workItem from="1602511607234" duration="10858000" />
+      <workItem from="1602578807680" duration="207000" />
+      <workItem from="1602579042469" duration="33000" />
+      <workItem from="1602579182768" duration="1209000" />
+      <workItem from="1602588631699" duration="10551000" />
+      <workItem from="1602664813611" duration="11435000" />
+      <workItem from="1602761032524" duration="14491000" />
+      <workItem from="1602829254519" duration="39817000" />
+      <workItem from="1603086773972" duration="1404000" />
+      <workItem from="1603115329109" duration="3768000" />
+      <workItem from="1603187716794" duration="110000" />
+      <workItem from="1603204919881" duration="16470000" />
+      <workItem from="1603268465281" duration="14536000" />
+      <workItem from="1603292138386" duration="4333000" />
+      <workItem from="1603340016020" duration="14703000" />
+      <workItem from="1603365447093" duration="14428000" />
+      <workItem from="1603452575877" duration="20658000" />
+      <workItem from="1603625982106" duration="330000" />
+      <workItem from="1603695096375" duration="3867000" />
+      <workItem from="1603720286654" duration="928000" />
+      <workItem from="1604032697068" duration="138000" />
+      <workItem from="1604033066490" duration="2000" />
+      <workItem from="1604033316662" duration="112000" />
+      <workItem from="1604055448942" duration="85000" />
+      <workItem from="1604055740197" duration="15000" />
+      <workItem from="1604055767918" duration="264000" />
+      <workItem from="1604065759413" duration="3131000" />
+      <workItem from="1604312707393" duration="336000" />
+      <workItem from="1604325315535" duration="1338000" />
+      <workItem from="1604336405916" duration="118000" />
+      <workItem from="1604375084936" duration="492000" />
+      <workItem from="1604641062071" duration="205000" />
+      <workItem from="1604659277486" duration="1129000" />
+      <workItem from="1604827746387" duration="1109000" />
+      <workItem from="1605257799170" duration="5041000" />
+      <workItem from="1605266665717" duration="4560000" />
+      <workItem from="1605371666216" duration="216000" />
+      <workItem from="1606130645190" duration="1097000" />
+      <workItem from="1606141468089" duration="311000" />
+      <workItem from="1606142799045" duration="1268000" />
+      <workItem from="1606152401458" duration="125000" />
+      <workItem from="1608277649118" duration="665000" />
+      <workItem from="1608279753755" duration="533000" />
+      <workItem from="1608549999609" duration="1497000" />
+      <workItem from="1608558734011" duration="1839000" />
+      <workItem from="1608571989317" duration="293000" />
+      <workItem from="1608622821370" duration="91000" />
+      <workItem from="1608623204324" duration="1726000" />
+      <workItem from="1608704865257" duration="461000" />
+      <workItem from="1608724023205" duration="1381000" />
+      <workItem from="1608744900272" duration="767000" />
+      <workItem from="1608747316033" duration="573000" />
+      <workItem from="1608900483483" duration="167000" />
+      <workItem from="1608903588006" duration="2938000" />
+      <workItem from="1608914996872" duration="283000" />
+      <workItem from="1608968409991" duration="1745000" />
+      <workItem from="1608982348680" duration="348000" />
+      <workItem from="1608986038487" duration="788000" />
+      <workItem from="1608997856060" duration="1126000" />
+      <workItem from="1610425835522" duration="1230000" />
+      <workItem from="1610476165545" duration="2045000" />
+      <workItem from="1610626857557" duration="243000" />
+      <workItem from="1610969098698" duration="41000" />
+      <workItem from="1611306401040" duration="3150000" />
+      <workItem from="1611571190832" duration="948000" />
+      <workItem from="1611597731274" duration="748000" />
+      <workItem from="1611638654036" duration="2221000" />
+      <workItem from="1611650640241" duration="7118000" />
+      <workItem from="1611830430873" duration="7532000" />
+      <workItem from="1613036314213" duration="317000" />
+      <workItem from="1613038984275" duration="161000" />
+      <workItem from="1613039198949" duration="710000" />
+      <workItem from="1613047748673" duration="12354000" />
+      <workItem from="1613399919069" duration="440000" />
+      <workItem from="1613400571921" duration="4000" />
+      <workItem from="1613400661752" duration="498000" />
+      <workItem from="1613466736659" duration="396000" />
+      <workItem from="1613563575888" duration="4544000" />
+      <workItem from="1613621784469" duration="657000" />
+      <workItem from="1613624231873" duration="991000" />
+      <workItem from="1613627946971" duration="1916000" />
+      <workItem from="1613731420582" duration="1746000" />
+      <workItem from="1614315908289" duration="5859000" />
+      <workItem from="1615953614139" duration="3201000" />
+      <workItem from="1615958836891" duration="715000" />
+      <workItem from="1615959761326" duration="3915000" />
+      <workItem from="1616046529887" duration="1625000" />
+      <workItem from="1616048666544" duration="50000" />
+      <workItem from="1616134664172" duration="1818000" />
+      <workItem from="1616387309369" duration="129000" />
+      <workItem from="1616586178019" duration="727000" />
+      <workItem from="1616646815572" duration="180000" />
+      <workItem from="1617301173132" duration="613000" />
+      <workItem from="1617363982612" duration="2464000" />
+      <workItem from="1617373301819" duration="475000" />
+      <workItem from="1617452773095" duration="847000" />
+      <workItem from="1617641959934" duration="1156000" />
+      <workItem from="1617732507030" duration="9201000" />
+      <workItem from="1617782901498" duration="2268000" />
+      <workItem from="1617945165153" duration="609000" />
+      <workItem from="1618202146017" duration="248000" />
+      <workItem from="1618204169782" duration="177000" />
+      <workItem from="1618373610355" duration="24253000" />
+      <workItem from="1618482915063" duration="7374000" />
+      <workItem from="1618545734750" duration="4714000" />
+      <workItem from="1618551726094" duration="15539000" />
+      <workItem from="1618575870718" duration="3564000" />
+      <workItem from="1618592396923" duration="2182000" />
+      <workItem from="1618646360563" duration="2869000" />
+      <workItem from="1618811394059" duration="1546000" />
+      <workItem from="1619003818139" duration="5254000" />
+      <workItem from="1619168887214" duration="2850000" />
+      <workItem from="1619496639961" duration="313000" />
+      <workItem from="1619497861766" duration="189000" />
+      <workItem from="1619591930401" duration="434000" />
+      <workItem from="1619600100616" duration="5029000" />
+      <workItem from="1619612374267" duration="2138000" />
+      <workItem from="1619670411921" duration="17422000" />
+      <workItem from="1619772652628" duration="4579000" />
+      <workItem from="1619778508200" duration="125000" />
+      <workItem from="1619788457588" duration="3998000" />
+      <workItem from="1619942534686" duration="121000" />
+      <workItem from="1619942684793" duration="20000" />
+      <workItem from="1619943088627" duration="8000" />
+      <workItem from="1619943743583" duration="51000" />
+      <workItem from="1619944361763" duration="185000" />
+      <workItem from="1620028313604" duration="448000" />
+      <workItem from="1620372094421" duration="13886000" />
+      <workItem from="1620494553559" duration="1325000" />
+      <workItem from="1620818878700" duration="2276000" />
+      <workItem from="1621156005472" duration="4837000" />
+      <workItem from="1621505019758" duration="6626000" />
+      <workItem from="1622110308144" duration="6297000" />
+      <workItem from="1622213516172" duration="366000" />
+      <workItem from="1623324176603" duration="21000" />
+      <workItem from="1623845371007" duration="483000" />
+      <workItem from="1623932044681" duration="405000" />
+      <workItem from="1624372566037" duration="5969000" />
+      <workItem from="1624435104951" duration="3399000" />
+      <workItem from="1624882452570" duration="950000" />
+      <workItem from="1624891857990" duration="5900000" />
+      <workItem from="1624979573214" duration="3226000" />
+      <workItem from="1625045578977" duration="449000" />
+      <workItem from="1625060400525" duration="6268000" />
+      <workItem from="1625129703521" duration="335000" />
+      <workItem from="1625503205624" duration="42000" />
+      <workItem from="1625503920153" duration="284000" />
+      <workItem from="1625829676712" duration="327000" />
+      <workItem from="1625831258618" duration="10542000" />
+      <workItem from="1626117243634" duration="653000" />
+      <workItem from="1626118365391" duration="677000" />
+      <workItem from="1626157812522" duration="1719000" />
+      <workItem from="1626172149272" duration="330000" />
+      <workItem from="1626190134536" duration="1582000" />
+      <workItem from="1626967688645" duration="25000" />
+      <workItem from="1627046946281" duration="6647000" />
+      <workItem from="1627116504830" duration="917000" />
+      <workItem from="1627547791004" duration="648000" />
+      <workItem from="1627573983171" duration="2000" />
+      <workItem from="1627718811411" duration="3275000" />
+      <workItem from="1627971081234" duration="684000" />
+      <workItem from="1628022694798" duration="2326000" />
+      <workItem from="1628081039687" duration="697000" />
+      <workItem from="1628228849185" duration="9000" />
+      <workItem from="1628228900616" duration="560000" />
+      <workItem from="1629710146974" duration="1355000" />
+      <workItem from="1630679348020" duration="2077000" />
+      <workItem from="1630908517597" duration="1276000" />
+      <workItem from="1630993354513" duration="2271000" />
+      <workItem from="1631168481377" duration="3402000" />
+      <workItem from="1631264102737" duration="2130000" />
+      <workItem from="1631353992064" duration="1191000" />
+      <workItem from="1631355461270" duration="32000" />
+      <workItem from="1631552797717" duration="323000" />
+      <workItem from="1631774913149" duration="383000" />
+      <workItem from="1632158611102" duration="2715000" />
+      <workItem from="1632216460210" duration="599000" />
+      <workItem from="1632225658914" duration="1258000" />
+      <workItem from="1632228267324" duration="1487000" />
+      <workItem from="1632295673445" duration="1883000" />
+      <workItem from="1632390483031" duration="204000" />
+      <workItem from="1632417608599" duration="64000" />
+      <workItem from="1632716943611" duration="1510000" />
+      <workItem from="1632763408838" duration="572000" />
+      <workItem from="1632764701269" duration="1487000" />
+      <workItem from="1632807126999" duration="5066000" />
+      <workItem from="1633081662000" duration="2912000" />
     </task>
-    <task id="LOCAL-00001" summary="Тест из IDEA">
-      <created>1515327675870</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
+    <task id="LOCAL-00716" summary="Добавлена форма для видов закрытия вложений">
+      <created>1619789352257</created>
+      <option name="number" value="00716" />
+      <option name="presentableId" value="LOCAL-00716" />
       <option name="project" value="LOCAL" />
-      <updated>1515327675870</updated>
+      <updated>1619789352258</updated>
     </task>
-    <task id="LOCAL-00002" summary="Добавлен метод для извлечения потоков инвесторов по объектам, закрепленным за инвестором.">
-      <created>1515476313253</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
+    <task id="LOCAL-00717" summary="Переименована таблица">
+      <created>1619789599156</created>
+      <option name="number" value="00717" />
+      <option name="presentableId" value="LOCAL-00717" />
       <option name="project" value="LOCAL" />
-      <updated>1515476313253</updated>
+      <updated>1619789599156</updated>
     </task>
-    <task id="LOCAL-00003" summary="Исправлено изменение суммы вложенных денег инвесторов, при котором терялись связи с предыдущими суммами.">
-      <created>1515478614995</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
+    <task id="LOCAL-00718" summary="Переименована таблица">
+      <created>1619791152888</created>
+      <option name="number" value="00718" />
+      <option name="presentableId" value="LOCAL-00718" />
       <option name="project" value="LOCAL" />
-      <updated>1515478614995</updated>
+      <updated>1619791152888</updated>
     </task>
-    <task id="LOCAL-00004" summary="Исправлено изменение суммы вложенных денег инвесторов, при котором терялись связи с предыдущими суммами.">
-      <created>1515500381933</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
+    <task id="LOCAL-00719" summary="Переделаны методы работы с видами закрытия вложений.">
+      <created>1619792300780</created>
+      <option name="number" value="00719" />
+      <option name="presentableId" value="LOCAL-00719" />
       <option name="project" value="LOCAL" />
-      <updated>1515500381933</updated>
+      <updated>1619792300780</updated>
     </task>
-    <task id="LOCAL-00005" summary="Исправлено изменение суммы вложенных денег инвесторов, при котором терялись связи с предыдущими суммами.">
-      <created>1515502218262</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
+    <task id="LOCAL-00720" summary="Перенесён расчёт маркетингового дерева на MySQL сервер.">
+      <created>1620387139312</created>
+      <option name="number" value="00720" />
+      <option name="presentableId" value="LOCAL-00720" />
       <option name="project" value="LOCAL" />
-      <updated>1515502218262</updated>
+      <updated>1620387139312</updated>
     </task>
-    <task id="LOCAL-00006" summary="Исправлено изменение суммы вложенных денег инвесторов, при котором терялись связи с предыдущими суммами.">
-      <created>1515556582854</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
+    <task id="LOCAL-00721" summary="Удалены неиспользуемые методы.">
+      <created>1620387617782</created>
+      <option name="number" value="00721" />
+      <option name="presentableId" value="LOCAL-00721" />
       <option name="project" value="LOCAL" />
-      <updated>1515556582854</updated>
+      <updated>1620387617782</updated>
     </task>
-    <task id="LOCAL-00007" summary="Исправлено изменение суммы вложенных денег инвесторов, при котором терялись связи с предыдущими суммами.">
-      <created>1515557988413</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
+    <task id="LOCAL-00722" summary="Переделана работа с токенами приложения.">
+      <created>1620396640560</created>
+      <option name="number" value="00722" />
+      <option name="presentableId" value="LOCAL-00722" />
       <option name="project" value="LOCAL" />
-      <updated>1515557988413</updated>
+      <updated>1620396640560</updated>
     </task>
-    <task id="LOCAL-00008" summary="Тест">
-      <created>1515558494108</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
+    <task id="LOCAL-00723" summary="Стилизация страницы для работы с помещениями">
+      <created>1620398925663</created>
+      <option name="number" value="00723" />
+      <option name="presentableId" value="LOCAL-00723" />
       <option name="project" value="LOCAL" />
-      <updated>1515558494108</updated>
+      <updated>1620398925664</updated>
     </task>
-    <task id="LOCAL-00009" summary="Тест">
-      <created>1515560553760</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
+    <task id="LOCAL-00724" summary="Добавлено DTO помещения">
+      <created>1620399978074</created>
+      <option name="number" value="00724" />
+      <option name="presentableId" value="LOCAL-00724" />
       <option name="project" value="LOCAL" />
-      <updated>1515560553760</updated>
+      <updated>1620399978075</updated>
     </task>
-    <task id="LOCAL-00010" summary="Тест2">
-      <created>1515560683857</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
+    <task id="LOCAL-00725" summary="Добавлена форма для работы с помещением">
+      <created>1620400030700</created>
+      <option name="number" value="00725" />
+      <option name="presentableId" value="LOCAL-00725" />
       <option name="project" value="LOCAL" />
-      <updated>1515560683857</updated>
+      <updated>1620400030700</updated>
     </task>
-    <task id="LOCAL-00011" summary="Тест2">
-      <created>1518864052781</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
+    <task id="LOCAL-00726" summary="Стилизация страницы для работы с помещениями">
+      <created>1620400043118</created>
+      <option name="number" value="00726" />
+      <option name="presentableId" value="LOCAL-00726" />
       <option name="project" value="LOCAL" />
-      <updated>1518864052781</updated>
+      <updated>1620400043118</updated>
     </task>
-    <task id="LOCAL-00012" summary="Тест2">
-      <created>1520069742283</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
+    <task id="LOCAL-00727" summary="Добавлено DTO в модель">
+      <created>1620400062966</created>
+      <option name="number" value="00727" />
+      <option name="presentableId" value="LOCAL-00727" />
       <option name="project" value="LOCAL" />
-      <updated>1520069742283</updated>
+      <updated>1620400062966</updated>
     </task>
-    <task id="LOCAL-00013" summary="Initial commit">
-      <created>1536351334481</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
+    <task id="LOCAL-00728" summary="Исправление. Изменён идентификатор.">
+      <created>1620838162800</created>
+      <option name="number" value="00728" />
+      <option name="presentableId" value="LOCAL-00728" />
       <option name="project" value="LOCAL" />
-      <updated>1536351334481</updated>
+      <updated>1620838162801</updated>
     </task>
-    <task id="LOCAL-00014" summary="update .gitignore">
-      <created>1536386692305</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
+    <task id="LOCAL-00729" summary="Стилизация формы работы с помещениями.">
+      <created>1621157266436</created>
+      <option name="number" value="00729" />
+      <option name="presentableId" value="LOCAL-00729" />
       <option name="project" value="LOCAL" />
-      <updated>1536386692305</updated>
+      <updated>1621157266436</updated>
     </task>
-    <task id="LOCAL-00015" summary="Тест2">
-      <created>1538049563643</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
+    <task id="LOCAL-00730" summary="Используем id подобъекта вместо всего подобъекта">
+      <created>1621157300243</created>
+      <option name="number" value="00730" />
+      <option name="presentableId" value="LOCAL-00730" />
       <option name="project" value="LOCAL" />
-      <updated>1538049563644</updated>
+      <updated>1621157300243</updated>
     </task>
-    <task id="LOCAL-00016" summary="Обновлён .gitignore">
-      <created>1541742636705</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
+    <task id="LOCAL-00731" summary="Переделана работа с помещениями.">
+      <created>1621512248356</created>
+      <option name="number" value="00731" />
+      <option name="presentableId" value="LOCAL-00731" />
       <option name="project" value="LOCAL" />
-      <updated>1541742636705</updated>
+      <updated>1621512248357</updated>
     </task>
-    <task id="LOCAL-00017" summary="Добавлено маркетинговое дерево и методы для работы с ним.&#10;Добавлена поддержка запланированных заданий.&#10;Добавлено запланированное задание, для заполнения маркетингового дерева.&#10;Добавлена ссылка в справочник.&#10;Добавлены поля в форму создания пользователя (канал продаж и родство),&#10;удалены из формы группы рассылки и объекты.&#10;Исправлен вывод всех денег, не проставлялся тип закрытия и дата закрытия&#10;по некторым суммам.&#10;Добавлено поле выбора подобъекта при реинвесте/выводе.&#10;При удалении &quot;помещения&quot; сбрасывать его привязку в деньгах инвесторов и &#10;в выплатах инвесторам с аренды.&#10;Мелкий рефакторинг.">
-      <created>1541743908747</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
+    <task id="LOCAL-00732" summary="Получатель денег не подобъект, а объект.">
+      <created>1622110582542</created>
+      <option name="number" value="00732" />
+      <option name="presentableId" value="LOCAL-00732" />
       <option name="project" value="LOCAL" />
-      <updated>1541743908747</updated>
+      <updated>1622110582542</updated>
     </task>
-    <task id="LOCAL-00018" summary="Удалено поле &quot;вид инвестора&quot; из &quot;выплаты с аренды&quot; и &quot;выплаты с продажи&quot;&#10;исправление: исправлена блокировка нажатия на ссылку, если она не активна&#10;Мелкий рефакторинг.">
-      <created>1541755276424</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
+    <task id="LOCAL-00733" summary="Убираем не нужный пункт меню.">
+      <created>1622111309243</created>
+      <option name="number" value="00733" />
+      <option name="presentableId" value="LOCAL-00733" />
       <option name="project" value="LOCAL" />
-      <updated>1541755276424</updated>
+      <updated>1622111309243</updated>
     </task>
-    <task id="LOCAL-00019" summary="исправление: добавлен вид инвестора &quot;Старый инвестор&quot; при реинвестировании">
-      <created>1541756188109</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
+    <task id="LOCAL-00734" summary="Скрываем &quot;баланс&quot;, &quot;свободный капитал&quot; и &quot;реализованные проекты&quot; вне страницы с графиками">
+      <created>1622115085884</created>
+      <option name="number" value="00734" />
+      <option name="presentableId" value="LOCAL-00734" />
       <option name="project" value="LOCAL" />
-      <updated>1541756188109</updated>
+      <updated>1622115085884</updated>
     </task>
-    <task id="LOCAL-00020" summary="исправление: вернули &quot;Источник денег&quot; на страницу">
-      <created>1541758276205</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
+    <task id="LOCAL-00735" summary="Добавляем возможность просмотра инфо о балансе и свободных средствах из под админа">
+      <created>1622115111762</created>
+      <option name="number" value="00735" />
+      <option name="presentableId" value="LOCAL-00735" />
       <option name="project" value="LOCAL" />
-      <updated>1541758276205</updated>
+      <updated>1622115111762</updated>
     </task>
-    <task id="LOCAL-00021" summary="Удалены поля род id из &quot;денег инв&quot;">
-      <created>1541758838384</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
+    <task id="LOCAL-00736" summary="Добавляем возможность просмотра инфо о балансе и свободных средствах из под админа">
+      <created>1622120945771</created>
+      <option name="number" value="00736" />
+      <option name="presentableId" value="LOCAL-00736" />
       <option name="project" value="LOCAL" />
-      <updated>1541758838384</updated>
+      <updated>1622120945771</updated>
     </task>
-    <task id="LOCAL-00022" summary="Выплаты инвесторам. Показ по 100 записей">
-      <created>1541914535039</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
+    <task id="LOCAL-00737" summary="Добавлена возможность отправки приветственного email пользователям от любого админа">
+      <created>1624377959551</created>
+      <option name="number" value="00737" />
+      <option name="presentableId" value="LOCAL-00737" />
       <option name="project" value="LOCAL" />
-      <updated>1541914535040</updated>
+      <updated>1624377959551</updated>
     </task>
-    <task id="LOCAL-00023" summary="исправление: не срабатывал чекбокс &quot;выбрать всё&quot;">
-      <created>1541915301978</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
+    <task id="LOCAL-00738" summary="Запрещаем редактирование канала привлечения и степени родства">
+      <created>1624378666721</created>
+      <option name="number" value="00738" />
+      <option name="presentableId" value="LOCAL-00738" />
       <option name="project" value="LOCAL" />
-      <updated>1541915301978</updated>
+      <updated>1624378666721</updated>
     </task>
-    <task id="LOCAL-00024" summary="исправление: при откате перепродажи доли не скидывались тип и дата закрытия">
-      <created>1542009041707</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
+    <task id="LOCAL-00739" summary="Создание счёта для подобъекта.">
+      <created>1624382846824</created>
+      <option name="number" value="00739" />
+      <option name="presentableId" value="LOCAL-00739" />
       <option name="project" value="LOCAL" />
-      <updated>1542009041707</updated>
+      <updated>1624382846824</updated>
     </task>
-    <task id="LOCAL-00025" summary="исправление: при сохранении пользователя не давал выбрать степень родства и не сохранял связь с маркетинговым деревом. &#10;Добавлено отсутствие признака родства (null).">
-      <created>1542013762364</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
+    <task id="LOCAL-00740" summary="Исправление. При удалении суммы ищем есть ли она в базе или мы её уже удалили.">
+      <created>1624438483830</created>
+      <option name="number" value="00740" />
+      <option name="presentableId" value="LOCAL-00740" />
       <option name="project" value="LOCAL" />
-      <updated>1542013762364</updated>
+      <updated>1624438483831</updated>
     </task>
-    <task id="LOCAL-00026" summary="Изменено формирование маркетингового дерева. Если данные в дереве есть, проходило только обновление данных, новой информации не вносилось в БД.">
-      <created>1542015850258</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
+    <task id="LOCAL-00741" summary="Добавлен вид денег корректировка">
+      <created>1624882616439</created>
+      <option name="number" value="00741" />
+      <option name="presentableId" value="LOCAL-00741" />
       <option name="project" value="LOCAL" />
-      <updated>1542015850258</updated>
+      <updated>1624882616439</updated>
     </task>
-    <task id="LOCAL-00027" summary="исправление: порядковый номер начинается с 1">
-      <created>1542016019449</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
+    <task id="LOCAL-00742" summary="Допускаем погрешность в 50 копеек.">
+      <created>1624892190584</created>
+      <option name="number" value="00742" />
+      <option name="presentableId" value="LOCAL-00742" />
       <option name="project" value="LOCAL" />
-      <updated>1542016019449</updated>
+      <updated>1624892190584</updated>
     </task>
-    <task id="LOCAL-00028" summary="Вынесено на MySQL сервер обновление маркетингового дерева.">
-      <created>1542111486206</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
+    <task id="LOCAL-00743" summary="Добавлено лоигрование и откат операции разделения денег.">
+      <created>1625072988595</created>
+      <option name="number" value="00743" />
+      <option name="presentableId" value="LOCAL-00743" />
       <option name="project" value="LOCAL" />
-      <updated>1542111486206</updated>
+      <updated>1625072988596</updated>
     </task>
-    <task id="LOCAL-00029" summary="Удалены поля пользователя: статус, дней до деактивации, дата первого вложения.&#10;Мелкий рефакторинг.">
-      <created>1542186594196</created>
-      <option name="number" value="00029" />
-      <option name="presentableId" value="LOCAL-00029" />
+    <task id="LOCAL-00744" summary="Исправление. Добавляем виды денег">
+      <created>1626159418562</created>
+      <option name="number" value="00744" />
+      <option name="presentableId" value="LOCAL-00744" />
       <option name="project" value="LOCAL" />
-      <updated>1542186594196</updated>
+      <updated>1626159418562</updated>
     </task>
-    <task id="LOCAL-00030" summary="Возвращаем поле &quot;вид инвестора&quot; на страницу">
-      <created>1542191802681</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
+    <task id="LOCAL-00745" summary="Исправление.">
+      <created>1627048013465</created>
+      <option name="number" value="00745" />
+      <option name="presentableId" value="LOCAL-00745" />
       <option name="project" value="LOCAL" />
-      <updated>1542191802681</updated>
+      <updated>1627048013465</updated>
     </task>
-    <task id="LOCAL-00031" summary="исправление: Выплаты инвесторам - продажа. Активация/деактивация ссылок">
-      <created>1542195188445</created>
-      <option name="number" value="00031" />
-      <option name="presentableId" value="LOCAL-00031" />
+    <task id="LOCAL-00746" summary="Исправление. Сохраняем новый пароль пользователя">
+      <created>1627051098590</created>
+      <option name="number" value="00746" />
+      <option name="presentableId" value="LOCAL-00746" />
       <option name="project" value="LOCAL" />
-      <updated>1542195188445</updated>
+      <updated>1627051098590</updated>
     </task>
-    <task id="LOCAL-00032" summary="Выплаты инвесторам. Показ по 100 записей">
-      <created>1542195222110</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
+    <task id="LOCAL-00747" summary="Рефакторинг.">
+      <created>1627051290842</created>
+      <option name="number" value="00747" />
+      <option name="presentableId" value="LOCAL-00747" />
       <option name="project" value="LOCAL" />
-      <updated>1542195222110</updated>
+      <updated>1627051290842</updated>
     </task>
-    <task id="LOCAL-00033" summary="Выплаты инвесторам. Продажа. Разделение строк, как в деньгах инвесторов.">
-      <created>1542215132945</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
+    <task id="LOCAL-00748" summary="Добавлены поля для логирования действий с деньгами.">
+      <created>1627054179435</created>
+      <option name="number" value="00748" />
+      <option name="presentableId" value="LOCAL-00748" />
       <option name="project" value="LOCAL" />
-      <updated>1542215132945</updated>
+      <updated>1627054179436</updated>
     </task>
-    <task id="LOCAL-00034" summary="исправление: Вывод денег. Не верно выводились деньги.">
-      <created>1542272806607</created>
-      <option name="number" value="00034" />
-      <option name="presentableId" value="LOCAL-00034" />
+    <task id="LOCAL-00749" summary="Исправление.">
+      <created>1627054190719</created>
+      <option name="number" value="00749" />
+      <option name="presentableId" value="LOCAL-00749" />
       <option name="project" value="LOCAL" />
-      <updated>1542272806607</updated>
+      <updated>1627054190719</updated>
     </task>
-    <task id="LOCAL-00035" summary="исправление: дата и тип закрытия у комиссии проставлялась дважды, второй раз не верно">
-      <created>1542277222584</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
+    <task id="LOCAL-00750" summary="Исправление. NPE">
+      <created>1628081141520</created>
+      <option name="number" value="00750" />
+      <option name="presentableId" value="LOCAL-00750" />
       <option name="project" value="LOCAL" />
-      <updated>1542277222584</updated>
+      <updated>1628081141520</updated>
     </task>
-    <task id="LOCAL-00036" summary="исправление: не создавался пользователь, если внести ФИО">
-      <created>1542356005990</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
+    <task id="LOCAL-00751" summary="Миграция на PostgreSQL">
+      <created>1628081199367</created>
+      <option name="number" value="00751" />
+      <option name="presentableId" value="LOCAL-00751" />
       <option name="project" value="LOCAL" />
-      <updated>1542356005990</updated>
+      <updated>1628081199367</updated>
     </task>
-    <task id="LOCAL-00037" summary="Добавлена возможность &quot;массовых&quot; действий, если подобъект включает слово &quot;_Целиком&quot;">
-      <created>1542385417554</created>
-      <option name="number" value="00037" />
-      <option name="presentableId" value="LOCAL-00037" />
+    <task id="LOCAL-00752" summary="Убираем ненужные кнопки">
+      <created>1628081260334</created>
+      <option name="number" value="00752" />
+      <option name="presentableId" value="LOCAL-00752" />
       <option name="project" value="LOCAL" />
-      <updated>1542385417561</updated>
+      <updated>1628081260335</updated>
     </task>
-    <task id="LOCAL-00038" summary="Выплаты инвесторам. Продажа. Разделение строк, как в деньгах инвесторов.">
-      <created>1542386252951</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
+    <task id="LOCAL-00753" summary="Исправление.">
+      <created>1629711916544</created>
+      <option name="number" value="00753" />
+      <option name="presentableId" value="LOCAL-00753" />
       <option name="project" value="LOCAL" />
-      <updated>1542386252951</updated>
+      <updated>1629711916544</updated>
     </task>
-    <task id="LOCAL-00039" summary="Выплаты инвесторам. Продажа. Разделение строк, как в деньгах инвесторов.">
-      <created>1542429975039</created>
-      <option name="number" value="00039" />
-      <option name="presentableId" value="LOCAL-00039" />
+    <task id="LOCAL-00754" summary="Миграция на PostgreSQL">
+      <created>1630688967761</created>
+      <option name="number" value="00754" />
+      <option name="presentableId" value="LOCAL-00754" />
       <option name="project" value="LOCAL" />
-      <updated>1542429975039</updated>
+      <updated>1630688967767</updated>
     </task>
-    <task id="LOCAL-00040" summary="Выплаты инвесторам. Показ по 100 записей">
-      <created>1542430541357</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
+    <task id="LOCAL-00755" summary="Миграция на PostgreSQL">
+      <created>1630910029493</created>
+      <option name="number" value="00755" />
+      <option name="presentableId" value="LOCAL-00755" />
       <option name="project" value="LOCAL" />
-      <updated>1542430541357</updated>
+      <updated>1630910029494</updated>
     </task>
-    <task id="LOCAL-00041" summary="Выплаты инвесторам. Продажа. Разделение строк, как в деньгах инвесторов.">
-      <created>1542484226281</created>
-      <option name="number" value="00041" />
-      <option name="presentableId" value="LOCAL-00041" />
+    <task id="LOCAL-00756" summary="Миграция на PostgreSQL">
+      <created>1631173214773</created>
+      <option name="number" value="00756" />
+      <option name="presentableId" value="LOCAL-00756" />
       <option name="project" value="LOCAL" />
-      <updated>1542484226281</updated>
+      <updated>1631173214774</updated>
     </task>
-    <task id="LOCAL-00042" summary="fix: Выплаты инвесторам. Продажа. Разделение строк. Откат при удалении сумм.">
-      <created>1542703984232</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
+    <task id="LOCAL-00757" summary="Миграция на PostgreSQL">
+      <created>1631355487005</created>
+      <option name="number" value="00757" />
+      <option name="presentableId" value="LOCAL-00757" />
       <option name="project" value="LOCAL" />
-      <updated>1542703984232</updated>
+      <updated>1631355487005</updated>
     </task>
-    <task id="LOCAL-00043" summary="fix: Выплаты инвесторам. Продажа. Разделение строк. Откат при удалении сумм.">
-      <created>1542711779335</created>
-      <option name="number" value="00043" />
-      <option name="presentableId" value="LOCAL-00043" />
+    <task id="LOCAL-00758" summary=" Миграция на PostgreSQL">
+      <created>1632162091508</created>
+      <option name="number" value="00758" />
+      <option name="presentableId" value="LOCAL-00758" />
       <option name="project" value="LOCAL" />
-      <updated>1542711779335</updated>
+      <updated>1632162091510</updated>
     </task>
-    <task id="LOCAL-00044" summary="исправление: при выводе денег блокировались все суммы, а должны только при выводе всех денег.&#10;Мелкий рефакторинг.">
-      <created>1542868913233</created>
-      <option name="number" value="00044" />
-      <option name="presentableId" value="LOCAL-00044" />
+    <task id="LOCAL-00759" summary="Заменены иконки">
+      <created>1632216509559</created>
+      <option name="number" value="00759" />
+      <option name="presentableId" value="LOCAL-00759" />
       <option name="project" value="LOCAL" />
-      <updated>1542868913233</updated>
+      <updated>1632216509559</updated>
     </task>
-    <task id="LOCAL-00045" summary="fix: откат при удалении суммы в деньгах инвесторов.">
-      <created>1542888797362</created>
-      <option name="number" value="00045" />
-      <option name="presentableId" value="LOCAL-00045" />
+    <task id="LOCAL-00760" summary="Исправление. Используем IDENTITY вместо AUTO">
+      <created>1632296726122</created>
+      <option name="number" value="00760" />
+      <option name="presentableId" value="LOCAL-00760" />
       <option name="project" value="LOCAL" />
-      <updated>1542888797362</updated>
+      <updated>1632296726122</updated>
     </task>
-    <task id="LOCAL-00046" summary="fix: При разделении сумм терялся sourceFlowsId">
-      <created>1542907996223</created>
-      <option name="number" value="00046" />
-      <option name="presentableId" value="LOCAL-00046" />
+    <task id="LOCAL-00761" summary="Изменяем текстовку для отправки email.">
+      <created>1632723889041</created>
+      <option name="number" value="00761" />
+      <option name="presentableId" value="LOCAL-00761" />
       <option name="project" value="LOCAL" />
-      <updated>1542907996223</updated>
+      <updated>1632723889042</updated>
     </task>
-    <task id="LOCAL-00047" summary="Откат денег. При удалении заглядываем в таблицу AfterCashing, если удаляемая сумма с типом закрытия &quot;Вывод&quot; или &quot;Вывод_комиссия&quot;">
-      <created>1543054150934</created>
-      <option name="number" value="00047" />
-      <option name="presentableId" value="LOCAL-00047" />
+    <task id="LOCAL-00762" summary="Изменяем текстовку для отправки email.">
+      <created>1632723997462</created>
+      <option name="number" value="00762" />
+      <option name="presentableId" value="LOCAL-00762" />
       <option name="project" value="LOCAL" />
-      <updated>1543054150934</updated>
+      <updated>1632723997462</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00763" summary="Изменяем текстовку для отправки email.">
+      <created>1632724120217</created>
+      <option name="number" value="00763" />
+      <option name="presentableId" value="LOCAL-00763" />
+      <option name="project" value="LOCAL" />
+      <updated>1632724120217</updated>
+    </task>
+    <task id="LOCAL-00764" summary="Доработка отображения свободных средств клиентов. Группировка и сортировка">
+      <created>1632813631200</created>
+      <option name="number" value="00764" />
+      <option name="presentableId" value="LOCAL-00764" />
+      <option name="project" value="LOCAL" />
+      <updated>1632813631200</updated>
+    </task>
+    <option name="localTasksCounter" value="765" />
     <servers />
-  </component>
-  <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4601308000" />
   </component>
   <component name="TodoView" selected-index="2">
     <todo-panel id="selected-file">
@@ -1943,119 +1987,15 @@
       <is-autoscroll-to-source value="true" />
     </todo-panel>
   </component>
-  <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1680" height="1050" extended-state="6" />
-    <editor active="true" />
-    <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.55618775" visible="true" weight="0.21550672" />
-      <window_info id="Structure" order="1" sideWeight="0.44381222" side_tool="true" visible="true" weight="0.21550672" />
-      <window_info id="Nl-Palette" order="2" />
-      <window_info id="Designer" order="3" />
-      <window_info id="UI Designer" order="4" />
-      <window_info id="Image Layers" order="5" />
-      <window_info id="Web" order="6" sideWeight="0.50995404" side_tool="true" weight="0.26190478" />
-      <window_info id="Favorites" order="7" sideWeight="0.5035751" side_tool="true" weight="0.35042736" />
-      <window_info id="Capture Tool" order="8" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.3265306" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.28265306" />
-      <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
-      <window_info anchor="bottom" id="Debug" order="5" sideWeight="0.49570355" weight="0.43061224" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.3299285" />
-      <window_info anchor="bottom" id="Application Servers" order="7" weight="0.32890704" />
-      <window_info anchor="bottom" id="Messages" order="8" weight="0.3265306" />
-      <window_info anchor="bottom" id="Version Control" order="9" weight="0.327551" />
-      <window_info anchor="bottom" id="Java Enterprise" order="10" weight="0.32890704" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.327551" />
-      <window_info anchor="bottom" id="Event Log" order="12" sideWeight="0.5042965" side_tool="true" weight="0.4065373" />
-      <window_info anchor="bottom" id="Database Changes" order="13" weight="0.32959184" />
-      <window_info anchor="bottom" id="Dependency Viewer" order="14" weight="0.3299285" />
-      <window_info anchor="bottom" id="Spring" order="15" weight="0.32890704" />
-      <window_info anchor="bottom" id="Database Console" order="16" weight="0.32985386" />
-      <window_info anchor="bottom" id="Docker" order="17" show_stripe_button="false" />
-      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.24969475" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="right" id="CDI" order="4" />
-      <window_info anchor="right" id="Properties" order="5" />
-      <window_info anchor="right" id="Database" order="6" weight="0.1898657" />
-      <window_info anchor="right" id="JSF" order="7" />
-      <window_info anchor="right" id="Palette&#9;" order="8" />
-      <window_info anchor="right" id="Capture Analysis" order="9" />
-      <window_info anchor="right" id="Bean Validation" order="10" />
-      <window_info anchor="right" id="Theme Preview" order="11" />
-      <window_info anchor="right" id="Maven Projects" order="12" weight="0.32905984" />
-      <window_info anchor="right" id="Key Promoter" order="13" />
-      <window_info anchor="right" id="Maven" order="14" />
-    </layout>
-    <layout-to-restore>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.57758623" visible="true" weight="0.24114774" />
-      <window_info id="Structure" order="1" sideWeight="0.4224138" side_tool="true" visible="true" weight="0.24114774" />
-      <window_info id="Nl-Palette" order="2" />
-      <window_info id="Designer" order="3" />
-      <window_info id="UI Designer" order="4" />
-      <window_info id="Image Layers" order="5" />
-      <window_info id="Web" order="6" sideWeight="0.50995404" side_tool="true" weight="0.26190478" />
-      <window_info id="Favorites" order="7" sideWeight="0.5035751" side_tool="true" weight="0.35042736" />
-      <window_info id="Capture Tool" order="8" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.3271795" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.2897959" />
-      <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
-      <window_info anchor="bottom" id="Debug" order="5" sideWeight="0.49570355" weight="0.43163267" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.3299285" />
-      <window_info anchor="bottom" id="Application Servers" order="7" weight="0.32890704" />
-      <window_info anchor="bottom" id="Messages" order="8" weight="0.327551" />
-      <window_info anchor="bottom" id="Version Control" order="9" weight="0.32923076" />
-      <window_info anchor="bottom" id="Java Enterprise" order="10" weight="0.32890704" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.327551" />
-      <window_info anchor="bottom" id="Event Log" order="12" sideWeight="0.5042965" side_tool="true" weight="0.4065373" />
-      <window_info anchor="bottom" id="Database Changes" order="13" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Dependency Viewer" order="14" weight="0.3299285" />
-      <window_info anchor="bottom" id="Spring" order="15" weight="0.32890704" />
-      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="right" id="CDI" order="4" />
-      <window_info anchor="right" id="Properties" order="5" />
-      <window_info anchor="right" id="Database" order="6" />
-      <window_info anchor="right" id="JSF" order="7" />
-      <window_info anchor="right" id="Palette&#9;" order="8" />
-      <window_info anchor="right" id="Capture Analysis" order="9" />
-      <window_info anchor="right" id="Bean Validation" order="10" />
-      <window_info anchor="right" id="Theme Preview" order="11" />
-      <window_info anchor="right" id="Maven Projects" order="12" weight="0.32905984" />
-      <window_info anchor="right" id="Key Promoter" order="13" />
-    </layout-to-restore>
-  </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="RECENTLY_FILTERED_USER_GROUPS">
-                <collection />
-              </option>
-              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
-                <collection />
-              </option>
-              <option name="COLUMN_ORDER">
-                <list>
-                  <option value="0" />
-                  <option value="1" />
-                  <option value="2" />
-                  <option value="3" />
-                </list>
-              </option>
-            </State>
+            <State />
           </value>
         </entry>
       </map>
@@ -2074,58 +2014,61 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <confirmRemoveEmptyChangelist value="1" />
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Удалено поле &quot;вид инвестора&quot; из &quot;выплаты с аренды&quot; и &quot;выплаты с продажи&quot;&#10;исправление: исправлена блокировка нажатия на ссылку, если она не активна&#10;Мелкий рефакторинг." />
-    <MESSAGE value="исправление: добавлен вид инвестора &quot;Старый инвестор&quot; при реинвестировании" />
-    <MESSAGE value="исправление: вернули &quot;Источник денег&quot; на страницу" />
-    <MESSAGE value="Удалены поля род id из &quot;денег инв&quot;" />
-    <MESSAGE value="исправление: не срабатывал чекбокс &quot;выбрать всё&quot;" />
-    <MESSAGE value="исправление: при откате перепродажи доли не скидывались тип и дата закрытия" />
-    <MESSAGE value="исправление: при сохранении пользователя не давал выбрать степень родства и не сохранял связь с маркетинговым деревом. &#10;Добавлено отсутствие признака родства (null)." />
-    <MESSAGE value="Изменено формирование маркетингового дерева. Если данные в дереве есть, проходило только обновление данных, новой информации не вносилось в БД." />
-    <MESSAGE value="исправление: порядковый номер начинается с 1" />
-    <MESSAGE value="Вынесено на MySQL сервер обновление маркетингового дерева." />
-    <MESSAGE value="Удалены поля пользователя: статус, дней до деактивации, дата первого вложения.&#10;Мелкий рефакторинг." />
-    <MESSAGE value="Возвращаем поле &quot;вид инвестора&quot; на страницу" />
-    <MESSAGE value="исправление: Выплаты инвесторам - продажа. Активация/деактивация ссылок" />
-    <MESSAGE value="исправление: Вывод денег. Не верно выводились деньги." />
-    <MESSAGE value="исправление: дата и тип закрытия у комиссии проставлялась дважды, второй раз не верно" />
-    <MESSAGE value="исправление: не создавался пользователь, если внести ФИО" />
-    <MESSAGE value="Добавлена возможность &quot;массовых&quot; действий, если подобъект включает слово &quot;_Целиком&quot;" />
-    <MESSAGE value="Выплаты инвесторам. Показ по 100 записей" />
-    <MESSAGE value="Выплаты инвесторам. Продажа. Разделение строк, как в деньгах инвесторов." />
-    <MESSAGE value="Выплаты инвесторам. Продажа. Разделение строк, как в деньгах инвесторов. Откат при удалении сумм." />
-    <MESSAGE value="fix: Выплаты инвесторам. Продажа. Разделение строк. Откат при удалении сумм." />
-    <MESSAGE value="исправление: при выводе денег блокировались все суммы, а должны только при выводе всех денег.&#10;Мелкий рефакторинг." />
-    <MESSAGE value="fix: откат при удалении суммы в деньгах инвесторов." />
-    <MESSAGE value="fix: При разделении сумм терялся sourceFlowsId" />
-    <MESSAGE value="Откат денег. При удалении заглядываем в таблицу AfterCashing, если удаляемая сумма с типом закрытия &quot;Вывод&quot; или &quot;Вывод_комиссия&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Откат денег. При удалении заглядываем в таблицу AfterCashing, если удаляемая сумма с типом закрытия &quot;Вывод&quot; или &quot;Вывод_комиссия&quot;" />
+    <MESSAGE value="Переделана работа с помещениями." />
+    <MESSAGE value="Получатель денег не подобъект, а объект." />
+    <MESSAGE value="Убираем не нужный пункт меню." />
+    <MESSAGE value="Скрываем &quot;баланс&quot;, &quot;свободный капитал&quot; и &quot;реализованные проекты&quot; вне страницы с графиками" />
+    <MESSAGE value="Добавляем возможность просмотра инфо о балансе и свободных средствах из под админа" />
+    <MESSAGE value="Добавлена возможность отправки приветственного email пользователям от любого админа" />
+    <MESSAGE value="Запрещаем редактирование канала привлечения и степени родства" />
+    <MESSAGE value="Создание счёта для подобъекта." />
+    <MESSAGE value="Исправление. При удалении суммы ищем есть ли она в базе или мы её уже удалили." />
+    <MESSAGE value="Добавлен вид денег корректировка" />
+    <MESSAGE value="Допускаем погрешность в 50 копеек." />
+    <MESSAGE value="Добавлено лоигрование и откат операции разделения денег." />
+    <MESSAGE value="Исправление. Добавляем виды денег" />
+    <MESSAGE value="Исправление. Сохраняем новый пароль пользователя" />
+    <MESSAGE value="Рефакторинг." />
+    <MESSAGE value="Добавлены поля для логирования действий с деньгами." />
+    <MESSAGE value="Исправление. NPE" />
+    <MESSAGE value="Убираем ненужные кнопки" />
+    <MESSAGE value="Исправление." />
+    <MESSAGE value="Миграция на PostgreSQL" />
+    <MESSAGE value=" Миграция на PostgreSQL" />
+    <MESSAGE value="Заменены иконки" />
+    <MESSAGE value="Исправление. Используем IDENTITY вместо AUTO" />
+    <MESSAGE value="Изменяем текстовку для отправки email." />
+    <MESSAGE value="Доработка отображения свободных средств клиентов. Группировка и сортировка" />
+    <option name="LAST_COMMIT_MESSAGE" value="Доработка отображения свободных средств клиентов. Группировка и сортировка" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
+    <option name="PRESELECT_EXISTING_CHANGELIST" value="true" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/art/converter/StringToRoomsConverter.java</url>
-          <line>24</line>
-          <properties />
-          <option name="timeStamp" value="1879" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/art/service/TypeClosingService.java</url>
+          <line>78</line>
+          <option name="timeStamp" value="11" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/main/webapp/resources/core/js/scriptsForInvestorsCash.js</url>
-          <line>209</line>
-          <option name="timeStamp" value="2143" />
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/art/service/TransactionLogService.java</url>
+          <line>508</line>
+          <option name="timeStamp" value="23" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/main/webapp/resources/core/js/scriptsForFlowsSale.js</url>
-          <line>664</line>
-          <option name="timeStamp" value="2145" />
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/art/service/UnderFacilityService.java</url>
+          <line>57</line>
+          <option name="timeStamp" value="28" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

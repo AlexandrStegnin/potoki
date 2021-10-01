@@ -63,7 +63,7 @@
                         <option
                                 <c:forEach var="filterUnderFacility" items="${cashFilters.underFacilities}">
                                     <c:choose>
-                                        <c:when test="${uf.name eq filterUnderFacility}">selected="selected"</c:when>
+                                        <c:when test="${uf.name eq filterUnderFacility.name}">selected="selected"</c:when>
                                     </c:choose>
                                 </c:forEach>
                                 value="${uf.name}" id="${uf.id}"
@@ -422,6 +422,5 @@
 <script type="text/javascript" src="<c:url value='/resources/core/js/cashing.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/monies.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/scripts.js' />"></script>
-<script type="text/javascript" src="<c:url value='/resources/core/js/progress.js' />"></script>
 </body>
 </html>

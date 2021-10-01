@@ -10,6 +10,9 @@ import com.art.model.supporting.enums.MoneyOperation;
 import com.art.model.supporting.enums.ShareType;
 import com.art.model.supporting.filters.CashFilter;
 import com.art.service.*;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Hibernate;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -37,45 +40,21 @@ import java.util.stream.Collectors;
 @Slf4j
 @Controller
 @Transactional
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class MoneyController {
 
-    private final StatusService statusService;
-
-    private final MoneyService moneyService;
-
-    private final FacilityService facilityService;
-
-    private final UserService userService;
-
-    private final CashSourceService cashSourceService;
-
-    private final NewCashDetailService newCashDetailService;
-
-    private final UnderFacilityService underFacilityService;
-
-    private final TypeClosingService typeClosingService;
-
-    private final SearchSummary filters = new SearchSummary();
-
-    private CashFilter cashFilters = new CashFilter();
-
-    private final AppFilterService appFilterService;
-
-    public MoneyController(MoneyService moneyService,
-                           StatusService statusService, FacilityService facilityService, UserService userService,
-                           CashSourceService cashSourceService, NewCashDetailService newCashDetailService,
-                           UnderFacilityService underFacilityService, TypeClosingService typeClosingService,
-                           AppFilterService appFilterService) {
-        this.moneyService = moneyService;
-        this.statusService = statusService;
-        this.facilityService = facilityService;
-        this.userService = userService;
-        this.cashSourceService = cashSourceService;
-        this.newCashDetailService = newCashDetailService;
-        this.underFacilityService = underFacilityService;
-        this.typeClosingService = typeClosingService;
-        this.appFilterService = appFilterService;
-    }
+    final StatusService statusService;
+    final MoneyService moneyService;
+    final FacilityService facilityService;
+    final UserService userService;
+    final CashSourceService cashSourceService;
+    final NewCashDetailService newCashDetailService;
+    final UnderFacilityService underFacilityService;
+    final TypeClosingService typeClosingService;
+    final AppFilterService appFilterService;
+    CashFilter cashFilters = new CashFilter();
+    final SearchSummary filters = new SearchSummary();
 
     /**
      * Получить список денег инвесторов
