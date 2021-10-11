@@ -15,17 +15,18 @@ import java.io.Serializable;
 @Table(name = "type_closing")
 public class TypeClosing implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "type_closing_generator")
+  @SequenceGenerator(name = "type_closing_generator", sequenceName = "type_closing_id_seq")
+  @Column(name = "id")
+  private Long id;
 
-    @Column(name = "name")
-    private String name;
+  @Column(name = "name")
+  private String name;
 
-    public TypeClosing(TypeClosingDTO dto) {
-        this.id = dto.getId();
-        this.name = dto.getName();
-    }
+  public TypeClosing(TypeClosingDTO dto) {
+    this.id = dto.getId();
+    this.name = dto.getName();
+  }
 
 }

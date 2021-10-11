@@ -14,62 +14,63 @@ import java.util.GregorianCalendar;
 @Entity
 @Table(name = "PasswordResetToken")
 public class PasswordResetToken implements Serializable {
-    private static final int EXPIRATION = 24;
+  private static final int EXPIRATION = 24;
 
-    public PasswordResetToken() {
-    }
+  public PasswordResetToken() {
+  }
 
-    public PasswordResetToken(String token, AppUser appUser) {
-        this.token = token;
-        this.appUser = appUser;
-    }
+  public PasswordResetToken(String token, AppUser appUser) {
+    this.token = token;
+    this.appUser = appUser;
+  }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "password_reset_token_generator")
+  @SequenceGenerator(name = "password_reset_token_generator", sequenceName = "passwordresettoken_id_seq")
+  private Long id;
 
-    public Long getId() {
-        return id;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    private String token;
+  private String token;
 
-    public String getToken() {
-        return token;
-    }
+  public String getToken() {
+    return token;
+  }
 
-    public void setToken(String token) {
-        this.token = token;
-    }
+  public void setToken(String token) {
+    this.token = token;
+  }
 
-    @OneToOne(targetEntity = AppUser.class, fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false, name = "UserId")
-    private AppUser appUser;
+  @OneToOne(targetEntity = AppUser.class, fetch = FetchType.EAGER)
+  @JoinColumn(nullable = false, name = "UserId")
+  private AppUser appUser;
 
-    public AppUser getAppUser() {
-        return appUser;
-    }
+  public AppUser getAppUser() {
+    return appUser;
+  }
 
-    public void setAppUser(AppUser appUser) {
-        this.appUser = appUser;
-    }
+  public void setAppUser(AppUser appUser) {
+    this.appUser = appUser;
+  }
 
-    private Date expiryDate;
+  private Date expiryDate;
 
-    public Date getExpiryDate() {
-        return expiryDate;
-    }
+  public Date getExpiryDate() {
+    return expiryDate;
+  }
 
-    public void setExpiryDate(Date expiryDate) {
+  public void setExpiryDate(Date expiryDate) {
 
-        Calendar cal = new GregorianCalendar();
-        cal.setTime(expiryDate);
-        cal.add(Calendar.HOUR, EXPIRATION);
-        this.expiryDate = new java.sql.Date(cal.getTime().getTime());
-    }
+    Calendar cal = new GregorianCalendar();
+    cal.setTime(expiryDate);
+    cal.add(Calendar.HOUR, EXPIRATION);
+    this.expiryDate = new java.sql.Date(cal.getTime().getTime());
+  }
 
 }

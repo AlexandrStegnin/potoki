@@ -14,21 +14,22 @@ import javax.persistence.*;
 @Table(name = "cash_source")
 public class CashSource {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cash_source_generator")
+  @SequenceGenerator(name = "cash_source_generator", sequenceName = "cash_source_id_seq")
+  @Column(name = "id")
+  private Long id;
 
-    @Column(name = "name")
-    private String name;
+  @Column(name = "name")
+  private String name;
 
-    @Column(name = "organization_id")
-    private String organizationId;
+  @Column(name = "organization_id")
+  private String organizationId;
 
-    public CashSource(CashSourceDTO dto) {
-        this.id = dto.getId();
-        this.name = dto.getName();
-        this.organizationId = dto.getOrganizationId();
-    }
+  public CashSource(CashSourceDTO dto) {
+    this.id = dto.getId();
+    this.name = dto.getName();
+    this.organizationId = dto.getOrganizationId();
+  }
 
 }

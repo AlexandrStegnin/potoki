@@ -26,7 +26,8 @@ public class AfterCashing implements Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_tx_generator")
+  @SequenceGenerator(name = "account_tx_generator", sequenceName = "account_transaction_id_seq")
     public Long getId() {
         return id;
     }

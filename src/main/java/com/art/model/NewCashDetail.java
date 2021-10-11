@@ -17,33 +17,34 @@ import java.io.Serializable;
 @Table(name = "new_cash_detail")
 public class NewCashDetail implements Serializable {
 
-    private Long id;
+  private Long id;
 
-    private String name;
+  private String name;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    public Long getId() {
-        return id;
-    }
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "new_cash_detail_generator")
+  @SequenceGenerator(name = "new_cash_detail_generator", sequenceName = "new_cash_detail_id_seq")
+  @Column(name = "id")
+  public Long getId() {
+    return id;
+  }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    @Column(name = "name")
-    public String getName() {
-        return name;
-    }
+  @Column(name = "name")
+  public String getName() {
+    return name;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public NewCashDetail(NewCashDetailDTO dto) {
-        this.id = dto.getId();
-        this.name = dto.getName();
-    }
+  public NewCashDetail(NewCashDetailDTO dto) {
+    this.id = dto.getId();
+    this.name = dto.getName();
+  }
 
 }

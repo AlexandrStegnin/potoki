@@ -21,7 +21,8 @@ import javax.persistence.*;
 public class AppFilter {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_tx_generator")
+  @SequenceGenerator(name = "account_tx_generator", sequenceName = "account_transaction_id_seq")
     Long id;
 
     @Column(name = "user_id")

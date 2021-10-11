@@ -15,34 +15,35 @@ import java.util.Date;
 @Table(name = "marketing_tree")
 public class MarketingTree implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "marketing_tree_generator")
+  @SequenceGenerator(name = "marketing_tree_generator", sequenceName = "marketing_tree_id_seq")
+  @Column(name = "id")
+  private Long id;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "partner_id", referencedColumnName = "id")
-    private AppUser partner;
+  @OneToOne(cascade = CascadeType.PERSIST)
+  @JoinColumn(name = "partner_id", referencedColumnName = "id")
+  private AppUser partner;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "investor_id", referencedColumnName = "id")
-    private AppUser investor;
+  @OneToOne(cascade = CascadeType.PERSIST)
+  @JoinColumn(name = "investor_id", referencedColumnName = "id")
+  private AppUser investor;
 
-    @Column(name = "kin")
-    @Enumerated(EnumType.STRING)
-    private KinEnum kin;
+  @Column(name = "kin")
+  @Enumerated(EnumType.STRING)
+  private KinEnum kin;
 
-    @Column(name = "first_investment_date")
-    private Date firstInvestmentDate;
+  @Column(name = "first_investment_date")
+  private Date firstInvestmentDate;
 
-    @Column(name = "inv_status")
-    @Enumerated(EnumType.STRING)
-    private StatusEnum invStatus;
+  @Column(name = "inv_status")
+  @Enumerated(EnumType.STRING)
+  private StatusEnum invStatus;
 
-    @Column(name = "days_to_deactivate")
-    private int daysToDeactivate;
+  @Column(name = "days_to_deactivate")
+  private int daysToDeactivate;
 
-    @Column(name = "ser_number")
-    private int serNumber;
+  @Column(name = "ser_number")
+  private int serNumber;
 
 }

@@ -20,39 +20,40 @@ import java.util.Set;
 @Table(name = "transaction_log")
 public class TransactionLog {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transaction_log_generator")
+  @SequenceGenerator(name = "transaction_log_generator", sequenceName = "transaction_log_id_seq")
+  @Column(name = "id")
+  private Long id;
 
-    @Column(name = "created_by")
-    private String createdBy;
+  @Column(name = "created_by")
+  private String createdBy;
 
-    @Column(name = "tx_date")
-    private Date txDate;
+  @Column(name = "tx_date")
+  private Date txDate;
 
-    @ManyToMany
-    @JoinTable(name = "tx_log_inv_cash",
-            joinColumns = {@JoinColumn(name = "tx_id", referencedColumnName = "id")},
-            inverseJoinColumns = @JoinColumn(name = "cash_id", referencedColumnName = "id"))
-    private Set<Money> monies;
+  @ManyToMany
+  @JoinTable(name = "tx_log_inv_cash",
+      joinColumns = {@JoinColumn(name = "tx_id", referencedColumnName = "id")},
+      inverseJoinColumns = @JoinColumn(name = "cash_id", referencedColumnName = "id"))
+  private Set<Money> monies;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "transaction_type")
-    private TransactionType type;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "transaction_type")
+  private TransactionType type;
 
-    @Column(name = "rollback_enabled")
-    private boolean rollbackEnabled;
+  @Column(name = "rollback_enabled")
+  private boolean rollbackEnabled;
 
-    @OneToOne
-    @JsonIgnore
-    @JoinColumn(name = "blocked_from")
-    private TransactionLog blockedFrom;
+  @OneToOne
+  @JsonIgnore
+  @JoinColumn(name = "blocked_from")
+  private TransactionLog blockedFrom;
 
-    @PrePersist
-    public void prePersist() {
-        this.txDate = new Date();
-        this.createdBy = SecurityUtils.getUsername();
-    }
+  @PrePersist
+  public void prePersist() {
+    this.txDate = new Date();
+    this.createdBy = SecurityUtils.getUsername();
+  }
 
 }

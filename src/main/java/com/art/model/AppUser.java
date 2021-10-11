@@ -20,67 +20,68 @@ import java.util.Objects;
 @EqualsAndHashCode(of = {"id", "login"})
 public class AppUser implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "app_user_generator")
+  @SequenceGenerator(name = "app_user_generator", sequenceName = "app_user_id_seq")
+  private Long id;
 
-    @Column(name = "login", unique = true, nullable = false, length = 30)
-    private String login;
+  @Column(name = "login", unique = true, nullable = false, length = 30)
+  private String login;
 
-    @JsonIgnore
-    @Column(name = "password", nullable = false, length = 100)
-    private String password;
+  @JsonIgnore
+  @Column(name = "password", nullable = false, length = 100)
+  private String password;
 
-    @OneToOne
-    @JoinColumn(name = "partner_id")
-    private AppUser partner;
+  @OneToOne
+  @JoinColumn(name = "partner_id")
+  private AppUser partner;
 
-    @Column(name = "confirmed")
-    private boolean confirmed;
+  @Column(name = "confirmed")
+  private boolean confirmed;
 
-    @OneToOne
-    @JoinColumn(name = "role_id")
-    private AppRole role;
+  @OneToOne
+  @JoinColumn(name = "role_id")
+  private AppRole role;
 
-    @Enumerated(EnumType.ORDINAL)
-    @Column(name = "kin")
-    private KinEnum kin;
+  @Enumerated(EnumType.ORDINAL)
+  @Column(name = "kin")
+  private KinEnum kin;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private UserProfile profile;
+  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private UserProfile profile;
 
-    public AppUser() {
+  public AppUser() {
+  }
+
+  public AppUser(Long id, AppUser partner) {
+    this.id = id;
+    this.partner = partner;
+  }
+
+  public AppUser(UserDTO userDTO) {
+    this.id = userDTO.getId() != null ? userDTO.getId() : null;
+    this.profile = new UserProfile(userDTO.getProfile());
+    this.login = userDTO.getLogin();
+    this.role = convertRole(userDTO.getRole());
+    this.kin = userDTO.getKin() == null ? null : KinEnum.fromValue(userDTO.getKin());
+    this.partner = makePartner(userDTO.getPartnerId());
+    this.password = userDTO.getPassword();
+  }
+
+  private AppRole convertRole(AppRoleDTO dto) {
+    if (Objects.isNull(dto)) {
+      return null;
     }
+    return new AppRole(dto);
+  }
 
-    public AppUser(Long id, AppUser partner) {
-        this.id = id;
-        this.partner = partner;
+  private AppUser makePartner(Long partnerId) {
+    if (Objects.nonNull(partnerId) && partnerId != 0) {
+      AppUser partner = new AppUser();
+      partner.setId(partnerId);
+      return partner;
     }
-
-    public AppUser(UserDTO userDTO) {
-        this.id = userDTO.getId() != null ? userDTO.getId() : null;
-        this.profile = new UserProfile(userDTO.getProfile());
-        this.login = userDTO.getLogin();
-        this.role = convertRole(userDTO.getRole());
-        this.kin = userDTO.getKin() == null ? null : KinEnum.fromValue(userDTO.getKin());
-        this.partner = makePartner(userDTO.getPartnerId());
-        this.password = userDTO.getPassword();
-    }
-
-    private AppRole convertRole(AppRoleDTO dto) {
-        if (Objects.isNull(dto)) {
-            return null;
-        }
-        return new AppRole(dto);
-    }
-
-    private AppUser makePartner(Long partnerId) {
-        if (Objects.nonNull(partnerId) && partnerId != 0) {
-            AppUser partner = new AppUser();
-            partner.setId(partnerId);
-            return partner;
-        }
-        return null;
-    }
+    return null;
+  }
 
 }
