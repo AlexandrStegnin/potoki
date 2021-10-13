@@ -1,17 +1,12 @@
-let KindOnProject = function () {
-}
+let KindOnProject = function () {}
 
-let KindProjectOnMonies = function () {
-}
+let KindProjectOnMonies = function () {}
 
-let CompanyProfit = function () {
-}
+let CompanyProfit = function () {}
 
-let InvestorProfit = function () {
-}
+let InvestorProfit = function () {}
 
-let Profit = function () {
-}
+let Profit = function () {}
 
 KindOnProject.prototype = {
     facility: '',
@@ -70,8 +65,7 @@ Profit.prototype = {
     }
 }
 
-let AccountSummaryDTO = function () {
-}
+let AccountSummaryDTO = function () {}
 
 AccountSummaryDTO.prototype = {
     accountId: null,
@@ -187,7 +181,7 @@ function prepareBarChart(kinds) {
                 let chartInstance = this.chart;
                 let ctx = chartInstance.ctx;
                 let width = chartInstance.width;
-                let size = Math.round(width / 96);
+                let size = Math.round(width / 120);
                 ctx.font = "" + size + "px 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
 
                 ctx.textAlign = "left";
