@@ -120,7 +120,7 @@
         <tbody>
         <c:forEach items="${page.content}" var="agr">
             <tr id="${agr.id}">
-                <td>${agr.facility.name}</td>
+                <td>${agr.facility.fullName}</td>
                 <td>${agr.concludedFrom.login}</td>
                 <td>${agr.concludedWith}</td>
                 <td>${agr.organization}</td>
