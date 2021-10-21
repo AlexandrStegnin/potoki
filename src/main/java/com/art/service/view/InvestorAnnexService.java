@@ -7,10 +7,12 @@ import com.art.model.UsersAnnexToContracts;
 import com.art.model.supporting.filters.InvestorAnnexFilter;
 import com.art.model.supporting.view.InvestorAnnex;
 import com.art.repository.view.InvestorAnnexRepository;
-import com.art.service.StatusService;
 import com.art.service.UserService;
 import com.art.service.UsersAnnexToContractsService;
 import com.art.specifications.InvestorAnnexSpecification;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -34,33 +36,15 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class InvestorAnnexService {
 
-    private final InvestorAnnexRepository annexRepository;
+    UserService userService;
+    InvestorAnnexRepository annexRepository;
+    InvestorAnnexSpecification specification;
+    UsersAnnexToContractsService usersAnnexToContractsService;
 
-    private final InvestorAnnexSpecification specification;
-
-    private final UsersAnnexToContractsService usersAnnexToContractsService;
-
-    private final UserService userService;
-
-    private final StatusService statusService;
-
-    public InvestorAnnexService(InvestorAnnexRepository annexRepository, InvestorAnnexSpecification specification,
-                                UsersAnnexToContractsService usersAnnexToContractsService, UserService userService,
-                                StatusService statusService) {
-        this.annexRepository = annexRepository;
-        this.specification = specification;
-        this.usersAnnexToContractsService = usersAnnexToContractsService;
-        this.userService = userService;
-        this.statusService = statusService;
-    }
-
-    /**
-     * Получить список всех приложений инвесторов
-     *
-     * @return - список приложений
-     */
     public List<InvestorAnnex> findAll() {
         return annexRepository.findAll();
     }
@@ -114,11 +98,7 @@ public class InvestorAnnexService {
     public String uploadFiles(List<MultipartFile> files) throws IOException, RuntimeException {
         String path = System.getProperty("catalina.home") + "/pdfFiles/";
         AppUser currentUser = userService.findByLogin(SecurityUtils.getUsername());
-//        int counter = 0;
-//        int filesCnt = files.size();
         for (MultipartFile uploadedFile : files) {
-//            counter++;
-//            statusService.sendStatus(String.format("Загружаем %d из %d файлов", counter, filesCnt));
             String fileName = uploadedFile.getOriginalFilename();
             if (uploadedFile.isEmpty()) {
                 String message = "Файл [" + fileName + "] пустой";
@@ -160,7 +140,6 @@ public class InvestorAnnexService {
             usersAnnexToContractsService.create(usersAnnexToContracts);
             uploadedFile.transferTo(file);
         }
-//        statusService.sendStatus("OK");
         return "Файлы успешно загружены";
     }
 

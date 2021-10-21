@@ -19,7 +19,7 @@ public class UsersAnnexToContracts implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_annex_to_contracts_generator")
-  @SequenceGenerator(name = "users_annex_to_contracts_generator", sequenceName = "userannextocontracts_id_seq")
+  @SequenceGenerator(name = "users_annex_to_contracts_generator", sequenceName = "usersannextocontracts_id_seq")
   public BigInteger getId() {
     return id;
   }
