@@ -115,7 +115,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .antMatchers("/kind-on-project", Location.INVESTMENTS, "/union-profit", "/have-unread").access("hasAnyRole('ADMIN', 'INVESTOR')")
                 .antMatchers("/mark-read-annex", "/cashing-money", "/annexToContract/**").access("hasAnyRole('ADMIN', 'INVESTOR')")
-                .antMatchers("/uploadexcel", "**close**", "/load**").access("hasRole('ADMIN')")
+                .antMatchers("/uploadexcel", "**close**", "/load**", "/investors/rating**").access("hasRole('ADMIN')")
                 .antMatchers(Location.ADMIN_URLS).access("hasRole('ADMIN')")
                 .and().formLogin().loginPage(Location.LOGIN).permitAll()
                 .loginProcessingUrl(Location.LOGIN)

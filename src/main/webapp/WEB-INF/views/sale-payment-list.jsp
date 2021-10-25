@@ -201,7 +201,7 @@
                     <fmt:formatNumber value="${flows.cashInFacility}" type="currency" minFractionDigits="2"/>
                 </td>
                 <td data-date-gived="${flows.dateGiven.time}">
-                        <fmt:formatDate value="${flows.dateGiven}" pattern="dd.MM.yyyy" />
+                    <fmt:formatDate value="${flows.dateGiven}" pattern="dd.MM.yyyy" />
                 </td>
                 <td>
                     <fmt:formatNumber value="${flows.cashInUnderFacility}" type="currency" minFractionDigits="2"/>
