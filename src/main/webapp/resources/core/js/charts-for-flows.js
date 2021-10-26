@@ -182,7 +182,7 @@ function prepareBarChart(kinds) {
                 let ctx = chartInstance.ctx;
                 let width = chartInstance.width;
                 let size = Math.round(width / 120);
-                ctx.font = "" + size + "px 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
+                ctx.font = "" + size + "px 'Inter', sans-serif"
 
                 ctx.textAlign = "left";
                 ctx.fillStyle = "#000000";
@@ -207,11 +207,11 @@ function prepareBarChart(kinds) {
             datasets: [{
                 label: 'МОИ ВЛОЖЕНИЯ',
                 data: myCash,
-                backgroundColor: "#0d345d"
+                backgroundColor: "#262626"
             }, {
                 label: 'СТОИМОСТЬ ПРОЕКТА',
                 data: projectCoasts,
-                backgroundColor: "#95B3D7"
+                backgroundColor: "#9B7863"
             }]
         },
 
@@ -219,12 +219,12 @@ function prepareBarChart(kinds) {
         plugins: [{
             beforeDraw: function(c) {
                 let chartHeight = c.chart.height;
-                c.scales['y-axis-0'].options.ticks.minor.fontSize = chartHeight * (3 / 100); //fontSize: 3% of canvas height
+                c.scales['y-axis-0'].options.ticks.minor.fontSize = chartHeight * (2.5 / 100); //fontSize: 2.5% of canvas height
             }
         }]
     });
-    myChart.options.title.fontSize = Math.round(myChart.width / 48);
-    myChart.options.legend.labels.fontSize = myChart.options.title.fontSize / 2 * 1.5;
+    myChart.options.title.fontSize = Math.round(myChart.width / 60);
+    myChart.options.legend.labels.fontSize = myChart.options.title.fontSize / 1.5;
     myChart.update();
 }
 
@@ -300,8 +300,9 @@ function prepareInvestedBarChart(kinds) {
         },
         title: {
             display: true,
-            text: 'МОИ ВЛОЖЕНИЯ',
-            fontSize: 24
+            text: 'МОИ ВЛОЖЕНИЯ'
+            // ,
+            // fontSize: 24
         },
         animation: {
             onComplete: function () {
@@ -309,7 +310,7 @@ function prepareInvestedBarChart(kinds) {
                 let ctx = chartInstance.ctx;
                 let width = chartInstance.width;
                 let size = Math.round(width / 96);
-                ctx.font = "" + size + "px 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
+                ctx.font = "" + size + "px 'Inter', sans-serif"
                 ctx.textAlign = "left";
                 ctx.fillStyle = "#000000";
                 ctx.textBaseline = 'middle';
@@ -331,7 +332,7 @@ function prepareInvestedBarChart(kinds) {
         colors.push("#28a745")
     }
     for (let i = 0; i < myCash.length; i++) {
-        colors.push("#0D345D")
+        colors.push("#9B7863")
     }
     myChart = new Chart(ctx, {
         type: 'horizontalBar',
@@ -346,11 +347,11 @@ function prepareInvestedBarChart(kinds) {
         plugins: [{
             beforeDraw: function(c) {
                 let chartHeight = c.chart.height;
-                c.scales['y-axis-0'].options.ticks.minor.fontSize = chartHeight * (3 / 100); //fontSize: 3% of canvas height
+                c.scales['y-axis-0'].options.ticks.minor.fontSize = chartHeight * (2.5 / 100); //fontSize: 2.5% of canvas height
             }
         }]
     });
-    myChart.options.title.fontSize = Math.round(myChart.width / 48);
+    myChart.options.title.fontSize = Math.round(myChart.width / 60);
     myChart.update();
 }
 
@@ -397,7 +398,8 @@ function prepareCompanyProfitBarChart(profits) {
             xAxes: [{
                 ticks: {
                     beginAtZero: true,
-                    display: true
+                    display: true,
+                    fontSize: 12
                 },
                 scaleLabel: {
                     display: false
@@ -432,7 +434,7 @@ function prepareCompanyProfitBarChart(profits) {
                 let ctx = chartInstance.ctx;
                 let width = chartInstance.width;
                 let size = Math.round(width / 96);
-                ctx.font = "" + size + "px 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
+                ctx.font = "" + size + "px 'Inter', sans-serif"
                 ctx.textAlign = "center";
                 ctx.fillStyle = "#000000";
                 ctx.textBaseline = 'bottom';
@@ -459,17 +461,17 @@ function prepareCompanyProfitBarChart(profits) {
             datasets: [{
                 label: 'ЗАРАБОТАНО ДЛЯ ВАС',
                 data: myCash,
-                backgroundColor: "#0d345d"
+                backgroundColor: "#262626"
             }, {
                 label: 'ЗАРАБОТАНО ДЛЯ ВСЕХ',
                 data: companySums,
-                backgroundColor: "#95B3D7"
+                backgroundColor: "#9B7863"
             }]
         },
         options: options,
     });
-    myChart.options.title.fontSize = Math.round(myChart.width / 48);
-    myChart.options.legend.labels.fontSize = myChart.options.title.fontSize / 2 * 1.5;
+    myChart.options.title.fontSize = Math.round(myChart.width / 60);
+    myChart.options.legend.labels.fontSize = myChart.options.title.fontSize / 1.5;
     myChart.update();
 }
 

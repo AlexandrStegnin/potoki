@@ -11,11 +11,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="<c:url value='https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css' />"
           rel="stylesheet"/>
+    <link href="<c:url value='/resources/core/css/inter.css' />"
+          rel="stylesheet"/>
     <script src="<c:url value='https://kit.fontawesome.com/2b84e2f58d.js' />" crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="<c:url value='/resources/core/img/favicon/favicon.ico?v=eEY755nn99' />">
     <style type="text/css">
         table, td, th {
             text-align: center;
+        }
+        html, body, head {
+            font-family: Inter, system-ui !important;
         }
     </style>
     <!-- Yandex.Metrika counter -->
@@ -79,7 +84,6 @@
 <script type="text/javascript"
         src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js' />"></script>
 <script type="text/javascript" src="<c:url value='https://www.gstatic.com/charts/loader.js' />"></script>
-<%--    <script src="<c:url value='https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0' />"></script>--%>
 <script type="text/javascript" src="<c:url value='/resources/core/js/charts-for-flows.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/annex.js' />"></script>
 <script type="text/javascript" src="<c:url value='/resources/core/js/ddk_loader.js' />"></script>
