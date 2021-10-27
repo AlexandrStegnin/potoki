@@ -15,7 +15,7 @@
         <c:set var="disabled" scope="page" value="disabled"/>
     </sec:authorize>
     <a href="#" class="navbar-brand">
-        <img src="<c:url value='/resources/core/img/logo.png' />" height="56" alt="ДД Колесникъ">
+        <img src="<c:url value='/resources/core/img/new-logo.png' />" height="18" alt="ДД Колесникъ">
     </a>
     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
@@ -24,13 +24,13 @@
         <div class="navbar-nav ml-auto">
             <sec:authorize access="hasRole('INVESTOR') OR (hasRole('ADMIN') AND ${pageContext.request.servletPath.endsWith('flows.jsp')})">
                 <li class="nav-item mr-2">
-                    <a id="balance" href="#" class="nav-link disabled" style="color: #262626;">
+                    <a id="balance" href="#" class="nav-link disabled mt-0" style="color: #262626;">
                         <span class="fas fa-ruble-sign" style="color: #262626;"></span>
                         Баланс: <span id="balanceText">0</span>
                     </a>
                 </li>
                 <li class="nav-item mr-2">
-                    <a id="free-cash" href="#" class="nav-link" data-owner-id="${ownerId}" style="color: #262626;">
+                    <a id="free-cash" href="#" class="nav-link mt-0" data-owner-id="${ownerId}" style="color: #262626;">
                         <span class="fas fa-coins" style="color: #262626;"></span>
                         Свободный капитал: <span id="free-cash-text">
                         <fmt:setLocale value="ru-RU" scope="session"/>
@@ -40,28 +40,28 @@
                 </li>
             </sec:authorize>
             <li class="nav-item mr-2">
-                <a id="profile" href="<c:url value='/profile' />" class="nav-link ${disabled}" style="color: #262626;">
+                <a id="profile" href="<c:url value='/profile' />" class="nav-link ${disabled} mt-0" style="color: #262626;">
                     <span class="fas fa-lock" style="color: #262626;"></span>
                     Личный кабинет / <strong>${username}</strong>
                 </a>
             </li>
             <sec:authorize access="hasRole('INVESTOR') OR (hasRole('ADMIN') AND ${pageContext.request.servletPath.endsWith('flows.jsp')})">
                 <li class="nav-item mr-2">
-                    <a id="closed-projects" href="<c:url value='/#' />" class="nav-link" style="color: #262626;">
+                    <a id="closed-projects" href="<c:url value='/#' />" class="nav-link mt-0" style="color: #262626;">
                         <span class="fas fa-archive" style="color: #262626;"></span>
                         Реализованные проекты
                     </a>
                 </li>
             </sec:authorize>
             <li class="nav-item mr-2">
-                <a id="home" href="<c:url value='/welcome' />" class="nav-link ${disabled}" style="color: #262626;">
+                <a id="home" href="<c:url value='/welcome' />" class="nav-link ${disabled} mt-0" style="color: #262626;">
                     <span class="fas fa-home" style="color: #262626;"></span>
                     На главную
                 </a>
             </li>
 
             <li class="nav-item mr-2">
-                <a id="exit" href="<c:url value='/logout' />" class="nav-link" style="color: #262626;">
+                <a id="exit" href="<c:url value='/logout' />" class="nav-link mt-0" style="color: #262626;">
                     <span class="fas fa-sign-out-alt" style="color: #262626;"></span>
                     Выйти
                 </a>
