@@ -19,6 +19,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 import javax.annotation.Resource;
@@ -122,7 +123,14 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
         .tokenValiditySeconds(86400)
         .and().csrf()
         .and().exceptionHandling().accessDeniedPage("/Access_Denied")
-        .and().sessionManagement().invalidSessionUrl(Location.LOGIN);
+        .and().sessionManagement().invalidSessionUrl(Location.LOGIN)
+        .and()
+        .logout().clearAuthentication(true)
+        .logoutRequestMatcher(new AntPathRequestMatcher(Location.LOGOUT))
+        .logoutSuccessUrl(Location.LOGIN)
+        .invalidateHttpSession(true)
+        .deleteCookies("JSESSIONID")
+        .permitAll();
   }
 
   @Bean

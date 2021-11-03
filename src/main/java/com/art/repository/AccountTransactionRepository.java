@@ -141,7 +141,9 @@ public interface AccountTransactionRepository extends JpaRepository<AccountTrans
       "ORDER BY atx.owner.ownerName")
   Page<AccountDTO> fetchSummaryByParentPayers(@Param("ownerType") OwnerType ownerType, @Param("parentPayers") Collection<Account> parentPayers, Pageable pageable);
 
-  @Query("SELECT DISTINCT new com.art.model.supporting.dto.AccountDTO(atx.owner, SUM(atx.cash), atx.owner.ownerName) " +
+  @Query("SELECT DISTINCT new com.art.model.supporting.dto.AccountDTO(atx.owner, " +
+      "CASE WHEN SUM(atx.cash) BETWEEN -1 AND 1 THEN 0 ELSE SUM(atx.cash) END, " +
+      "atx.owner.ownerName) " +
       "FROM AccountTransaction atx " +
       "WHERE atx.owner.ownerType = :ownerType AND atx.owner.id = :ownerId " +
       "GROUP BY atx.owner, atx.owner.ownerName " +
