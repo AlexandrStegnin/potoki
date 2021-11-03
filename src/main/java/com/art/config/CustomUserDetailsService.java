@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Objects;
 
 @Component
 public class CustomUserDetailsService implements UserDetailsService {
@@ -19,7 +20,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         AppUser user = userService.findByLoginWithAnnexes(login);
-        if (user == null) {
+        if (Objects.isNull(user) || user.getProfile().isLocked()) {
             throw new UsernameNotFoundException("Username not found");
         }
         return new SecurityUser(user);
