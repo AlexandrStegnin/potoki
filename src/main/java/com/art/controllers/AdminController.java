@@ -9,12 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class AdminController {
 
-    public AdminController() {
-    }
+  @Secured("ROLE_ADMIN")
+  @GetMapping(path = Location.CATALOGUE)
+  public String cataloguePage(ModelMap model) {
+    return "catalogues";
+  }
 
-    @Secured("ROLE_ADMIN")
-    @GetMapping(path = Location.CATALOGUE)
-    public String cataloguePage(ModelMap model) {
-        return "catalogues";
-    }
 }

@@ -33,243 +33,238 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class UserController {
 
-    private final UserService userService;
+  private final UserService userService;
 
-    private final RoleService roleService;
+  private final RoleService roleService;
 
-    private final FacilityService facilityService;
+  private final FacilityService facilityService;
 
-    private final MoneyService moneyService;
+  private final MoneyService moneyService;
 
-    private final UsersAnnexToContractsService usersAnnexToContractsService;
+  private final UsersAnnexToContractsService usersAnnexToContractsService;
 
-    private final AccountService accountService;
+  private final AccountService accountService;
 
-    private AppUserFilter filter = new AppUserFilter();
+  private AppUserFilter filter = new AppUserFilter();
 
-    private final AccountTransactionService accountTransactionService;
+  private final AccountTransactionService accountTransactionService;
 
-    private final AppFilterService appFilterService;
+  private final AppFilterService appFilterService;
 
-    public UserController(UserService userService, RoleService roleService,
-                          FacilityService facilityService, MoneyService moneyService,
-                          UsersAnnexToContractsService usersAnnexToContractsService, AccountService accountService,
-                          AccountTransactionService accountTransactionService, AppFilterService appFilterService) {
-        this.userService = userService;
-        this.roleService = roleService;
-        this.facilityService = facilityService;
-        this.moneyService = moneyService;
-        this.usersAnnexToContractsService = usersAnnexToContractsService;
-        this.accountService = accountService;
-        this.accountTransactionService = accountTransactionService;
-        this.appFilterService = appFilterService;
+  public UserController(UserService userService, RoleService roleService,
+                        FacilityService facilityService, MoneyService moneyService,
+                        UsersAnnexToContractsService usersAnnexToContractsService, AccountService accountService,
+                        AccountTransactionService accountTransactionService, AppFilterService appFilterService) {
+    this.userService = userService;
+    this.roleService = roleService;
+    this.facilityService = facilityService;
+    this.moneyService = moneyService;
+    this.usersAnnexToContractsService = usersAnnexToContractsService;
+    this.accountService = accountService;
+    this.accountTransactionService = accountTransactionService;
+    this.appFilterService = appFilterService;
+  }
+
+  @Secured("ROLE_ADMIN")
+  @GetMapping(path = Location.USERS_LIST)
+  public ModelAndView usersList(@PageableDefault(size = 1000) @SortDefault Pageable pageable) {
+    filter = (AppUserFilter) appFilterService.getFilter(filter, AppUserFilter.class, AppPage.USERS);
+    return prepareModel(filter);
+  }
+
+  @Secured("ROLE_ADMIN")
+  @PostMapping(path = Location.USERS_LIST)
+  public ModelAndView usersListFiltered(@ModelAttribute("filter") AppUserFilter filter) {
+    appFilterService.updateFilter(filter, AppPage.USERS);
+    return prepareModel(filter);
+  }
+
+  /**
+   * Подготовить модель для страницы
+   *
+   * @param filter фильтры
+   */
+  private ModelAndView prepareModel(AppUserFilter filter) {
+    ModelAndView model = new ModelAndView("user-list");
+    Pageable pageable = new PageRequest(filter.getPageNumber(), filter.getPageSize());
+    Page<AppUser> page = userService.findAll(filter, pageable);
+    List<KinEnum> kins = new ArrayList<>(Arrays.asList(KinEnum.values()));
+    model.addObject("page", page);
+    model.addObject("filter", filter);
+    model.addObject("userDTO", new UserDTO());
+    model.addObject("kins", kins);
+
+    return model;
+  }
+
+  /*
+   * В профиль
+   *
+   * */
+
+  @GetMapping(value = "/profile")
+  public ModelAndView toProfile(Principal principal) {
+
+    String title = "Личный кабинет";
+    ModelAndView modelAndView = new ModelAndView("profile");
+    AppUser user = userService.findByLoginWithAnnexes(principal.getName());
+    Account account = accountService.findByOwnerId(user.getId(), OwnerType.INVESTOR);
+    String accountNumber;
+    if (null == account) {
+      accountNumber = "";
+    } else {
+      accountNumber = account.getAccountNumber();
     }
+    List<UsersAnnexToContracts> usersAnnexToContracts = usersAnnexToContractsService.findByUserId(user.getId());
 
-    @Secured("ROLE_ADMIN")
-    @GetMapping(path = Location.USERS_LIST)
-    public ModelAndView usersList(@PageableDefault(size = 1000) @SortDefault Pageable pageable) {
-        filter = (AppUserFilter) appFilterService.getFilter(filter, AppUserFilter.class, AppPage.USERS);
-        return prepareModel(filter);
+    user.setPassword("");
+    FileBucket fileModel = new FileBucket();
+    int annexCnt = (int) usersAnnexToContracts.stream()
+        .filter(a -> a.getAnnexRead() == 0)
+        .count();
+
+    int totalAnnex = usersAnnexToContracts.size();
+    modelAndView.addObject("usersAnnexToContractsList", usersAnnexToContracts);
+    modelAndView.addObject("totalAnnex", totalAnnex);
+    modelAndView.addObject("annexCnt", annexCnt);
+    modelAndView.addObject("fileBucket", fileModel);
+    modelAndView.addObject("user", user);
+    modelAndView.addObject("title", title);
+    modelAndView.addObject("search", new SearchSummary());
+    modelAndView.addObject("accountNumber", accountNumber);
+    modelAndView.addObject("ownerId", user.getId());
+    modelAndView.addObject("emailDTO", new EmailDTO());
+    if (account != null) {
+      BalanceDTO balanceDTO = accountTransactionService.getBalance(user.getId());
+      BigDecimal balance = balanceDTO.getSummary();
+      if (balance.compareTo(BigDecimal.valueOf(-1)) > 0 && balance.compareTo(BigDecimal.ONE) < 0) {
+        balance = BigDecimal.ZERO;
+      }
+      modelAndView.addObject("balance", balance);
     }
+    return modelAndView;
+  }
 
-    @Secured("ROLE_ADMIN")
-    @PostMapping(path = Location.USERS_LIST)
-    public ModelAndView usersListFiltered(@ModelAttribute("filter") AppUserFilter filter) {
-        appFilterService.updateFilter(filter, AppPage.USERS);
-        return prepareModel(filter);
+  @PostMapping(value = "/profile")
+  public ModelAndView profilePage(@ModelAttribute("user") UserDTO userDTO, Principal principal) {
+    ModelAndView modelAndView = new ModelAndView("profile");
+    AppUser user = new AppUser(userDTO);
+    userService.updateProfile(user);
+    user.setPassword(null);
+    modelAndView.addObject("user", user);
+    return modelAndView;
+  }
+
+  @PostMapping(value = "/admin-flows")
+  public ModelAndView viewFlowsAdmin(@ModelAttribute("searchSummary") SearchSummary searchSummary) {
+    ModelAndView view = new ModelAndView("viewFlows");
+    if (SecurityUtils.isAdmin() && (Objects.nonNull(searchSummary.getInvestor()) || Objects.nonNull(searchSummary.getLogin()))) {
+      BigInteger invId = new BigInteger(searchSummary.getInvestor());
+      String login = searchSummary.getLogin();
+      view.addObject("invId", invId);
+      view.addObject("invLogin", login);
     }
+    return view;
+  }
 
-    /**
-     * Подготовить модель для страницы
-     *
-     * @param filter фильтры
-     */
-    private ModelAndView prepareModel(AppUserFilter filter) {
-        ModelAndView model = new ModelAndView("user-list");
-        Pageable pageable = new PageRequest(filter.getPageNumber(), filter.getPageSize());
-        Page<AppUser> page = userService.findAll(filter, pageable);
-        List<KinEnum> kins = new ArrayList<>(Arrays.asList(KinEnum.values()));
-        model.addObject("page", page);
-        model.addObject("filter", filter);
-        model.addObject("userDTO", new UserDTO());
-        model.addObject("kins", kins);
-
-        return model;
+  /**
+   * Удаление пользователя по ID.
+   */
+  @PostMapping(path = Location.USERS_DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  public @ResponseBody
+  ApiResponse deleteUser(@RequestBody UserDTO userDTO) {
+    if (userDTO.getId() == null) {
+      return new ApiResponse("Не задан id пользоватея для удаления", HttpStatus.BAD_REQUEST.value());
     }
-
-    /*
-     * В профиль
-     *
-     * */
-
-    @GetMapping(value = "/profile")
-    public ModelAndView toProfile(Principal principal) {
-
-        String title = "Личный кабинет";
-        ModelAndView modelAndView = new ModelAndView("profile");
-        AppUser user = userService.findByLoginWithAnnexes(principal.getName());
-        Account account = accountService.findByOwnerId(user.getId(), OwnerType.INVESTOR);
-        String accountNumber;
-        if (null == account) {
-            accountNumber = "";
-        } else {
-            accountNumber = account.getAccountNumber();
-        }
-        List<UsersAnnexToContracts> usersAnnexToContracts = usersAnnexToContractsService.findByUserId(user.getId());
-
-        user.setPassword("");
-        FileBucket fileModel = new FileBucket();
-        int annexCnt = (int) usersAnnexToContracts.stream()
-                .filter(a -> a.getAnnexRead() == 0)
-                .count();
-
-        int totalAnnex = usersAnnexToContracts.size();
-        modelAndView.addObject("usersAnnexToContractsList", usersAnnexToContracts);
-        modelAndView.addObject("totalAnnex", totalAnnex);
-        modelAndView.addObject("annexCnt", annexCnt);
-        modelAndView.addObject("fileBucket", fileModel);
-        modelAndView.addObject("user", user);
-        modelAndView.addObject("title", title);
-        modelAndView.addObject("search", new SearchSummary());
-        modelAndView.addObject("accountNumber", accountNumber);
-        modelAndView.addObject("ownerId", user.getId());
-        modelAndView.addObject("emailDTO", new EmailDTO());
-        if (account != null) {
-            BalanceDTO balanceDTO = accountTransactionService.getBalance(user.getId());
-            BigDecimal balance = balanceDTO.getSummary();
-            if (balance.compareTo(BigDecimal.valueOf(-1)) > 0 && balance.compareTo(BigDecimal.ONE) < 0) {
-                balance = BigDecimal.ZERO;
-            }
-            modelAndView.addObject("balance", balance);
-        }
-        return modelAndView;
+    ApiResponse response = new ApiResponse();
+    AppUser user = userService.findById(userDTO.getId());
+    List<Money> monies;
+    monies = moneyService.findByInvestorId(user.getId());
+    monies.forEach(ic -> moneyService.deleteById(ic.getId()));
+    try {
+      userService.deleteUser(user.getId());
+      return new ApiResponse("Пользователь " + user.getLogin() + " успешно удалён.");
+    } catch (Exception e) {
+      response.setError("При удалении пользователя <b>" + user.getLogin() + "</b> произошла ошибка.");
     }
+    return response;
+  }
 
-    @PostMapping(value = "/profile")
-    public ModelAndView profilePage(@ModelAttribute("user") UserDTO userDTO, Principal principal) {
-        ModelAndView modelAndView = new ModelAndView("profile");
-        AppUser user = new AppUser(userDTO);
-        userService.updateProfile(user);
-        user.setPassword(null);
-        modelAndView.addObject("user", user);
-        return modelAndView;
+  /**
+   * Создание/обновление пользователя
+   */
+  @PostMapping(path = Location.USERS_SAVE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  public @ResponseBody
+  ApiResponse saveUser(@RequestBody UserDTO userDTO) {
+    AppUser user = new AppUser(userDTO);
+    ApiResponse response;
+    if (user.getId() == null) {
+      response = userService.create(user);
+    } else {
+      response = userService.update(user);
     }
+    return response;
+  }
 
-    @PostMapping(value = "/admin-flows")
-    public ModelAndView viewFlowsAdmin(@ModelAttribute("searchSummary") SearchSummary searchSummary) {
-        ModelAndView view = new ModelAndView("viewFlows");
-        if (SecurityUtils.isAdmin()) {
-            if (searchSummary.getInvestor() != null || searchSummary.getLogin() != null) {
-                BigInteger invId = new BigInteger(searchSummary.getInvestor());
-                String login = searchSummary.getLogin();
-                view.addObject("invId", invId);
-                view.addObject("invLogin", login);
-            }
-        }
-        return view;
-    }
+  @PostMapping(value = {"/setReadToAnnex"}, produces = "application/json;charset=UTF-8")
+  public @ResponseBody
+  GenericResponse saveAnnexRead(@RequestBody SearchSummary searchSummary) {
+    GenericResponse response = new GenericResponse();
+    UsersAnnexToContracts usersAnnexToContracts = usersAnnexToContractsService.findById(searchSummary.getUsersAnnexToContracts().getId());
+    usersAnnexToContracts.setAnnexRead(1);
+    usersAnnexToContracts.setDateRead(new Date());
+    usersAnnexToContractsService.update(usersAnnexToContracts);
+    response.setMessage("Запись успешно изменена");
+    return response;
+  }
 
-    /**
-     * Удаление пользователя по ID.
-     */
-    @PostMapping(path = Location.USERS_DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public @ResponseBody
-    ApiResponse deleteUser(@RequestBody UserDTO userDTO) {
-        if (userDTO.getId() == null) {
-            return new ApiResponse("Не задан id пользоватея для удаления", HttpStatus.BAD_REQUEST.value());
-        }
-        ApiResponse response = new ApiResponse();
-        AppUser user = userService.findById(userDTO.getId());
-        List<Money> monies;
-        monies = moneyService.findByInvestorId(user.getId());
-        monies.forEach(ic -> moneyService.deleteById(ic.getId()));
-        try {
-            userService.deleteUser(user.getId());
-            return new ApiResponse("Пользователь " + user.getLogin() + " успешно удалён.");
-        } catch (Exception e) {
-            response.setError("При удалении пользователя <b>" + user.getLogin() + "</b> произошла ошибка.");
-        }
-        return response;
-    }
+  @ResponseBody
+  @PostMapping(path = Location.DEACTIVATE_USER)
+  public ApiResponse deactivateUser(@RequestBody UserDTO dto) {
+    return userService.deactivateUser(dto);
+  }
 
-    /**
-     * Создание/обновление пользователя
-     */
-    @PostMapping(path = Location.USERS_SAVE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public @ResponseBody
-    ApiResponse saveUser(@RequestBody UserDTO userDTO) {
-        AppUser user = new AppUser(userDTO);
-        ApiResponse response;
-        if (user.getId() == null) {
-            response = userService.create(user);
-        } else {
-            response = userService.update(user);
-        }
-        return response;
-    }
+  @ResponseBody
+  @PostMapping(path = Location.USERS_FIND_BY_ID)
+  public UserDTO findUser(@RequestBody UserDTO dto) {
+    return userService.find(dto);
+  }
 
-    @PostMapping(value = {"/setReadToAnnex"}, produces = "application/json;charset=UTF-8")
-    public @ResponseBody
-    GenericResponse saveAnnexRead(@RequestBody SearchSummary searchSummary) {
-        GenericResponse response = new GenericResponse();
-        UsersAnnexToContracts usersAnnexToContracts = usersAnnexToContractsService.findById(searchSummary.getUsersAnnexToContracts().getId());
-        usersAnnexToContracts.setAnnexRead(1);
-        usersAnnexToContracts.setDateRead(new Date());
-        usersAnnexToContractsService.update(usersAnnexToContracts);
-        response.setMessage("Запись успешно изменена");
-        return response;
-    }
+  @ResponseBody
+  @PostMapping(path = Location.SEND_WELCOME)
+  public ApiResponse sendWelcomeMessage(@RequestBody EmailDTO emailDTO) {
+    return userService.sendWelcomeMessage(emailDTO);
+  }
 
-    @ResponseBody
-    @PostMapping(path = Location.DEACTIVATE_USER)
-    public ApiResponse deactivateUser(@RequestBody UserDTO dto) {
-        return userService.deactivateUser(dto);
-    }
+  @InitBinder
+  public void initBinder(WebDataBinder webDataBinder) {
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    dateFormat.setLenient(false);
+    webDataBinder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+  }
 
-    @ResponseBody
-    @PostMapping(path = Location.USERS_FIND_BY_ID)
-    public UserDTO findUser(@RequestBody UserDTO dto) {
-        return userService.find(dto);
-    }
+  /**
+   * Конвертация ролей/должностей в представление
+   */
 
-    @ResponseBody
-    @PostMapping(path = Location.SEND_WELCOME)
-    public ApiResponse sendWelcomeMessage(@RequestBody EmailDTO emailDTO) {
-        return userService.sendWelcomeMessage(emailDTO);
-    }
+  @ModelAttribute("roles")
+  public List<AppRole> initializeRoles() {
+    return roleService.initializeRoles();
+  }
 
-    @InitBinder
-    public void initBinder(WebDataBinder webDataBinder) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        dateFormat.setLenient(false);
-        webDataBinder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
-    }
+  @ModelAttribute("investors")
+  public List<AppUser> initializeInvestors() {
+    return userService.initializeInvestors();
+  }
 
-    /**
-     * Конвертация ролей/должностей в представление
-     */
-
-    @ModelAttribute("roles")
-    public List<AppRole> initializeRoles() {
-        return roleService.initializeRoles();
-    }
-
-    @ModelAttribute("investors")
-    public List<AppUser> initializeInvestors() {
-        return userService.initializeInvestors();
-    }
-
-    @ModelAttribute("facilities")
-    public List<Facility> initializeFacilities() {
-        return facilityService.findAll();
-    }
+  @ModelAttribute("facilities")
+  public List<Facility> initializeFacilities() {
+    return facilityService.findAll();
+  }
 
 }
