@@ -2,7 +2,6 @@ package com.art.controllers;
 
 import com.art.config.SecurityUtils;
 import com.art.config.application.Location;
-import com.art.model.Account;
 import com.art.model.supporting.dto.BalanceDTO;
 import com.art.service.AccountService;
 import com.art.service.AccountTransactionService;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.math.BigDecimal;
 
 @Controller
 @RequiredArgsConstructor
@@ -35,15 +33,9 @@ public class AppController {
     if (request.isUserInRole("ROLE_INVESTOR") && !request.isUserInRole("ROLE_ADMIN")) {
       Long userId = SecurityUtils.getUserId();
       userService.confirm(userId);
-      Account account = accountService.findByInvestorId(userId);
-      Long ownerId = account.getId();
-      BalanceDTO balanceDTO = accountTransactionService.getBalance(ownerId);
-      BigDecimal balance = balanceDTO.getSummary();
-      if (balance.compareTo(BigDecimal.valueOf(-1)) > 0 && balance.compareTo(BigDecimal.ONE) < 0) {
-        balance = BigDecimal.ZERO;
-      }
-      model.addAttribute("ownerId", ownerId);
-      model.addAttribute("balance", balance);
+      BalanceDTO balanceDTO = accountTransactionService.getBalanceByInvestorLogin(SecurityUtils.getUsername());
+      model.addAttribute("ownerId", balanceDTO.getAccountId());
+      model.addAttribute("balance", balanceDTO.getSummary());
       model.addAttribute("investorLogin", SecurityUtils.getUsername());
       return "flows";
     } else {

@@ -654,6 +654,16 @@ public class AccountTransactionService {
         return new BalanceDTO();
     }
 
+    public BalanceDTO getBalanceByInvestorLogin(String investorLogin) {
+        AppUser user = userService.findByLogin(investorLogin);
+        Account account = accountService.findByInvestorId(user.getId());
+        AccountDTO accountDTO = accountTransactionRepository.fetchBalance(OwnerType.INVESTOR, account.getId());
+        if (accountDTO != null) {
+            return new BalanceDTO(accountDTO);
+        }
+        return new BalanceDTO();
+    }
+
     /**
      * Обновить сумму транзакции
      *

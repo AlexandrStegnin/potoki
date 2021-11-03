@@ -21,17 +21,11 @@ import java.util.Objects;
 public class UserDTO {
 
     Long id;
-
     String login;
-
     AppRoleDTO role;
-
     String kin;
-
     Long partnerId;
-
     String password;
-
     UserProfileDTO profile;
 
     public UserDTO(AppUser entity) {
