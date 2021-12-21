@@ -6,6 +6,7 @@ import com.art.config.exception.AnnexNotFoundException;
 import com.art.config.exception.UsernameNotFoundException;
 import com.art.model.AppUser;
 import com.art.model.UsersAnnexToContracts;
+import com.art.model.supporting.ApiResponse;
 import com.art.model.supporting.GenericResponse;
 import com.art.model.supporting.filters.InvestorAnnexFilter;
 import com.art.model.supporting.model.AnnexModel;
@@ -22,6 +23,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -81,20 +83,14 @@ public class AnnexController {
     return response;
   }
 
-  @PostMapping(path = Location.INVESTOR_ANNEXES_DELETE)
-  public @ResponseBody
-  GenericResponse deleteAnnexes(@RequestBody UsersAnnexToContracts annex) {
-    GenericResponse response = new GenericResponse();
-    response.setMessage("Для удаления файлов загрузите новый файл");
-    return response;
-  }
-
   @PostMapping(path = Location.INVESTOR_ANNEXES_DELETE_LIST)
   public @ResponseBody
-  GenericResponse deleteAnnexesList(@RequestBody AnnexModel annex) {
-    GenericResponse response = new GenericResponse();
-    response.setMessage("Для удаления файлов загрузите новый файл");
-    return response;
+  ApiResponse deleteAnnexesList(@RequestBody AnnexModel annex) {
+    annexService.deleteList(annex.getAnnexIdList());
+    return ApiResponse.builder()
+        .message("Записи удалены")
+        .status(HttpStatus.OK.value())
+        .build();
   }
 
   @RequestMapping("/annexes/{annexId}")

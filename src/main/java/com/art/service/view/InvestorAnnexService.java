@@ -4,6 +4,7 @@ import com.art.config.SecurityUtils;
 import com.art.config.exception.FileUploadException;
 import com.art.config.exception.UsernameNotFoundException;
 import com.art.config.exception.UsernameParseException;
+import com.art.config.property.NextcloudProperty;
 import com.art.model.AnnexToContracts;
 import com.art.model.AppUser;
 import com.art.model.UsersAnnexToContracts;
@@ -20,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.aarboard.nextcloud.api.NextcloudConnector;
 import org.aarboard.nextcloud.api.filesharing.SharePermissions;
 import org.aarboard.nextcloud.api.filesharing.ShareType;
-import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class InvestorAnnexService {
   InvestorAnnexSpecification specification;
   UsersAnnexToContractsService usersAnnexToContractsService;
   NextcloudConnector connector;
-  Environment env;
+  NextcloudProperty nextcloudProperty;
 
   public List<InvestorAnnex> findAll() {
     return annexRepository.findAll();
@@ -127,7 +128,7 @@ public class InvestorAnnexService {
 
   private void uploadFileToNextcloud(File file, MultipartFile uploadedFile) {
     try {
-      String remoteFolder = File.separator + env.getProperty("nextcloud.folder") + File.separator;
+      String remoteFolder = nextcloudProperty.getRemoteFolder();
       connector.uploadFile(file, remoteFolder + uploadedFile.getOriginalFilename());
       SharePermissions permissions = new SharePermissions(SharePermissions.SingleRight.READ);
       connector.doShare(remoteFolder + uploadedFile.getOriginalFilename(),
@@ -156,6 +157,19 @@ public class InvestorAnnexService {
       throw UsernameNotFoundException.build404Exception("Пользователь с логином [" + lastName + "] не найден");
     }
     return investor;
+  }
+
+  public void delete(BigInteger id) {
+    usersAnnexToContractsService.deleteById(id);
+  }
+
+  public void deleteList(List<BigInteger> ids) {
+    String remoteFolder = nextcloudProperty.getRemoteFolder();
+    ids.forEach(id -> {
+      UsersAnnexToContracts annex = usersAnnexToContractsService.findById(id);
+      connector.removeFile(remoteFolder + annex.getAnnex().getAnnexName());
+      delete(id);
+    });
   }
 
 }
