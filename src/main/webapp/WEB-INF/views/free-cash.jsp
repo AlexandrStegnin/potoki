@@ -120,7 +120,7 @@
             <tr>
                 <td>${acc.owner.ownerName}</td>
                 <td><fmt:setLocale value="ru-RU" scope="session"/>
-                    <fmt:formatNumber value="${acc.summary}" type="currency" minFractionDigits="2"/></td>
+                    <fmt:formatNumber value="${acc.summary}" type="currency" minFractionDigits="0" maxFractionDigits="0"/></td>
                 <td>
                     <button type="button" class="btn btn-sm btn-success tx-show" data-toggle="tooltip"
                             data-placement="left" title="Посмотреть" data-owner-id="${acc.owner.id}">

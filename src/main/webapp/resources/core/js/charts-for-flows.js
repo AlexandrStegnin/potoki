@@ -638,7 +638,7 @@ function getFormatter() {
         style: 'currency',
         currency: 'RUB',
         // These options are needed to round to whole numbers if that's what you want.
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
     })
 }
