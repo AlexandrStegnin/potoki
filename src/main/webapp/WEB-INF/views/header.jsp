@@ -34,7 +34,7 @@
                         <span class="fas fa-coins" style="color: #262626;"></span>
                         Свободный капитал: <span id="free-cash-text">
                         <fmt:setLocale value="ru-RU" scope="session"/>
-                            <fmt:formatNumber value="${balance}" type="currency" minFractionDigits="2"/>
+                            <fmt:formatNumber value="${balance}" type="currency" minFractionDigits="0" maxFractionDigits="0"/>
                     </span>
                     </a>
                 </li>
