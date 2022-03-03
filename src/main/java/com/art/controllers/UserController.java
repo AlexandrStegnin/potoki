@@ -200,15 +200,8 @@ public class UserController {
    */
   @PostMapping(path = Location.USERS_SAVE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   public @ResponseBody
-  ApiResponse saveUser(@RequestBody UserDTO userDTO) {
-    AppUser user = new AppUser(userDTO);
-    ApiResponse response;
-    if (user.getId() == null) {
-      response = userService.create(user);
-    } else {
-      response = userService.update(user);
-    }
-    return response;
+  ApiResponse saveUser(@RequestBody UserDTO dto) {
+    return userService.save(dto);
   }
 
   @PostMapping(value = {"/setReadToAnnex"}, produces = "application/json;charset=UTF-8")

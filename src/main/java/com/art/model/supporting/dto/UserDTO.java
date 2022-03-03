@@ -20,38 +20,39 @@ import java.util.Objects;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserDTO {
 
-    Long id;
-    String login;
-    AppRoleDTO role;
-    String kin;
-    Long partnerId;
-    String password;
-    UserProfileDTO profile;
+  Long id;
+  String login;
+  AppRoleDTO role;
+  String kin;
+  Long partnerId;
+  String password;
+  UserProfileDTO profile;
+  String phone;
 
-    public UserDTO(AppUser entity) {
-        this.id = entity.getId();
-        this.login = entity.getLogin();
-        this.role = convertRole(entity.getRole());
-        this.kin = convertKin(entity.getKin());
-        if (Objects.nonNull(entity.getPartner())) {
-            this.partnerId = entity.getPartner().getId();
-        }
-        this.profile = convertProfile(entity.getProfile());
+  public UserDTO(AppUser entity) {
+    this.id = entity.getId();
+    this.login = entity.getLogin();
+    this.role = convertRole(entity.getRole());
+    this.kin = convertKin(entity.getKin());
+    if (Objects.nonNull(entity.getPartner())) {
+      this.partnerId = entity.getPartner().getId();
     }
+    this.profile = convertProfile(entity.getProfile());
+  }
 
-    private String convertKin(KinEnum kin) {
-        if (kin != null) {
-            return kin.getVal();
-        }
-        return null;
+  private String convertKin(KinEnum kin) {
+    if (kin != null) {
+      return kin.getVal();
     }
+    return null;
+  }
 
-    private AppRoleDTO convertRole(AppRole role) {
-        return new AppRoleDTO(role);
-    }
+  private AppRoleDTO convertRole(AppRole role) {
+    return new AppRoleDTO(role);
+  }
 
-    private UserProfileDTO convertProfile(UserProfile profile) {
-        return new UserProfileDTO(profile);
-    }
+  private UserProfileDTO convertProfile(UserProfile profile) {
+    return new UserProfileDTO(profile);
+  }
 
 }

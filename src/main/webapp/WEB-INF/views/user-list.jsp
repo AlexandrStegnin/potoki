@@ -128,6 +128,7 @@
             <th>ID</th>
             <th>Имя пользователя</th>
             <th>Email</th>
+            <th>Телефон</th>
             <th>Подтверждён</th>
             <th>Деактивирован</th>
             <th>Роль</th>
@@ -143,6 +144,7 @@
                 <td>${user.id}</td>
                 <td>${user.login}</td>
                 <td>${user.profile.email}</td>
+                <td>${user.phone}</td>
                 <c:choose>
                     <c:when test="${user.confirmed}">
                         <td>Да</td>

@@ -44,12 +44,14 @@ UserDTO.prototype = {
     partnerId: null,
     profile: null,
     kin: null,
-    build: function (id, login, role, partnerId, kin) {
+    phone: '',
+    build: function (id, login, role, partnerId, kin, phone) {
         this.id = id;
         this.login = login;
         this.role = role;
         this.partnerId = partnerId;
         this.kin = kin;
+        this.phone = phone;
     },
     buildPartner: function (id, login) {
         this.id = id;
@@ -75,6 +77,8 @@ UserProfileDTO.prototype = {
 let confirmForm
 
 jQuery(document).ready(function ($) {
+    onPhoneFieldFocusOut()
+
     confirmForm = $('#confirm-form');
     let userForm = $('#user-form-modal');
 
@@ -243,6 +247,17 @@ function checkUserDTO(userDTO) {
     } else {
         emailErr.removeClass('d-block')
     }
+
+    let phoneErr = $('#phoneError')
+    let phoneValid = new RegExp("\\+[0-9]{11}$")
+    if (!phoneValid.test(userDTO.phone)) {
+        phoneErr.html('Введите телефон в формате +79998887766')
+        phoneErr.addClass('d-block')
+        return false
+    } else {
+        phoneErr.removeClass('d-block')
+    }
+
     let rolesError = $('#rolesError')
     if (userDTO.role.id === '0') {
         rolesError.addClass('d-block')
@@ -269,9 +284,16 @@ function getUserDTO() {
     let kin = $('#kins').val();
     let userId = $('#id').val();
 
+    let lastName = $('#lastName').val()
+    let firstName = $('#firstName').val()
+    let patronymic = $('#patronymic').val()
+    let email = $('#email').val()
+
+    let phone = $('#phone').val()
+
     let userDTO = new UserDTO()
-    userDTO.build(userId, login, role, partnerId, kin)
-    userDTO.profile = createProfile(userId, $('#lastName').val(), $('#firstName').val(), $('#patronymic').val(), $('#email').val());
+    userDTO.build(userId, login, role, partnerId, kin, phone)
+    userDTO.profile = createProfile(userId, lastName, firstName, patronymic, email);
 
     return userDTO
 }
@@ -548,6 +570,7 @@ function showUpdateUserForm(data) {
     userForm.find('#edit').val(true)
     userForm.find('#user-login').val(userDTO.login)
     userForm.find('#email').val(userDTO.profile.email)
+    userForm.find('#phone').val(userDTO.phone)
     bindRoles(userDTO.role)
     bindPartner(userDTO.partnerId)
     bindKin(userDTO.kin)
@@ -601,4 +624,11 @@ function bindKin(kin) {
         }
     })
     userForm.find('#kins').selectpicker('refresh')
+}
+
+function onPhoneFieldFocusOut() {
+    $('#phone').on('focusout', function (e) {
+        let phone = '+' + $(this).val().replace(/\D/g,'')
+        $('#user-form-modal').find('#phone').val(phone)
+    })
 }

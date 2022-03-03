@@ -34,6 +34,17 @@
                         </div>
 
                         <div class="form-group row">
+                            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="phone">Телефон:</label>
+                            <div class="col-md-6">
+                                <form:input type="tel" path="phone" id="phone" class="form-control input-sm"
+                                            placeholder="+79998887766" required="required"/>
+                                <div class="has-error d-none" id="phoneError">
+                                    Необходимо ввести корректный телефон
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="roles">Роли:</label>
                             <div class="col-md-6">
                                 <form:select path="role" id="roles" items="${roles}" multiple="false"
