@@ -28,6 +28,7 @@ public class UserDTO {
   String password;
   UserProfileDTO profile;
   String phone;
+  Long bitrixId;
 
   public UserDTO(AppUser entity) {
     this.id = entity.getId();
@@ -38,6 +39,8 @@ public class UserDTO {
       this.partnerId = entity.getPartner().getId();
     }
     this.profile = convertProfile(entity.getProfile());
+    this.bitrixId = entity.getBitrixId();
+    this.phone = entity.getPhone();
   }
 
   private String convertKin(KinEnum kin) {

@@ -54,6 +54,9 @@ public class AppUser implements Serializable {
   @Column(name = "phone")
   String phone;
 
+  @Column(name = "bitrix_id")
+  Long bitrixId;
+
   public AppUser(Long id, AppUser partner) {
     this.id = id;
     this.partner = partner;
@@ -68,6 +71,7 @@ public class AppUser implements Serializable {
     this.partner = makePartner(userDTO.getPartnerId());
     this.password = userDTO.getPassword();
     this.phone = userDTO.getPhone();
+    this.bitrixId = userDTO.getBitrixId();
   }
 
   AppRole convertRole(AppRoleDTO dto) {

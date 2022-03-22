@@ -45,13 +45,15 @@ UserDTO.prototype = {
     profile: null,
     kin: null,
     phone: '',
-    build: function (id, login, role, partnerId, kin, phone) {
+    bitrixId: null,
+    build: function (id, login, role, partnerId, kin, phone, bitrixId) {
         this.id = id;
         this.login = login;
         this.role = role;
         this.partnerId = partnerId;
         this.kin = kin;
         this.phone = phone;
+        this.bitrixId = bitrixId;
     },
     buildPartner: function (id, login) {
         this.id = id;
@@ -61,15 +63,9 @@ UserDTO.prototype = {
 
 UserProfileDTO.prototype = {
     id: 0,
-    lastName: '',
-    firstName: '',
-    patronymic: '',
     email: '',
-    build: function (id, lastName, firstName, patronymic, email) {
+    build: function (id,  email) {
         this.id = id;
-        this.lastName = lastName;
-        this.firstName = firstName;
-        this.patronymic = patronymic;
         this.email = email;
     }
 }
@@ -284,16 +280,15 @@ function getUserDTO() {
     let kin = $('#kins').val();
     let userId = $('#id').val();
 
-    let lastName = $('#lastName').val()
-    let firstName = $('#firstName').val()
-    let patronymic = $('#patronymic').val()
     let email = $('#email').val()
 
     let phone = $('#phone').val()
 
+    let bitrixId = $('#bitrixId').val()
+
     let userDTO = new UserDTO()
-    userDTO.build(userId, login, role, partnerId, kin, phone)
-    userDTO.profile = createProfile(userId, lastName, firstName, patronymic, email);
+    userDTO.build(userId, login, role, partnerId, kin, phone, bitrixId)
+    userDTO.profile = createProfile(userId, email);
 
     return userDTO
 }
@@ -343,24 +338,12 @@ function getPartner() {
  * Создать профиль для DTO пользователя
  *
  * @param userId id пользователя
- * @param lastName Фамилия
- * @param firstName Имя
- * @param patronymic Отчество
  * @param email адрес эл почты
  * @returns {UserProfileDTO}
  */
-function createProfile(userId, lastName, firstName, patronymic, email) {
+function createProfile(userId, email) {
     let profile = new UserProfileDTO();
-    if (lastName.length === 0) {
-        lastName = null;
-    }
-    if (firstName.length === 0) {
-        firstName = null;
-    }
-    if (patronymic.length === 0) {
-        patronymic = null;
-    }
-    profile.build(userId, lastName, firstName, patronymic, email);
+    profile.build(userId, email);
     return profile;
 }
 
@@ -563,7 +546,7 @@ function getUser(userId) {
  */
 function showUpdateUserForm(data) {
     let userDTO = new UserDTO()
-    userDTO.build(data.id, data.login, data.role, data.partnerId, data.kin)
+    userDTO.build(data.id, data.login, data.role, data.partnerId, data.kin, data.phone, data.bitrixId)
     userDTO.profile = data.profile
     let userForm = $('#user-form-modal')
     userForm.find('#id').val(userDTO.id)
@@ -571,6 +554,7 @@ function showUpdateUserForm(data) {
     userForm.find('#user-login').val(userDTO.login)
     userForm.find('#email').val(userDTO.profile.email)
     userForm.find('#phone').val(userDTO.phone)
+    userForm.find('#bitrixId').val(userDTO.bitrixId)
     bindRoles(userDTO.role)
     bindPartner(userDTO.partnerId)
     bindKin(userDTO.kin)

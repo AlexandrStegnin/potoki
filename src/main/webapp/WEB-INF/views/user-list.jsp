@@ -125,14 +125,15 @@
            id="users-table">
         <thead style="text-align: center">
         <tr>
-            <th>ID</th>
-            <th>Имя пользователя</th>
-            <th>Email</th>
-            <th>Телефон</th>
-            <th>Подтверждён</th>
-            <th>Деактивирован</th>
-            <th>Роль</th>
-            <th>Партнёр</th>
+            <th style="width: 5%">ID</th>
+            <th style="width: 10%">Логин</th>
+            <th style="width: 15%">Email</th>
+            <th style="width: 15%">Телефон</th>
+            <th style="width: 10%">Подтверждён</th>
+            <th style="width: 10%">Деактивирован</th>
+            <th style="width: 10%">Роль</th>
+            <th style="width: 10%">Партнёр</th>
+            <th style="width: 10%">ID Б24</th>
             <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                 <th style="text-align: center">Действие</th>
             </sec:authorize>
@@ -163,6 +164,7 @@
                 </c:choose>
                 <td>${user.role.humanized}</td>
                 <td>${user.partner.login}</td>
+                <td>${user.bitrixId}</td>
                 <sec:authorize access="isFullyAuthenticated()">
                     <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                         <td style="text-align: center">

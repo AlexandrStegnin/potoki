@@ -45,6 +45,13 @@
                         </div>
 
                         <div class="form-group row">
+                            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="bitrixId">ID Битрикс24:</label>
+                            <div class="col-md-6">
+                                <form:input type="number" path="bitrixId" id="bitrixId" class="form-control input-sm"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                             <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="roles">Роли:</label>
                             <div class="col-md-6">
                                 <form:select path="role" id="roles" items="${roles}" multiple="false"
@@ -74,27 +81,6 @@
                                              itemLabel="val" itemValue="val" class="form-control form-control-sm selectpicker"
                                              data-size="10" data-live-search="true" data-none-selected-text="Степень родства"
                                              disabled="true"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="lastName">Фамилия:</label>
-                            <div class="col-md-6">
-                                <form:input type="text" path="profile.lastName" id="lastName" class="form-control input-md"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="firstName">Имя:</label>
-                            <div class="col-md-6">
-                                <form:input type="text" path="profile.firstName" id="firstName" class="form-control input-md"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label class="col-sm-2 offset-sm-2 col-form-label-sm" for="patronymic">Отчество:</label>
-                            <div class="col-md-6">
-                                <form:input type="text" path="profile.patronymic" id="patronymic" class="form-control input-md"/>
                             </div>
                         </div>
                     </form:form>

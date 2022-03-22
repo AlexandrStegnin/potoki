@@ -175,6 +175,7 @@ public class UserService {
     dbUser.setKin(user.getKin());
     dbUser.setRole(user.getRole());
     dbUser.setPhone(user.getPhone());
+    dbUser.setBitrixId(user.getBitrixId());
     UserProfile profile = dbUser.getProfile();
     profile.setFirstName(user.getProfile().getFirstName());
     profile.setLastName(user.getProfile().getLastName());
