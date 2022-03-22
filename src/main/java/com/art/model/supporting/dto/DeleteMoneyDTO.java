@@ -9,11 +9,10 @@ import java.util.List;
 /**
  * @author Alexandr Stegnin
  */
-
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class DeleteMoneyDTO extends MoneyDTO {
 
-    private List<Long> moneyIds = new ArrayList<>();
+  private List<Long> moneyIds = new ArrayList<>();
 
 }

@@ -7,10 +7,9 @@ import org.springframework.stereotype.Repository;
 /**
  * @author Alexandr Stegnin
  */
-
 @Repository
 public interface TypeClosingRepository extends JpaRepository<TypeClosing, Long> {
 
-    TypeClosing findByName(String name);
+  TypeClosing findByName(String name);
 
 }

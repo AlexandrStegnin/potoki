@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface NewCashDetailRepository extends JpaRepository<NewCashDetail, Long> {
 
-    NewCashDetail findByName(String name);
+  NewCashDetail findByName(String name);
 }

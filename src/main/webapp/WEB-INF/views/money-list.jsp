@@ -98,9 +98,6 @@
             <label for="endPeriod" style="margin-left:5px; margin-right:5px; font-size:14px">по:</label>
             <input id="endPeriod" name="toDate" type="date" class="form-control input-sm" value=""
                    style="margin-right:5px">
-                <%--                <input type="checkbox" checked data-toggle="toggle"--%>
-                <%--                       data-on="Все" data-off="Из 1С" data-onstyle="success" data-offstyle="danger"--%>
-                <%--                       data-size="input-sm">--%>
             <form:select path="fromApi" class="selectpicker" data-width="130px">
                 <form:option value="true" label="Из 1С"/>
                 <form:option value="false" label="Остальные"/>
@@ -217,10 +214,10 @@
                     <fmt:setLocale value="ru-RU" scope="session"/>
                     <fmt:formatNumber value="${money.givenCash}" type="currency" minFractionDigits="2"/>
                 </td>
-                <td>${money.getDateGivenToLocalDate()}</td>
+                <td><fmt:formatDate pattern="dd.MM.yyyy" value="${money.dateGiven}" /></td>
                 <td>${money.cashSource.name}</td>
                 <td>${money.newCashDetail.name}</td>
-                <td>${money.getDateClosingToLocalDate()}</td>
+                <td><fmt:formatDate pattern="dd.MM.yyyy" value="${money.dateClosing}" /></td>
                 <td>${money.typeClosing.name}</td>
                 <td>${money.sourceUnderFacility.name}</td>
                 <c:set var="is1C" value="Да"/>

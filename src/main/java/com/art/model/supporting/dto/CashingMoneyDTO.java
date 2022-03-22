@@ -1,6 +1,7 @@
 package com.art.model.supporting.dto;
 
-import lombok.Data;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -11,30 +12,23 @@ import java.util.List;
  *
  * @author Alexandr Stegnin
  */
-
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CashingMoneyDTO {
 
-    private Long id;
-
-    private Long facilityId;
-
-    private Long underFacilityId;
-
-    private List<Long> investorsIds;
-
-    private BigDecimal cash;
-
-    private Date dateCashing;
-
-    private BigDecimal commission;
-
-    private BigDecimal commissionNoMore;
-
-    private Date dateClose;
-
-    private String operation;
-
-    private boolean all = false;
+  Long id;
+  Long facilityId;
+  Long underFacilityId;
+  List<Long> investorsIds;
+  BigDecimal cash;
+  Date dateCashing;
+  BigDecimal commission;
+  BigDecimal commissionNoMore;
+  Date dateClose;
+  String operation;
+  boolean all = false;
 
 }

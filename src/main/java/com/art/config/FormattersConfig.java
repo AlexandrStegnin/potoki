@@ -3,6 +3,9 @@ package com.art.config;
 import com.art.config.application.WebConfig;
 import com.art.converter.*;
 import com.art.service.*;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.format.FormatterRegistry;
@@ -12,43 +15,20 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @EnableWebMvc
 @Configuration
 @Import(WebConfig.class)
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FormattersConfig extends WebMvcConfigurerAdapter {
 
-    private final RoleService roleService;
-
-    private final UserService userService;
-
-    private final FacilityService facilityService;
-
-    private final UnderFacilityService underFacilityService;
-
-    private final CashSourceService cashSourceService;
-
-    private final NewCashDetailService newCashDetailService;
-
-    private final TypeClosingService typeClosingService;
-
-    private final RoomService roomService;
-
-    private final AppTokenService appTokenService;
-
-    private final AccountService accountService;
-
-    public FormattersConfig(RoleService roleService, UserService userService, FacilityService facilityService,
-                            UnderFacilityService underFacilityService, CashSourceService cashSourceService,
-                            NewCashDetailService newCashDetailService, TypeClosingService typeClosingService,
-                            RoomService roomService, AppTokenService appTokenService, AccountService accountService) {
-        this.roleService = roleService;
-        this.userService = userService;
-        this.facilityService = facilityService;
-        this.underFacilityService = underFacilityService;
-        this.cashSourceService = cashSourceService;
-        this.newCashDetailService = newCashDetailService;
-        this.typeClosingService = typeClosingService;
-        this.roomService = roomService;
-        this.appTokenService = appTokenService;
-        this.accountService = accountService;
-    }
+    RoleService roleService;
+    UserService userService;
+    FacilityService facilityService;
+    UnderFacilityService underFacilityService;
+    CashSourceService cashSourceService;
+    NewCashDetailService newCashDetailService;
+    TypeClosingService typeClosingService;
+    RoomService roomService;
+    AppTokenService appTokenService;
+    AccountService accountService;
 
     @Override
     public void addFormatters(FormatterRegistry registry) {

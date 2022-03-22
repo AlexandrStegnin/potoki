@@ -1,9 +1,7 @@
 package com.art.model.supporting;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -13,22 +11,29 @@ import org.springframework.http.HttpStatus;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ApiResponse {
 
-    private String message;
+  String message;
+  int status;
+  String error;
 
-    private int status;
+  public ApiResponse(String message) {
+    this.message = message;
+    this.status = HttpStatus.OK.value();
+  }
 
-    private String error;
+  public ApiResponse(String message, int status) {
+    this.message = message;
+    this.status = status;
+  }
 
-    public ApiResponse(String message) {
-        this.message = message;
-        this.status = HttpStatus.OK.value();
-    }
+  public static ApiResponse build422Response(String message) {
+    return new ApiResponse(message, HttpStatus.PRECONDITION_FAILED.value());
+  }
 
-    public ApiResponse(String message, int status) {
-        this.message = message;
-        this.status = status;
-    }
+  public static ApiResponse build200Response(String message) {
+    return new ApiResponse(message, HttpStatus.OK.value());
+  }
 
 }
