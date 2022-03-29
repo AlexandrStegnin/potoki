@@ -1,17 +1,15 @@
 package com.art.service;
 
 import com.art.config.AppSecurityConfig;
-import com.art.config.SecurityUtils;
-import com.art.config.exception.ApiException;
 import com.art.config.exception.EntityNotFoundException;
 import com.art.func.PersonalMailService;
-import com.art.model.*;
+import com.art.model.AppUser;
+import com.art.model.AppUser_;
+import com.art.model.UserProfile;
+import com.art.model.UserProfile_;
 import com.art.model.supporting.ApiResponse;
-import com.art.model.supporting.SendingMail;
-import com.art.model.supporting.dto.EmailDTO;
 import com.art.model.supporting.dto.UserDTO;
 import com.art.model.supporting.enums.KinEnum;
-import com.art.model.supporting.enums.UserRole;
 import com.art.model.supporting.filters.AppUserFilter;
 import com.art.repository.MarketingTreeRepository;
 import com.art.repository.UserRepository;
@@ -139,12 +137,6 @@ public class UserService {
     user.getProfile().setEmail(user.getProfile().getEmail().toLowerCase());
     user.setLogin(user.getLogin().toLowerCase());
     userRepository.save(user);
-    if (SecurityUtils.isUserInRole(user, UserRole.ROLE_INVESTOR)) {
-      Account account = accountService.createAccount(user);
-      if (account != null) {
-        sendWelcomeMessage(user, password);
-      }
-    }
     response.setMessage("Пользователь успешно создан");
     return response;
   }
@@ -183,20 +175,6 @@ public class UserService {
     profile.setEmail(user.getProfile().getEmail());
     userRepository.save(dbUser);
     return new ApiResponse("Пользователь успешно обновлён");
-  }
-
-  private void sendWelcomeMessage(AppUser user, String password) {
-    SendingMail mail = new SendingMail();
-    mail.setSubject("Добро пожаловать в Доходный Дом КолесникЪ!");
-    mail.setBody("Здравствуйте, уважаемый Инвестор!<br/>" +
-        "Вам предоставлен доступ в личный кабинет Доходного Дома &#171;КолесникЪ&#187; (https://www.lk.ddkolesnik.com)<br/>" +
-        "Данные для входа:<br/>" +
-        "login: " + user.getLogin() + "<br/>" +
-        "Пароль: " + password + "<br/>" +
-        "С уважением, Колесник.Инвестиции");
-    String who = "ДД КолесникЪ";
-    Properties prop = getProp();
-    personalMailService.sendEmails(user, mail, prop.getProperty("mail.kolesnik"), prop.getProperty("mail.kolesnikpwd"), who, null);
   }
 
   public AppUser findByLoginAndEmail(String login, String email) {
@@ -284,20 +262,4 @@ public class UserService {
     return appUsers;
   }
 
-  public ApiResponse sendWelcomeMessage(EmailDTO emailDTO) {
-    if (Objects.isNull(emailDTO)
-        || Objects.isNull(emailDTO.getUser())
-        || Objects.isNull(emailDTO.getUser().getId())) {
-      throw new ApiException("Для отправки email не указан пользователь", HttpStatus.BAD_REQUEST);
-    }
-    AppUser user = findById(emailDTO.getUser().getId());
-    if (Objects.isNull(user)) {
-      throw new ApiException("Пользователь не найден", HttpStatus.NOT_FOUND);
-    }
-    String password = generatePassword();
-    user.setPassword(passwordEncoder.encode(password));
-    sendWelcomeMessage(user, password);
-    userRepository.save(user);
-    return new ApiResponse("Письмо успешно отправлено пользователю " + user.getProfile().getEmail());
-  }
 }

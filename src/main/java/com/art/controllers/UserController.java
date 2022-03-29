@@ -15,6 +15,9 @@ import com.art.model.supporting.enums.KinEnum;
 import com.art.model.supporting.enums.OwnerType;
 import com.art.model.supporting.filters.AppUserFilter;
 import com.art.service.*;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,39 +39,19 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserController {
 
-  private final UserService userService;
-
-  private final RoleService roleService;
-
-  private final FacilityService facilityService;
-
-  private final MoneyService moneyService;
-
-  private final UsersAnnexToContractsService usersAnnexToContractsService;
-
-  private final AccountService accountService;
-
-  private AppUserFilter filter = new AppUserFilter();
-
-  private final AccountTransactionService accountTransactionService;
-
-  private final AppFilterService appFilterService;
-
-  public UserController(UserService userService, RoleService roleService,
-                        FacilityService facilityService, MoneyService moneyService,
-                        UsersAnnexToContractsService usersAnnexToContractsService, AccountService accountService,
-                        AccountTransactionService accountTransactionService, AppFilterService appFilterService) {
-    this.userService = userService;
-    this.roleService = roleService;
-    this.facilityService = facilityService;
-    this.moneyService = moneyService;
-    this.usersAnnexToContractsService = usersAnnexToContractsService;
-    this.accountService = accountService;
-    this.accountTransactionService = accountTransactionService;
-    this.appFilterService = appFilterService;
-  }
+  final UserService userService;
+  final RoleService roleService;
+  final FacilityService facilityService;
+  final MoneyService moneyService;
+  final UsersAnnexToContractsService usersAnnexToContractsService;
+  final AccountService accountService;
+  final AccountTransactionService accountTransactionService;
+  final AppFilterService appFilterService;
+  AppUserFilter filter = new AppUserFilter();
 
   @Secured("ROLE_ADMIN")
   @GetMapping(path = Location.USERS_LIST)
@@ -228,22 +211,12 @@ public class UserController {
     return userService.find(dto);
   }
 
-  @ResponseBody
-  @PostMapping(path = Location.SEND_WELCOME)
-  public ApiResponse sendWelcomeMessage(@RequestBody EmailDTO emailDTO) {
-    return userService.sendWelcomeMessage(emailDTO);
-  }
-
   @InitBinder
   public void initBinder(WebDataBinder webDataBinder) {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     dateFormat.setLenient(false);
     webDataBinder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
   }
-
-  /**
-   * Конвертация ролей/должностей в представление
-   */
 
   @ModelAttribute("roles")
   public List<AppRole> initializeRoles() {
