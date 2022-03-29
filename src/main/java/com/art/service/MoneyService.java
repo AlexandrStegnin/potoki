@@ -147,54 +147,6 @@ public class MoneyService {
     return update(dbMoney);
   }
 
-  public ApiResponse resaleSimple(ResaleMoneyDTO moneyDTO) {
-    TypeClosing closingInvest = typeClosingService.findByName(RESALE_SHARE);
-    NewCashDetail newCashDetail = newCashDetailService.findByName(RE_BUY_SHARE);
-    AppUser buyer = userService.findById(moneyDTO.getBuyerId());
-    Date dateClosingInvest = moneyDTO.getDateClose();
-
-    Money sellerMoney = findById(moneyDTO.getId());
-
-    Money buyerMoney = new Money(sellerMoney);
-    Money negativeMoney = new Money(sellerMoney);
-
-    sellerMoney.setDateClosing(dateClosingInvest);
-    sellerMoney.setTypeClosing(closingInvest);
-    sellerMoney.setRealDateGiven(moneyDTO.getRealDateGiven());
-
-    buyerMoney.setInvestor(buyer);
-    buyerMoney.setDateGiven(dateClosingInvest);
-    buyerMoney.setSourceId(moneyDTO.getId());
-    buyerMoney.setCashSource(null);
-    buyerMoney.setSource(null);
-    buyerMoney.setNewCashDetail(newCashDetail);
-
-    negativeMoney.setCashSource(null);
-    negativeMoney.setSource(null);
-    negativeMoney.setGivenCash(negativeMoney.getGivenCash().negate());
-    negativeMoney.setSourceId(moneyDTO.getId());
-    negativeMoney.setDateGiven(dateClosingInvest);
-    negativeMoney.setDateClosing(dateClosingInvest);
-    negativeMoney.setTypeClosing(closingInvest);
-
-    createNew(buyerMoney);
-    createNew(negativeMoney);
-    update(sellerMoney);
-
-    Money transactionOldCash = new Money(sellerMoney);
-    transactionOldCash.setId(sellerMoney.getId());
-
-    Set<Money> cashSet = new HashSet<>();
-    cashSet.add(buyerMoney);
-    cashSet.add(negativeMoney);
-    cashSet.add(transactionOldCash);
-    transactionLogService.resale(Collections.singleton(transactionOldCash), cashSet);
-    return ApiResponse.build200Response(
-        String.format("Перепродажа доли инвестора %s прошла успешно",
-            sellerMoney.getInvestor().getLogin())
-    );
-  }
-
   public List<Money> findByIdIn(List<Long> idList) {
     return moneyRepository.findByIdIn(idList);
   }
@@ -250,13 +202,7 @@ public class MoneyService {
       underFacility = underFacilityService.findById(dto.getUnderFacilityId());
     }
     for (AppUser investor : investors) {
-      Money money = Money.builder()
-          .investor(investor)
-          .facility(facility)
-          .underFacility(underFacility)
-          .dateGiven(dto.getDateCashing())
-          .givenCash(dto.getCash())
-          .build();
+      Money money = buildMoney(dto, facility, underFacility, investor);
 
       List<AfterCashing> cashingList = new ArrayList<>();
       Date dateClosing = money.getDateGiven();
@@ -334,6 +280,17 @@ public class MoneyService {
     return new ApiResponse("Вывод денег прошёл успешно");
   }
 
+  private Money buildMoney(CashingMoneyDTO dto, Facility facility, UnderFacility underFacility, AppUser investor) {
+    Money money = Money.builder()
+        .investor(investor)
+        .facility(facility)
+        .underFacility(underFacility)
+        .dateGiven(dto.getDateCashing())
+        .givenCash(dto.getCash())
+        .build();
+    return money;
+  }
+
   private void createCommission(Money commissionCash, StringBuilder sourceCash) {
     commissionCash.setSource(sourceCash.toString());
     create(commissionCash);
@@ -359,9 +316,7 @@ public class MoneyService {
 
   private BigDecimal updateReminderSum(TypeClosing typeClosing, Date dateClosing, BigDecimal remainderSum, Money cash) {
     remainderSum = remainderSum.subtract(cash.getGivenCash());
-    cash.setDateClosing(dateClosing);
-    cash.setTypeClosing(typeClosing);
-    update(cash);
+    updateSellerMoney(cash, dateClosing, typeClosing);
     return remainderSum;
   }
 
@@ -559,11 +514,6 @@ public class MoneyService {
    * @return сообщение
    */
   public ApiResponse close(CloseCashDTO closeCashDTO) {
-    AppUser invBuyer = null;
-    if (closeCashDTO.getInvestorBuyerId() != null) {
-      invBuyer = userService.findById(closeCashDTO.getInvestorBuyerId());
-    }
-
     List<Money> cashList = new ArrayList<>(0);
     closeCashDTO.getInvestorCashIdList().forEach(id -> cashList.add(findById(id)));
 
@@ -572,65 +522,112 @@ public class MoneyService {
     // список сумм, которые закрываем для вывода
     Set<Money> closeCashes = new HashSet<>();
     // список сумм, которые закрываем для перепродажи доли
-    Set<Money> oldCashes = new HashSet<>();
+    Set<Money> resaleCashes = new HashSet<>();
     // список сумм, которые получатся на выходе
     Set<Money> newCashes = new HashSet<>();
 
-    for (Money c : cashList) {
-      if (invBuyer != null) { // Перепродажа доли
-        resaleShare(invBuyer, dateClose, realDateGiven, oldCashes, newCashes, c);
+    for (Money money : cashList) {
+      if (Objects.nonNull(closeCashDTO.getInvestorBuyerId())) { // Перепродажа доли
+        resaleShare(closeCashDTO.getInvestorBuyerId(), dateClose, realDateGiven, resaleCashes, newCashes, money);
       } else {
-        TypeClosing cashing = typeClosingService.findByName(CASHING);
-        Money cashForTx = new Money(c);
-        cashForTx.setId(c.getId());
-        c.setDateClosing(dateClose);
-        c.setTypeClosing(cashing);
-        c.setRealDateGiven(realDateGiven);
-        update(c);
-        closeCashes.add(cashForTx);
+        cashingMoney(dateClose, realDateGiven, closeCashes, money);
       }
     }
     if (!closeCashes.isEmpty()) {
       transactionLogService.close(closeCashes);
     } else {
-      transactionLogService.resale(oldCashes, newCashes);
+      transactionLogService.resale(resaleCashes, newCashes);
     }
     return new ApiResponse("Массовое закрытие прошло успешно.");
   }
 
-  private void resaleShare(AppUser invBuyer, Date dateClose, Date realDateGiven, Set<Money> oldCashes, Set<Money> newCashes, Money c) {
+  private void cashingMoney(Date dateClose, Date realDateGiven, Set<Money> closeCashes, Money money) {
+    TypeClosing cashing = typeClosingService.findByName(CASHING);
+    Money cashForTx = new Money(money);
+    cashForTx.setId(money.getId());
+    money.setDateClosing(dateClose);
+    money.setTypeClosing(cashing);
+    money.setRealDateGiven(realDateGiven);
+    update(money);
+    closeCashes.add(cashForTx);
+  }
+
+  private void resaleShare(Long buyerId, Date dateClose, Date realDateGiven, Set<Money> resaleCashes,
+                           Set<Money> newCashes, Money sellerMoney) {
+    AppUser buyer = userService.findById(buyerId);
     TypeClosing closingInvest = typeClosingService.findByName(RESALE_SHARE);
+
+    Money buyerMoney = createBuyerMoney(dateClose, realDateGiven, sellerMoney, buyer);
+    Money negativeMoney = createNegativeMoney(dateClose, sellerMoney, closingInvest);
+
+    updateSellerMoney(sellerMoney, dateClose, closingInvest);
+
+    resaleCashes.add(sellerMoney);
+    newCashes.add(sellerMoney);
+    newCashes.add(buyerMoney);
+    newCashes.add(negativeMoney);
+  }
+
+  private void updateSellerMoney(Money sellerMoney, Date dateClose, TypeClosing closingInvest) {
+    sellerMoney.setDateClosing(dateClose);
+    sellerMoney.setTypeClosing(closingInvest);
+    update(sellerMoney);
+  }
+
+  private Money createNegativeMoney(Date dateClose, Money sellerMoney, TypeClosing closingInvest) {
+    Money negativeMoney = new Money(sellerMoney);
+
+    negativeMoney.setCashSource(null);
+    negativeMoney.setGivenCash(negativeMoney.getGivenCash().negate());
+    negativeMoney.setSourceId(sellerMoney.getId());
+    negativeMoney.setSource(null);
+    negativeMoney.setDateGiven(dateClose);
+    negativeMoney.setDateClosing(dateClose);
+    negativeMoney.setTypeClosing(closingInvest);
+
+    createNew(negativeMoney);
+    return negativeMoney;
+  }
+
+  private Money createBuyerMoney(Date dateClose, Date realDateGiven, Money sellerMoney, AppUser buyer) {
     NewCashDetail newCashDetail = newCashDetailService.findByName(RE_BUY_SHARE);
-    Money copyCash = new Money(c);
-    Money newMoney = new Money(c);
+    Money buyerMoney = new Money(sellerMoney);
 
-    copyCash.setInvestor(invBuyer);
-    copyCash.setDateGiven(dateClose);
-    copyCash.setSourceId(c.getId());
-    copyCash.setCashSource(null);
-    copyCash.setSource(null);
-    copyCash.setNewCashDetail(newCashDetail);
-    copyCash.setRealDateGiven(realDateGiven);
+    buyerMoney.setInvestor(buyer);
+    buyerMoney.setDateGiven(dateClose);
+    buyerMoney.setSourceId(sellerMoney.getId());
+    buyerMoney.setCashSource(null);
+    buyerMoney.setSource(null);
+    buyerMoney.setNewCashDetail(newCashDetail);
+    buyerMoney.setRealDateGiven(realDateGiven);
 
-    copyCash = createNew(copyCash);
+    buyerMoney = createNew(buyerMoney);
+    return buyerMoney;
+  }
 
-    newMoney.setCashSource(null);
-    newMoney.setGivenCash(newMoney.getGivenCash().negate());
-    newMoney.setSourceId(c.getId());
-    newMoney.setSource(null);
-    newMoney.setDateGiven(dateClose);
-    newMoney.setDateClosing(dateClose);
-    newMoney.setTypeClosing(closingInvest);
+  public ApiResponse resaleSimple(ResaleMoneyDTO moneyDTO) {
+    AppUser buyer = userService.findById(moneyDTO.getBuyerId());
+    TypeClosing typeClosing = typeClosingService.findByName(RESALE_SHARE);
 
-    createNew(newMoney);
+    Money sellerMoney = findById(moneyDTO.getId());
 
-    c.setDateClosing(dateClose);
-    c.setTypeClosing(closingInvest);
-    update(c);
-    oldCashes.add(c);
-    newCashes.add(c);
-    newCashes.add(copyCash);
-    newCashes.add(newMoney);
+    Money buyerMoney = createBuyerMoney(moneyDTO.getDateClose(), moneyDTO.getRealDateGiven(), sellerMoney, buyer);
+    Money negativeMoney = createNegativeMoney(moneyDTO.getDateClose(), sellerMoney, typeClosing);
+
+    updateSellerMoney(sellerMoney, moneyDTO.getDateClose(), typeClosing);
+
+    Money transactionOldCash = new Money(sellerMoney);
+    transactionOldCash.setId(sellerMoney.getId());
+
+    Set<Money> cashSet = new HashSet<>();
+    cashSet.add(buyerMoney);
+    cashSet.add(negativeMoney);
+    cashSet.add(transactionOldCash);
+    transactionLogService.resale(Collections.singleton(transactionOldCash), cashSet);
+    return ApiResponse.build200Response(
+        String.format("Перепродажа доли инвестора %s прошла успешно",
+            sellerMoney.getInvestor().getLogin())
+    );
   }
 
   private void sendStatus(String message) {
@@ -731,9 +728,7 @@ public class MoneyService {
               .filter(ac -> ac.getOldId().equals(parentCashId))
               .collect(Collectors.toList());
 
-          if (!afterCashing.isEmpty() && Objects.nonNull(deleting.getTypeClosing()) &&
-              (deleting.getTypeClosing().getName().equalsIgnoreCase(CASHING)
-                  || deleting.getTypeClosing().getName().equalsIgnoreCase(CASHING_COMMISSION))) {
+          if (isCashing(deleting, afterCashing)) {
 
             List<Money> childCash = findBySource(deleting.getSource());
             AfterCashing cashToDel = afterCashing.stream()
@@ -750,12 +745,7 @@ public class MoneyService {
               .filter(m -> !m.getId().equals(deleting.getId()))
               .findFirst().orElse(null);
 
-          if (Objects.isNull(makeDelete)) {
-            parentCash.setIsReinvest(0);
-            parentCash.setIsDivide(0);
-            parentCash.setTypeClosing(null);
-            parentCash.setDateClosing(null);
-          }
+          updateParentCashIfNeeded(parentCash, makeDelete);
 
           if (isSameMonies(deleting, parentCash)) {
             parentCash.setGivenCash(parentCash.getGivenCash().add(deleting.getGivenCash()));
@@ -771,6 +761,21 @@ public class MoneyService {
         }
       });
     }
+  }
+
+  private void updateParentCashIfNeeded(Money parentCash, Money makeDelete) {
+    if (Objects.isNull(makeDelete)) {
+      parentCash.setIsReinvest(0);
+      parentCash.setIsDivide(0);
+      parentCash.setTypeClosing(null);
+      parentCash.setDateClosing(null);
+    }
+  }
+
+  private boolean isCashing(Money deleting, List<AfterCashing> afterCashing) {
+    return !afterCashing.isEmpty() && Objects.nonNull(deleting.getTypeClosing()) &&
+        (deleting.getTypeClosing().getName().equalsIgnoreCase(CASHING)
+            || deleting.getTypeClosing().getName().equalsIgnoreCase(CASHING_COMMISSION));
   }
 
   private List<Long> getSourceIds(Money deleting) {
@@ -883,9 +888,6 @@ public class MoneyService {
    */
   private List<Money> closeSellerMonies(ReBuyShareDTO dto) {
     TypeClosing typeClosing = typeClosingService.findByName(RESALE_SHARE);
-    if (Objects.isNull(typeClosing)) {
-      throw new ApiException("Не удалось найти вид закрытия \"Перепродажа доли\"", HttpStatus.NOT_FOUND);
-    }
     List<Long> openedCash = dto.getOpenedCash()
         .stream()
         .map(InvestorCashDTO::getId)

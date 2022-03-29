@@ -1,26 +1,25 @@
 package com.art.model.supporting.dto;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.util.Date;
 
 /**
  * @author Alexandr Stegnin
  */
-
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @EqualsAndHashCode(callSuper = true)
 public class ResaleMoneyDTO extends MoneyDTO {
 
-    private Long id;
-
-    private Long buyerId;
-
-    private Date dateClose;
-
-    private Long typeCloseId;
-
-    private Date realDateGiven;
+  Long id;
+  Long buyerId;
+  Date dateClose;
+  Long typeCloseId;
+  Date realDateGiven;
 
 }

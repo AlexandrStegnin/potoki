@@ -73,17 +73,20 @@ public class MoneyController {
    */
   @PostMapping(path = Location.MONEY_LIST)
   public ModelAndView moneyPageable(@ModelAttribute(value = "cashFilters") CashFilter cashFilters) {
-    Pageable pageable;
+    Pageable pageable = prepareFilter(cashFilters);
+    appFilterService.updateFilter(cashFilters, AppPage.MONEY);
+    return prepareModel(pageable, cashFilters);
+  }
+
+  private Pageable prepareFilter(CashFilter cashFilters) {
     if (cashFilters.getFiltered() == 0) {
       cashFilters.setFiltered(1);
     }
     if (cashFilters.isAllRows()) {
-      pageable = new PageRequest(0, Integer.MAX_VALUE);
+      return new PageRequest(0, Integer.MAX_VALUE);
     } else {
-      pageable = new PageRequest(cashFilters.getPageNumber(), cashFilters.getPageSize());
+      return new PageRequest(cashFilters.getPageNumber(), cashFilters.getPageSize());
     }
-    appFilterService.updateFilter(cashFilters, AppPage.MONEY);
-    return prepareModel(pageable, cashFilters);
   }
 
   private ModelAndView prepareModel(Pageable pageable, CashFilter cashFilters) {
